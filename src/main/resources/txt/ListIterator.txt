@@ -1,0 +1,35 @@
+=================================================================================
+LISTITERATOR
+=================================================================================
+Interface which extends the Iterator interface.
+Especially good for iterating through a List and its implementing ArrayList, LinkedList, Vector or Stack.
+Provides two-directional movements through the elements.
+The List interface (and all its implementing classes) provides a listIterator() method to access its functionality.
+
+EXAMPLE FOR ALL AVAILABLE METHODS:
+import java.util.ListIterator;
+import java.util.ArrayList;
+...
+ArrayList<elementType> al = new ArrayList<>();
+elementType element;
+...
+ListIterator<elementType> liter = al.listIterator();
+//sequential processing all elements
+while (liter.hasNext()) { //has next element in order
+    element = liter.next(); //reads the next element
+    //process element
+}
+element = liter.previous(); //previous element in order
+int index = liter.nextIndex(); //index of element which will be reached with the following next() method
+index = liter.previousIndex(); //index of element which will be reached with the following previous() method
+liter.remove() //removes the element got via next() or previous()
+element = liter.previous();
+liter.set(element) //replaces the element got via next() or previous()
+liter.add(element); //inserts a new element on the position the ListIterator stands, on the position the added element will be
+
+In case of LinkedList, the ListIterator will handle the reference fields within the node.
+Some of these methods throw exception in case of using them at the edges of the List e.g. calling previous() on the 1st element.
+
+=>Iterator
+=>List
+=>LinkedList

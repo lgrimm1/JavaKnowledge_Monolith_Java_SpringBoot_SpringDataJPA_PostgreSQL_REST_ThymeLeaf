@@ -1,0 +1,114 @@
+=================================================================================
+POSTGRESQL
+=================================================================================
+The postgreSQL (or postgres) is a relational database system.
+Database names, column names, index names etc. should be lowercase.
+
+1. SETTING UP
+2. CONSOLE
+3. INDEX (KEY) TYPES
+4. BACKEND CONNECTION PARAMETERS
+
+=>Spring_Boot
+=>Spring_Boot_entity
+=>Spring_Boot_repository
+
+=================================================================================
+1. SETTING UP
+=================================================================================
+During installation, important parameters are asked from the user:
+    a. database root username and password
+    b. communication port (default: 5432)
+    c. default user (postgres) username and password
+
+After installation, find the bin directory (e.g. c:\Program Files\PostgreSQL\15\bin\), and add it to the PATH system variable.
+
+=================================================================================
+2. CONSOLE
+=================================================================================
+The console can be reached by launching system console and typing psql command, or launching the SQL SHELL provided by the installer.
+The console will ask for user password for a local user different from the default postgres user (or whatever user was given during installation).
+
+Workaround to use the system console:
+    a. psql -U <username> -W command, or
+    b. psql -d <db-name> -U <username> -W, or
+    c. psql -h <host address> -d <db-name> -U <username> -W, or
+    d. psql "sslmode=require host=<db-address> dbname=<db-name> user=<username>"
+
+Commands in psql shell:
+||Command|Description||
+||\l|list of existing databases||
+||\c <db-name>|switch to another database with the same user||
+||\dt|list of database tables||
+||\d <table-name>|describe a table (table structure)||
+||\d+ <table-name>|describe a table (table structure), more information||
+||\dn|lists all database schemas||
+||\du|list users and their roles||
+||\du <username>|list a specific user and its roles||
+||\df|list all the functions from database (schema it belongs, names, result data type, argument data types, type)||
+||\dv|list all the database views||
+||\o|save terminal query to a file||
+||\i <file-name>|run commands from file||
+||\q|quit from the PSQL interface||
+
+Save a query to a file:
+\o <file_name>
+...run the psql commands...
+\o
+The closing command stops the process and send output to terminal (file was saved continuously until this point).
+
+Console SQL commands:
+CREATE DATABASE db-name;
+GRANT ALL PRIVILEGES ON DATABASE "db-name" TO username;
+
+=================================================================================
+3. INDEX (KEY) TYPES
+=================================================================================
+In postgres the column types can be used for defining index (or key).
+In a postgres table, indexes (keys) can be defined on a single column or on more columns. In the latter case, the combination of the columns will be indexed.
+Primary key can be only one over a table. By defining it, the search and navigation in the table becomes much faster.
+Any number of additional keys can be defined over a table.
+Postgres creates index table (key table) per key. Such table contains existing values of the key and pointers for the row of the table. Searching in these tables is faster than searching in a whole table due to accessing much less data.
+Any column type can be used in indexing in case that type can produce comparable values.
+Primary key values must be not just comparable but unique as well.
+In postgres, there are column types many administrators and developers use, see below.
+
+||Type|Description|Pros|Cons|Remarks||
+||BIGSERIAL|64-bit|convenient and simple, lesser index table size, needs lesser write time to logs|there can be gaps in values, predictable, unique only in a table|most popular||
+||SERIAL|32-bit|convenient and simple, lesser index table size, needs lesser write time to logs|there can be gaps in values, predictable, unique only in a table|can be ideal for middle-size tables||
+||SMALLSERIAL|16-bit|convenient and simple, lesser index table size, needs lesser write time to logs|there can be gaps in values, predictable, unique only in a table|ideal for smaller tables||
+||Postgres Native UUID v4|128-bit|no gaps in values, unpredictable, unique between databases as well|higher index table size, needs higher write time to logs|postgres uses generator algorithm, canonically encoded as a 36 character string||
+||Postgres uuid-ossp extension|128-bit|same as previous|same as previous|commonly used in earlier postgres versions, postgres uses generator algorithm based on random numbers, creates v4 UUID, supports v1, v3, v5 UUID numbers||
+||UUID v4 saved as VARCHAR(36)|128-bit number written as text|no pros|in greater tables needs more insertion time, needs more size|-||
+||ULID|128-bit|lexicographically sortable, canonically encoded as a 26 character string, uses 5 bit per character|no native support yet, need custom generator method for better server performance, open for timing information|48 bit for unix time, 80 bit for random number, uses Crockford’s base32 for characters (5-bit, not 8-bit)||
+||UUID v6|-|-|experimental, need custom generator method for better server performance|-||
+
+Although the types above are used frequently, in case the [1, Long.MAX_VALUE] interval is enough for the table IDs, the next type can be used for primary index as well:
+    bigint
+This type is matching with the Java long or Long types.
+Also, the Java int and Integer types are matching with the next postgres type:
+    integer
+
+=================================================================================
+4. BACKEND CONNECTION PARAMETERS
+=================================================================================
+These parameters are declared in the application.properties file under the project directory.
+Some of the usable parameters are described below.
+
+||Parameter|Description||
+||spring.jpa.show-sql|sets visibility of executed SQL commands on console||
+||spring.jpa.properties.hibernate.format_sql|sets formatting on printed SQL commands on console||
+||logging.level.org.hibernate.SQL|for DEBUG value prints SQL debug information on console||
+||logging.level.org.hibernate.type.descriptor.sql|for TRACE value prints SQL debug information on console for prepared statements||
+||server.error.include-message|sets whether the server error messages should be sent to the frontend||
+
+EXAMPLE FOR CONNECTION DATA (APPLICATION.PROPERTIES FILE FOR POSTGRESQL, JPA):
+spring.datasource.url=jdbc:postgresql://localhost:5432/dataBaseName
+spring.datasource.username=
+spring.datasource.password=
+spring.jpa.hibernate.ddl-auto=create-drop
+spring.jpa.show-sql=true
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
+spring.jpa.properties.hibernate.format_sql=true
+
+server.error.include-message=always

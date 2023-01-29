@@ -1,0 +1,54 @@
+=================================================================================
+SPRING.BOOT SERVICE
+=================================================================================
+This class provides methods serving the controller, also storage instances and other methods.
+It is the core of web app, equals with the Business layer. There can be more service classes, depending on the project structure.
+In order to define a class as service, the @Service or @Component or @Bean annotation is needed, the first expresses its function better.
+This class must be a singleton in memory per service.
+The class must be public in order to let Spring accessing it.
+
+EXAMPLE FOR A SERVICE CLASS (PURE @AUTOWIRED):
+package PackageName;
+
+import org.springframework.beans.factory.annotation.*;
+import org.springframework.stereotype.*;
+
+@Service
+public class ServiceClassName {
+
+    @Autowired
+    private RepositoryClassName repository;
+
+    //other fields
+
+    //service (helper) methods of the controller etc.
+    //service methods
+    //accessing a repository method etc.: repository.methodName()
+}
+
+EXAMPLE FOR A SERVICE CLASS (@AUTOWIRED WITH CLASS DEPENDENCY INJECTION):
+package PackageName;
+
+import org.springframework.stereotype.*;
+
+@Service
+public class ServiceClassName {
+
+    private final RepositoryClassName repository;
+    //other fields
+
+    @Autowired
+    public ServiceClassName(RepositoryClassName repository) {
+        this.repository = repository;
+    }
+
+    //service (helper) methods of the controller etc.
+    //service methods
+    //accessing a repository method etc.: repository.methodName()
+}
+
+In case the repository and the entity is handled by JPA, coming from design, it is possible to manage entity management via the repository or via the service.
+
+=>Spring_Boot
+=>Spring_Boot_tests;4. SERVICE CLASS TESTS
+=>Spring_Boot_service_validation_methods

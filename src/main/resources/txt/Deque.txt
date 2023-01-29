@@ -1,0 +1,63 @@
+=================================================================================
+DEQUE
+=================================================================================
+Extends the Queue interface.
+Interface for a double-ended queue.
+Elements can be added and removed from both ends.
+Implementing classes are ArrayDeque, LinkedList.
+Extending class is BlockingDeque.
+For creating instances, use constructors of classes which implements the Deque interface.
+
+import java.util.Deque;
+import java.util.ArrayDeque;
+import java.util.LinkedList;
+...
+Deque<String> animal1 = new ArrayDeque<>(); //ArrayDeque implementation of Deque
+Deque<String> animal2 = new LinkedList<>(); //LinkedList implementation of Deque
+
+These implementations can use declared methods in the Deque interface.
+
+||Method|Description||
+||addFirst()|adds element to the beginning, exception if deque is full||
+||addLast()|adds element to the end, exception if deque is full||
+||offerFirst()|adds element to the beginning, false if deque is full||
+||offerLast()|adds element to the end, false if deque is full||
+||getFirst()|returns the first element, exception if deque is empty||
+||getLast()|returns the last element, exception if deque is empty||
+||peekFirst()|returns the first element, null if deque is empty||
+||peekLast()|returns the last element, null if deque is empty||
+||removeFirst()|returns and removes the first element, exception if deque is empty||
+||removeLast()|returns and removes the last element, exception if deque is empty||
+||pollFirst()|returns and removes the first element, null if deque is empty||
+||pollLast()|returns and removes the last element, null if deque is empty||
+
+The Deque class provides right implementation of a stack.
+The Stack class provides implementation of a stack as well however methods of it are synchronized, using it is not recommended.
+
+Methods of Deque providing stack functionality follow.
+
+||Method|Description||
+||push()|adds element to the beginning||
+||pop()|returns and removes element from the beginning||
+||peek()|returns element from the beginning||
+
+EXAMPLE FOR USING ARRAYDEQUE VIA DEQUE:
+import java.util.Deque;
+import java.util.ArrayDeque;
+...
+Deque<Integer> numbers = new ArrayDeque<>();
+numbers.offer(1); //[1]
+numbers.offerLast(2); //[1, 2]
+numbers.offerFirst(3); //[3, 1, 2]
+int firstElement = numbers.peekFirst(); //3
+int lastElement = numbers.peekLast(); //2
+int removedNumber1 = numbers.pollFirst(); //3, [1, 2]
+int removedNumber2 = numbers.pollLast(); //2, [1]
+
+=>Queue
+=>ArrayDeque
+=>LinkedList
+=>BlockingDeque
+=>Stack
+=>Iterator
+=>Collection

@@ -1,0 +1,66 @@
+=================================================================================
+RECORD
+=================================================================================
+An immutable class where its purpose is to hold data, the next structure is needed:
+    a. fields are private final
+    b. the only constructor is public and holds all the setters of the fields
+    c. there is no explicit setter method (immutable)
+    d. the only methods are the getters, equals(), hashCode() and toString() to all fields
+In order to create such a data container, a lot of boilerplate code is needed.
+Modifying the data container need other coding since the methods should be updated not just the fields.
+From Java 17 the whole class can be replaced with a record structure which ensures that the class is a data container for purpose but no need to maintain the rest of the code.
+
+A record is an immutable class which represents data container for given classes (primitives are included).
+This structure is equally usable as a class would be.
+The method names of getters of the record are originated from the names of the specific fields.
+The toString() method will give different result from the usual.
+Fields and methods of the record can be accessed via using this.fieldName and this.methodName().
+
+EXAMPLE FOR A SIMPLE RECORD:
+public record RecordName (FieldType1 fieldName1, FieldType2 fieldName2) {}
+...
+FieldType1 name1 = ...;
+FieldType2 name2 = ...;
+RecordName names = new RecordName(name1, name2);
+FieldType1 var1 = names.fieldName1();
+FieldType2 var2 = names.fieldName2();
+String s = names.toString(); //RecordName[fieldName1=..., fieldName2=...]
+RecordName newNames = new RecordName(name1, name2);
+boolean b = names.equals(newNames);
+assertEquals(names.hashCode(), newNames.hashCode());
+
+A record can be extended:
+    a. overloading its constructor
+    b. adding additional constructors
+    c. adding additional (static) fields
+    d. adding additional (static) methods
+The this keyword points to the record itself, the this() method points to the original (automatically generated) constructor.
+Overloading the automatically created constructor is valid, however, overloading again with the same method signature is not allowed.
+
+EXAMPLE FOR OVERLOADING CONSTRUCTOR OF A RECORD:
+public record RecordName (FieldType1 fieldName1, FieldType2 fieldName2) {
+    public RecordName(FieldType1 fieldName1, FieldType2 fieldName2) {
+        Objects.requireNonNull(fieldName1);
+        Objects.requireNonNull(fieldName2);
+    }
+}
+
+EXAMPLE FOR ADDING NEW CONSTRUCTOR TO A RECORD:
+public record RecordName (FieldType1 fieldName1, FieldType2 fieldName2) {
+    public RecordName(FieldType1 fieldName1) {
+        this(fieldName1, valueForFieldName2);
+    }
+}
+
+EXAMPLE FOR ADDING STATIC CONTENT TO A RECORD:
+public record RecordName (FieldType1 fieldName1, FieldType2 fieldName2) {
+    public static FieldType3 fieldName = ...;
+    public static returnType4 methodName4(...) {
+        return ...;
+    }
+}
+...
+FieldType3 var3 = RecordName.fieldName3;
+returnType4 var4 = RecordName.methodName4(...);
+
+=>Classes;6. IMMUTABILITY

@@ -1,0 +1,31 @@
+=================================================================================
+TREESET
+=================================================================================
+Implements the SortedSet and the NavigableSet interfaces.
+
+EXAMPLE FOR CREATING AN INSTANCE:
+import java.util.TreeSet;
+...
+class CustomComparator implements Comparator<elementType> {...}
+...
+TreeSet<elementType> ss = new TreeSet<>(); //natural order
+TreeSet<elementType> ss2 = new TreeSet<>(new CustomComparator()); //custom order
+
+All methods of SortedSet and NavigableSet are available, priority on NavigableSet. Other methods are below.
+Because the element adding order is stored, e.g. the toArray(), toString(), iterator() methods will follow that order.
+
+||Method|Description||
+||clone()|returns a copy||
+||isEmpty()|checks whether the set is empty||
+
+Differences between HashSet and TreeSet:
+    a. TreeSet stores element order, HashSet does not
+    b. TreeSet provides navigation methods along the elements, HashSet does not
+    c. HashSet is faster for basic operations like add, remove, contains and size than TreeMap
+
+=>SortedSet
+=>NavigableSet
+=>Set
+=>Collection
+=>Comparator
+=>HashSet

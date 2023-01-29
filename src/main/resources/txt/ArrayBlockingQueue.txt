@@ -1,0 +1,17 @@
+=================================================================================
+ARRAYBLOCKINGQUEUE
+=================================================================================
+Implements BlockingQueue.
+Blocking queue implementation using an array.
+
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ArrayBlockingQueue;
+...
+int capacity = ...;
+ArrayBlockingQueue<elementType> abq = new ArrayBlockingQueue<>(); //or:
+ArrayBlockingQueue<elementType> abq = new ArrayBlockingQueue<>(capacity);
+
+All methods from BlockingQueue is accessible.
+
+=>BlockingQueue
+=>Iterator

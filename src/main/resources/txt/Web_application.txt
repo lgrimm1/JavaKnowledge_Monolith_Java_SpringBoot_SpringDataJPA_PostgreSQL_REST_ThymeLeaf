@@ -1,0 +1,340 @@
+=================================================================================
+WEB APPLICATION
+=================================================================================
+1. FRONTEND-BACKEND STRUCTURE, WORK CONCEPT
+2. REQUESTS AND RESPONSES
+3. JSON COMMUNICATION FILE
+4. CURL
+5. API
+
+=>Spring_Boot
+=>Spring_ThymeLeaf
+=>Serialization
+=>Tests
+=>Spring_Boot_tests
+
+=================================================================================
+1. FRONTEND-BACKEND STRUCTURE, WORK CONCEPT
+=================================================================================
+The web application structure is built up from the next levels:
+    a. thin client: a frontend application usually written in JavaScript
+    b. internet browser: runs the thin application, handles communication (e.g. HTTP, HTTPS, FTP) and security protocols
+    c. thick server: a backend application written e.g. in Java on server side
+
+The backend application is built up from the next layers:
+    a. Communication
+    b. Business
+    c. Storage (Repository, Data Access)
+
+The Communication layer is made of controllers, and connects the frontend with backend. It handles requests and if necessary, does authentication as well.
+The Business layer does the processing. That said, upon any request handled by the Communication level the data check already will happen in the Business layer.
+The Storage layer (also called by Repository layer or Data Access layer) handles all processes connected to data storage like databases, clouds and files.
+The layers are formed due to the need to separate tasks: in case the database is changed, only the Storage level should be modified.
+
+The Communication layer is built up from the next components:
+    a. dispatcher servlet
+    b. mapping
+    c. controller
+
+The dispatcher servlet receives the requests from the outside, converts it to readable information and forwards them to the inner processing parts, later receives view from the inner processing parts and sends them to the outside. Usually maintained by a framework like Spring.Boot.
+Mapping means the information is divided by request type and endpoint.
+The controller contains backend methods which receive the mapped incoming requests, start processing them, have the results and send those to the framework.
+
+The data is received with a request or sent with a response.
+The controller can serve data in two main modes:
+    a. view: the response will navigate a web page or a template along with data
+    b. object: the response contains data without navigation
+
+Generally, at backend for different tasks different threads are launched.
+The main() method starts these threads then should go to wait.
+Such threads are organized into classes, these classes are called controllers.
+
+In a controller several endpoints can be defined. These endpoints are unique, practically methods which handle endpoints coming in via requests. Overloading such methods with keeping the same endpoint is not allowed, in such case use different endpoint.
+Of course, in a controller there can be fields to keep data, furthermore helper methods to increase modularity and language structure.
+Best practice is to keep the controller as thin as it can be so for data checks and processing the flow should be forwarded to the Business layer where the processor and helper methods are.
+In case the project is organized around different packages where a package contains its element and storage classes, it is best practice to put all correspondent classes like controllers, services into that package. In this case modularity appears in packages as well. Adding, removing or modifying package will not have effect on other packages.
+In case the application would contain only one such package, it can be organized by keeping element classes in a package, the classes representing the three web app layers in a separate one.
+In case the class system is complex, there can be sub-packages under the present ones for both solutions.
+
+On frontend side, for answers, templates can be defined.
+A template is an JSON/HTML/XML/etc. page into which the answer is injected via defining HTML variables and frontend (e.g. Javascript) codes.
+Templates can be used only when the controller works in model&view mode.
+
+For all responses, the dispatcher servlet sends not just the response but an HTML code as well:
+    a. 1xx (transient response, more is coming)
+    b. 2xx (success)
+    c. 3xx (redirect)
+    d. 4xx (the client asked for something the server could not or would not deliver, e.g. 404 = page not found)
+    e. 5xx (server-side error)
+For all the possible HTML codes in verbal form, visit Spring.Boot tests (StatusResultMatcher methods).
+
+Building a whole web application needs much complexity in code.
+For simplification, using the Spring.Boot framework is advised.
+
+=================================================================================
+2. REQUESTS AND RESPONSES
+=================================================================================
+The communication is built-up from requests which go from the client to the server, as an answer the server may send data back.
+A request contains an URI (Uniform Resource Identifier) which points exactly to a specific target (endpoint, see later) and optionally can carry a query (see later).
+
+Request types can be:
+    a. GET: asks data from the server in form of a query (retrieve)
+    b. POST: new data (create)
+    c. PUT: full modification of data (update)
+    g. PATCH: partial modification of data (update)
+    d. DELETE: remove data (delete)
+    e. OPTIONS: asks for meta-data
+    h. HEAD
+
+In the URL, the carried data of GET requests (queries) are visible whilst the carried data of other requests are hidden and can be sent via the frontend or cURL command (see later).
+None of the request types creates obligation: the backend can render any code to any types; using the right type for the right task increases readability.
+
+The incoming requests are handled through methods developed by developers at backend side therefore it is allowed to use any requests for any tasks. However, there are differences and best practices:
+    a. the GET query is always public data so sending sensitive data via GET query is not good, asking data is preferred
+    b. the other requests are secure, the data is coded, sending data is preferred
+    c. some schools say every request could be sent via POST request however, differentiating between requests can be done by following the request type
+It is also possible to send request body via GET request as well however by using this option the purpose of GET can be injured.
+
+The communication is always established via using URLs. The different network elements, DNS servers handle the targeting.
+If the server is configured properly, before a request reaches the web application, must go through different levels of security (e.g. firewall) and web services.
+Before POST and PUT requests, one of the browser security protocols sends an OPTIONS request (pre-flight request). In case the web application receives the request, it sends meta-data back like in which format it communicates (e.g. JSON, XML, plain-text, text/html).
+Usually, the same company develops the frontend and the backend applications therefore the frontend is prepared for receiving one format only which was chosen at the very beginning of development.
+
+A request has the next formula:
+    a. base path (protocol://server_address)
+    b. path (/endpoint[?parameter=value[&parameter2=value]...])
+The endpoint defines a group under which the different request types are checked at backend.
+In case there is no endpoint or under it no request type is defined in the web application, the backend will not send answer to the frontend.
+
+EXAMPLES FOR A REQUEST:
+https://www.wind.com
+https://www.wind.com/category
+https://www.wind.com/category?strength=3
+https://www.wind.com/category?strength=3&level=800
+https://www.wind.com/category?strength=3&level=800&db=65
+https://www.wind.com/category/3
+https://www.wind.com/category/3/800/65
+https://www.wind.com/category/3?level=800&db=65
+
+Best practice for endpoints is that queries should be used in case of possible more dependent elements in the answer.
+
+The answer is packed into a data package called payload. The payload is practically an object created by the developer directly (object mode) or handled by Spring (model&view mode).
+
+=================================================================================
+3. JSON COMMUNICATION FILE
+=================================================================================
+The possible (accepted) requests formulas must be defined in order to limit the communication possibilities and introduced standards between the frontend and the backend.
+In case the controller methods are working in object mode, such rules are usually defined in JSON communication file.
+JSON: Javascript Object Notation, data transfer standard between internet elements such as servers and clients.
+This file should be named as JSON.txt and placed into the src/main/java directory.
+
+Elements of JSON format:
+    a. outer {} marks an object, if there is not, marks a literal (no variable or array it can contain)
+    b. "variableName" marks a variable name within the object
+    c. lesser-greater signs: mark type and format information for developers only
+    d. double quote: variable name or text value
+    e. |: separates possible options (typically for enums)
+    f. [...]: array (because a JSON file contains data which has fix size, no List is available in JSON)
+    g. [{}, ...]: an array where an element is described inside the inner {}
+    h. the format is not sensitive for spaces and line breaks; the automatically generated JSON contains neither
+
+Values in JSON:
+    a. numbers: 12.3, -36, "25.4"
+    b. enums as text: "CARD", "CHICKEN"
+    c. logical: true, false
+    d. text: "abc", "ooo"
+    e. null: null
+
+EXAMPLE FOR JSON COMMUNICATION FILE (FOR DEVELOPERS):
+Endpoints
+-------------------
+GET /purchase/id        response: {"purchaseId": <long>, "purchaseDate": "<YYYY-MM-DD>", "purchaseType": "CARD"|"CASH"|"INTERNET", "purchaseValue": <double>, "purchaseDescription": <string>}
+PUT /newPurchase        request body: {"purchaseId": <long>, "purchaseDate": "<YYYY-MM-DD>", "purchaseType": "CARD"|"CASH"|"INTERNET", "purchaseValue": <double>, "purchaseDescription": <string>}
+                        response: {"id": <long>}
+PUT /purchase           request body: {"purchaseId": <long>, "purchaseDate": "<YYYY-MM-DD>", "purchaseType": "CARD"|"CASH"|"INTERNET", "purchaseValue": <double>, "purchaseDescription": <string>}
+                        response: {true|false}
+DELETE /purchase/id     response: {true|false}
+GET /purchases          response:  [{"purchaseId": <long>, "purchaseDate": "<YYYY-MM-DD>", "purchaseType": "CARD"|"CASH"|"INTERNET", "purchaseValue": <double>, "purchaseDescription": <string>}, ...]
+DELETE /purchases       request body: [<long>, ...]
+                        response: {[<long>, ...]}
+GET /count              response: {<integer>}
+GET /stat/annual        response: [{"year": <integer>, "total": <double>, "count": <integer>, "average": <double>}, ...]
+GET /stat/months        response: [{"year": <integer>, "month": <integer>, "total": <double>, "count": <integer>, "average": <double>}, ...]
+GET /stat/full          response: {"total": <double>, "count": <integer>, "average": <double>}
+
+This file can not be automatically used since contains human-friendly data as well but can be modified easily to be proper. In this form informs the frontend developer about exact data formulas.
+
+EXAMPLES FOR JSON COMMUNICATION FILE (BETWEEN SOFTWARES):
+12
+false
+"abc"
+null
+[12.6,65.78,78.40]
+[false,true,false,false]
+{"date":"2010-12-06","type":"CARD","value":12.32,"description":"abc"}
+{[{"date":"2010-12-06","type":"CARD","value":12.32,"description":"abc"},{"date":"2010.06.12","type":"CASH","value":32.12,"description":"xyz"}]}
+
+The JSON is visualized better if formatted with spaces and line breaks. Such format is shown by browsers for better readability.
+
+EXAMPLE FOR A FORMATTED JSON COMMUNICATION FILE (LITERALS IN ARRAY, SPACES):
+[12.6, 65.78, 78.40]
+
+EXAMPLE FOR A FORMATTED JSON COMMUNICATION FILE (OBJECTS IN ARRAY, SPACES):
+[{"date": "2010-12-06", "type": "CARD", "value": 12.32, "description": "abc"}, {"date": "2010.06.12", "type": "CASH", "value": 32.12, "description": "xyz"}]
+
+EXAMPLE FOR A FORMATTED JSON COMMUNICATION FILE (LITERALS IN ARRAY, SPACES AND LINE BREAKS):
+[
+    12.6,
+    65.78,
+    78.40
+]
+
+EXAMPLE FOR A FORMATTED JSON COMMUNICATION FILE (OBJECT IN ARRAY, SPACES AND LINE BREAKS):
+[
+    {
+        "date": "2010-12-06",
+        "type": "CARD",
+        "value": 12.32,
+        "description": "abc"
+    },
+    {
+        "date": "2010.06.12",
+        "type": "CASH",
+        "value": 32.12,
+        "description": "xyz"
+    }
+]
+
+The serialization and deserialization processes which convert data to and from JSON are language-dependent but the JSON itself is platform-independent, must work under the same rules whatever servers and frontends communicate with each other.
+
+=================================================================================
+4. CURL
+=================================================================================
+The cURL is a PowerShell command line app for sending requests.
+Ideal tool for integration test of an application.
+
+A cURL distribution can already be found in Windows and Linux and the curl alias is pointing on that. If that distribution is not acceptable (it is not updated), install a fresh version from the internet.
+In order to let the external cURL app being available, first the alias must be removed before the new cURL can be reached:
+    remove-item alias:curl
+No message will appear in console in case the alias existed and removed successfully.
+
+The Github webpage presents a public endpoint for developers to test whether the cURL is operable:
+    api.github.com/octocat
+
+Important parameters:
+    a. -V or --version (get cURL version)
+    b. -h or --help (get help)
+    c. -d "data" or --data "data" (for POST, PUT, DELETE, ... request body)
+    d. -X <request_type> (overwrite GET/POST request type with GET, POST, PUT etc.)
+    e. --write-out (extract HTTP response code)
+    f. -H "header" (use given header)
+    g. -i (show request body along with response protocol headers e.g. HTTP version with response code (200, 404 etc.), content type, encoding, zoned date and time)
+    h. -o <file> or --output <file> (output into file instead of console)
+    i. -T <file> or --upload-file <file> (send local file to server)
+    j. -u <user:password> or --user <user:password> (server login data)
+    k. -v or --verbose (talkative output)
+    l. @<jsonfile> (use JSON file, no outer quote signs in it, in case there should be, use --upload)
+
+The default request type is GET (no need to define it explicitly).
+In case -d (--data) parameter is given, the default request type will be POST.
+In all cases the needed request type is not equal with the actual default, must the needed request type be expressed.
+
+Order of parameters can be any.
+For switches starting with - sign, they can be written as one parameter, order is unimportant:
+    -Viv
+
+Header can be:
+    a. "Accept: content-type"
+    b. "Content-Type: content-type"
+The Accept parameter defines in which format the cURL waits response from the server. In case the server (willingly or not) is not prepared for that format, cURL will receive an error HTTP message.
+The Content-Type parameter defines in which format the JSON will be sent to the server.
+
+For formatted JSON output, use the cURL command with jq pipelines:
+    a. curl ... | jq (Windows)
+    a. curl ... | json_pp (Mac, Linux)
+
+Sending JSON object in command line with cURL should follow specific formulas:
+    a. "{"variable": "value"}" (general format)
+    b. '{"variable": "value"}' (mostly on Windows)
+    c. "{\"variable\": \"value\"}" (escaped format)
+When the JSON formula is read from an external file by cURL, the general format is acceptable.
+
+In order to keep readability for the command in command line, when typing, use the ^ (Windows) or \ (Linux) character when a line break is needed.
+Testing endpoints is possible by e.g. write batched cURL commands with JSON formulas in outer files and checking results against expected.
+The JSON in external file can be either un-formatted or formatted.
+
+EXAMPLE FOR SENDING A PUT REQUEST WITH QUERY:
+curl -X PUT https://www.wind.com/category?strength=3&level=800&db=65
+
+EXAMPLE FOR A POST REQUEST WITH JSON DATA AND CONTENT-TYPE HEADERS:
+curl -i -H "Accept: application/json" -H "Content-Type: application/json" --data '{"variable1": "value1", "variable2": "value2"}' "https://server/endpoint"
+
+EXAMPLE FOR A POST REQUEST WITH JSON DATA AND CONTENT-TYPE HEADERS (WITH LINE BREAKS, WINDOWS):
+curl -i -H "Accept: application/json" -H "Content-Type: application/json" ^
+--data '{"variable1": "value1", "variable2": "value2"}' ^
+"https://server/endpoint"
+
+EXAMPLE FOR A POST REQUEST WITH JSON DATA AND CONTENT-TYPE HEADERS (WITH LINE BREAKS, LINUX):
+curl -i -H "Accept: application/json" -H "Content-Type: application/json" \
+--data '{"variable1": "value1", "variable2": "value2"}' \
+"https://server/endpoint"
+
+EXAMPLE FOR USING FORMATTED EXTERNAL JSON FILE IN A PUT REQUEST:
+put.json:
+{
+"variable1": "value1",
+"variable2": "value2"
+}
+command line:
+curl -X PUT --upload-file "put_example.json" "https://server/endpoint"
+
+=================================================================================
+5. API
+=================================================================================
+The API means Application Programming Interface.
+Creating an API from an application means that the application will have open points where other applications can connect and use the original application as a black box.
+That said, a backend API means collection of endpoints provided by the backend to which any frontends can connect by sending requests to provided endpoints.
+Following best practices, backend development of Communication layer manifested as a thin Controller class provides the API of a backend web application.
+
+Web APIs are used for providing computing and/or backend support for several customized applications, even from other companies.
+
+In order to use a web API, protocols must be defined.
+A protocol contains that for what exact request what exact answer the other part will provide.
+A protocol is created by defining an endpoint and providing request and response formulas (e.g. JSON) along.
+
+For API, it is important that the interface must show that it is an API and which version of it is published.
+That happens with naming the endpoints correctly.
+
+EXAMPLES FOR API ENDPOINT NAMINGS:
+/api/v1/file-load
+/api/v5.2/get/12
+/api/v3/window?size=12&type="fastseal"
+
+For purpose, in case the API handles the tasks below, is called CRUD API:
+    a. Create
+    b. Retrieve
+    c. Update
+    d. Delete
+
+For communication, in case the API follows the REST (REpresentational State Transfer) standard, the application will be a RESTful application, and will fulfill the next conditions:
+    a. will communicate with a package which contains not just data in transfer format like JSON but header with metadata, authorization, uniform resource identifier (URI), caching, cookies etc.
+    b. the package must be managed through HTTP
+    c. the package must be stateless (does not contain client-specific information)
+    d. the package must not contain information about the path the package goes through (servers and other network elements)
+
+With using a controller as a web API, both the response modes are available:
+    a. view
+    b. object
+
+With using a controller as a REST API, only one response mode is available:
+    a. object
+
+The typical manifestation of a REST CRUD API can be seen below.
+
+||API function|Request type|Endpoint|Request body|Response body|HTTP success code||
+||create|POST|api/v1/elementName|all fields (ID is excluded)|all fields (ID is included)|200||
+||retrieve one|GET|api/v1/elementName?id=idNumber|-|all fields (ID is included)|200||
+||retrieve all|GET|api/v1/elementNames or api/v1/allElementName|all elements in array, per element all fields (ID is included)|200||
+||full update|PUT|api/v1/elementName|all fields (ID is included)|all fields (modified version; ID is included)|200||
+||partial update|PATCH|api/v1/elementName/idNumber|only the fields which need to be updated (ID can not be given)|all fields (modified version; ID is included)|200||
+||delete|DELETE|api/v1/elementName/idNumber|-|-|204 (No Content)||

@@ -1,0 +1,28 @@
+=================================================================================
+STACK
+=================================================================================
+Extends the Vector to have a stack model with LIFO (Last In First Out) functionality.
+
+import java.util.Stack;
+...
+Stack<elementType> stack = new Stack<>();
+//All methods of Vector are inherited. Added methods are:
+stack.push(element1); //[element1]
+stack.push(element2); //[element1, element2]
+stack.push(element3); //[element1, element2, element3]
+int position = stack.search(element3); //position: 1; position of element starting from the last one; first position is 1
+int position = stack.search(element1); //position: 3; position of element starting from the last one; first position is 1
+elementType element = stack.peek(); //element: element3, stack: [element1, element2, element3]; accesses the last element
+element = stack.pop(); //element: element3, stack: [element1, element2]; accesses and removes the last element
+element = stack.pop(); //element: element2, stack: [element1]; accesses and removes the last element
+boolean b = stack.empty(); //checks whether the stack is empty
+
+Utilizing push(), pop(), peek() in a frame of condition with empty() provides the functionality of a stack structure.
+However, by inheriting Vector, it is not data-safe (data can be read from other positions and toString() shows the push() order instead of pop order) nor thread-safe, and has no extended functionality for stack data structure. Use ArrayDeque class (implementing Deque interface) instead.
+
+=>List
+=>Vector
+=>Collection
+=>ArrayDeque
+=>Iterator
+=>ListIterator

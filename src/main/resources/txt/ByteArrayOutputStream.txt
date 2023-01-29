@@ -1,0 +1,43 @@
+=================================================================================
+BYTEARRAYOUTPUTSTREAM
+=================================================================================
+Extends the OutputStream abstract class.
+Writes an array of output data in bytes to the output stream.
+It includes an internal array to store data.
+All methods of OutputStream are implemented and available. Specific methods are below.
+
+||Method|Description||
+||write(int b)|writes the given byte, handles ASCII and Unicode which means it can be 1 or 2 bytes in reality||
+||write(byte[] byteArray, int startPosition, int length)|writes length number of bytes of byteArray from startPosition in the array||
+||writeTo(ByteArrayOutputStream baos2)|writes the entire data of the current stream to the given stream||
+||toString()|converts the data stored in stream to aString||
+||toByteArray()|converts the data stored in stream to a byte array||
+||size()|actual length of the stream||
+||close()|this method is implemented differently than its original purpose: while the stream can be closed, no exception raises in case of accessing after invoking||
+||flush()|clears the stream||
+
+EXAMPLE FOR USAGE:
+import java.io.ByteArrayOutputStream;
+...
+byte[] byteArray = ...; //preparing byteArray or converting from String before of that
+try {
+    ByteArrayOutputStream baos = new ByteArrayOutputStream(); //stream to write data to an array in bytes with default of 32 bytes, or:
+    ByteArrayOutputStream baos = new ByteArrayOutputStream(int size); //stream to write data to an array in bytes with bytes of given the size (length of the array)
+    //writing one-by-one
+    for (byte b : byteArray) {
+        baos.write(b); //append
+    }
+    //or writing all-at-once
+    baos.write(byteArray, 0, byteArray.length);
+    //process the data in stream
+    byte[] byteData = baos.toByteArray();
+    String s = baos.toString();
+    //copying data of the stream into an other stream
+    ByteArrayOutputStream baos2 = new ByteArrayOutputStream(byteArray.length);
+    baos.writeTo(baos2);
+    fos.close();
+}
+catch (Exception e) {...}
+
+=>Stream
+=>OutputStream

@@ -1,0 +1,17 @@
+=================================================================================
+SPRING.BOOT ENTITY VALIDATION
+=================================================================================
+Coming from the nature of Spring.Data JPA, the properness of field data can not be checked (validated) from the constructors or the setters of the entity.
+There are two separate ways to apply validation of an entity:
+    a. Spring.Validation
+    b. service class validation methods
+
+The Spring.Validation is mainly used for rendering a condition system on the entity fields.
+Advantage is that there is a wide variety of conditions available, and it is very fast to apply the conditions themselves.
+Disadvantage is that the conditions set on a field become static and there is no flexibility e.g. if the possible maximum value is set on a number field, the maximum can not be changed.
+
+Validation method(s) in service class for the entity below that class provides flexibility since the validation can be parametrized.
+Disadvantage is the need of coding.
+
+=>Spring_Validation
+=>Spring_Boot_service_validation_methods

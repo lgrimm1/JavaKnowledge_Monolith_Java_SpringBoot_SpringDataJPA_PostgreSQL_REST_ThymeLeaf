@@ -1,0 +1,57 @@
+=================================================================================
+OBJECTINPUTSTREAM
+=================================================================================
+Extends the InputStream abstract class.
+Can be used to read objects that were written by ObjectOutputStream.
+Files can be transferred through networks.
+ObjectInputStream decodes Java objects read from files using the class name and object values (deserialization).
+All data coming from instances of classes which implement the Serializable interface can be processed.
+The decoded objects can be processed following types normally. For custom classes, casting is necessary, see below.
+Reading from the stream must follow the order of writing to stream (FIFO).
+
+Due to having slightly different structure, all methods are described here.
+
+||Method|Description||
+||read()|receives a byte data from the linked file stream||
+||readBoolean()|receives data in boolean form from the file stream||
+||readChar()|receives data in character form from the file stream||
+||readInt()|receives data in integer form from the file stream||
+||readObject()|receives object from the file stream||
+||available()|returns the available number of bytes in the stream||
+||mark()|marks the position in stream up to which data has been read||
+||reset()|returns the control to the point in the stream where the mark was set||
+||skipBytes()|skips and discards the specified bytes from the stream||
+||close()|closes the stream||
+
+
+EXAMPLE FOR READING DATA:
+import java.io.ObjectInputStream;
+import java.io.FileInputStream;
+import java.io.File;
+import java.io.Serializable;
+...
+class ClassName implements Serializable {...};
+boolean booleanData;
+char characterData;
+int integerData;
+String stringData;
+ClassName className;
+//read data
+try {
+    FileInputStream fis = new FileInputStream(String file); //create file stream for input, see constructors at FileInputStream
+    ObjectInputStream ois = new ObjectInputStream(fis); //create object stream with linking the file stream to it
+    booleanData = ois.readBoolean();
+    characterData = ois.readChar();
+    integerData = ois.readInt();
+    objectData = ois.readObject();
+    className = (ClassName) ois.readObject(); //for classes, needs casting
+    ois.close();
+    fis.close();
+}
+catch (Exception e) {...}
+
+=>Stream
+=>InputStream
+=>ObjectOutputStream
+=>FileInputStream
+=>Serialization

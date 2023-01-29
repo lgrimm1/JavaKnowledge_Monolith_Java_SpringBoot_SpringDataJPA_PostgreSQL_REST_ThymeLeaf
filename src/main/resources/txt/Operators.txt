@@ -1,0 +1,134 @@
+=================================================================================
+OPERATORS
+=================================================================================
+1. ARITHMETIC
+2. ASSIGNMENT
+3. RELATIONAL
+4. LOGICAL
+5. UNARY
+6. BITWISE
+7. OTHER
+8. PRECEDENCE RULES
+
+=>Literals
+=>Primitive_data_types
+=>Variables
+=>Lambda_expressions
+=>Statements
+=>Iteration
+
+=================================================================================
+1. ARITHMETIC
+=================================================================================
++
+-
+*
+/ (the whole part of division: in case both numbers are whole, the result will be whole)
+/ (real division: in case at least one number is a floating-point number)
+% (remainder after division, modulo operator)
+
+=================================================================================
+2. ASSIGNMENT
+=================================================================================
+a = b
+a += b (a = a + b)
+a -= b (a = a - b)
+a *= b (a = a * b)
+a /= b (a = a / b)
+a %= b (a = a % b)
+
+=================================================================================
+3. RELATIONAL
+=================================================================================
+Results true or false value.
+== (equals with)
+!= (not equals with)
+>
+>=
+<
+<=
+
+=================================================================================
+4. LOGICAL
+=================================================================================
+&& (AND)
+|| (OR)
+! (NOT)
+
+=================================================================================
+5. UNARY
+=================================================================================
++n (unary plus, optional)
+-n (unary minus, inverts the sign)
+++n (prefix increment operator, 1st increases, then executes)
+n++ (postfix increment operator, 1st executes, then increases)
+--n (prefix decrement, 1st decreases, then executes)
+n-- (postfix decrement, 1st executes, then decreases)
+! (logical complement operator, inverts boolean variable)
+int n = 5;
+System.out.println(n++); //writes 5 then n == 6
+System.out.println(++n); //n == 6 then writes 6
+
+=================================================================================
+6. BITWISE
+=================================================================================
+Operations on binary forms of numbers.
+~ (invert, by bits, ~N = -(N+1))
+<< (left shift)
+>> (right shift)
+>>> (unsigned right shift)
+& (bitwise AND)
+| (bitwise OR)
+^ (bitwise exclusive OR == XOR)
+
+EXAMPLE FOR OR:
+12 == 0000 1100
+25 == 0001 1001
+|  == 0001 1101 == 29
+with code:
+int a = 12, b = 25, c;
+c = a | b; //c == 29
+
+EXAMPLE FOR INVERT:
+12 == 0000 1100
+~  == 1111 0011
+with code:
+int a = 12, c;
+c = ~a; //c == -13
+
+=================================================================================
+7. OTHER
+=================================================================================
+instanceof (checks whether a variable is a member of class)
+ternary (short solution for a simple "if" condition)
+-> (lambda operator)
+
+EXAMPLES:
+String s;
+boolean b = s instanceof String; //b == true
+int a = 10;
+int b = (a > 5) ? 12 : 6; //b == 12
+String s = (a % 2 == 1) : "even" : "odd"; //s: "odd"
+
+Lambda operator formula:
+(parameter list) -> lambda body
+or
+(parameter list) -> {lambda body}
+
+=================================================================================
+8. PRECEDENCE RULES
+=================================================================================
+||Type|Mark|Direction of execution||
+||postfix|++ --|->||
+||prefix and unary|++ -- + - ~ !|<-||
+||multiplicative|* / %|->||
+||additive|+ -|->||
+||shift|>> << >>>|->||
+||relation|< > <= >= instanceof|->||
+||equality|== !=|->||
+||AND|&& &|->||
+||OR|double vertical bar, simple vertical bar|->||
+||ternary|() ? :|<-||
+||assignment|= += -= *= /= %= &= ^= <<= >>= >>>=|<-||
+
+Chain equality: a = b = c is b = c, then a = b, therefore direction is <-

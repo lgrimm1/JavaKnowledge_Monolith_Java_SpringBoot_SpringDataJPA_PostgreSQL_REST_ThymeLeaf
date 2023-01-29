@@ -1,0 +1,339 @@
+=================================================================================
+STATEMENTS
+=================================================================================
+1. GROUP OF STATEMENTS
+2. DECLARATION STATEMENTS
+3. MEMORY ALLOCATION STATEMENT
+4. IF STATEMENT
+5. IF-ELSE STATEMENT
+6. IF-ELSE-IF STATEMENT
+7. NESTED IF STATEMENT
+8. SWITCH STATEMENT
+9. ENHANCED SWITCH STATEMENT
+10. RETURN STATEMENT
+11. RETURN-SWITCH STATEMENT
+12. TRY-CATCH STATEMENT
+13. TRY-FINALLY STATEMENT
+14. TRY-CATCH-FINALLY STATEMENT
+15. TRY-WITH-RESOURCES STATEMENT
+16. ENHANCED TRY-WITH-RESOURCES STATEMENT
+17. CHAINED STATEMENTS
+
+=>Break_and_Continue
+=>StringBuilder
+=>Stream
+=>String
+=>Variables
+=>Iteration
+=>Keywords_and_identifiers
+=>Operators
+
+=================================================================================
+1. GROUP OF STATEMENTS
+=================================================================================
+Between { and } brackets; can be empty; in case no statements inside, can be left.
+
+=================================================================================
+2. DECLARATION STATEMENTS
+=================================================================================
+int i;
+String s;
+
+Can be combined with memory allocation statement:
+int a = 11;
+String[] sa = new String[5];
+
+=================================================================================
+3. MEMORY ALLOCATION STATEMENT
+=================================================================================
+k = 3 * 5; //3 * 5: expression
+l = new ArrayList<>();
+m = makeImpression(abu, dzabu);
+n = "window";
+
+Can be combined with declaration statement:
+int a = 11;
+String[] sa = new String[5];
+
+=================================================================================
+4. IF STATEMENT
+=================================================================================
+if (condition) {
+	...
+}
+
+=================================================================================
+5. IF-ELSE STATEMENT
+=================================================================================
+if (condition) {
+	...
+}
+else {
+	...
+}
+
+=================================================================================
+6. IF-ELSE-IF STATEMENT
+=================================================================================
+if (condition) {
+	...
+}
+else if (condition) {
+	...
+}
+else if (condition) {
+	...
+}
+else {
+	...
+}
+
+=================================================================================
+7. NESTED IF STATEMENT
+=================================================================================
+if (condition) {
+	if (condition) {
+		...
+	}
+	else {
+		...
+	}
+}
+else {
+	if (condition) {
+		...
+	}
+	else {
+		...
+	}
+}
+
+=================================================================================
+8. SWITCH STATEMENT
+=================================================================================
+switch (variable) {
+	case value1:
+		statement;
+		statement;
+		break;
+	case value2:
+		statement;
+		break;
+	[default:
+		statement;
+		break;]
+}
+
+Variable can be primitive, enumerated types, String, wrapper classes.
+Leaving a break; statement causes that the flow jumps on the next case.
+
+=================================================================================
+9. ENHANCED SWITCH STATEMENT
+=================================================================================
+switch (variable) {
+	case value1 -> statement;
+	case value2 -> {
+		statement;
+		statement;
+	}
+	[default -> statement;]
+}
+
+=================================================================================
+10. RETURN STATEMENT
+=================================================================================
+return true;
+return 3 * 2;
+return variable;
+return (condition) ? true : false;
+return (condition) ? 3 * 2 : 5 / 6;
+return (condition) ? variable1 : variable2;
+
+=================================================================================
+11. RETURN-SWITCH STATEMENT
+=================================================================================
+return switch (variable) {
+	case value1 -> statement;
+	case value2 -> {
+		statement;
+		statement;
+	}
+	[default -> statement;]
+};
+
+=================================================================================
+12. TRY-CATCH STATEMENT
+=================================================================================
+try {
+    //tried statements
+}
+catch (exceptionType exceptionVariable) {
+    //process exceptionVariable in case thrown such exception
+}
+[catch (exceptionType2 exceptionVariable2) {
+    //process exceptionVariable2 in case thrown such exception
+}
+...
+catch (exceptionTypeX exceptionVariableX) {
+    //process exceptionVariableX in case thrown such exception
+}]
+
+More catch branches can be merged into one:
+catch (exceptionType1 | exceptionType2 exceptionVariable) {...}
+
+=================================================================================
+13. TRY-FINALLY STATEMENT
+=================================================================================
+try {
+    //tried statements
+}
+finally {
+    //closing statements, invoked after try clause
+}
+
+The finally block will not apply:
+    a. after System.exit() method
+    b. unhandled exception in finally block
+    c. thread freezes
+
+=================================================================================
+14. TRY-CATCH-FINALLY STATEMENT
+=================================================================================
+try {
+    //tried statements
+}
+catch (exceptionType exceptionVariable) {
+    //process exceptionVariable in case thrown such exception
+}
+[catch (exceptionType2 exceptionVariable2) {
+    //process exceptionVariable2 in case thrown such exception
+}
+...
+catch (exceptionTypeX exceptionVariableX) {
+    //process exceptionVariableX in case thrown such exception
+}]
+finally {
+    //closing statements, invoked after tried statements and caught exceptions
+}
+
+Less safe try statement for more objects need closing after process: there is a possibility that one of the .close methods will not run if the previous one fails.
+
+More catch branches can be merged into one:
+catch (exceptionType1 | exceptionType2 exceptionVariable) {...}
+
+The "finally" block will not apply:
+    a. after System.exit() method
+    b. unhandled exception in finally block
+    c. thread freezes
+
+=================================================================================
+15. TRY-WITH-RESOURCES STATEMENT
+=================================================================================
+try (resource declaration) {
+    //tried statements
+}
+catch (exceptionType exceptionVariable) {
+    //process exceptionVariable in case thrown such exception
+}
+[catch (exceptionType2 exceptionVariable2) {
+    //process exceptionVariable2 in case thrown such exception
+}
+...
+catch (exceptionTypeX exceptionVariableX) {
+    //process exceptionVariableX in case thrown such exception
+}]
+
+Resource declaration: autoClosableType autoClosableVariable = ...[; ...; autoClosableTypeX autoClosableVariableX = ...]
+After tried statements and caught exceptions, invokes .close() methods for all declared resources.
+The most safe try statement for objects need closing after process.
+Closing the resources will happen in reverse order (last first).
+
+EXAMPLES FOR RESOURCE DECLARATION:
+Scanner sci = new Scanner(...)
+FileReader fr = new FileReader(...)
+
+More catch branches can be merged into one:
+catch (exceptionType1 | exceptionType2 exceptionVariable) {...}
+
+=================================================================================
+16. ENHANCED TRY-WITH-RESOURCES STATEMENT
+=================================================================================
+From Java9.
+The try header can handle resources declared before the try block.
+
+EXAMPLE:
+Scanner sc = new Scanner(...);
+...
+try (sc) {...}
+
+=================================================================================
+17. CHAINED STATEMENTS
+=================================================================================
+In case a statement has a return value which will be used for an other method, the statements can be attached into a chain.
+By using this, less explicit variables can be used since the returned values will not be stored one-by-one but of the last statement.
+The code will be more readable, and less variables will be stored.
+
+Formula 1 for chained statements (variable holds the class; no return value for the last statement):
+variable.method1().method2().method3();
+
+Formula 2 for chained statements (variable holds the first class, return value for the last statement):
+variable2 = variable.method1().method2().method3();
+
+Formula 3 for chained statements (no return value for the last statement):
+variable //holds the first class
+    .method1()
+    .method2()
+    .method3();
+
+Formula 4 for chained statements (return value for the last statement):
+variable2 = variable //holds the first class
+    .method1()
+    .method2()
+    .method3();
+
+These methods will be executed in their respected order.
+Every method will result data the next method will work on. That said, new memory will be allocated with all statement.
+
+EXAMPLE 1 FOR CHAINED STATEMENTS:
+ArrayList<String> sal = new ArrayList<>();
+...
+sal.stream()
+    .filter((p) -> p.startsWith("abc")) //returns Stream
+    .map((p) -> p.toUpperCase()) //returns Stream
+    .sorted() //returns Stream
+    .forEach((p) -> System.out.println(p)); //no returned value
+
+EXAMPLE 2 FOR CHAINED STATEMENTS:
+String s = ...;
+String s2 = s
+    .toUpperCase() //returns String
+    .substring(0, 4); //returns String
+
+EXAMPLE 3 FOR CHAINED STATEMENTS:
+String[] sa = new String[]{...};
+StringBuilder sb = new StringBuilder();
+for (String s : sa) {
+    if (sb.length() == 0) {
+        sb.append(s);
+    }
+    else {
+        sb.append(", ").append(s);
+        //or:
+        sb.append(", ")
+            .append(s);
+        //or:
+        sb
+            .append(", ")
+            .append(s);
+    }
+}
+
+EXAMPLE 4 FOR CHAINED STATEMENTS:
+ArrayList<Character> cal = new ArrayList<>();
+cal.add('A');
+cal.add('b');
+cal.add('c');
+int index = cal
+	.toString() //returns String
+	.toUpperCase() //returns String
+	.indexOf('B'); //returns int

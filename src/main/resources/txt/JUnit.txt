@@ -1,0 +1,199 @@
+=================================================================================
+JUNIT
+=================================================================================
+JUnit is a general test framework for unit tests, integration tests, Test-Driven Development (TDD) etc. This is one of the most commonly used test environment.
+The IntelliJ IDEA IDE - when creating a new projects - asks which test framework should be used and will automatically handle the dependency in the background. That said, it is not needed to add dependency to the pom.xml.
+JUnit extends the functionality of Java core assertions. Furthermore, works together with IntelliJ IDEA perfectly. That said, a method marked with @Test annotation will be handled as a test method and in case the IDE or Maven wants to run tests, will invoke these marked methods.
+When Maven or IntelliJ IDEA executes tests, invoking happens parallel by launching the methods on different threads.
+In case there is a method marked with @BeforeEach annotation, that method will be the starting method on all test threads, following by the specific test method.
+Similarly, in case there is a method marked with @After, that method will be added to the end of every invoking chain on all test threads.
+Because JUnit will handle all methods, access modifiers should not be written, no arguments, and all return values should be void in method signatures.
+If needed, normal helper methods can be written for the test methods, naturally.
+Rule is that any @Test test method must not be called by an other @Test test method or its helper method since the @Test methods should be independent and invoked parallel.
+
+EXAMPLE FOR JUNIT TEST UNIT:
+package PackageName;
+
+import org.junit.jupiter.api.*;
+
+class TestClassName {
+
+    //class-level declarations
+
+    @Before
+    void setUp() {...}
+
+    @Test
+    void testMethodName() {...}
+
+    @After
+    tearDown() {...}
+}
+
+JUnit provides a wide variety of possible expected versus actual values by providing the Assertions class.
+The test program flow stops on the Assertions method where the condition represented by the method fails. In case the flow steps further, the test passed.
+The checked condition is readable in the name of the Assertions method.
+For 2-parameter methods, first parameter is always the expected, the second is the actual value or their containers.
+For 1-parameter methods, the parameter is the actual value or its container.
+All methods can have an additional parameter which contains a message String to be sent to the output in case of fail. If this parameter is missing, default text will be sent.
+
+||Assertions method|Description||
+||assertEquals(a, b)|a, b can be enums, primitive types, wrappers, lists of these, objects, lists of object etc.||
+||assertNotEquals(a, b)|a, b can be enums, primitive types, wrappers, lists of these, objects, lists of object etc.||
+||assertArrayEquals(a, b)|a, b can be primitive arrays||
+||assertIterableEquals(a, b)|a, b are Iterable||
+||assertLinesMatch(e, a)|for Lists or Streams with String element type||
+||assertTrue(a)|a is boolean; can be expression as well like s.isEmpty()||
+||assertFalse(a)|a is boolean; can be expression as well like s.isEmpty()||
+||assertSame(oe, og)|oe, og can be any objects||
+||assertNotSame(oe, og)|oe, og can be any objects||
+||assertNull(a)|a can be any class type||
+||assertNotNull(a)|a can be any class type||
+||assertInstanceOf(t, a)|t is a class, a can be any class type||
+||assertThrows(t, e)|t is the class of expected Throwable (Exception), e is an Executable||
+||assertThrows(t, e, m)|t is the class of expected Throwable (Exception), e is an Executable, m is an expected message String sent by the Executable||
+||assertDoesNotThrow(e)|e is an executable; tests whether there is no thrown exception||
+||assertTimeout(d, e)|d is Duration, e is Executable; tests whether the Executable finishes within duration||
+||assertTimeoutPreemptively(d, e)|d is Duration, e is Executable; tests whether the Executable finishes within duration||
+
+The next methods has different argument list.
+
+||Assertions method|Description||
+||fail(s)|s is the sent error message; fails the test||
+||fail(t)|t is Throwable; fails the test||
+||fail(s, t)|s is the sent error message, t is Throwable; fails the test||
+
+There are two main directions in how many Assertions a test method could contain:
+    a. one (a test method is created for every checked values)
+    b. many (a test method is created for testing a code scope or a strategy)
+In case of Test-Driven Development or when the followed testing strategy needs it, a test method represents a test case. In such, if in the test the developer wants to check all critical points (and separate them from each other), will use several Assertions.
+
+In case the tested object is an instance of a custom class, and the test should examine object value, the class must implement the equals() and hashCode() methods or else the test will be rendered down to general object equality problem (object is identical with the expected one or not etc.).
+In case the tested values are in a List but the producer method uses parallel technique (e.g. Streams), the element order can not be predicted. Sorting the List before examining could be needed. For custom element types, implementing the compareTo() method (Comparable) or using a custom Comparator beforehand can be advised.
+The Executable can be Runnable or Callable.
+
+The assertEquals() and assertNotEquals() methods work on any class and primitive type for values.
+In case of List, it is sensitive for element order. Use assertIterableEquals() (more verbal).
+In case of Set, the element order is indifferent.
+On primitive arrays, use the assertArrayEquals() method.
+On boolean and Boolean values, it is better to use assertTrue() and assertFalse() methods (more verbal).
+
+The assertIterableEquals() deeply compares (element number, element order, element) two Iterables (e.g. Lists).
+
+The assertLinesMatch() is a specialized version of Assertion methods. Tests a List of Strings or a Stream of Strings against the expected.
+The test follows the element order and uses three rules at all lines-pairs:
+    a. if expected.equals(actual) then the assertion passes for that line-pair, or
+    b. if expected.matches(actual) then the assertion passes for that line-pair, or
+    c. if expected line is a fast-forward marker then passes, or
+    d. fails
+The assertion as whole passes when for all line-pairs it passes.
+A fast-forward marker line starts with ">>" and ends with ">>" and contains at least four characters (e.g. ">>>>", ">> something message >>").
+
+The assertThrows() and assertDoesNotThrow() methods are for testing for exceptions.
+In case the thrown exception is a subclass of the expected, the test will pass.
+When the expected exception is Exception, for any thrown exception the test will pass.
+
+The assertTimeout() and assertTimeoutPreemptively() methods are both used for examining running time of long-term codes.
+The assertTimeoutPreemptively() method, once the expected duration is exceeded, will stop the tested Executable, the assertTimeout() will not, the Executable must stop by itself.
+
+EXAMPLES FOR TESTED VARIABLES AND METHODS:
+String s = ...;
+List<Long> list = ...;
+Iterable<Short> iter = List.of(...);
+Set<Character> set = ...;
+double[] dArray = ...;
+CustomClass1[] ccArray = ...; //CustomClass1 has implemented equals() and hashCode() methods
+int testMethod1(...) {...}
+CustomClass2 testMethod2() {...} //no implemented equals() and hashCode() methods
+boolean b = ...;
+List<String> lines1 = ...;
+Stream<String> lines2 = ...;
+
+EXAMPLES FOR ASSERTEQUALS(), ASSERTNOTEQUALS(), ASSERTARRAYEQUALS(), ASSERTITERABLEEQUALS(), ASSERTLINESMATCH(), ASSERTTRUE(), ASSERTFALSE():
+@Test
+void assertEqualityTests() {
+    Assertions.assertEquals("window", s);
+    Assertions.assertEquals(List.of(12L, 3L, 300L), list);
+    Assertions.assertEquals(Set.of('a', 'x', 'S'), set);
+    Assertions.assertEquals(new CustomClass1[]{...}, ccArray);
+    Assertions.assertEquals(24, testMethod1(...));
+    Assertions.assertEquals(new CustomClass2(...), testMethod2());
+
+    Assertions.assertNotEquals("window", s);
+    Assertions.assertNotEquals(List.of(12L, 3L, 300L), list);
+    Assertions.assertNotEquals(Set.of('a', 'x', 'S'), set);
+    Assertions.assertNotEquals(new CustomClass1[]{...}, ccArray);
+    Assertions.assertNotEquals(24, testMethod1(...));
+    Assertions.assertNotEquals(new CustomClass2(...), testMethod2());
+
+    Assertions.assertArrayEquals(new double[]{...}, dArray);
+    Assertions.assertIterableEquals(new ArrayList<Short>(...), iter);
+
+    Assertions.assertLinesMatch(List.of("abc", ">> nothing >>", "xyz"), lines1);
+    Assertions.assertLinesMatch(....Stream(), lines2);
+
+    Assertions.assertTrue(b);
+    Assertions.assertFalse(b);
+}
+
+EXAMPLES FOR ASSERTSAME(), ASSERTNOTSAME(), ASSERTNULL(), ASSERTNOTNULL(), ASSERTINSTANCEOF():
+@Test
+void assertObjectTests() {
+    Assertions.assertSame(list, iter);
+    Assertions.assertNotSame(list, iter);
+
+    Assertions.assertNull(testMethod2());
+    Assertions.assertNotNull(testMethod2());
+
+    Assertions.assertInstanceOf(String.class, s);
+}
+
+EXAMPLES FOR ASSERTTHROWS() METHODS:
+@Test
+void testExpectedException() {
+	NumberFormatException thrown = Assertions.assertThrows(
+	        NumberFormatException.class,
+	        () -> {Integer.parseInt("One");},
+	        "NumberFormatException was expected");
+	Assertions.assertEquals("Some message that it was the expected", thrown.getMessage());
+}
+
+@Test
+void testExpectedExceptionWithParentType() {
+	Assertions.assertThrows(
+	        IllegalArgumentException.class,
+	        () -> {Integer.parseInt("One");});
+}
+
+EXAMPLES FOR ASSERTTIMEOUT() AND ASSERTPREEMPTIVELYTIMEOUT() METHODS:
+@Test
+void durationTests() {
+    Assertions.assertTimeout(
+            Duration.ofMinutes(1),
+            () -> code);
+    Assertions.assertTimeoutPreemptively(
+            Duration.ofMillis(100),
+            () -> {
+                    code;
+                    code;
+                    return value;}
+            );
+}
+
+EXAMPLES FOR FAIL() METHOD:
+public class AppTest {
+	@Test
+	void testCase() {
+		Assertions.fail("not found good reason to pass");
+		Assertions.fail(AppTest::message);
+	}
+
+	private static String message () {
+		return "not found good reason to pass";
+	}
+}
+=>Tests
+=>Assertion
+=>Mockito
+=>Spring_Boot_tests
+=>Comparator

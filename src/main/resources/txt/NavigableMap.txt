@@ -1,0 +1,38 @@
+=================================================================================
+NAVIGABLEMAP
+=================================================================================
+Extends the SortedMap interface.
+Implementing class is TreeMap.
+It is an interface, must use constructor of TreeMap in order to reach its functionalities.
+
+Creating instance by using a constructor of its subclass:
+import java.util.NavigableMap;
+import java.util.TreeMap;
+...
+NavigableMap<keyType, valueType> nm = new TreeMap<>();
+
+All methods of SortedMap are available. However, headMap(), tailMap(), and subMap() are defined differently.
+Specific methods are below.
+
+||Method|Description||
+||headMap(key, [includingKey])|returns all entries with keys less than passed key, includingKey as true makes the key to be included, default is false||
+||tailMap(key, [includingKey])|returns all entries with keys greater than passed key, includingKey as true makes the key to be included, default is true||
+||subMap(key1, [includingKey1], key2, [includingKey2])|returns all entries with keys within [key1, key2] interval, includingKeyX as true makes the given key to be included, defaults are true and false||
+||descendingMap()|reverse the order of entries||
+||descendingKeyMap()|reverses the order of keys||
+||ceilingEntry(key)|returns an entry with the lowest key from keys greater or equal than the passed key||
+||ceilingKey(key)|returns the lowest key from keys greater or equal than the passed key||
+||floorEntry(key)|returns an entry with the highest key from keys less or equal than the passed key||
+||floorKey(key)|returns the highest key from keys less or equal than the passed key||
+||higherEntry(key)|returns an entry with the lowest key from keys greater than the passed key||
+||higherKey(key)|returns the lowest key from keys greater than the passed key||
+||lowerEntry(key)|returns an entry with the highest key from keys lessthan the passed key||
+||lowerKey(key)|returns the highest key from keys less than the passed key||
+||firstEntry()|returns the first entry (the entry with the lowest key)||
+||lastEntry()|returns the last entry (the entry with the highest key)||
+||pollFirstEntry()|returns and removes the first entry (the entry with the lowest key)||
+||pollLastEntry()|returns and removes the last entry (the entry with the highest key)||
+
+=>Map
+=>SortedMap
+=>TreeMap

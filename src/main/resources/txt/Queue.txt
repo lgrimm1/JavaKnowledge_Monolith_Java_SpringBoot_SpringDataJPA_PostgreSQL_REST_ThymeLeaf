@@ -1,0 +1,36 @@
+=================================================================================
+QUEUE
+=================================================================================
+Extends the Collection interface.
+Implementing classes of Queue are ArrayDeque, LinkedList and PriorityQueue.
+Extended interfaces of Queue are Deque, BlockingQueue.
+Modelling of FIFO (First In First Out) data structure.
+Elements can not be primitive type.
+
+EXAMPLES FOR CREATE INSTANCES:
+import java.util.Queue;
+...
+Queue<String> animal1 = new LinkedList<>(); //LinkedList implementation of Queue
+Queue<String> animal2 = new ArrayDeque<>(); //ArrayDeque implementation of Queue
+Queue<String> animal3 = new PriorityQueue<>(); //PriorityQueue implementation of Queue
+
+The Queue interface includes all methods from Collection. Declared methods:
+import java.util.Queue;
+...
+Queue<elementType> queue = new constructorOfAnImplementingClass<>();
+boolean b;
+elementType element = ...;
+b = queue.add(element); //inserts element, exception if no success
+b = queue.offer(element); //inserts element, false if no success
+element = queue.element(); //returns the head of the queue, exception if queue is empty
+element = queue.peek(); //returns the head of the queue, null if queue is empty
+element = queue.remove(); //returns and removes the head of the queue, exception if queue is empty
+element = queue.poll(); //returns and removes the head of the queue, null if queue is empty
+
+=>Collection
+=>ArrayDeque
+=>LinkedList
+=>PriorityQueue
+=>Deque
+=>BlockingQueue
+=>Iterator

@@ -1,0 +1,192 @@
+=================================================================================
+REFLECTION
+=================================================================================
+1. THE CLASS CLASS
+2. THE METHOD CLASS
+3. THE FIELD CLASS
+4. THE CONSTRUCTOR CLASS
+
+=>Classes
+=>Methods
+=>Inheritance
+=>Array
+=>Iteration
+=>Exceptions
+
+=================================================================================
+1. THE CLASS CLASS
+=================================================================================
+1.1. CREATING A CLASS OBJECT
+1.2. CLASS METHODS
+1.3. PASSING A CLASS AS METHOD PARAMETER
+
+1.1. CREATING A CLASS OBJECT
+---------------------------------------------------------------------------------
+Class, field and method managing in runtime.
+All actions are through the Class class.
+A Class object can be created on 3 ways.
+All Class statements must be wrapped into try-catch frame.
+
+EXAMPLE FOR CREATING CLASS OBJECT:
+import java.lang.Class;
+import java.lang.reflect.*;
+...
+class A {
+    try {
+        Class a1 = Class.forName("A"); //inside the corresponding class declaration
+    }
+    catch (Exception e) {...}
+}
+...
+A a = new A();
+try {
+    Class a2 = a.getClass(); //through the object
+    Class a3 = A.class; //through the property of class
+}
+catch (Exception e) {...}
+
+1.2. CLASS METHODS
+---------------------------------------------------------------------------------
+Class c = ...;
+...
+try {
+    String s = c.getName(); //name of the class
+    s = Modifier.toString(c.getModifier()); //access modifier of the class e.g. "public"
+    Class super = c.getSuperClass(); //Class of the superclass of c
+}
+catch (Exception e) {...}
+
+For accessing annotations:
+getAnnotationsByType(...)
+getAnnotations()
+
+1.3. PASSING A CLASS AS METHOD PARAMETER
+---------------------------------------------------------------------------------
+returnValue methodName(Object passedObject) {
+//reaching the Class class of the given object by passedObject.class
+}
+...
+class ClassName {...}
+value = methodName(new ClassName());
+
+=================================================================================
+2. THE METHOD CLASS
+=================================================================================
+
+2.1. CREATING A METHOD OBJECT, METHOD METHODS
+2.2. PASSING A METHOD AS METHOD PARAMETER
+
+2.1. CREATING A METHOD OBJECT, METHOD METHODS
+---------------------------------------------------------------------------------
+class C {...}
+Class c = ...;
+...
+try {
+    Method[] maDeclared = c.getDeclaredMethods(); //all methods declared in C with all kind of access modifiers
+    //all accessible methods from C:
+    //public, protected, default of C, and
+    //public and protected from superclasses (a tree up to the overriddens), and
+    //public from imported classes:
+    Method[] ma = c.getMethods();
+    //creating parameter type list of a method signature, all converted to Class, e.g. String.class,
+    //in case of primitive type wrapper class is used, e.g. Integer.class:
+    Class[] args = new Class[]{parameterType1.class, parameterType2.class, ...};
+    Method m = c.getDeclaredMethod(methodName, args); //a method declared in C with given signature
+    Method m = c.getMethod(methodName, args); //a method accessible from C with given signature
+    String s = m.getName(); //name of method
+    s = Modifier.toString(m.getModifiers()); //access modifier of the method e.g. "public"
+    s = m.getReturnType(); //return type of method e.g. "void", "int"
+    int n = m.getParameterCount(); //number of parameters of the method
+    args = m.getParameterTypes(); //parameter type list of method as Class objects
+    //in case the method is private or is within an other class, must open it for access before invoking:
+    m.setAccessible(true);
+    //invoking a method without return value and without parameters:
+    m.invoke(objectOfLaunchingClass);
+    //invoking a method with return value and with parameters,
+    //parameters are passed in an Object[],
+    //returnValue needs type casting for further use
+    Object returnValue = m.invoke(objectOfLaunchingClass, objectArrayOfParameters);
+    s = m.getGenericString(); //method signature as a String
+    s = m.toString(); //method everything as a String
+}
+catch (Exception e) {...}
+
+For accessing annotations:
+getAnnotationsByType(...)
+getAnnotations()
+
+2.2. PASSING A METHOD AS METHOD PARAMETER
+---------------------------------------------------------------------------------
+returnValue methodName(Method method) {
+//process
+}
+...
+class ClassName {
+//declare methodOfClass()
+}
+value = methodName(ClassName.class.getDeclaredMethod("name of methodOfClass", null)); //in case of no parameter in signature
+
+=================================================================================
+3. THE FIELD CLASS
+=================================================================================
+class C {...}
+Class c = ...;
+...
+try {
+    Field[] faDeclared = c.getDeclaredFields(); //all fields declared in C with all kind of access modifiers
+    //all accessible fields from C:
+    //public, protected, default of C, and
+    //public and protected from superclasses (a tree up to the overriddens), and
+    //public from imported classes:
+    Field[] fa = c.getFields();
+    Field f = c.getDeclaredField(fieldName); //a field declared in C
+    //an accessible field from C:
+    //public, protected, default of c class, or
+    //public and protected from superclasses (a tree up to the overriddens), or
+    //public from imported classes:
+    Field f = c.getField(fieldName);
+    String s = f.getName(); //name of field
+    f.setAccessible(true); //in case the field is private, opens it for access
+    f.set(c, value); //value giving to field in C, can be primitive or class type value
+    Object o = f.get(c); //value of field in C, use casting to get needed type
+    s = Modifier.toString(f.getModifiers()); //access modifier of the field e.g. "public"
+}
+catch (Exception e) {...}
+
+For accessing annotations:
+getAnnotationsByType(...)
+getAnnotations()
+
+=================================================================================
+4. THE CONSTRUCTOR CLASS
+=================================================================================
+class C {...}
+Class c = ...;
+...
+try {
+    Constructor[] coaDeclared = c.getDeclaredConstructors(); //all constructors declared in C with all kind of access modifiers
+    //all accessible constructors from C:
+    //public, protected, default of C, and
+    //public and protected from superclasses (a tree up to the overriddens), and
+    //public from imported classes:
+    Constructor[] coa = c.getConstructors();
+    //creating parameter type list of a method signature, all converted to Class, e.g. String.class,
+    //in case of primitive type wrapper class is used, e.g. Integer.class:
+    Class[] args = new Class[]{parameterType1.class, parameterType2.class, ...};
+    Constructor co = c.getDeclaredConstructor(args); //a constructor declared in C
+    //an accessible constructor from C:
+    //public, protected, default of C, or
+    //public and protected from superclasses (a tree up to the overriddens), or
+    //public from imported classes:
+    Constructor co = c.getConstructor(args);
+    String s = co.getName(); //name of constructor
+    int n = co.getParameterCount(); //number of parameters of the constructor
+    s = Modifier.toString(co.getModifiers()); //access modifier of the constructor e.g. "public"
+    s = co.getGenericString(); //method signature as a String
+    s = co.toString(); //constructor everything as a String
+}
+catch (Exception e) {...}
+
+For accessing annotations:
+getAnnotationsByType(...)
+getAnnotations()

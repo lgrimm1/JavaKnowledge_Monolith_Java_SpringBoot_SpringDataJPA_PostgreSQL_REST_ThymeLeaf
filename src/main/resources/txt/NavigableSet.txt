@@ -1,0 +1,38 @@
+=================================================================================
+NAVIGABLESET
+=================================================================================
+Extends the SortedSet interface.
+Implementing class is TreeSet.
+Purpose is to have navigating controls among set elements.
+
+EXAMPLE FOR CREATING AN INSTANCE:
+import java.util.NavigableSet;
+import java.util.TreeSet;
+...
+class CustomComparator implements Comparator {...}
+...
+NavigableSet<elementType> ss = new TreeSet<>(); //natural order
+NavigableSet<elementType> ss2 = new TreeSet<>(new CustomComparator()); //custom order
+
+All methods of SortedSet are available. Other methods are below.
+Because the element adding order is stored, e.g. the toArray(), toString(), iterator() methods will follow that order.
+
+||Method|Description||
+||headSet(element[, includeElement])|returns all the elements before the given element, includeElement shows if the element will be included, default is false||
+||tailSet(element[, includeElement])|returns all the elements after the given element, includeElement shows if the element will be included, default is true||
+||subSet(element1, [includeElement1], element2, [includeElement2])|returns all the elements between the given elements, includeElementX shows if that element will be included, defaults are true, false||
+||descendingSet()|reverses the element order||
+||descendingIterator()|returns a reverse-order Iterator||
+||ceiling(element)|returns the lowest element from among elements greater or equal than given element||
+||floor(element)|returns the greatest element from among elements less or equal than given element||
+||higher(element)|returns the lowest element from among elements greater than given element||
+||lower(element)|returns the greatest element from among elements less than given element||
+||pollFirst()|returns and removes the 1st element||
+||pollLast()|returns and removes the last element||
+
+=>Set
+=>Collection
+=>SortedSet
+=>TreeSet
+=>Iterator
+

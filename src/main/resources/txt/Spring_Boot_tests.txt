@@ -1,0 +1,167 @@
+=================================================================================
+SPRING.BOOT TESTS
+=================================================================================
+1. MAIN CLASS TEST
+2. ENTITY TEST
+3. REPOSITORY TESTS
+4. SERVICE CLASS TESTS
+5. CONTROLLER CLASS TESTS
+
+=>Spring_Boot
+=>Tests
+=>JUnit
+=>Mockito
+=>Spring_Boot_Main_class
+=>Spring_Boot_entity
+=>Spring_Boot_repository
+=>Spring_Boot_service
+=>Spring_Boot_controller_tests
+
+=================================================================================
+1. MAIN CLASS TEST
+=================================================================================
+As normally, under the src/test/java/<package> folder, the tests will be created.
+This test is for testing whether the web application starts up and loads the Communication layer (controller).
+In the test class, the @Autowired annotation makes into the marked field the controller(s) to be injected.
+
+EXAMPLE FOR MAIN TEST:
+import org.junit.jupiter.api.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+
+@SpringBootTest
+public class MainTest {
+
+	@Autowired
+	private ControllerClassName controller;
+
+	@Test
+	public void contextLoads() throws Exception {
+		Assertions.assertNotNull(controller);
+	}
+}
+
+=================================================================================
+2. ENTITY TEST
+=================================================================================
+The tests should be created under the src/test/java/<package> folder.
+
+For no-JPA entities, unit testing is appropriate.
+
+For clean JPA entities, because the entity usually does not carry others than fields, constructors, getters, setters and the equals(), hashCode(), toString() overridden methods, instead of unit tests, behaviour tests are needed.
+The behaviours are defined via using Spring.Validation annotations. That said, the behaviour is apparent when the Spring framework reads and uses the annotations via the repository.
+In order to test only the behaviours without starting up the application (and Spring environment with it), the Validator class of Hibernate is needed.
+
+Behaviours are declared on fields. That means, after creating an object with some data, should be checked what will the validation result be.
+
+In case the JPA entity has custom methods (e.g. for handling transient fields), for those methods unit tests are needed.
+
+EXAMPLE FOR ENTITY BEHAVIOUR TEST CLASS (CLEAN JPA):
+package packageName;
+
+import jakarta.validation.*;
+import org.junit.jupiter.api.*;
+import java.util.*;
+
+class SeriesEntityTest {
+
+	private Validator validator;
+
+    //prepare Validator
+	@BeforeEach
+	void setUp() {
+		ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+		validator = factory.getValidator();
+	}
+
+	//simulate the behaviour of bean-validation e.g. @NotNull
+	private void validateBean(Object bean) throws AssertionError {
+		Optional<ConstraintViolation<Object>> violation = validator.validate(bean).stream().findFirst();
+		if (violation.isPresent()) {
+			throw new ValidationException(violation.get().getMessage());
+		}
+	}
+
+	@Test
+	void testMethodForInvalidity() {
+		Exception e = Assertions.assertThrows(ValidationException.class, () -> validateBean(entityObjectWhichWillBeValidated1));
+		Assertions.assertEquals("expected error message set with Validation annotation", e.getMessage());
+	}
+
+	@Test
+   	void testMethodForValidity() {
+   		Assertions.assertDoesNotThrow(() -> validateBean(entityObjectWhichWillBeValidated2));
+   	}
+}
+
+=================================================================================
+3. REPOSITORY TESTS
+=================================================================================
+As normally, under the src/test/java/<package> folder, the tests will be created.
+Repository classes can be tested out with normal unit tests.
+Proper tests should cover the functionality (e.g. searching, adding, deleting, modifying data) of the repository as it represents the Storage layer of the web application.
+
+In case of using Spring.Data JPA, instead of class the repository will be an interface, no tests for functionality are needed since the functionalities will be given by the Spring itself.
+
+=================================================================================
+4. SERVICE CLASS TESTS
+=================================================================================
+As normally, under the src/test/java/<package> folder, the tests will be created.
+Service classes need creating their corresponding storage instances first since these objects are needed for class dependency injection in constructors of the service classes. In case this version is followed, the tests will be dependent since the storage classes will be used during tests.
+Best practice in order to gain independent unit tests, is to use mocked repository (storage) classes injected into the right controllers.
+
+EXAMPLE FOR SERVICE CLASS TEST CLASS (NOT INDEPENDENT UNIT TEST):
+import org.junit.jupiter.api.*;
+
+class ServiceTest {
+
+	RepositoryClassName repositoryName;
+	ServiceClassName serviceName;
+
+	@BeforeEach
+	void setUp() {
+		repositoryName = new RepositoryClassName();
+		//preparing stored data
+		serviceName = new ServiceClassName(repositoryName);
+	}
+
+    //tests of service class
+	@Test
+	void testName() {...}
+}
+
+EXAMPLE FOR SERVICE CLASS TEST CLASS (MOCKING, INDEPENDENT UNIT TEST):
+import org.junit.jupiter.api.*;
+import org.mockito.Mockito;
+import org.mockito.*;
+import static org.mockito.Mockito.when;
+
+class ServiceTest {
+
+	RepositoryClassName repositoryName;
+	ServiceClassName serviceName;
+
+	@BeforeEach
+	void setUp() {
+		repositoryName = Mockito.mock(RepositoryClassName.class);
+		//setting up common mocked behaviours
+		//e.g. in case the Element is a class declared elsewhere, and
+		//repositoryName.getElement(int id) would return an Element with the passed ID, and
+		//the service get() method calls repositoryName.getElement(...), then mocking:
+		when(repositoryName.getElement(12)).thenReturn(new Element(12, "abc", 3.14d));
+		serviceName = new ServiceClassName(repositoryName);
+	}
+
+    //tests of service class
+	@Test
+	void testName() {
+	    //setting up local behaviours
+
+	    Assertions.assertEquals(new Element(12, "abc", 3.14d), serviceName.get(12));
+	}
+}
+
+=================================================================================
+5. CONTROLLER CLASS TESTS
+=================================================================================
+Visit the Spring_Boot_controller_tests page for description.

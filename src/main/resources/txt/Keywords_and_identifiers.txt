@@ -1,0 +1,29 @@
+=================================================================================
+KEYWORDS AND IDENTIFIERS
+=================================================================================
+
+=>Variables
+=>Statements
+=>Iteration
+=>Access_modifiers
+
+Keywords: defined within Java and its libraries, can not used as identifiers.
+
+EXAMPLES:
+class, interface, public, static, final, void, if, else, switch, case, for, while, @Override
+
+Identifiers:
+- no keywords
+- case-sensitive
+- starts with letter, $ or _
+- no white space and special characters within
+
+By Java common directives, in case the identifier consists of several words, they are written without separators but all words start with upcase letter whilst the first word starts with lowcase letter.
+
+EXAMPLES:
+door12
+dOoR12 //different from door1, but not following common directives
+newDoor
+textWhichHasNoMeaning
+$somethingImportant
+_anotherThing

@@ -1,0 +1,52 @@
+=================================================================================
+PACKAGES
+=================================================================================
+1. ORGANIZING PACKAGES
+2. UNNAMED PACKAGES
+
+=>Import
+=>Classes
+=>Methods
+=>Inheritance
+
+=================================================================================
+1. ORGANIZING PACKAGES
+=================================================================================
+Package of classes, interfaces, fields, methods and annotations, usually making them available for different applications.
+It is also useful for creating better organized code.
+From a package methods, classes, sub-package or the whole package can be imported.
+After importing, the data in package can be used.
+
+Naming of elements can be the same in case they are in different packages.
+	a. built-in (e.g. java.lang, java.io)
+	b. user-defined
+
+Organizing into folders will follow the package structure:
+packageName (0th level)
+	L classes and interfaces (1st level)
+	L subPackageName1 (1st level)
+		L classes and interfaces (2nd level)
+	L subPackageName2 (1st level)
+		L classes and interfaces (2nd level)
+
+In classes and interfaces the 1st line must contain the package name, following the above structure:
+	a. on 1st level: package packageName;
+	b. on 2nd level: package packageName.subPackageName;
+
+After the package identifier, imports and the class header line come.
+The class name will be the java file name as usual.
+The package name must not be equal with any class or interface names within.
+
+Within a package, use the next class declarations:
+[protected] class className {...} //a package helper class, visible for package classes only
+public class className {...} //visible from outside the package as well
+
+For console-based compilation of the whole package, use:
+javac <path>\*
+Error message appears in case of need of overwriting.
+
+=================================================================================
+2. UNNAMED PACKAGES
+=================================================================================
+All classes and interfaces in the working directory of the application form an unnamed package.
+Such package members are not marked with the package statement in their first lines.

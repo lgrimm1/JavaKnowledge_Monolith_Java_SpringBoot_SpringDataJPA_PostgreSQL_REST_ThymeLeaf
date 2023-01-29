@@ -1,0 +1,368 @@
+=================================================================================
+SPRING.BOOT CONTROLLER
+=================================================================================
+1. CONTROLLER CLASS GENERALLY
+2. CONTROLLER ANNOTATIONS
+3. CONTROLLER DATA
+4. CONTROLLER MODEL&VIEW MODE
+5. CONTROLLER OBJECT MODE
+6. RESPONSE ENTITY
+7. DIRECT RESPONSE MANIPULATION
+8. EXCEPTION HANDLING
+9. IMPLEMENT REST CRUD API
+
+=>Spring_Boot
+=>Spring_Boot_requests
+=>Spring_Boot_Validation
+=>Spring_Boot_controller_tests
+=>Spring_ThymeLeaf
+=>Serialization
+=>Spring_exception_handling
+
+=================================================================================
+1. CONTROLLER CLASS GENERALLY
+=================================================================================
+A controller is practically a thread started by the Main class. There can be more controllers in an application.
+A controller must be created under src/main/java/<package> folder.
+This class must be a singleton in memory per controller.
+The class must be public in order to let Spring accessing it.
+
+The thinnest controller represents the API to the web application:
+    a. the @Controller annotation in a class marks that the class is a controller, normal API.
+    b. the @RestController annotation in a class marks that the class is a controller, REST API.
+
+The normal API uses Spring MVC framework which is based upon views. That said, the return value (the response body) represents a view which is read by the frontend.
+The RESTful API uses Spring MVC REST framework which is based upon objects. That said, the controller returns the object or value as it is, usually packed into a JSON or XML format.
+
+EXAMPLE FOR A CONTROLLER CLASS (PURE @AUTOWIRED):
+package PackageName;
+
+import org.springframework.beans.factory.annotation.*;
+import org.springframework.http.*;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+
+@Controller
+public class ControllerClassName {
+
+    @Autowired
+    private ServiceClassName service;
+
+    //other fields
+
+    //request handler (endpoint) methods
+    //accessing a service method etc.: service.methodName()
+}
+
+EXAMPLE FOR A CONTROLLER CLASS (@AUTOWIRED WITH CLASS DEPENDENCY INJECTION):
+package PackageName;
+
+import org.springframework.beans.factory.annotation.*;
+import org.springframework.http.*;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+
+@Controller
+public class ControllerClassName {
+
+    private final ServiceClassName service;
+    //other fields
+
+    @Autowired
+    public ControllerClassName(ServiceClassName service) {
+        this.service = service;
+    }
+
+    //request handler (endpoint) methods
+    //accessing a service method etc.: service.methodName()
+}
+
+In case something is sent to the console by invoking System.out.println(), the text will appear on the console of the web application, among Spring messages. Because the console carries a bunch or logs for every request, it is advised to insert a well visible line into.
+A controller class contains request handler methods, and can contain subclasses, fields and other methods. Best practice is to keep a controller as thin as it is possible which means any helpers, variables should be declared in the Business layer, in its service class (see earlier).
+Controller methods must be public so the Spring.Boot can call them.
+
+=================================================================================
+2. CONTROLLER ANNOTATIONS
+=================================================================================
+With a controller, the next annotations can be used:
+||Annotation|Position|Used for||
+||@Controller|before the class declaration|marks that the class is a controller (API), view and object modes||
+||@RestController|before the class declaration|marks that the class is a controller (REST API), object mode only||
+||@RequestMapping|before the class declaration, after the @Controller or @RestController annotation|marks the root of all endpoints||
+||@RequestMapping|before a method|marks that the method will be invoked when a request type with the endpoint is received||
+||@GetMapping|before a method|marks that the method will be invoked when GET request with the endpoint is received||
+||@PostMapping|before a method|marks that the method will be invoked when POST request with the endpoint is received||
+||@PutMapping|before a method|marks that the method will be invoked when PUT request with the endpoint is received||
+||@DeleteMapping|before a method|marks that the method will be invoked when DELETE request with the endpoint is received||
+||@ResponseBody|after request type annotation, before method signature, or before return value in signature|marks that the returned value will be sent to the frontend as object (not as view)||
+||@PathVariable|before a method argument|marks that the argument is found in endpoint path||
+||@RequestParam|before a method argument|marks that the argument will be used for receiving the given parameter from the request query||
+||@RequestBody|before method argument|marks that the argument is in the request body||
+||@ModelAttribute|before a method argument|marks that the argument is passed by an incoming model of a template (model&view mode)||
+||@NonNull|before method argument|marks that for that argument only non-null parameter is acceptable (modifies method signature, in case of null argument HTTP4xx code is sent back)||
+||@ResponseStatus|before a method|defines a custom HTTP code which will be added to the answer from the endpoint when its method ends successfully||
+
+Parameters of @Request/Get/Post/Put/DeleteMapping:
+    a. "/endpoint" (can be used when only this parameter is given)
+    b. value = "/endpoint" (defines the endpoint)
+    c. path = "/endpoint" (same as previous)
+    d. consumes = contentType (in what context type the data will be received; optional)
+    e. produces = contentType (in what context type the data will be sent; optional)
+    f. method = POST (only for @RequestMapping, defines request type, value can be any request type)
+
+The @RestController annotation automatically adds two annotations to the class (class global):
+    a. @Controller
+    b. @ResponseBody
+That said, the class will be a REST controller, and all methods will return objects instead of views.
+When using the @ResponseBody annotation globally, will mark all controller methods.
+In case the @ResponseBody annotation is used independently on controller methods, the annotation can be before the method signature or before the return value in the signature.
+
+Parameters of @RequestParam:
+    a. name = "parameter_name_in_request"
+    b. required = true (optional; using false value is possible but leaving this argument means the same)
+    c. defaultValue = "default_value" (optional; if this argument does not exist and there is no passed value for the marked parameter, null will be passed)
+
+Parameter versions of @ResponseStatus:
+    a. HttpStatus status
+    b. code = HttpStatus status
+    c. HttpStatus status, reason = reasonString
+    d. code = HttpStatus status, reason = reasonString
+
+EXAMPLES FOR MAPPING PARAMETERS:
+@RequestMapping(path = "/endpoint", produces = MediaType.APPLICATION_XML_VALUE)
+@RequestMapping(method=GET, path = "/endpoint", produces = MediaType.APPLICATION_XML_VALUE)
+@GetMapping("/endpoint")
+@PutMapping(value = "/endpoint")
+@DeleteMapping(path = "/endpoint")
+@PostMapping(path = "/endpoint", consumes = MediaType.APPLICATION_JSON_VALUE)
+
+Using the @RequestMapping annotation for the whole class is useful when more controllers are defined and a controller covers a certain endpoint root (all endpoints starts with the same common part).
+Also, common sent and accepted media types can be defined here as well.
+It is possible to define a request type in this annotation explicitly, in this case the controller will let that request type to its methods only.
+In case the backend represents a true API with the aim that the controller will serve as an interface for any frontend or other backends, best practice is that the root endpoint must show that the interface is an API and the version of the interface. With this technique, different versions can be represented in different controller classes as well.
+
+EXAMPLES FOR USING @REQUESTMAPPING FOR A CLASS:
+@Controller
+@RequestMapping("/api/v1/abc")
+public class ControllerClass1 {
+    @PostMapping("/xyz") //the whole endpoint will be: /api/v1/abc/xyz
+    public String method1() {...}
+    @PutMapping("/ooo") //the whole endpoing will be: /api/v1/abc/ooo
+    public String method2() {...}
+}
+...
+@RestController
+@RequestMapping("/api/v3.2")
+public class ControllerClass2 {
+    @PostMapping("/xyz") //the whole endpoint will be: /api/v3.2/xyz
+    public String method1() {...}
+    @PutMapping("/ooo") //the whole endpoing will be: /api/v3.2/ooo
+    public String method2() {...}
+}
+...
+@RestController
+@RequestMapping(value = "/api/v1", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+public class ControllerClass3 {
+    @PostMapping("/xyz") //the whole endpoint will be: /api/v1/xyz, sends and accepts JSON
+    public String method1() {...}
+    @PutMapping("/ooo") //the whole endpoint will be: /api/v1/ooo, sends and accepts JSON
+    public String method2() {...}
+}
+
+EXAMPLES FOR CONTENT TYPE DEFINITIONS:
+    a. MediaType.APPLICATION_JSON_VALUE
+    b. MediaType.APPLICATION_JSON_UTF8_VALUE
+    c. MediaType.APPLICATION_XML_VALUE
+    d. MediaType.TEXT_HTML
+
+=================================================================================
+3. CONTROLLER DATA
+=================================================================================
+In controller methods, there can be the next kind of incoming and outgoing data:
+    a. request type definition (in method annotation)
+    b. incoming content type definition (how the JSON data is deserialized when received from the frontend; object mode)
+    c. outgoing content type definition (how the JSON data is serialized when sent to the frontend; object mode)
+    d. request body parameters (marked in method annotation, received in argument list)
+    e. query parameters (in argument list)
+    f. model attributes (submitted from the form of a template, sent by browser; model&view mode)
+    g. model (sent to a template; model&view mode)
+    h. template name (model&view mode)
+    i. sent data (both modes)
+    j. HTTP response code (HTTP status code, both modes)
+
+The Spring.Boot automatically handles the HTTP response code (e.g. 200, 404, 500) sent to the frontend, it is not needed to send these explicitly.
+Of course, can be overwritten manually by using ResponseEntity (see later).
+
+When an endpoint finishes without fail (exception), the HTTP200 (OK) code is added to the response.
+This code can be overwritten via using the @ResponseStatus(HttpStatus status) method-level annotation.
+In case the annotation is used in @ResponseStatus(HttpStatus status, reason = reasonString) formula, the successfully finished endpoint will return an HTML error page with the given reasonString which forces this method out of REST compatibility.
+
+In model&view mode, the return value of the controller method will be a String containing the web page or template (file) name.
+In this version, the method signature must contain a Model argument which contains the data sent toward the frontend.
+Also, if the frontend sends data with the request, there must be an other argument marked with @ModelAttribute annotation which receives data.
+
+In object mode, the returned data will be JSON data, generated from serialized data of the returned object of the method, this would be sent to the frontend.
+In this version, there is no Model in the argument list.
+If the response contains only a literal or a wrapper object (not String which would mark model&view mode by itself), using the @ResponseBody annotation is optional.
+If the response is a custom object (List, array, Map, any other custom class), the handling method must be marked with @ResponseBody annotation.
+
+For both techniques, in case the content type is not defined, uses standard coding.
+As for incoming requests in object mode, an endpoint can receive JSON data only in the defined (or default) format. For different content types, different endpoints must be created. In case no format is defined, the Spring.Boot will use the best appropriate format.
+In older Spring versions, in controller, the method signature elements and the return type must be object types (wrapper types are included). Newer versions can accept literally every serializable type.
+
+=================================================================================
+4. CONTROLLER MODEL&VIEW MODE
+=================================================================================
+In order to use model&view mode on a controller method, the controller class must not be marked with @RestController annotation, nor the correspondent method marked with @ResponseBody annotation.
+
+The return value must be a String which holds the name of the web page or the template.
+
+In the method signature, an optional argument marked with @ModelAttribute annotation shows an object which was sent by the frontend; in case there is no such object, this argument is not needed; in case of more objects, more arguments can be used, all marked with the annotation.
+
+In the method signature, a Model object should be placed as argument, in case data should be sent towards the frontend.
+The Model object contains data prepared to be sent. Any kind of object can be added to the Model.
+
+See Spring_Boot_requests page for code samples.
+
+=================================================================================
+5. CONTROLLER OBJECT MODE
+=================================================================================
+In order to use object mode on a controller method, the controller class must be marked with @RestController annotation, or the correspondent method marked with @ResponseBody annotation.
+
+The return value can be any type or a Map with String keys and values where keys are HTML attribute names and values are their respective values (converted to String).
+
+In the method signature, every incoming object (sent by frontend) must be marked with @RequestBody annotation.
+Alternatively, all incoming objects can be rendered into one Map of String keys and values, also marked with @RequestBody annotation.
+
+See Spring_Boot_requests page for code samples.
+
+=================================================================================
+6. RESPONSE ENTITY
+=================================================================================
+The ResponseEntity represents the whole HTTP response: status, header and body.
+By using it as return value, the response is fully customizable.
+The ResponseEntity can have any class type due to being generic.
+The response body can contain an object (wrappers are included) or a literal.
+Whilst using ResponseEntity can make a specific controller method customizable for response, due to Spring's capabilities, it is advised to use the methods in pure view or object mode for cleaner code.
+
+In some cases when not using String-type ResponseEntity, exception can be raised upon sending the method return value.
+For such cases an exception handler method (marked with the @ExceptionHandler annotation) is needed among controller methods. When an endpoint raises exception, this method will run. The return code of this method is defined with the @ResponseStatus annotation.
+Visit the Spring_exception_handling page for description.
+
+Constructor argument variations:
+    a. responseBodyObject, HttpStatus
+    b. responseBodyObject, HttpHeaders, HttpStatus
+
+The ResponseEntity has two nested interfaces which provide additional functionality on method level:
+    a. HeadersBuilder
+    b. BodyBuilder
+
+Some of the methods coming from these interfaces:
+    a. BodyBuilder accepted(): defines the HTTP code
+    b. BodyBuilder badRequest(): defines the HTTP code
+    c. BodyBuilder ok(): defines the HTTP code
+    d. BodyBuilder created(java.net.URI location)
+    e. BodyBuilder status(HttpStatus status): defines the HTTP code
+    f. BodyBuilder status(int status): defines the HTTP code
+    g. HeadersBuilder<?> noContent()
+    h. HeadersBuilder<?> notFound()
+    g. ResponseEntity body(value): defines the response body, must be used as last method
+
+Typical usage of BodyBuilder methods:
+    a. ResponseEntity.methodNameOfStatus(value)
+    b. ResponseEntity.methodNameOfStatus().body(value)
+    c. ResponseEntity.methodNameOfStatus().header("headerName", "headerValue").body(value)
+
+With using HeaderBuilder, no properties of the response body can be set.
+
+EXAMPLES FOR CONTROLLER METHODS WITH RESPONSE ENTITY:
+@GetMapping("/endpoint1")
+public ResponseEntity<String> controllerMethod1(...) {
+    return new ResponseEntity<>(value, HttpStatus.OK);
+}
+
+@GetMapping("/endpoint2")
+public ResponseEntity<String> controllerMethod2(...) {
+    if (condition) {
+        return new ResponseEntity<>(value1, HttpStatus.BAD_REQUEST);
+    }
+    return new ResponseEntity<>(value2, HttpStatus.OK);
+}
+
+@GetMapping("/endpoint3")
+public ResponseEntity<String> controllerMethod3(...) {
+    HttpHeaders headers = new HttpHeaders();
+    headers.add(headerName, headerValue);
+    return new ResponseEntity<>(value, headers, HttpStatus.OK);
+}
+
+@GetMapping("/endpoint4")
+public ResponseEntity<String> controllerMethod4(...) {
+    return ResponseEntity.ok(value);
+}
+
+@GetMapping("/endpoint5")
+public ResponseEntity<String> controllerMethod5(...) {
+    if (condition) {
+        return ResponseEntity
+                .badRequest()
+                .body(value1);
+    }
+    return ResponseEntity
+            .status(HttpStatus.OK)
+            .body(value2);
+}
+
+@GetMapping("/endpoint6")
+public ResponseEntity<String> controllerMethod6(...) {
+    return ResponseEntity
+            .ok()
+            .header(headerName, headerValue)
+            .body(value);
+}
+
+=================================================================================
+7. DIRECT RESPONSE MANIPULATION
+=================================================================================
+Spring lets the HttpServletResponse object to be accessed.
+Via this object, direct manipulation is possible.
+However, because this technique is not covered (protected) by any abstractions and capabilities provided by Spring, using it should be avoided.
+
+EXAMPLE FOR CONTROLLER METHOD WITH DIRECT RESPONSE MANIPULATION (HTTPSERVLETRESPONSE):
+import javax.servlet.http.HttpServletResponse;
+...
+@GetMapping("/manual")
+public void controllerMethod(HttpServletResponse response) throws IOException {
+    response.setHeader(headerName, headerValue);
+    response.setStatus(statusNumber);
+    response.getWriter().println(value);
+}
+
+=================================================================================
+8. EXCEPTION HANDLING
+=================================================================================
+When an endpoint fails, an exception is raised and a HTTP500 error code is sent back to the client by default.
+(For reference, when there is no proper endpoint or method signature for a request, HTTP error code will be sent back but no exception will be raised.)
+For such cases one or more handler methods must be defined.
+
+Visit the Spring_exception_handling page for description.
+
+=================================================================================
+9. IMPLEMENT REST CRUD API
+=================================================================================
+When an API publishes the CRUD (Create-Retrieve-Update-Delete) functions, must follow industrial standard unless the app design declares differently.
+
+||API function|Request type|Endpoint|Request body|Response body|HTTP success code||
+||create|POST|api/v1/elementName|all fields (ID is excluded)|all fields (ID is included)|200||
+||retrieve one|GET|api/v1/elementName?id=idNumber or api/v1/elementName/idNumber|-|all fields (ID is included)|200||
+||retrieve all|GET|api/v1/elementNames or api/v1/allElementName|-|all elements in array, per element all fields (ID is included)|200||
+||full update|PUT|api/v1/elementName|all fields (ID is included)|all fields (modified version; ID is included)|200||
+||partial update|PATCH|api/v1/elementName/idNumber|only the fields which need to be updated (ID can not be given)|all fields (modified version; ID is included)|200||
+||delete|DELETE|api/v1/elementName/idNumber|-|-|204 (No Content)||
+
+The HTTP success code is generated by Spring.Boot automatically.
+In case Spring but not Spring.Boot is used, the code should generate them.
+
+Naturally, the API can publish other functions as well next to the CRUD.

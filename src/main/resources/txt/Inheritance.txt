@@ -1,0 +1,445 @@
+=================================================================================
+INHERITANCE
+=================================================================================
+1. INHERITANCE
+2. NEW FIELD AND FIELD OVERRIDE
+3. NEW METHOD, METHOD OVERRIDE, METHOD OVERLOAD
+4. ACCESS MODIFIERS
+5. ABSTRACT CLASS, ABSTRACT METHOD
+6. CONSTRUCTORS IN INHERITANCE
+7. INTERFACE
+8. POLYMORPHISM
+9. ENCAPSULATION
+10. DATA HIDING
+11. GENERIC ALGORITHMS
+12. GENERICS CLASSES
+
+=>Access_modifiers
+=>Classes
+=>Methods
+=>Methods;9. VARIABLE NUMBER OF ARGUMENTS (VARARGS)
+=>Annotations
+=>Collection
+=>Lambda_expressions
+=>Classes;10. GENERICS CLASSES
+
+=================================================================================
+1. INHERITANCE
+=================================================================================
+1.1. GENERALLY
+1.2. INHERITANCE TYPES
+
+1.1. GENERALLY
+---------------------------------------------------------------------------------
+A class can be inherited.
+The original class is called the parent/base/superclass.
+The newly created class is called the child/derived/subclass.
+Final classes can not be inherited.
+The absolute superclass is the Object.
+The inheritance keyword is extends.
+
+EXAMPLE FOR INHERITANCE:
+class A {...} //superclass
+class B extends A {..} //subclass of A
+
+The object of a subclass will be an instance of the object of its superclass.
+
+EXAMPLE FOR INHERITANCE (RELATION TO SUBCLASS):
+class A {...}
+class B extends A {...}
+class Main {
+    public static void main(String[] args) {
+        A a = new A();
+        B b = new B();
+        b = B instanceof A; //true
+        boolean b = b instanceof a; //true
+    }
+}
+
+A class has fields and methods with access modifiers attached to them.
+The subclass will inherit all fields and methods with their access modifiers from the superclass except the constructors which should be declared independently, and final fields and methods.
+The superclass can be accessed by the "super" keyword.
+Using the "this" keyword from the superclass accesses the superclass, from the subclass accesses the subclass.
+
+1.2. INHERITANCE TYPES
+---------------------------------------------------------------------------------
+Single:
+Super -> Sub
+
+Multilevel:
+Super 1 -> Sub 1/Super 2 -> Sub 2
+
+Hierarchical:
+Super -> Sub 1
+      -> Sub 2
+
+Multiple:
+Super 1 -
+Super 2 -> Sub
+or
+Sub <- Super 1
+     - Super 2
+Java does not support it but through interfaces can be emulated.
+
+Hybrid:
+Combination of other types.
+
+=================================================================================
+2. NEW FIELD AND FIELD OVERRIDE
+=================================================================================
+In the subclass all inherited fields can be accessed.
+As extension, in the subclass new fields can be declared as well.
+A field of the superclass can be overridden if in the subclass a new variable is declared with the same name.
+The overridden field can have different value than the original one has.
+Final and static fields can not be overridden.
+
+EXAMPLE FOR OVERRIDDEN FIELDS:
+class A {
+    int a = 1;
+    char b = 'a';
+    final String c;
+}
+class B extends A {
+    int a = 200; //overridden field
+    boolean d = true; //new field
+}
+class Main {
+    public static void main(String[] args) {
+        System.out.println("a: " + super.a); //accessing super field a: 1
+        System.out.println("a: " + a); //accessing overridden field a: 200
+        System.out.println("b: " + b); //accessing inherited field b: 'a'
+        System.out.println("c: " + c); //run-time error, final field c was not inherited
+        System.out.println("d: " + d); //accessing new field d: true
+    }
+}
+
+=================================================================================
+3. NEW METHOD, METHOD OVERRIDE, METHOD OVERLOAD
+=================================================================================
+In the subclass all inherited methods can be accessed.
+As extension, in the subclass new methods can be declared as well.
+A method of the superclass can be overridden if in the subclass a new method is declared with the same name and method signature.
+The overridden method can have different code block and return type than the original one has.
+In case the new method has different method signature than the original one has, instead of overriding overloading will take place, both methods will be accessible in the subclass.
+Because method overload is possible as well, the compiler will not know whether the aim was to override.
+In order to make it sure that overriding is the aim, in the subclass, right before the overridden method head, the @Override annotation should be placed. In this case, if the method override was not successful in the code, the compiler will give a warning.
+Final and static methods can not be overridden.
+
+EXAMPLE FOR OVERRIDDEN AND OVERLOADED METHODS:
+class A {
+    int calc(int a, int b) {
+        return a + b;
+    }
+    int calc2(int a, int b) {
+        return a - b;
+    }
+    final int calc3(int a, int b) {
+        return a / b; //int / int -> int
+    }
+}
+class B extends A {
+    @Override
+    int calc2(int a, int b) { //overridden method calc2
+        return a * b;
+    }
+    int calc2(int a, int b, int b) { //overloaded method calc2
+        return a + b + c;
+    }
+    int calc4(int a, int b) { //new method
+        return a % b;
+    }
+    public static void main(String[] args) {
+        int x = 3, y = 4;
+        System.out.println("x + y: " + calc(x, y)); //accessing inherited method calc: 7
+        System.out.println("x * y: " + calc2(x, y)); //accessing overridden method calc2: 12
+        System.out.println("x - y: " + super.calc2(x, y)); //accessing super method calc2: -1
+        System.out.println("2x + y: " + calc2(x, x, y)); //accessing overloaded method calc2: 10
+        System.out.println("x / y: " + calc3(x, y)); //compile-time error, final method calc3 was not inherited
+        System.out.println("x % y: " + calc4(x, y)); //new method calc4: 3
+    }
+}
+
+In case all the variants of possible parameters are not known or the number of possibilities are high, use vargargs instead.
+
+=================================================================================
+4. ACCESS MODIFIERS
+=================================================================================
+The subclass will inherit the access modifiers as well.
+In case of override, new modifier can be declared, with the restriction that the new modifier should allow wider access.
+
+||Modifier in superclass|Modifier in subclass||
+||private|private, default, protected, public||
+||[default]|[default], protected, public||
+||protected|protected, public||
+||public|public||
+
+=================================================================================
+5. ABSTRACT CLASS, ABSTRACT METHOD
+=================================================================================
+5.1. ABSTRACT CLASS
+5.2. ABSTRACT METHOD
+
+5.1. ABSTRACT CLASS
+---------------------------------------------------------------------------------
+As an access modifier, the abstract keyword can be used before the classname. That is, such class has only superclass position in the structure.
+Can not create object from it.
+Can consist fields, normal methods and abstract methods.
+
+abstract class A {...}
+
+Can have constructors. Its parameterized constructors can be called from subclasses but only as the 1st line of their constructor.
+super(...);
+
+5.2. ABSTRACT METHOD
+---------------------------------------------------------------------------------
+In an abstract class, next to normal methods, abstract methods can be declared.
+In such method the code block is empty.
+That said, all of these methods must be overridden as normal, but can be implemented differently in all its subclasses (polymorphism).
+Abstract method can be declared only in abstract classes.
+
+EXAMPLE FOR ABSTRACT METHOD:
+abstract class A { //declaring abstract class
+    int calc1(int a) { //declaring normal method
+        return a * a;
+    }
+    abstract int calc2(int a); //declaring abstract method
+}
+
+In case the subclass is an abstract class as well, the subclass will inherit all methods (normal and abstract), and there is no obligation to implement all abstract methods of the super.
+
+=================================================================================
+6. CONSTRUCTORS IN INHERITANCE
+=================================================================================
+A constructor method can not be inherited, in all classes it must be implemented.
+In case a class does not have a constructor, will use a default one.
+In case the subclass want to use a constructor of the superclass, can use the "super(...)" statement.
+The "super()" for the no-argument form of constructor in the superclass can not be accessed from the subclass since it invokes automatically when an instance of the subclass is created.
+In case the "super(...)" statement is used in the subclass, this statement must be the first.
+
+EXAMPLE FOR CONSTRUCTORS IN INHERITANCE:
+class A {
+    int n
+    public A(int n) {
+        this.n = n;
+    }
+}
+class B extends A {
+    int m;
+    public B(int n, int m) {
+        super(n);
+        this.m = m;
+    }
+}
+
+=================================================================================
+7. INTERFACE
+=================================================================================
+7.1. INTERFACE GENERALLY
+7.2. ORGANIZING INTERFACES
+7.3. FUNCTIONAL INTERFACE
+7.4. STANDARD FUNCTIONAL INTERFACES
+7.5. GENERICS FUNCTIONAL INTERFACE
+
+7.1. INTERFACE GENERALLY
+---------------------------------------------------------------------------------
+An abstract class with abstract methods only is called interface.
+Because its is a type of abstract class, no object can be created from it.
+Other classes must implement it.
+Keyword for implementation is implement.
+More than one interfaces can be implemented by a class.
+Interface can be inherited as well. It is allowed to inherit more than one interfaces (extends keyword).
+All interface methods are public by default.
+All interface fields are public static final by default.
+Interfaces can have methods with code blocks. These are called default methods.
+Default methods can be overridden on implementation or inheritance, or left as they are.
+Default interface methods can be static. These can be addressed by using interfaceName.methodName(args) expression.
+Default interface methods can be private explicitly. These are helper methods for interface methods.
+
+EXAMPLE FOR INTERFACE INHERITANCE:
+interface A {
+    returnValue1 methodName1(args1);
+    returnValue2 methodName2(args2);
+    default returnValue3 methodName3(args2) {
+        ...
+    }
+}
+interface B {
+    returnValue4 methodName4(args4);
+}
+interface C extends A {
+    @Override
+    default returnValue2 methodName2(args2) {
+        ...
+    }
+}
+class D implements B, C {
+    @Override
+    returnValue4 methodName4(args4) {
+        ...
+    }
+    @Override
+    returnValue1 methodName1(args1) {
+        ...
+    }
+}
+class E implements B {
+    @Override
+    returnValue4 methodName4(args4) {
+        ...
+    }
+}
+class Main {
+    D d = new D();
+    E d = new E();
+    type1 = methodName1(args1); //implemented in D
+    type2 = methodName2(args2); //default from C
+    type3 = methodName3(args3); //default from A, inherited in C
+    type4 = methodName4(args4); //implemented in D
+    typeVariant4 = methodName4(args4); //implemented in E with different code block
+}
+
+7.2. ORGANIZING INTERFACES
+---------------------------------------------------------------------------------
+Use default method in case more classes will use the method with the same code block.
+Use normal method in case in classes it must be implemented differently.
+Use private method in case that is a helper of the interface.
+Use static method in case that method is a helper of the implementer class.
+Keep the code of interfaces and classes under approx. 200 lines plus Javadocs.
+
+7.3. FUNCTIONAL INTERFACE
+---------------------------------------------------------------------------------
+Interface with only one method.
+This method specifies the purpose of the interface.
+This kind of interface can be used as parameter of a custom method.
+It is called as Single Abstract Method or SAM type in Java7.
+Such parameter can be a lambda expression from Java8.
+
+EXAMPLE FOR DECLARATION:
+import java.lang.FunctionalInterface;
+...
+@FunctionalInterface //optional, but by using it the compiler will tell if the interface will not be functional
+interface functionalInterfaceName {
+    <return value> methodName(arguments);
+}
+
+EXAMPLE FOR USING FUNCTIONAL INTERFACE AS PASSED ANONYMOUS CLASS:
+//declare the interface as a SAM type
+@FunctionalInterface
+interface functionalInterfaceName {...}
+...
+//declare a custom method
+<access modifier> <return value> customMethodName(parameter) {...}
+...
+//call the custom method with a SAM type; the implementation of the SAM type will exist only within the scope of the method
+customMethodName(new functionalInterfaceName {
+    @Override
+    <access modifier> <return value> methodName(arguments) {...} //implementation of the abstract method
+});
+
+EXAMPLE FOR USING FUNCTIONAL INTERFACE AS PASSED LAMBDA EXPRESSION:
+//declare a custom method
+<access modifier> <return value> customMethodName(parameter) {...}
+...
+//call the custom method with a lambda; the lambda will exist only within the scope of the method
+customMethodName((virtual parameter list of the abstract method) -> unique implemented algorithm of the abstract method);
+
+EXAMPLE FOR USAGE:
+interface Circle {
+    double calc(double radius);
+}
+...
+double r = ...; //setting actual radius
+//anonymous class from Circle interface with implementing the method
+Circle circle = new Circle() {
+    double calc(double radius) {
+        return 2 * radius * Math.PI;
+    }
+};
+//or with lambda expression:
+Circle circle = (double radius) -> 2 * radius * Math.PI;
+//processing circle.calc(r) as perimeter
+//changing the function
+circle = (double radius) -> Math.pow(radius, 2) * Math.PI;
+//processing circle.calc(r) as area
+
+7.4. STANDARD FUNCTIONAL INTERFACES
+---------------------------------------------------------------------------------
+The java.util.function package contains 43 functional interfaces.
+From among them, the most important 6 are below.
+
+||Functional interface|Example as method reference||
+||UnaryOperator<T>|String::toLowerCase||
+||BinaryOperator<T>|BigInteger::add||
+||Predicate<T>|Collection::isEmpty||
+||Function<T,R>|Arrays::asList||
+||Supplier<T>|Instant::now||
+||Consumer<T>|System.out::println||
+
+7.5. GENERICS FUNCTIONAL INTERFACE
+---------------------------------------------------------------------------------
+Functional interface which can be used with any kind of data. For this, a virtual type called T or "type parameter" is used as its type.
+No primitive types can be used with generics functional interface.
+The type structure can be designed once, in its variable references it will be virtually inherited via a wrapper or class type.
+
+EXAMPLE FOR DECLARING GENERICS FUNCTIONAL INTERFACE:
+@FunctionalInterface
+interface GenericInterfaceName<T> { //T typed interface
+    T func(T data); //func as mandatory name of method, T as return value type, T as argument type
+}
+
+EXAMPLE FOR USING INTERFACE (DECLARED IN PREVIOUS EXAMPLE) AS PASSED LAMBDA EXPRESSION:
+GenericsInterfaceName<String> generic1 = (str) -> {...}; //operate with String data
+GenericsInterfaceName<Integer> generic2 = (a) -> {...}; //operate with Integer data
+
+By using <T>, any types except primitive types can be accepted. Narrowing is possible by using <T extends typeClass> where typeClass can be e.g. Number for numbers or any custom types so T can be only a subtype of typeClass.
+Such T is called bounded type.
+
+EXAMPLE FOR DECLARING GENERICS FUNCTIONAL INTERFACE OF NUMBERS:
+@FunctionalInterface
+interface genericsInterfaceName<T extends Number> {...} //a class represents T as subtype of Number
+
+Advantages of using generics:
+    a. code re-usability
+    b. compile-time type checking
+
+=================================================================================
+8. POLYMORPHISM
+=================================================================================
+OOP basic theory.
+An entity can handle different tasks in different situations. E.g. under an identical name which shows the basic task, with different implementations the method processes data in different ways.
+Polymorphism can be reached by using
+    a. method override (inheritance: extending and implementing classes and interfaces; run-time polymorphism)
+    b. method overload (due to different signatures, different code blocks, compile-time polymorphism)
+    c. operator overload (same operator provides different actions for different types, e.g. + can mean adding and concatenation; Java does not support user-defined operator overloading)
+    d. polymorphic variable (type (class) of variable can change during running; Java does not support it)
+
+=================================================================================
+9. ENCAPSULATION
+=================================================================================
+OOP basic theory.
+Fields and methods which are connected by their common task, are placed into a common class/method. Thanks for that, a class or a method can be independently developed, corrected and tested, parallelly with other encapsulated entities, without having effect on other classes and/or methods.
+
+=================================================================================
+10. DATA HIDING
+=================================================================================
+OOP basic theory.
+    a. Encapsulation in method: fields can not be accessed from outside the method.
+    b. Encapsulation in class: fields and methods can not be accessed from outside the class.
+    c. Encapsulation in package: classes and their fields and methods can not be accessed from outside the package.
+
+=================================================================================
+11. GENERIC ALGORITHMS
+=================================================================================
+OOP basic theory.
+Algorithms which can be used on various types e.g. sort() on Collection types.
+Due to operating on different types and structures, implementations of such algorithms are different.
+
+=================================================================================
+12. GENERICS CLASSES
+=================================================================================
+Through generics classes, a special inheritance can be achieved as a generics class carrying T as its type can be virtually inherited by its instances carrying specific type.
+
+Advantages of using generics:
+    a. code re-usability
+    b. compile-time type checking
+    c. used with Collections (e.g. ArrayList<String> creates a String-based instance of ArrayList<T>)

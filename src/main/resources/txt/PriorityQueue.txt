@@ -1,0 +1,53 @@
+=================================================================================
+PRIORITYQUEUE
+=================================================================================
+Implements Queue.
+Presents heap data structure on FIFO.
+Its elements may not be sorted, but returned in sorted order.
+In ascending return order, the head of the queue will be the always the smallest element.
+In case the head is not removed, the rest of the queue follow their original order.
+
+EXAMPLE FOR ASCENDING ORDERED QUEUE:
+import java.util.PriorityQueue;
+import java.util.Iterator;
+...
+PriorityQueue<Integer> pq = new PriorityQueue<>(); //declaring for ascending ordered retrieval
+pq.add(4); //[4]
+pq.add(2); //original order: [4, 2]
+String s = pq.toString(); //[2, 4]: 2 is the smallest therefore it is the head
+pq.add(1); //original order: [4, 2, 1]
+s = pq.toString(); //[1, 4, 2]: 1 is the smallest therefore it is the head, the rest follows the original order
+boolean b = pq.remove(3); //removes the 3rd element == 1
+int element = pq.poll(); //returns and removes 2, remains [4]
+pq.add(2); //original order: [4, 2]
+pq.add(1); //original order: [4, 2, 1]
+Iterator iter = pq.iterator();
+while (iter.hasNext()) {
+    element = iter.next();
+    //processed in order: 1, 4, 2 (head is 1 but not removed, rest follow original order)
+}
+b = pq.contains(element); //whether element is in queue
+int size = pq.size(); //number of elements
+Integer[] ia = pq.toArray(); //[1, 4, 2]
+
+EXAMPLE FOR CUSTOM ORDERED QUEUE:
+import java.util.PriorityQueue;
+import java.util.Comparator;
+...
+//setting up a comparator for descending order
+class DesComparator implements Comparator<Integer> {...} //custom comparator
+PriorityQueue<Integer> pq = new PriorityQueue<>(new DesComparator()); //custom ordered priority queue; or:
+Comparator desComparator2 = new Comparator<Integer> {...}; //for custom comparator, anonymous class is created
+PriorityQueue<Integer> pq = new PriorityQueue<>(desComparator2); //using the anonymous class
+//using the comparator
+pq.add(4); //[4]
+pq.add(1); //original order: [4, 1]
+pq.add(2); //original order: [4, 1, 2]
+String s = pq.poll(); //returns 4, original order: [1, 2]
+String s = pq.poll(); //returns 2, original order: [1]
+
+=>Queue
+=>Comparator
+=>Iterator
+=>Inheritance
+=>Collection

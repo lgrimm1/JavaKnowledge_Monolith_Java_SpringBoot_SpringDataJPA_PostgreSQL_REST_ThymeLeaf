@@ -1,0 +1,44 @@
+=================================================================================
+SYSTEM
+=================================================================================
+The System class reaches out to the system environment. Creates connection towards system console, operation system etc.
+Handles the standard input (System.in), standard output (System.out) and error output streams, accesses externally defined properties and environment variables, contains means of loading files and libraries, and contains utility method for quickly copying a portion of an array.
+
+The System has static methods before which there is no need to explicitly access the System class. Such methods are below.
+
+||Field|Type||
+||err|PrintStream||
+||out|PrintStream||
+||in|InputStream||
+
+||Method|Description||
+||arrayCopy()|copies a portion of an array||
+||clearProperty(String key)|removes system property marked with key||
+||console()|returns the Console object of the JVM||
+||currentTimeMillis()|returns the system time in milliseconds||
+||exit()|terminates the currently running JVM||
+||gc()|runs the Garbage Collector||
+||getenv()|returns unmodifiable map view of system environment||
+||getenv(String name)|returns unmodifiable system environment variable by given name||
+||getProperties()|returns the system properties||
+||getProperty(String key)|returns the system property of key||
+||getProperty(String key, String def)|returns the system property of key||
+||setProperty(Properties props)|sets the given system properties||
+||setProperty(String key, String value)|sets the system property of key to value||
+||lineSeparator()|returns the system line separator||
+||nanoTime()|returns the JVM time in nanoseconds||
+||setErr(PrintStream err)|re-roots the standard error stream||
+||setOut(PrintStream out)|re-roots the standard output stream||
+||setIn(InputStream in)|re-roots the standard input stream||
+||getSecurityManager()|Gets the system security interface||
+||setSecurityManager(SecurityManager sm)|Sets the system security interface||
+
+EXAMPLE FOR GETTING OS NAME AND VERSION NUMBER:
+String OS = System.getProperty("os.name"); //Windows 10
+System.getProperty("os.version");
+
+=>Standard_input_and_output
+=>Array
+=>GarbageCollector
+=>InputStream
+=>PrintStream

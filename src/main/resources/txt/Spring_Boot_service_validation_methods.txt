@@ -1,0 +1,66 @@
+=================================================================================
+SPRING.BOOT SERVICE VALIDATION METHODS
+=================================================================================
+In order to have validation and for validation fails error messages, conditions and exceptions will be used.
+Basically, for exceptions, HTTP500 error code is preferred.
+
+EXAMPLE FOR VALIDATION METHODS IN SERVICE CLASS:
+//SeriesEntity fields: @Id long id, String title, String remarks
+
+enum IdValidationType {
+	WITHOUT_ID, NON_NEGATIVE_ID, POSITIVE_ID, GREATER_THAN_1
+}
+...
+private String validateId(long id, IdValidationType idValidationType)  {
+	if (idValidationType == IdValidationType.NON_NEGATIVE_ID && id < 0) {
+		return "ID must be minimum 0.";
+	}
+	if (idValidationType == IdValidationType.POSITIVE_ID && id < 1) {
+		return "ID must be minimum 1.";
+	}
+	return "";
+}
+
+private String validateEntity(SeriesEntity entity, IdValidationType idValidationType) {
+	if (entity == null) {
+		return "Item must not be null.";
+	}
+	if (idValidationType == IdValidationType.NON_NEGATIVE_ID && entity.getId() < 0) {
+		return "ID must be minimum 0.";
+	}
+	if (idValidationType == IdValidationType.POSITIVE_ID && entity.getId() < 1) {
+		return "ID must be minimum 1.";
+	}
+	if (entity.getTitle() == null || entity.getTitle().isBlank()) {
+		return "Title must exist.";
+	}
+	return "";
+}
+
+public SeriesEntity createNewEntity(SeriesEntity newSeriesEntity) {
+	String message = validateEntity(newSeriesEntity, IdValidationType.WITHOUT_ID);
+	if (message.isEmpty() && seriesRepository.findFirst1ByTitle(newSeriesEntity.getTitle()).isPresent()) {
+		message = "Title is not unique.";
+	}
+	if (!message.isEmpty()) {
+		throw new IllegalStateException(message);
+	}
+	return seriesRepository.save(newSeriesEntity);
+}
+
+public SeriesEntity getEntityById(long id) {
+	String message = validateId(id, IdValidationType.POSITIVE_ID);
+	if (!message.isEmpty()) {
+		throw new IllegalStateException(message);
+	}
+	Optional<SeriesEntity> optionalSeriesEntity = seriesRepository.findById(id);
+	if (optionalSeriesEntity.isEmpty()) {
+		throw new IllegalStateException("No such item.");
+	}
+	return optionalSeriesEntity.get();
+}
+
+=>Spring_Boot
+=>Spring_Boot_entity_validation
+=>Spring_Boot_entity
+=>Spring_Boot_service

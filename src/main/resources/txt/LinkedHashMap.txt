@@ -1,0 +1,39 @@
+=================================================================================
+LINKEDHASHMAP
+=================================================================================
+Implements the Map, extends the HashMap.
+Provides ordered entries (key-value pairs) in a HashMap. That said, it is a double-linked list among entries similarly to LinkedList.
+All methods from Map and HashMap are available.
+LinkedHashMap provides slower performance than HashMap and needs more storage.
+
+Constructor signatures:
+    a. (): default capacity is 16, default load factor is 0.75; the order will follow the order as the entries will be added
+    b. (capacity in int, load factor in float): like the a. version, plus: how many entries it can store, and if load factor is exceeded, the map is moved to an other map with double size
+    c. (capacity in int, load factor in float, accessOrder): like the b. version with accessOrder is false; if accessOrder is true, entries will be ordered by when the entries were accessed, last will be the most recently accessed entry
+    d. (other LinkedHashMap): creates (deep copies) a new map from an other LinkedHashMap; need identical pair types
+Coming from the above versions, accessOrder is false by default and optional to use it.
+
+EXAMPLE FOR CREATING A NEW LINKEDHASHMAP FROM AN OTHER:
+import java.util.LinkedHashMap;
+...
+LinkedHashMap<keyType, valueType> lhm1 = new LinkedHashMap<>();
+LinkedHashMap<keyType, valueType> lhm2 = new LinkedHashMap<>(lhm1);
+
+EXAMPLE FOR SORTING A LINKEDHASHMAP:
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.Map.Entry;
+...
+LinkedHashMap<String, String> lhm = new LinkedHashMap();
+...
+List<Map.Entry<String, String>> ll = new LinkedList<>(lhm.entrySet());
+Collections.sort(ll, (l1, l2) -> l1.getValue().compareTo(l2.getValue()));
+LinkedHashMap<String, String> lhm2 = new LinkedHashMap(); //in order to keep original data as well
+for (Map.Entry<String, String> entry : ll) {
+    lhm2.put(entry.getKey(), entry.getValue());
+}
+
+=>Map
+=>HashMap
+=>LinkedList
+=>Collection;3.1. SORTING

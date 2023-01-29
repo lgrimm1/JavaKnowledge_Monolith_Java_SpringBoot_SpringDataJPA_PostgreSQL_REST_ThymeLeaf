@@ -1,0 +1,199 @@
+=================================================================================
+COMPARATOR
+=================================================================================
+For determining greater, lesser values, or equality between two object variables.
+Used with sorting of ArrayLists or other Collection types.
+Sorting is based on comparing element values to each other by subtracting the second value from the first. This rule goes for not-number types e.g. String as well.
+There can be data overflow in ordering number-type class elements. In case the first element is at the maximum of its type (e.g. Integer.MAX_VALUE) and the second element is lesser then zero (e.g. -1), subtracting the second will increase the first over its limit and the result jumps to the minimum side of the type (here: Integer.MIN_VALUE) therefore in these particular cases the order will be reversed in comparison of these two elements.
+
+1. SIMPLE USE ON WRAPPER ELEMENT TYPES
+2. SIMPLE USE ON CUSTOM ELEMENT TYPES (COMPARETO() METHOD)
+3. CUSTOM USE (COMPARATOR)
+4. CHAINED COMPARATORS
+
+=>Primitive_data_types
+=>Objects
+=>Operators
+=>Equality
+=>ArrayList
+=>PriorityQueue
+
+=================================================================================
+1. SIMPLE USE ON WRAPPER ELEMENT TYPES
+=================================================================================
+Used with a wrapper class (e.g. Integer, String) as element type.
+
+EXAMPLE FOR SIMPLE USE OF COMPARATOR (WRAPPER ELEMENT TYPE):
+import java.util.ArrayList;
+import java.util.Comparator;
+...
+ArrayList<WrapperElementType> arrayList = new ArrayList<>();
+...
+arrayList.sort(Comparator.naturalOrder()); //ascending order
+arrayList.sort(Comparator.reverseOrder()); //descending order
+arrayList.sort(Comparator.nullsFirst()); //ascending order, zeros first; only for number-based elementTypes
+arrayList.sort(Comparator.nullsLast()); //ascending order, zeros last; only for number-based elementTypes
+
+=================================================================================
+2. SIMPLE USE ON CUSTOM ELEMENT TYPES (COMPARETO() METHOD)
+=================================================================================
+In order to use Comparator in simple ways but on custom element types, the element class should know how to compare itself to other.
+For this, the class must implement the Comparable interface and express the compareTo() method. There can be only one such method in a class.
+When it is done, sorting as having a simple element type is possible, see previous section.
+The compareTo() method reaches the fields of its own element. However, when the element class is defined to be immutable, in order to reach the fields of the same-type other element, getters must be defined within the class.
+Implement this solution in case you want to introduce the sorting mechanism on element side and will not use other mechanisms in the future. Downside, this will increase the complexity of the element itself.
+
+EXAMPLE FOR COMPARING CUSTOM ELEMENT TYPE (CUSTOM COMPARETO() METHOD):
+import java.util.Comparable;
+...
+class CustomElementType implements Comparable<CustomElementType> {
+    //fields
+    //constructors
+    //getters
+
+    @Override
+    public int compareTo(CustomElementType otherElement) {
+        //return value < 0: this element is smaller
+        //return value == 0: elements are equal
+        //return value > 0: otherElement is smaller
+    }
+}
+
+In case there is no need for having all fields effected by comparing, use what fields you need.
+In case the compareTo() method uses a wrapper field only from all the fields of the class, utilize the wrapper class comparing methods.
+
+EXAMPLE FOR COMPARING CUSTOM ELEMENT TYPE (CUSTOM COMPARETO() METHOD ON WRAPPER FIELD):
+import java.util.Comparable;
+...
+class CustomElementType implements Comparable<CustomElementType> {
+    //fields
+    private WrapperType variable;
+    //constructors
+    //getters
+
+    @Override
+    public int compareTo(CustomElementType otherElement) {
+        return WrapperType.compare(variable, otherElement.getVariable());
+    }
+}
+
+In case the class contains a method which produces a type the compareTo() method can use, can be used in the compareTo() method as well.
+In case there is priority in fields used for ordering (e.g. order by fields1, then order by field2 etc.), usage of the if statement is advised.
+
+EXAMPLE FOR COMPARING CUSTOM ELEMENT TYPE (CUSTOM COMPARETO() METHOD, WRAPPERS AND PRIORITY):
+import java.util.Comparable;
+...
+class CustomElementType implements Comparable<CustomElementType> {
+    //field1, field2, field3
+    //constructors
+    //getters
+
+    @Override
+    public int compareTo(CustomElementType otherElement) {
+        int result = Field1WrapperType.compare(field1, otherElement.getField1());
+        if (result == 0) {
+            result = Field2WrapperType.compare(field2, otherElement.getField2());
+            if (result == 0) {
+                result = Field3WrapperType.compare(field3, otherElement.getField3());
+            }
+        }
+        return result;
+    }
+}
+
+=================================================================================
+3. CUSTOM USE (COMPARATOR)
+=================================================================================
+By declaring a custom Comparator, custom and complex comparing techniques can be introduced.
+A Comparator elementType must be class-type, similarly to ArrayLists, e.g. a wrapper type or a custom class-type.
+A Comparator declaration must contain an overridden compare method which is responsible for the comparing itself.
+The return value must be an integer.
+For the return value, if it is less than zero, then they are in ascending order, if it is greater than zero, they are in descending order, zero means equality.
+It is possible to declare different Comparators for any kind of ordering of a collection or more collections in the same class/application.
+It is possible to create a reversed Comparator by creating a Comparator for natural order then create a reversed version from it.
+Implement this solution in case you want to introduce the sorting mechanism outside the element type or want to declare more mechanisms on the same element class in the present or in the future. This also will prevent the element class growing in complexity.
+
+EXAMPLE FOR COMPARATOR WITH ASCENDING ORDER (ANONYMOUS CLASS):
+import java.util.Comparator;
+...
+Comparator<elementType> comparatorName = new Comparator<>() {
+    //custom method declarations
+    @Override
+	public int compare(elementType element1, elementType element2) {
+	    //expressions with which we prepare data of elements for comparison
+	    //here the results are compact1 and compact2 following the order of passed parameters
+	    //compact1 and compact2 are primitive or wrapper types or other types with existing compareTo() method
+		return compact1.compareTo(compact2); //in case of Strings, or
+		return compact1.compareToIgnoreCase(compact2); //in case of Strings, or
+		return compact1 - compact2; //in case of primitive types
+	}
+};
+
+EXAMPLE FOR REVERSED COMPARATOR (ANONYMOUS CLASS):
+Comparator<elementType> comparatorName = new Comparator<>() {...}
+Comparator<elementType> reversedComparatorName = comparatorName.reserved();
+
+EXAMPLE FOR COMPARATOR WITH DESCENDING ORDER (ANONYMOUS CLASS):
+import java.util.Comparator;
+...
+Comparator<elementType> comparatorName = new Comparator<>() {
+    //custom method declarations
+    @Override
+	public int compare(elementType element1, elementType element2) {
+	    //expressions with which we prepare data of elements for comparison
+	    //here the results are compact1 and compact2 following the order of passed parameters
+	    //compact1 and compact2 are primitive or wrapper types or other types with existing compareTo() method
+		return compact2.compareTo(compact1); //in case of Strings, or
+		return compact2.compareToIgnoreCase(compact1); //in case of Strings, or
+		return compact2 - compact1; //in case of primitive types
+	}
+};
+
+EXAMPLE FOR IMPLEMENTING A COMPARATOR:
+class customComparator implements Comparator<elementType> {
+    //custom method declarations
+    @Override
+	public int compare(elementType element1, elementType element2) {...}
+}
+
+EXAMPLE FOR USING COMPARATORS:
+import java.util.ArrayList;
+import java.util.PriorityQueue;
+import java.util.Comparator;
+...
+class CustomComparator implements Comparator<elementType> {...}
+private final Comparator<elementType> comparatorName1 = new Comparator<>() {...};
+private final CustomComparator comparatorName2 = new CustomComparator();
+...
+ArrayList<elementType> al = new ArrayList<>();
+...
+al.sort(comparatorName1); //custom order set via comparatorName1
+al.sort(comparatorName2); //custom order set via comparatorName2
+al.sort(comparatorName2.reversed()); //reversed custom order set via comparatorName2
+al.sort(new CustomComparator()); //custom order set via temporary instance of CustomComparator class
+PriorityQueue<elementType> pq1 = new PriorityQueue<>(comparatorName1); //custom order set via comparatorName1
+PriorityQueue<elementType> pq2 = new PriorityQueue<>(comparatorName2); //custom order set via comparatorName2
+PriorityQueue<elementType> reversedPq2 = new PriorityQueue<>(comparatorName2.reversed()); //reversed custom order set via comparatorName2
+PriorityQueue<elementType> pq3 = new PriorityQueue<>(new CustomComparator); //custom order set via temporary instance of CustomComparator class
+
+=================================================================================
+4. CHAINED COMPARATORS
+=================================================================================
+In case a class contains several fields with different types and ordering elements of this class is followed by priority (e.g. order by field1, then order by field2), Comparators can be linked in a chain.
+
+EXAMPLE FOR CHAINED COMPARING:
+class element {
+    private fieldType1 field1;
+    private fieldType2 field2;
+    private fieldType3 field3;
+    //getters
+}
+List<element> list;
+...
+Comparator<element> customComparator = Comparator.comparing(element::getField1)
+        .thenComparing(element::getField2)
+        .thenComparing(element::getField3);
+...
+list.sort(customComparator);
+
+In case a field type is a complex class itself, create a comparator for that field, then use that Comparator in a chain normally.

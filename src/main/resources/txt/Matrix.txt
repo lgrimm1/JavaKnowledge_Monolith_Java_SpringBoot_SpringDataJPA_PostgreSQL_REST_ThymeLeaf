@@ -1,0 +1,149 @@
+=================================================================================
+MATRIX
+=================================================================================
+A matrix is a 2D array. A matrix list is a 2D ArrayList. Sometime with matrix, the ArrayList version is marked.
+A matrix is squared in case number of rows and columns are equal and there is value in every cell.
+Because a matrix is made via array or ArrayList, in all rows there is a 1D array or ArrayList. For processing, it is advised to check whether all cells are existing by checking length (size) all rows.
+Matrix diagonal means cells where row and column indexes are equal (geometrically a line from top left to bottom right). Only a square matrix has diagonal.
+Transposing a matrix means geometrically mirroring (or rotating) cell values on or around its diagonal. Only square matrix can be transposed.
+Reversing rows in a matrix means for each row the order of elements are to reversed (e.g. 1, 3, 2 becomes 2, 3, 1, no sorting).
+
+Rotating a matrix means several processes in a chain. For rotating, the matrix has to be squared due to using a process which works on a square matrix:
+    a. rotate clockwise (+90 degrees): transpose, then reverse rows
+    b. rotate counter-clockwise (-90 degrees): reverse rows then transpose
+    c. rotate by 180 degrees: rotate twice in clockwise (or counter-clockwise) direction
+
+EXAMPLES FOR CHECKING SQUARED:
+import java.util.ArrayList;
+...
+public static boolean isMatrixSquare(int[][] matrix) {
+	int rowLength = matrix.length;
+	if (rowLength < 2) {
+		return false;
+	}
+	for (int[] row : matrix) {
+		if (row.length != rowLength) {
+			return false;
+		}
+	}
+	return true;
+}
+public static boolean isMatrixListSquare(List<List<Integer>> matrixList) {
+	if (matrixList == null) {
+		return false;
+	}
+	int rowLength = matrixList.size();
+	if (rowLength < 2) {
+		return false;
+	}
+	for (List<Integer> rowList : matrixList) {
+		if (rowList == null || rowList.size() != rowLength) {
+			return false;
+		}
+	}
+	return true;
+}
+
+EXAMPLE FOR CONVERTING MATRIX TO MATRIX LIST:
+import java.util.ArrayList;
+...
+public static List<List<Integer>> convertMatrixToMatrixList(int[][] matrix) {
+	if (matrix.length == 0) {
+		return null;
+	}
+	List<List<Integer>> matrixList = new ArrayList<>();
+	for (int[] row : matrix) {
+		if (row.length == 0) {
+			return null;
+		}
+		matrixList.add(Arrays.stream(row)
+				.boxed()
+				.toList());
+	}
+	return matrixList;
+}
+
+EXAMPLE FOR CONVERTING MATRIX LIST TO MATRIX:
+import java.util.ArrayList;
+...
+public static int[][] convertIntegerMatrixListToMatrix(List<List<Integer>> matrixList) {
+	if (matrixList == null || matrixList.size() == 0) {
+		return new int[][]{};
+	}
+	int numberOfRows = matrixList.size();
+	int[][] matrix = new int[numberOfRows][];
+	for (int index = 0; index < numberOfRows; index++) {
+		if (matrixList.get(index) == null || matrixList.get(index).size() == 0) {
+			return new int[][]{};
+		}
+		matrix[index] = matrixList.get(index).stream()
+				.mapToInt(n -> n)
+				.toArray();
+	}
+	return matrix;
+}
+
+EXAMPLES FOR TRANSPOSING A MATRIX (LIST):
+import java.util.ArrayList;
+...
+public static int[][] transposeSquareMatrix(int[][] squareMatrix) {
+	//check if matrix is squared if not, return null
+	int[][] newSquareMatrix = new int[squareMatrix.length][];
+	for (int row = 0; row < squareMatrix.length; row++) {
+		newSquareMatrix[row] = Arrays.copyOf(squareMatrix[row], squareMatrix.length);
+		for (int column = row; column < squareMatrix[row].length; column++) {
+			int temp = newSquareMatrix[row][column];
+			newSquareMatrix[row][column] = newSquareMatrix[column][row];
+			newSquareMatrix[column][row] = temp;
+		}
+	}
+	return newSquareMatrix;
+}
+public static List<List<Integer>> transposeSquareMatrixList(List<List<Integer>> squareMatrixList) {
+    //check if matrix list is squared if not, return null
+	List<List<Integer>> newSquareMatrixList = new ArrayList<>();
+	for (List<Integer> row : squareMatrixList) {
+		newSquareMatrixList.add(new ArrayList<>(row));
+	}
+	for (int row = 0, rowLength = newSquareMatrixList.size(); row < rowLength; row++) {
+		for (int column = row, columnLength = newSquareMatrixList.get(row).size(); column < columnLength; column++) {
+			Integer temp = newSquareMatrixList.get(row).get(column);
+			newSquareMatrixList.get(row).set(column, newSquareMatrixList.get(column).get(row));
+			newSquareMatrixList.get(column).set(row, temp);
+		}
+	}
+	return newSquareMatrixList;
+}
+
+EXAMPLES FOR REVERSING ROWS IN A MATRIX (LIST):
+import java.util.ArrayList;
+...
+public static int[][] reverseRowsInMatrix(int[][] matrix) {
+	if (matrix == null || matrix.length == 0) {
+		return null;
+	}
+	int[][] newMatrix = new int[matrix.length][];
+	for (int row = 0; row < matrix.length; row++) {
+		int[] newRow = Arrays.copyOf(matrix[row], matrix[row].length);
+		List<Integer> temp = new ArrayList<>(Arrays.stream(matrix[row]).boxed().toList());
+		Collections.reverse(temp);
+		newMatrix[row] = temp.stream().mapToInt(n -> n).toArray();
+	}
+	return newMatrix;
+}
+public static List<List<Integer>> reverseRowsInMatrixList(List<List<Integer>> matrixList) {
+	if (matrixList == null) {
+		return null;
+	}
+	List<List<Integer>> newMatrixList = new ArrayList<>();
+	for (List<Integer> row : matrixList) {
+		List<Integer> newRow = new ArrayList<>(row);
+		Collections.reverse(newRow);
+		newMatrixList.add(newRow);
+	}
+	return newMatrixList;
+}
+
+=>Array
+=>ArrayList
+=>Stream

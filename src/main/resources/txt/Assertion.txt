@@ -1,0 +1,118 @@
+=================================================================================
+ASSERTION
+=================================================================================
+1. ASSERTIONS
+2. USAGE TYPES
+
+=>Tests
+=>Classes
+=>Packages
+=>Logging
+=>JUnit
+
+=================================================================================
+1. ASSERTIONS
+=================================================================================
+For direct debugging purposes from within source code.
+Inserting an assertion means comparing a result against its needed value.
+The developer assumes that at the checked line a condition is true. If the condition fails, that shows a bug.
+
+assert condition; //if the condition is false, throws an AssertionError and the flow stops, otherwise the flow steps through
+assert condition : expression; //if the condition is false, throws an AssertionError with the expression as details, then the flow stops
+
+Normally, the assertions are not evaluated since they are for debugging purposes.
+In order to force the compiler for evaluation, use the next formulas:
+java -ea:arguments //enables assertions in all classes except system classes; or:
+java -enableassertions:arguments
+java -esa:arguments //enables assertions in system classes; or:
+java -enablesystemassertions:arguments
+java -da:arguments //disables assertions in all classes except system classes; or:
+java -disableassertions:arguments
+java -dsa:arguments //disables assertions in system classes; or:
+java -disablesystemassertions:arguments
+
+EXAMPLES FOR ENABLING ASSERTIONS:
+java -ea //evaluates assertions in all classes except system classes
+java -ea:className //evaluates assertions in className class and in all of its subclasses if they are exist
+java -ea:subClassName className //evaluates assertions in subClassName subclass of className class
+java -ea:packagePath... className //evaluates assertions in packagePath package and in its subpackages called from className class
+java -ea:... className //evaluates assertions in unnamed packages in the current working directory, called from className class
+java -esa //evaluates assertions in system classes
+
+EXAMPLE:
+String[] sa = new String[3];
+//processing
+assert sa[1] != null; //throws the error in case sa[1] == null
+assert sa[2] == null : "sa[2] must be null"; //in case sa[2] != null, throws the error with the next detail: sa[2] must be null
+
+Using assertions helps to find bugs directly where they can appear.
+They are automatically removed from production code at runtime, so they will not slow down the flow.
+They make the code more readable, and help remove boilerplate code.
+Using them increases the confidence that the code functions correctly.
+
+Assertions should not be used for checking arguments of a method. In case a developer uses a method with wrong parameters, the method should throw the right exceptions.
+Do not use assertions to invoke methods which would run normally. By disabling assertions, these methods will not be reachable at runtime.
+
+EXAMPLE FOR WRONG USAGE:
+ArrayList<Integer> ial1 = new ArrayList<>(Arrays.asList(1, 2, 3, 4));
+ArrayList<Integer> ial2 = new ArrayList<>(Arrays.asList(2, 4));
+assert ial1.removeAll(ial2);
+
+EXAMPLE FOR CORRECT USAGE:
+ArrayList<Integer> ial1 = new ArrayList<>(Arrays.asList(1, 2, 3, 4));
+ArrayList<Integer> ial2 = new ArrayList<>(Arrays.asList(2, 4));
+boolean success = ial1.removeAll(ial2);
+assert success;
+
+=================================================================================
+2. USAGE TYPES
+=================================================================================
+2.1. CHECK VALUE(S) AGAINST CONDITION
+2.2. UNREACHABLE CODE
+2.3. DOCUMENTING
+
+2.1. CHECK VALUE(S) AGAINST CONDITION
+---------------------------------------------------------------------------------
+After a code part, in case there can be unwanted results, using assertions.
+
+EXAMPLE:
+String[] sa = ...;
+...
+assert sa.length == 6;
+
+2.2. UNREACHABLE CODE
+---------------------------------------------------------------------------------
+Marking unreachable code: not executed code parts.
+
+EXAMPLE 1:
+int methodName() {
+    ...
+    return ...;
+    ...
+    assert false : "Unreachable code";
+}
+In case the code is refactored and the return statement is moved into an if branch, the flow could reach the assertion.
+
+EXAMPLE 2:
+int oneTwoThree = ...;
+switch (oneTwoThree) {
+    case 1 -> ...;
+    case 2 -> ...;
+    case 3 -> ...;
+    default -> assert false : "Invalid value: " + oneTwoThree;
+}
+Although the variable should receive 1..3 numbers, reaching the assertion means it gets wrong value.
+
+2.3. DOCUMENTING
+---------------------------------------------------------------------------------
+Checks the code which normally would be marked with a comment, and forcing the developer to check the code in case something had been changed above.
+This usage prevents the comment to be out-dated as well; having an out-dated comment means a mis-lead to the developer.
+
+EXAMPLE:
+if (i % 2 == 0) {
+    ...
+}
+else {
+    assert i % 2 == 1 : i; //this line is instead of this comment: //i % 2 == 1
+    ...
+}

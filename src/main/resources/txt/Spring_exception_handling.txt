@@ -1,0 +1,267 @@
+=================================================================================
+SPRING EXCEPTION HANDLING
+=================================================================================
+When an endpoint fails, an exception is raised and a HTTP500 error code is sent back to the client by default.
+(For reference, when there is no proper endpoint or method signature for a request, Spring automatically sends HTTP error code back but no exception will be raised.)
+For such cases one or more handler methods must be defined.
+
+There are several ways to handle a controller method exception, below they are described as Spring evolution brought them forward.
+These solutions can be combined (used together) but for one specific exception one handler must be used only.
+All custom exceptions are classes inherited from RuntimeException.
+
+When with the solution the response body is accessible and the exception handler sends that back to the caller, the solution will be REST compatible.
+When the response body is not accessible, the body will be practically null, the solution will not be REST compatible, and Spring will send a default HTTP error page back with an HTTP error code and additional error message, see later session.
+For the latter, workaround can be releasing the REST standard for exception handling which is not advised.
+
+=>Spring_Boot
+=>Spring_Boot_controller
+
+1. EXCEPTION HANDLER
+2. HANDLER EXCEPTION RESOLVER
+3. CONTROLLER ADVISE
+4. RESPONSE STATUS EXCEPTION
+5. THE DEFAULT ERROR PAGE
+
+=================================================================================
+1. EXCEPTION HANDLER
+=================================================================================
+The @ExceptionHandler is the oldest solution in Spring.
+It is a method declared in a controller class and handles a certain number of exceptions within that controller.
+In order to use only one exception to work with, use e.g. the RuntimeException class.
+This solution is compatible with REST when sends ResponseEntity back.
+Choosing String for ResponseEntity type can lead to model&view mode, choosing any class leads to object mode.
+
+This handler is not capable of handling exceptions globally within the application, not suited for general exception handling.
+Workaround is to create a base controller class with an exception handler method and all controllers are inherited from that superclass.
+The workaround is not suited for all development situations e.g. when the controller classes already are inherited from an other superclass.
+
+EXAMPLE FOR EXCEPTION HANDLER METHOD (NO-REST):
+@ExceptionHandler({IOException.class[, ...]})
+public void handleException() {...}
+
+EXAMPLE FOR EXCEPTION HANDLER METHOD (REST, OBJECT MODE):
+@ExceptionHandler({IOException.class[, ...]})
+public ResponseEntity<String> handleException(IOException ex) {
+    //prepare ResponseEntity responseEntity
+    return responseEntity;
+}
+
+=================================================================================
+2. HANDLER EXCEPTION RESOLVER
+=================================================================================
+The Handler Exception Resolver carries the core mechanism of the Exception Handler and is enabled by default in the DispatcherServlet from Spring 3.
+
+2.1. DEFAULT HANDLER EXCEPTION RESOLVER
+2.2. RESPONSE STATUS EXCEPTION RESOLVER
+2.3. CUSTOM HANDLER EXCEPTION RESOLVER
+
+2.1. DEFAULT HANDLER EXCEPTION RESOLVER
+---------------------------------------------------------------------------------
+The DefaultHandlerExceptionResolver is handling the standard HTTP error codes by itself.
+Not compatible with REST (sends back the error page).
+
+||HTTP code|Handled exceptions||
+||400 (Bad Request)|BindException, HttpMessageNotReadableException, MethodArgumentNotValidException, MissingServletRequestParameterException, MissingServletRequestPartException, TypeMismatchException||
+||404 (Not Found)|NoSuchRequestHandlingMethodException||
+||405 (Method Not Allowed)|HttpRequestMethodNotSupportedException||
+||406 (Not Acceptable)|HttpMediaTypeNotAcceptableException||
+||415 (Unsupported Media Type)|HttpMediaTypeNotSupportedException||
+||500 (Internal Server Error)|ConversionNotSupportedException, HttpMessageNotWritableException||
+
+2.2. RESPONSE STATUS EXCEPTION RESOLVER
+---------------------------------------------------------------------------------
+The ResponseStatusExceptionResolver is also enabled by default in the DispatcherServlet.
+Using the @ResponseStatus annotation on custom exceptions maps these exceptions to HTTP status codes.
+The @ResponseStatus annotation offers capability to use it locally (on controller level) and globally (on class level).
+
+In case of using the reason parameter or using a handling class, Spring will always call HttpServletResponse.sendError() which sends back the HTTP error page (no-REST).
+In case of not using the reason parameter for a handling method, REST compatibility can be reached when choosing returned value.
+In case there are subclasses inherited from the handler class, without marking those with their own @ResponseStatus annotation, Spring will use the annotation parameters of their superclass on them as well.
+
+EXAMPLE FOR RESPONSE STATUS EXCEPTION RESOLVER (METHOD, NO-REST):
+@ResponseStatus(value = HttpStatus.NOT_FOUND) //or:
+@ResponseStatus(HttpStatus.BAD_REQUEST, reason = reasonText)
+public void onIllegalArgumentException(RuntimeException exception) {...}
+
+EXAMPLE FOR RESPONSE STATUS EXCEPTION RESOLVER (METHOD, REST):
+@ResponseStatus(value = HttpStatus.NOT_FOUND) //or:
+@ResponseStatus(HttpStatus.BAD_REQUEST, reason = reasonText)
+public ResponseEntity<String> onIllegalArgumentException(RuntimeException exception) {
+    //prepare ResponseEntity responseEntity
+    return responseEntity;
+}
+
+EXAMPLE FOR RESPONSE STATUS EXCEPTION RESOLVER (CLASS, NO-REST):
+@ResponseStatus(value = HttpStatus.NOT_FOUND) //or:
+@ResponseStatus(code = HttpStatus.BAD_REQUEST, reason = reasonText)
+public class MyResourceNotFoundException extends RuntimeException {
+    public MyResourceNotFoundException() {
+        super();
+    }
+    public MyResourceNotFoundException(String message, Throwable cause) {
+        super(message, cause);
+    }
+    public MyResourceNotFoundException(String message) {
+        super(message);
+    }
+    public MyResourceNotFoundException(Throwable cause) {
+        super(cause);
+    }
+}
+
+2.3. CUSTOM HANDLER EXCEPTION RESOLVER
+---------------------------------------------------------------------------------
+Combination of the previous two.
+This version works via a handler class.
+This version lets having access to the request itself.
+Returns a model (ModelAndView object) which means this solution is REST compatible, model&view mode.
+
+EXAMPLE FOR CUSTOM HANDLER EXCEPTION RESOLVER:
+@Component
+public class RestResponseStatusExceptionResolver extends AbstractHandlerExceptionResolver {
+
+    @Override
+    protected ModelAndView doResolveException (HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
+        try {
+            if (ex instanceof IllegalArgumentException) {
+                return handleIllegalArgument((IllegalArgumentException) ex, response, handler);
+            }
+            //other conditions for other exceptions
+        }
+        catch (Exception handlerException) {
+            logger.warn("Handling of [" + ex.getClass().getName() + "] resulted in Exception", handlerException);
+        }
+        return null;
+    }
+
+    private ModelAndView handleIllegalArgument(IllegalArgumentException ex, HttpServletResponse response, Object handler) throws IOException {
+        response.sendError(HttpServletResponse.SC_CONFLICT);
+        String accept = request.getHeader(HttpHeaders.ACCEPT);
+        //process the Accept header sent by the frontend
+        return new ModelAndView(); //or create a new instance and then fill it with the body content
+    }
+}
+
+=================================================================================
+3. CONTROLLER ADVISE
+=================================================================================
+Since Spring 3.2 using of global @ExceptionHandler with the @ControllerAdvice annotation is possible.
+Utilizes the ResponseEntity (REST compatible). Choosing String for ResponseEntity type can lead to model&view mode, choosing any class leads to object mode.
+
+The exceptions declared with @ExceptionHandler must match to the exception used as the argument of the method.
+In case not, no compiler error will be raised but in runtime when the flow reaches the handler, IllegalStateException will be raised.
+
+EXAMPLE FOR CONTROLLER ADVISE:
+@ControllerAdvice
+public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
+
+    @ExceptionHandler(value = {IllegalArgumentException.class, IllegalStateException.class}) //specify any exceptions here to be handled with this class globally
+    protected ResponseEntity<Object> handleConflict(RuntimeException ex, WebRequest request) {
+        //if needed, create new HttpHeaders() and add any header to it before returning
+        String bodyOfResponse = "This should be application specific";
+        return handleExceptionInternal(ex, bodyOfResponse, new HttpHeaders(), HttpStatus.CONFLICT, request);
+    }
+}
+
+=================================================================================
+4. RESPONSE STATUS EXCEPTION
+=================================================================================
+Since Spring 5.
+The ResponseStatusException can be used with the specific controller method.
+Not usable for global exception handling. Also, can lead to code duplication in different controller methods.
+Sends back the HTTP error page (no-REST).
+
+EXAMPLE FOR RESPONSE STATUS EXCEPTION:
+//declare MyResourceNotFoundException class
+@GetMapping(value = "/{id}")
+public Foo findById(@PathVariable("id") Long id, HttpServletResponse response) {
+    try {
+        Foo resourceById = RestPreconditions.checkFound(service.findOne(id));
+        eventPublisher.publishEvent(new SingleResourceRetrievedEvent(this, response));
+        return resourceById;
+     }
+    catch (MyResourceNotFoundException exc) {
+         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Foo Not Found", exc);
+    }
+}
+
+=================================================================================
+5. THE DEFAULT ERROR PAGE
+=================================================================================
+1. SPRING ERROR PAGE
+2. SPRING.BOOT ERROR PAGE
+
+1. SPRING ERROR PAGE
+---------------------------------------------------------------------------------
+When the status of the response is set to an error status code and the body of the response is empty, Servlet containers commonly render an HTML formatted error page.
+To customize the default error page of the container, you can declare an <error-page> element in web.xml. Up until Servlet 3, that element had to be mapped to a specific status code or exception type. Starting with Servlet 3 an error page does not need to be mapped, which effectively means the specified location customizes the default Servlet container error page.
+The controller class needs an endpoint which handles the error page. Following a universal purpose, this method should be organized to a separate controller class.
+The handler method is REST compatible.
+
+The folder to keep web.xml is:
+    src/main/webapp/WEB-INF
+
+EXAMPLE FOR CUSTOMIZING WEB.XML:
+<error-page>
+    <location>/error</location>
+</error-page>
+
+EXAMPLE FOR A CONTROLLER HANDLING THE CUSTOM ERROR PAGE:
+@Controller
+public class ErrorController {
+
+    @RequestMapping(value="/error", produces="application/json")
+    @ResponseBody
+    public Map<String, Object> handle(HttpServletRequest request) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("status", request.getAttribute("javax.servlet.error.status_code"));
+        map.put("reason", request.getAttribute("javax.servlet.error.message"));
+        return map;
+    }
+}
+
+2. SPRING.BOOT ERROR PAGE
+---------------------------------------------------------------------------------
+Spring.Boot provides a fallback page called Whitelabel Error Page for HTML requests.
+For RESTful, non-HTML requests it provides a JSON answer.
+
+EXAMPLE FOR JSON ERROR ANSWER:
+{
+    "timestamp": "2019-01-17T16:12:45.977+0000",
+    "status": 500,
+    "error": "Internal Server Error",
+    "message": "Error processing the request!",
+    "path": "/my-endpoint-with-exceptions"
+}
+
+In order to customize the error page, should create ErrorAttributes and ErrorController beans, and inject these beans into whatever controller we want to.
+
+EXAMPLE FOR ERRORATTRIBUTES BEAN:
+@Component
+public class MyCustomErrorAttributes extends DefaultErrorAttributes {
+
+    @Override
+    public Map<String, Object> getErrorAttributes(WebRequest webRequest, ErrorAttributeOptions options) {
+        Map<String, Object> errorAttributes = super.getErrorAttributes(webRequest, options);
+        errorAttributes
+                .put("locale", webRequest.getLocale()
+                .toString());
+        errorAttributes.remove("error");
+        //...
+        return errorAttributes;
+    }
+}
+
+EXAMPLE FOR ERRORCONTROLLER BEAN:
+@Component
+public class MyErrorController extends BasicErrorController {
+
+    public MyErrorController(ErrorAttributes errorAttributes, ServerProperties serverProperties) {
+        super(errorAttributes, serverProperties.getError());
+    }
+
+    @RequestMapping(produces = MediaType.APPLICATION_XML_VALUE)
+    public ResponseEntity<Map<String, Object>> xmlError(HttpServletRequest request) {
+    //...
+    }
+}

@@ -1,0 +1,28 @@
+=================================================================================
+SORTEDMAP
+=================================================================================
+Extends the Map interface.
+Extending interface is NavigableMap.
+Implementing class through NavigableMap is TreeMap.
+It is an interface, must use constructor of TreeMap in order to reach its functionalities.
+
+Creating instance by using a constructor of its subclass:
+import java.util.SortedMap;
+import java.util.TreeMap;
+...
+SortedMap<keyType, valueType> sm = new TreeMap<>();
+
+All methods of Map are available.
+Specific methods are below.
+
+||Method|Description||
+||Comparator()|returns a Comparator which is used to order the keys||
+||firstKey()|returns the 1st key||
+||lastKey()|returns the last key||
+||headMap(key)|returns all entries with keys less than passed key||
+||tailMap(key)|returns all entries with keys greater than passed key||
+||subMap(key1, key2)|returns all entries with keys within [key1, key2) interval||
+
+=>Map
+=>TreeMap
+=>NavigableMap

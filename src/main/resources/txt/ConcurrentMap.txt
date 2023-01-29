@@ -1,0 +1,26 @@
+=================================================================================
+CONCURRENTMAP
+=================================================================================
+Interface which extends the Map interface.
+Implemented by ConcurrentHashMap class.
+Known as a synchronized map, thread-safe, multiple threads can access it at the same time.
+It is an interface, must use constructor of ConcurrentHashMap in order to reach its functionalities.
+
+Creating instance by using a constructor of its subclass:
+import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.ConcurrentHashMap;
+...
+ConcurrentMap<keyType, valueType> cm = new ConcurrentHashMap<>();
+
+Includes all methods of Map interface. Specific methods are below.
+
+||Method|Description||
+||putIfAbsent()|Inserts the specified key-value pair only if the key is absent||
+||compute()|computes an entry for the specified key and its previously mapped value.||
+||computeIfAbsent()|computes a value using the specified function for the specified key if the key is absent||
+||computeIfPresent()|computes a value using the specified function for the specified key if the key is already in the map||
+||forEach()|returns an Iterator of the entries||
+||merge()|merges the given value to with the old value in the map at the given key, if key is absent, equals with put||
+
+=>Map
+=>ConcurrentHashMap

@@ -1,0 +1,50 @@
+=================================================================================
+BUFFEREDREADER
+=================================================================================
+Extends Reader.
+Its purpose is to provide memory buffer with character stream reading for having less file accessing and more speed.
+Internal buffer is 8192 characters by default.
+During operations, pre-reads the buffer from the external file, actual reading happens from buffer.
+The BufferedReader implements the AutoClosable interface, the try-with-resources statement can be used to ensure proper closing.
+
+Constructors:
+    a. (FileReader fileReader)
+    b. (FileReader fileReader, int bufferSize)
+
+||Method|Description||
+||ready()|checks if the reader is ready to be read||
+||read()|reads a character from the internal buffer||
+||read(char[] array)|reads the characters from the internal buffer and stores in the given array||
+||read(char[] array, int startPosition, int length)|reads length number of characters from the internal buffer and stores in the given array from startPosition||
+||mark()|marks the position in the stream up to which data has been read||
+||reset()|returns the control to the point in the stream where the mark is set||
+||skip()|discards the specified number of characters from the buffer||
+
+EXAMPLE FOR USAGE:
+import java.io.FileReader;
+import java.io.BufferedReader;
+...
+char[] charArray = ...; //prepare the array into which the data will be read
+try {
+    FileReader fileReader = new FileReader(fileName);
+    BufferedReader bufferedReader = new BufferedReader(fileReader); //immediately fills the buffer as pre-reads file
+    r.read(charArray);
+    bufferedReader.close(); //release FileReader
+    fileReader.close(); //release file
+}
+catch (Exception e) {...}
+
+EXAMPLE FOR USAGE WITH TRY-WITH-RESOURCES:
+import java.io.FileReader;
+import java.io.BufferedReader;
+...
+char[] charArray = ...; //prepare the array into which the data will be read
+try (FileReader fileReader = new FileReader(fileName); BufferedReader bufferedReader = new BufferedReader(fileReader)) {
+    r.read(charArray);
+}
+catch (Exception e) {...}
+
+=>Stream
+=>Reader
+=>FileReader
+=>Statements;15. TRY-WITH-RESOURCES STATEMENT

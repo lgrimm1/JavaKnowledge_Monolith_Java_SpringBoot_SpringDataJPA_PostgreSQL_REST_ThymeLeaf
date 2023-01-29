@@ -1,0 +1,36 @@
+=================================================================================
+WEAKHASHMAP
+=================================================================================
+Implements Map.
+Keys of the WeakHashMap are WeakReference type. That means if a key is not used in the program anymore, the Garbage Collector (GC) will collect it.
+A not-used-key means that the map received a reference as a key (e.g. a String) and later that reference was deleted.
+
+Methods are identical with methods of HashMap.
+So are the constructor signatures.
+
+EXAMPLE FOR RELEASING A KEY:
+import java.util.WeakHashMap;
+...
+WeakHashMap<keyType, valueType> whm = new WeakHashMap<>();
+keyType key = ...;
+valueType value = ...;
+whm.put(key, value); //in case keyType is a class, the map receives a reference as a key
+...
+key = null; //releasing the reference, means the key in the map points to null as well, so the key is not used anymore
+System.gc(); //somewhere the GC runs, or like here, forced to run
+//from this point on, the corresponding key-value pair is deleted from the map
+
+EXAMPLE FOR CREATING A NEW WEAKHASHMAP FROM AN OTHER:
+import java.util.WeakHashMap;
+import java.util.HashMap;
+...
+HashMap<keyType, valueType> hm = new HashMap<>();
+WeakHashMap<keyType, valueType> whm = new WeakHashMap<>(hm);
+
+Differences between HashMap and WeakHashMap:
+    a. HashMap keys are strong reference type, WeakHashMap keys are weak reference type
+    b. by the GC, released (not used) keys will be left in HashMap while will be freed in WeakHashMap
+
+=>Map
+=>GarbageCollector
+=>HashMap

@@ -1,0 +1,79 @@
+=================================================================================
+RANDOM NUMBERS
+=================================================================================
+1. ONE RANDOM NUMBER
+1. PSEUDO-RANDOM NUMBERS
+3. SECURE RANDOM NUMBERS
+
+=================================================================================
+1. ONE RANDOM NUMBER
+=================================================================================
+The random() method of the Math class provides a number generated pseudo-randomly.
+Follows a pre-programmed algorithm based upon a seed (root) number which is within Java.
+With is Java stays platform independent (does not use resource from outside Java like system clock) but the number is not true random. However, for normal purposes, pseudo-random number are fine.
+The generator is within the Math class.
+It generates a double number in the [0, 1) interval.
+
+EXAMPLES FOR RANDOM NUMBERS:
+int m = ..., n = ...;
+double d = Math.random(); //floating number in [0, 1)
+d = Math.random() * n; //floating number in [0, n)
+d = Math.random() * n + m; //floating number in [m, m+n)
+int i = (int) (Math.random() * n); //whole number in [0, n)
+i = (int) (Math.random() * (n + 1)); //whole number in [0, n]
+i = (int) (Math.random() * n) + m; //whole number in [m, m+n)
+i = (int) (Math.random() * (n + 1)) + m; //whole number in [m, m+n]
+
+=================================================================================
+2. PSEUDO-RANDOM NUMBERS
+=================================================================================
+The Random class is a random number generator which generates a stream upon declaration, containing pseudo-random series of numbers.
+That is, the numbers follow a well-designed pattern to be look like random, uses a 48-bit seed, and generates maximum 32-bit numbers.
+The reason for using a well-defined mathematical pattern is, it is not needed to use an independent and always changing seed (root number) coming from outside the Java (e.g. system time).
+With this, it is possible to re-generate the same series of numbers and recreate the examined environment in case the second Random uses the same seed and declared in the same method.
+By using its methods, it is possible to export the whole stream from double, float, long, int and byte types.
+Asking numbers one-by-one, use methods like nextByte(), nextFloat().
+In order to set the seed, use the setSeed(long seed) method.
+
+EXAMPLES FOR PSEUDO-RANDOM NUMBERS:
+import java.util.Random;
+...
+Random rand = new Random(); //create the stream of numbers; or:
+Random rand = new Random(long seed); //create the stream of numbers using the seed
+int m = ..., n = ...;
+int i = rand.nextInt(1); //always 0
+i = rand.nextInt(n); //whole number in [0, n) = [0, n-1]
+i = rand.nextInt(n) + 1; //whole number in [1, n]
+i = rand.nextInt(n) + m; //whole number in [m, m+n)=[m, m+n-1]
+double d = rand.nextDouble(1); //floating number in [0, 1)
+d = rand.nextDouble(n); //floating number in [0, n)
+d = rand.nextDouble(n) + 1; //floating number in [1, n+1)
+d = rand.nextDouble(n) + m; //floating number in [m, m+n)
+
+=================================================================================
+3. SECURE RANDOM NUMBERS
+=================================================================================
+The SecurityRandom class provides a cryptographically strong random number generator.
+That said, generates true random numbers which means non-deterministic output.
+
+EXAMPLE 1 FOR TRUE RANDOM NUMBERS:
+import java.security.SecureRandom;
+...
+SecureRandom random = new SecureRandom(); //no seed numbers
+byte[] byteArray = new byte[numberOfNumbers];
+random.nextBytes(byteArray); //fill the array with random numbers; forces the random to generate new seeds before it
+
+EXAMPLE 2 FOR TRUE RANDOM NUMBERS:
+import java.security.SecureRandom;
+...
+byte[] seedArray = random.generateSeed(numberOfSeeds); //generate new series of seed numbers
+SecureRandom random = new SecureRandom(seedArray); //use given seed
+byte[] byteArray = new byte[numberOfNumbers];
+random.nextBytes(byteArray); //fill the array with random numbers
+
+Other methods are below.
+
+||Method|Description||
+||setSeed(byte[] seedArray)|sets seed numbers||
+||setSeed(long seed)|sets seed from the 8th bits of the given long number||
+||getSeed(int numberOfBytes)|returns the used seed numbers as a byte[numberOfBytes]

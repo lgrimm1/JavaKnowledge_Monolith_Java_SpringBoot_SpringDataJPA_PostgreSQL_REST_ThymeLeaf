@@ -1,0 +1,228 @@
+=================================================================================
+STRING
+=================================================================================
+1. STRING OBJECT
+2. COMPARING STRINGS
+3. PARSE FROM STRING, CONVERT TO STRING
+4. STRING FORMATTING
+5. STRING-CHAR[]-ARRAYLIST<CHARACTER> CONVERSIONS
+6. STRING METHODS
+
+=>Wrapper_classes
+=>Type_casting_and_conversion;3. TYPE CONVERSION
+=>Equality
+=>Standard_input_and_output
+=>PrintStream
+=>StringBuilder
+=>PrintWriter
+
+=================================================================================
+1. STRING OBJECT
+=================================================================================
+A String object is immutable, contains a fix-ordered series of characters or String literal for short.
+The referenced literal can not be changed but new literal can be assigned to it.
+A String object is an instance of the String wrapper class.
+In case a String object is declared without giving a value to it, its constructor will render an empty String ("") to it. Therefore, the String will not point to null unless we give that value to it explicitly.
+
+A String can be concatenated with another using simple adding operators:
+    String s1 = ...;
+    String s2 = ...;
+	String s = s1 + s2;
+	s += s1; //s = s + s1;
+
+In case concatenation is placed inside an iteration and/or processed many times, use StringBuilder for the operations then save the result into a String.
+
+=================================================================================
+2. COMPARING STRINGS
+=================================================================================
+String s1 = ...;
+String s2 = ...;
+char[] ca = new ca[]{...};
+ArrayList<Character> cal = ArrayList<>();
+...
+boolean b = s1.equals(s2);
+b = s1.equalsIgnoreCase(s2);
+int pos = s1.indexOf(s2); //pos > -1: contents of s2 is within s1
+b = s1.ContentEquals(s2);
+b = s1.ContentEquals(ca);
+b = s1.ContentEquals(cal);
+
+=================================================================================
+3. PARSE FROM STRING, CONVERT TO STRING
+=================================================================================
+String s = ...;
+int pos = ...;
+byte a = Byte.parseByte(s);
+short b = Short.parseShort(s);
+int c = Integer.parseInteger(s);
+long d = Long.parseLong(s);
+float e = Float.parseFloat(s);
+double f = Double.parseDouble(s);
+boolean g = Boolean.parseBoolean(s);
+char h = s.charAt(pos);
+byte[] ba = s.getBytes(); //handles ASCII and Unicode as well
+
+Converting to String:
+	a. by automated literal conversion primitive types can be converted (e.g. String s = "" + 12 + 'c' + -65.12 + true -> "12c-65.12true", slow for iteration or many tags)
+	b. by using StringBuilder (e.g. in iteration it is the fastest)
+	c. by using the .toString() method of a class (e.g. String s = Character.toString('c'), fast and obvious)
+	d. by using String.valueOf() (e.g. String s = String.valueOf(-32.45), can be used for char[] as well, fast)
+	e. by using constructor (e.g. String s = new String(variable), can be used for byte[], int[] (following ASCII and Unicode) and char[] as well)
+	f. by using String formatting (slower process for many data e.g. hexadecimal conversion of byte[] with higher length)
+
+=================================================================================
+4. STRING FORMATTING
+=================================================================================
+Rules are equal with rules used at formatted standard output or console (.printf()).
+Also can be used with PrintStreams (System.out is a PrintStream).
+
+String text = ...;
+String fs = String.format(formatString, text);
+System.out.println(text); //shows original text
+System.out.println(fs); //shows formatted text
+
+The formatting rules as reference will be merged with fs String, any later use will carry this information.
+More formatting references can be declared for an original String.
+In case an object contains more Strings (e.g. ArrayList<String>, String[]), accessing String.format to its elements is possible as well.
+
+formatString:
+"[pre-text]%[flags][width][.precision]conversionCharacter[post-text]"
+
+Flags:
+[-][+][0][,][ ]
+They are for numbers only except the - character.
+Follow the order of options above at writing the flags into formatString.
+	-: left justified (default: right)
+	+: show + sign for positive numbers
+	0: zero-padded (fill the rest of width with zeros)
+	,:	show thousand separator (the shown character depends on locale settings)
+	white space: minus sign for negative, white space for positive numbers
+Use + or white space or none but not both.
+
+Width:
+A minimum number which shows on how many characters should the value be drawn.
+Include the white space, thousand separators, decimal sign, precision as well.
+
+Precision:
+How many decimal digits should be shown within the width.
+The decimal sign (a character depends on locale settings) and the number of precision digits will decrease the whole width.
+In case less decimal digits than the available precision, will fill the rest of digits with zeros.
+In case more decimal digits the number will be rounded.
+This parameter will be used only with floating-point numbers.
+
+conversionCharacter:
+d|f|c|C|s|S|h|X[\n|%n]
+	d: whole number (byte..long)
+	f: foating-point number (float, double)
+	c: character, not case-sensitive
+	C: uppercase character
+	s: text (String)
+	S: uppercase text (String)
+	h: hashcode
+	X: convert the number input to hexadecimal value (2 characters per byte, it is slower process)
+	\n, %n: new line character, platform-dependent
+
+EXAMPLES:
+"Total is: $%,.2f\n" ->
+Total is:    103.40\n
+Total is:  3,212.12\n
+Total is: -3,564.99\n
+"%02X" ->
+04
+6F
+7A
+
+=================================================================================
+5. STRING-CHAR[]-ARRAYLIST<CHARACTER> CONVERSIONS
+=================================================================================
+5.1. STRING TO CHAR[]
+5.2. CHAR[] TO STRING
+5.3. CHAR[] TO ARRAYLIST<CHARACTER>
+5.4. ARRAYLIST<CHARACTER> TO CHAR[]
+5.5. STRING TO ARRAYLIST<CHARACTER>
+5.6. ARRAYLIST<CHARACTER> TO STRING
+
+5.1. STRING TO CHAR[]
+---------------------------------------------------------------------------------
+String s = ...;
+char[] ca = s.toCharArray();
+
+5.2. CHAR[] TO STRING
+---------------------------------------------------------------------------------
+char[] charArray = new char[]{...};
+String s1 = new String(charArray);
+String s2 = String.valueOf(charArray);
+StringBuilder sb = new StringBuilder(charArray.length);
+for (char c : charArray) {
+	sb.append(c);
+}
+String s3 = sb.toString();
+
+5.3. CHAR[] TO ARRAYLIST<CHARACTER>
+---------------------------------------------------------------------------------
+char[] ca = new char[]{...};
+ArrayList<Character> cal = new ArrayList<>();
+for (char c : ca) {
+	cal.add(c);
+}
+
+5.4. ARRAYLIST<CHARACTER> TO CHAR[]
+---------------------------------------------------------------------------------
+ArrayList<Character> = new ArrayList<>();
+...
+char[] ca = new char[cal.size()];
+for (int index = 0, length = cal.size(); index < length; ++index) {
+	ca[index] = cal.get(index);
+}
+
+5.5. STRING TO ARRAYLIST<CHARACTER>
+---------------------------------------------------------------------------------
+String s = ...;
+ArrayList<Character> cal1 = new ArrayList<>();
+for (int index = 0, length = s.length(); index < length; ++index) {
+	cal1.add(s.charAt(index));
+}
+ArrayList<Character> cal2 = new ArrayList<>();
+for (char c : s) {
+	cal2.add(c);
+}
+
+5.6. ARRAYLIST<CHARACTER> TO STRING
+---------------------------------------------------------------------------------
+StringBuilder sb = new StringBuilder(cal.size());
+for (Character c : cal) {
+	sb.append(c);
+}
+String s = sb.toString();
+
+=================================================================================
+6. STRING METHODS
+=================================================================================
+String s = ...;
+s = s.trim(); //deletes trailing white spaces and empty lines from beginning and ending of the String
+s = s.toUpperCase(); //transforms all characters into their upcase forms following UTF-8.
+s = s.toLowerCase(); //transforms all characters into their lowcase forms following UTF-8.
+String toFind = ...;
+int pos = s.indexOf(toFind); //-1: no such part, >-1: starting position of toFind at the 1st appearance
+pos = s.lastIndexOf(toFind); //-1: no such part, >-1: starting position of toFind at the last appearance
+boolean b = s.contains(toFind); //true if toFind exists
+b = s.startsWith(toFind); //true if starts with toFind
+b = s.endsWith(toFind); //true if ends with toFind
+b = s.isEmpty(); //true if s.equals("")
+int compResult = s.compareTo(toFind); //-1: s < toFind, 0: equals, +1: s > toFind
+String orig = ...;
+String new = ...;
+String s2 = s.replace(orig, new); //replaces all occurrences of orig to new from start to end; that said, if s is "aaa", orig is "aa" and new is "b", s2 will be "ba"
+s2 = s.replaceFirst(orig, new); //replaces the 1st occurrence
+s2 = s.replaceLast(orig, new); //replaces the last occurrence
+int startIndex, endIndex = ...;
+s2 = s.substring(startIndex, endIndex); //copies a sub-String with startIndex as starting position and endIndex as (ending position - 1); that said, the effective index interval will be [startIndex, endIndex)
+s2 = s.substring(startIndex); //copies a sub-String with startIndex as starting position; that said, the effective index interval will be [startIndex, s.length())
+char[] ca = new ca[]{...};
+int count = ...;
+s2 = s.copyValueOf(ca, startIndex, count); //the result will be an extraction of ca with index interval of [startIndex, startIndex + count - 1], converted to String
+ca = s.toCharArray(); //converts the String to the char[]
+byte[] ba = s.getBytes(); //return the bytes of the String
+byte[] ba = s.getBytes(Charset cs); //return the bytes of the String, following the Charset
+byte[] ba = s.getBytes(String charsetName); //return the bytes of the String, following the Charset from charsetName
+s2 = String.join(s, s2, ...); //adds up the Strings

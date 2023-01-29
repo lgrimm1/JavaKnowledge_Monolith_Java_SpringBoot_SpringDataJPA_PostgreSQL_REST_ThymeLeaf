@@ -1,0 +1,35 @@
+=================================================================================
+FILEINPUTSTREAM
+=================================================================================
+Extends the InputStream abstract class.
+Reads byte data from files.
+All methods of InputStream are implemented and available. Specific methods are below.
+
+||Method|Description||
+||read(byte[] byteArray, int startPosition, int length)|reads length number of bytes into byteArray from startPosition in the array||
+||finalize()|ensures the calling of close()||
+||getChannel()|returns the object of FileChannel associated with the input stream||
+||getFD()|returns the file descriptor associated with the input stream||
+
+EXAMPLE FOR USAGE:
+import java.io.FileInputStream;
+import java.io.File;
+...
+try {
+    FileInputStream fis = new FileInputStream(string fileName); //or:
+    FileInputStream fis = new FileInputStream(File file);
+    //reading one-by-one
+    while (fis.available() > 0) {
+        //process fis.read()
+    }
+    //or reading all-at-once
+    byte[] byteArray = new byte[fis.available()];
+    fis.read(byteArray);
+    //processing byteArray or converting to String before of that
+    fis.close();
+}
+catch (Exception e) {...}
+
+=>Stream
+=>InputStream
+=>ObjectInputStream

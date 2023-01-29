@@ -1,0 +1,52 @@
+=================================================================================
+OUTPUTSTREAM
+=================================================================================
+Abstract class for handling output streams of byte.
+Extending subclasses are FileOutputStream, ByteArrayOutputStream, ObjectOutputStream, BufferedOutputStream and PrintStream.
+Due to being an abstract class, for declaration use constructor of a subclass.
+The stream must be closed after processing in order to release the source.
+After closing the stream, any method will raise exception.
+The OutputStream implements the AutoClosable interface, the try-with-resources statement can be used to ensure proper closing.
+The concept behind the output streams is similar to the StringBuilder (appending several sequences of data) but in this case, it works with bytes.
+
+||Method|Description||
+||write()|writes the given byte||
+||write(byte[] byteArray)|writes bytes from the given array||
+||flush()|forces to write all data set to write to the destination||
+||close()|closes the stream||
+
+EXAMPLE FOR USAGE:
+import java.io.OutputStream;
+import java.io.FileOutputStream;
+...
+String string = ...; //the characters to write if there are
+byte[] byteArray = string.getBytes(); //prepare the byte array from the String, or:
+byte[] byteArray = new byte[]{...}; //prepare the byte array
+try {
+    OutputStream outputStream = new FileOutputStream(fileName); //attach the destination
+    outputStream.write(byteArray); //write to the destination
+    outputStream.close(); //close the stream (release the source)
+}
+catch (Exception e) {...} //in case the destination was not accessible
+
+EXAMPLE FOR USAGE WITH TRY-WITH-RESOURCES:
+import java.io.OutputStream;
+import java.io.FileOutputStream;
+...
+String string = ...; //the characters to write if there are
+byte[] byteArray = string.getBytes(); //prepare the byte array from the String, or:
+byte[] byteArray = new byte[]{...}; //prepare the byte array
+try (OutputStream outputStream = new FileOutputStream(fileName)) {
+    outputStream.write(byteArray); //write to the destination
+}
+catch (Exception e) {...} //in case the destination was not accessible
+
+=>Stream
+=>FileOutputStream
+=>ByteArrayOutputStream
+=>ObjectOutputStream
+=>StringBuilder
+=>BufferedOutputStream
+=>PrintStream
+=>File_operations
+=>Statements;15. TRY-WITH-RESOURCES STATEMENT

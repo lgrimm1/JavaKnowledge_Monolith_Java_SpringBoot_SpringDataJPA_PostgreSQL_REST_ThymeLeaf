@@ -1,0 +1,272 @@
+=================================================================================
+ZONEDDATETIME
+=================================================================================
+
+1. ZONEDATETIME AND ITS COMPONENTS
+2. ZONEID COMPONENT
+3. LOCALDATE, LOCALTIME, LOCALDATETIME, FORMATTING
+4. INITIALIZATION
+5. MANAGEMENT OF PARAMETERS
+6. CALCULATIONS
+7. GETTING PARAMETERS
+
+=>Locale
+
+=================================================================================
+1. ZONEDATETIME AND ITS COMPONENTS
+=================================================================================
+The ZonedDateTime is a stable representation for timezones, dates and times. Its instance contains a moment in a specific timezone. In order to synchronize with system time, need to set time in it regularly.
+There are other representations for datetime in Java. Communication with them is possible through exporting-importing Instant object.
+The ZonedDateTime contains LocalDateTime, ZoneId and the resolved ZoneOffset.
+The ZoneId contains all the rules of the specific time zone.
+The ZoneOffset is used when only time shift is declared but without other time zone rules. In case the ZoneId is defined, this is handled automatically.
+The LocalDateTime is a datetime stamp without zone information, contains LocalDate and LocalTime.
+LocalDate is a date stamp.
+LocalTime is a time stamp. Precision is nanosecond.
+All components and the ZonedDateTime are immutable and thread-safe.
+For setting new time zone or datetime parameters, due to immutability, creating absolutely new instance or overwrite the original is needed. If needed, use data of the previous object. For changing all or many parameters, create absolutely new instance.
+From converting local datetime to an Instant (zoned datetime) is complicated since time zone offsets are not defined by their geometrical position on Earth. Their can be gaps and overlaps. The conversion tries to solve any such problems, by using the LocalDateTime and the ZoneOffset components.
+ZonedDateTime has no explicit constructors but needs initialization before use.
+In order to use it for only local time mode, initialize it with local time zone and do not modify the zone later.
+
+The Date class of Java can handle a date from 1970 (1970.01.01 equals with zero number), that is, not proper for handling and managing dates universally.
+The Calendar class of Java is not stable for some operations, e.g. for day-of-week, first-day-of-year, last-day-of-year calculates wrong data.
+The GregorianCalendar is an extending class of Calendar, follows the Gregorian calendar system. Theoretically, contains all data according to the calendar system. Still, carries the problems of Calendar.
+
+=================================================================================
+2. ZONEID COMPONENT
+=================================================================================
+Every time zone has an inner identifier. Such ID can be used with ZonedDateTime methods. In order to produce it, use the ZoneId class.
+For methods, passed time zone Strings can be:
+    a. offset from Greenwich Mean Time (e.g. GMT+01:30); will not use Daylight Saving Time (DST) offset
+    b. offset from Universal Coordinated Time (e.g. UTM+01:30); will not use DST offset
+    c. offset from Universal Time (e.g. UT+01:30); will not use DST offset
+    d. regional time definition in continent/city format (e.g. America/Los_Angeles); will use DST offset
+    e. short mosaic letters (e.g. CET) of time zone; due to having the same mosaic words for different zones on Earth, use it only when the ID is unique; will use DST offset
+    f. Z for the absolute zeroth time zone; will not use DST offset
+    e. in case wrong time zone is given, exception raises
+
+=================================================================================
+3. LOCALDATE, LOCALTIME, LOCALDATETIME, FORMATTING
+=================================================================================
+For checking if the given year-month-day numbers form a legal date, use the data with zeroed time numbers with a ZonedDateTime constructor: no exception means legality.
+For leap year check, use new GregorianCalendar().isLeapYear(int year) formula.
+DateTimeFormatter is used to create datetime pattern for converting back and forth to String. It is immutable and thread-safe.
+All 3 components have toString() methods which enables them to e.g. send them to console output.
+All 3 components have now() methods for accessing current system clock data and parse() methods for composing date, time or datetime from given text (for this, a DateTimeFormatter is used as parsing pattern of given data).
+
+EXAMPLE FOR GETTING CURRENT SYSTEM CLOCK DATETIME AND FORMATTING:
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+...
+//get current data
+LocalDate currentD = LocalDate.now();
+LocalTime currentT = LocalTime.now();
+LocalDateTime currentDT = LocalDateTime.now();
+//String format with pattern
+DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
+String formattedLocalDateTime = currentDT.format(formatter);
+//String format with constants
+DateTimeFormatter formatter2 = DateTimeFormatter.BASIC_ISO_DATE; //or: ISO_LOCAL_DATE, ISO_LOCAL_TIME etc. for yyyy-mm-dd, HH:mm:ss etc. respectively
+formattedLocalDateTime = currentDT.format(formatter2); //yyyyMMdd
+//String format with localized style
+DateTimeFormatter formatter3 = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM); //or: FULL, LONG, SHORT
+formattedLocalDateTime = currentDT.format(formatter3);
+
+||Pattern component|Meaning||
+||G|era as text||
+||y|year of era||
+||D|day of year||
+||M|month as number||
+||L|month as text||
+||d|day of month||
+||Q|quarter of year as number||
+||q|quarter of year as text||
+||E|day of week as text||
+||e|localized day of week as number||
+||C|localized day of week as text||
+||F|week of month||
+||a|am/pm||
+||h|hour in am/pm system 1-12||
+||K|hour in am/pm system 0-11||
+||k|hour in am/pm system 1-24||
+||H|hour 0-23||
+||m|minute||
+||s|second||
+||S|fraction of second 0-999||
+||A|millisecond of day||
+||n|nano of second||
+||N|nano of day||
+||V|timezone ID||
+||z|timezone name||
+||O|localized offset||
+||X|zone offset, Z for zero||
+||x|zone offset, without zero minutes||
+||Z|zone offset, with zero minutes||
+
+=================================================================================
+4. INITIALIZATION
+=================================================================================
+EXAMPLE FOR INITIALIZATION OF LOCAL TIME ZONE AND LOCAL DATETIME:
+import java.time.ZonedDateTime;
+...
+ZonedDateTime zdt1 = ZonedDateTime.now();
+
+EXAMPLE FOR INITIALIZATION OF A TIME ZONE AND LOCAL DATETIME:
+import java.time.ZonedDateTime;
+import java.time.ZoneId;
+...
+//if time zone is illegal use local
+String timezone = ...;
+ZonedDateTime zdt2;
+try {
+	zdt2 = ZonedDateTime.now(ZoneId.of(timezone));
+}
+catch (Exception e) {
+	zdt2 = ZonedDateTime.now();
+}
+
+EXAMPLE FOR INITIALIZATION OF A LOCAL TIME ZONE AND A LOCAL DATETIME:
+import java.time.ZonedDateTime;
+import java.time.ZoneId;
+...
+//if time zone fails use local, if time stamp fails use local
+String timezone = ...;
+int year = ..., month = ..., day = ..., hour24 = ..., minute = ..., second = ..., nanosecond = ...;
+ZoneId zi;
+ZonedDateTime zdt3;
+try {
+	zi = ZoneId.of(String timezone);
+	try {
+		zdt3 = ZonedDateTime.of(year, month, day, hour24, minute, second, nanosecond, zi);
+	}
+	catch (Exception e) {
+		zdt3 = ZonedDateTime.now(zi);
+	}
+}
+catch (Exception e) {
+	zdt3 = ZonedDateTime.now();
+	zi = zdt3.getZone();
+	try {
+		zdt3 = ZonedDateTime.of(year, month, day, hour24, minute, second, nanosecond, zi);
+	}
+	catch (Exception e) {
+		zdt3 = ZonedDateTime.now(zi);
+	}
+}
+
+=================================================================================
+5. MANAGEMENT OF PARAMETERS
+=================================================================================
+EXAMPLE FOR CHANGING TIME ZONE:
+import java.time.ZonedDateTime;
+import java.time.ZoneId;
+...
+ZonedDateTime zdt = ...;
+String newTimezone = ...;
+zdt = zdt.withZoneSameInstant(ZoneId.of(newTimezone)); //exception if fails
+
+EXAMPLE FOR CHANGING DATETIME PARAMETERS:
+import java.time.ZonedDateTime;
+import java.time.ZoneId;
+...
+ZonedDateTime zdt = ...;
+int year = ..., month = ..., day = ..., hour24 = ..., minute = ..., second = ..., nanosecond = ..., dayofyear;
+try {
+    zdt = zdt.withYear(year);
+    zdt = zdt.withMonth(month);
+    zdt = zdt.withDayOfMonth(day);
+    zdt = zdt.withHour(hour24);
+    zdt = zdt.withMinute(minute);
+    zdt = zdt.withSecond(second);
+    zdt = zdt.withNano(nanosecond);
+    zdt = zdt.withDayOfYear(dayofyear);
+}
+catch (Exception e) {
+    //failed
+}
+
+EXAMPLE FOR RELATIVELY CHANGING DATE AND TIME:
+import java.time.ZonedDateTime;
+...
+ZonedDateTime zdt = ...;
+try {
+    zdt = zdt.plusYears(int signedOffset);
+    zdt = zdt.plusMonths(int signedOffset);
+    zdt = zdt.plusWeeks(int signedOffset);
+    zdt = zdt.plusDays(int signedOffset);
+    zdt = zdt.plusHours(int signedOffset);
+    zdt = zdt.plusMinutes(int signedOffset);
+    zdt = zdt.plusSeconds(int signedOffset);
+    zdt = zdt.plusNanos(int signedOffset);
+}
+catch (Exception e) {
+    //failed
+}
+
+=================================================================================
+6. CALCULATIONS
+=================================================================================
+The ZonedDateTime is used together with the Duration class for calculating differences between two ZonedDateTime where if the result is positive, the 2nd (the passed) is greater.
+The TimeUnit is used for converting between time units.
+
+EXAMPLE FOR DURATION CALCULATIONS:
+import java.time.Duration;
+import java.time.ZonedDateTime;
+...
+ZonedDateTime zdt1 = ...;
+ZonedDateTime zdt2 = ...;
+boolean equals = zdt1.equals(zdt2);
+int hours = Duration.between(zdt1, zdt2).toHours(); //returns long
+int days = Duration.between(zdt1, zdt2).toDays(); //returns long
+int seconds = Duration.between(zdt1, zdt2).toSeconds(); //returns long
+int nanoseconds = Duration.between(zdt1, zdt2).toNanos(); //returns long
+//difference separated to time components
+Duration d = Duration.between(zdt1, zdt2);
+long[] trueDifference = new long[]{d.toDaysPart(), d.toHoursPart(), d.toMinutesPart(), d.toSecondsPart(), d.toNanosPart()};
+
+EXAMPLE FOR TIME UNIT CALCULATIONS:
+import java.util.concurrent.TimeUnit;
+...
+long milliseconds = 1000000;
+//convert as it is, no partials
+long seconds = TimeUnit.MILLISECONDS.toSeconds(milliseconds); //trims the fractional part
+long minutes = TimeUnit.MILLISECONDS.toMinutes(milliseconds); //trims the fractional part
+//or use basic mathematical formulas
+seconds = milliseconds / 1000; //trims the fractional part
+minutes = milliseconds / 1000 / 60; //trims the fractional part
+
+
+=================================================================================
+7. GETTING PARAMETERS
+=================================================================================
+The WeekFields and Locale classes are used for getting week-of-year information.
+
+EXAMPLE FOR GETTING DATA FROM ZONEDDATETIME:
+import java.time.ZonedDateTime;
+import java.time.ZoneId;
+import java.time.LocalDate;
+...
+ZonedDateTime zdt = ...;
+String allData = zdt.toString(); //all data as descriptive text
+ZoneId zi = zdt.getZone(); //time zone
+String zone = zi.getId(); //time zone as descriptive text
+String offset = zdt.getOffset().getId(); //time zone offset as descriptive text
+//offset in hours
+float hours = Float.parseFloat(offset.substring(1, 3)) + Float.parseFloat(offset.substring(4)) / 60; //works on hh.mm format
+hours = (offset.charAt(0) == '+') ? hours : -1 * hours;
+int n = zdt.getYear();
+n = zdt.getMonth();
+n = zdt.getDay();
+n = zdt.getHour();
+n = zdt.getMinute();
+n = zdt.getSecond();
+n = zdt.getNano();
+n = zdt.getDayOfWeek().getValue();
+n = zdt.getDayOfYear();
+//get week-of-year
+LocalDate ld = zdt.toLocalDate();
+WeekFields weekFields = WeekFields.of(Locale.getDefault());
+n = ld.get(weekFields.weekOfWeekBasedYear());

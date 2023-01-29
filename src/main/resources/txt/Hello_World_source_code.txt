@@ -1,0 +1,14 @@
+=================================================================================
+HELLO WORLD SOURCE CODE
+=================================================================================
+class HelloWorld {
+	public static void main(String[] args) {
+		System.out.println("Hello World");
+	}
+}
+
+=>Classes
+=>Methods
+=>Access_modifiers
+=>Standard_input_and_output
+=>Literals

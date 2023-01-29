@@ -1,0 +1,452 @@
+=================================================================================
+INTELLIJ IDEA
+=================================================================================
+1. SHORTCUTS
+2. CODE TEMPLATES
+
+=================================================================================
+1. SHORTCUTS
+=================================================================================
+1.1. SHORT KEY NAMES
+1.2. TOOL PANELS AND EDITOR TABS
+1.3. SEARCH AND REPLACE
+1.4. COMPLETION
+1.5. VIEWING
+1.6. SELECTION
+1.7. EDITING
+1.8. ERRORS AND DEBUGGING
+1.9. COMMENTING
+
+1.1. SHORT KEY NAMES
+---------------------------------------------------------------------------------
+||Short|Key||
+||CTR|Control||
+||ALT|Alt||
+||SHF|Shift||
+||ENT|Enter||
+||ESC|Escape||
+||TAB|Tabulator||
+
+1.2. TOOL PANELS AND EDITOR TABS
+---------------------------------------------------------------------------------
+||Shortcut|Description||
+||ALT 1|Project||
+||ALT 2|Bookmarks||
+||ALT 3|Find||
+||ALT 4|Run||
+||ALT 5|Debug||
+||ALT 6|Problems||
+||ALT 7|Structure (CTR F12 popup)||
+||ALT 8|Services||
+||ALT 9|Version Control||
+||ALT 0|Commit||
+||SHF ESC|hide actual opened tool||
+||CTR F4|close actual editor tab||
+||ALT click-on-close-editor-tab-icon|close all tabs except the clicked one||
+
+1.3. SEARCH AND REPLACE
+---------------------------------------------------------------------------------
+||Shortcut|Description||
+||2x SHF|search everywhere||
+||CTR N|search in classes, files, symbols, actions||
+||CTR Q|list of available documentations on selected||
+||CTR F|find||
+||F3|next occurrence||
+||SHF F3|previous occurrence||
+||CTR SHF F|find in files||
+||CTR R|replace||
+||CTR SHF R|replace in files||
+||ALT 3|find everywhere||
+||CTR B|jump on method declaration||
+||CTR B|show all usages of the method (caret on method declaration)||
+||ALT F7|detailed view on usages (use on declaration or usages)||
+||CTR ALT B|show implementations of method/class (popup corner: into find tool)||
+||CTR U|show super of method/class||
+||CTR SHF H|show hierarchy tool||
+||CTR E|recent files (delete on list closes opened files)||
+||CTR SHF E|discover codes in recent files (type it)||
+
+1.4. COMPLETION
+---------------------------------------------------------------------------------
+||Shortcut|Description||
+||CTR SPC|completion suggestions||
+||CTR SHF SPC|type-matching suggestions||
+||CTR SHF ENT|complete statement||
+||.|show postfix completion (available subclasses or after an expression), accept with ENT or ! for negate it||
+||TAB|replaces the word at the caret with the selected suggestion||
+||ALT ENT|open intention (yellow/red bulbs)||
+||CTR P|view method signature||
+||CTR Q|vew documentation popup under caret||
+||CTR SHF I|view definition og the symbol at the caret||
+
+1.5. VIEWING
+---------------------------------------------------------------------------------
+||Shortcut|Description||
+||CTR -|collapse code region||
+||CTR =|expand code region||
+||CTR SHF -|collapse all||
+||CTR SHF =|expand all||
+
+1.6. SELECTION
+---------------------------------------------------------------------------------
+||Shortcut|Description||
+||CTR W|extend selection: word - string - string with quotes around - parameters - whole call inside brackets - whole statement||
+||CTR SHF W|shrink selection (backward CTR W)||
+||ALT J|select next occurrence of selected word||
+||ALT SHF J|deselect next occurrence of selected word||
+||CTR ALT SHF J|select all occurrences of the selected word||
+||(Edit/Find menu)|all possibilities||
+
+1.7. EDITING
+---------------------------------------------------------------------------------
+||Shortcut|Description||
+||ALT SHF INS|vertical selection mode, exit for Escape||
+||CTR D|duplicate selected text in a line horizontally, duplicate line or selection of lines||
+||CTR Y|delete line||
+||ALT SHF UP|move line up on line, move method up on signature||
+||ALT SHF DWN|move line down, move method down on signature||
+||CTR SHF UP|move method up (for method, caret on method definition)||
+||CTR SHF DWN|move method down (for method, caret on method definition)||
+||CTR SHF LEFT|move text in a line to the left||
+||CTR SHF RIGHT|move text in a line to the right||
+||CTR ALT T|surround selected code with template code (e.g. putting into try-catch)||
+||CTR SHF DEL|unwrapping code from template code||
+||SHF F6|rename everywhere||
+||CTR ALT V|extract local variable from selection (creates a new local variable then changes all occurrences in selected code)||
+||CTR ALT M|extract method from selection (created a new method then changes all occurrences in selected code)||
+||CTR ALT L|reformat all/selected line||
+||CTR ALT SHF L|reformat options||
+||Code & Refactor menus|all possibilities||
+||custom text||if there are, show live templates||
+||CTR J|show the possible live templates in the context||
+
+1.8. ERRORS AND DEBUGGING
+---------------------------------------------------------------------------------
+||Shortcut|Description||
+||F2|next error||
+||CTR F1|show error description (switchable between short/expanded, expanded shows refactoring option)||
+||CTR SHF F7|show all usages of the symbol||
+||CTR F8|place breakpoint||
+||SHF F9|start debugging||
+||F8|step over||
+||F7|step into||
+||CTR F9|build||
+||ALT F9|run to cursor||
+||CTR F2|finish debugging||
+
+1.9. COMMENTING
+---------------------------------------------------------------------------------
+||Shortcut|Description||
+||CTR /|comment/uncomment out a line or a selection||
+||CTR SHF /|block comment out a line or a selection of lines or selection inside lines, for uncommenting caret is anywhere inside the block comment||
+
+=================================================================================
+2. CODE TEMPLATES
+=================================================================================
+Under the File - Settings, Editor - Live Templates menu the user can create or modify live template codes parts.
+For typing the name of these code parts the IDE will show available template names and short description possible to choose.
+
+When time is essence, defining statement, iteration formulas is advised.
+
+In a template, template variables can be used:
+    $<VARIABLE NAME>$
+For escaping a $ sign, use $$.
+
+||Variable name|Description||
+||RET|return value||
+||SELECTION|selected text in the editor||
+||END|place of the cursor after inserting the template||
+||CONDITION|a condition used e.g. in if statement||
+||VAR|a variable||
+||VAR1|first variable||
+||ELEMENT_TYPE||type of the variable||
+||INDEX|a variable used as index in a loop||
+||LIMIT|maximum + 1 value of an index||
+||CLASS_NAME|name of a class||
+||VALUE|a value||
+||EXPR|an expression||
+||TYPE|a type class||
+||ARRAY|an array variable||
+||ITER_TYPE|Iteration type||
+||ITER|Iteration variable||
+||COLLECTION|Collection variable||
+||CAST|a type class using in casting||
+||ENUM|an enum variable||
+||ITERABLE_TYPE|Iterable type||
+||LIST|List variable||
+||METHOD_NAME|name of a method||
+
+A template must contain minimum one template variable except $END$ and $SELECTION$.
+It is possible to save a code part in the editor by selecting it and choosing Save as Live Template option from the context (popup) menu.
+
+The live templates below are recommended for adding to Live Templates.
+
+For all templates here:
+	a. Applicable in Java: statement
+	b. Reformat according to style
+
+Order of data here follows the next:
+	a. abbreviation
+	b. description
+	c. template text
+
+2.1. IF TEMPLATES
+2.2. SWITCH TEMPLATES
+2.3. ITERATION TEMPLATES
+2.4. TRY TEMPLATES
+2.5. RETURN TEMPLATES
+
+2.1. IF TEMPLATES
+---------------------------------------------------------------------------------
+if
+Add if branch
+if ($CONDITION$) {
+	$END$
+}
+
+elseif
+Add else-if branch
+else if ($CONDITION$) {
+	$END$
+}
+
+else
+Add else branch
+else {
+	$END$
+}
+
+ifn
+Add if-null branch
+if ($VAR$ == null) {
+	$END$
+}
+
+ifnc
+Add if-null branch (call constructor on variable if condition met)
+if ($VAR$ == null) {
+  $VAR$ = new $TYPE$($END$);
+}
+
+ifnn
+Add if-not-null branch
+if ($VAR$ != null) {
+	$END$
+}
+
+ifi
+Add instance-of branch (cast to type if condition met)
+if ($EXPR$ instanceof $TYPE$) {
+	$TYPE$ $VAR$ = ($TYPE$) $EXPR$;
+	$END$
+}
+
+ift
+Add ternary branches
+if ($CONDITION$) ? $EXPR1$ : $EXPR2$;
+
+2.2. SWITCH TEMPLATES
+---------------------------------------------------------------------------------
+switch
+Add switch statement
+switch ($VAR$) {
+	case $VALUE1$:
+		$EXPR1$;
+		break;
+	case $VALUE2$:
+		$EXPR2$;
+		break;
+	case $VALUE3$:
+		$EXPR3$;
+		break;
+	default:
+		$EXPR4$;
+		break;
+}
+
+switche
+Add enhanced switch statement
+switch ($VAR$) {
+	case $VALUE1$ -> $EXPR1$;
+	case $VALUE2$ -> $EXPR2$;
+	case $VALUE3$ -> $EXPR3$;
+	default -> $EXPR4$;
+}
+
+2.3. ITERATION TEMPLATES
+---------------------------------------------------------------------------------
+for
+Create for iteration with index variable
+for (int $INDEX$ = 0, limit = $LIMIT$; $INDEX$ < limit; $INDEX$++) {
+	$END$
+}
+
+forr
+Create reversed for iteration with index variable
+for (int $INDEX$ = $LIMIT$ - 1; $INDEX$ > -1; $INDEX$--) {
+	$END$
+}
+
+fora
+Create for iteration for array with index variable
+for (int $INDEX$ = 0, length = $ARRAY$.length; $INDEX$ < length; $INDEX$++) {
+	$ELEMENT_TYPE$ $VAR$ = $ARRAY$[$INDEX$];
+	$END$
+}
+
+forl
+Create for iteration for List with index variable
+for (int $INDEX$ = 0, size = $LIST$.size(); $INDEX$ < size; $INDEX$++) {
+	$ELEMENT_TYPE$ $VAR$ = $CAST$ $LIST$.get($INDEX$);
+	$END$
+}
+
+forlr
+Create reversed for iteration for List with index variable
+for (int $INDEX$ = $LIST$.size() - 1; $INDEX$ > -1; $INDEX$--) {
+	$ELEMENT_TYPE$ $VAR$ = $CAST$ $LIST$.get($INDEX$);
+	$END$
+}
+
+fore
+Create for-each iteration for Iterable or array
+for ($ELEMENT_TYPE$ $VAR$ : $ITERABLE_TYPE$) {
+	$END$
+}
+
+while
+Create while iteration
+while ($CONDITION$) {
+	$END$
+}
+
+whilei
+Create while iteration with index variable
+int $INDEX$ = 0;
+while ($INDEX$ < $LIMIT$) {
+	$END$
+	$INDEX$++;
+}
+
+whileir
+Create reversed while iteration with index variable
+int $INDEX$ = $LIMIT$ - 1;
+while ($INDEX$ > -1) {
+	$END$
+	$INDEX$--;
+}
+
+whileit
+Create while iteration for Iterator
+while ($ITER$.hasNext()) {
+	$TYPE$ $VAR$ = $CAST$ $ITER$.next();
+	$END$
+}
+
+whilee
+Create while iteration for enumeration
+while ($ENUM$.hasMoreElements()) {
+	$TYPE$ $VAR$ = $CAST$ $ENUM$.nextElement();
+	$END$
+}
+
+do
+Create do-while iteration
+do {
+	$END$
+} while ($CONDITION$)
+
+2.4. TRY TEMPLATES
+---------------------------------------------------------------------------------
+try
+Create try-catch statement
+try {
+    $EXPR1$
+}
+catch (Exception e) {
+    $EXPR2$
+}
+
+trycf
+Create try-catch-finally statement
+try {
+    $EXPR1$
+}
+catch (Exception e) {
+    $EXPR2$
+}
+finally {
+	$EXPR3$
+}
+
+tryf
+Create try-finally statement
+try {
+    $EXPR1$
+}
+finally {
+    $EXPR2$
+}
+
+tryr
+Create try-with-resources statement
+try ($TYPE$ $VAR$ = new $TYPE$()) {
+    $EXPR1$
+}
+catch (Exception e) {
+    $EXPR2$
+}
+
+tryer
+Create enhanced try-with-resources statement
+$TYPE$ $VAR$ = new $TYPE$()
+try ($VAR$) {
+    $EXPR1$
+}
+catch (Exception e) {
+    $EXPR2$
+}
+
+catch
+Add catch branch
+catch (Exception e) {
+    $EXPR$
+}
+
+finally
+Add finally branch
+finally {
+    $EXPR$
+}
+
+2.5. RETURN TEMPLATES
+---------------------------------------------------------------------------------
+returns
+Create return-switch statement
+return switch ($VAR$) {
+	case $VALUE1$:
+		$EXPR1$;
+		break;
+	case $VALUE2$:
+		$EXPR2$;
+		break;
+	case $VALUE3$:
+		$EXPR3$;
+		break;
+	default:
+		$EXPR4$;
+		break;
+}
+
+returnse
+Create return-enhanced-switch statement
+return switch ($VAR$) {
+	case $VALUE1$ -> $EXPR1$;
+	case $VALUE2$ -> $EXPR2$;
+	case $VALUE3$ -> $EXPR3$;
+	default -> $EXPR4$;
+}
+
+returnt
+Create return-ternary statement
+return ($CONDITION$) ? $EXPR1$ : $EXPR2$;

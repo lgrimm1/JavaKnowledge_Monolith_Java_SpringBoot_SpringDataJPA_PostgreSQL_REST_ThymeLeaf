@@ -1,0 +1,116 @@
+=================================================================================
+HASHMAP
+=================================================================================
+Implements the Map.
+Its extending class is LinkedHashMap.
+
+1. GENERALLY
+2. CONVERT TO ARRAYLIST AND BACK
+
+=>Map
+=>TreeMap
+=>LinkedHashMap
+=>WeakHashMap
+=>GarbageCollector
+=>ConcurrentHashMap
+=>ArrayList
+=>Stream
+
+=================================================================================
+1. GENERALLY
+=================================================================================
+All methods of Map is available.
+Specific method are below.
+
+||Method|Description||
+||clear()|removes all pairs||
+||compute()|computes a new value for the given key||
+||computeIfAbsent()|computes a new value for the given key if the mapping for that key is absent||
+||computeIfPresent()|computes a new value for the given key if the mapping for that key is present||
+||merge()|merges a specified mapping to the map||
+||clone()|creates a copy||
+||size()|number of items in the map||
+||isEmpty()|true if no pairs||
+
+Constructor signatures:
+    a. (): default capacity is 16, default load factor is 0.75
+    b. (capacity in int, load factor in float): how many entries it can store, if load factor is exceeded, the map is moved to an other map with double size
+    c. (other Map class): converting from that map to HashMap; need identical pair types
+
+EXAMPLE FOR CONVERSION:
+import java.util.HashMap;
+import java.util.TreeMap;
+...
+TreeMap<keyType, valueType> tm = new TreeMap<>();
+...
+HashMap<keyType, valueType> hm = new HashMap<>(tm);
+
+EXAMPLE FOR USAGE:
+import java.util.HashMap;
+...
+HashMap<keyType, valueType> hm = new HashMap<>();
+keyType key;
+valueType value;
+hm.put(key, value);
+if (hm.containsKey(key)) {
+    value = hm.get(key);
+}
+else {...}
+value = hm.getOrDefault(key, ...);
+if (hm.containsKey(key)) {
+    value = hm.remove(key);
+}
+else {...}
+
+EXAMPLE FOR ITERATION:
+import java.util.HashMap;
+import java.util.Map.Entry;
+...
+HashMap<keyType, valueType> hm = new HashMap<>();
+...
+for (keyType key : hm.keySet()) { //iterating through keys
+    //processing: key
+}
+for (valueType value : hm.values()) { //iterating through values
+    //processing: value
+}
+for (Entry<keyType, valueType> entry : hm.entrySet()) { //iterating through pairs
+    //processing: entry
+}
+
+Differences between HashMap and WeakHashMap:
+    a. HashMap keys are strong reference type, WeakHashMap keys are weak reference type
+    b. by the GC, released (not used) keys will be left in HashMap while will be freed in WeakHashMap
+
+Differences between ConcurrentHashMap and HashMap:
+    a. ConcurrentHashMap is thread-safe, HashMap is not
+    b. ConcurrentHashMap provides methods for bulk operations like forEach(), search() and reduce(), HashMap does not
+
+=================================================================================
+2. CONVERT TO ARRAYLIST AND BACK
+=================================================================================
+import java.util.Map;
+import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream;
+import java.util.stream.Collectors;
+...
+Map<Integer, String> map = new HashMap<>();
+...
+List<Integer> keyList = new ArrayList<>(map.keySet());
+List<String> valueList = new ArrayList<>(map.values());
+//or:
+List<Integer> keyList = map.keySet().stream().collect(Collectors.toList());
+List<String> valueList = map.values().stream().collect(Collectors.toList());
+...
+int lengthKeyList = keyList.size();
+if (lengthKeyList == valueList.size()) {
+    Map<Integer, String> map2 = new HashMap<>();
+    for (int index = 0; index < lengthKeyList; index++) {
+        map2.put(keyList.get(index), valueList.get(index));
+    }
+}
+else {
+    //unable to pair all keys and values
+}

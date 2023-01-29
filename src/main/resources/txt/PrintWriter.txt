@@ -1,0 +1,60 @@
+=================================================================================
+PRINTWRITER
+=================================================================================
+Extends Writer.
+Its purpose is to write output data in commonly readable form (text).
+Converts primitive data into text format, then sends it to the writer.
+Does not throw exceptions, success can be checked with checkError() method.
+Uses optional auto flushing (specified with constructor) when using println() or printf() methods.
+After closing the stream, any method will raise exception.
+The PrintWriter implements the AutoClosable interface, the try-with-resources statement can be used to ensure proper closing.
+Uses default character set but other encoding (e.g. UTF8 or UTF16) can be used as well.
+The written data can be formatted. The methodology follows the String formatting.
+
+Constructors:
+    a. use other writer (e.g. a previously declared FileWriter)
+    b. use other output stream (e.g. a previously declared FileOutputStream)
+    c. use an output file name
+
+Constructor parameters:
+    a. (writer or output stream)
+    b. (writer or output stream, boolean autoFlush)
+    c. (writer or output stream, boolean autoFlush, Charset charset)
+
+||Method|Description||
+||print()|sends the data to the writer||
+||println()|sends the data to the writer, puts a line end character to the end||
+||printf()|sends the data to the writer in formatted ways, arguments are the formatting rule and the data||
+||checkError()|returns whether there was an error with the last used method||
+||append()|appends the given data to the writer||
+||close()|closes the print writer||
+
+EXAMPLE FOR USAGE:
+import java.io.FileWriter;
+import java.io.PrintWriter;
+...
+String string = ...; //prepare data
+try {
+    FileWriter fileWriter = new FileWriter(fileName);
+    PrintWriter printWriter = new PrintWriter(fileWriter, true);
+    printWriter.print(string); //send to the writer
+    printWriter.close(); //close the print writer (release the stream)
+    fileWriter.close(); //close the stream (release the source)
+}
+catch (Exception e) {...} //in case the destination or the accessed writer was not accessible on declaring
+
+EXAMPLE FOR USAGE WITH TRY-WITH-RESOURCES:
+import java.io.FileWriter;
+import java.io.PrintWriter;
+...
+String string = ...; //prepare data
+try (FileWriter fileWriter = new FileWriter(fileName); PrintWriter printWriter = new PrintWriter(fileWriter, true)) {
+    printWriter.print(string); //send to the writer
+}
+catch (Exception e) {...} //in case the destination or the accessed writer was not accessible on declaring
+
+=>Stream
+=>Writer
+=>Charset
+=>String;4. STRING FORMATTING
+=>Statements;15. TRY-WITH-RESOURCES STATEMENT

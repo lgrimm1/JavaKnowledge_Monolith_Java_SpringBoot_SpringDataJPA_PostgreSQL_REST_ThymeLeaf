@@ -1,0 +1,227 @@
+=================================================================================
+FILE OPERATIONS
+=================================================================================
+Separators in a file or folder path are the same within an OS, but are different by operating systems.
+In order to make a path OS independent, use the File.separator constant instead of \\ or /.
+In case of using file/folder list, File.pathSeparator constant will give OS independent solution (e.g. on Windows ; separates two paths in a list).
+
+1. INFORMATION
+2. CREATE AND DELETE
+3. RENAME AND MOVE
+4. READ
+5. WRITE
+6. SCANNER
+7. LIST FILES AND FOLDERS
+8. READ AND WRITE INPUTSTREAMS
+
+=>Statements
+=>Iteration
+=>Exceptions
+=>Scanner
+=>Array
+=>Import
+=>FileReader
+=>FileWriter
+=>InputStream
+=>OutputStream
+
+=================================================================================
+1. INFORMATION
+=================================================================================
+import java.io.File;
+import java.nio.file.Path;
+...
+String path = ...; //can be relative, absolute, or even just a filename in which case the application folder and JAVAPATH will be checked
+String extension = ...;
+File f = new File(path);
+boolean success = false;
+long fileSize;
+String fileName, fileExtension, fileNameWithExtension, filePath, fullName, fileAbsolutePath, fileDriver;
+int pos;
+try {
+	success = f.exists();
+	fileSize = f.length();
+	success = f.isFile();
+	success = f.isDirectory();
+	fileNameWithExtension = f.getName(); //without path
+	if (fileNameWithExtension.endsWith(extension)) {...}
+	pos = fileNameWithExtension.lastIndexOf(".");
+	if (pos > -1) {
+	    fileName = fileNameWithExtension.substring(0, pos);
+	    fileExtension = fileNameWithExtension.substring(pos);
+	}
+	else {
+	    fileName = fileNameWithExtension;
+	    fileExtension = ""; //no extension
+	}
+	filePath = f.getParent(); //without the ending \ sign; in case of relative path, will return relative path
+	fullName = f.getPath(); //filename with file path, equals with f.getParent() + File.pathSeparator + f.getName()
+	fileAbsolutePath = filePath.getCanonicalPath(); //without the ending \ sign; returns absolute path
+	fileDriver = ((fileAbsolutePath.length() > 1) && (fileAbsolutePath.charAt(1) == ':')) ? fileAbsolutePath.substring(0, 2) : ""; //letter plus the : sign, or ""
+	Path p1 = Path.of(f);
+	Path p2 = f.toPath();
+	String name = p1.getFileName().toString();
+	String directory = p1.getParent().toString();
+}
+catch (Exception e) {
+	...
+}
+
+=================================================================================
+2. CREATE AND DELETE
+=================================================================================
+import java.io.File;
+...
+String path = ...;
+File f = new File(path); //path: filename and extension with optional path
+File d = new File(path); //path: folder name with optional path without ending \
+boolean success = false;
+try {
+	success = f.createNewFile();
+	success = f.deleteFile();
+	success = d.mkdir();
+	success = d.mkdirs(); //creates it with creating all needed new folders above it
+	success = d.deleteFile();
+}
+catch (Exception e) {
+	...
+}
+
+=================================================================================
+3. RENAME AND MOVE
+=================================================================================
+import java.io.File;
+...
+String oldPathAndName = ...;
+String newPathAndName = ...;
+File oldFile = new File(oldPathAndName);
+File newFile = new File(newPathAndName);
+boolean success = false;
+try {
+	success = oldFile.renameTo(newFile);
+}
+catch (Exception e) {
+	...
+}
+
+=================================================================================
+4. READ
+=================================================================================
+import java.io.File;
+import java.io.FileReader;
+...
+char[] data;
+String path = ...;
+File f = new File(path);
+boolean success = false;
+try {
+	FileReader fr = new FileReader(path); //or:
+	FileReader fr = new FileReader(f);
+	success = fr.read(data); //the parameter is the target
+}
+catch (Exception e) {
+	...
+}
+finally {
+	fr.close();
+}
+
+=================================================================================
+5. WRITE
+=================================================================================
+import java.io.File;
+import java.io.FileWriter;
+...
+int asciiData = ...;
+char[] caData = ...;
+String strData = ...;
+int startIndex = ..., length = ...;
+String path = ...;
+File f = new File(path);
+boolean append = true;
+boolean success = false;
+try {
+	FileWriter fw = new FileWriter(path); //or:
+	FileWriter fw = new FileWriter(f);
+	success = fw.write(asciiData); //a character based upon the ascii code, for 1st overwrites the file then appends it; or:
+	success = fw.write(caData); //for 1st overwrites the file then appends; or:
+	success = fw.write(caData, append); //the boolean marks appending; or:
+	success = fw.write(caData, startIndex, length); //extracts from caData, for 1st overwrites the file then appends; or:
+	success = fw.write(strData); //for 1st overwrites the file then appends; or:
+	success = fw.write(strData, append); //the boolean marks appending; or:
+	success = fw.write(strData, startIndex, length); //extracts from strData, for 1st overwrites the file then appends
+}
+catch (Exception e) {
+	...
+}
+finally {
+	fw.close();
+}
+
+=================================================================================
+6. SCANNER
+=================================================================================
+import java.util.Scanner;
+import java.io.File;
+...
+File data = new File(...);
+String line;
+try {
+	Scanner scf = new Scanner(data);
+	while (scf.hasNextLine()) {
+		line = sc.nextLine();
+		//processing
+	}
+}
+catch (Exception e) {
+	...
+}
+finally {
+		scf.close();
+}
+
+=================================================================================
+7. LIST FILES AND FOLDERS
+=================================================================================
+import java.io.File;
+...
+String path = ...; //folder path without ending \
+File d = new File(path);
+String[] list1;
+File[] list2;
+try {
+	list1 = d.list();
+	list2 = d.listFiles();
+}
+catch (Exception e) {
+	...
+}
+
+=================================================================================
+8. READ AND WRITE INPUTSTREAMS
+=================================================================================
+import java.io.File;
+import java.io.InputStream;
+import java.io.OutputStream;
+...
+byte[] data;
+String sourcePath = ...;
+String destinationPath = ...;
+File sourceFile = new File(sourcePath);
+File destinationFile = new File(destinationPath);
+try {
+	data = new byte[(int) sourceFile.length()]; //in case file size < 2 GB or else use BigFile class
+	FileInputStream fis = new FileInputStream(sourcePath); //or:
+	FileInputStream fis = new FileInputStream(sourceFile);
+	fis.read(data);
+	FileOutputStream fos = new FileOutputStream(destinationPath); //or:
+	FileOutputStream fos = new FileOutputStream(destinationFile);
+	fos.write(data);
+}
+catch (Exception e) {
+	...
+}
+finally {
+	fis.close();
+	fos.close();
+}

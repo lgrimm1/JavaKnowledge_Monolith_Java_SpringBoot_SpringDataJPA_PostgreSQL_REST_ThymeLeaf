@@ -1,0 +1,56 @@
+=================================================================================
+SCANNER
+=================================================================================
+For sequential processing.
+Scanner sc = new Scanner(sourceObject);
+The sourceObject can be:
+	a. System.in
+	b. String
+	c. File
+	d. InputStream
+After use must be closed by invoking .close() method.
+Closing a Scanner on System.in, will close the entire input stream on console so after that no console input can be received.
+
+Scanner sc = new Scanner(...);
+boolean b = sc.hasNext() //is there possibility to read another data
+b = sc.hasNextLine() //same but for lines (line: has \n character or end-of-file at the end).
+reader methods: nextLine(), next(), nextBoolean(), nextByte(), nextShort(), nextInt(), nextLong(), nextFloat(), nextDouble().
+
+The nextLine() excluded, all reader methods try to reach data of the primitive type but will have no \n at the end of the read data sequence. Therefore, in case of console reading, after reading data, always read a nextLine() after it or the next read will produce fake data.
+The next() and nextLine() read String.
+All reader methods trim the data for white spaces.
+Scanner will use some default locale settings when reads data. It is possible to use specific locale settings as well.
+In case the addressed source is not ready (e.g. scanning a file or an input stream), use try statement.
+Scanner implements AutoClosable interface therefore it is possible to use try-with-resources statement with it.
+
+EXAMPLE:
+import java.util.Scanner;
+...
+Scanner sci = new Scanner(System.in);
+String s;
+while (sci.hasNextLine()) {
+	s = sci.nextLine();
+	//processing s
+}
+sci.close();
+
+EXAMPLE FOR BIG INPUTS:
+import java.util.Scanner;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+...
+BigDecimal bd = sci.nextBigDecimal();
+BigInteger bi = sci.nextBigInteger();
+
+EXAMPLE FOR USING LOCALE SETTINGS AND TRY-WITH-RESOURCES:
+import java.util.Scanner;
+...
+try (Scanner sc = new Scanner(File file).useLocal(Locale locale)) {
+...
+}
+
+=>String
+=>File_operations
+=>Standard_input_and_output
+=>Locale
+=>Statements;15. TRY-WITH-RESOURCES STATEMENT

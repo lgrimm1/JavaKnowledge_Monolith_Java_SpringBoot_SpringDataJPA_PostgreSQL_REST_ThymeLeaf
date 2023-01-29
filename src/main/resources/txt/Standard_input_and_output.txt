@@ -1,0 +1,26 @@
+=================================================================================
+STANDARD INPUT AND OUTPUT
+=================================================================================
+System console is for both.
+The System is a final class meant for handling standard input and output operations.
+Input: with System.in, handled via Scanner class.
+Output: with System.out which is a PrintStream.
+
+EXAMPLE FOR INPUT:
+import java.util.Scanner;
+...
+Scanner sci = new Scanner(System.in);
+//processing input(s)
+...
+sci.close;
+
+EXAMPLES FOR OUTPUT:
+System.out.println(text); //for a line
+System.out.print(text); //for without line end
+System.out.printf(formatString, text[, text, text...]); //for formatted output; rules of formatString equal with String formatting, look there
+System.out.format(formatString, text[, text, text...]); //for formatted output; rules of formatString equal with String formatting, look there
+
+=>System
+=>Scanner
+=>String;4. STRING FORMATTING
+=>PrintStream

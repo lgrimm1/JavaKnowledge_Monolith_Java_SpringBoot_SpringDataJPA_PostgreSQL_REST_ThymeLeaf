@@ -1,0 +1,45 @@
+=================================================================================
+OBJECTS
+=================================================================================
+
+=>Variables
+=>Equality
+=>Classes
+
+From classes many instances (objects) can be made.
+
+className objectName; //declaration where the reference will point to null
+objectName = ...; //memory allocation
+className objectName = new className(...); //declaration and memory allocation by invoking a constructor method of the object.
+
+methodName(new className()); //passing a temporary object created with its constructor, to a method. Outside the scope of method the object will not exist.
+
+EXAMPLE FOR CLASS AND ITS OBJECT IN DIFFERENT CLASSES:
+class className1 {...}
+
+class className2 {
+    className1 objectName = new className1();
+}
+
+EXAMPLE FOR CLASS AND ITS OBJECT IN SAME CLASS:
+class className {
+    className objectName = new className();
+}
+
+EXAMPLE FOR PASSING TEMPORARY OBJECT TO METHOD 1:
+void methodName(Scanner scanner) {...}
+...
+methodName(new Scanner(...));
+
+EXAMPLE FOR PASSING TEMPORARY OBJECT TO METHOD 2:
+void methodName(int[] array) {...}
+...
+methodName(new int[]{1, 2, 3});
+
+It is a good practice to have private fields and public constructors, getter and setter methods.
+
+String is a wrapper class. Declaration of a String sets its value to "" instead of pointing to null.
+
+By creating an object in memory, Java will generate a unique number (hashcode) to it. With hashcode, the object can be referenced.
+For the same type of immutable objects, Java will use memory pools, and upon creation, if the object with the same value already exists in the pool, will use hashcode of the existing object in order to reserve memory space.
+By using constructor of a class to create new object, Java will skip searching for existing objects in the pool but create a new one.

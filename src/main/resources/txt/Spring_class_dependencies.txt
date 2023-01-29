@@ -1,0 +1,111 @@
+=================================================================================
+SPRING CLASS DEPENDENCIES
+=================================================================================
+Building class dependencies can be done in many ways. Spring offers simplified solutions, following them is part of best practices.
+In Spring, classes which should be injected, are marked with either of @Bean, @Component, @RestController, @Controller, @Service or @Repository annotations.
+For not having dedicated web app function like controller, service or storage, best expressing annotation is @Component.
+
+Versions for class dependency injections matching with Spring capabilities:
+||Version|Description||
+||Spring, @Autowired prototype|best practice for Spring injection of not-dedicated class, forces Spring to use no-singleton from the class, most possible memory heap overload||
+||Spring, @Autowired|best practice for Spring injection of dedicated class, Spring creates singleton from the class||
+||singleton injection|best practice for no-Spring injection of dedicated class but possible memory heap overload in Spring environment (Spring creates a copy from it first on instance level)||
+||constructor outside container class|best practice for normal no-Spring injection, Spring recognizes and uses it as a virtual @Autowired solution||
+||constructor within container constructor|worst practice, no independent unit test, possible memory heap overload||
+
+For Spring web applications, there are dedicated classes for controller, service and storage functions. The best solution is using the @Autowired version without prototype-ing.
+In some schools, the constructor-outside-container-class version is used with the @Autowired annotation above the constructor. Although this is not a Spring solution (no simplification in code), shows the pure injection as well as its Spring function.
+
+EXAMPLE FOR CLASS DEPENDENCY INJECTION (CONSTRUCTOR OUTSIDE CONTAINER CLASS, WITH @AUTOWIRED):
+import org.springframework.stereotype.*;
+@Component
+class Class1 {...}
+
+class Class2 {
+    private final Class1 variable;
+
+    @Autowired
+    public Class2(Class1 variable) {
+        this.variable = variable;
+    }
+}
+
+EXAMPLE FOR CLASS DEPENDENCY INJECTION (SPRING, @AUTOWIRED PROTOTYPE):
+import org.springframework.context.annotation.*;
+import org.springframework.stereotype.*;
+@Component
+@Scope(value = "prototype")
+class Class1 {...}
+
+class Class2 {
+    @Autowired
+    private Class1 variable;
+}
+
+EXAMPLE FOR CLASS DEPENDENCY INJECTION (SPRING, @AUTOWIRED):
+import org.springframework.stereotype.*;
+@Component
+class Class1 {...}
+
+class Class2 {
+    @Autowired
+    private Class1 variable;
+}
+
+EXAMPLE FOR CLASS DEPENDENCY INJECTION (SINGLETON INJECTION):
+import org.springframework.stereotype.*;
+@Component
+class Class1 {
+    private static Class1 class1;
+    private Class1(...) {...}
+    public static Class1 getInstance(...) {...}
+}
+
+class Class2 {
+    private final Class1 variable;
+    public Class2() {
+        this.variable = Class1.getInstance();
+    }
+}
+
+EXAMPLE FOR CLASS DEPENDENCY INJECTION (CONSTRUCTOR OUTSIDE CONTAINER CLASS):
+import org.springframework.stereotype.*;
+@Component
+class Class1 {...}
+
+class Class2 {
+    private final Class1 variable;
+    public Class2(Class1 variable) {
+        this.variable = variable;
+    }
+}
+
+EXAMPLE FOR CLASS DEPENDENCY INJECTION (CONSTRUCTOR WITHIN CONTAINER CONSTRUCTOR):
+import org.springframework.stereotype.*;
+@Component
+class Class1 {...}
+
+class Class2 {
+    private final Class1 variable;
+    public Class2() {
+        this.variable = new Class1();
+    }
+}
+
+Spring will use the class name for identifying a dependency (component).
+In case the class name is not appropriate or there are component classes with the same name but in different packages, must differentiate between them by using component naming:
+    a. the @Component("alternativeName") defines a virtual name for the marked class
+    b. the @Qualifier("alternativeName") annotation below the @Autowired directs the injection to the right component
+
+EXAMPLE FOR COMPONENT NAMING:
+@Component("altName")
+class Class1 {...}
+
+class Class2 {
+    @Autowired
+    @Qualifier("altName")
+    private Class1 variable1;
+}
+
+=>Classes;13. CLASS DEPENDENCY INJECTION
+=>Spring_Boot

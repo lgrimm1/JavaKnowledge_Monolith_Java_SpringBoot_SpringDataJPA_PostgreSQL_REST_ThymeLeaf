@@ -1,0 +1,31 @@
+=================================================================================
+TESTS
+=================================================================================
+Before any application is deployed, tests are needed in order to make it sure that for functionality, robustness and performance the application is trustable.
+Tests are divided to test cases. A test case represents a certain group of incoming data and checks against the results. The test cases together must cover all possibilities, also it is essential that the test strategy should follow the design.
+A well-designed test series makes it sure that if passes, the code is in proper status and works within the needed parameters. Also, when a test case fails, that marks properly that the code lost it properness and helps to identify the source of error.
+
+There are several test strategies:
+    a. unit tests
+    b. behaviour tests
+    c. integration tests
+
+A unit test goes through all public part of that unit (e.g. on class, interface, method level etc.) and examines that unit independently for test cases.
+Due to having independent unit tests, when the tested unit changes but the purpose of it does not, it is enough to re-run the corresponding unit test.
+Best practice is to make a test as independent as it is possible. In most cases, an application contains several application layers (e.g. Storage, Business, Communication for backend), many classes and other units. When a test case is well-separated from the others, in case that test fails, will point out the exact source of the fail.
+
+A behaviour test examines not all cases for a unit but how it will work (behave) when invoked or used.
+Typical situation is when simple classes (made of fields, constructors and getters-setters only) need testing, e.g. will the object constructed when wrong data is passed.
+
+An integration test serves as general test which examines how two or more units work together, or how the whole application works.
+Typical integration test for a backend is having external cURL test cases.
+Other typical version is when two layers are tested together and connections with other layers are mocked out.
+
+At the point of examination, use an assertion (Java core) or the Assertions class of JUnit.
+In case an independent unit test would not run without invoking other units in the process, best practice is to use the Mockito framework to emulate working of the other unit.
+
+=>Assertion
+=>JUnit
+=>Mockito
+=>Web_application
+=>Spring_Boot_tests

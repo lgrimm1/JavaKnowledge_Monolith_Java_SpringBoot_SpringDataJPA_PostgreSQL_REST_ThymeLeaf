@@ -1,0 +1,17 @@
+=================================================================================
+LINKEDBLOCKINGQUEUE
+=================================================================================
+Implements BlockingQueue.
+Blocking queue implementation using a linked list.
+
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
+...
+int capacity = ...;
+LinkedBlockingQueue<elementType> abq = new LinkedBlockingQueue<>(); //or:
+LinkedBlockingQueue<elementType> abq = new LinkedBlockingQueue<>(capacity);
+
+All methods from BlockingQueue is accessible.
+
+=>BlockingQueue
+=>Iterator

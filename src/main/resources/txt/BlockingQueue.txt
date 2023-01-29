@@ -1,0 +1,72 @@
+=================================================================================
+BLOCKINGQUEUE
+=================================================================================
+Extends Queue, FIFO structure.
+Implemented by ArrayBlockingQueue and LinkedBlockingQueue.
+Allows any operations to wait until it can be successfully executed. E.g. removing from a queue will be executed until the queue will not be empty.
+Due to the above statement, BlockingQueue is thread-safe.
+Waiting/blocking means the execution of that thread will be halted until condition is met.
+There is no direct implementation, use it through its implementing classes.
+
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
+...
+int capacity = ...;
+BlockingQueue<elementType> abq = new ArrayBlockingQueue<>(); //or:
+BlockingQueue<elementType> abq = new ArrayBlockingQueue<>(capacity);
+BlockingQueue<elementType> lbq = new LinkedBlockingQueue<>(); //or:
+BlockingQueue<elementType> lbq = new LinkedBlockingQueue<>(capacity);
+
+The constructors has 2 signatures:
+    a. no argument: the queue is infinite
+    b. integer argument: size of the queue
+
+||Method|Description||
+||add()|inserts element at the end, exception if queue is full||
+||element()||returns head element of queue, exception if queue is empty||
+||remove()||returns and removes head element of queue, exception if queue is empty||
+||offer()|inserts element at the end, false if queue is full||
+||peek()|returns the head element, null if queue is empty||
+||poll()|returns and removes the head element, null if queue is empty||
+||iterator()|returns an Iterator of the queue, need to import java.util.Iterator||
+||clear()|removes all elements||
+||contains(element)|true if contained||
+||size()|maximum number of elements||
+||toArray()|returns an array version||
+||toString()|returns a String version like [value1, value2]||
+
+The offer() and poll() methods have 2 signatures.
+
+boolean b = abq.offer(value);
+b = abq.offer(value, tryingTime, timeScale); //tries to insert value for tryingTime on timeScale
+elementType element = abq.poll();
+element = abq.poll(tryingTime, timeScale); //tries to return and remove the head element for tryingTime on timeScale
+//tryingTime is an int, timeScale can be nanoseconds, microseconds, milliseconds, seconds, minutes, hours, days
+//if succeeded before the time limit, will execute them, if no success, false/null will be returned
+
+The next methods can block the execution by themselves.
+
+||Method|Description||
+||put()|inserts an element, if queue is full, waits until the queue has enough space||
+||take()|returns and removes element, waits until the queue will not be empty, exception if waiting is interrupted||
+
+EXAMPLE FOR BLOCKED EXECUTION:
+import java.util.concurrent.BlockingQueue;
+java.util.concurrent.ArrayBlockingQueue;
+...
+BlockingQueue<Integer> abq = new ArrayBlockingQueue<>(3);
+int element;
+try {
+    abq.put(1); //[1]
+    abq.put(2); //[1, 2]
+    abq.put(3); //[1, 2, 3]
+    element = abq.take(); //waits until queue is not empty; [2, 3], returns 1
+}
+catch {...} //in case take() is interrupted
+
+=>Queue
+=>ArrayBlockingQueue
+=>LinkedBlockingQueue
+=>Iterator
+=>Collection

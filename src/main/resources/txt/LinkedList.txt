@@ -1,0 +1,87 @@
+=================================================================================
+LINKEDLIST
+=================================================================================
+Implements List, Queue and Deque.
+Linked list data structure.
+
+An element is a node, contains 3 fields:
+    a. prev: address of the previous element, null if the node is the first element
+    b. next: address of the next element, null if the node is the last element
+    c. data: the element data
+The elements are not stored in order, instead, the order can be followed be using prev and next addresses.
+
+EXAMPLE FOR CREATING LINKEDLIST INSTANCES:
+LinkedList<elementType> ll = new LinkedList<>();
+Queue<elementType> q = new LinkedList<>();
+Deque<elementType> d = new LinkedList<>();
+In case Queue and Deque, only methods of those interfaces will be available.
+
+Methods of LinkedList are the following:
+import java.util.LinkedList;
+import java.util.ListIterator;
+...
+LinkedList<elementType> ll = new LinkedList<>();
+elementType element;
+int index;
+boolean b;
+...
+ll.add(value1); //adds a next element (here it is the first)
+ll.add(value2); //adds a next element
+ll.add(index, value3); //inserts an element at index position; appends the new data and organizes the address fields
+LinkedList<elementType> ll2 = new LinkedList<>();
+ll2.add(value4); //add the first element to ll2
+ll2.addAll(ll); //appends elements of ll to ll2
+element = ll.get(index); //returns the element under index
+ll.set(index, element); //replaces the element under index
+element = ll.remove(index); //returns and removes the element under index
+//ll.removeAll(); //removes all elements
+ll.clear(); //removes all elements, more efficient
+//in case elementType is Integer:
+ll2.removeIf((Integer i) -> i < 4); //removes elements by lambda condition
+b = ll2.contains(element); //true if contains
+index = ll2.indexOf(element); //index of first found element
+index = ll2.lastIndexOf(element); //index of last found element
+//iterating
+for (elementType element2 : ll) {
+    //processing of element2
+}
+
+The addAll() method can add elements of any Collection type to the LinkedList.
+To add to, remove from, set and reach elements of a LinkedList, also can use the Iterator and the ListIterator classes:
+ll2.iterator() -> Iterator<elementType>
+ll2.listIterator() -> ListIterator<elementType>
+
+Since LinkedList implements Queue and Deque, can be used as a queue or as a deque, it has the next methods as well (see their usage there):
+addFirst()
+addLast()
+getFirst()
+getLast()
+removeFirst()
+removeLast()
+peek()
+poll()
+offer()
+
+Differences between ArrayList and LinkedList:
+    a. ArrayList implements List, LinkedList implements List, Queue and Deque
+    b. ArrayList stores a simple value, LinkedList stores the element, previous and next addresses
+    c. ArrayList provides a resizeable array, LinkedList provides a doubly-linked list
+    d. For inserting element, ArrayList shifts all elements after, LinkedList modifies prev and next fields in the surrounding nodes
+    e. To access data, in ArrayList elements can be accessed randomly, in LinkedList sequentially
+
+Differences between ArrayDeque and LinkedList:
+    a. Both implements Deque
+    b. LinkedList supports null elements, ArrayDeque does not
+    c. LinkedList nodes contain data plus addresses of next and prev therefore needs more memory than ArrayDeque
+    d. ArrayDeque is faster than LinkedList
+
+=>List
+=>Queue
+=>Deque
+=>ArrayList
+=>Collection
+=>Queue
+=>Iterator
+=>ListIterator
+=>ArrayDeque
+=>Lambda_expressions

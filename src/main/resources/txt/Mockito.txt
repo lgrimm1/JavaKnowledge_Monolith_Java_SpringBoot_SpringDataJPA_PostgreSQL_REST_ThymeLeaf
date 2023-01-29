@@ -1,0 +1,98 @@
+=================================================================================
+MOCKITO
+=================================================================================
+1. GENERALLY
+2. SETTING UP
+3. MOCKING
+
+=>Classes
+=>Tests
+=>JUnit
+=>Spring_Boot_tests
+
+=================================================================================
+1. GENERALLY
+=================================================================================
+Mocking a class means that a virtual class is created based upon the original, and that class is rendered to a variable.
+This new class will have behaviours how the class will act for actions coming from caller side. Practically, a behaviour equals with calling a method which name is identical to one of the original method names of the class.
+Mocking is important in testing with which making independent unit tests become possible.
+In case in a testing environment emulated classes are needed (e.g. file environment), mocking is the best.
+
+=================================================================================
+2. SETTING UP
+=================================================================================
+In order to address Mockito, the following tags should be inserted into pom.xml.
+After modifying the pom.xml, in IntelliJ IDEA, right-click on the pom.xml and select the Maven/Reload Project menu item.
+Alternative way is to type "mvn compile" to make Maven to find and install all what is needed.
+
+If there is not, create a block under the properties block:
+    <dependencies>
+    </dependencies>
+
+Then inside, add the next (it is possible to define version tag with all dependencies, in case no version tag, the best compatible version will be used by Maven):
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+=================================================================================
+3. MOCKING
+=================================================================================
+Mocking a variable means the variable will act like what references to a real memory or disk allocation but instead, will be held in memory and limited to keep its data as needed for mocking.
+Behavior means how the variable will act for calling certain methods, with this, will emulate a true behavior of corresponding class.
+
+Some formulas for emulating methods (setting up behaviors):
+    a. when(mockedVariable.methodWithReturnValue()).thenReturn(value);
+    b. when(mockedVariable.methodWithReturnValue()).thenThrow(exception);
+    c. doThrow(exception).when(mockedVariable).methodWithoutReturnValue();
+The thenReturn() method can not receive mocked class in its argument.
+
+Practically, any class can be mocked.
+
+EXAMPLE 1 FOR MOCKING:
+import org.mockito.Mockito;
+import org.mockito.*;
+import static org.mockito.Mockito.when;
+...
+File testfolder = Mockito.mock(File.class); //testfolder will have File as type but will be kept in memory
+//behavior settings: how the mocked variable will act for certain actions
+when(testfolder.isFile()).thenReturn(false);
+when(testfolder.isDirectory()).thenReturn(true);
+when(testfolder.getName()).thenReturn("nicefolder");
+when(testfolder.getPath()).thenReturn("c:\\aaa\\nicefolder");
+when(testfolder.getParent()).thenReturn("c:\\aaa");
+when(testfolder.listFiles()).thenReturn(new File[]{...});
+...
+File[] fileList = testfolder.listFiles(); //will return File[] as set with behaviors
+//processes
+Mockito.verify(testfolder, Mockito.times(3)).getName(); //checks getName() of testfolder was used 3 times from declaration until this point
+Mockito.verify(testfolder, Mockito.never()).getPath(); //checks getName() of testfolder was never used from declaration until this point
+
+EXAMPLE 2 FOR MOCKING:
+import org.mockito.Mockito;
+import org.mockito.*;
+import static org.mockito.Mockito.when;
+...
+File testfolder = Mockito.mock(File.class);
+when(testfolder.isFile()).thenReturn(false);
+when(testfolder.isDirectory()).thenReturn(true);
+when(testfolder.getName()).thenReturn("nicefolder");
+
+File testfile = Mockito.mock(File.class);
+when(testfile.isFile()).thenReturn(true);
+when(testfile.isDirectory()).thenReturn(false);
+when(testfile.getName()).thenReturn("nicefile.txt");
+
+when(testfolder.listFiles()).thenReturn(new File[]{nicefile});
+
+List<File> list = Arrays.asList(testfolder.listFiles());
+String name = list.get(0).getName();
+
+Mockito.verify(testfile, Mockito.times(3)).getName(); //false, stops test flow
+Mockito.verify(testfile, Mockito.times(1)).getName(); //true
+Mockito.verify(testfolder, Mockito.never()).getName(); //true
+Mockito.verify(testfolder, Mockito.times(1)).listFiles(); //true
+
+list = Arrays.asList(testfolder.listFiles());
+Mockito.verify(testfolder, Mockito.times(2)).listFiles(); //true

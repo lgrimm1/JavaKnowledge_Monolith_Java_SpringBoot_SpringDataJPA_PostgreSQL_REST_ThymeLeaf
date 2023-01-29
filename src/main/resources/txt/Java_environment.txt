@@ -1,0 +1,23 @@
+=================================================================================
+JAVA ENVIRONMENT
+=================================================================================
+The Java building-executing structure:
+Java source code -> Java Compiler -> Bytecode -> Java Virtual Machine -> Machine code
+
+The source code is made by developers. The source code is stored in .java text files.
+The Java Compiler creates bytecode from the source code. This code is platform-independent. Usually, the bytecode is stored in .class files or in a single .jar file.
+The Java Virtual Machine (JVM) itself is platform-dependent and installed on a platform like Linux, System (Apple) or Windows.
+On application launch, the JVM compiles the bytecode into machine code of the given platform and executes it.
+
+Java Runtime Environment (JRE):
+Contains the JVM and libraries.
+A library means a pre-made collection of .class files (byte codes), organized into folders.
+
+Java Development Kit (JDK):
+Contains the JRE and compilers and JavaDocs and Java debuggers.
+The JDK is for software developers.
+There can be several compilers for different purposes and/or from different JDK creators.
+JavaDocs is an automated documentation routine.
+Debuggers are for checking the source code for purpose, stability and exceptions.
+
+=>Comments_and_JavaDocs

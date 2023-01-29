@@ -1,0 +1,239 @@
+=================================================================================
+METHODS
+=================================================================================
+1. DECLARATION
+2. ACTUAL AND PASSED PARAMETERS
+3. RETURN
+4. METHOD SIGNATURE
+5. METHOD OVERLOAD
+6. MAIN METHOD
+7. HELPER METHOD
+8. GENERICS METHOD
+9. VARIABLE NUMBER OF ARGUMENTS (VARARGS)
+10. METHOD ORGANIZING
+
+=>Access_modifiers
+=>Classes
+=>Inheritance
+=>Primitive_data_types
+=>Objects
+=>Classes;10. GENERICS CLASSES
+=>Annotations
+=>Classes;3. NEW METHOD, METHOD OVERRIDE, METHOD OVERLOAD
+
+=================================================================================
+1. DECLARATION
+=================================================================================
+[access modifiers] returnType methodName([paramType paramName[, paramType2 paramName2, ...]) {
+	//body
+}
+
+=================================================================================
+2. ACTUAL AND PASSED PARAMETERS
+=================================================================================
+A method can have 0, 1 or more parameters.
+On the caller side these are called actual parameters while on method side these are the passed parameters.
+
+Primitive types as parameters means the caller method passes a literal.
+Object type as parameter means the caller method passes a reference to the original object.
+In case the original object is immutable, any changes to the object within the scope of the method will not change the original object.
+In case the original object is mutable (e.g. ArrayList), the changes will apply to the original object.
+
+EXAMPLE FOR PASSING LITERAL TO METHOD:
+void methodName(int n) {...}
+...
+methodName(3);
+
+EXAMPLE FOR PASSING PRIMITIVE TYPE TO METHOD:
+void methodName(int n) {...}
+...
+int n = 4;
+methodName(n);
+
+EXAMPLE FOR PASSING CLASS TYPE TO METHOD:
+void methodName(ArrayList<String> sal) {...}
+...
+ArrayList<String> sal = new ArrayList<>();
+...
+methodName(sal);
+
+EXAMPLE FOR PASSING TEMPORARY OBJECT TO METHOD 1:
+void methodName(Scanner scanner) {...}
+...
+methodName(new Scanner(...));
+
+EXAMPLE FOR PASSING TEMPORARY OBJECT TO METHOD 2:
+void methodName(int[] array) {...}
+...
+methodName(new int[]{1, 2, 3});
+
+=================================================================================
+3. RETURN
+=================================================================================
+A method will or will not return a literal, a result of expression or an object.
+In many cases it is a control value (e.g. boolean of successfulness), in other cases it is the result of process.
+
+In case of no returned value, use the "void" keyword instead.
+
+In case a returned value, the flow must reach the next line, and exits from the method there:
+return value;
+
+There can be more endpoints (more return statements) in case the flow branches (using conditions) but only one must be at the end of each branch.
+In case no returned value, no return statement must be used, and the method exits as the flow reaches the end of it.
+
+EXAMPLE FOR USAGE OF RETURN 1:
+if (condition) {
+    return ...;
+}
+//process continues (false case)
+
+EXAMPLES FOR USAGE OF RETURN 2:
+return true; //literal
+return a * b; //expression as dynamic literal (can change with every invoking)
+return a; //variable defined in method
+return new int[]{...}; //allocates memory for a temporary object with values
+
+EXAMPLES FOR USAGE OF RETURN 3:
+return (condition) ? return a : return b;
+
+EXAMPLES FOR USAGE OF RETURN 4:
+return switch (variable or expression) {
+    case ... -> a;
+    case ... -> a * b;
+    case ... -> new int[]{...};
+    default -> ...;
+};
+
+=================================================================================
+4. METHOD SIGNATURE
+=================================================================================
+Signature of method: name of the method and the types of passed parameters in order.
+The element type of ArrayList, Maps etc. (between < and > at their definition) will not be analysed when the signature is checked. Due to this, the next two methods are the same for signatures:
+
+methodName(ArrayList<String> sal)
+methodName(ArrayList<Integer> ial)
+
+There can not be methods in a class with the same signature.
+
+=================================================================================
+5. METHOD OVERLOAD
+=================================================================================
+Polymorphism can be added by using a method for the same purpose but declared with different signatures to ensure that the method can be used for more than one tasks. This is method overloading.
+Be aware that for method overloading, method signatures must be unique for each method version. For example these parameter lists are equal for signature because the types are the same (String, String):
+(String a, String b) and (String d, String e), or
+(ArrayList<String>) and (ArrayList<Integer>).
+
+EXAMPLE FOR METHOD OVERLOADING:
+returnType methodName(paramType1 paramName1) {...}
+returnType methodName(paramType1 paramName1, paramType2 paramName2) {...}
+returnType methodName(paramType3 paramName3, paramType4 paramName4) {...}
+
+=================================================================================
+6. MAIN METHOD
+=================================================================================
+An application needs a main (root) class and within the main method which invokes first when the application starts.
+
+The declaration must be this:
+public static void main(String[] args) {
+	...
+}
+The main method is static, no need to create an instance from the root class for the system to access it.
+The args contains the application launch parameters with which the application (the root class) was called.
+The launch parameters are divided and stored in a String array based upon separation by white space.
+The command line parameters (launch parameters) are always stored as Strings, for numbers corresponding array elements must be converted.
+In a dynamic (non-static) class it is allowed to declare static methods, these methods can be accessed without creating an object from the class first.
+
+=================================================================================
+7. HELPER METHOD
+=================================================================================
+In a class there usually are public methods which can be reached by other classes, and helper methods which calculate inner results for public methods. That said, a helper method is private, and helps to organize the method system and the execution flow better.
+
+EXAMPLE:
+class className {
+    //private fields
+
+    private returnType1 helperMethod(...) {...}
+
+    public returnType2 methodName() {
+        ...
+        ... = helperMethod(...);
+        ...
+        return ...;
+    }
+}
+
+=================================================================================
+8. GENERICS METHOD
+=================================================================================
+A method which can work with any type of data. For this, a virtual type called T or "type parameter" is used as its argument.
+No primitive types can be used with generics methods.
+When calling such method, the type optionally can be given. If not given, Java will try to reach for the best fitting type.
+
+EXAMPLE FOR DECLARING A GENERICS METHOD:
+<access modifier> <T> returnValue methodName(T data) {
+    //statements
+}
+
+EXAMPLE FOR UTILIZING A GENERICS METHOD:
+//declare method
+public <T> void genMethod(T data) {
+    System.out.println(data);
+}
+//use as String method
+<String>genMethod("Window"); //or:
+genMethod("Window");
+//use as Integer method
+<Integer>genMethod(3); //or:
+genMethod(3);
+
+By using <T>, any types except primitive types can be accepted. Narrowing is possible by using <T extends typeClass> where typeClass can be e.g. Number for numbers or any custom types so T can be only a subtype of typeClass.
+Such T is called bounded type.
+
+EXAMPLE FOR DECLARING GENERICS METHOD ACCEPTING ONLY NUMBERS:
+<access modifier> <T extends Number> returnValue methodName(T data) {...}
+
+Advantages of using generics:
+    a. code re-usability
+    b. compile-time type checking
+
+=================================================================================
+9. VARIABLE NUMBER OF ARGUMENTS (VARARGS)
+=================================================================================
+The method which accepts variable argument, is called variable-arity method or varargs.
+The parameter which represents the variable argument is called vararg.
+
+<access modifier> returnType methodName(dataType... arg) {...}
+
+It allows to have high amount of passed variables handled. The actual number of passed variables depends on the caller side.
+A vararg means zero or many parameters of the same type.
+The passed variables will be rendered into an array of the same type the varargs have, on the receiver (method) side.
+In case all the variants of possible parameters are known and the number of possibilities are low, use overload instead, for better code understanding.
+A vararg must be the last parameter in the method signature. A method can have only 1 vararg parameter.
+In case the vararg and a parameter just before it has the same type (e.g. int i, int... args), will lead to unstable code since the compiler might not know that the first parameter is part of the vararg or not. In such cases use method overload.
+
+EXAMPLE:
+int totalCalc(int... intParams) {
+    if (intParams.length == 0) {
+        return 0;
+    }
+    int total = 0;
+    for (int n : intParams) {
+        total += n;
+    }
+    return total;
+}
+...
+int sum = totalCalc(1, 2); //3
+sum = totalCalc(1, 2, 3, 4, 5); //15
+
+Varargs can be overloaded as well as normal methods.
+
+int methodName(int... args) {...}
+int methodName(String s, int... args) {...}
+
+
+=================================================================================
+10. METHOD ORGANIZING
+=================================================================================
+A method should be handled as a black box which has its inputs (or uses already defined local variables) and generates an output (and/or changes mutable passed parameters).
+In such structure, if there is a test behind which compares outputs against needed values, after re-developing the method, running the test will ensure the proper results.

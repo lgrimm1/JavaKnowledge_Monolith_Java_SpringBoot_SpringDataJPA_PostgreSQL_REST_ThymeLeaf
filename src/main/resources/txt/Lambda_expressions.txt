@@ -1,0 +1,230 @@
+=================================================================================
+LAMBDA EXPRESSIONS
+=================================================================================
+1. LAMBDA GENERALLY
+2. LAMBDA DERIVING FROM SAM
+3. LAMBDA USED NOT IN-PLACE
+4. LAMBDA USED IN-PLACE
+5. LAMBDA WITH GENERICS FUNCTIONAL INTERFACE
+6. METHOD REFERENCE
+
+=>Classes
+=>Inheritance
+=>ArrayList
+=>ConcurrentHashMap
+=>Iterator
+=>LinkedList
+=>Map
+=>Set
+=>TreeMap
+=>Inheritance;7.4. GENERICS FUNCTIONAL INTERFACE
+
+=================================================================================
+1. LAMBDA GENERALLY
+=================================================================================
+The lambda expression is an anonymous, unnamed method.
+It is a virtual functional interface which declares a simple method, usually passed as an argument. That is, lambda expressions are not executed by their own.
+It is derived from functional interface (Single Abstract Method or SAM) in Java8.
+By using it, the readability of passed methods is increasing while the code amount is greatly decreasing.
+It is used to implement a method without an explicitly defined functional interface.
+
+General formula:
+    (virtual parameter list of the abstract method) -> unique implemented algorithm of the abstract method
+or in other way:
+    (parameter list) -> lambda body
+In case the body consists of more statements:
+    (parameter list) -> {lambda body}
+
+In case the body consists of 1 statement, the body is called expression body.
+In case the body consists of more statements, the body is called block body (avoid it by organizing the statements into an external helper method for better code).
+In case there is only one parameter, using braces becomes optional (do not put one parameter into braces for better code).
+
+In case of no parameter:
+    () -> statement
+In case of 1 parameter:
+    parameter -> statement
+In case of more parameters:
+    (parameter1, parameter2, ...) -> statement
+
+=================================================================================
+2. LAMBDA DERIVING FROM SAM
+=================================================================================
+EXAMPLE FOR DERIVING 0-STATEMENT SAM INTO LAMBDA:
+//SAM:
+void methodName() {
+}
+//lambda:
+() -> {}
+
+EXAMPLE FOR DERIVING 1-STATEMENT SAM INTO LAMBDA:
+//SAM:
+void methodName() {
+    statement;
+}
+//lambda:
+() -> statement
+
+EXAMPLE FOR DERIVING 1-STATEMENT-SAM-WITH-RETURN-VALUE INTO LAMBDA:
+//SAM:
+<returnType> methodName() {
+    return returnValue;
+}
+//lambda:
+() -> returnValue
+
+EXAMPLE FOR DERIVING MORE-STATEMENT SAM INTO LAMBDA:
+//SAM:
+void methodName() {
+    statement1;
+    statement2;
+}
+//lambda:
+() -> {
+    statement1;
+    statement2;
+};
+
+EXAMPLE FOR DERIVING MORE-STATEMENT-SAM-WITH-RETURN-VALUE INTO LAMBDA:
+//SAM:
+void methodName() {
+    statement;
+    return returnValue;
+}
+//lambda:
+() -> {
+    statement;
+    return returnValue;
+};
+
+=================================================================================
+3. LAMBDA USED NOT IN-PLACE
+=================================================================================
+In case the expression will be used more than once (not just in-place), must a functional interface be declared which will carry the block of the lambda.
+The functional interface then can be assigned to a variable which will represent an anonymous class.
+The variable is not an instance since the reference points to an interface is not a class.
+That variable can be passed as parameter.
+
+EXAMPLE FOR USING LAMBDA THROUGH FUNCTIONAL INTERFACE IN MORE PLACES:
+//define functional interface with one abstract method
+@FunctionalInterface
+interface InterfaceName() {
+    returnValue methodName();
+}
+...
+//create reference
+InterfaceName fi;
+//declare lambda (implement the abstract method)
+fi = () -> statement;
+//or:
+//create reference and declare lambda together
+InterfaceName fi = () -> statement;
+...
+//use lambda as a variable passed to a method as parameter
+method(fi.methodName());
+...
+//redeclare lambda (implement the abstract method again)
+fi = () -> statement;
+...
+//use lambda as a variable passed to a method as parameter
+method(fi.methodName());
+
+EXAMPLE FOR LAMBDA USED NOT IN-PLACE, HANDLING STRING WITH RETURN VALUE:
+@FunctionalInterface
+interface UpperCase() {
+    String upperCase(String string);
+}
+...
+UpperCase uc = (s) -> {
+    String s2 = (s.length() > 5) ? "AAA" : "BBB";
+    return s2 + s.toUpperCase();
+};
+...
+String s = ...;
+s = uc.upperCase(s);
+...
+uc = (s) -> s.toUpperCase();
+s = uc.upperCase(s);
+
+=================================================================================
+4. LAMBDA USED IN-PLACE
+=================================================================================
+In case the lambda is used only in-place, declaring the interface and using a reference on it is optional, not necessary.
+
+EXAMPLES FOR USING LAMBDA IN-PLACE:
+//use lambda as a variable passed to a method as parameter
+method(() -> statement);
+//or:
+method((a, b) -> {
+    statement1;
+    statement2;
+    return statement;
+});
+
+=================================================================================
+5. LAMBDA WITH GENERICS FUNCTIONAL INTERFACE
+=================================================================================
+Lambda can be used with generics functional interface.
+Declaring the variable pointing to the instance of such interface will define the carried input type.
+Explicitly declaring the type when creating instance is optional, without it Java chooses the best fitting type.
+
+EXAMPLE FOR USING LAMBDA WITH GENERICS FUNCTIONAL INTERFACE:
+@FunctionalInterface
+interface GenericsInterfaceName<T> {
+    T func(T data);
+}
+...
+GenericsInterfaceName<String> generic1 = (str) -> {...}; //operate with String data
+GenericsInterfaceName<String> generic1 = (str) -> {...}; //operate with String data
+GenericsInterfaceName generic2 = (a) -> {...}; //operate with type choosen by Java
+
+=================================================================================
+6. METHOD REFERENCE
+=================================================================================
+For lambdas which use external methods as statements, method reference can be used instead of the lambda formula.
+In these cases, 0 or 1 parameter is accepted.
+
+Formulas of lambda:
+    () -> [ClassName.]methodName1()
+    (parameter) -> [ClassName.]methodName2(parameter)
+Replacer formulas of method reference:
+    ClassName::methodName1
+    ClassName::methodName2
+
+This exchange can increase code readability in case the ClassName is a relatively short one.
+In case the ClassName is too long, use the original lambda instead.
+
+EXAMPLES FOR CONVERTING LAMBDA TO METHOD REFERENCE:
+//lambda formulas:
+() -> getSize()
+(windowSize) -> setSize(windowSize)
+//method reference formulas:
+DeclareNewWindowParameters::getSize
+DeclareNewWindowParameters::setSize
+
+=================================================================================
+7. PASSING LAMBDA AS METHOD ARGUMENT
+=================================================================================
+Methods can receive lambdas (method references) as parameter.
+For this, the type on receiver side should be Runnable (no return value) or Callable (with return value) or an implementation of them.
+
+EXAMPLE FOR PASSING LAMBDA AS ARGUMENT:
+void methodName() {...} //the method we would like to pass
+//the method we would like to receive with; exception are not handled by run()
+void receivingMethod1(Runnable process1) {
+    try {
+        process1.run();
+    }
+    catch (Exception e) {
+        //processing exception
+    }
+}
+//the method we would like to receive with; exceptions are handled by call()
+int receivingMethod2(Callable process2) {
+    return process2.call();
+}
+...
+receivingMethod1(methodName());
+receivingMethod1(() -> methodName());
+receivingMethod1(ClassName::methodName);
+receivingMethod1(() -> ...); //lambda not referencing to outer method
+int newValue = receivingMethod2(methodName(intValue));

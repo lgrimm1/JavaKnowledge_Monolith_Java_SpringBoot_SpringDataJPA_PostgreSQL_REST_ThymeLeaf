@@ -1,0 +1,298 @@
+=================================================================================
+SPRING.BOOT ENTITY
+=================================================================================
+Before any development of the repository class, an entity must be defined.
+This class forms the basic element type which will be sent and received to-from the in-memory container or the database by the repository class, and processed by the service class.
+Because objects of this entity will be checked for equality e.g. in tests, overriding the equals() and hashCode() methods of Object class is mandatory.
+In case the entity will be transferred between backend and frontend, following the rules of serialization is necessary (transient and static fields, serialVersionUID, Serializable, writeObject(), readObject() etc.).
+It is advised to express the toString() method of the entity as well.
+
+1. NO-JPA ENTITY CLASS
+2. JPA ENTITY CLASS
+
+=>Spring_Boot
+=>Spring_Boot_Validation
+=>Serialization
+=>PostgreSQL
+=>Spring_Boot_tests;2. ENTITY TEST
+=>Spring_Boot_controller#9. IMPLEMENT REST CRUD API
+=>Spring_Boot_configuration
+
+=================================================================================
+1. NO-JPA ENTITY CLASS
+=================================================================================
+In case of in-memory (no database) container, this class should provide an immutable data holder.
+
+EXAMPLE FOR AN ENTITY CLASS (NO-JPA):
+package PackageName;
+
+public class EntityClassName {
+
+	private long id;
+
+	//private field definitions
+
+	public EntityClassName(long id, ...) {
+	    this.id = id;
+	    ...
+	}
+
+	//getters
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		EntityClassName entityClassName = (EntityClassName) o;
+		return Objects.equals(id, entityClassName.id) && ...);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id, ...);
+	}
+
+	@Override
+	public String toString() {
+		return "EntityClassName{" +
+				"id=" + id +
+                ...
+				'}';
+	}
+}
+
+=================================================================================
+2. JPA ENTITY CLASS
+=================================================================================
+Developing JPA entity class can start with developing a no-JPA entity. A no-JPA entity can be easily transformed to a JPA-entity by filling it with the correct annotations and checking the existence of the needed constructors and methods (see later).
+When the class is refactored to be a JPA entity class, before the first test run, make the JPA dependency in the pom.xml alive.
+The entity is called domain class under Spring JPA.
+
+In case the repository solution will be not in-memory, before the first test run, also need to create a new and empty database in PostgreSQL or other database system beforehand via using console or admin interface provided by the database system.
+For console, the next SQL commands are needed:
+    CREATE DATABASE db-name;
+    GRANT ALL PRIVILEGES ON DATABASE "db-name" TO username;
+The db-name is name of the database, username is the user which we want to use to manage the database, both are set in the application.properties file.
+The default username under postgreSQL is postgres.
+
+The entity will represent a row in a table, also carries the backend and database behaviour connected to the correspondent table via annotations.
+The Spring.Data framework (especially the database dependency) will handle the conversion processes from-to the database.
+
+The JPA software development aims for the backend. The database itself is not part of the backend which means the new database is needed for software development only.
+All application launch starts with that Hibernate in the background fills the database with tables and other elements.
+Every action with the repository will be rendered to SQL commands by Hibernate and also sent to the database.
+All application ends with that Hibernate empties the database for rows, tables and everything else.
+
+2.1. GENERAL CLASS STRUCTURE
+2.2. FIELDS
+2.3. METHODS
+2.4. ENTITY CLASS EXAMPLES
+
+2.1. GENERAL CLASS STRUCTURE
+---------------------------------------------------------------------------------
+The class must be public and must not be final in order to let Spring accessing and using it.
+The entity class is marked with Spring (Hibernate) class-level annotations.
+
+||Annotation|Description||
+||@Entity|marks that the class is a Spring.Data entity||
+||@Table|defines the corresponding table name in the database in case the two are not the same (most cases)||
+||@NamedQuery|optional; defines a domain-level query on the entity and renders it to a query method signature from within the domain||
+
+The Spring name of the entity is defined by the class name. This can be overwritten via using the optional name parameter:
+    @Entity(name = "entityName")
+
+The @Table annotation can have two parameters:
+    a. name = "table name in database"
+    b. schema = "name of set of tables in the database" (optional)
+
+The @NamedQuery annotation has the next parameters:
+    a. name = "EntityClassName.queryMethodName"
+    b. query = "JPQL expression"
+By using it, the query will be bounded to the domain class and will be accessible by calling the method in static mode:
+    variable = EntityClassName.queryMethodName();
+For JPQL examples see the Spring_Boot_repository page.
+By using this annotation on a domain class, annotation-based configuration is created.
+
+2.2. FIELDS
+---------------------------------------------------------------------------------
+Every JPA entity must have a primary key which follows the standard table structure in relational database world.
+The ID can be generated via following four strategics, defined with the @GeneratedValue annotation:
+    a. AUTO (any strategy will be used by JPA)
+    b. TABLE
+    c. SEQUENCE (preferred for postgreSQL, needs a sequence generator)
+    d. IDENTITY
+When using the SEQUENCE strategy, the ID generator also needs a sequence generator with which the IDs are generated.
+
+The relation between class fields and table fields are marked with field-level annotations.
+
+||Annotation|Description||
+||@Id|marks that the field will represent a primary key column in the table of the database||
+||@SequenceGenerator|marks the ID generator parameters||
+||@GeneratedValue|marks ID generator type||
+||@Column|defines the corresponding column name of the table in the database||
+||@Transient|will not match with column, will be calculated with constructor or with other code segments e.g. in service class||
+||@Temporal|for older Spring JPA, marks that the date or time field will contain temporal data||
+||@Enumerated|marks that the field contains enum||
+
+The @Id annotation marks that the field matches with the table column with primary key values.
+Using the @Column annotation is still needed.
+
+The @SequenceGenerator annotation also marks the ID field and has the next parameters:
+    a. name = "generator_name" (practically same as sequence_name)
+    b. sequenceName = "sequence_name"
+    c. allocationSize = 1 (defines how the ID value will increase)
+With the values above, the generator will start the IDs with 1 and steps with 1 (allocationSize). The maximum value will be determined by the field type (e.g. long or Long will be bigint in the table, int or Integer will be integer in the table).
+
+The @GeneratedValue annotation also marks the ID field, and has the next parameters:
+    a. strategy = GenerationType.SEQUENCE
+    b. generator = "sequence_name" (connects the strategy with the sequence generator defined with @SequenceGenerator annotation)
+
+The @Column annotation can have the next parameters:
+    a. name = "column name in database"
+    b. length = number (maximum length of the text values, default is 255)
+    c. precision = number (maximum number of digits, default is zero)
+    d. scale = number (maximum number of decimal digits, default is zero)
+    e. nullable = true|false (does the column accept null as value, default is true)
+    f. unique = true|false (is accepting unique value for the column obligatory, default is false)
+    g. insertable = true|false (is accepting new rows, default is true)
+    h. updatable = true|false (is accepting updating existing rows, default is true)
+    i. table = "table name" (default is "")
+    j. columnDefinition = "" (default is "")
+In database tables, every cell value can be null unless marked differently. That said, every type when transferred or set directly to and in database, can be null in the database so marking the column for nullability is preferred even in case of primitive type in entity.
+In case the @Column annotation is not used on a field, that field will be matched with table column by the field name, and will apply default values of all parameters of the virtually non-existent annotation.
+
+The @Temporal annotation has a TemporalType parameter e.g. TemporalType.DATE.
+The newer JPA supports the next field types (no need for annotation):
+    a. LocalDate
+    b. LocalTime
+    c. LocalDateTime
+    d. OffsetTime
+    e. OffsetDateTime
+
+The @Enumerated annotation can have the next parameters:
+    a. [value = ]EnumType.STRING (will use the String value of the enum)
+    b. [value = ]EnumType.ORDINAL (default, will use ordinals of the enum)
+In case the order of possible enum values can change in time, use String version in order to prevent necessary database processing.
+
+If needed, transient fields can be connected to table columns as well, by using @Column annotation.
+
+2.3. METHODS
+---------------------------------------------------------------------------------
+The default constructor is needed by the Spring.JPA. By defining it, the class will not be immutable by definition.
+Custom constructors (which serve as collective setter method as well) is optional.
+When implementing CRUD API, two additional constructors are needed: one with all fields except the ID, and one with all fields.
+In case of using JPA, the entity will need all getters and setters in order to have access to them. However, with this the entity will not be immutable by definition.
+
+In case a method argument must not be null, that argument can be marked with the @NonNull annotation. Please note, passing null to a @NonNull argument results an HTTP500 exception.
+
+EXAMPLES FOR MARKING A NON-NULL METHOD ARGUMENT:
+public void EntityName(..., @NonNull parameterType, parameterName, ...) {...}
+
+2.4. ENTITY CLASS EXAMPLES
+---------------------------------------------------------------------------------
+EXAMPLE FOR AN ENTITY CLASS (JPA, CRUD API):
+package PackageName;
+
+import jakarta.persistence.*;
+import java.util.*;
+
+@Entity
+@Table(name = "database_table_name")
+public class EntityClassName {
+
+	@Id
+	@SequenceGenerator(name = "sequence_name", sequenceName = "sequence_name", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequence_name")
+	@Column(name = "id_column_name_in_database_table")
+	private long id;
+
+	@Column(name = "column_name_in_database_table", ...)
+	//private field definition
+
+	public EntityClassName() {
+	}
+
+	public EntityClassName(...) {
+	    ...
+	}
+
+	public EntityClassName(long id, ...) {
+	    this.id = id;
+	    ...
+	}
+
+	//getters
+	//setters
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		EntityClassName entityClassName = (EntityClassName) o;
+		return Objects.equals(id, entityClassName.id) && ...);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id, ...);
+	}
+
+	@Override
+	public String toString() {
+		return "EntityClassName{" +
+				"id=" + id +
+                ...
+				'}';
+	}
+}
+
+EXAMPLE FOR CALCULATED ENTITY FIELD (TRANSIENT):
+package PackageName;
+
+import jakarta.persistence.*;
+import java.util.*;
+
+@Entity
+@Table(name = "database_table_name")
+public class EntityClassName {
+
+	@Id
+	@SequenceGenerator(name = "sequence_name", sequenceName = "sequence_name", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequence_name")
+	@Column(name = "id_column_name_in_database_table")
+	private long id;
+
+	@Column(name = "birthday", ...)
+	private LocalDate birthday;
+
+	@Transient
+	private integer age;
+
+	public EntityClassName() {
+	}
+
+	public EntityClassName(LocalDate birthday) {
+	    this.birthday = birthday;
+	}
+
+	public EntityClassName(long id, LocalDate birthday) {
+	    this.id = id;
+	    this.birthday = birthday;
+	}
+
+    //getters-setters for id and birthday fields
+
+    public Integer getAge() {
+        return Period.between(LocalDate.now().getYears() - this.birthday);
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    //equals(), hashCode(), toString() methods for all fields
+}
+
+//TODO https://www.baeldung.com/hibernate-one-to-many
+//TODO https://www.baeldung.com/jpa-many-to-many
+//TODO https://stackoverflow.com/questions/32427921/jpa-entity-must-be-unit-tested-and-how

@@ -1,0 +1,38 @@
+=================================================================================
+ENUMSET
+=================================================================================
+Implements the Set interface.
+Provides elements of a single enum.
+Also implements Cloneable and Serializable interfaces. Cloneable means copy of the instance can be made. Serializable means it can be converted to bits and bytes in order to transfer it through network.
+
+Because elements can be only from an enum, the JVM knows all possible values of the set, so the EnumSet is implemented as sequence of bits internally, one bit shows if that enum value is added to the set or not.
+
+EnumSet has no public constructors. In order to declare an EnumSet, an enum must bve declared first, then an instance can be created by using allOf(), nonOf(), range() or of() methods.
+
+EXAMPLE FOR CREATING AN INSTANCE:
+import java.util.EnumSet;
+...
+enum enumName {
+    ENUM1, ENUM2, ...
+}
+EnumSet<enumName> set1 = EnumSet.allOf(enumName.class); //[ENUM1, ENUM2, ...], set will contain all elements of the enum
+EnumSet<enumName> set2 = EnumSet.noneOf(enumName.class); //[], only the elements of the enum can be added to the set in the program
+EnumSet<enumName> set3 = EnumSet.range(enumName.ENUMx, enumName.ENUMy); //[ENUMx, ..., ENUMy], will contain values of the enum between the given values
+EnumSet<enumName> set4 = EnumSet.of(enumName.ENUMx, enumName.ENUMy); //[ENUMx, ENUMy], will contain given values of the enum
+
+All methods of Set are available but values can be only from the same enum type.
+Elements can be added from other Collection types like ArrayList, LinkedList in case their element type are the same enum type.
+Specific method are below.
+
+||Method|Description||
+||copyOf()|created a copy of the set||
+
+Differences between EnumSet and EnumMap:
+    a. EnumSet is stored as a sequence of bits, EnumMap is stored as arrays
+    b. EnumSet is created with its methods e.g. allOf(), noneOf(), range(), of(), EnumMap is created with its constructor
+
+=>EnumMap
+=>Set
+=>Collection
+=>Classes;9. ENUMERATION CLASSES
+=>Serialization

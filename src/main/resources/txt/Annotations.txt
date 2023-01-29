@@ -1,0 +1,108 @@
+=================================================================================
+ANNOTATIONS
+=================================================================================
+Metadata for the compiler, does not create code.
+The used annotation can be accessed in run-time through Reflection.
+
+1. ANNOTATIONS BY NUMBER OF PARAMETERS
+2. ANNOTATIONS BY PLACING
+3. ANNOTATIONS BY FUNCTION
+
+=>Classes
+=>Methods
+=>Variables
+=>Type_casting_and_conversion
+=>Inheritance
+=>Methods;9. VARIABLE NUMBER OF ARGUMENTS (VARARGS)
+
+=================================================================================
+1. ANNOTATIONS BY NUMBER OF PARAMETERS
+=================================================================================
+Marker annotation:
+@AnnotationName()
+@AnnotationName
+
+1-element annotation:
+@AnnotationName(value = elementValueString)
+@AnnotationName(elementValueString)
+Because it has only 1 element, the parameter is called value or can be left out.
+
+Multi-element annotation:
+@AnnotationName(value1 = elementValueString1, value1 = elementValueString1, ...)
+
+=================================================================================
+2. ANNOTATIONS BY PLACING
+=================================================================================
+2.1. DECLARATION ANNOTATIONS
+2.2. TYPE ANNOTATIONS
+
+2.1. DECLARATION ANNOTATIONS
+---------------------------------------------------------------------------------
+For classes, interfaces, fields, methods.
+Place directly above a line it refers to.
+
+@Override //in case the method signature is different from the signature of overridden method, gives a warning
+@SuppressWarnings("unchecked") //without it, in case unchecked exception would be thrown during run-time, gives warning at compile-time
+
+2.2. TYPE ANNOTATIONS
+---------------------------------------------------------------------------------
+A type annotation is used inline with the type it refers to.
+
+a. Constructor annotation: used in calling constructor.
+ArrayList<String> sal = new @ReadOnly ArrayList<>(); //the constructor will create a read-only object
+
+b. Type definition annotation:
+@NonNull String s; //gives warning in case an action with s would throw a NullPointerException
+@NonNull List<String> li; //through the warning, li must have minimum 1 element
+List<@NonNull String> li2; //through the warning, all elements of li2 must not be null but minimum empty String
+
+c. Type cast annotation:
+String s = (@NonNull String) str; //if str would be null, gives warning
+
+d. Extend and implement clause annotation:
+class W extends @Localized M {...}
+
+e. Throws clause annotation:
+public String read() throws @Localized IOException
+
+=================================================================================
+3. ANNOTATIONS BY FUNCTION
+=================================================================================
+3.1. PREDEFINED ANNOTATIONS
+3.2. META ANNOTATIONS
+3.3. CUSTOM ANNOTATIONS
+
+3.1. PREDEFINED ANNOTATIONS
+---------------------------------------------------------------------------------
+Used as declaration annotations.
+@Deprecated //compiler gives warning in compile-time
+@Override
+@SuppressWarnings(value) //"unchecked": raw type usage, in JavaDocs should have to be documented; "deprecated"; {"deprecated", "unchecked"}
+@SafeVarargs //in case of variable number of arguments and unsafe action is made by the method, suppresses the warning, only for not-extendable (and from Java9 for private) methods
+@FunctionalInterface //the interface can have only abstract methods
+
+3.2. META ANNOTATIONS
+---------------------------------------------------------------------------------
+Modifies the validity of the following annotation.
+@Retention(retentionPolicy) //RetentionPolicy.SOURCE: the annotation is seeable only in the source code, ~.CLASS: seeable only by the compiler, ~.RUNTIME: available for the JVM
+@Documented //the annotation will be mentioned in Javadocs
+@Target(elementType) //the annotation is limited to the given type (ElementType.CONSTRUCTOR, ~.FIELD, ~.METHOD, ~.PACKAGE)
+@Inherited //the annotation can be inherited
+@Repeatable(...) //the annotation can be more than once in the given class (e.g. Uni.class)
+
+3.3. CUSTOM ANNOTATIONS
+---------------------------------------------------------------------------------
+Can be achieved by creating an interface for this purpose.
+[Access Modifier] @interface<AnnotationName> {
+    DataType <MethodName>() [default value];
+}
+
+EXAMPLE FOR CUSTOM ANNOTATION:
+@interface CustomAnno {
+    String value() default "defaultValue";
+}
+class Main {
+    ...
+    @CustomAnno(value = "A")
+    public void method1(){...}
+}

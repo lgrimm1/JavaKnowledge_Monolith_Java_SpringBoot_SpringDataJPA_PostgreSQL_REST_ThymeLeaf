@@ -1,0 +1,44 @@
+=================================================================================
+ITERATOR
+=================================================================================
+For all Collection type, elements can be accessed via loops or Iterator interface.
+The Iterator interface provides a verbal loop for sequential processes.
+Provides one-directional (forward) movements through the elements.
+For List types, the ListIterator interface (extension of Iterator) is the right solution.
+
+||Method|Description||
+||hasNext()|true if there is a next element||
+||next()|returns the next element, exception if there is none||
+||remove()|removes the last element returned by next()||
+||forEachRemaining()|performs an action for all remaining elements||
+
+In case the Iterator is set to the 1st element, the forEachRemaining() method will process all elements of the collection.
+
+EXAMPLE FOR SEQUENTIAL PROCESSING A COLLECTION:
+import java.util.Iterator;
+import java.util.ArrayList;
+...
+ArrayList<elementType> al = new ArrayList<>();
+elementType element;
+...
+Iterator<elementType> iter = al.iterator();
+while (iter.hasNext()) {
+    element = iter.next();
+    //process element
+}
+
+EXAMPLE FOR PROCESSING ALL REMAINING ELEMENTS:
+import java.util.Iterator;
+import java.util.ArrayList;
+...
+ArrayList<elementType> al = new ArrayList<>();
+elementType element;
+...
+Iterator<elementType> iter = al.iterator();
+//processing elements
+iter.forEachRemaining((value) -> System.out.print(value + ", ")); //roughly prints all remaining elements via passing a lambda expression
+
+=>Collection
+=>ListIterator
+=>List
+=>Lambda_expressions

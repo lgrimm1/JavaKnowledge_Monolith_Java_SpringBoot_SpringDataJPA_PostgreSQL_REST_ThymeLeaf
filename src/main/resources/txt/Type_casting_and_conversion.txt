@@ -1,0 +1,117 @@
+=================================================================================
+TYPE CASTING AND CONVERSION
+=================================================================================
+Converting a type to an other type.
+1. WIDENING (IMPLICIT) CASTING
+2. NARROWING (EXPLICIT) CASTING
+3. TYPE CONVERSION
+4. HEXADECIMAL, BINARY AND OCTAL NUMBER CONVERSIONS
+
+=>Primitive_data_types
+=>Wrapper_classes
+=>String
+=>Variables
+=>Objects
+=>Statements
+
+=================================================================================
+1. WIDENING (IMPLICIT) CASTING
+=================================================================================
+Automatic, no data loss, a type will be converted to a type which can hold wider data.
+
+int a = ...;
+long b = a;
+double c = a;
+
+=================================================================================
+2. NARROWING (EXPLICIT) CASTING
+=================================================================================
+The target type is narrower, part of the source type will be truncated or trimmed.
+
+double a = ...;
+int b = (int) d; //the decimal part will be truncated which means the whole part of the original
+float c = (float) a; //can be processed only when the stored value can fit into the narrower type
+
+TYPICAL EXAMPLE:
+import java.io.File;
+...
+File f = new File(...);
+int length = (int) f.size(); //f.size() is a file size in Byte, it can be bigger than INTEGER.MAXVALUE however in many cases methods can accept only int parameter for input
+
+=================================================================================
+3. TYPE CONVERSION
+=================================================================================
+If the target class has (wrapper classes always have) type conversion methods, can convert data into their own type.
+The .valueOf() methods return a wrapper class-type value.
+The .parseInt(), .parseDouble() etc. methods return a primitive-type value of the referred wrapper class.
+Calling a parser on a primitive type is fast, but a .valueOf() first creates a wrapper type then down-casts it to be a primitive one.
+Always use .valueOf() in case the source and the target are classes, and parsing when both are primitives. Otherwise, use .valueOf() if the target is a class.
+
+EXAMPLES FOR CONVERSIONS:
+int a = ...;
+double b = ...;
+String c = String.valueOf(a); //value of a as a String
+c = String.valueOf(b); //value of b as a String like -12.435
+double d = Double.parseDouble(s); //d would be "-12.435"; if conversion is not possible throws exception
+Double e = Double.valueOf(s); //s is converted into a wrapper class
+int f = Integer.parseInt(s); //conversion throws exception, "-12.435" is not an int
+
+=================================================================================
+4. HEXADECIMAL, BINARY AND OCTAL NUMBER CONVERSIONS
+=================================================================================
+Hexadecimal numbers are stored in Strings, 2 characters per a byte.
+For a few byte-to-hexa conversions, can use String formatting since formatting is a slower process but it is a simple solution.
+For general byte-to-hexa solution, use dedicated method.
+For integer, use the Integer.toHexString() method for int-to-hexa, and Integer.parseInt() method for hexa-to-int conversions. Both methods handle minus signs. The toHexString() method results lower case characters, use toUpperCase() method on the result if needed.
+Byte conversions can be handled via int-to-hexa and hexa-to-int conversions as well but must check data against valid byte intervals and the one-byte-two-characters rule.
+
+EXAMPLE FOR BYTE-TO-HEXA CONVERSION VIA STRING FORMATTING:
+byte[] ba = ...;
+String s = "";
+for (byte b : ba) {
+    s += String.format("%02X", b);
+}
+
+EXAMPLE FOR BYTE-TO-HEXA CONVERSION VIA DEDICATED METHOD:
+public static String byteArrayToHexa(byte[] byteArray) {
+    private final static char[] hexArray = "0123456789ABCDEF".toCharArray();
+    char[] hexChars = new char[byteArray.length * 2];
+    for (int i = 0; i < byteArray.length; i++) {
+        int v = bytes[i] & 0xFF;
+        hexChars[j * 2] = hexArray[v >>> 4];
+        hexChars[j * 2 + 1] = hexArray[v & 0x0F];
+    }
+    return new String(hexChars);
+}
+
+EXAMPLE FOR INT-TO-HEXA CONVERSION:
+int n = ...;
+String s = Integer.toHexString(n).toUpperCase();
+
+EXAMPLE FOR HEXA-TO-INT CONVERSION:
+String s = ...;
+int n = Integer.parseInt(s, 16);
+
+Binary numbers are stored in Strings, a number per String.
+For int-to-bin conversion, use Integer.toBinaryString(), bin-to-int conversion, use Integer.parseInt() methods. Both methods handle minus signs.
+
+EXAMPLE FOR INT-TO-BIN CONVERSION:
+int n = ...;
+String s = Integer.toBinaryString(n);
+
+EXAMPLE FOR BIN-TO-INT CONVERSION:
+String s = ...;
+int n = Integer.parseInt(s, 2);
+
+Octal numbers are stored in Strings, a number per String.
+For int-to-octal conversion, use Integer.toOctalString(), octal-to-int conversion, use Integer.parseInt() methods. Both methods handle minus signs.
+
+EXAMPLE FOR INT-TO-OCTAL CONVERSION:
+int n = ...;
+String s = Integer.toOctalString(n);
+
+EXAMPLE FOR OCTAL-TO-INT CONVERSION:
+String s = ...;
+int n = Integer.parseInt(s, 8);
+
+The parseInt() method throws exception in case the input String contains invalid characters for the prefix (e.g. F character in octal number String).

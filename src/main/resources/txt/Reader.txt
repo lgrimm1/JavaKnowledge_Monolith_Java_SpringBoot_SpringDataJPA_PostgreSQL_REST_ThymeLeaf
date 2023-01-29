@@ -1,0 +1,40 @@
+=================================================================================
+READER
+=================================================================================
+Abstract class for handling input streams of character.
+Extending subclasses are BufferedReader, InputStreamReader, StringReader.
+Due to being an abstract class, for declaration use constructor of a subclass.
+Processing of the stream is sequential: after reading the given amount of data, the position will shift as well, the next reading will start from there.
+In case a method tries to access data after the end of the source (accessed length is greater than the actually available), exception raises.
+The stream must be closed after processing in order to release the source.
+After closing the stream, any method will raise exception.
+The Reader implements the AutoClosable interface, the try-with-resources statement can be used to ensure proper closing.
+Find some practical information about file handling under the File operations section.
+
+||Method|Description||
+||ready()|checks if the reader is ready to be read||
+||read(char[] array)|reads the characters from the stream and stores in the given array||
+||read(char[] array, int startPosition, int length)|reads length number of characters from the stream and stores in the given array from startPosition||
+||mark()|marks the position in the stream up to which data has been read||
+||reset()|returns the control to the point in the stream where the mark is set||
+||skip()|discards the specified number of characters from the stream||
+
+EXAMPLE FOR USAGE:
+import java.io.Reader;
+import java.io.FileReader;
+import java.io.File;
+...
+char[] charArray = ...; //prepare the array into which the data will be read
+String fileName = ...; //external file on the storage
+try {
+    Reader r = new FileReader(fileName);
+    r.read(charArray);
+    r.close();
+}
+catch (Exception e) {...}
+
+=>Stream
+=>InputStreamReader
+=>FileReader
+=>BufferedReader
+=>StringReader

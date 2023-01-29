@@ -1,0 +1,34 @@
+=================================================================================
+LITERALS
+=================================================================================
+
+=>Variables
+=>Primitive_data_types
+=>Equality
+
+Literals are constants but no variables.
+For further use we render them to variables or pass them to methods.
+Logical: true or false
+
+Whole number:
+	a. 12 //normal decimal
+	b. 65l or 65L //long decimal
+	c. 0b1001101 //binary, mark is 0b
+	d. 027 //octa, mark is 0 at beginning
+	e. 0x2F //hexadecimal, mark is 0x
+
+Floating-point number:
+	a. 3.4 or 3.4d or 3.4D or 3.445e2 //double-precision, last one is 3.445 * 10^2
+	b. 3.4f or 3.4F //single-precision
+
+Character:
+	a. 'a' //normal character
+	b. \b or \n or \t or \\ or \" //escape character, in order: backspace, new line, TAB, backslash, quotation mark
+
+String: "a" or "abc\nd12n" //with an escape character for demonstration
+
+Automated literal conversion:
+    data with different type will be converted at value giving.
+    int ascii;
+    ascii = 'a'; //value will be 97
+    "Number is " + ascii //right, ascii will be converted to String for concatenation

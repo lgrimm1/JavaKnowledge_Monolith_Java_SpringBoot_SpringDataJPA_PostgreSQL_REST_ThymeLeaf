@@ -1,0 +1,35 @@
+=================================================================================
+SPRING.BOOT CONFIGURATION
+=================================================================================
+This class is used to create pre-configuration of the Spring.Boot application for development purposes.
+Useful when need e.g. records in the database at startup.
+
+The application classes are rendered into graph hierarchy by their package and class dependency injections. The configuration class applies on the package its defined and below in the hierarchy.
+Create a configuration class per graph branch if needed.
+
+The configuration is made of beans. These beans will be injected when Spring arrives at the point when builds the hierarchy or when using the bean makes sense.
+
+The CommandLineRunner bean is used for sending commands to the application only after it fully started up.
+That said, e.g. in tests when the application not or partially started (unit tests or MockMVC controller tests), this bean will not be alive, will not be invoked.
+
+EXAMPLE FOR CONFIGURATION CLASS:
+package packageName;
+
+import org.springframework.boot.*;
+import org.springframework.context.annotation.*;
+
+import java.util.*;
+
+@Configuration
+public class Config {
+	@Bean
+	CommandLineRunner commandLineRunner(RepositoryClass repositoryName) {
+		return args -> {
+			EntityClass entity1 = new EntityClass("Test Data 1", ...);
+			EntityClass entity2 = new EntityClass("Test Data 2", ...);
+			repositoryName.saveAll(List.of(se1, se2));
+		};
+	}
+}
+
+=>Spring_Boot_entity

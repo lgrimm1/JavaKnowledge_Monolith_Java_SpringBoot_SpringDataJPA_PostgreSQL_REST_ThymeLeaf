@@ -1,0 +1,54 @@
+=================================================================================
+WRAPPER CLASSES
+=================================================================================
+Every primitive type has a wrapper class it is originated from.
+Arrays can have primitive and (wrapper) class element types.
+Classes (wrapper classes included) can be given as element type to e.g. List collections only.
+It is possible to use objects with wrapper class as type.
+Wrapper classes have constant fields, static and non-static methods as well.
+All wrapper classes are immutable. That said, the object contains data in memory, a variable points to that memory portion as a reference. When the variable receives a new value, means a new object is created and the pointer of variable is moved to that, the old object can be freed.
+Due to immutability, in order to create a deep copy, no constructor is needed, the new variable can have the old variable assigned to it.
+
+||Primitive type|Wrapper class||
+||boolean|Boolean||
+||byte|Byte||
+||short|Short||
+||int|Integer||
+||long|Long||
+||float|Float||
+||double|Double||
+||char|Character||
+||-|String||
+
+String has no primitive type version.
+Declaring a String object sets its default "" value (empty String).
+String s; //value is ""
+
+All number-based wrapper classes have minimum and maximum constants like .MIN_VALUE and .MAX_VALUE.
+All number-based wrapper classes are extended from Number abstract class.
+All wrapper classes have type conversion methods like .valueOf() and e.g. for Integer .parseInt().
+
+EXAMPLES:
+int a = 2;
+Integer b = 3; //3 is a literal which means we give a primitive-type value to a wrapper-class variable; it is widening casting
+Character c = 'a'; //through widening casting
+Integer d = 6; //through widening casting
+Integer e = a + d; //through narrowing then widening castings; equals with the next:
+Integer e = Integer.valueOf((int) a + (int) b);
+
+Autoboxing: the compiler automatically converts a primitive type to its wrapper type.
+Unboxing: the compiler automatically converts a wrapper type to its primitive type.
+For example, autoboxing and unboxing is used typically when handling collection elements.
+
+EXAMPLE FOR AUTOBOXING AND UNBOXING:
+int a = ...; //primitive type
+Integer b = a; //autoboxing from a primitive type into a wrapper type
+int c = b; //unboxing fromout a wapper type to a primitive type
+ArrayList<Character> cal = new ArrayList<>(); //wrapper element type
+cal.add("a"); //autoboxing from primitive type
+char d = cal.get(0); //unboxing from wrapper class
+Float[] fa = new Float[]{12.5, 34.6}; //wrapper element type, autoboxing from 2 primitive types
+
+=>Primitive_data_types
+=>Variables
+=>Type_casting_and_conversion

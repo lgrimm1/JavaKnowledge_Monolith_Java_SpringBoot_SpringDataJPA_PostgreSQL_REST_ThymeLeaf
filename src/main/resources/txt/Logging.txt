@@ -1,0 +1,239 @@
+=================================================================================
+LOGGING
+=================================================================================
+Classes for logging purposes.
+The developer can place any logs into code to inform other developers or the users about something.
+There are several logging frameworks with full support for logging, e.g. Log4j (Apache), SLF4J (abstraction layer for different kind frameworks), Logback (open-source version of Log4j ver1), tinylog (light weight open-source).
+
+1. LOGGERS
+2. LOGRECORD
+3. LOG HANDLERS
+4. FILTERS, FORMATTERS
+5. LOGMANAGER
+
+=>Classes
+=>Standard_input_and_output
+=>File_operations
+=>Assertion
+
+=================================================================================
+1. LOGGERS
+=================================================================================
+Loggers are conventionally named after their carrier classes. The variable name is different from the name in name space which will be the class name.
+In case a class is in a hierarchical system like in a package, the name should follow the system e.g. java.awt or java.util.
+Log records are categorized into levels.
+Running a logger on a level means all log records on the defined or higher levels are passed through while under the defined level are dropped.
+
+||Level|Details||
+||SEVERE|serious failure||
+||WARNING|potential problem||
+||INFO|general runtime information||
+||CONFIG|configuration data||
+||FINE|general developer information||
+||FINER|detailed developer information||
+||FINEST|highly detailed developer information||
+||OFF|turn off all logging||
+||ALL|turn on logging on FINEST level||
+
+EXAMPLE FOR DECLARING A LOGGER AND SETTING ITS LEVEL:
+Logger logger = Logger.getLogger(ClassName.class.getName()); //by convention the logger name space should come from caller class
+logger.setLevel(Level.INFO); //sets the level to INFO, means only log record from INFO to SEVERE levels will be passed.
+//logger.setLevel(null); //the level will come from the superclass; if there is not, steps through supers until finds one
+
+EXAMPLE FOR CREATING LOG EVENTS:
+logger.info(textString); //INFO-level record with textString as text; can be .severe, .warning etc.
+logger.config(textString); //CONFIG-level record with textString as text; can be .severe, .warning etc.
+logger.log(LEVEL.WARNING, textString); //WARNING-level record; or:
+logger.log(LEVEL.WARNING, textString, ...[, ...]); //WARNING-level record, adds all arguments to the event text, eats more stack; or:
+logger.log(LEVEL.WARNING, textString, new Object[]{..., ...}); //eats less stack with more text components
+
+In any case of exceptions, it is advised to create an event with all the data available about the exception.
+
+EXAMPLE FOR LOGGING AN EXCEPTION:
+try {...}
+catch (Exception e) {
+    logger.log(Level.SEVERE, e.toString(), e);
+}
+
+For a class, it is a good practice to put a logger declaration into the first declarations, and upon extending, implementing or importing, adding them to the main class.
+Next to .log, there are two other methods for creating an event:
+.logp: same as .log but takes class name and method name as arguments as well;
+.logrb: same as .logp but takes the resource bundle name as argument as well.
+
+=================================================================================
+2. LOGRECORD
+=================================================================================
+Every log event is presented as a LogRecord.
+It holds the time of event, the text of event, the module from which the event has been raised etc.
+A LogRecord is created by a Logger, and sent to a Handler.
+For every stored (carried) information the LogRecord has getter method.
+Although there is possibility to create an authentic LogRecord and set its information, for logging purposes it is better to create an event through Logger instead.
+In case of customization, the passed LogRecords are caught and modified via overridden methods, see later.
+
+=================================================================================
+3. LOG HANDLERS
+=================================================================================
+The raised log records will be forwarded to one or more log handlers (appenders) which handle the output channels.
+
+||Handler|Target||
+||StreamHandler|writes to an OutputStream||
+||ConsoleHandler|writes to the console||
+||FileHandler|writes to a file||
+||SocketHandler|writes to remote TCP ports||
+||MemoryHandler|writes to memory||
+
+A ConsoleHandler is already added to a new Logger by default.
+It can be removed from the Logger.
+In case there is probability that the class will be used in an other class with LogManager (see later), should avoid rendering a handler to the Logger of the class.
+
+EXAMPLE FOR DECLARING AND RE-ORGANIZING LOG HANDLERS:
+import java.util.logging.*;
+//import java.util.logging.XxxHandler; //XxxHandler: the needed handler type
+...
+Logger logger = Logger.getLogger(ClassName.class.getName());
+Handler[] handlers = logger.getHandlers();
+for (Handler handler : handlers) {
+    logger.removeHandler(handler); //remove all pre-added handlers, should be only a ConsoleHandler
+}
+Handler handler = new XxxHandler(); //e.g. ConsoleHandler();
+//setting up handler e.g. formatting, see later
+logger.addHandler(XxxHandler); //log records will be written to Xxx handler
+
+By extending, a handler can be customized.
+
+EXAMPLE FOR CUSTOM HANDLER:
+import java.util.logging.LogRecord;
+import java.util.logging.XxxHandler; //the handler to be extended
+...
+public class handlerName extends XxxHandler { //XxxHandler is the handler to be extended
+    //method to publish the record with
+    @Override
+    public void publish(LogRecord record) {
+        //add own logic to publish
+        super.publish(record);
+    }
+    //method to empty the handler, forgets the incoming and published record
+    @Override
+    public void flush() {
+        super.flush();
+    }
+    //method to close the handler
+    @Override
+    public void close() throws SecurityException {
+        super.close();
+    }
+}
+
+=================================================================================
+4. FILTERS, FORMATTERS
+=================================================================================
+Filters can be defined; a log record can be passed to a handler only if conditions met.
+Formatted log records can be set through formatters (layouts). SimpleFormatter is default for ConsoleHandler while XMLFormatter is for FileHandler, but SimpleFormatter can be used for files as well.
+By extending a formatter, customization is possible.
+
+EXAMPLE FOR CREATING A CUSTOM FORMATTER FROM SIMPLEFORMATTER:
+import java.util.Date;
+import java.util.logging.Formatter; //or:
+import java.util.logging.SimpleFormatter;
+import java.util.logging.LogRecord;
+import java.util.logging.XxxHandler; //the needed handler type
+...
+public class FormatterClassName extends Formatter { //or: SimpleFormatter
+    @Override
+    public String format(LogRecord record) {
+        return record.getSourceClassName()+"::"+record.getSourceMethodName()+"::"+new Date(record.getMillis())+"::"+record.getMessage()+"\n"; //example: a new String format
+    }
+}
+class Main {
+    ...
+    Logger logger = ...;
+    FormatterClassName formatterName = new FormatterClassName();
+    Handler handler = new XxxHandler(); //e.g. ConsoleHandler
+    handler.setFormatter(formatterName); //rendering the formatter to the handler
+    logger.addHandler(handler); //adding the formatted handler to a logger
+}
+
+=================================================================================
+5. LOGMANAGER
+=================================================================================
+The LogManager is a singleton, by importing its class it is already set up. It tracks loggers globally.
+Every defined logger can be added to the LogManager.
+All added loggers bring their settings with them which means the application can have several formats etc. for log records. In order to create a standard for the application, all added loggers can be reached through LogManager.
+The manager has a nameless and a global logger by default, then the added loggers follow. By default, the empty-named logger has an already-added ConsoleHandler while the global logger has none.
+In order to control the added loggers globally, use the nameless logger of the manager, modify its levels and handlers.
+Alternatively, remove the default ConsoleHandler from the nameless logger, and add one or more handler to the global logger.
+In order to set added loggers independently but with iteration, remove the default ConsoleHandler from the nameless logger of the manager.
+In order to let the classes manage their own loggers, accessing the LogManager is not necessary.
+In case handlers are added to the added loggers of added classes, should be removed first for unification, or parallel usage of global (nameless) logger results double (and probably in different format) logging.
+
+EXAMPLE FOR LOGGER DECLARATION IN A CLASS IN ORDER TO USE IT WITH LOGMANAGER IN A CALLER APPLICATION:
+import java.util.logging.*;
+...
+class ClassName {
+    private [static] final Logger logger = Logger.getLogger(ClassName.class.getName()); //private for security
+    //getter for logger
+    public [static] final Logger getLogger() {
+        return logger;
+    }
+    ...
+}
+
+EXAMPLE FOR SETTING UP LOGMANAGER WITH DEFAULTS:
+import java.util.logging.*;
+...
+//accessing the global manager
+private static final LogManager logManager = LogManager.getLogManager();
+//adding loggers
+logManager.addLogger(ClassName.getLogger());
+...
+
+EXAMPLE FOR SETTING UP THE NAMELESS LOGGER OF LOGMANAGER:
+import java.util.logging.*;
+import java.util.Date;
+class ClassName1 {...} //class definitions with private Loggers and public getters
+class ClassName2 {...} //class definitions with private Loggers and public getters
+class GlobalLogFormatter {...} //declaration of custom format for global purposes
+...
+class Main {
+    //accessing the global manager
+    private static final LogManager logManager = LogManager.getLogManager();
+    //adding loggers
+    logManager.addLogger(ClassName1.getLogger());
+    logManager.addLogger(ClassName2.getLogger());
+    //modifying all added loggers with common settings
+    Enumeration<String> loggerNames = logManager.getLoggerNames(); //returns names of all added loggers; will not hold references to Loggers which still can be garbage collected
+    Iterator<String> loggersIterator = loggerNames.asIterator(); //defines an Iterator for the added loggers
+	while (loggersIterator.hasNext()) {
+		Logger logger = logManager.getLogger(loggersIterator.next()); //returns an added logger by its name; name will be the class name containing the checked logger
+		if (logger.getName().isEmpty) { //nameless global logger
+			Handler[] handlers = logger.getHandlers();
+			for (Handler handler : handlers) {
+				logger.removeHandler(handler); //removes all handlers from nameless global logger
+			}
+			logger.setLevel(Level.WARNING); //sets global level, e.g. WARNING
+			Handler globalLogHandler = new ConsoleHandler(); //creating handler, e.g. ConsoleHandler
+			globalLogHandler.setFormatter(new GlobalLogFormatter); //setting global formatter
+			logger.addHandler(globalLogHandler); //adding handler to global nameless logger
+		}
+		else if (logger.getName().equals("global")) {
+		    //passed
+		}
+		else { //added loggers
+			logger.setLevel(Level.ALL); //needs all log records, will set level globally
+			Handler[] handlers = logger.getHandlers();
+			for (Handler handler : handlers) {
+				logger.removeHandler(handler); //removes all handlers from added loggers
+			}
+            Handler consoleHandler = new ConsoleHandler(); //creates a ConsoleHandler
+            Handler fileHandler = new FileHandler(...); //creates a FileHandler
+            consoleHandler.setFormatter(new SimpleFormatter()); //String for the console
+            fileHandler.setFormatter(new XMLFormatter()); //XML for the file
+            logger.addHandler(consoleHandler); //log records will be written to console
+            logger.addHandler(fileHandler); //log records will be written to ... file as well
+            //logger.removeHandler(fileHandler); //removes a handler from logger
+            //Handler[] handlers = logger.getHandlers(); //returns all added handlers
+            Filter filter = logger.getFilter();
+            logger.setFilter(filter);
+		}
+	}
+}

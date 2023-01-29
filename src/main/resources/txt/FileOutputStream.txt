@@ -1,0 +1,38 @@
+=================================================================================
+FILEOUTPUTSTREAM
+=================================================================================
+Extends the OutputStream abstract class.
+Writes byte data to files.
+
+In the constructor optionally can be defined if the destination file will be appended with the written data or not. This setting will determine behavior of the 1st writing attempt. The rest of attempts will append the destination.
+All methods of OutputStream are implemented and available. Specific methods are below.
+
+||Method|Description||
+||write(byte[] byteArray, int startPosition, int length)|writes length number of bytes of byteArray from startPosition in the array||
+||finalize()|ensures the calling of close()||
+||getChannel()|returns the object of FileChannel associated with the input stream||
+||getFD()|returns the file descriptor associated with the input stream||
+
+EXAMPLE FOR USAGE:
+import java.io.FileOutputStream;
+import java.io.File;
+...
+byte[] byteArray = ...; //preparing byteArray or converting from String before of that
+try {
+    FileOutputStream fos = new FileOutputStream(string fileName); //overwrites existing file, or:
+    FileOutputStream fos = new FileOutputStream(string fileName, boolean append); //if true, appends existing file, or:
+    FileOutputStream fos = new FileOutputStream(File file); //overwrites existing file, or:
+    FileOutputStream fos = new FileOutputStream(File file, boolean append); //if true, appends existing file
+    //writing one-by-one
+    for (byte b : byteArray) {
+        fos.write(b);
+    }
+    //or writing all-at-once
+    fos.write(byteArray);
+    fos.close();
+}
+catch (Exception e) {...}
+
+=>Stream
+=>OutputStream
+=>ObjectOutputStream

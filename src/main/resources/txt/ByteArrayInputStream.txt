@@ -1,0 +1,39 @@
+=================================================================================
+BYTEARRAYINPUTSTREAM
+=================================================================================
+Extends the InputStream abstract class.
+Reads an array of input data in bytes.
+It includes an internal array to store data.
+All methods of InputStream are implemented and available. Specific methods are below.
+
+||Method|Description||
+||read(byte[] byteArray)|reads the whole available length of bytes into byteArray||
+||read(byte[] byteArray, int startPosition, int length)|reads length number of bytes into byteArray from startPosition in the array||
+||close()|this method is implemented differently than its original purpose: while the stream can be closed, no exception raises in case of accessing after invoking||
+||finalize()|ensures the calling of close()||
+
+EXAMPLE FOR USAGE:
+import java.io.ByteArrayInputStream;
+...
+byte[] byteArray = ...; //the source array
+try {
+    ByteArrayInputStream bais = new ByteArrayInputStream(byte[] byteArray); //uses the given entire array as a source; or:
+    ByteArrayInputStream bais = new ByteArrayInputStream(byte[] byteArray, int startPosition, int length); //uses a portion of the given array as a source
+    //read single bytes from the whole source array
+    for (int i = 0; i < byteArray.length; i++) {
+        int n = bais.read();
+    }
+    //or read single bytes from the available portion of the source array
+    while (bais.available() > 0) {
+        //process bais.read();
+    }
+    //or reading whole
+    byte[] ba = new byte[bais.available()];
+    bais.read(ba);
+    //processing ba or converting to String before of that
+    bais.close(); //close stream
+}
+catch (Exception e) {...}
+
+=>Stream
+=>InputStream

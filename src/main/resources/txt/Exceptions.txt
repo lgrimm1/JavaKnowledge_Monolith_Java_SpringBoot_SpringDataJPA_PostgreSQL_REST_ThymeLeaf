@@ -1,0 +1,71 @@
+=================================================================================
+EXCEPTIONS
+=================================================================================
+An unexpected event leads to abnormal termination of the application. To prevent that, we catch exceptions at certain points and handle the unexpected events there.
+The root class for exceptions is Throwable.
+
+Hierarchy of the exceptions:
+Throwable
+    L Error (can not be handled)
+    L Exception
+        L Run-time (developing error, unchecked exceptions, we handle it)
+        L I/O (checked exception, compile-time error)
+
+The root class for all exceptions is Exception. That said, can be many kind of exceptions but with the root one, we can catch all in one step. However, in this case, we can not differentiate between what kind of exception has been raised.
+
+1. EXCEPTIONS HANDLED IN PLACE
+2. EXCEPTIONS HANDLED OUTSIDE THE PLACE
+3. SUPPRESSED EXCEPTION
+
+=>Statements
+=>Methods
+=>Annotations
+
+=================================================================================
+1. EXCEPTIONS HANDLED IN PLACE
+=================================================================================
+In order to detect a possible exception, we use a try-catch, try-finally, try-catch-finally or try-with-resources statement.
+In its try branch we put the sensitive expressions, statements which can result an exception.
+In case there was none, the flow will continue with the finally block (if exists), closes the resources (if defined) and moves forward.
+In case an exception was raised, the flow jumps into the proper catch block (if defined; in case it is not defined, the exception remains unhandled), process it, then if there is, follows in the finally block, closes resources if defined, then moves forward.
+
+EXAMPLE:
+try {
+    //statements which can raise exception
+}
+catch (exceptionType e) {
+    //processed when exceptionType was raised
+    e.getStackTrace(); //show the error on console if needed
+}
+finally {
+    //processed after successful try block, or after processed catch block
+}
+
+Must be aware that in case in the catch and/or the finally branch an other exception can be raised, with nesting an other try statement, it must be handled that as well.
+
+Intentionally, an exception can be raised by using:
+throw new exceptionType(messageText);
+
+The raised exception must be handled, therefore should throw one from inside a try block.
+
+=================================================================================
+2. EXCEPTIONS HANDLED OUTSIDE THE PLACE
+=================================================================================
+In case it is possible that a method throws an exception but should be handled in that method, can use the formula:
+[access modifiers] returnType methodName(args) throws exceptionType[, exceptionType2, ...] {..}
+
+Using this formula means that the developer knows that some operations can raise exception(s) but does not want (or can) handle it inside the method. In this case the caller method must handle the possible exception(s) by applying a try clause.
+
+=================================================================================
+3. SUPPRESSED EXCEPTION
+=================================================================================
+In case of using try-with-resources statement and in the resource declaration and in the try block exception is raised at the same time, the exception will be thrown from the try block but not from the resource declaration, the last one is suppressed.
+
+To handle such problem, use the next formula:
+catch (exceptionType e) {
+    //processing e which comes from the try block
+    Throwable[] sups = e.getSuppressed();
+    for (Throwable sup : sups) {
+        //processing suppressed exceptions
+    }
+}

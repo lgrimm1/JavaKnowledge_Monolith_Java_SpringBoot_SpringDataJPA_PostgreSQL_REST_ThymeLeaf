@@ -1,0 +1,244 @@
+=================================================================================
+COLLECTION
+=================================================================================
+1. COLLECTIONS GENERALLY
+2. COMPLEX ELEMENT TYPE
+3. GENERIC ALGORITHMS OF COLLECTIONS
+
+=>List
+=>Set
+=>Queue
+=>Iterator
+=>ArrayList
+=>Array
+=>Comparator
+=>ArrayList;2. ARRAYLIST SORTING
+=>Inheritance
+=>GarbageCollector
+=>Stream
+
+=================================================================================
+1. COLLECTIONS GENERALLY
+=================================================================================
+The Collections is a framework for handling Collection types.
+Its root interface is Collection.
+The Collection is an interface for List, Set and Queue classes.
+Contains methods for all implementing classes. These methods are optimized.
+Elements of every collection type can be accessed via Iterator.
+For manipulating data stored in a collection, use streams.
+
+Extending and implementing structure of Collection (i - implementing, e - extending):
+Collection
+    L (e) List
+        L (i) ArrayList
+        L (i) LinkedList
+        L (i) Vector
+            L (e) Stack
+        L (i) Stack
+    L (e) Queue
+        L (i) ArrayDeque
+        L (i) LinkedList
+        L (i) PriorityQueue
+        L (e) Deque
+            L (i) ArrayDeque
+            L (i) LinkedList
+            L (e) BlockingDeque
+        L (e) BlockingQueue
+            L (i) ArrayBockingQueue
+            L (i) LinkedBockingQueue
+    L (e) Set
+        L (i) HashSet
+        L (i) EnumSet
+        L (i) LinkedHashSet
+        L (e) SortedSet
+            L (i) TreeSet
+            L (e) NavigableSet
+                L (i) TreeSet
+
+||Method|Description||
+||add()|inserts an element||
+||size()|returns the number of elements||
+||remove()|removes an element||
+||iterator()|returns an Iterator to access all elements||
+||addAll()|adds all elements of a collection to the collection||
+||removeAll()|removes all elements of a collection from the collection||
+||clear()|removes all elements||
+
+=================================================================================
+2. COMPLEX ELEMENT TYPE
+=================================================================================
+Normally, arrays and collections like ArrayLists use the same element type for all of their elements.
+In case different element types should be stored within the same type, creating a new class as element type is necessary.
+We create a field for every element type with assigning null to them.
+Then, we create a constructor for every field which will be the setter method for that field only.
+We can reach the element by invoking a common getter method, and can check the stored type via getting the type name. At the caller side, we need type-casting.
+
+EXAMPLE FOR COMPLEX ELEMENT TYPE:
+import java.util.ArrayList;
+
+//element type declaration
+class Element {
+    private String elementTypeName;
+    private elementType1 elementName1 = null;
+    private elementType2 elementName2 = null;
+
+    public Element(elementType1 elementName1) { //constructor and setter for elementName1
+        this.elementName1 = elementName1;
+        this.elementTypeName = elementType1 as String;
+    }
+
+    public Element(elementType2 elementName2) { //constructor and setter for elementName2
+        this.elementName2 = elementName2;
+        this.elementTypeName = elementType2 as String;
+    }
+
+    public Object getElement() { //common getter
+        if (elementName1 != null) {
+            return elementName1;
+        }
+        else if (elementName2 != null) {
+            return elementName2;
+        }
+        else {
+            return null;
+        }
+    }
+
+    public String getTypeName() { //type name getter
+        return elementTypeName;
+    }
+}
+
+class Main {
+    int arrayListIndex;
+    ArrayList<Element> eal = new ArrayList<>();
+    eal.add(new Element(...)); //the passed type determines which constructor will invoke
+    eal.add(new Element(...)); //the passed type determines which constructor will invoke
+    eal.set(arrayListIndex, new Element(...)); //setting value at index
+    ...
+    for (Element e : eal) { //processing ArrayList
+        if (e.getTypeName().equals(elementType1 as String)) {
+            //processing: (elementType1) e.getElement()
+        }
+        if (e.getTypeName().equals(elementType2 as String)) {
+            //processing: (elementType2) e.getElement()
+        }
+    }
+}
+
+=================================================================================
+3. GENERIC ALGORITHMS OF COLLECTIONS
+=================================================================================
+3.1. SORTING
+3.2. SHUFFLING
+3.3. ROUTINE DATA MANIPULATION
+3.4. BINARY SEARCH
+3.5. COMPOSITION
+3.6. FINDING EXTREME VALUES
+
+3.1. SORTING
+---------------------------------------------------------------------------------
+Sorting means giving the elements a new order.
+Available with the sort() method.
+This method uses the "Merge Sort Algorithm" that is based upon the "Divide and Conquer Algorithm". "Divide and Conquer Algorithm": a problem is divided into multiple sub-problems. Each sub-problem is solved individually. Finally, sub-problems are combined to form the final solution.
+Sorting always create natural (ascending) order unless a Comparator is not used to customize the element comparing process.
+
+EXAMPLE FOR SORTING WRAPPER TYPE:
+import java.util.ArrayList;
+import java.util.Collections;
+...
+ArrayList<Integer> numbers = new ArrayList<>();
+...
+Collections.sort(numbers);
+
+EXAMPLE FOR SORTING CUSTOM CLASS TYPE:
+class ClassName {
+    private fieldType field
+    public fieldType getField() {
+        return field;
+    }
+}
+...
+ArrayList<ClassName> cnal = new ArrayList<>();
+...
+//in case field is comparable
+Collections.sort(cnal, (f1, f2) -> f1.getField().compareTo(f2.getField()));
+//or create a compare() method and:
+Collections.sort(cnal, (f1, f2) -> compare(f1.getField(), f2.getField()));
+//or create a Comparator
+
+3.2. SHUFFLING
+---------------------------------------------------------------------------------
+Shuffling means giving the elements a randomized order. Opposite of sorting, destroys any order in the collection.
+Available with shuffle() method.
+
+EXAMPLE FOR SHUFFLING:
+import java.util.ArrayList;
+import java.util.Collections;
+...
+ArrayList<Integer> numbers = new ArrayList<>();
+...
+Collections.shuffle(numbers);
+
+3.3. ROUTINE DATA MANIPULATION
+---------------------------------------------------------------------------------
+Routine data manipulation means several methods which are meant to manipulate collection data.
+
+||Method|Description||
+||reverse()|reverses the order of elements||
+||fill()|replace every element with the given value||
+||copy()|creates a copy of the collection||
+||swap()|swaps positions of two elements||
+
+EXAMPLE FOR ROUTINE DATA MANIPULATION:
+import java.util.ArrayList;
+import java.util.Collections;
+...
+ArrayList<Integer> numbers = new ArrayList<>();
+...
+Collections.reverse(numbers);
+Collections.swap(numbers, 0, 1);
+Collections.fill(numbers, 0);
+ArrayList<Integer> newNumbers = new ArrayList<>();
+Collections.copy(newNumbers, numbers);
+
+3.4. BINARY SEARCH
+---------------------------------------------------------------------------------
+The binarySearch() method searches for position of the specified element.
+The collection should be sorted before executing.
+
+EXAMPLE FOR BINARY SEARCH:
+import java.util.ArrayList;
+import java.util.Collections;
+...
+ArrayList<Integer> numbers = new ArrayList<>();
+...
+int pos = Collections.binarySearch(numbers, 3);
+
+3.5. COMPOSITION
+---------------------------------------------------------------------------------
+The frequency() method returns the count of the number of times an element is present in the collection.
+The disjoint() method checks if two collections contain some common element.
+
+EXAMPLE FOR COMPOSITION METHODS:
+import java.util.ArrayList;
+import java.util.Collections;
+...
+ArrayList<Integer> numbers = new ArrayList<>();
+ArrayList<Integer> newNumbers = new ArrayList<>();
+...
+int count = Collections.frequency(numbers, 2);
+boolean value = Collections.disjoint(numbers, newNumbers);
+
+3.6. FINDING EXTREME VALUES
+---------------------------------------------------------------------------------
+Determining of minimum and maximum values of the collection via using min() and max() methods.
+
+EXAMPLE FOR MIN() AND MAX() METHODS:
+import java.util.ArrayList;
+import java.util.Collections;
+...
+ArrayList<Integer> numbers = new ArrayList<>();
+...
+int min = Collections.min(numbers);
+int max = Collections.max(numbers);

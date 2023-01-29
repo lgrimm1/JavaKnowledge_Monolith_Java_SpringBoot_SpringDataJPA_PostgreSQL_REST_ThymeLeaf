@@ -1,0 +1,74 @@
+=================================================================================
+VARIABLES
+=================================================================================
+1. DECLARATION OF VARIABLES
+2. VARIABLE TYPES
+3. OBJECT POOLS
+
+=>Literals
+=>Primitive_data_types
+=>Wrapper_classes
+=>String
+=>Access_modifiers
+=>Annotations
+=>GarbageCollector
+=>Type_casting_and_conversion
+=>Statements
+=>Classes
+=>Classes;11. MULTI-TYPE VARIABLES
+=>Objects
+
+=================================================================================
+1. DECLARATION OF VARIABLES
+=================================================================================
+Value is given later:
+    int number;
+    number = 80;
+
+... or with starting value giving:
+    int number = 80;
+
+More variables in one declaration:
+    int a, b;
+    int c = 75, d = 8;
+
+Mixed:
+    int a = 80, b = 75, c, d;
+
+A variable name can be defined only once in a scope.
+
+=================================================================================
+2. VARIABLE TYPES
+=================================================================================
+Instance variables (non-static fields):
+	everything not defined as static
+
+Class variables (static fields):
+	static int number = 2;
+	Every time the system initialize the variable will use the same memory place.
+	static final int NUMBER = 2;
+	Furthermore, the value can not be changed.
+	By rule, in this case the variable should be written in uppercase.
+
+Local variables:
+	coming from the place of defining, and will be usable only in that scope.
+
+Parameters:
+	local but not defined within the object, passed instead.
+
+The first three are fields.
+
+In case the need is to have a variable which can contain more than one type, use a multi-type class.
+
+=================================================================================
+3. OBJECT POOLS
+=================================================================================
+Whenever a new variable is declared, Java will render an object to it:
+    a. if the object is non-existent (e.g. it is not given at declaration), no reference will be stored under the variable and its value will show null
+    b. if the object exists, the variable will store the hashcode of the object
+    c. if the variable type is primitive (e.g. int or boolean), Java will box the value into its wrapper object (e.g. Integer or Boolean) and use the hashcode of that new object
+    d. if the variable is primitive and no value is rendered to it at declaration, Java will create a default value for that type first
+
+Immutable objects are stored in memory pools. When a new variable is created and a literal is given (or default is used), Java will find an existing object with that value first, and uses the proper hashcode. With this technique, less memory is needed.
+For mutable object, every declaration needs creation of new object since modifying the value stored in that object, would modify all variable values linked to that object which would cause fraud.
+By using constructor of a class to create new object, Java will skip searching for existing objects in the pool but create a new one.

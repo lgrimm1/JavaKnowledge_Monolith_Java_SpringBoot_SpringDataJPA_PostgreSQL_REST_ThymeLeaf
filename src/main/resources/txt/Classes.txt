@@ -1,0 +1,744 @@
+=================================================================================
+CLASSES
+=================================================================================
+1. DECLARATION
+2. MAIN (ROOT) CLASS
+3. "THIS" KEYWORD
+4. CONSTRUCTORS
+5. GETTER-SETTER METHODS
+6. IMMUTABILITY
+7. NESTED CLASSES
+8. ANONYMOUS CLASSES
+9. SINGLETON CLASSES
+10. ENUMERATION CLASSES
+11. GENERICS CLASSES
+12. MULTI-TYPE VARIABLES
+13. CLASS ORGANIZING
+14. CLASS DEPENDENCY INJECTION
+
+=>Access_modifiers
+=>Variables
+=>Methods
+=>Inheritance
+=>EnumMap
+=>Primitive_data_types
+=>Collection
+=>Array
+=>Serialization
+=>Mockito
+=>GarbageCollector
+=>Record
+
+=================================================================================
+1. DECLARATION
+=================================================================================
+[access modifiers] class className {
+	//fields
+	//methods
+}
+
+Fields: variable declarations.
+Methods: functions with or without passed parameters, with or without return value.
+In a class the execution pointer moves from top to bottom.
+
+=================================================================================
+2. MAIN (ROOT) CLASS
+=================================================================================
+An application needs a main (root) class which carries the main method (which invokes first when the application starts) and imports, calls, uses all other classes, fields and methods of the application.
+Name of the root class equals with the .java (or .class) file name and equals with the name of the application.
+The contents of the root class must be static.
+
+=================================================================================
+3. "THIS" KEYWORD
+=================================================================================
+With the "this" keyword it is possible to:
+    a. access a constructor within the class
+    b. access a field within the class
+    c. access a method within the class
+
+In static or interface content the "this" keyword must not be used.
+
+EXAMPLE FOR THE "THIS" KEYWORD:
+class className {
+    private int a;
+    private int b;
+
+    public className() {
+        this.a = ...; //refers to field
+    }
+
+    public className(int n) {
+        this(); //refers to constructor without parameters
+        this.b = n; //refers to field
+    }
+
+    public getA() {
+        return this.a; //refers to field
+    }
+
+    public void methodName() {
+        int b; //on purpose variable name equals with a field name
+        b = ...; //process variable
+        this.b = ...; //process field
+    }
+}
+
+=================================================================================
+4. CONSTRUCTORS
+=================================================================================
+In order to create an instance from a class, a constructor method of that class is invoked. This is an initialization process where inner fields are set.
+In cases there is no constructor, the Java invokes a default constructor instead which has no arguments nor method code block.
+There can be more constructors implemented in a class.
+
+Invoking a constructor along with declaring a variable:
+className variableName = new className(...);
+
+EXAMPLE FOR INITIALIZING AN OBJECT:
+Integer a = 2; // for wrapper classes (String is partly excluded) the constructor calling is hidden
+ArrayList<String> b = new ArrayList<>(); //explicit constructor calling without arguments
+Scanner c = new Scanner(new File(...)); //explicit constructor calling with an explicit constructor calling as argument
+
+The constructor method has to have the same name then its owner class has, and there is no return value (nor void).
+There can be overloaded versions of the constructor as well (with different method signatures).
+
+class className {
+    //fields
+    public className(...) {...} //constructor
+    //other methods
+}
+
+Because the execution flow begins at the top, the constructors have to be the first methods in the class.
+The "this" keyword refers to the class, the "this()" method name refers to the constructors where the argument list will tell which constructor should be called internally.
+In case the "this()" is called, the caller statement must be the first one in the caller constructor.
+
+EXAMPLE FOR CALLING THIS():
+class className {
+    //fields
+    public className() { //constructor without arguments
+        //basic initialization
+    }
+    public className() { //constructor as setter method or specific object creation
+        this(); //invokes the basic constructor
+        ... //unique statements
+    }
+}
+
+In case the constructor is private in a class, the solution is called singleton class.
+
+=================================================================================
+5. GETTER-SETTER METHODS
+=================================================================================
+It is a common practice for a class, that fields are not accessible from outside the class, instead it is better to introduce getter/setter methods, and instead of setter methods, introduce proper constructors. This technique will protect the field as the constructor/setter methods will let value giving through data check.
+
+EXAMPLE FOR GETTER/SETTER METHODS:
+class className{
+    private fieldType fieldName; //field
+
+    public className(fieldType fieldName) { //constructor merged with setter
+        if (condition) {
+            this.fieldName = fieldName;
+        }
+        else {
+            this.fieldName = ...;
+        }
+    }
+
+    public boolean setFieldName(fieldType fieldName) { //independent setter
+        if (condition) {
+            this.fieldName = fieldName;
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    public fieldType getFieldName() { //getter
+        return this.fieldName;
+    }
+}
+
+=================================================================================
+6. IMMUTABILITY
+=================================================================================
+Best practice is to protect the data in OOP world. That said, in case there is an instance of a class (an object), that instance should not be modified for their fields but instead create a new instance with new data and replace the old object with it behind the same reference.
+Of course, in time the memory could be overloaded since the old objects are still in memory. Java uses the Garbage Collector to delete all objects without reference pointing to them from memory. Also, Java uses memory pools to keep the objects there and if a new variable gets its value, Java will look for existing object in the pool to reference that to the variable, with this spares memory.
+
+In immutable world there is no setter method in a class. The initial settings are made via the constructor. Also, all fields are private and final.
+
+Immutability ensures that the data contained in an object stays constant in time. Data can be transferred between threads or scopes without being worried about changes, and no synchronization is needed. That said, using immutable objects has no side effects.
+For short, an immutable object is thread-safe and free for side effects.
+
+EXAMPLE FOR A BASIC IMMUTABLE CLASS:
+class ClassName {
+    private final Type1 field1;
+    private final Type2 field2;
+
+    public ClassName(Type1 field1, Type2 field2) {
+        this.field1 = field1;
+        this.field2 = field2;
+    }
+
+    public Type1 getField1() {
+        return field1;
+    }
+
+    public Type2 getField2() {
+        return field2;
+    }
+}
+
+In order to make an immutable object universal for examining equality, accessing and converting to String, additional methods should be added to its class:
+    a. equals()
+    b. hashCode()
+    c. toString()
+These methods are inherited from Object class therefore overriding is necessary.
+
+EXAMPLE FOR AN UNIVERSAL IMMUTABLE CLASS:
+class ClassName {
+    private final Type1 field1;
+    private final Type2 field2;
+
+    public ClassName(Type1 field1, Type2 field2) {
+        this.field1 = field1;
+        this.field2 = field2;
+    }
+
+    public Type1 getField1() {
+        return field1;
+    }
+
+    public Type2 getField2() {
+        return field2;
+    }
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) return true;
+		if (obj == null || this.getClass() != obj.getClass()) return false;
+		ClassName other = (ClassName) obj;
+		return Objects.equals(this.field1, other.field1) && Objects.equals(this.field2, other.field2));
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(field1, field2);
+	}
+
+	@Override
+	public String toString() {
+		return "ClassName{" +
+				"field1=" + this.field1 +
+				", field2=" + this.field2 +
+				'}';
+	}
+}
+
+Naturally, immutable classes can have other methods as well but only if those methods will not modify the data stored.
+In case there are no other methods except what are needed in an universal immutable class, in order to prevent boilerplate coding, from higher versions of Java records can be used.
+
+=================================================================================
+7. NESTED CLASSES
+=================================================================================
+7.1. NON-STATIC (INNER) CLASSES
+7.2. STATIC NESTED CLASSES
+
+7.1. NON-STATIC (INNER) CLASSES
+---------------------------------------------------------------------------------
+class OuterClass {
+    int m;
+    this.m = ...;
+    class NestedClass {
+        int n;
+        OuterClass.m = ...;
+        this.n = ...;
+    }
+}
+...
+OuterClass oc = new OuterClass();
+OuterClass.NestedClass nc = oc.new NestedClass();
+oc.m = ...;
+nc.n = ...;
+
+7.2. STATIC NESTED CLASSES
+---------------------------------------------------------------------------------
+class OuterClass {
+    int m;
+    this.m = ...;
+    static class NestedClass {
+        int n;
+        OuterClass.m = ...; //error, can not reach elements of the OuterClass
+        n = ...;
+    }
+}
+...
+OuterClass oc = new OuterClass();
+OuterClass.NestedClass nc = new OuterClass.NestedClass();
+oc.m = ...;
+nc.n = ...;
+
+Only the nested class can be static.
+The nested class can not reach the outer class.
+Access modifiers can be: -/private/protected.
+
+=================================================================================
+8. ANONYMOUS CLASSES
+=================================================================================
+Anonymous classes are non-static (inner) nested classes without a named class declaration.
+It is a kind of variable declaration but with class code block.
+
+class OuterClass {
+    Type name = new Type(parameters) {...};
+}
+
+Type can be a superclass (the anonymous class will inherit from it) or an interface (will implement it).
+
+Usage: creating a temporary class for executing a definite task in place, dynamically.
+Perfect solution for polymorphism as an entity is created for only one task from a superclass/interface.
+
+EXAMPLE FOR INHERITING:
+class P1 {
+    public void methodName() {...}
+}
+class P2 {
+    public static void main(...) {
+        //creates an instance of a virtual class extending P1 inside P2, name it p1, but
+        //overrides the method of P1:
+        P1 p1 = new P1() {
+            public void methodName() {...}
+        };
+        p1.methodName(); //invokes the overridden method
+    }
+}
+
+EXAMPLE FOR IMPLEMENTING:
+interface P1 {
+    public void methodName(); //abstract method declaration
+}
+class P2 {
+    //creates an instance of a virtual class implementing P1 inside P2, name it p1, and
+    //implements the method of P1:
+    P1 p1 = new P1 {
+        public void methodName() {...}
+    };
+    p1.methodName(); //invokes the implemented method
+}
+
+=================================================================================
+9. SINGLETON CLASSES
+=================================================================================
+It is a formula which ensures that from a class there can be only one object.
+Can be useful for handling a database channel or central logging where more than one object must be avoided.
+
+EXAMPLE FOR A SINGLETON CLASS:
+class SC {
+    private static SC sc; //holds an own instance inside the class, but private and static
+    private SC(arguments) {...} //a private constructor which ensures that from outside an instance can not be created
+    public static SC getInstance(arguments) {
+        if (sc == null) {
+            sc = new SC(arguments); //only if does not exist yet, creates the object and store it in the private variable
+        }
+        return sc; //returns the object
+    }
+}
+class Main {
+    ...
+    SC sco = SC.getInstance(...); //will create a new object
+    sco = SC.getInstance(...); //returns the same object
+}
+
+=================================================================================
+10. ENUMERATION CLASSES
+=================================================================================
+An enumeration class is a special class type which contains a series of constants and automatically made methods, and can contain user-defined fields and methods as well.
+Safe in compile-time: an enum variable can get only the pre-defined values or throws compile-time error.
+Enum classes are final by default. That said, can not be inherited.
+Enum classes can not inherit (extend) from other classes. Reason: the declaration of an enum class consists of an inheritance from java.lang.Enum by default, hidden, and in Java, there is no multiple inheritance.
+Enum classes can implement interfaces since there is no restriction in Java for number of implements.
+
+10.1. USED AS ENUMERATION TYPE
+10.2. USED AS ENUMERATION CLASS
+10.3. ENUMERATION CONSTRUCTOR
+10.4. ENUMERATION STRINGS
+
+10.1. USED AS ENUMERATION TYPE
+---------------------------------------------------------------------------------
+enum enumName {
+    CONSTANTNAME1, ..., CONSTANTNAMEX
+}
+class Main {
+    ...
+    enumName variableName1 = enumName.CONSTANTNAME1;
+    enumName variableName2 = enumName.CONSTANTNAMEX;
+    ...
+    if (variableName == enumName.CONSTANTNAME1) {...}
+}
+
+Every constant has an inner integer identifier, starting with 0, following the defined constant names.
+These values can be accessed by using the constant names. This makes the code more readable, verbal.
+The compiler creates an object for every constant under the enumName class so the access is enumName.CONTANTNAME1 etc.
+For the enum class, the compiler creates methods automatically for all sub-objects:
+
+int n = variableName1.ordinal(); //the inner index number of variableName1
+n = variableName1.compareTo(variableName2); //returns variableName1.ordinal() - variableName2.ordinal(), distance of constants in indexes
+String s = variableName1.toString(); //CONSTANTNAME1 between quote marks like "CONSTANTNAME1"
+s = variableName1.name(); ////CONSTANTNAME1 between quote marks like "CONSTANTNAME1"
+variableName1 = enumName.valueOf(constantNameAsString); //enumName.CONSTANTNAME1
+enumName[] variableNames = enumName.values(); //CONSTANTNAMEs in order
+
+10.2. USED AS ENUMERATION CLASS
+---------------------------------------------------------------------------------
+Additionally to the enumeration "type", user-defined fields and methods can be added.
+The particular object will have the extended capabilities.
+
+EXAMPLE FOR ENUMERATION CLASS:
+enum Size {
+    SMALL, MEDIUM, LARGE;
+    public String getSize() {
+        return switch(this) {
+            case SMALL -> "small";
+            case MEDIUM -> "medium";
+            case LARGE -> "large";
+        };
+    }
+}
+class Main {
+    ...
+    Size pizza = Size.LARGE;
+    String ps = pizza.getSize(); //"large"
+}
+
+10.3. ENUMERATION CONSTRUCTOR
+---------------------------------------------------------------------------------
+For creating constant-value pairs (value can be String but in special cases any orderable type like int or char).
+By using it, the enumeration will be more verbal.
+In case pairs are needed, although it is a matter of taste, this version is preferred to enumeration class since all pairs can be seen together.
+
+enum enumName {
+    CONSTANT1(valueString1), CONSTANT2(valueString2), ...; //pairs
+    private final String value; //value container
+    private enumName(String value) { //hidden constructor, can be private or protected
+        this.value = value;
+    }
+    public String getValue() { //getter
+        return value;
+    }
+}
+class Main {
+    ...
+    enumName variableName = enumName.CONSTANT1; //calls the hidden constructor based upon CONSTANT1-valueString1 pair
+    String s = variableName.getValue(); //valueString1
+}
+
+EXAMPLE FOR DECLARING ENUMERATION (CONSTRUCTOR VERSION):
+public enum Priority {
+	LOWEST(1), LOWER(2), LOW(3), LESS_LOW(4), NORMAL(5), LESS_HIGH(6), HIGH(7), HIGHER(8), HIGHEST(9), INSANE(10);
+	private final int value;
+	private Priority(int value) {
+		this.value = value;
+	}
+	public int getValue() {
+		return this.value;
+	}
+}
+
+10.4. ENUMERATION STRINGS
+---------------------------------------------------------------------------------
+Of course, the automatically created methods will be created for this usage of enum as well.
+These methods (except the .name() method) can be overridden.
+Because for all constants will be an object created, must take it into consideration.
+
+enum enumName {
+    CONSTANT1 {
+        public String toString() {
+            return stringValue1;
+        }
+    },
+    CONSTANT2 {
+        public String toString() {
+            return stringValue2;
+        }
+    };
+}
+
+=================================================================================
+11. GENERICS CLASSES
+=================================================================================
+Classes which can be used with any kind of data. For this, a virtual type called T or "type parameter" is used as its type.
+No primitive types can be used as generics class.
+By using generics class, the type structure can be designed once, in its instances it will be virtually inherited via a wrapper or class type.
+Collection subclasses use generics at declaration.
+
+EXAMPLE FOR DECLARING GENERICS CLASS:
+class genericClassName<T> { //a class represents T type
+    //field declaration
+    private T data;
+    //constructor declaration
+    public genericClassName(T data) { //parameter of T type
+        this.data = data;
+    }
+    //getter
+    public T getData() { //return value has T type
+        return this.data;
+    }
+}
+
+EXAMPLE FOR CREATING INSTANCES OF GENERICS CLASS (DESIGNED IN PREVIOUS EXAMPLE):
+//Integer instance
+int a = 5;
+genericClassName<Integer> genericVariable1 = new genericClassName<>(a); //autoboxing int to Integer, or use with a literal directly
+//Double instance
+double b = 5.2;
+genericClassName<Double> genericVariable2 = new genericClassName<>(b); //autoboxing double to Double, or use with a literal directly
+//String instance
+String c = "abc";
+genericClassName<String> genericVariable3 = new genericClassName<>(c); //or use with a literal directly
+//ArrayList instance 1
+ArrayList<Character> cal = new ArrayList<>();
+genericClassName<ArrayList<Character>> genericVariable4 = new genericClassName<>(cal); //or use with a constructor directly:
+genericClassName<ArrayList<Character>> genericVariable4 = new genericClassName<>(new ArrayList<>());
+
+EXAMPLE FOR DECLARING A COLLECTION SUBCLASS:
+ArrayList<String> sal = new ArrayList<>(); //derived from ArrayList<T>
+
+By using <T>, any types except primitive types can be accepted. Narrowing is possible by using <T extends typeClass> where typeClass can be e.g. Number for numbers or any custom types so T can be only a subtype of typeClass.
+Such T is called bounded type.
+
+EXAMPLE FOR DECLARING GENERICS CLASS OF NUMBERS:
+class genericClassName<T extends Number> {...} //a class represents T as subtype of Number
+
+Advantages of using generics:
+    a. code re-usability
+    b. compile-time type checking
+    c. used with Collections (e.g. ArrayList<String> creates a String-based instance of ArrayList<T>)
+
+=================================================================================
+12. MULTI-TYPE VARIABLES
+=================================================================================
+In subclasses of Collection and in arrays the element type means all elements must have the same type.
+In case the need is to have a variable which can contain more than one type, use a multi-type class.
+As an element, primitive types, wrapper and other classes can be used together.
+The number of contained types depends on needs.
+With using this solution, primitive types can be stored in collections and arrays.
+
+EXAMPLE FOR DECLARING A MULTI-TYPE VARIABLE:
+class ClassName {
+    //declare used-type-flag
+    private int flag = -1; //-1 means empty
+    //declare the different needed types
+    private String string = null; //for a wrapper class; null means it will not need memory unless it is used
+    private double d; //for a primitive type; will allocate memory
+    private float[] fa = null; //for an array class, can be ArrayList as well; null means it will not need memory unless it is used
+    private CustomClassName custom = null; //for a custom class; ; null means it will not need memory unless it is used
+    //declare first and overload constructors
+    //only the needed type will be allocated, the rest stay null except primitive types
+    public ClassName(String string) {
+        this.string = string;
+        this.flag = 0;
+    }
+    public ClassName(double d) {
+        this.d = d;
+        this.flag = 1;
+    }
+    public ClassName(float[] fa) {
+        this.fa = fa;
+        this.flag = 2;
+    }
+    public ClassName(CustomClassName custom) {
+        this.custom = custom;
+        this.flag = 3;
+    }
+    //declare flag getter
+    public int getFlag() {
+        return flag;
+    }
+    //declare getters
+    public String get0() {
+        return string;
+    }
+    public double get1() {
+        return d;
+    }
+    public float[] get2() {
+        return fa;
+    }
+    public CustomClassName get3() {
+        return custom;
+    }
+}
+
+EXAMPLE FOR USING MULTI-TYPE ELEMENTS (ELEMENT TYPE IS DECLARED IN PREVIOUS EXAMPLE):
+//declare container
+ArrayList<ClassName> cal = new ArrayList<>();
+
+//add a String element
+cal.add(new ClassName("...")); //or:
+String s = ...;
+cal.add(new ClassName(s)); //but this adds a reference, s = null would mean this element will be null as well
+//add a double
+cal.add(new ClassName(23.5D)); //or:
+double d = 45.3D;
+cal.add(new ClassName(d)); //primitive type means no reference is added
+//add an array
+cal.add(new ClassName(new float[10])); //or:
+cal.add(new ClassName(new float[]{...})); //or:
+float[] fa = new float[10];
+cal.add(new ClassName(fa)); //adds a reference
+//add a custom class
+cal.add(new ClassName(new CustomClassName(...))); //use constructor or the custom class, or:
+CustomClassName ccn = new CustomClassName(...);
+cal.add(new ClassName(ccn)); //adds a reference
+
+//access elements
+for (ClassName element : cal) {
+    switch (element.getFlag()) {
+        0 -> ...; //process element.get0()
+        1 -> ...; //process element.get1()
+        2 -> ...; //process element.get2()
+        3 -> ...; //process element.get3()
+    }
+}
+
+Through accessing the contained collections and arrays, because the getter gives the reference back, it is possible to access their elements, and in case of Collection, adding and removing their elements as well.
+
+EXAMPLE FOR MANAGEMENT OF AN ARRAY AS ELEMENT DESCRIBED IN THE PREVIOUS EXAMPLE:
+ArrayList<ClassName> cal = new ArrayList<>();
+cal.add(new ClassName(new float[10]));
+cal.get2()[0] = 32.3f;
+cal.get2()[1] = 1.4f;
+...
+cal.get2()[10] = 123.9f;
+...
+float sum = 0;
+for (float f : cal.get2()) {
+    sum += f;
+}
+
+=================================================================================
+13. CLASS ORGANIZING
+=================================================================================
+Java lets the developers declare classes:
+    a. in different files
+    b. in the same file, above each other
+    c. nested, a class declared inside a class
+
+Although Java lets it, it is advised to organize all classes into different files. Best practice is to keep everything simple so if needed, the classes can be organized into a multi-level package system under the root class.
+Following best practices for inheritance is also important.
+Classes can not be transmitted over the network. Exceptions are classes implementing the Serializable interface. With this, fields of an instance can be converted into bits and bytes which enables transmitting. Methods cannot be transmitted.
+
+=================================================================================
+14. CLASS DEPENDENCY INJECTION
+=================================================================================
+A class can contain fields which have custom class types with their own constructors.
+
+These classes could be defined like this:
+class Class1 {
+    //fields
+    public Class1() {...} //constructor of Class1
+    //methods
+}
+class Class2 {
+    private Class1 field1;
+    //other fields
+
+    public Class2() { //constructor of Class2
+        this.field1 = new Class1(); //instantiating of Class1
+    }
+}
+class Main {
+    Class2 variable = new Class2(); //this will automatically call constructor of Class1
+}
+
+An other solution could be to call Class1 constructor with the field declaration:
+class Class1 {
+    //fields
+    public Class1() {...} //constructor of Class1
+    //methods
+}
+class Class2 {
+    private Class1 field1 = new Class1(); //instantiating of Class1
+    //other fields
+}
+class Main {
+    Class2 variable = new Class2(); //this will automatically call constructor of Class1
+}
+
+These two solutions above are not comfortable:
+    a. it is not possible to create independent unit test for Class1 and Class2 since the instantiating of Class1 happens along with instantiating Class2
+    b. in case Class1 has been changed, class tests of Class2 must be revisited
+    c. in case instantiating of Class1 is not possible due to any problems, tests of Class2 will break
+    d. the caller class (e.g. Main) will instantiate only Class2
+
+The best practice in such cases is the class dependency injection:
+    a. writing independent unit tests for every injected classes becomes possible
+    b. testing the container class becomes possible by mocking the injected classes
+    c. the caller class (e.g. Main) will instantiate all classes
+
+EXAMPLE FOR CLASS DEPENDENCY INJECTION:
+class Class1 {
+    //fields
+    public Class1() {...} //constructor of Class1
+    //methods
+}
+class Class2 {
+    private final Class1 field1;
+    //other fields
+
+    public Class2(Class1 variable1) { //constructor of Class2
+        this.field1 = variable1; //referencing to Class1
+    }
+}
+//version 1
+class Main {
+    //dependency
+    Class1 variable1 = new Class1();
+
+    //injection
+    Class2 variable2 = new Class2(variable1);
+}
+//version 2
+class Main {
+    //injection without holding a variable for the dependency
+    Class2 variable2 = new Class2(new Class1());
+}
+
+In case more container classes would use dependency injection for the same class, there is a possibility that in time the heap will be full.
+If the object created from the injected class serves a common function for all (e.g. an email sender), best practice is to use singleton.
+
+EXAMPLE FOR USING SINGLETON FOR CLASS DEPENDENCY INJECTION:
+class Class1 {
+    //fields
+    private static Class1 class1;
+
+    private Class1(...) {...}
+
+    public static Class1 getInstance(...) {
+        if (class1 == null) {
+            class1 = new Class1(...);
+        }
+        return class1;
+    }
+
+    //methods
+}
+class Class2 {
+    private final Class1 field1;
+    //other fields
+
+    public Class2(Class1 variable1) { //constructor of Class2
+        this.field1 = new Class1(variable1); //referencing to Class1
+    }
+}
+//version 1
+class Main {
+    //dependency
+    Class1 variable1 = Class1.getInstance(...);
+
+    //injection
+    Class2 variable2 = new Class2(variable1);
+}
+//version 2
+class Main {
+    //injection without holding a variable for the dependency
+    Class2 variable2 = new Class2(Class1.getInstance(...));
+}

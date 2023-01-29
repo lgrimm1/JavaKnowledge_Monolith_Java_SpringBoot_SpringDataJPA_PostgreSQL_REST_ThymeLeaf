@@ -1,0 +1,55 @@
+=================================================================================
+HASHSET
+=================================================================================
+Implements the Set interface.
+Provides hash table data structure. That said, elements are stored randomly, and elements are accessed by their hash code. Each element has a unique hash code.
+HashSet is not synchronized, after modifying by a thread, need external synchronization.
+
+1. GENERALLY
+2. CONVERT TO ARRAY AND BACK
+
+=>Set
+=>Collection
+=>TreeSet
+=>Stream
+
+=================================================================================
+1. GENERALLY
+=================================================================================
+Constructor signatures:
+    a. (): default capacity is 16, default load factor is 0.75
+    b. (capacity in int, load factor in float): how many elements it can store, if load factor is exceeded, the set is moved to an other set with double size
+    c. (other Set class): converting from that set to HashSet; need identical pair types
+
+EXAMPLE FOR CREATING AN INSTANCE:
+import java.util.HashSet;
+...
+HashSet<elementType> set = new HashSet<>();
+
+All methods of Set are available. Other methods are below.
+
+||Method|Description||
+||clone()|creates a copy||
+||isEmpty()|true if no elements||
+
+Differences between HashSet and TreeSet:
+    a. TreeSet stores element order, HashSet does not
+    b. TreeSet provides navigation methods along the elements, HashSet does not
+    c. HashSet is faster for basic operations like add, remove, contains and size than TreeMap
+
+=================================================================================
+2. CONVERT TO ARRAY AND BACK
+=================================================================================
+import java.util.HashSet;
+import java.util.List;
+import java.util.stream;
+import java.util.stream.Collectors;
+...
+Set<String> set = new HashSet<>();
+...
+String[] array = new String[set.size()];
+set.toArray(array);
+...
+Set<String> set2 = new HashSet<>(Arrays.asList(array));
+//or:
+Set<String> set2 = new HashSet<>(Arrays.stream(array).collect(Collectors.toSet()));

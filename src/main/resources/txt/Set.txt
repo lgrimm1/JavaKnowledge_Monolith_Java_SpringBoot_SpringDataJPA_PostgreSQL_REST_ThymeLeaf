@@ -1,0 +1,80 @@
+=================================================================================
+SET
+=================================================================================
+Extends the Collection interface.
+Interface which provides structure of the mathematical set.
+Implementing classes are HashSet, EnumSet, LinkedHashSet, TreeSet.
+Extending interfaces are SortedSet.
+Elements can not be primitive type.
+
+Differences between Set and List:
+    a. Set can not include duplicated elements
+    b. Set does not keep order of its elements (similar to a mathematical set)
+
+Interface so instance can be created by using constructor of one of its subclasses.
+
+EXAMPLE FOR DECLARATION AND USAGE:
+import java.util.Set;
+import java.util.HashSet;
+...
+Set<elementType> set = new HashSet<>();
+
+All methods of Collection interface are available.
+
+||Method|Description||
+||add()|adds element to the set||
+||addAll()|adds all elements of the given collection to the set||
+||iterator()|returns an Iterator of the set||
+||remove()|removes element from the set, returns successfulness||
+||removeAll()|removes all elements from the set, returns successfulness||
+||removeAll(another Set)|removes all elements of the given set from the set, same as creating the difference set, returns successfulness||
+||retainAll()|retains all elements of a given set in the set, same as removing all elements except elements in the given set||
+||clear()|removes all elements, better efficiency than removeAll() has||
+||size()|returns the number of elements||
+||toArray()|converts the set to an array||
+||contains()|checks whether the given value is element of the set||
+||containsAll()|checks whether all elements of the given collection are elements of the set||
+||hashCode()|returns hash code of the element (address of the element) of the set||
+
+||Mathematical operation|Method||
+||union|addAll()||
+||intersection|retainAll()||
+||difference|removeAll()||
+||subset|containsAll()||
+
+EXAMPLE FOR USAGE:
+import java.util.Set;
+import java.util.HashSet;
+import java.util.Iterator;
+...
+Set<Integer> set1 = new HashSet<>();
+...
+set1.add(1); //[1]
+set1.add(5); //[1, 5]
+set1.add(5); //no duplicates; [1, 5]
+Set<Integer> set2 = new HashSet<>();
+set2.add(2); //[2]
+set2.add(5); //[2, 5]
+int total = 0;
+Iterator<Integer> iter = set1.iterator();
+while (iter.hasNext()) {
+    total += iter.next();
+}
+//total: 6
+total = 0;
+Iterator<Integer> iter2 = set2.iterator();
+iter2.forEachRemaining((n) -> total += n); //by begin the process from the beginning, all is remaining
+//total: 7
+set2.addAll(set1); //no duplicates; [1, 2, 5]
+boolean success = set1.remove(1); //true, [5]
+set1.add(2); //[2, 5]
+set1.add(6); //[2, 5, 6]
+set2.retainAll(set1); //[2, 5]
+set1.removeAll(set2); //[6]
+boolean contains = set1.containsAll(set2); //false
+
+=>Collection
+=>SortedSet
+=>List
+=>Iterator
+=>Lambda_expressions

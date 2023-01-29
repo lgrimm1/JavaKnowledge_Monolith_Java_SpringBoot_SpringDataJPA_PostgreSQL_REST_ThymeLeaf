@@ -1,0 +1,54 @@
+=================================================================================
+BUFFEREDWRITER
+=================================================================================
+Extends Writer.
+Its purpose is to provide memory buffer with character stream writing for having less file accessing and more speed.
+Internal buffer is 8192 characters by default.
+During operations, collects character data into the buffer until it is filled or the BufferedWriter is closed or forced to empty the buffer, then writes to the external file.
+The BufferedWriter implements the AutoClosable interface, the try-with-resources statement can be used to ensure proper closing.
+
+Constructors:
+    a. (FileWriter fileWriter)
+    b. (FileWriter fileWriter, int bufferSize)
+
+||Method|Description||
+||write()|writes a character to the buffer||
+||write(char[] array)|writes the characters of the array to the internal buffer||
+||write(String string)|writes the characters of the String to the internal buffer||
+||flush()|forces writing the buffer to the FileWriter, empties the buffer||
+||close()|flushes and closes the BufferedWriter||
+||newLine()|inserts a new line character||
+||append()|inserts a character||
+
+EXAMPLE FOR USAGE:
+import java.io.FileWriter;
+import java.io.BufferedWriter;
+...
+char[] charArray = ...; //prepare the array of data
+String string = ...; //prepare the String of data
+try {
+    FileWriter fileWriter = new FileWriter(fileName);
+    BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+    bufferedWriter.write(charArray);
+    bufferedWriter.write(string);
+    bufferedWriter.close(); //release FileWriter
+    fileWriter.close(); //release file
+}
+catch (Exception e) {...}
+
+EXAMPLE FOR USAGE WITH TRY-WITH-RESOURCES:
+import java.io.FileReader;
+import java.io.BufferedReader;
+...
+char[] charArray = ...; //prepare the array into which the data will be read
+String string = ...; //prepare the String of data
+try (FileWriter fileWriter = new FileWriter(fileName); BufferedWriter bufferedWriter = new BufferedWriter(fileWriter)) {
+    bufferedWriter.write(charArray);
+    bufferedWriter.write(string);
+}
+catch (Exception e) {...}
+
+=>Stream
+=>Writer
+=>FileWriter
+=>Statements;15. TRY-WITH-RESOURCES STATEMENT

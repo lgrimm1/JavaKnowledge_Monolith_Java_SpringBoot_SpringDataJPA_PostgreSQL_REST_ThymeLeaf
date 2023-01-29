@@ -1,0 +1,315 @@
+=================================================================================
+SPRING.BOOT REPOSITORY
+=================================================================================
+The Spring framework can identify a class as a repository.
+That said, that class will be responsible for storage management.
+
+1. REPOSITORY CLASS, NO-JPA
+2. REPOSITORY INTERFACE, JPA
+
+=>Spring_Boot
+=>PostgreSQL
+=>Spring_Boot_tests;3. REPOSITORY TESTS
+
+=================================================================================
+1. REPOSITORY CLASS, NO-JPA
+=================================================================================
+In case of no-JPA solution, this class will keep the data itself as well in some container of entities.
+As a class it gives the structure and its methods but not the instance which will be hold by the service class.
+In order to define a class as repository, the @Repository or @Component or @Bean annotation is needed, the first expresses its function better.
+This class must be a singleton in memory per repository.
+The class must be public in order to let Spring accessing it.
+
+The simplest solution is to define a List<elementType> as a private field and its manipulation methods.
+For smaller data amount it provides fast data access. The data will be hold in-memory and all methods must be declared in order to hold data in it.
+In case of higher element number, the time needed for storage operations can be very high.
+For keeping data in file system, the repository class can have load, save, find etc. methods which virtually mirror the in-memory data down to file system.
+
+EXAMPLE FOR A REPOSITORY CLASS (NO-JPA):
+package PackageName;
+
+import org.springframework.stereotype.*;
+
+@Repository
+public class RepositoryClassName {
+    private final ...; //data container of entities e.g. a List or a Set
+    //fields
+    //constructor
+    //getters
+    //manipulation methods and helper methods
+}
+
+=================================================================================
+2. REPOSITORY INTERFACE, JPA
+=================================================================================
+2.1. DEFAULT INTERFACE
+2.2. QUERY METHODS
+2.3. NAMED QUERIES
+2.4. QUERY REWRITER
+
+2.1. DEFAULT INTERFACE
+---------------------------------------------------------------------------------
+In case of JPA solution, instead of class the repository will be an interface which extends JpaRepository.
+In this case there is no need to define any fields or methods, by default it will provide the basic functionality of the repository for Spring.Boot.
+In order to define an interface as repository, the @Repository annotation is needed.
+The interface must be public in order to let Spring accessing it.
+The best solution is to engage with an in-memory or in-server database. Such database can be H2 (in-memory) or postgreSQL (or postgres) or MySQL or Oracle etc. In this version the Spring.Boot must connect to the storage by using application.properties file under the src/main/resources directory.
+
+The JpaRepository is a generics for handling basic repository functions like CRUD (Create, Retrieve, Update, Delete). Two types it needs in declaration:
+    a. EntityClassName: the class of the entity it manages
+    b. TypeOfID: the type of the entity ID field e.g. String or Long
+
+EXAMPLE FOR A REPOSITORY INTERFACE (JPA):
+package PackageName;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.*;
+
+@Repository
+public interface RepositoryClassName extends JpaRepository<EntityClassName, TypeOfID> {
+//optional fields
+//optional query methods
+//optional overridden methods
+//optional custom methods
+}
+
+In case of using a database, the next parameters should be defined for the connection:
+    a. path to the SQL server with port (e.g. protocol is postgresql://, for local development localhost:5432 is fine, port number is default and defined during installation)
+    b. name of the database
+    c. authorisation data (for connection to the database)
+    d. JPA parameters (in case JPA is used under Spring.Boot for connecting the storage level to the database)
+These parameters are declared in the application.properties file under the project directory.
+
+By extending the JPA repository, the next inherited methods will be accessible. The access can happen from within the repository class or from the service class into which the repository was injected.
+The entity is the element of the table of the database defined with @Entity under Spring, accessible via the repository.
+Coming from design, it is possible to manage entity management via the repository or via the service.
+
+||Method|Description||
+||existsById(id)|returns existence of the entity by the ID||
+||getReferenceById(id)|returns a specific entity by ID||
+||findById(id)|returns an Optional of entity by ID||
+||findAllById(iterableOfIds)|returns a List of entities found by IDs||
+||findAll()|returns a List of all entities||
+||save(entity)|adds the passed entity to the repository||
+||flush()|writes all entities to the storage, which were kept in repository for buffering||
+||count|returns the number of entities stored in the repository||
+||delete(entity)|finds and deletes the passed entity from the repository||
+||deleteAll(iterableOfEntities)|finds and deletes entities of the passed Iterable||
+||deleteById(id)|finds and deletes the entity by ID||
+||deleteAllById(iterableOfIds)|finds and deletes entities by their IDs of the passed Iterable||
+||deleteAll|empties the repository||
+
+2.2. QUERY METHODS
+---------------------------------------------------------------------------------
+The default interface is for saving data and finding-managing data by the ID.
+In case of other or overridden methods are needed, can be coded on repository level.
+
+The JPA repository has conventions for new query methods. That said, all new query methods should be defined as abstract and JPA will fill them with code.
+In case the method name is built from keywords (see later), JPA will automatically fill the method with the right code. For increasing readability, optionally the @Query annotation can be used for such method.
+In case the method name does not follow naming conventions, must the @Query annotation be used for that method which must mark the SQL (JPQL) expression the method should invoke.
+A query method usually has argument list, its variable names must be used in the method name, and or must be marked in the query with ?1, ?2, ... respectively.
+
+The main keywords are for identifying the main purpose of the query.
+The find keyword can be replaced with read, get, query, search or stream keywords. In case of stream, a Stream result type would be advised.
+
+||Main keyword|Description||
+||find[...]By...|general query for finding data||
+||read[...]By...|general query for finding data||
+||get[...]By...|general query for finding data||
+||query[...]By...|general query for finding data||
+||search[...]By...|general query for finding data||
+||stream[...]By...|general query for finding data||
+||exists[...]By...|returns typically a boolean value||
+||count[...]By...|returns a numeric value||
+||delete[...]By..., remove[...]By...|deletion query, returns void or number of deleted rows||
+||...First[number]...By..., ...Top[number]...By...|used somewhere between find and By keywords; restricts the found elements for their first appearance (possible found maximum number of rows are defined with the number value, if left, means first only)||
+||...distinct...By...|results unique values for the marked column etc.||
+
+The additional keywords are used together with main keywords (usually with find).
+Except for AllIgnoreCase and AllIgnoringCase, every additional keywords can be used for a column only which means for multiple fields different keywords can be used.
+
+||Additional keyword|Example|Description||
+||Distinct|findDistinctByLastnameAndFirstname|SELECT DISTINCT ... WHERE ... (returns only unique results)||
+||And|findByLastnameAndFirstname|... WHERE x.lastname = ?1 AND x.firstname = ?2||
+||Or|findByLastnameOrFirstname|... WHERE x.firstname = ?1 OR x.lastname = ?2||
+||Is, Equals|findByFirstname, findByFirstnameIs, findByFirstnameEquals|... WHERE x.firstname = ?1||
+||IsEmpty, Empty|findByFirstnameIsEmpty, findByFirstnameEmpty|... WHERE x.firstname IS EMPTY||
+||IsNotEmpty, NotEmpty|findByFirstnameIsNotEmpty, findByFirstnameNotEmpty|... WHERE x.firstname NOT EMPTY||
+||Between|findByStartDateBetween|... WHERE x.startdate BETWEEN ?1 AND ?2||
+||LessThan|findByAgeLessThan|... WHERE x.age < ?1||
+||LessThanEqual|findByAgeLessThanEqual|... WHERE x.age <= ?1||
+||GreaterThan|findByAgeGreaterThan|... WHERE x.age > ?1||
+||GreaterThanEqual|findByAgeGreaterThanEqual|... WHERE x.age >= ?1||
+||Near, IsNear|findByAgeNear, findByAgeIsNear|... WHERE ABS(x.age - ?1) < ?2||
+||Within, IsWithin|findByAgeWithin, findByAgeIsWithin|... WHERE x.age >= ?1 OR x.age <= ?2||
+||After|findByStartDateAfter|... WHERE x.startdate > ?1||
+||Before|findByStartDateBefore|... WHERE x.startdate < ?1||
+||IsNull, Null|findByAgeIsNull, findByAgeNull||... WHERE x.age IS NULL||
+||IsNotNull, NotNull|findByAgeIsNotNull, findByAgeNotNull||... WHERE x.age NOT NULL||
+||Like|findByFirstnameLike|... WHERE x.firstname LIKE ?1||
+||NotLike|findByFirstnameNotLike|... WHERE x.firstname NOT LIKE ?1||
+||StartingWith|findByFirstnameStartingWith|... WHERE x.firstname LIKE ?1 (?1 is e.g. "abc%")||
+||EndingWith|findByFirstnameEndingWith|... WHERE x.firstname LIKE ?1 (?1 is e.g. "%abc")||
+||Containing|findByFirstnameContaining|... WHERE x.firstname LIKE ?1 (?1 is e.g. "%abc%")||
+||OrderBy|findByAgeOrderByLastnameDesc|... WHERE x.age = ?1 ORDER BY x.lastname DESC (or Asc for ASC)||
+||Not|findByLastnameNot|... WHERE x.lastname <> ?1||
+||In|findByAgeIn(Collection<Age> ages)|... WHERE x.age IN ?1 (accepts any Collection type or varargs)||
+||NotIn|findByAgeNotIn(Collection<Age> ages)|... WHERE x.age NOT IN ?1 (accepts any Collection type or varargs)||
+||True|findByActiveTrue|... WHERE x.active = TRUE||
+||False|findByActiveFalse|... WHERE x.active = FALSE||
+||IgnoreCase, IgnoringCase|findByFirstnameIgnoreCase, findByFirstnameIgnoringCase|... WHERE UPPER(x.firstname) = UPPER(?1)||
+||AllIgnoreCase, AllIgnoringCase|findByFirstnameAndLastnameAllIgnoreCase, findByFirstnameAndLastnameAllIgnoringCase|... WHERE UPPER(x.firstname) = UPPER(?1)||
+||Regex, MatchesRegex, Matches|findByFirstnameRegex, findByFirstnameMatchesRegex, findByFirstnameMatches|-||
+
+Using the Distinct keyword needs careful consideration:
+    a. SELECT DISTINCT u FROM User u (because it includes User.id, nothing will be duplicated, result will be the whole table e.g. in a List<User>)
+    b. select DISTINCT u.lastname FROM User u (narrows the query for User.lastname and finds unique values for that, result can be either List<User> and List<String>)
+    c. countDistinctByLastname(String lastname) (equals with SELECT COUNT(DISTINCT u.id) FROM User u WHERE u.lastname = ?1, because u.id contains unique values, result equals with countByLastname(String lastname))
+In case of better verbal and cleaner query, it can be advised to use the @Query annotation with custom method name.
+
+The return value of the query method depends on the query.
+Basically, the return value can be single (e.g. the entity class or a primitive) or multiple (e.g. a Collection subtype like List).
+In case a query could result multiple values it is advised to define multiple return value for the method. By defining single and the query returns single in a specific case, no error will appear but because the method is capable to produce multiple elements, in such situation, IncorrectResultSizeDataAccessException will be raised.
+For geospatial returned data, GeoResult (single) or result wrapper like GeoPage or GeoResults as multiple data can be used.
+In case the method return type is different from what the query would produce but convertible, JPA will convert it automatically, if not possible, exception will be raised.
+
+Return types can be:
+    a. void
+    b. primitive type (int, boolean etc.)
+    c. wrapper types (Long, String etc.)
+    d. T (unique entity, the query must produce a single result at most, if none, null will be returned)
+    e. Iterator<T>
+    f. Collection<T> (superclass of List, Map and Set)
+    g. List<T>
+    h. Optional<T> (the query must produce a single result at most, if none, Optional will be empty)
+    i. Option<T> (Scala or Vavr class, similar to Optional)
+    j. Stream<T>
+    k. Streamable<T> (extension of Collection<T> for convenience)
+    l. Seq, List, Map, Set (Vavr classes)
+    m. Future<T> (expects a method to be annotated with @Async and requires Spring’s asynchronous method execution capability to be enabled)
+    n. CompletableFuture<T> (expects a method to be annotated with @Async and requires Spring’s asynchronous method execution capability to be enabled)
+    o. Slice<T> (a sized chunk of data with an indication of whether there is more data available. Requires a Pageable method parameter)
+    p. Page<T> (Slice with additional information such as the total number of results, requires a Pageable method parameter)
+    q. GeoResult<T> (result entry with additional information, such as the distance to a reference location)
+    r. GeoResults<T> (a list of GeoResult<T> with additional information, such as the average distance to a reference location)
+    s. GeoPage<T> (a Page with GeoResult<T>, such as the average distance to a reference location)
+    t. Mono<T> (a Project Reactor Mono emitting zero or one element using reactive repositories; expects the query method to return one result at most; if no result is found, Mono.empty() is returned; more than one result triggers an IncorrectResultSizeDataAccessException)
+    u. Flux<T> (a Project Reactor Flux emitting zero, one, or many elements using reactive repositories; queries returning Flux can emit also an infinite number of elements)
+    v. Single<T> (a RxJava Single emitting a single element using reactive repositories; expects the query method to return one result at most; if no result is found, Mono.empty() is returned; more than one result triggers an IncorrectResultSizeDataAccessException)
+    w. Maybe<T> (a RxJava Maybe emitting zero or one element using reactive repositories; expects the query method to return one result at most; if no result is found, Mono.empty() is returned; more than one result triggers an IncorrectResultSizeDataAccessException)
+    x. Flowable<T> (a RxJava Flowable emitting zero, one, or many elements using reactive repositories; queries returning Flowable can emit also an infinite number of elements)
+
+EXAMPLE FOR CUSTOM JPA REPOSITORY INTERFACE:
+//entity fields: @Id long id; String field1; String field2; int field3;
+package PackageName;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.*;
+
+@Repository
+public interface RepositoryClassName extends JpaRepository<EntityClassName, TypeOfID> {
+
+    //find first, if not found, Optional will be empty
+    //for finding the first, there is no similar in JPQL
+    Optional<EntityClass> findFirstByField1(String field1);
+
+    //find first 10, if found nothing, List will be empty
+    //for finding the first/top 10, there is no similar in JPQL
+    List<EntityClass> findFirst10ByField1(String field1);
+
+    //find all by two fields, if not found, List will be empty
+    Query("SELECT s FROM EntityClassName s WHERE s.field1 = ?1 AND s.field3 = ?2")
+    List<EntityClass> findByField1AndField3(String field1, int field3);
+
+    //find all by two fields and convert into Stream, if not found, Stream will be empty
+    Query("SELECT s FROM EntityClassName s WHERE s.field1 = ?1 AND s.field2 = ?2")
+    Stream<EntityClass> findByField1AndField2(String field1, String field2);
+
+    //find all, ignore case, ordering by field1 then field2, if not found, List will be empty
+    Query("SELECT s FROM EntityClassName s WHERE UPPER(s.field1) = UPPER(?1) ORDER BY s.field1 ASC ORDER BY s.field2 DESC")
+    List<EntityClass> findByField1IgnoreCaseOrderByField1AscField2Desc(String name);
+}
+
+2.3. NAMED QUERIES
+---------------------------------------------------------------------------------
+Custom named queries can be rendered to the domain class:
+    a. annotation-based configuration (see on Spring_Boot_entity page)
+    b. JPA named queries
+
+The JPA named queries are defined in XML configuration metafile while attached to the repository with additional method declaration of the repository interface.
+These queries are read at every call runtime.
+The configuration metafile directory should be placed on the domain class path and named META-INF.
+The file itself should be named orm.xml.
+The named query will be accessible by invoking the DomainClassName.methodName(...) in the code.
+In case the invoked query can not be found in the metafile, JPA will try to understand it by the name of the method by looking for keyword, see above.
+
+Although using named queries are valid strategy for a limited number of queries, this technique ties them to the entity instead of the repository where their place should be.
+Therefore, using them does not fit to best practices.
+
+EXAMPLE FOR A NAMED QUERY DEFINITION:
+<named-query name="User.findByLastname">
+    <query>select u from User u where u.lastname = ?1</query>
+</named-query>
+
+The abstract method which uses the query definition, should be added to the repository interface.
+
+EXAMPLE FOR THE ABSTRACT METHOD REFERENCING TO THE QUERY DEFINITION:
+List<User> findByLastname(String lastname);
+
+EXAMPLE FOR INVOKING THE NAMED QUERY:
+List<User> list = User.findByLastname(lastname);
+
+2.4. QUERY REWRITER
+---------------------------------------------------------------------------------
+In the previous variants queries are a priori defined.
+These queries are sent to the EntityManager of Hibernate upon usage.
+It is possible to alternate a pre-defined query before it reaches the manager by utilizing the QueryRewriter:
+    a. via custom QueryRewriter class
+    b. via extending the repository interface with QueryRewriter
+
+When the rewriter is expressed via class, in case such query is invoked, JPA will search for a QueryRewriter bean. That said, the class should be marked with @Component annotation or should be lifted into the configuration class of the entity as a @Bean.
+This version is advised when e.g. more services or more repositories would access the same rewriter.
+
+EXAMPLE FOR REPOSITORY INTERFACE WITH QUERY METHODS REFERENCING TO QUERY REWRITER (SQL AND JPQL):
+public interface MyRepository extends JPARepository<EntityClassName, idType> {
+    @Query(value = "select original_user_alias.* from SD_USER original_user_alias", nativeQuery = true, queryRewriter = MyQueryRewriter.class)
+    List<User> findByNativeQuery(String param);
+
+    @Query(value = "select original_user_alias from User original_user_alias", queryRewriter = MyQueryRewriter.class)
+    List<User> findByNonNativeQuery(String param);
+}
+
+EXAMPLE FOR CUSTOM QUERY REWRITER CLASS:
+@Component
+public class MyQueryRewriter implements QueryRewriter {
+
+     @Override
+     public String rewrite(String query, Sort sort) {
+         return query.replaceAll("original_user_alias", "rewritten_user_alias");
+     }
+}
+
+When the rewriter is part of the repository, will be used only by that repository.
+This version is advised when the container repository uses it only.
+
+EXAMPLE FOR INTEGRATED QUERY REWRITER:
+public interface MyRepository extends JPARepository<EntityClassName, idType>, QueryRewriter {
+    @Query(value = "select original_user_alias.* from SD_USER original_user_alias", nativeQuery = true, queryRewriter = MyRepository.class)
+    List<User> findByNativeQuery(String param);
+
+    @Query(value = "select original_user_alias from User original_user_alias", queryRewriter = MyRepository.class)
+    List<User> findByNonNativeQuery(String param);
+
+     @Override
+     public String rewrite(String query, Sort sort) {
+         return query.replaceAll("original_user_alias", "rewritten_user_alias");
+     }
+}
+
+//TODO Using Advanced LIKE Expressions, https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#jpa.query-methods

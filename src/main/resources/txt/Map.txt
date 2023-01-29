@@ -1,0 +1,59 @@
+=================================================================================
+MAP
+=================================================================================
+Interface for storing key-value pairs.
+All keys are unique, no duplications.
+Each key is associated to a single value.
+
+The Map contains of 3 sets:
+    a. set of keys
+    b. set of values
+    c. set of key-value associations (mapping)
+
+Implementing classes: HashMap, EnumMap, LinkedHashMap, WeakHashMap, TreeMap.
+Extending interfaces: SortedMap, NavigableMap, ConcurrentMap.
+
+Creating instance by using a constructor of one of its subclasses:
+import java.util.Map;
+import java.util.HashMap;
+...
+Map<keyType, valueType> mapName = new HashMap<>();
+
+All methods of the Collection interface is available. Specific methods follow.
+
+||Method|Description||
+||put(key, value)|inserts the key-value pair into the map, overwrites the pair at already existing key||
+||putAll(otherMap)|inserts all pairs from otherMap, overwrites already existing ones||
+||putIfAbsent(key, value)|inserts pair in case the key does not exist yet (put() methods without overwriting)||
+||get(key)|returns the value at key, if not found, returns null||
+||getOrDefault(key, defaultValue)|returns the value at key, if not found, returns defaultValue||
+||containsKey(key)|true is exists||
+||containsValue(value)|true is exists||
+||replace(key, value)|replaces the value at key||
+||replace(key, oldValue, newValue)|replaces the value at key only if the original value is oldValue||
+||replaceAll(function)|replaces all values with the result of a function (lambda)
+||remove(key)|returns its value and removes pair at key||
+||remove(key, value)|returns successfulness||
+||keySet()|returns all keys as a Set||
+||values()|returns all values as a Set||
+||entrySet()|returns all pairs as a Set||
+||toString()|returns the map as String: {key1=value1, key2=value2, ...}||
+
+EXAMPLE FOR REPLACEALL():
+import java.util.HashMap;
+...
+HashMap<keyType, valueType> hm = new HashMap<>();
+//inserting pairs
+keyType key;
+valueType value;
+hm.replaceAll((key, value) -> value + 3);
+
+=>HashMap
+=>EnumMap
+=>LinkedHashMap
+=>WeakHashMap
+=>TreeMap
+=>SortedMap
+=>NavigableMap
+=>ConcurrentMap
+=>Lambda_expressions

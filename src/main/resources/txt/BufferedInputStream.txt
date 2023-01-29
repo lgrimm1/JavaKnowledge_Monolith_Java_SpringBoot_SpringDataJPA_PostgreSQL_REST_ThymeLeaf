@@ -1,0 +1,43 @@
+=================================================================================
+BUFFEREDINPUTSTREAM
+=================================================================================
+Extends the InputStream abstract class.
+Used with other input streams to read the data (in bytes) more efficiently.
+Maintains an internal buffer of 8192 bytes by default.
+A chunk of bytes is read from the disk and stored in the internal buffer. The internal buffer bytes will be read by other streams. With this, the number of communication to the disk is reduced causing faster operations.
+All methods are available from InputStream. Special method is below.
+
+||Method|Description||
+||read(byte[] byteArray, int position, int length)|reads length amount of bytes into the given byte array from position||
+
+EXAMPLE FOR USAGE:
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
+...
+try {
+    //declare streams
+    FileInputStream fis = new FileInputStream(String file); //create file stream for input, see constructors at FileInputStream
+    BufferedInputStream bis = new BufferInputStream(fis); //create buffered stream with linking the file stream to it with default buffer size; or:
+    BufferedInputStream bis = new BufferInputStream(fis, int bufferSize); //create buffered stream with linking the file stream to it with bufferSize buffer size
+    //process data, version 1
+    int n = bis.read();
+    ...
+    while (n != -1) {
+        n = bis.read();
+        ...
+    }
+    //process data, version 2
+    int n;
+    while (bis.available() > 0) {
+        n = bis.read();
+        ...
+    }
+    //close streams
+    bis.close();
+    fis.close();
+}
+catch (Exception e) {...}
+
+=>Stream
+=>InputStream
+=>FileInputStream

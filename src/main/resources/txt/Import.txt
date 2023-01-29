@@ -1,0 +1,53 @@
+=================================================================================
+IMPORT
+=================================================================================
+Enables accessing package classes and interfaces, furthermore fields and methods of them.
+1. NORMAL IMPORT
+2. STATIC IMPORT
+
+=>Classes
+=>Methods
+=>Access_modifiers
+
+=================================================================================
+1. NORMAL IMPORT
+=================================================================================
+import packageName; //all classes and interfaces from 1st level
+import packageName.className; //a class or interface from 1st level
+import packageName.className.methodName; //a method of a class or interface from 1st level
+import packageName.className.fieldName; //a field of a class or interface from 1st level
+import packageName.className.*; //all of a class or interface from 1st level
+import packageName.*; //all classes and interfaces from 1st level
+import packageName.subPackage; //all classed and interfaces on 2nd level under the subPackage
+import packageName.subPackage.className; //a class or interface on 2nd level under the subPackage
+import packageName.subPackage.className.methodName; //a method of a class or interface on 2nd level under the subPackage
+import packageName.subPackage.className.fieldName; //a field of a class or interface on 2nd level under the subPackage
+import packageName.subPackage.className.*; //all of a class or interface on 2nd level under the subPackage
+import packageName.subPackage.*; //all classed and interfaces on 2nd level under the subPackage
+
+After import, class(es) can be accessed by defining object(s) from.
+In case the class contains static method that can be accessed without defining an  instance first.
+
+EXAMPLE:
+import packageName.className1;
+import packageName.subClassName.className2;
+import packageName.interfaceName;
+...
+class newClass extends className2 implements interFaceName {
+className1 obj = new className1();
+obj.methodName();
+className1.staticMethodName();
+
+=================================================================================
+2. STATIC IMPORT
+=================================================================================
+The same variations can be used but starting with "import static" instead of a simple "import". Doing so let us access the methods and fields without accessing the class itself or creating an instance from it.
+Be aware: you can address things from a statically imported class with method names or field names only if no other used classes contain same namings.
+Of course, accessing the class is still allowed.
+For interfaces and inheriting, static import can not be used.
+
+EXAMPLE:
+import static packageName.className;
+...
+methodName();
+className.methodName();

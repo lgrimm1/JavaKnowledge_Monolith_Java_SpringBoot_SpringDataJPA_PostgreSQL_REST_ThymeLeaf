@@ -1,0 +1,77 @@
+=================================================================================
+CHARSET
+=================================================================================
+Represents a specific geographical, political, or cultural region.
+An operation is locale-sensitive in case requires a Locale to perform its task, e.g. optionally the Scanner.
+References information of number, money, date and time formats etc. It does not contain the data itself but points to several classes which contain the data itself.
+Components:
+    a. language (e.g. en for English, hu for Hungarian, ja for Japanese; not case-sensitive but canonicalizes to lower case)
+    b. script (e.g. Latn for latin, Cyrl for cyrillic)
+    c. country or region (e.g. US for United States, FR for France, 029 for Caribbean)
+    d. variant (defines a language or a dialect or a variant for culture behavior which is not covered by the previous 3 components; e.g. polyton for Polytonic Greek)
+    e. extensions (a map for single character keys to string values with which the specific Locale differs from the standard; e.g. key="u"/value="ca-japanese" (Japanese Calendar), key="x"/value="java-1-7")
+The language, script, country parameters are coming from the IANA Language Subtag Registry (similarly to Charset), the variant, extensions parameters are coming from the IETF BCP 47 standards.
+The Locale class does not provide any validation features, its Builder checks only the syntax.
+The Locale class provides constants for easy and fast use, e.g. Locale.US marks all parameters for the US standard locale.
+The Unicode has a locale+language extension. A keyword is represented by a pair of key and type, e.g. nu-thai is for formatting numbers (key=nu) the Thai local digits (value=thai) should be used. The keywords are mapped to a BCP 47 extension value using the extension key 'u', e.g. "u-nu-thai".code will mark Unicode extension of nu-thai.
+
+Constructing a Locale:
+    a. Locale.Builder: any combinations as parameters are put together, following the needed syntax
+    b. constructor
+Constructors:
+    a. (String language)
+    b. (String language, String country)
+    c. (String language, String country, String variant)
+Constructors can not specify script or extensions.
+
+In internationalized environment (multiple localization) there can be a need to find specific locales e.g. when the user chooses a language from a verbal list. There is two possibility integrated into Locale class:
+    a. filtering: returns all matching locales
+    b. lookup: returns the best matching locale
+Matching is not case-sensitive.
+The user's preference is called Language Priority List and expressed as a list of language ranges.
+There is two types of language ranges: basic and extended.
+
+||Method|Description||
+||getCountry()|returns the country or region code||
+||getDisplayCountry()|returns the country or region verbally||
+||getISO3Country()|returns the country or region 3-letter code||
+||getLanguage()|returns the language code||
+||getISO3Language()|returns the language 3-letter code||
+||getDisplayLanguage()|returns the language verbally||
+||getName()|returns the locale name||
+||getDisplayName()|returns the locale name verbally||
+||getScript()|returns the script||
+||getDisplayScript()|returns the script verbally||
+||getVariant()|returns the variant||
+||getDisplayVariant()|returns the variant verbally||
+||getExtension(key)|returns the extension value for given key||
+||getExtensionKeys()|returns all extension keys||
+||getUnicodeLocaleAttributes()|Returns the set of unicode locale attributes associated with this locale||
+||getUnicodeLocaleKeys()|Returns the set of Unicode locale keys defined by this locale||
+||getUnicodeLocaleType(String key)|Returns the Unicode locale type associated with the specified Unicode locale key for this locale||
+||hasExtensions()|Returns true if this Locale has any extensions||
+||getISOCountries()|returns a list of all country or region 2-letter codes||
+||getISOLanguages()|returns a list of all language 2-letter codes||
+||toString()|all parameters are displayed as a String||
+||toLanguageTag()|returns the BCP 47 language tag, will not contain all data stored with the locale||
+||forLanguageTag(String languageTag)|creates a proper BCP 47 language tag||
+||Locale.Builder()|creates a proper locale||
+||equals()|checks whether two locales has the same parameters||
+||getAvailableLocales()|returns all installed locales||
+||getDefault()|returns the default locale in the installed JVM||
+
+There are several classes which work alongside with Locale, these store the data itself.
+E.g. the NumberFormat class which contains formats of numbers, currency, and percentages.
+Some methods of NumberFormat are below.
+
+||Method|Description||
+||NumberFormat.getInstance()||returns a NumberFormat instance, based on the default FORMAT locale||
+||NumberFormat.getCurrencyInstance()|returns a NumberFormat instance for currencies, based on the default FORMAT locale||
+||NumberFormat.getPercentInstance()|returns a NumberFormat instance for percentages, based on the default FORMAT locale||
+||NumberFormat.getInstance(Locale locale)||returns a NumberFormat instance, based on the given locale||
+||NumberFormat.getCurrencyInstance(Locale locale)|returns a NumberFormat instance for currencies, based on given locale||
+||NumberFormat.getPercentInstance(Locale locale)|returns a NumberFormat instance for percentages, based on given locale||
+
+=>ZonedDateTime
+=>Charset
+=>Scanner

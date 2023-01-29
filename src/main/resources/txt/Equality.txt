@@ -1,0 +1,32 @@
+=================================================================================
+EQUALITY
+=================================================================================
+The == operator checks equality.
+1. EQUALITY BETWEEN LITERALS
+2. EQUALITY BETWEEN VALUES OF PRIMITIVE VARIABLES
+3. EQUALITY BETWEEN REFERENCES OF OBJECTS
+
+=>Literals
+=>Variables
+=>Objects
+
+=================================================================================
+1. EQUALITY BETWEEN LITERALS
+=================================================================================
+1 == 1 -> true
+'a' == 'a' -> true
+"abc" == "abc" -> true
+"abc" == "ab" + "c" -> true
+
+=================================================================================
+2. EQUALITY BETWEEN VALUES OF PRIMITIVE VARIABLES
+=================================================================================
+int a = 1, b = 1;
+a == b -> true
+
+=================================================================================
+3. EQUALITY BETWEEN REFERENCES OF OBJECTS
+=================================================================================
+String s1 = "abc", s2 = "abc";
+s1 == s2 -> false (different references)
+For checking objects for their values use .equal() methods.

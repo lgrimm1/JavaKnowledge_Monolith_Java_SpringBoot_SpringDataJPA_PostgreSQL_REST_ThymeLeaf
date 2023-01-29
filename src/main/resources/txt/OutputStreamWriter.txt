@@ -1,0 +1,74 @@
+=================================================================================
+OUTPUTSTREAMWRITER
+=================================================================================
+Extends Writer.
+Extended by FileWriter.
+Converts data of characters to data of bytes for a StreamWriter (any subclasses). That said, it is a bridge between character streams and byte streams, writes characters to an output stream as bytes.
+
+For 1-byte characters (ASCII) using simplier converter methods to bytes then using an OutputStream is valid.
+For minimum 2-byte characters (UTF-8, Unicode), the OutputStreamWriter is needed since it can write more bytes together per one character.
+After building the bridge over it, the handled output stream needs no further access, methods of the bridge can be used.
+In case a method tries to access data after the end of the source (accessed length is greater than the actually available), exception raises.
+The stream must be closed after processing in order to release the output stream.
+After closing the stream, any method will raise exception.
+The OutputStreamWriter implements the AutoClosable interface, the try-with-resources statement can be used to ensure proper closing.
+
+Constructor parameters:
+    a. (FileOutputStream fileOutputStream): links the bridge to the output stream (e.g. FileOutputStream), default character coding
+    b. (FileOutputStream fileOutputStream, Charset charset): links the bridge to the output stream, charset character coding
+
+The defined character coding will be forced during accessing the destination stream.
+Available methods are below.
+
+||Method|Description||
+||write()|writes a single character||
+||write(char[] characterArray)|writes characters from the given character array||
+||write(String string)|writes the given String||
+||getEncoding()|detects the character encoding in the output stream, set earlier by constructor||
+||close()|closes the stream writer over the output stream||
+||flush()|forces the output stream to write all stored data to the destination||
+||append()|inserts the character to the output stream||
+
+EXAMPLE FOR USAGE:
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
+...
+try {
+    FileOutputStream fileOutputStream = new FileOutputStream(fileName); //attach the destination
+    OutputStreamWriter outputStreamWriter = new OutputStreamWriter(fileOutputStream); //or:
+    OutputStreamWriter outputStreamWriter = new OutputStreamWriter(fileOutputStream, Charset cs);
+    String string = ...; //set up a String as source
+    char[] characterArray = ...; //set up a char[] as source
+    outputStreamWriter.write(string); //write the source to destination stream
+    outputStreamWriter.write(characterArray); //write the source to destination stream
+    outputStreamWriter.close(); //close the bridge (release the destination stream)
+    fileOutputStream.close(); //close the output stream (release the destination)
+}
+catch (Exception e) {...} //in case the destination was not accessible or the bridge was not built over the stream
+
+EXAMPLE FOR USAGE WITH TRY-WITH-RESOURCES:
+import java.io.FileInputStream;
+import java.io.OutputStreamWriter;
+...
+try (FileOutputStream fileOutputStream = new FileOutputStream(fileName); OutputStreamWriter outputStreamWriter = new OutputStreamWriter(fileOutputStream)) {
+    String string = ...; //set up a String as source
+    char[] characterArray = ...; //set up a char[] as source
+    outputStreamWriter.write(string); //write the source to destination stream
+    outputStreamWriter.write(characterArray); //write the source to destination stream
+}
+catch (Exception e) {...} //in case the destination was not accessible or the bridge was not built over the stream
+
+EXAMPLE FOR USING CHARACTER CODINGS:
+...
+OutputStreamWriter outputStreamWriter1 = new OutputStreamWriter(fileOutputStream); //will use canonical naming e.g. Cp1252
+OutputStreamWriter outputStreamWriter2 = new OutputStreamWriter(fileOutputStream, Charset.forName("UTF8")); //will use the given naming
+String s = outputStreamWriter1.getEncoding(); //"Cp1252"
+s = outputStreamWriter2.getEncoding(); //"UTF8"
+
+=>Stream
+=>Writer
+=>FileWriter
+=>OutputStream
+=>FileOutputStream
+=>Charset
+=>Statements;15. TRY-WITH-RESOURCES STATEMENT

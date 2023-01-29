@@ -1,0 +1,98 @@
+=================================================================================
+ACCESS MODIFIERS
+=================================================================================
+1. PUBLIC, PROTECTED, DEFAULT, PRIVATE
+2. STATIC
+3. FINAL
+
+=>Classes
+=>Methods
+=>Variables
+=>Inheritance
+=>Import
+
+=================================================================================
+1. PUBLIC, PROTECTED, DEFAULT, PRIVATE
+=================================================================================
+The access modifiers modify the default code element visibility, accessibility and forced memory allocation.
+They are used as optional first keywords in class, interface, field and method declarations.
+Usage: [public|protected|[default]|private] [static] [final] class/interface/field/method declaration
+
+||Keyword|From actual class|From sub-class|From package|From outside||
+||public|visible|visible|visible|visible||
+||protected|visible|visible|visible|not visible||
+||default|visible|not visible|visible|not visible||
+||private|visible|not visible|not visible|not visible||
+In case no modifier is defined, will mean default.
+
+=================================================================================
+2. STATIC
+=================================================================================
+The static keyword defines that a field or method in a class will allocate memory to its contained data. That said, these can can be accessible without creating an instance from their class first.
+A static code will allocate memory without using them, actually.
+It is still possible to create an instance of such class.
+In case the class which elements would be statically accessed is in a separated file, must be imported first in solo or with package.
+Normal objects are allocated dynamically (run-time) while static contents statically (compile-time). Therefore, cross-referencing between non-static and static contents is not allowed.
+The contents of the root class must be static.
+
+EXAMPLE FOR ACCESSIBILITY WITHOUT STATIC KEYWORD:
+class className1{
+    variableType variableName = ...;
+    returnType methodName() {...}
+}
+class className2 {
+    className1 object = new className1();
+    //process className1.variableName
+    //invoke className1.methodName()
+}
+
+EXAMPLE FOR ACCESSIBILITY WITH STATIC KEYWORD:
+class className1{
+    static variableType variableName = ...;
+    static returnType methodName() {...}
+}
+class className2 {
+    //process className1.variableName
+    //invoke className1.methodName()
+}
+
+=================================================================================
+3. FINAL
+=================================================================================
+3.1. FINAL VARIABLES (CONSTANTS)
+3.2. FINAL METHODS
+3.3. FINAL CLASSES
+
+3.1. FINAL VARIABLES (CONSTANTS)
+---------------------------------------------------------------------------------
+The final keyword defines that a variable (value) is immutable (unchangeable) or not.
+For primitive type variables: the value is unchangeable.
+For class (wrapper) type variables: the variable can not receive new instance.
+In final cases the variable names should be written with upcase letters.
+It is possible to allocate memory (render an instance) to a final variable later in the code but can be done only once.
+For interfaces, all fields are final as default.
+
+EXAMPLE FOR FINAL VARIABLES:
+private final int AGE = 3;
+private final String ALPHABET = "abc";
+private final ArrayList<String> PERSONS; //can add/remove/set elements later
+
+3.2. FINAL METHODS
+---------------------------------------------------------------------------------
+These methods can not be overridden in child classes.
+
+EXAMPLE FOR FINAL METHOD:
+class className1 {
+    final returnType methodName(...) {...}
+}
+class className2 extends className1 {
+    final returnType methodName(...) {...} //compile-time error
+}
+
+3.3. FINAL CLASSES
+---------------------------------------------------------------------------------
+Final classes can not be inherited.
+
+EXAMPLE FOR FINAL CLASS:
+final class className1 {...}
+class className2 extends className1 {...} //compile-time error

@@ -1,0 +1,64 @@
+=================================================================================
+FILEREADER
+=================================================================================
+Extends InputStreamReader.
+Its purpose is to read data in characters from a file.
+In case a method tries to access data after the end of the source (accessed length is greater than the actually available), exception raises.
+The stream must be closed after processing in order to release the source file.
+After closing the stream, any method will raise exception.
+The FileReader implements the AutoClosable interface, the try-with-resources statement can be used to ensure proper closing.
+
+Constructor parameters:
+    a. (String fileName): links the FileReader to file based upon its file name, default character coding
+    b. (String fileName, Charset charset): same as previous but charset character coding
+    c. (File file): links the FileReader to file based upon its file object, default character coding
+    d. (File file, Charset charset): same as previous but charset character coding
+
+The defined character coding will be forced during accessing the source stream.
+Available methods are below.
+
+||Method|Description||
+||read()|reads a single character||
+||read(char[] characterArray)|reads characters into the given character array||
+||read(char[] characterArray, int start, int length)|reads length number of characters into the given character array from its start index||
+||getEncoding()|detects the character encoding in the input stream, set earlier by constructor||
+||close()|closes the stream reader||
+||ready()|checks whether the source stream is ready to be read||
+||mark()|marks the position in the stream it was read until||
+||reset()|returns the position to the marked position||
+
+EXAMPLE FOR USAGE:
+import java.io.FileReader;
+...
+try {
+    FileReader fileReader = new FileReader(fileName); //attach the source
+    char[] characterArray = new char[100]; //set up a character array
+    fileReader.read(characterArray); //read the source into array
+    fileReader.close(); //close the input stream (release the source)
+}
+catch (Exception e) {...} //in case the source was not accessible or the bridge was not built over the stream
+
+EXAMPLE FOR USAGE WITH TRY-WITH-RESOURCES:
+import java.io.FileReader;
+...
+try (FileReader fileReader = new FileReader(fileName)) {
+    char[] characterArray = new char[100]; //set up a character array
+    fileReader.read(characterArray); //read the source into array
+}
+catch (Exception e) {...} //in case the source was not accessible
+
+EXAMPLE FOR USING CHARACTER CODINGS:
+...
+FileReader fileReader1 = new FileReader(fileName1); //will use canonical naming e.g. Cp1252
+FileReader fileReader2 = new FileReader(fileName2, Charset.forName("UTF8")); //will use the given naming
+String s = fileReader1.getEncoding(); //"Cp1252"
+s = fileReader2.getEncoding(); //"UTF8"
+
+=>Stream
+=>Reader
+=>InputStream
+=>FileInputStream
+=>Charset
+=>File_operations
+=>BufferedReader
+=>Statements;15. TRY-WITH-RESOURCES STATEMENT

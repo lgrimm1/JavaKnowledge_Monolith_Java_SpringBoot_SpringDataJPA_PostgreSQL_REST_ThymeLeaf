@@ -1,0 +1,84 @@
+=================================================================================
+ARRAYDEQUE
+=================================================================================
+Implements Queue and Deque.
+Ideal for stack structure.
+All methods of the implemented interfaces are usable.
+
+The methods:
+java.util.ArrayDeque;
+...
+ArrayDeque<elementType> ad = new ArrayDeque<>();
+ArrayDeque<elementType> adclone = new ArrayDeque<>();
+elementType element;
+boolean b;
+int size;
+elementType[] a;
+...
+ad.add(element); //appends, exception if array deque is full
+ad.addLast(element); //same as add()
+ad.addFirst(element); //inserts at the beginning, exception if array deque is full
+b = ad.offer(element); //appends, false if array deque is full
+b = ad.offerLast(element); //same as offer()
+b = ad.offerFirst(element); //inserts at the beginning, false if array deque is full
+element = ad.getFirst(); //returns the 1st element, exception if array deque is empty
+element = ad.getLast(); //returns the last element, exception if array deque is empty
+element = ad.peek(); //returns the 1st element, exception if array deque is empty
+element = ad.peekFirst(); //same as peek()
+element = ad.peekLast(); //returns the last element, exception if array deque is empty
+element = ad.remove(); //returns and removes the 1st element, exception if array deque is empty
+element = ad.removeFirst(); //same as remove()
+element = ad.removeLast(); //returns and removes the last element, exception if array deque is empty
+element = ad.remove(element); //returns and removes the specified element from the head, exception if array deque is empty or element is not found
+element = ad.poll(); //returns and removes the 1st element, null if array deque is empty
+element = ad.pollFirst(); //same as poll()
+element = ad.pollLast(); //returns and removes the last element, null if array deque is empty
+element = ad.element(); //returns the element from the head
+b = ad.contains(element); //true if contained
+size = ad.size(); //number of elements
+a = ad.toArray(); //converts to array
+adclone = ad.clone(); //creates a copy
+ad.clear(); //removes all elements
+
+Iterating:
+java.util.ArrayDeque;
+import java.util.Iterator;
+...
+ArrayDeque<elementType> ad = new ArrayDeque<>();
+elementType element;
+...
+//ascending processing
+Iterator<elementType> iter = ad.iterator();
+while (iter.hasNext()) {
+    element = iter.next();
+    //processing element
+}
+//descending processing
+Iterator<elementType> diter = ad.descendingIterator();
+while (diter.hasNext()) {
+    element = diter.next();
+    //processing element
+}
+
+Using ArrayDeque as a stack (LIFO):
+java.util.ArrayDeque;
+...
+ArrayDeque<elementType> ad = new ArrayDeque<>();
+elementType element;
+...
+ad.push(element); //adds element to the end of the stack
+element = ad.peek(); //returns the last element
+element = ad.pop(); //returns and removes the last element
+
+Differences between ArrayDeque and LinkedList:
+    a. Both implements Deque
+    b. LinkedList supports null elements, ArrayDeque does not
+    c. LinkedList nodes contain data plus addresses of next and prev therefore needs more memory than ArrayDeque
+    d. ArrayDeque is faster than LinkedList
+
+=>Queue
+=>Deque
+=>Stack
+=>Iterator
+=>LinkedList
+=>Collection

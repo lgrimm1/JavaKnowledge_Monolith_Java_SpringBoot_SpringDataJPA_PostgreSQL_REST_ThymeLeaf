@@ -1,0 +1,33 @@
+=================================================================================
+COMMENTS AND JAVADOCS
+=================================================================================
+Comments are not compiled information.
+
+Types:
+    a. single-line comment (marked with / and / before the comment; can be at beginning of somewhere inside a line)
+    b. multi-line comment (marked with / and * at beginning, * and / at the end)
+    c. in-row comment (in a row marked with / and * at beginning, * and / at the end)
+    d. single-line to-do reminder (a row marked with / and / and TO and DO)
+    e. multi-line to-do reminder (first row marked with / and / and TO and DO, next rows will start with / and / and <space>-<space>)
+    f. single-line fix-me reminder (a row marked with / and / and FIX and ME)
+    g. multi-line fix-me reminder (first row marked with / and / and FIX and ME, next rows will start with / and / and <space>-<space>)
+    h. JavaDocs paragraph (marked with / and ** at the beginning, * and / at the end, * between, all three at beginning of line)
+
+JavaDocs comments are used for:
+    a. hint/description of element (class, interface, method, field)
+    b. automatically generated documentation of the code
+
+For methods with right-level verbal names and parameters names and-or their task is well-known, there is no need to create Javadocs, unless some special information is needed to be documented in order to understand the method and its why-s better. Also, if the parameters need no further details, show no description for them in Javadocs.
+
+JavaDocs formatting characters:
+    a. can use HTML formatting (tag-pairs)
+    b. <p> line end
+    c. &lt; <
+    d. &gt; >
+
+JavaDocs tags:
+    a. @author authorNames
+    b. @since dd-mm-yyyy
+    c. @version versionNumbers
+    d. @see [className][#methodName(signature)]
+    e. @deprecated

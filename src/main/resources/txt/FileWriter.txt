@@ -1,0 +1,68 @@
+=================================================================================
+FILEWRITER
+=================================================================================
+Extends OutputStreamWriter.
+Converts data of characters to data of bytes for a StreamWriter (any subclasses). That said, it is a bridge between character streams and byte streams, writes characters to an output stream as bytes.
+Its purpose is to read data in characters from a file.
+In case a method tries to access data after the end of the source (accessed length is greater than the actually available), exception raises.
+The stream must be closed after processing in order to release the output stream.
+After closing the stream, any method will raise exception.
+The FileWriter implements the AutoClosable interface, the try-with-resources statement can be used to ensure proper closing.
+
+Constructor parameters:
+    a. (String fileName): links the FileWriter to file based upon its file name, default character coding
+    b. (String fileName, Charset charset): same as previous but charset character coding
+    c. (File file): links the FileWriter to file based upon its file object, default character coding
+    d. (File file, Charset charset): same as previous but charset character coding
+
+The defined character coding will be forced during accessing the destination stream.
+Available methods are below.
+
+||Method|Description||
+||write()|writes a single character||
+||write(char[] characterArray)|writes characters from the given character array||
+||write(String string)|writes the given String||
+||getEncoding()|detects the character encoding in the output stream, set earlier by constructor||
+||close()|closes the stream writer||
+||flush()|forces the output stream to write all stored data to the destination||
+||append()|inserts the character to the output stream||
+
+EXAMPLE FOR USAGE:
+import java.io.FileWriter;
+...
+try {
+    FileWriter fileWriter = new FileWriter(fileName); //attach the destination
+    String string = ...; //set up a String as source
+    char[] characterArray = ...; //set up a char[] as source
+    fileWriter.write(string); //write the source to destination stream
+    fileWriter.write(characterArray); //write the source to destination stream
+    fileWriter.close(); //close the output stream (release the destination)
+}
+catch (Exception e) {...} //in case the destination was not accessible
+
+EXAMPLE FOR USAGE WITH TRY-WITH-RESOURCES:
+import java.io.FileWriter;
+...
+try (FileWriter fileWriter = new FileWriter(fileName)) {
+    String string = ...; //set up a String as source
+    char[] characterArray = ...; //set up a char[] as source
+    fileWriter.write(string); //write the source to destination stream
+    fileWriter.write(characterArray); //write the source to destination stream
+}
+catch (Exception e) {...} //in case the destination was not accessible
+
+EXAMPLE FOR USING CHARACTER CODINGS:
+...
+FileWriter fileWriter1 = new FileWriter(fileName1); //will use canonical naming e.g. Cp1252
+FileWriter fileWriter2 = new FileWriter(fileName2, Charset.forName("UTF8")); //will use the given naming
+String s = fileWriter1.getEncoding(); //"Cp1252"
+s = fileWriter2.getEncoding(); //"UTF8"
+
+=>Stream
+=>Writer
+=>OutputStream
+=>FileOutputStream
+=>Charset
+=>File_operations
+=>BufferedWriter
+=>Statements;15. TRY-WITH-RESOURCES STATEMENT

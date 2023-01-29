@@ -1,0 +1,41 @@
+=================================================================================
+STRINGBUILDER
+=================================================================================
+Purpose is to have a fast and optimized class for appending characters and Strings together.
+An instance of StringBuilder class is a mutable object which means the object itself can change as its contained data changes. That said, no other memory allocation will be created in case the contained data changes, the allocated amount of memory changes dynamically.
+The concept behind the StringBuilder is similar to the OutputStream and the Writer (appending several sequences of data) but in this case, it works with characters and Strings.
+Using the StringBuilder in iteration for adding Strings together is faster and more and effective than using String concatenation (e.g. a += b) due to its mutable structure: memory allocation for every new String is time and place consuming.
+There are methods for trimming memory allocation for the actual size (by default, as optimisation, StringBuilder allocates more memory than the actual size to have free space for processes), clearing the data, returning the actual size and the contained data as String as well.
+In case a character array should be converted into String, using the new String(characterArray) constructor is more effective.
+The StringBuilder handles Unicode properly.
+Its working mechanism is similar to StringWriter.
+
+EXAMPLE FOR USAGE WITH STRINGS:
+import java.util.StringBuilder;
+...
+String[] sa = ...; //or ArrayList<String>
+int size = ...;
+StringBuilder sb = new StringBuilder(); //or:
+StringBuilder sb = new StringBuilder(size); //with initial size
+for (String s : sa) {
+    sb.append(s);
+}
+String s = sb.toString(); //exporting the result into String
+
+EXAMPLE FOR USAGE WITH CHARACTERS:
+import java.util.StringBuilder;
+...
+char[] ca = ...; //or ArrayList<Character>
+StringBuilder sb = new StringBuilder(ca.length); //or .size() in case of ArrayList
+for (char c : ca) {
+	sb.append(c);
+}
+String s = sb.toString();
+
+=>String
+=>OutputStream
+=>Writer
+=>Array;2.2. DEEP COPY WITH ITERATION
+=>GarbageCollector
+=>ArrayList
+=>StringWriter

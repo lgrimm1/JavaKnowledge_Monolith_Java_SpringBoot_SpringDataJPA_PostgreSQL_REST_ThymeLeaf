@@ -1,0 +1,38 @@
+=================================================================================
+GARBAGE COLLECTOR
+=================================================================================
+
+=>Primitive_data_types
+=>Objects
+=>Array
+=>ArrayList
+=>StringBuilder
+=>System
+
+The developer should not take care of freeing memory. Instead, the automated Garbage Collector (GC) handles it.
+The GC is a process which runs at near idle state of the application, or when the sources are low. This is due to optimization where the weight is on the fast and effective application executing.
+Exception are particular objects which have .close methods. Invoking them after processing releases memory allocation.
+
+The GC can empty a memory location in case no reference points on it.
+Can not free memory allocation in case the object behind the reference still exists.
+
+EXAMPLE WHICH SHOWS REFERENCING:
+String s; //declares s as variable
+s = "abc"; //allocates memory for "abc" and points reference from s to the memory portion
+String[] sa; //declares sa as variable
+sa = new String[1]; //allocates memory for 1 element, points reference from the element to a non-existent memory location (null)
+sa[0] = s; //changes the null reference of the element to reference of s which points to the memory portion where "abc" is
+sa[0] = null; //while the element released it, the memory portion of "abc" still remains, and s points on that
+sa[0] = s; //jumping back to previous state
+s = null; //s releases it but "abc" is still referenced from sa[0]
+sa[0] = null; //now "abc" is not referenced from anywhere, the GC can have it
+sa = null; //now the memory allocation from sa is free as well and the GC can have it
+//s and sa variables will remain until the flow exists from the scope they were declared in, then the GC can have them
+
+Collection and StringBuilder objects handle dynamic memory allocation. That said, they occupy more than the actually needed in order to cover instant data grow.
+They can have methods to trim the empty memory parts for the case using such method is a must.
+
+Scanner object keeps memory allocation until .close() method is called.
+
+The GC can be forced to run with the following formula:
+System.gc();

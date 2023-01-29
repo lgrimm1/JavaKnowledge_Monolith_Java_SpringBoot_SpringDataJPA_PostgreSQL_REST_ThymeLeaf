@@ -1,0 +1,45 @@
+=================================================================================
+PRIMITIVE DATA TYPES
+=================================================================================
+
+=>Literals
+=>Variables
+=>Equality
+=>Wrapper_classes
+=>String
+=>Type_casting_and_conversion
+
+The Java is a statically typized language, so all variables must be declared before use.
+Referenced types are e.g. String s = "Java"; where s is an object of String class.
+Primitive types are e.g. int n = 2; where n will contain a value only.
+
+Primitive types:
+    boolean (can have 2 value, default == false)
+
+    byte (-128..+127, 8-bit signed, default == 0)
+
+    short (-32768..+32767, 16-bit signed, default ==0)
+
+    int (-2^31..+2^31-1, 32-bit signed, default == 0)
+
+    long (-2^63L..+(2^63-1)L, 64-bit signed, default == 0L)
+
+    float (single-precision, 32-bit floating-point, default == 0.0f,
+	    1x float register on 32-bit systems, half float register on 64-bit systems,
+	    1st bit: sign
+	    2nd-9th bit: exponent
+	    10th-32nd bit: fraction (mantisse)
+	    -> 7-8 decimal digits (e.g. from 0.12345*10^3 the 12345 part means 5 decimal digits) for safe use)
+
+    double (double-precision, 64-bit floating-point, default == 0.0D,
+	    2x float register on 32-bit systems, 1x float register on 64-bit system,
+    	1st bit: sign
+	    2nd-12th bit: exponent
+    	13th-64th bit: fraction (mantisse)
+	    -> 15-16 digits for safe use)
+
+    char ('\u0000'..'\uFFFF', 16-bit Unicode, for value giving char c = 'A'; equals with char c = 65; default == '\u0000')
+
+The default values are set by the constructor of the corresponding wrapper class.
+The String is a wrapper class, declaring a String results "" as a default value set by its constructor.
+Hexadecimal numbers are not primitive types but series of characters (for a byte, 2 characters) therefore can be stored in String wrapper object.

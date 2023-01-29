@@ -1,0 +1,613 @@
+=================================================================================
+SPRING.BOOT CONTROLLER TESTS
+=================================================================================
+For controller classes, based upon the best practices, the Communication layer of the backend should be as thin as it is possible. Therefore, following best practices, for all other processes tests should be developed but for the controllers, it can be skipped.
+That said, testing the Communication layer which equals with testing the controller classes, is simplified for sending requests to the layer.
+
+1. CONTROLLER CLASS TESTS WITH CURL
+2. CONTROLLER CLASS TESTS WITH STARTED WEB APPLICATION
+3. CONTROLLER CLASS TESTS IN MOCKED ENVIRONMENT
+
+=>Spring_Boot
+=>Spring_Boot_tests
+=>Spring_Boot_configuration
+=>Mockito
+=>JUnit
+=>Spring_Boot_controller
+=>Spring_Validation
+=>Web_application;4. CURL
+=>Serialization
+
+=================================================================================
+1. CONTROLLER CLASS TESTS WITH CURL
+=================================================================================
+Before the test runs, the web application must be started up.
+The cURL tests are used to test the application from the outside which means integrity test. That said, the whole application must be started beforehand.
+
+1.1. EXTERNAL CURL TESTS
+1.2. INTERNAL CURL TESTS
+
+1.1. EXTERNAL CURL TESTS
+---------------------------------------------------------------------------------
+Sending requests can be done by fully starting up the server application, then using cURL commands from Powershell console.
+This kind of testing is not automated since external cURL commands must be executed.
+Tests will reach all the layers of the backend, database is included.
+The cURL commands should be placed under the src/main/resources/cURL folder under Maven.
+The cUrl tests can be used for testing out a single function or a scenario.
+
+For a single function, when the aim is to reach existing data from the storage, that data must be recorded beforehand, practically when the application starts up (see Spring_Boot_configuration page).
+The single function tests should follow the test cases defined in the service unit test class.
+
+For a test scenario, more cURL commands are used from a batch file. In this case when some commands are aiming for creating data in the database, no need to prepare data through configuration.
+The good scenario travels through more endpoints and launches a line of actions which follow a certain path a user would travel on. Of course, the scenarios must cover all possibilities.
+
+In case of clean CRUD API, creation of some records, querying one and all, updating, deleting, along with willingly using request errors, covers the whole functionality which means only one scenario would be enough.
+In case the answer sent by the cURL is not satisfying, add -i, -v or -vi to the command line.
+
+EXAMPLE FOR A SINGLE FUNCTION TEST WITH CURL (ONE COMMAND):
+curl -X PUT -H "Accept: application/json" -H "Content-Type:application/json" --data "{\"purchaseId\": 5, \"purchaseDate\": \"2010-06-03\", \"purchaseType\": \"CARD\", \"purchaseValue\": 12, \"purchaseDescription\": \"abc\"}" "localhost:8080/api/v1/newPurchase"
+
+EXAMPLE FOR A SINGLE FUNCTION TEST WITH CURL (BATCH FILE):
+curl -X PUT -H "Accept: application/json" -H "Content-Type:application/json" --data "{\"purchaseId\": 5, \"purchaseDate\": \"2010-06-03\", \"purchaseType\": \"CARD\", \"purchaseValue\": 12, \"purchaseDescription\": \"abc\"}" "localhost:8080/api/v1/newPurchase"
+echo.
+echo ===== Expected: 13 =====
+echo.
+
+EXAMPLE FOR A SCENARIO TEST WITH CURL (BATCH FILE):
+@echo off
+title PurchaseRegister cURL tests
+
+echo ===== Add New Purchases - Success =====
+curl -X PUT -H "Accept: application/json" -H "Content-Type:application/json" --data "{\"purchaseId\": 5, \"purchaseDate\": \"2010-06-03\", \"purchaseType\": \"CARD\", \"purchaseValue\": 12, \"purchaseDescription\": \"abc\"}" "localhost:8080/api/v1/newPurchase"
+echo.
+echo ===== Expected: -9223372036854775807 =====
+echo.
+curl -X PUT -H "Accept: application/json" -H "Content-Type:application/json" --data "{\"purchaseId\": 5, \"purchaseDate\": \"1980-12-31\", \"purchaseType\": \"INTERNET\", \"purchaseValue\": 123.45, \"purchaseDescription\": \"pqr\"}" "localhost:8080/api/v1/newPurchase"
+echo.
+echo ===== Expected: -9223372036854775806 =====
+echo.
+curl -X PUT -H "Accept: application/json" -H "Content-Type:application/json" --data "{\"purchaseId\": 5, \"purchaseDate\": \"2020-06-03\", \"purchaseType\": \"INTERNET\", \"purchaseValue\": 48, \"purchaseDescription\": \"ooo\"}" "localhost:8080/api/v1/newPurchase"
+echo.
+echo ===== Expected: -9223372036854775805 =====
+echo.
+
+echo ===== Add New Purchase - Failure =====
+curl -X PUT -H "Accept: application/json" -H "Content-Type:application/json" --data "{\"purchaseId\": 5, \"purchaseDate\": null, \"purchaseType\": \"CASH\", \"purchaseValue\": 12.24, \"purchaseDescription\": \"abc\"}" "localhost:8080/api/v1/newPurchase"
+echo.
+echo ===== Expected: -9223372036854775808 =====
+echo.
+
+echo ===== Get All Purchases =====
+curl -X GET -H "Accept: application/json" -H "Content-Type:application/json" "localhost:8080/api/v1/purchases"
+echo.
+echo ===== Expected: [{"purchaseId":-9223372036854775807,"purchaseDate":"2010-06-03","purchaseType":"CARD","purchaseValue":12.0,"purchaseDescription":"abc"},{"purchaseId":-9223372036854775806,"purchaseDate":"1980-12-31","purchaseType":"INTERNET","purchaseValue":123.45,"purchaseDescription":"pqr"},{"purchaseId":-9223372036854775805,"purchaseDate":"2020-06-03","purchaseType":"INTERNET","purchaseValue":48.0,"purchaseDescription":"ooo"}] =====
+echo.
+
+pause
+
+1.2. INTERNAL CURL TESTS
+---------------------------------------------------------------------------------
+In order to keep all tests inside the project, there is possibility to use internal cURL tests as well.
+In order to have this solution, need to pre-install the cURL normally, then the access happens via using the Process and the ProcessBuilder classes.
+Alternatively, instead of ProcessBuilder, the Runtime.getRuntime() method can be used as well. Here, the cURL must be added to the Path environmental variable.
+The output of the Process is an InputStream which must be consumed during the command run. At the same time, it should be converted to String which will be comparable.
+Note that the answer generated by cURL can be different in different cURL versions.
+Because this type of cURL testing reaches the Communication layer from the inside, it is possible to mock the Business layer. However, cURL tests are mostly used in integrity tests.
+
+EXAMPLE FOR INTERNAL CURL TEST (PROCESSBUILDER):
+String command = "curl -X GET https://postman-echo.com/get?foo1=bar1&foo2=bar2";
+ProcessBuilder processBuilder = new ProcessBuilder(command.split(" "));
+processBuilder.command(new String[]{"curl", "-X", "GET", "https://postman-echo.com?foo=bar"}); //add optional additional command by its words
+processBuilder.directory(new File("/home/")); //in case cURL is not on the path environmental variable, the work directory must be shown
+Process process = processBuilder.start();
+InputStream inputStream = process.getInputStream();
+int exitCode = process.exitValue();
+process.destroy();
+
+EXAMPLE FOR INTERNAL CURL TEST (GETRUNTIME):
+String command = "curl -X POST https://postman-echo.com/post --data foo1=bar1&foo2=bar2";
+Process process = Runtime.getRuntime().exec(command);
+InputStream inputStream = process.getInputStream();
+int exitCode = process.exitValue();
+process.destroy();
+
+EXAMPLE FOR A CLASS CONSUMING INPUTSTREAM:
+package packageName;
+
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
+public class ProcessCurlOutput {
+
+    public static String inputStreamToString(InputStream inputStream) {
+        final int bufferSize = 8 * 1024;
+        byte[] buffer = new byte[bufferSize];
+        final StringBuilder builder = new StringBuilder();
+        try (BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream, bufferSize)) {
+            while (bufferedInputStream.read(buffer) != -1) {
+                builder.append(new String(buffer));
+            }
+        }
+        catch (IOException ex) {
+            //process exception
+        }
+        return builder.toString();
+    }
+
+    public static void consumeInputStream(InputStream inputStream) {
+        inputStreamToString(inputStream);
+    }
+}
+
+EXAMPLE FOR CONTROLLER TEST CLASS FOR CURL COMMANDS:
+package packageName;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+
+import org.junit.Assert;
+import org.junit.Test;
+
+public class ControllerCurlTest {
+
+    @Test
+    public void givenCommand_whenCalled_thenProduceZeroExitCode() throws IOException {
+        String command = "curl -X GET https://postman-echo.com/get?foo1=bar1&foo2=bar2";
+        ProcessBuilder processBuilder = new ProcessBuilder(command.split(" "));
+        processBuilder.directory(new File("/home/"));
+        Process process = processBuilder.start();
+        InputStream inputStream = process.getInputStream();
+        // Consume the inputStream so the process can exit
+        ProcessCurlOutput.consumeInputStream(inputStream);
+        int exitCode = process.exitValue();
+
+        Assert.assertEquals(0, exitCode);
+    }
+
+    @Test
+    public void givenNewCommands_whenCalled_thenCheckIfIsAlive() throws IOException {
+        String command = "curl -X GET https://postman-echo.com/get?foo1=bar1&foo2=bar2";
+        ProcessBuilder processBuilder = new ProcessBuilder(command.split(" "));
+        processBuilder.directory(new File("/home/"));
+        Process process = processBuilder.start();
+
+        // Re-use processBuilder
+        processBuilder.command(new String[]{"newCommand", "arguments"});
+
+        Assert.assertEquals(true, process.isAlive());
+    }
+
+    @Test
+    public void whenRequestPost_thenCheckIfReturnContent() throws IOException {
+        String command = "curl -X POST https://postman-echo.com/post --data foo1=bar1&foo2=bar2";
+        Process process = Runtime.getRuntime().exec(command);
+
+        // Get the POST result
+        String content = ProcessCurlOutput.inputStreamToString(process.getInputStream());
+
+        Assert.assertTrue(null != content && !content.isEmpty());
+    }
+}
+
+=================================================================================
+2. CONTROLLER CLASS TESTS WITH STARTED WEB APPLICATION
+=================================================================================
+The @SpringBootTest in a class marks that the class is for testing a controller class.
+For all tests, the Spring.Boot will start the web service (servlet) layer, practically the whole web application.
+The @Autowired annotation expresses injection the marked class (e.g. the controller) into the test class before starting up the app. In case of using the TestRestTemplate class with this annotation, the given class will handle the storage and the service layers together automatically.
+
+The application layers will be cached by default so Spring will not start-stop the application per test method.
+In case the test modifies the context (e.g. the state of a singleton bean or the state of an embedded database) and that modification could have an effect on other test results, usage of @DirtiesContext annotation is needed. When the flow reaches this annotation, the context will be emptied and reloaded.
+Effect of the @DirtiesContext annotation depends on its placement:
+    a. before class
+    b. before each test method
+    c. before a specific test method
+    d. after a specific test method
+    e. after each test method
+    f. after class
+
+In case there are more controllers, because running tests for them is executes parallel, there can be communication conflicts (they should use the same (8080 by default) port).
+That said, the @SpringBootTest annotation can have the next formulas:
+    a. @SpringBootTest
+    b. @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
+In case of the latter version, an additional @Value (under older Spring versions, @LocalServerPort) annotation and its field must be declared (will be used by Spring automatically). In case the port can be given specifically, use other constant of WebEnvironment.
+The @LocalServerPort is deprecated under newer Spring versions, and because the servlet is started along with the context which is cached, can lead to unwanted errors and conflicts.
+In case the servlet startup and loading the context can be tested via testing the Main class, furthermore the controller class can be tested in a mocked web environment, the test cases will be separated from the startup and there should not be problems due to cached context either, see the next session.
+
+In case the test of Spring.Boot dependency is not added to the project, your may add the next dependency to your pom.xml:
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-test</artifactId>
+        </dependency>
+
+EXAMPLE FOR CONTROLLER TEST CLASS SIGNATURE (ONE CONTROLLER):
+@SpringBootTest
+public class ControllerClassNameTest {
+...
+}
+
+EXAMPLE FOR CONTROLLER TEST CLASS SIGNATURE (MORE CONTROLLERS, OLDER SPRING VERSIONS):
+@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
+public class ControllerClassNameTest {
+    @LocalServerPort
+	private int port;
+...
+}
+
+EXAMPLE FOR CONTROLLER TEST CLASS SIGNATURE (MORE CONTROLLERS, NEWER SPRING VERSIONS):
+@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
+public class ControllerClassNameTest {
+    @Value(value="${local.server.port}")
+	private int port;
+...
+}
+
+EXAMPLE FOR A CONTROLLER TEST CLASS:
+import org.junit.jupiter.api.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.beans.factory.annotation.Value;
+
+@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
+public class ControllerClassNameTest {
+
+    @LocalServerPort //older versions; or:
+    @Value(value="${local.server.port}")
+	private int port;
+
+    @Autowired
+    private TestRestTemplate restTemplate;
+
+    @Test
+	public void getCountOnEmptyStorage() throws Exception {
+		Assertions.assertEquals(..., this.restTemplate.getForObject("http://localhost:" + port + "/count", ...));
+	}
+}
+
+=================================================================================
+3. CONTROLLER CLASS TESTS IN MOCKED ENVIRONMENT
+=================================================================================
+3.1. MOCKMVC BASICS
+3.2. MOCKMVC REQUEST BUILDERS
+3.3. MOCKMVC RESULT MATCHERS
+3.4. MOCKMVC REQUEST BUILDERS AND RESULT MATCHERS EXAMPLES
+
+3.1. MOCKMVC BASICS
+---------------------------------------------------------------------------------
+This kind of testing will not start the web service but mock it. The direct Communication layer will be started.
+From the mocked environment we can send requests to the controller like it would arrive from the outside, and check the controller response as it would be sent out.
+Due to the two statements above, testing the startup itself is necessary, see the main class test earlier.
+With the structure above, in case of normally mocking the service classes as well, independent unit testing becomes possible.
+
+For separating the service class(es) and their methods, they will be mocked by using Mockito.
+For separating the web layer, the MockMVC will be used which is part of the Spring frameworks.
+Due to automatism possible this way, no cURL commands are needed, tests will stay within Maven and the IDE.
+
+The MockMVC uses a JSON parser and de-parser to transform incoming JSON strings to serialized object and vica-versa. The serialized object will be transformed to object normally.
+The JSON parser of earlier MockMVC versions evaluates numbers in JSON as Long for whole numbers and BigDecimal for float numbers.
+Although the BigDecimal has proper automatism for serialization and deserialization, does not have automatism to convert to wrapper or primitive type of float numbers.
+Due to these, when using lower versions of MockMVC, the receiver object can contain Long, Integer, long and int types for whole numbers, but for float numbers in object, use BigDecimal as type.
+In such cases, only for test purposes should the BigDecimal problem be handled, without modifying the original data model.
+
+When MockMVC is used along with Spring.Data JPA, an important issue can appear.
+Normally, the main application class carries the @EnableJPARepositories annotation which instructs Hibernate (which is part of JPA core) to collect the repository beans. That said, the Spring layer of the application must be fully started up in order to enable Hibernate to search for beans in the class hierarchy.
+The MockMVC controller test environment does not start the whole Spring framework therefore it is not possible for Hibernate to search for Spring beans. Furthermore, the test class is part of a lower level in the hierarchy.
+Solution is to instruct JPA to re-calibrate the search graph with the MockMVC test class as start by using the @AutoConfigureDataJpa annotation for the particular MockMVC controller test class.
+When no JPA is involved with the test class, this annotation is not needed.
+
+EXAMPLE FOR CONTROLLER TEST CLASS (MOCKMVC, MOCKITO, JPA):
+package packageName;
+
+import static org.mockito.Mockito.when;
+import static org.hamcrest.Matchers.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import org.junit.jupiter.api.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.*;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.*;
+import org.springframework.test.web.servlet.*;
+
+@WebMvcTest(ControllerClassName.class)
+@AutoConfigureDataJpa
+public class ControllerTest {
+
+	@Autowired
+	private MockMvc mockMvc;
+
+	@MockBean
+	private PurchaseService purchaseService;
+
+    //test cases marked with @Test annotation.
+}
+
+In test cases, first task is mocking the correspondent service method with Mockito.
+As second task, with MockMVC, the next data should be defined:
+    a. incoming request type (get, post, put, delete)
+    b. endpoint (with query if there is)
+    c. incoming media type (if there is incoming data)
+    d. accepted incoming media type (if there is incoming data)
+    e. incoming request body (JSON or XML or other, in String)
+    f. expected outgoing media type (if there is outgoing data)
+    g. expected outgoing data (if there is; can be JSON or XLS or other, in String)
+    h. expected HTTP response code (codes are exchanged to verbal constants)
+    i. expected HTTP response message
+Using the above defined MockMVC components are optional, mainly depends on the particular controller method.
+The HTTP response codes match with HTTP statuses.
+
+With perform() method the test case is set. Order of the perform steps is important: the media types must be set before the content is defined.
+Optionally, the MockMVC can be forced to print information about the results of performed action with the print() method. By default, the same information will appear when using Spring.Data JPA because Hibernate is verbal.
+Every andExpect() method means an assertion for its argument.
+
+Some expected statuses (look for more under StatusResultMatcher methods below):
+    a. isOk()
+    b. isAccepted()
+    c. isBadRequest()
+    d. isCreated()
+    e. isFound()
+    f. notAcceptable()
+    g. notFound()
+    h. notModified()
+
+EXAMPLE FOR A TEST CASE METHOD (PUT ON /ENDPOINT, JSON REQUEST BODY AND EXPECTED RESPONSE BODY, EXPECTED HTTP200 SUCCESS CODE):
+@Test
+public void testCaseName() throws Exception {
+    //mocking service method
+	when(purchaseService.serviceMethodName(...))
+			.thenReturn(...);
+
+	//mocking web layer and controller
+	mockMvc
+	        .perform(put("/endpoint")
+					.contentType(MediaType.APPLICATION_JSON_VALUE)
+					.accept(MediaType.APPLICATION_JSON_VALUE))
+					.content(...)
+			.andDo(print())
+			.andExpect(status().isOk())
+			.andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+			.andExpect(content().json(...)); //or:
+			.andExpect(content().string(...)); //or:
+			.andExpect(content().string(containsString(...)));
+}
+
+3.2. MOCKMVC REQUEST BUILDERS
+---------------------------------------------------------------------------------
+The MockMvcRequestBuilders class defines the incoming request type, and the endpoint or the endpoint path and the path parameters.
+By default, MockMVC does not require to express this class explicitly in its perform() method which means e.g. the MockMvcRequestBuilders.get() methods equals with the get() method.
+
+Every request type has a method in MockMvcRequestBuilders:
+    a. get()
+    b. post()
+    c. put()
+    d. delete()
+    e. options()
+    f. patch()
+    g. head()
+    h. request(): general method for all request types
+    i. multipart(): multipart POST request or any request type if defined with HttpMethod argument
+
+Variants of get()/.../head() method parameters:
+    a. String URI (which means endpoint; object mode)
+    b. String urlTemplate[, Object... uriVariables] (model&view mode)
+
+Variants of request() method parameters:
+    a. HttpMethod method, String URI (URI means the whole endpoint path)
+    b. HttpMethod method, String urlTemplate[, Object... uriVariables]
+    c. String httpMethod, String urlTemplate[, Object... uriVariables] (lets the developer use any custom request type)
+
+In case of using path parameters, the urlTemplate/uriVariable1/uriVariable2/... text forms the whole endpoint path. Expressing it by using the (urlTemplate, uriVariables) argument variant:
+    a. "/urlTemplate/{param1}/{param2}", paramValue1, paramValue2
+
+Every MockMvcRequestBuilders method returns a MockHttpServletRequestBuilder instance. Methods of this instance represents the environment under which the mocked action will be held.
+MockHttpServletRequestBuilder methods:
+    a. accept(String... mediaTypes), accept(MediaType... mediaTypes): sets what the requester can accept
+    b. buildRequest(ServletContext servletContext): builds a request, returns a MockHttpServletRequest instance
+    c. characterEncoding(String encoding), characterEncoding(Charset encoding)
+    d. content(byte[] content), content(String content): sets the request body
+    e. contentType(String contentType), contentType(MediaType contentType): sets the request body type
+    f. contextPath(String contextPath)
+    g. cookie(Cookie... cookies): adds cookies to the request
+    h. createServletRequest(ServletContext servletContext): returns a MockHttpServletRequest instance
+    i. flashAttr(String name, Object value), flashAttrs(Map<String,Object> flashAttributes)
+    j. header(String name, Object... values), headers(HttpHeaders httpHeaders): adds header to the request
+    k. locale(Locale locale), locale(Locale... locales)
+    l. param(String name, String... values), params(MultiValueMap<String,String> params): adds request parameter
+    m. pathInfo(String pathInfo): specify the portion of the requestURI that represents the pathInfo
+    n. postProcessRequest(MockHttpServletRequest request): adds a post-processing server request, returns MockHttpServletRequest
+    o. queryParam(String name, String... values), queryParams(MultiValueMap<String,String> params)
+    p. requestAttr(String name, Object value)
+    q. secure(boolean secure): indicates secure channel e.g. HTTPS
+    r. servletPath(String servletPath): specify the portion of the requestURI that represents the path to which the Servlet is mapped
+    s. session(MockHttpSession session): set the HTTP session to use, possibly re-used across requests
+    t. sessionAttr(String name, Object value), sessionAttrs(Map<String,Object> sessionAttributes)
+
+3.3. MOCKMVC RESULT MATCHERS
+---------------------------------------------------------------------------------
+The MockMvcResultMatchers class defines the expected response body along with the HTTP response code (e.g. 200, 404) and the response cookie.
+By default, MockMVC does not require to express this class explicitly in its andExpect() method which means e.g. the MockMvcResultMatchers.content() methods equals with the content() method.
+This class makes the expected JSON object to be checked in parts and so on.
+
+MockMvcResultMatchers methods:
+    a. content(), cookie(), flash(): response body, response cookie, response flash attribute
+    b. forwardedUrl(String url), forwardedUrlPattern(String url)
+    c. forwardedUrlTemplate(String urlTemplate, Object... uriVars)
+    d. jsonPath(String expression, Object... args): response JSON field
+    e. jsonPath(String expression, Matcher <? super T> matcher): response JSON field
+    f. jsonPath(String expression, Matcher <? super T> matcher, Class <T> targetType): response JSON field
+    g. model(): model-related assertion
+    h. redirectedUrl(String url), redirectedUrlPattern(String url)
+    i. redirectedUrlTemplate(String urlTemplate, Object... uriVars)
+    k. request()
+    l. status(): returns a StatusResultMatcher object
+    m. view()
+These methods return instances with similar namings. Methods of the returned instances will provide the values which the MockMVC will check in andExpect() assertions.
+
+ContentResultMatchers methods:
+    a. bytes(byte[] expectedContent)
+    b. contentType(String contentType), contentType(MediaType contentType)
+    c. contentTypeCompatibleWith(String contentType), contentTypeCompatibleWith(MediaType contentType)
+    d. encoding(String characterEncoding), encoding(Charset characterEncoding)
+    e. json(String jsonContent), json(String jsonContent, boolean strict)
+    f. string(String expectedContent)
+    g. xml(String xmlContent)
+
+JsonPathResultMatchers methods:
+    a. doesNotExist()
+    b. doesNotHaveJsonPath()
+    c. exists()
+    d. hasJsonPath()
+    e. isArray()
+    f. isBoolean()
+    g. isEmpty()
+    h. isMap()
+    i. isNotEmpty()
+    j. isNumber()
+    k. isString()
+    l. value(Object expectedValue), value(Matcher<? super T> matcher)
+    m. value(Matcher<? super T> matcher, Class<T> targetType)
+
+ModelResultMatchers methods:
+    a. attribute(String name, Object value), attribute(String name, Matcher<? super T> matcher)
+    b. attributeDoesNotExist(String... names)
+    c. attributeErrorCount(String name, int expectedCount)
+    d. attributeExists(String... names)
+    e. attributeHasErrors(String... names)
+    f. attributeHasFieldErrorCode(String name, String fieldName, String error)
+    g. attributeHasFieldErrorCode(String name, String fieldName, Matcher<? super String> matcher)
+    h. attributeHasFieldErrors(String name, String... fieldNames)
+    i. attributeHasNoErrors(String... names)
+    j. errorCount(int expectedCount)
+    k. hasErrors()
+    l. hasNoErrors()
+    m. size(int size): number of model attributes
+
+RequestResultMatchers methods:
+    a. asyncNotStarted(): assert that asynchronous processing was not started
+    b. asyncResult(Object expectedResult): assert the result from asynchronous processing
+    c. asyncResult(Matcher<? super T> matcher): assert the result from asynchronous processing with the given matcher
+    d. asyncStarted(): assert whether asynchronous processing started, usually as a result of a controller method returning Callable or DeferredResult
+    e. attribute(String name, Object expectedValue): assert a request attribute value
+    f. attribute(String name, Matcher<? super T> matcher): assert a request attribute value with the given Hamcrest Matcher
+    g. sessionAttribute(String name, Object value): assert a session attribute value
+    h. sessionAttribute(String name, Matcher<? super T> matcher): assert a session attribute value with the given Hamcrest Matcher
+    i. sessionAttributeDoesNotExist(String... names): assert the given session attributes do not exist
+
+StatusResultMatcher methods:
+    a. is(int status)
+    b. is1xxInformational(), is2xxSuccessful(), is3xxRedirection(), is4xxClientError(), is5xxServerError()
+    c. isAccepted()
+    d. isAlreadyReported()
+    e. isBadGateway()
+    f. isBadRequest()
+    g. isBandwidthLimitExceeded()
+    h. isCheckpoint()
+    i. isConflict()
+    j. isContinue()
+    k. isCreated()
+    l. isExpectationFailed()
+    m. isFailedDependency()
+    n. isForbidden()
+    o. isFound()
+    p. isGatewayTimeout()
+    q. isGone()
+    r. isHttpVersionNotSupported()
+    s. isIAmATeapot()
+    t. isImUsed()
+    u. isInsufficientStorage()
+    v. isInternalServerError()
+    w. isLengthRequired()
+    x. isLocked()
+    y. isLoopDetected()
+    z. isMethodNotAllowed()
+    aa. isMovedPermanently()
+    ab. isMultipleChoices()
+    ac. isMultiStatus()
+    ad. isNetworkAuthenticationRequired()
+    ae. isNoContent()
+    af. isNonAuthoritativeInformation()
+    ag. isNotAcceptable()
+    ah. isNotExtended()
+    ai. isNotFound()
+    aj. isNotImplemented()
+    ak. isNotModified()
+    al. isOk()
+    am. isPartialContent()
+    an. isPayloadTooLarge()
+    ao. isPaymentRequired()
+    ap. isPermanentRedirect()
+    aq. isPreconditionFailed()
+    ar. isPreconditionRequired()
+    as. isProcessing()
+    at. isProxyAuthenticationRequired()
+    au. isRequestedRangeNotSatisfiable()
+    av. isRequestHeaderFieldsTooLarge()
+    aw. isRequestTimeout()
+    ax. isResetContent()
+    ay. isSeeOther()
+    az. isServiceUnavailable()
+    ba. isSwitchingProtocols()
+    bb. isTemporaryRedirect()
+    bc. isTooEarly()
+    bd. isTooManyRequests()
+    be. isUnauthorized()
+    bf. isUnavailableForLegalReasons()
+    bg. isUnprocessableEntity()
+    bh. isUnsupportedMediaType()
+    bi. isUpgradeRequired()
+    bj. isUriTooLong()
+    bk. isVariantAlsoNegotiates()
+
+ViewResultMatchers methods:
+    a. name(String expectedViewName): assert the selected view name
+    b. name(Matcher<? super String> matcher): assert the selected view name with the given Hamcrest Matcher
+
+3.4. MOCKMVC REQUEST BUILDERS AND RESULT MATCHERS EXAMPLES
+---------------------------------------------------------------------------------
+EXAMPLE FOR SEPARATING ENDPOINT FROM PATH PARAMETER, OUTPUT COMPONENTS FROM JSON:
+@Test
+public void testCaseName() throws Exception {
+    //mocking service method
+	when(purchaseService.serviceMethodName(...))
+			.thenReturn(...);
+
+	//mocking web layer and controller
+	mockMvc
+	        .perform(
+	                MockMvcRequestBuilders.get("/endpoint/{param}", paramValue)
+					.contentType(MediaType.APPLICATION_JSON_VALUE)
+					.accept(MediaType.APPLICATION_JSON_VALUE))
+			.andDo(print())
+			.andExpect(MockMvcResultMatchers.status().isOk()) //or:
+			.andExpect(MockMvcResultMatchers.status().isBadRequest())
+			.andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_VALUE)) //or:
+			.andExpect(MockMvcResultMatchers.content().contentType(textPlainUtf8)) //or:
+			.andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith("application/json"))
+			.andExpect(MockMvcResultMatchers.jsonPath("$.fieldName").value(paramValue)); //or:
+			.andExpect(MockMvcResultMatchers.jsonPath("$.fieldName", Is.is(paramValue))); //for error message; or:
+			.andExpect(MockMvcResultMatchers.jsonPath("$.fieldName", is(paramValue))); //or:
+			.andExpect(MockMvcResultMatchers.jsonPath("$.fieldName").value(paramValue)); //or:
+			.andExpect(MockMvcResultMatchers.jsonPath("$.fieldName").exists());
+}
+
+EXAMPLE FOR TESTING EXPECTED EXCEPTIONS:
+@Test
+public void givenNotFound_whenGetSpecificException_thenNotFoundCode() throws Exception {
+    String exceptionParam = "not_found";
+
+    mvc.perform(get("/exception/{exception_id}", exceptionParam)
+      .contentType(MediaType.APPLICATION_JSON))
+      .andExpect(status().isNotFound())
+      .andExpect(result -> assertTrue(result.getResolvedException() instanceof ResourceNotFoundException))
+      .andExpect(result -> assertEquals("resource not found", result.getResolvedException().getMessage()));
+}
+
+//TODO https://www.baeldung.com/exception-handling-for-rest-with-spring

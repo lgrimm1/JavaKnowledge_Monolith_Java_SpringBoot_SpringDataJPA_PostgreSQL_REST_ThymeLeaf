@@ -1,0 +1,51 @@
+=================================================================================
+PRINTSTREAM
+=================================================================================
+Extends the OutputStream abstract class.
+Writes output data in commonly readable form (String) instead of bytes.
+For files, can be used together with FileOutputStream.
+Does not throw exceptions, need manual checking for successfulness.
+Data will be written in a default character encoding but UTF8 or Unicode can be specified as well.
+The default output (console) is System.in which is a PrintStream.
+
+Auto flushing can be used for the next cases:
+    a. a new-line (\n) character is written into the data
+    b. the println() method was invoked
+    c. an array of bytes is written as data
+
+Constructor parameters of PrintStream:
+    a. (FileOutputStream fos, boolean autoFlush[, Charset cs]): linking with the file stream, turning on or off the auto flushing function, optional output character set
+    b. (String fileName, boolean autoFlush[, Charset cs]): linking with the file without an explicit file stream, turning on or off the auto flushing function, optional output character set
+
+||Method|Description||
+||print()|prints the specified data||
+||println()|prints the data with a new line character at the end||
+||printf()|prints the data formatted||
+||append()|appends the given data to the stream||
+||flush()|forces to print all data in stream||
+||checkError()|checks if there is an error in the stream||
+||close()|closes the stream||
+
+EXAMPLES FOR USAGE:
+import java.io.FileOutputStream;
+import java.io.PrintStream;
+...
+String string = ...; //the characters to write if there are
+try {
+    //here: declaring with explicit file stream
+    FileOutputStream fos = new FileOutputStream(String file); //has many constructors, check FileOutputStream
+    PrintStream ps = new PrintStream(fos, true); //linking with the file stream, auto flushing is on
+    ps.print(string);
+    if !(ps.checkError) {
+        throw Exception;
+    }
+    ps.close();
+    fos.close(); //in case FileOutputStream was linked
+}
+catch (Exception e) {...} //in case the destination was not accessible by file stream, or manually thrown exception for PrintStream
+
+=>Stream
+=>OutputStream
+=>FileOutputStream
+=>Standard_input_and_output
+=>String;4. STRING FORMATTING

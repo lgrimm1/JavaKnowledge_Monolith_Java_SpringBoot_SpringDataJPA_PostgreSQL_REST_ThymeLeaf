@@ -1,0 +1,49 @@
+=================================================================================
+WRITER
+=================================================================================
+Abstract class for handling output streams of character.
+Extending subclasses are BufferedWriter, OutputStreamWriter, StringWriter and PrintWriter.
+Due to being an abstract class, for declaration use constructor of a subclass.
+The stream must be closed after processing in order to release the source.
+After closing the stream, any method will raise exception.
+The Writer implements the AutoClosable interface, the try-with-resources statement can be used to ensure proper closing.
+The concept behind the Writer is similar to the StringBuilder (appending several sequences of data) but in this case, it works with characters.
+
+||Method|Description||
+||write(char[] charArray)|writes the characters from the given array||
+||write(String string)|writes the characters from the given String||
+||append(char c)|inserts the given character to the Writer||
+||flush()|forces to write all data from the Writer to the destination||
+||close()|closes the stream||
+
+EXAMPLE FOR USAGE:
+import java.io.Writer;
+import java.io.FileWriter;
+...
+char[] charArray = ...; //prepare the source character array
+String fileName = ...; //external destination file on the storage
+try {
+    Writer w = new FileWriter(fileName); //attach the destination
+    w.write(charArray); //write to the destination
+    w.close(); //close the stream (release the source)
+}
+catch (Exception e) {...} //in case the destination was not accessible
+
+EXAMPLE FOR USAGE WITH TRY-WITH-RESOURCES:
+import java.io.Writer;
+import java.io.FileWriter;
+...
+char[] charArray = ...; //prepare the source character array
+String fileName = ...; //external destination file on the storage
+try (Writer w = new FileWriter(fileName)) {
+    w.write(charArray); //write to the destination
+}
+catch (Exception e) {...} //in case the destination was not accessible
+
+=>Stream
+=>StringBuilder
+=>OutputStreamWriter
+=>BufferedWriter
+=>StringWriter
+=>PrintWriter
+=>Statements;15. TRY-WITH-RESOURCES STATEMENT

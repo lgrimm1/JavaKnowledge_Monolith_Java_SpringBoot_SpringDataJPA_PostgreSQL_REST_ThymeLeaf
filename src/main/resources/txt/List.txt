@@ -1,0 +1,42 @@
+=================================================================================
+LIST
+=================================================================================
+Extends the Collection interface.
+An interface for ArrayList, LinkedList, Vector and Stack.
+List and all List implementations are mutable for element order and element number but not for element type or the elements themselves, the last depends on the element type.
+Element type must be a class (wrapper class as well). Elements can not be of primitive type.
+In order to use it for handling literals of primitive types, use their wrapper classes.
+This is an interface which means no object can be created from it.
+For creating instances, use constructors of classes which implement the List interface.
+
+EXAMPLE FOR CREATING INSTANCES:
+List<String> list1 = new ArrayList<>(); //uses ArrayList constructor
+List<String> list2 = new LinkedList<>(); //uses LinkedList constructor
+
+These instances can use methods in the List interface.
+
+||Method|Description||
+||add()|inserts an element||
+||addAll()|adds all elements of a List to the List||
+||get()|accesses an element||
+||iterator()|returns an Iterator to access all elements||
+||set()|changes an element||
+||remove()|removes an element||
+||removeAll()|removes all elements of the List||
+||clear()|removes all elements, more effective the removeAll()||
+||size()|returns the number of elements||
+||toArray()|convert the List to an array||
+||contains()|returns true if the List contains the element||
+
+Differences between List and Set:
+    a. List can include duplicated elements
+    b. List keeps order of its elements
+
+=>Collection
+=>ArrayList
+=>LinkedList
+=>Vector
+=>Stack
+=>Set
+=>Iterator
+=>ListIterator

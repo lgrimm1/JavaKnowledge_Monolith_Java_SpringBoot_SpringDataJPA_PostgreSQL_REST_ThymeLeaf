@@ -1,0 +1,57 @@
+=================================================================================
+CHARSET
+=================================================================================
+It is a named mapping between 16-bit Unicode code units and sequences of bytes.
+It knows many kind of namings for charsets.
+Safe for concurrent access from threads.
+The charset namings are follow the IANA Charset Registry standard.
+If a supported naming does not follow the IANA, the name itself starts with "X-" or "x-".
+A charset name is composed with the next characters: A..Z, a..z, 0..9, -, +, ., :, _
+The name must begin with an alphanumeric character.
+Charset names are not case-sensitive.
+Every charset has a canonical name and can have many aliases. Canonical names are in uppercase by convention.
+A historical name can be canonical or one of the aliases. Can be returned by getEncoding() method of InputStreamReader and OutputStreamReader.
+The IANA changes over time. It is important that no aliases should be removed from the charset, and in case a canonical name changes, the old one must become alias.
+Always recognized namings (Java standards) are below.
+
+||Charset|Description||
+||US-ASCII||Seven-bit ASCII, a.k.a. ISO646-US, a.k.a. the Basic Latin block of the Unicode character set||
+||ISO-8859-1|ISO Latin Alphabet No. 1, a.k.a. ISO-LATIN-1||
+||UTF-8|Eight-bit UCS Transformation Format||
+||UTF-16BE|Sixteen-bit UCS Transformation Format, big-endian byte order||
+||UTF-16LE|Sixteen-bit UCS Transformation Format, little-endian byte order||
+||UTF-16|Sixteen-bit UCS Transformation Format, byte order identified by an optional byte-order mark||
+
+The StandardCharset class provides constants for identifying a standard charset, see below. In order to use them, import the java.nio.charset.StandardCharset class.
+
+||Constant|Charset||
+||US_ASCII|US-ASCII||
+||ISO_8859_1|ISO-8859-1||
+||UTF_8|UTF-8||
+||UTF_16BE|UTF-16BE||
+||UTF_16LE|UTF-16LE||
+||UTF_16|UTF-16||
+
+EXAMPLE FOR CREATING A CHARSET:
+import java.nio.charset.Charset;
+...
+Charset cs = new Charset(String canonicalName, String[] aliases);
+
+||Method|Description||
+||name()|returns the canonical name||
+||aliases|returns aliases in a Set<String>||
+||defaultCharset()|returns the default charset of the present JVM||
+||displayName()|returns human-readable name on the system locale||
+||displayName(Locale locale)|returns human-readable name on the given locale||
+||forName(String name)|returns charset based upon the given name which can be canonical or alias or constant from StandardCharset||
+||encode(String string)|encodes the String into ByteBuffer||
+||encode(CharBuffer cb)|encodes the characters into ByteBuffer||
+||isSupported(String charset)|checks whether the charset is supported||
+||isRegistered()|checks whether the charset is registered into IANA||
+||toString()|returns verbal description of the charset||
+
+=>InputStreamReader
+=>OutputStreamWriter
+=>FileReader
+=>PrintWriter
+=>Locale

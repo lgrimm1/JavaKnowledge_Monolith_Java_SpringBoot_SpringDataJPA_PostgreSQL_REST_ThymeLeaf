@@ -1,0 +1,10 @@
+=================================================================================
+BLOCKINGDEQUE
+=================================================================================
+Interface, extends Deque, LIFO structure.
+Usage and methods are similar to BlockingQueue.
+Implementing classes are unknown to this knowledge base.
+
+=>Queue
+=>Iterator
+=>Collection

@@ -1,0 +1,103 @@
+=================================================================================
+BREAK AND CONTINUE STATEMENTS
+=================================================================================
+1. BREAK STATEMENT
+2. LABELED BREAK STATEMENT
+3. CONTINUE STATEMENT
+4. LABELED CONTINUE STATEMENT
+
+=>Statements
+=>Iteration
+
+=================================================================================
+1. BREAK STATEMENT
+=================================================================================
+Breaks are used to exit from an iteration directly.
+
+USUALLY USED FORMULA:
+if (condition) {
+	break;
+}
+
+Use when the condition can not be placed into the condition of the loop.
+It harms the readable structure, avoid it if possible or use a temporary variable in the head of the loop which you manipulate in place of the break.
+In case of nested loops, exits from the loop level you execute it from within.
+Breaks are parts of the not-enhanced switch statement.
+
+=================================================================================
+2. LABELED BREAK STATEMENT
+=================================================================================
+With a label, we can control where should the break move the flow.
+Use it from nested loops where exiting the inner loop is not enough.
+
+USUALLY USED FORMULA:
+label:
+for (condition) {
+	while (condition) {
+		if (condition) {
+			break label;
+		}
+	}
+}
+//jumps here
+
+A text following by a : sign is a label.
+The label marks the iteration from which the break should jump out.
+The text "label" can be choosen by developer for better understanding the reason or the position.
+More than one label can be placed alongside a nested loop.
+Ruins the readable structure more since a loop is identified and followed by its header and its condition which can become unreadable by using cross-jumpings through codes.
+
+EXAMPLE:
+for (...) {
+	first:
+	for (...) {
+		second:
+		for (...) {
+				if (...) {
+					break first;
+				}
+				if (...) {
+					break second;
+				}
+				if (...) {
+					break;
+				}
+		}
+		//the normal and the 2nd jumps here
+	}
+	//the 1st jumps here
+}
+
+=================================================================================
+3. CONTINUE STATEMENT
+=================================================================================
+The "continue" statement skips the actual loop turn, moves to the end of the cycle but stays within the loop.
+Always use it in an if statement.
+
+EXAMPLE FOR ADDING ONLY EVEN NUMBERS UNTIL 1000 BUT PASSES [500..600] interval:
+int n = 1000, sum = 0;
+for (int i = 0; i < n + 1; i++) {
+	if ((i >= 500) && (i <= 600) && (i % 2 != 0)) {
+		continue;
+	}
+	sum += i;
+}
+
+Again, ruins the structure, avoid if possible.
+In nested loops, navigates only in the loop it was executed.
+
+=================================================================================
+4. LABELED CONTINUE STATEMENT
+=================================================================================
+The "labeled continue" works similarly to the labeled break: the "continue" will make the flow skip until the end of the labeled iteration.
+
+EXAMPLE:
+label:
+for (...) {
+	for (...) {
+		if (...) {
+			continue label;
+		}
+	}
+	//skips until here
+}

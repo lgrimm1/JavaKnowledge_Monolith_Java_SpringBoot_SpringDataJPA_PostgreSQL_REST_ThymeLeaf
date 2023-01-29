@@ -1,0 +1,67 @@
+=================================================================================
+TREEMAP
+=================================================================================
+Implementing class of the NavigableMap, indirectly of SortedMap interfaces.
+Provides the tree data structure.
+All methods of Map, SortedMap and NavigableMap are available.
+The headMap(), tailMap(), and subMap() methods are implemented from NavigableMap.
+Data in TreeMap is sorted in natural (ascending) order by keys by default. In order to have custom order, a Comparator must be used.
+
+EXAMPLE FOR USAGE:
+import java.util.TreeMap;
+import java.util.Map.Entry;
+import java.util.Comparator;
+...
+private class CustomComparator implements Comparator<Integer> {
+    @Override
+    public int compare(int number1, int number2) {
+        //setting up custom ordering rule
+        //in this example: descending order
+    }
+}
+TreeMap<Integer, String> tm = new TreeMap<>(); //keys are sorted in natural order
+TreeMap<Integer, String> tmdesc = new TreeMap<>(new CustomComparator()); //keys are sorted in descending order
+tm.put(5, "A"); //inserts key-value pair, if key was there already, overwrites the value; {5="A"}
+tm.put(2, "B"); //inserts key-value pair, if key was there already, overwrites the value; {2="B", 5="A"}
+tm.putIfAbsent(3, "C"); //inserts only if key was not added earlier (inserts the pair without overwriting); {2="B", 3="C", 5="A"}
+tmdesc.putAll(tm); //appends all entries from tm, applies its own ordering on the keys; {5="A", 3="C", 2="B"}
+TreeMap<Integer, String> tm2 = new TreeMap<>(); //keys are sorted in natural order
+tm2.put(4, "D"); //{4="D"}
+tm.putAll(tm2); //natural order is kept; {2="B", 3="C", 4="D", 5="A"}
+//tm.entrySet() returns set of pairs in order; {2="B", 3="C", 4="D", 5="A"}
+//tm.keySet() returns keys in order; [2, 3, 4, 5]
+//tm.values() returns values in order of their keys; ["B", "C", "D", "A"]
+String value = tm.get(3); //"C", null if key is not found
+value = tm.getOrDefault(1, "X"); //"X", value of key or default if it is not found
+value = tm.remove(3); //"C", {2="B", 4="D", 5="A"}
+boolean success = tm.remove(4, "C"); //false, there is no passed pair, {2="B", 4="D", 5="A"}
+tm.replace(4, "C"); //"D", {2="B", 4="C", 5="A"}
+tm.replaceAll((key, oldValue) -> oldValue + "X"); //{2="BX", 4="CX", 5="AX"}
+value = tm.firstKey(); //"BX"
+Entry<Integer, String> entry = tm.firstEntry(); //2="BX"
+value = tm.lastKey(); //"AX"
+entry = tm.lastEntry(); //5="AX"
+entry = tm.pollFirstEntry(); //2="BX", {4="CX", 5="AX"}
+entry = tm.pollLastEntry(); //5="AX", {4="CX"}
+tm.put(5, "A"); //{4="CX", 5="A"}
+tm.put(2, "B"); //{2="B", 4="CX", 5="A"}
+tm.putIfAbsent(3, "C"); //{2="B", 3="C", 4="CX", 5="A"}
+//tm.headMap(3) returns 2="B"
+//tm.headMap(3, false) returns 2="B"
+//tm.headMap(3, true) returns {2="B", 3="C"}
+//tm.tailMap(3) returns {3="C", 4="CX", 5="A"}
+//tm.tailMap(3, false) returns {4="CX", 5="A"}
+//tm.tailMap(3, true) returns {3="C", 4="CX", 5="A"}
+//tm.subMap(3, 5) returns {3="C", 4="CX"}
+//tm.subMap(3, false, 5, true) returns {4="CX", 5="A"}
+tm2 = tm.clone(); //copy
+boolean exists = tm.containsKey(4); //true
+exists = tm.containsValue("X"); //false
+int size = tm.size(); //4
+tm.clear(); //{}
+
+=>Map
+=>SortedMap
+=>NavigableMap
+=>Comparator
+=>Lambda_expressions

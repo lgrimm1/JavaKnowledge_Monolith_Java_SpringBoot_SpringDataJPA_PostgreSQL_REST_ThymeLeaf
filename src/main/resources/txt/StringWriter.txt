@@ -1,0 +1,56 @@
+=================================================================================
+STRINGWRITER
+=================================================================================
+Extends Writer.
+Its purpose is to write data in characters to a String buffer from where a String will be written.
+The String buffer is mutable.
+The stream must be closed after processing in order to release the buffer.
+After closing the stream, no method will raise exception, all methods can be used normally.
+The StringReader implements the AutoClosable interface, the try-with-resources statement can be used to ensure proper closing.
+Available methods are below.
+Its working mechanism is similar to StringBuilder.
+
+Constructors:
+    a. (): uses default buffer size
+    a. (int bufferSize): uses the given buffer size
+
+||Method|Description||
+||write()|writes a single character to the buffer||
+||write(char[] characterArray)|writes characters of the given character array to the buffer||
+||write(String string)|writes characters of the given String to the buffer||
+||getBuffer()|returns the contained data||
+||getString()|returns the contained data as String||
+||close()|closes the stream, no effect on methods||
+||flush()|forces all data in the writer to write to the buffer||
+||append()|appends a character to the buffer||
+
+EXAMPLE FOR USAGE:
+import java.io.StringWriter;
+...
+char[] characterArray = ...; //prepare data
+String string = ...; //prepare data
+try {
+    StringWriter stringWriter = new StringWriter(string); //create the StringWriter
+    stringWriter.write(characterArray); //write the array into the buffer
+    stringWriter.write(string); //write the String into the buffer
+    String s = stringWriter.toString(); //export the buffer to a String
+    stringWriter.close(); //close the StringWriter
+}
+catch (Exception e) {...} //in case the source was not accessible or the buffer was not created
+
+EXAMPLE FOR USAGE WITH TRY-WITH-RESOURCES:
+import java.io.StringWriter;
+...
+char[] characterArray = ...; //prepare data
+String string = ...; //prepare data
+try (StringWriter stringWriter = new StringWriter(string)) {
+    stringWriter.write(characterArray); //write the array into the buffer
+    stringWriter.write(string); //write the String into the buffer
+    String s = stringWriter.toString(); //export the buffer to a String
+}
+catch (Exception e) {...} //in case the source was not accessible or the buffer was not created
+
+=>Stream
+=>Reader
+=>StringBuilder
+=>Statements;15. TRY-WITH-RESOURCES STATEMENT

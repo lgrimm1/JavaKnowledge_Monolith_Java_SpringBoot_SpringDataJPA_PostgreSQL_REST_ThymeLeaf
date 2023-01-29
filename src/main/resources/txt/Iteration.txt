@@ -1,0 +1,96 @@
+=================================================================================
+ITERATION
+=================================================================================
+1. FOR LOOP
+2. FOR-EACH LOOP
+3. WHILE LOOP
+4. DO-WHILE LOOP
+5. RECURSION
+6. INFINITE LOOP
+
+=>Statements
+=>Operators
+=>Keywords_and_identifiers
+=>Array
+=>ArrayList
+
+=================================================================================
+1. FOR LOOP
+=================================================================================
+for (initial expressions; test expression; update expression) {
+	...
+}
+
+Initial expression: invokes before starting the loop; declaration.
+Test expression: tested before every cycle for being true.
+Update expression: changes variables of test expression.
+
+EXAMPLE:
+for (int i = 0, l = 31; i < l; i++) {...}
+
+=================================================================================
+2. FOR-EACH LOOP
+=================================================================================
+For arrays and collections.
+
+for (item : array or collection) {
+	...
+}
+
+EXAMPLE:
+String s = ...;
+for (char c : s) {...}
+
+=================================================================================
+3. WHILE LOOP
+=================================================================================
+while (test expression) {
+	...
+}
+
+Test expression: tested before every cycle for being true (enters only when conditions met).
+
+EXAMPLE:
+Scanner sc = new Scanner(new File("..."));
+while (sc.hasNextLine()) {...}
+sc.close();
+
+=================================================================================
+4. DO-WHILE LOOP
+=================================================================================
+do {
+	...
+} while (test expression);
+
+Test expression: tested after every cycle for being true (enters minimum once).
+
+EXAMPLE:
+int i = 1;
+do {...} while (i < 100);
+
+=================================================================================
+5. RECURSION
+=================================================================================
+Iteration by using a method which calles itself until condition met, then returns the result.
+Typical solution for processing folder tree.
+Initialization of a method is a slower process, will happen in all loops.
+Fast to write and correct, needs less code.
+Fills the stack, therefore with the exception of processing folder tree, advised not to implement it.
+
+EXAMPLE:
+int i = 0;
+i = recMethod(i);
+...
+long recMethod(long i) {
+	if (i < 10) {
+		i = recMethod(i++);
+	}
+	else {
+		return i;
+	}
+}
+
+=================================================================================
+6. INFINITE LOOP
+=================================================================================
+When updating the condition prevents it from turning to false.

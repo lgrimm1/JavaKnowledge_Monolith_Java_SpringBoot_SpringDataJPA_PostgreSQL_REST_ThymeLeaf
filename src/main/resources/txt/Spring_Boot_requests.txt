@@ -1,0 +1,260 @@
+=================================================================================
+SPRING.BOOT REQUESTS
+=================================================================================
+1. GET REQUESTS
+2. POST, PUT, DELETE, OPTIONS, PATCH, HEAD REQUESTS
+3. PARAMETERS IN REQUEST
+
+=>Spring_Boot
+=>Spring_Boot_controller
+
+=================================================================================
+1. GET REQUESTS
+=================================================================================
+About GET requests in controller class:
+    a. for every received request parameter, the @RequestParam(...) annotation is needed then the type and the name of the passed parameter.
+    b. for every parameter received from a template model, the @ModelAttribute annotation is needed then the type and the name of the passed parameter
+    c. the GET request will arrive at the endpoint marked as "endpointName" (see below)
+    d. the endpoint is reached 1: the next request arrives: base_path/endpointName, or:
+    e. the endpoint is reached 2: the next request arrives: base_path/endpointName?, or:
+    f. the endpoint is reached 3: the next request arrives: base_path/endpointName?parameter_name_in_request=some_value, or:
+    g. the endpoint is reached 4: the next request arrives: base_path/endpointName?parameter_name_in_request=some_value&title=some_other_value
+    h. the passedObjectName (see below) will receive some_value, coming from parameter_name_in_request parameter in request
+    i. if required=true (see below), the request reaches the endpoint only when that parameter was passed
+    j. if no value is given in the request, passedObjectName will take the defaultValue value (see below), in case no default is defined, null will be passed
+    k. the Model model (see below) will be used when an answer will be rendered using the template which name is returned by the method, the added attributes can be referenced within the template
+    l. with GET request, no request body should be sent and received, if needed use other request types
+
+Relations between GET request parameter and passed parameter:
+    a. endpoint: runtime error, no parameter passed from browser but needed on server side
+    b. endpoint?parameter: passes null
+    c. endpoint?parameter=: passes null
+    d. endpoint?parameter=xxx: passes value
+In case the passed type is Number, only number will be passed (or as it narrowed down to Double or Integer), otherwise error page will be sent back.
+
+Parameters of a request parameter:
+    a. name = "..." (parameter name in request)
+    b. required = true (optional)
+    c. defaultValue="..." (optional)
+In case of name parameter only, using "..." is satisfying.
+In case of required = false or not defined, and the parameter is not defined in the GET query, the method argument will receive null.
+In case the default value is defined and there is no value in the query for that, the method argument will receive the default value.
+
+EXAMPLE FOR METHOD HANDLING A GET REQUEST WITH QUERY (TEMPLATES):
+@GetMapping("/endpointName")
+public String methodName(@RequestParam("parameter_name1") passedObjectType1 passedObjectName1[, @RequestParam("parameter_name2") passedObjectType2 passedObjectName2, ...], Model model) {
+    return serviceName.serviceMethod(passedObjectName1[, passedObjectName2, ...], model);
+}
+...
+public static String serviceMethod(passedObjectType1 passedObjectName1[, passedObjectType2 passedObjectName2, ...], Model model) {
+    if (testing passedObjectNameX for properness) {
+        //processing passedObjectNameX
+	    model.addAttribute("html_attribute_name", object_variable_or_object_or_literal); //added things in case of success
+	    return "endpointName_template_for_success[]"; //extension is optional and can be different
+    }
+    model.addAttribute("html_attribute_name", object_variable_or_object_or_literal); //added things in case of failure
+	return "endpointName_template_for_error[]"; //extension is optional and can be different, template can be identical to success template
+	}
+}
+
+EXAMPLE FOR METHOD HANDLING A GET REQUEST WITH QUERY (OBJECT AS RESPONSE):
+class ResponseClassName {...} //somewhere in Business layer
+...
+@GetMapping("/endpointName")
+@ResponseBody
+public ResponseClassName methodName(@RequestParam("parameter_name1") passedObjectType1 passedObjectName1[, @RequestParam("parameter_name2") passedObjectType2 passedObjectName2, ...]) {
+    return serviceName.serviceMethod(passedObjectName1[, passedObjectName2, ...]);
+}
+...
+public int ResponseClassName serviceMethod(passedObjectType1 passedObjectName1[, passedObjectType2 passedObjectName2, ...]) {
+    if (testing passedObjectNameX for properness) {
+        //processing passedObjectNameX
+	    return new ResponseClassName(...); //construct with variables and literals to be sent to frontend in case of success
+    }
+    return new ResponseClassName(...); //construct with variables and literals to be sent to frontend in case of failure
+	}
+}
+
+EXAMPLE FOR METHOD HANDLING DIFFERENT ENDPOINTS:
+@GetMapping(value = {"/endpointName1", "/endpointName2"})
+public String methodName(...) {...}
+
+=================================================================================
+2. POST, PUT, DELETE, OPTIONS, PATCH, HEAD REQUESTS
+=================================================================================
+About POST, PUT, DELETE, OPTIONS, PATCH, HEAD requests in controller class:
+    a. for having request parameters from a query, use the GET request type
+    b. for every parameter received from a template model, the @ModelAttribute annotation is needed then the type and the name of the passed parameter
+    c. the request will arrive at the endpoint
+    d. the endpoint is always reached when it was sent to endpointName
+    e. the request body will be hidden from URL field of the browser (from the URL field always GET arrives)
+    f. passedObjectName (see below) will receive some_value from the sender page in browser
+    g. if no value is given in the request, passedObjectName will take the defaultValue value (see below), in case no default is defined, null will be passed
+    h. the Model model (see below) will be used when the response will be rendered using a template which name is returned by the method
+    i. the request body can contain more variables but all will be rendered into one transfer object or a Map object where keys are variable names
+
+EXAMPLE FOR METHOD HANDLING A POST OR PUT OR DELETE REQUEST (MODEL&VIEW MODE):
+@PostMapping("/endpointName") //or:
+@PutMapping("/endpointName") //or:
+@DeleteMapping("/endpointName")
+public String methodName(@ModelAttribute passedObjectType1 passedObjectName1[, @ModelAttribute passedObjectType2 passedObjectName2, ...], Model model) {
+    return serviceName.serviceMethod(passedObjectName1[, passedObjectName2, ...], model);
+}
+...
+public static String serviceMethod(passedObjectType1 passedObjectName1[, passedObjectType2 passedObjectName2, ...], Model model) {
+    if (testing passedObjectNameX for properness) {
+        //processing passedObjectNameX
+	    model.addAttribute("html_attribute_name", object_variable_or_object_or_literal); //added things in case of success
+	    return "endpointName_template_for_success[]"; //extension is optional and can be different
+    }
+    model.addAttribute("html_attribute_name", object_variable_or_object_or_literal); //added things in case of failure
+	return "endpointName_template_for_error[]"; //extension is optional and can be different, template can be identical to success template
+	}
+}
+
+EXAMPLE FOR METHOD HANDLING A POST OR PUT OR DELETE REQUEST (OBJECT AS REQUEST BODY, OBJECT MODE):
+class RequestClassName {...} //somewhere in Business layer
+class ResponseClassName {...} //somewhere in Business layer
+...
+@PostMapping("/endpointName") //or:
+@PutMapping("/endpointName") //or:
+@DeleteMapping("/endpointName")
+@ResponseBody
+public ResponseClassName methodName(@RequestBody RequestClassName requestObjectName) {
+    return serviceName.serviceMethod(requestObjectName);
+}
+...
+public int ResponseClassName serviceMethod(RequestClassName requestObjectName) {
+    if (testing fields of requestObjectName for properness) {
+        //processing fields of requestObjectName
+	    return new ResponseClassName(...); //construct with variables and literals to be sent to frontend in case of success
+    }
+    return new ResponseClassName(...); //construct with variables and literals to be sent to frontend in case of failure
+	}
+}
+
+EXAMPLE FOR METHOD HANDLING A POST OR PUT OR DELETE REQUEST (MAP AS REQUEST BODY, OBJECT MODE):
+class ResponseClassName {...} //somewhere in Business layer
+...
+@PostMapping("/endpointName") //or:
+@PutMapping("/endpointName") //or:
+@DeleteMapping("/endpointName")
+@ResponseBody
+public ResponseClassName methodName(@RequestBody final Map<String, String> requestMapName) {
+    return serviceName.serviceMethod(requestMapName); //or:
+    return serviceName.serviceMethod(requestMapName.get(variableName1[, variableName2, ...]));
+}
+...
+public int ResponseClassName serviceMethod(Map<String, String> requestMapName) { //or:
+public int ResponseClassName serviceMethod(String variableName1[, String variableName2, ...]) {
+    if (testing requestMapName.get(variableName)s for properness) {
+        //processing requestMapName.get(variableName)s
+	    return new ResponseClassName(...); //construct with variables and literals to be sent to frontend in case of success
+    }
+    return new ResponseClassName(...); //construct with variables and literals to be sent to frontend in case of failure
+	}
+}
+
+EXAMPLE FOR METHOD HANDLING DIFFERENT REQUESTS:
+@PostMapping(value = {"/endpointName1", "/endpointName2"})
+public String methodName(...) {...}
+
+=================================================================================
+3. PARAMETERS IN REQUEST
+=================================================================================
+The endpoint can contain data which is an actual parameter e.g. /employee/id where the id is a number.
+Along with this technique query can be sent as well e.g. /employee/id?month=3.
+
+In the endpoint the {} marks which part will mean parameter value, this value will be rendered to method parameter name and type.
+An endpoint can contain more parameters as well. In this case in the method signature parameters can be received independently, or merged into a Map where keys are the parameter names.
+
+Because the parameter part of an endpoint forms one or more variables, the fix part must be unique in the controller.
+Furthermore, it is possible that the parameter values will be null in case the endpoint path ends before all values are written into.
+
+All request parameters accesses with @PathVariable have required flag by default. That said, by default, rendering more endpoints to one method with @PathVariable defaults will result 404 error for the latter endpoints.
+For default values, using the Optional version below is advised.
+
+Important as well that Spring identifies the last dot (.) in an endpoint as separator of extension. That said, in case the needed parameter would contain dot e.g. we are waiting a domain name with .com ending, the result will not contain the .com part. This is true only for the last parameter.
+Solution is to make the compiler to use the dot as part of last parameter, or use an ending / sign which pushes the aim of last parameter; see below.
+
+The endpoint path marks a virtual folder system. it is possible to use request parameter and path characters on the same virtual level:
+    a. /api/employees/{name} (path variable forms a level)
+    b. /api/employees/{name}.xml (path variable forms a part of a level)
+
+EXAMPLE FOR PARAMETER IN REQUEST (TEMPLATE PARAMETER NAME EQUALS METHOD PARAMETER NAME):
+@GetMapping("/api/employees/{id}")
+@ResponseBody
+public String getEmployeesById(@PathVariable String id) {
+    return "ID: " + id;
+}
+
+EXAMPLE FOR PARAMETER IN REQUEST (TEMPLATE PARAMETER NAME DIFFERS FROM METHOD PARAMETER NAME):
+@GetMapping("/api/employees/{id}")
+@ResponseBody
+public String getEmployeesById(@PathVariable("id") String employeeId) { //or:
+public String getEmployeesById(@PathVariable(value = "id") String employeeId) {
+    return "ID: " + id;
+}
+
+EXAMPLE FOR MORE PARAMETERS IN REQUEST (INDEPENDENT VARIABLES):
+@GetMapping("/api/employees/{id}/{month}")
+@ResponseBody
+public String getEmployeesByIdAndMonth(@PathVariable String id, @PathVariable String month) {
+    return "ID: " + id + ", name: " + name;
+}
+
+EXAMPLE FOR MORE PARAMETERS IN REQUEST (SUMMARIZED INTO MAP):
+@GetMapping("/api/employees/{id}/{month}")
+@ResponseBody
+public String getEmployeesByIdAndMonth(@PathVariable final Map<String, String> pathVarsMap) {
+    String id = pathVarsMap.get("id");
+    String month = pathVarsMap.get("month");
+    if (id != null && month != null) {
+        return "ID: " + id + ", month: " + month;
+    }
+    return "Missing Parameters";
+}
+
+EXAMPLES FOR HANDLING THE DOT PROBLEM:
+@GetMapping("/example/{firstValue}/{secondValue:.+}")
+public void example(@PathVariable("firstValue") String firstValue, @PathVariable("secondValue") String secondValue) {
+    //...
+}
+@GetMapping("/example/{firstValue}/{secondValue}/")
+public void example(@PathVariable("firstValue") String firstValue, @PathVariable("secondValue") String secondValue) {
+    //...
+}
+
+EXAMPLE FOR HANDLING MORE ENDPOINTS WITH PARAMETERS (REQUIRED FLAG):
+@GetMapping(value = {"/api/employeeswithrequiredfalse", "/api/employeeswithrequiredfalse/{id}"})
+@ResponseBody
+public String getEmployeesByIdWithRequiredFalse(@PathVariable(required = false) String id) {
+    if (id != null) {
+        return "ID: " + id;
+    } else {
+        return "ID missing";
+    }
+}
+
+EXAMPLE FOR HANDLING MORE ENDPOINTS WITH PARAMETERS (OPTIONAL):
+@GetMapping(value = { "/api/employeeswithoptional", "/api/employeeswithoptional/{id}" })
+@ResponseBody
+public String getEmployeesByIdWithOptional(@PathVariable Optional<String> id) {
+    if (id.isPresent()) {
+        return "ID: " + id.get();
+    } else {
+        return "ID missing"; //or: handling default value
+    }
+}
+
+EXAMPLE FOR HANDLING MORE ENDPOINTS WITH PARAMETERS (MAP):
+@GetMapping(value = { "/api/employeeswithmap/{id}", "/api/employeeswithmap" })
+@ResponseBody
+public String getEmployeesByIdWithMap(@PathVariable Map<String, String> pathVarsMap) {
+    String id = pathVarsMap.get("id");
+    if (id != null) {
+        return "ID: " + id;
+    } else {
+        return "ID missing";
+    }
+}

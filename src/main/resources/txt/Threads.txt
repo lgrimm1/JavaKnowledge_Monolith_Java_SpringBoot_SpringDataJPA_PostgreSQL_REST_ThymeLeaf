@@ -1,0 +1,240 @@
+=================================================================================
+THREADS
+=================================================================================
+All processes are organized into threads.
+A thread means a series of statements executed, following the process flow. There is no parallel execution.
+In case of more threads, the execution is separated into several process flows, the execution is parallel.
+The threads are handled by the JVM. That said, no direct access to CPU cores or OS threads. The JVM will manage how the different threads are organized and divided between OS threads. Therefore, the real execution is virtually parallel.
+The started application forms the main thread. In case no other threads defined, the main thread carries all execution flows.
+Some Java methods work with parallel processes inside (e.g. Streams), and after finishing the task, these threads are joined back into the main thread of the method.
+An object is controlled by one and only one thread. The control is gained by accessing that object. No other thread can access an already owned objects except within their flow an access action happens.
+
+A thread has several statuses:
+    a. new (created, never started)
+    b. runnable (started, not stopped, not waiting or blocked)
+    c. waiting (the accessed object is not ready to open its channel towards the thread, the thread will wait until such channel opens then continues so returns to be runnable)
+    d. blocked (the process enters into a situation where the flow is stuck into, e.g. a loop, once freed, continues so returns to be runnable)
+    d. interrupted (stopped, terminated; the flow ends or the thread stops itself or falls under a forced stop)
+The waiting thread will be notified by the object in case the channel is freed. The thread would need a few moments until re-activates itself.
+Stopped threads must not be restarted.
+
+When creating a new thread, always have to be sure that the flow has an end. The main thread (after reaches its final statement) will wait until the last running sub-threads are finished before exiting.
+Before starting a thread, it can be set to be a daemon thread. Such threads are for background operations with very low priority level, and the main level will not wait for these before terminates. Such daemon thread is for e.g. the Garbage Collector.
+A thread has priority level. Such level will determine with what weight (with what frequency) the statements should be executed within. The less priority means less available execution time offered by the JVM whilst the higher level means more execution time. On the 1-10 scale normal priority level is 5, 10 means the JVM will give all available resources to the thread.
+Be aware of parallel access of data which is not prepared for concurrent access. Furthermore, if such data is written by different threads, misreading (wrong data) can infect the process flows.
+
+=>GarbageCollector
+=>Lambda_expressions
+=>Statements
+=>Stream;2. STREAMS FOR MANIPULATING SERIES OF DATA
+
+1. THREAD OBJECT
+2. ATOMIC CLASSES FOR CONCURRENT USE OF PRIMITIVES
+3. THREAD POOLS
+
+=================================================================================
+1. THREAD OBJECT
+=================================================================================
+A Thread object represents a thread.
+When declaring, must override its run() method for defining the process the thread should execute.
+The thread can have a concrete algorithm burned into its run() method, or the method which creates the new thread can receive a lambda or a method reference. In the latter two cases, use the Runnable interface as argument type.
+
+EXAMPLE FOR RECEIVING LAMBDA AS ARGUMENT:
+void outerMethod() {...}
+void threadCreatorMethod(Runnable process) {
+    //create new thread
+    //within the overridden run() method of the thread, launch the lambda with process.run() statement, and/or:
+    //within the overridden run() method of the thread, write statements
+}
+threadCreatorMethod(outerMethod());
+threadCreatorMethod(lambda);
+
+EXAMPLE 1 FOR DECLARING A THREAD AS ANONYMOUS CLASS:
+import java.util.Thread;
+...
+		Thread thread = new Thread() {
+			@Override
+			public void run() {
+			    //in case of a pre-given Runnable process:
+				try {
+				    statement; //in case of burnt-in statements, or:
+					process.run(); //in case of lambda, or:
+					methodName(); //in case of outer method
+				}
+				catch (Exception e) {
+					e.printStackTrace();
+				}
+				//in case of locally declared statements:
+    	    	statement1;
+	    	    statement2;
+			}
+		};
+...
+newThread.start(); //starts the thread
+
+EXAMPLE 2 FOR DECLARING A THREAD AS ANONYMOUS CLASS:
+import java.util.Thread;
+...
+Thread thread = new Thread(() -> {
+		try {
+			process.run();
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		//or:
+		statement1;
+		statement2;
+});
+...
+newThread.start(); //starts the thread
+
+Because many threads can be executed parallel, which means process-parts from threads are following each-other, the momentarily running thread can be accessed by:
+Thread actualThread = Thread.currentThread();
+
+A Thread object contain a name, a unique ID, the priority level, the inner process and the status (e.g. runnable, interrupted). These parameters can be read, for some parameters can be set by methods.
+
+A Thread is an object, the thread from which it is declared, is its owner so starting such thread can be done from the original thread. However, after the start, the original thread loses control, the JVM will monitor the thread. This is why from the original thread it is not possible to suspend or terminate a thread. From within the new thread, it is possible to switch the thread to wait or interrupt it with the interrupt() method.
+
+=================================================================================
+2. ATOMIC CLASSES FOR CONCURRENT USE OF PRIMITIVES
+=================================================================================
+In case of reaching variables by threads at the same time, immutable classes with supporting concurrent use are needed. Than means, in case from more threads reading or writing access should happen, the first incoming thread will be executed while the rest of the treads will change to WAIT state, when the variable is freed (previous access has finished) the next thread will be notified, wakes up and executes the access, and so on.
+Primitive variables however, have no concurrent support due to not being objects.
+For having immutable and concurrent version from them, atomic classes can be used.
+
+EXAMPLE FOR ATOMIC CLASSES:
+import java.util.concurrent.atomic.*;
+...
+AtomicInteger ai = new AtomicInteger();
+int i = 3;
+ai.set(45); //value giving
+ai.set(i); //value giving via variable
+i = ai.get(); //value returning
+
+There are such versions for boolean, long etc.
+The atomic classes have many conversion methods and other useful tools.
+
+=================================================================================
+3. THREAD POOLS
+=================================================================================
+In case of many (probably un-named) threads created e.g. automatically, handling them and executing them needs a bit of code. Too much parallel executions will kill the system.
+There are solutions for automation called thread pools.
+Thread pools have 2 main areas: a pool where the processes are thrown (pratically a queue), and the core where the processes are executed as independent threads.
+The core manages the threads, and the processes are pulled out from the pool in FIFO order.
+With this solution, almost infinite number of processes can be sent to the thread pool while the number of actually running threads can be limited.
+The input should be a lambda e.g. () -> statement or () -> methodName(), or a method directly e.g. methodName().
+
+3.1. EXECUTOR
+3.2. FORKJOINPOOL
+
+3.1. EXECUTOR
+---------------------------------------------------------------------------------
+The Executor pool works with pre-settings, very easy to use: drop a processes into it, will do the rest. No returning values from the threads.  Core size is flexibly follows the need. There is no pool before the core.
+The ExecutorService pool lets controlling the service with its methods. There can be return values of processes reached through Future variables. In case there is no returned value, the Future variable will receive no value. Core size is flexibly follows the need. There is no pool before the core.
+The actual lambda or method passed to a thread pool can be Runnable (no return value) or Callable(with return value).
+
+The ThreadPoolExecutor is a real thread pool with parameterizable core and pool sizes and time in which inactive threads are kept alive in the core before removing. The getPoolSize() returns the number of threads while the getQueue().size() returns the number of waiting processes (naming can be a bit confusing). This thread pool has several implementations:
+    a. FixedThreadPool
+    b. CachedThreadPool
+    c. SingleThreadExecutor
+    d. ScheduledThreadPoolExecutor
+
+EXAMPLE FOR SINGLE THREAD EXECUTOR VIA EXECUTOR:
+Executor executor = Executors.newSingleThreadExecutor();
+Executor executor = Executors.newSingleThreadExecutor();
+executor.execute(lambda1); //dropping a process into
+executor.execute(lambda2); //dropping a process into
+
+EXAMPLE FOR FIXED THREAD POOL VIA EXECUTOR SERVICE:
+ExecutorService executorService = Executors.newFixedThreadPool(10); //size of the core
+Future<String> future1 = executorService.submit(lambda1); //dropping a process into
+Future<Integer> future2 = executorService.submit(lambda2); //dropping a process into
+...
+String result1 = future1.get();
+Integer result2 = future2.get();
+
+EXAMPLE FOR FIXED THREAD POOL VIA THREAD POOL EXECUTOR:
+//core with maximum 2 threads, other processes will wait in pool queue
+ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(2);
+executor.submit(lambda1);
+executor.submit(lambda2);
+executor.submit(lambda3); //will wait in pool until core has free slot
+int size = executor.getPoolSize(); //2
+int size = executor.getQueue().size(); //1
+
+EXAMPLE FOR CACHED THREAD POOL VIA THREAD POOL EXECUTOR:
+//no fixed core size, maximum Integer.MAX_VALUE, above that processes move to the pool first, keepAliveTime is 60 seconds
+//ideal for many sort processes
+ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newCachedThreadPool();
+executor.submit(lambda1);
+executor.submit(lambda2);
+executor.submit(lambda3);
+int size = executor.getPoolSize(); //3
+int size = executor.getQueue().size(); //0
+
+EXAMPLE FOR SINGLE THREAD EXECUTOR VIA EXECUTOR SERVICE:
+//core size is 1, sequential thread starting
+//because it contains immutable variables inside, instead of ThreadPoolExecutor the ExecutorService will hold the instance
+//ideal for one single loop
+ExecutorService executor = Executors.newSingleThreadExecutor();
+executor.submit(lambda);
+
+EXAMPLE FOR SCHEDULED THREAD POOL VIA SCHEDULED EXECUTOR SERVICE:
+//starts a thread after a defined delay; schedule()
+//repeats the thread execution with period of defined rate, will delay before starting the next loop; scheduleAtFixedRate()
+//repeats the thread execution with period of defined rate, will delay after starting the next loop; scheduleWithFixedDelay()
+//typically used with zero keepAliveTime, delay before the start
+ScheduledExecutorService executor = Executors.newScheduledThreadPool(5); //core size is 5, unlimited pool size (Integer.MAX_VALUE), kepp-alive-time is 0
+executor.schedule(lambda, 500, TimeUnit.MILLISECONDS); //will start after 500 ms, run once
+CountDownLatch lock = new CountDownLatch(3);
+ScheduledFuture<?> future = executor.scheduleAtFixedRate(() -> {
+        statement;
+        lock.countDown();
+    }, 500, 100, TimeUnit.MILLISECONDS); //starts after 500 ms, restarts after 100 ms delay, loop 3 times
+lock.await(1000, TimeUnit.MILLISECONDS); //waits 1000 ms
+future.cancel(true); //stops the loop
+
+3.2. FORKJOINPOOL
+---------------------------------------------------------------------------------
+The ForkJoinPool is ideal for solving recursive problems parallel.
+In a recursive tree, in case all node means a thread, all system resources would be full soon.
+The ForkJoinPool does not use threads but a RecursiveTask or a RecursiveAction implementation for all nodes, they have a compute() which is overridden.
+The implemented method can use Stream technology to parallel process a level and create a fork on every node, that fork will go down on the next level. Once reaches the lowest level of the tree (a leaf), computes the result and joins the fork with its mother fork, carrying the result on the leaf with it.
+
+EXAMPLE FOR FORK JOIN POOL (SUMMARIZING, RECURSIVE TASK):
+//declare a node structure
+class TreeNode {
+    int value; //this is the value on the node to process
+    Set<TreeNode> children; //this is the set of children nodes
+    TreeNode(int value, TreeNode... children) { //constructor of a node
+        this.value = value;
+        this.children = Sets.newHashSet(children);
+    }
+}
+//declare RecursiveTask implementation on a node
+class CountingTask extends RecursiveTask<Integer> {
+    private final TreeNode node; //the node
+    public CountingTask(TreeNode node) { //constructor, attach the node
+        this.node = node;
+    }
+    @Override
+    protected Integer compute() { //the process on the node
+        return node.value + node.children.stream() //Stream<TreeNode>
+            .map(childNode -> new CountingTask(childNode).fork()) //Stream<CountingTask.fork> means recursion and new fork
+            .collect(Collectors.summingInt(ForkJoinTask::join)); //collects values on Stream elements (if an element was a set, recursion will give a value for that), and joines the forks from recursion
+    }
+}
+...
+//declare tree (or receive it)
+//5
+//    L 3
+//    L 2
+//        L 2
+//        L 8
+TreeNode tree = new TreeNode(5, new TreeNode(3), new TreeNode(2, new TreeNode(2), new TreeNode(8)));
+//create and execute the pool
+ForkJoinPool forkJoinPool = ForkJoinPool.commonPool();
+int sum = forkJoinPool.invoke(new CountingTask(tree));
+
+In case of other tasks, e.g. deleting specific files on a node, the TreeNode/value would be a list of files to delete, the Node constructor would call filtering out these files, and in CountingTask/compute() the .collect() would be rewritten, or the whole Stream operation but do not forget creating the new fork.
