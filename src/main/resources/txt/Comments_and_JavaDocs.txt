@@ -22,8 +22,9 @@ For methods with right-level verbal names and parameters names and-or their task
 JavaDocs formatting characters:
     a. can use HTML formatting (tag-pairs)
     b. <p> line end
-    c. &lt; <
-    d. &gt; >
+    c. & and lt; less-than character
+    d. & and gt; greater-than character
+    e. & and nbsp; tabulator character
 
 JavaDocs tags:
     a. @author authorNames
