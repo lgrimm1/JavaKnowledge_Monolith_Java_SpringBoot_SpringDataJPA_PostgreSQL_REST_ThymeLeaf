@@ -1,22 +1,31 @@
 package lgrimm1.JavaKnowledge.Txt;
 
+import jakarta.persistence.*;
+
 import java.util.*;
 
-public class Entity {
+@Entity
+@Table(name = "txt")
+public class TxtEntity {
 
+	@Id
+	@SequenceGenerator(name = "seq_txt", sequenceName = "seq_txt", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_txt")
+	@Column(name = "id")
 	long id;
-	List<String> text;
+	@Column(name = "source_text", nullable = false)
+	List<String> sourceText;
 
-	public Entity() {
+	public TxtEntity() {
 	}
 
-	public Entity(List<String> text) {
-		this.text = text;
+	public TxtEntity(List<String> sourceText) {
+		this.sourceText = sourceText;
 	}
 
-	public Entity(long id, List<String> text) {
+	public TxtEntity(long id, List<String> sourceText) {
 		this.id = id;
-		this.text = text;
+		this.sourceText = sourceText;
 	}
 
 	public long getId() {
@@ -27,32 +36,32 @@ public class Entity {
 		this.id = id;
 	}
 
-	public List<String> getText() {
-		return text;
+	public List<String> getSourceText() {
+		return sourceText;
 	}
 
-	public void setText(List<String> text) {
-		this.text = text;
+	public void setSourceText(List<String> sourceText) {
+		this.sourceText = sourceText;
 	}
 
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
-		Entity entity = (Entity) o;
-		return id == entity.id && text.equals(entity.text);
+		TxtEntity txtEntity = (TxtEntity) o;
+		return id == txtEntity.id && sourceText.equals(txtEntity.sourceText);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, text);
+		return Objects.hash(id, sourceText);
 	}
 
 	@Override
 	public String toString() {
-		return "Entity{" +
+		return "TxtEntity{" +
 				"id=" + id +
-				", text=" + text +
+				", sourceText=" + sourceText +
 				'}';
 	}
 }
