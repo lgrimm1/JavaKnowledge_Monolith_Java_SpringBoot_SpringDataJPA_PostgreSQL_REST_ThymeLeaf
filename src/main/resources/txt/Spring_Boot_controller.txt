@@ -224,7 +224,7 @@ In the method signature, an optional argument marked with @ModelAttribute annota
 In the method signature, a Model object should be placed as argument, in case data should be sent towards the frontend.
 The Model object contains data prepared to be sent. Any kind of object can be added to the Model.
 
-See Spring_Boot_requests page for code samples.
+See Spring_Boot_requests page for code examples.
 
 =================================================================================
 5. CONTROLLER OBJECT MODE
@@ -236,7 +236,7 @@ The return value can be any type or a Map with String keys and values where keys
 In the method signature, every incoming object (sent by frontend) must be marked with @RequestBody annotation.
 Alternatively, all incoming objects can be rendered into one Map of String keys and values, also marked with @RequestBody annotation.
 
-See Spring_Boot_requests page for code samples.
+See Spring_Boot_requests page for code examples.
 
 =================================================================================
 6. RESPONSE ENTITY

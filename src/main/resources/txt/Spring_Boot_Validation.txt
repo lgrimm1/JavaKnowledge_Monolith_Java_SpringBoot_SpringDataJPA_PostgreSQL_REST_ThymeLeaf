@@ -330,7 +330,7 @@ Creation of such validation is reached via three steps:
     b. declare custom annotation for the custom checking method
     c. marking the proper fields for custom validation in the entity
 
-The sample below shows a solution for validating of the next field:
+The example below shows a solution for validating of the next field:
     private String phone;
 
 EXAMPLE FOR CUSTOM VALIDATION METHOD:

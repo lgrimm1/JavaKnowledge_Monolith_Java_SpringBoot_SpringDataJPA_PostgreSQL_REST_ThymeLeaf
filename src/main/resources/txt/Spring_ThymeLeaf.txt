@@ -5,7 +5,7 @@ SPRING.THYMELEAF
 2. SETTING UP
 3. TEMPLATES
 4. FORMS
-5. FORM SAMPLES
+5. FORM EXAMPLES
 
 =>Web_application
 =>Spring_Boot
@@ -318,7 +318,7 @@ Tags can be grouped by using the fieldset tag, see below.
 In case a field is not filled by the user, the form will send a null rendered to that HTML attribute as value. Same goes for attributes not distributed for user input on the form.
 
 =================================================================================
-5. FORM SAMPLES
+5. FORM EXAMPLES
 =================================================================================
 EXAMPLE FOR HTML FIELDSET (GROUPING OF PARTS OF THE FORM):
 ...
