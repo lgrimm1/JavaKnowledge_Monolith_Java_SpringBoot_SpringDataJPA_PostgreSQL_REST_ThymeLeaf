@@ -19,6 +19,7 @@ whm.put(key, value); //in case keyType is a class, the map receives a reference 
 key = null; //releasing the reference, means the key in the map points to null as well, so the key is not used anymore
 System.gc(); //somewhere the GC runs, or like here, forced to run
 //from this point on, the corresponding key-value pair is deleted from the map
+END OF EXAMPLE
 
 EXAMPLE FOR CREATING A NEW WEAKHASHMAP FROM AN OTHER:
 import java.util.WeakHashMap;
@@ -26,6 +27,7 @@ import java.util.HashMap;
 ...
 HashMap<keyType, valueType> hm = new HashMap<>();
 WeakHashMap<keyType, valueType> whm = new WeakHashMap<>(hm);
+END OF EXAMPLE
 
 Differences between HashMap and WeakHashMap:
     a. HashMap keys are strong reference type, WeakHashMap keys are weak reference type

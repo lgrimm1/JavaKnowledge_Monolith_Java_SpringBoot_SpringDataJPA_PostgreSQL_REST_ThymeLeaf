@@ -42,6 +42,7 @@ try {
     fileWriter.close(); //close the stream (release the source)
 }
 catch (Exception e) {...} //in case the destination or the accessed writer was not accessible on declaring
+END OF EXAMPLE
 
 EXAMPLE FOR USAGE WITH TRY-WITH-RESOURCES:
 import java.io.FileWriter;
@@ -52,6 +53,7 @@ try (FileWriter fileWriter = new FileWriter(fileName); PrintWriter printWriter =
     printWriter.print(string); //send to the writer
 }
 catch (Exception e) {...} //in case the destination or the accessed writer was not accessible on declaring
+END OF EXAMPLE
 
 =>Stream
 =>Writer

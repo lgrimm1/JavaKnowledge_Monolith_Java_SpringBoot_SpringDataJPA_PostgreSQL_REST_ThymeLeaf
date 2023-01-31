@@ -57,12 +57,14 @@ EXAMPLE FOR WRONG USAGE:
 ArrayList<Integer> ial1 = new ArrayList<>(Arrays.asList(1, 2, 3, 4));
 ArrayList<Integer> ial2 = new ArrayList<>(Arrays.asList(2, 4));
 assert ial1.removeAll(ial2);
+END OF EXAMPLE
 
 EXAMPLE FOR CORRECT USAGE:
 ArrayList<Integer> ial1 = new ArrayList<>(Arrays.asList(1, 2, 3, 4));
 ArrayList<Integer> ial2 = new ArrayList<>(Arrays.asList(2, 4));
 boolean success = ial1.removeAll(ial2);
 assert success;
+END OF EXAMPLE
 
 =================================================================================
 2. USAGE TYPES

@@ -36,6 +36,7 @@ The System has static methods before which there is no need to explicitly access
 EXAMPLE FOR GETTING OS NAME AND VERSION NUMBER:
 String OS = System.getProperty("os.name"); //Windows 10
 System.getProperty("os.version");
+END OF EXAMPLE
 
 =>Standard_input_and_output
 =>Array

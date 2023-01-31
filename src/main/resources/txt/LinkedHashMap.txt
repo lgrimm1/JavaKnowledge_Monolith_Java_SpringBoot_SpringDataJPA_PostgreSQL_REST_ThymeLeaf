@@ -18,6 +18,7 @@ import java.util.LinkedHashMap;
 ...
 LinkedHashMap<keyType, valueType> lhm1 = new LinkedHashMap<>();
 LinkedHashMap<keyType, valueType> lhm2 = new LinkedHashMap<>(lhm1);
+END OF EXAMPLE
 
 EXAMPLE FOR SORTING A LINKEDHASHMAP:
 import java.util.LinkedHashMap;
@@ -32,6 +33,7 @@ LinkedHashMap<String, String> lhm2 = new LinkedHashMap(); //in order to keep ori
 for (Map.Entry<String, String> entry : ll) {
     lhm2.put(entry.getKey(), entry.getValue());
 }
+END OF EXAMPLE
 
 =>Map
 =>HashMap

@@ -19,6 +19,7 @@ EnumSet<enumName> set1 = EnumSet.allOf(enumName.class); //[ENUM1, ENUM2, ...], s
 EnumSet<enumName> set2 = EnumSet.noneOf(enumName.class); //[], only the elements of the enum can be added to the set in the program
 EnumSet<enumName> set3 = EnumSet.range(enumName.ENUMx, enumName.ENUMy); //[ENUMx, ..., ENUMy], will contain values of the enum between the given values
 EnumSet<enumName> set4 = EnumSet.of(enumName.ENUMx, enumName.ENUMy); //[ENUMx, ENUMy], will contain given values of the enum
+END OF EXAMPLE
 
 All methods of Set are available but values can be only from the same enum type.
 Elements can be added from other Collection types like ArrayList, LinkedList in case their element type are the same enum type.

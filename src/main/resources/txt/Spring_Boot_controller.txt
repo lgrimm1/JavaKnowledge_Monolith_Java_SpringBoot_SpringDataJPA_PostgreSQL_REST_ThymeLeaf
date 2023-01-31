@@ -54,6 +54,7 @@ public class ControllerClassName {
     //request handler (endpoint) methods
     //accessing a service method etc.: service.methodName()
 }
+END OF EXAMPLE
 
 EXAMPLE FOR A CONTROLLER CLASS (@AUTOWIRED WITH CLASS DEPENDENCY INJECTION):
 package PackageName;
@@ -78,6 +79,7 @@ public class ControllerClassName {
     //request handler (endpoint) methods
     //accessing a service method etc.: service.methodName()
 }
+END OF EXAMPLE
 
 In case something is sent to the console by invoking System.out.println(), the text will appear on the console of the web application, among Spring messages. Because the console carries a bunch or logs for every request, it is advised to insert a well visible line into.
 A controller class contains request handler methods, and can contain subclasses, fields and other methods. Best practice is to keep a controller as thin as it is possible which means any helpers, variables should be declared in the Business layer, in its service class (see earlier).
@@ -339,6 +341,7 @@ public void controllerMethod(HttpServletResponse response) throws IOException {
     response.setStatus(statusNumber);
     response.getWriter().println(value);
 }
+END OF EXAMPLE
 
 =================================================================================
 8. EXCEPTION HANDLING

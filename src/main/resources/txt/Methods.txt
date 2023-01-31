@@ -43,12 +43,14 @@ EXAMPLE FOR PASSING LITERAL TO METHOD:
 void methodName(int n) {...}
 ...
 methodName(3);
+END OF EXAMPLE
 
 EXAMPLE FOR PASSING PRIMITIVE TYPE TO METHOD:
 void methodName(int n) {...}
 ...
 int n = 4;
 methodName(n);
+END OF EXAMPLE
 
 EXAMPLE FOR PASSING CLASS TYPE TO METHOD:
 void methodName(ArrayList<String> sal) {...}
@@ -56,16 +58,19 @@ void methodName(ArrayList<String> sal) {...}
 ArrayList<String> sal = new ArrayList<>();
 ...
 methodName(sal);
+END OF EXAMPLE
 
 EXAMPLE FOR PASSING TEMPORARY OBJECT TO METHOD 1:
 void methodName(Scanner scanner) {...}
 ...
 methodName(new Scanner(...));
+END OF EXAMPLE
 
 EXAMPLE FOR PASSING TEMPORARY OBJECT TO METHOD 2:
 void methodName(int[] array) {...}
 ...
 methodName(new int[]{1, 2, 3});
+END OF EXAMPLE
 
 =================================================================================
 3. RETURN
@@ -86,6 +91,7 @@ if (condition) {
     return ...;
 }
 //process continues (false case)
+END OF EXAMPLE
 
 EXAMPLES FOR USAGE OF RETURN 2:
 return true; //literal
@@ -127,6 +133,7 @@ EXAMPLE FOR METHOD OVERLOADING:
 returnType methodName(paramType1 paramName1) {...}
 returnType methodName(paramType1 paramName1, paramType2 paramName2) {...}
 returnType methodName(paramType3 paramName3, paramType4 paramName4) {...}
+END OF EXAMPLE
 
 =================================================================================
 6. MAIN METHOD
@@ -173,6 +180,7 @@ EXAMPLE FOR DECLARING A GENERICS METHOD:
 <access modifier> <T> returnValue methodName(T data) {
     //statements
 }
+END OF EXAMPLE
 
 EXAMPLE FOR UTILIZING A GENERICS METHOD:
 //declare method
@@ -185,12 +193,14 @@ genMethod("Window");
 //use as Integer method
 <Integer>genMethod(3); //or:
 genMethod(3);
+END OF EXAMPLE
 
 By using <T>, any types except primitive types can be accepted. Narrowing is possible by using <T extends typeClass> where typeClass can be e.g. Number for numbers or any custom types so T can be only a subtype of typeClass.
 Such T is called bounded type.
 
 EXAMPLE FOR DECLARING GENERICS METHOD ACCEPTING ONLY NUMBERS:
 <access modifier> <T extends Number> returnValue methodName(T data) {...}
+END OF EXAMPLE
 
 Advantages of using generics:
     a. code re-usability

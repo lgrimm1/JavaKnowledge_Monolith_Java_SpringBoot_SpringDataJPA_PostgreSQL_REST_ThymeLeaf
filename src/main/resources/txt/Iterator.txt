@@ -26,6 +26,7 @@ while (iter.hasNext()) {
     element = iter.next();
     //process element
 }
+END OF EXAMPLE
 
 EXAMPLE FOR PROCESSING ALL REMAINING ELEMENTS:
 import java.util.Iterator;
@@ -37,6 +38,7 @@ elementType element;
 Iterator<elementType> iter = al.iterator();
 //processing elements
 iter.forEachRemaining((value) -> System.out.print(value + ", ")); //roughly prints all remaining elements via passing a lambda expression
+END OF EXAMPLE
 
 =>Collection
 =>ListIterator

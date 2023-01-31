@@ -40,6 +40,7 @@ public class MainTest {
 		Assertions.assertNotNull(controller);
 	}
 }
+END OF EXAMPLE
 
 =================================================================================
 2. ENTITY TEST
@@ -93,6 +94,7 @@ class SeriesEntityTest {
    		Assertions.assertDoesNotThrow(() -> validateBean(entityObjectWhichWillBeValidated2));
    	}
 }
+END OF EXAMPLE
 
 =================================================================================
 3. REPOSITORY TESTS
@@ -129,6 +131,7 @@ class ServiceTest {
 	@Test
 	void testName() {...}
 }
+END OF EXAMPLE
 
 EXAMPLE FOR SERVICE CLASS TEST CLASS (MOCKING, INDEPENDENT UNIT TEST):
 import org.junit.jupiter.api.*;
@@ -160,6 +163,7 @@ class ServiceTest {
 	    Assertions.assertEquals(new Element(12, "abc", 3.14d), serviceName.get(12));
 	}
 }
+END OF EXAMPLE
 
 =================================================================================
 5. CONTROLLER CLASS TESTS

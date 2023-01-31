@@ -28,6 +28,7 @@ try {
     w.close(); //close the stream (release the source)
 }
 catch (Exception e) {...} //in case the destination was not accessible
+END OF EXAMPLE
 
 EXAMPLE FOR USAGE WITH TRY-WITH-RESOURCES:
 import java.io.Writer;
@@ -39,6 +40,7 @@ try (Writer w = new FileWriter(fileName)) {
     w.write(charArray); //write to the destination
 }
 catch (Exception e) {...} //in case the destination was not accessible
+END OF EXAMPLE
 
 =>Stream
 =>StringBuilder

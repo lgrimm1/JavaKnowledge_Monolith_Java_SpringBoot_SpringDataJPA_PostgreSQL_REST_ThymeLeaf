@@ -10,6 +10,7 @@ class CustomComparator implements Comparator<elementType> {...}
 ...
 TreeSet<elementType> ss = new TreeSet<>(); //natural order
 TreeSet<elementType> ss2 = new TreeSet<>(new CustomComparator()); //custom order
+END OF EXAMPLE
 
 All methods of SortedSet and NavigableSet are available, priority on NavigableSet. Other methods are below.
 Because the element adding order is stored, e.g. the toArray(), toString(), iterator() methods will follow that order.

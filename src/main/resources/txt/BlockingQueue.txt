@@ -64,6 +64,7 @@ try {
     element = abq.take(); //waits until queue is not empty; [2, 3], returns 1
 }
 catch {...} //in case take() is interrupted
+END OF EXAMPLE
 
 =>Queue
 =>ArrayBlockingQueue

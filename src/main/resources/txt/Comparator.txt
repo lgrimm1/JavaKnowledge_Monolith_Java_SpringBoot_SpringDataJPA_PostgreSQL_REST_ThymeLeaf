@@ -33,6 +33,7 @@ arrayList.sort(Comparator.naturalOrder()); //ascending order
 arrayList.sort(Comparator.reverseOrder()); //descending order
 arrayList.sort(Comparator.nullsFirst()); //ascending order, zeros first; only for number-based elementTypes
 arrayList.sort(Comparator.nullsLast()); //ascending order, zeros last; only for number-based elementTypes
+END OF EXAMPLE
 
 =================================================================================
 2. SIMPLE USE ON CUSTOM ELEMENT TYPES (COMPARETO() METHOD)
@@ -58,6 +59,7 @@ class CustomElementType implements Comparable<CustomElementType> {
         //return value > 0: otherElement is smaller
     }
 }
+END OF EXAMPLE
 
 In case there is no need for having all fields effected by comparing, use what fields you need.
 In case the compareTo() method uses a wrapper field only from all the fields of the class, utilize the wrapper class comparing methods.
@@ -76,6 +78,7 @@ class CustomElementType implements Comparable<CustomElementType> {
         return WrapperType.compare(variable, otherElement.getVariable());
     }
 }
+END OF EXAMPLE
 
 In case the class contains a method which produces a type the compareTo() method can use, can be used in the compareTo() method as well.
 In case there is priority in fields used for ordering (e.g. order by fields1, then order by field2 etc.), usage of the if statement is advised.
@@ -100,6 +103,7 @@ class CustomElementType implements Comparable<CustomElementType> {
         return result;
     }
 }
+END OF EXAMPLE
 
 =================================================================================
 3. CUSTOM USE (COMPARATOR)
@@ -128,10 +132,12 @@ Comparator<elementType> comparatorName = new Comparator<>() {
 		return compact1 - compact2; //in case of primitive types
 	}
 };
+END OF EXAMPLE
 
 EXAMPLE FOR REVERSED COMPARATOR (ANONYMOUS CLASS):
 Comparator<elementType> comparatorName = new Comparator<>() {...}
 Comparator<elementType> reversedComparatorName = comparatorName.reserved();
+END OF EXAMPLE
 
 EXAMPLE FOR COMPARATOR WITH DESCENDING ORDER (ANONYMOUS CLASS):
 import java.util.Comparator;
@@ -148,6 +154,7 @@ Comparator<elementType> comparatorName = new Comparator<>() {
 		return compact2 - compact1; //in case of primitive types
 	}
 };
+END OF EXAMPLE
 
 EXAMPLE FOR IMPLEMENTING A COMPARATOR:
 class customComparator implements Comparator<elementType> {
@@ -155,6 +162,7 @@ class customComparator implements Comparator<elementType> {
     @Override
 	public int compare(elementType element1, elementType element2) {...}
 }
+END OF EXAMPLE
 
 EXAMPLE FOR USING COMPARATORS:
 import java.util.ArrayList;
@@ -175,6 +183,7 @@ PriorityQueue<elementType> pq1 = new PriorityQueue<>(comparatorName1); //custom 
 PriorityQueue<elementType> pq2 = new PriorityQueue<>(comparatorName2); //custom order set via comparatorName2
 PriorityQueue<elementType> reversedPq2 = new PriorityQueue<>(comparatorName2.reversed()); //reversed custom order set via comparatorName2
 PriorityQueue<elementType> pq3 = new PriorityQueue<>(new CustomComparator); //custom order set via temporary instance of CustomComparator class
+END OF EXAMPLE
 
 =================================================================================
 4. CHAINED COMPARATORS
@@ -195,5 +204,6 @@ Comparator<element> customComparator = Comparator.comparing(element::getField1)
         .thenComparing(element::getField3);
 ...
 list.sort(customComparator);
+END OF EXAMPLE
 
 In case a field type is a complex class itself, create a comparator for that field, then use that Comparator in a chain normally.

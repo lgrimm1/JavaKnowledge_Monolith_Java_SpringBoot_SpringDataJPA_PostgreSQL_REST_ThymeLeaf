@@ -45,6 +45,7 @@ try {
     fileOutputStream.close(); //close the output stream (release the destination)
 }
 catch (Exception e) {...} //in case the destination was not accessible or the bridge was not built over the stream
+END OF EXAMPLE
 
 EXAMPLE FOR USAGE WITH TRY-WITH-RESOURCES:
 import java.io.FileInputStream;
@@ -57,6 +58,7 @@ try (FileOutputStream fileOutputStream = new FileOutputStream(fileName); OutputS
     outputStreamWriter.write(characterArray); //write the source to destination stream
 }
 catch (Exception e) {...} //in case the destination was not accessible or the bridge was not built over the stream
+END OF EXAMPLE
 
 EXAMPLE FOR USING CHARACTER CODINGS:
 ...
@@ -64,6 +66,7 @@ OutputStreamWriter outputStreamWriter1 = new OutputStreamWriter(fileOutputStream
 OutputStreamWriter outputStreamWriter2 = new OutputStreamWriter(fileOutputStream, Charset.forName("UTF8")); //will use the given naming
 String s = outputStreamWriter1.getEncoding(); //"Cp1252"
 s = outputStreamWriter2.getEncoding(); //"UTF8"
+END OF EXAMPLE
 
 =>Stream
 =>Writer

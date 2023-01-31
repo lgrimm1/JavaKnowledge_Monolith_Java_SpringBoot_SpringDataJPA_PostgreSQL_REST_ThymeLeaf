@@ -52,6 +52,7 @@ Based upon these, usage of ArrayList is preferred for thread-safety, and it is m
 EXAMPLE FOR MAKING SYNCHRONIZED (THREAD-SAFE) ARRAYLIST:
 ArrayList<type> al = new ArrayList<>();
 ArrayList<type> alSync = Collections.synchronizedList(al); //access is thread-safe on alSync
+END OF EXAMPLE
 
 1.2. METHODS
 ---------------------------------------------------------------------------------
@@ -108,6 +109,7 @@ e -> e.contains("abc")
 (e) -> {
     e = e * 10;
 }
+END OF EXAMPLE
 
 1.4. ITERATOR
 ---------------------------------------------------------------------------------
@@ -156,6 +158,7 @@ ial.sort(Comparator.naturalOrder()); //ascending order
 ial.sort(Comparator.reverseOrder()); //descending order
 ial.sort(Comparator.nullsFirst()); //ascending order, zeros first; only for number-based elementTypes
 ial.sort(Comparator.nullsLast()); //ascending order, zeros last; only for number-based elementTypes
+END OF EXAMPLE
 
 =================================================================================
 3. ARRAYLIST CONVERTING TO 1D ARRAY AND BACK

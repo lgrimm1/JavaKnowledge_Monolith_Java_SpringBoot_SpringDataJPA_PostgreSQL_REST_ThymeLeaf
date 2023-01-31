@@ -71,6 +71,7 @@ String s = "";
 for (byte b : ba) {
     s += String.format("%02X", b);
 }
+END OF EXAMPLE
 
 EXAMPLE FOR BYTE-TO-HEXA CONVERSION VIA DEDICATED METHOD:
 public static String byteArrayToHexa(byte[] byteArray) {
@@ -83,14 +84,17 @@ public static String byteArrayToHexa(byte[] byteArray) {
     }
     return new String(hexChars);
 }
+END OF EXAMPLE
 
 EXAMPLE FOR INT-TO-HEXA CONVERSION:
 int n = ...;
 String s = Integer.toHexString(n).toUpperCase();
+END OF EXAMPLE
 
 EXAMPLE FOR HEXA-TO-INT CONVERSION:
 String s = ...;
 int n = Integer.parseInt(s, 16);
+END OF EXAMPLE
 
 Binary numbers are stored in Strings, a number per String.
 For int-to-bin conversion, use Integer.toBinaryString(), bin-to-int conversion, use Integer.parseInt() methods. Both methods handle minus signs.
@@ -98,10 +102,12 @@ For int-to-bin conversion, use Integer.toBinaryString(), bin-to-int conversion, 
 EXAMPLE FOR INT-TO-BIN CONVERSION:
 int n = ...;
 String s = Integer.toBinaryString(n);
+END OF EXAMPLE
 
 EXAMPLE FOR BIN-TO-INT CONVERSION:
 String s = ...;
 int n = Integer.parseInt(s, 2);
+END OF EXAMPLE
 
 Octal numbers are stored in Strings, a number per String.
 For int-to-octal conversion, use Integer.toOctalString(), octal-to-int conversion, use Integer.parseInt() methods. Both methods handle minus signs.
@@ -109,9 +115,11 @@ For int-to-octal conversion, use Integer.toOctalString(), octal-to-int conversio
 EXAMPLE FOR INT-TO-OCTAL CONVERSION:
 int n = ...;
 String s = Integer.toOctalString(n);
+END OF EXAMPLE
 
 EXAMPLE FOR OCTAL-TO-INT CONVERSION:
 String s = ...;
 int n = Integer.parseInt(s, 8);
+END OF EXAMPLE
 
 The parseInt() method throws exception in case the input String contains invalid characters for the prefix (e.g. F character in octal number String).

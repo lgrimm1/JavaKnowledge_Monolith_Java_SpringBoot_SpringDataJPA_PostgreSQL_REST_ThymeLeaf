@@ -25,6 +25,7 @@ EXAMPLE FOR CREATING AN INSTANCE:
 import java.util.HashSet;
 ...
 HashSet<elementType> set = new HashSet<>();
+END OF EXAMPLE
 
 All methods of Set are available. Other methods are below.
 

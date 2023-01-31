@@ -20,21 +20,25 @@ class className1 {...}
 class className2 {
     className1 objectName = new className1();
 }
+END OF EXAMPLE
 
 EXAMPLE FOR CLASS AND ITS OBJECT IN SAME CLASS:
 class className {
     className objectName = new className();
 }
+END OF EXAMPLE
 
 EXAMPLE FOR PASSING TEMPORARY OBJECT TO METHOD 1:
 void methodName(Scanner scanner) {...}
 ...
 methodName(new Scanner(...));
+END OF EXAMPLE
 
 EXAMPLE FOR PASSING TEMPORARY OBJECT TO METHOD 2:
 void methodName(int[] array) {...}
 ...
 methodName(new int[]{1, 2, 3});
+END OF EXAMPLE
 
 It is a good practice to have private fields and public constructors, getter and setter methods.
 

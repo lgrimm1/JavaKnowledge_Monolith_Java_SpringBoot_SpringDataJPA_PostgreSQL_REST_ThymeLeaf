@@ -44,6 +44,7 @@ try {
     Class a3 = A.class; //through the property of class
 }
 catch (Exception e) {...}
+END OF EXAMPLE
 
 1.2. CLASS METHODS
 ---------------------------------------------------------------------------------

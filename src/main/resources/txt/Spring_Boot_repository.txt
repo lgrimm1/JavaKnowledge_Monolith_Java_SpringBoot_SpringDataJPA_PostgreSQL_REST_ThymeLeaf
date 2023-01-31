@@ -38,6 +38,7 @@ public class RepositoryClassName {
     //getters
     //manipulation methods and helper methods
 }
+END OF EXAMPLE
 
 =================================================================================
 2. REPOSITORY INTERFACE, JPA
@@ -75,6 +76,7 @@ public interface RepositoryClassName extends JpaRepository<EntityClassName, Type
 //optional overridden methods
 //optional custom methods
 }
+END OF EXAMPLE
 
 In case of using a database, the next parameters should be defined for the connection:
     a. path to the SQL server with port (e.g. protocol is postgresql://, for local development localhost:5432 is fine, port number is default and defined during installation)
@@ -235,6 +237,7 @@ public interface RepositoryClassName extends JpaRepository<EntityClassName, Type
     Query("SELECT s FROM EntityClassName s WHERE UPPER(s.field1) = UPPER(?1) ORDER BY s.field1 ASC ORDER BY s.field2 DESC")
     List<EntityClass> findByField1IgnoreCaseOrderByField1AscField2Desc(String name);
 }
+END OF EXAMPLE
 
 2.3. NAMED QUERIES
 ---------------------------------------------------------------------------------
@@ -256,14 +259,17 @@ EXAMPLE FOR A NAMED QUERY DEFINITION:
 <named-query name="User.findByLastname">
     <query>select u from User u where u.lastname = ?1</query>
 </named-query>
+END OF EXAMPLE
 
 The abstract method which uses the query definition, should be added to the repository interface.
 
 EXAMPLE FOR THE ABSTRACT METHOD REFERENCING TO THE QUERY DEFINITION:
 List<User> findByLastname(String lastname);
+END OF EXAMPLE
 
 EXAMPLE FOR INVOKING THE NAMED QUERY:
 List<User> list = User.findByLastname(lastname);
+END OF EXAMPLE
 
 2.4. QUERY REWRITER
 ---------------------------------------------------------------------------------
@@ -284,6 +290,7 @@ public interface MyRepository extends JPARepository<EntityClassName, idType> {
     @Query(value = "select original_user_alias from User original_user_alias", queryRewriter = MyQueryRewriter.class)
     List<User> findByNonNativeQuery(String param);
 }
+END OF EXAMPLE
 
 EXAMPLE FOR CUSTOM QUERY REWRITER CLASS:
 @Component
@@ -294,6 +301,7 @@ public class MyQueryRewriter implements QueryRewriter {
          return query.replaceAll("original_user_alias", "rewritten_user_alias");
      }
 }
+END OF EXAMPLE
 
 When the rewriter is part of the repository, will be used only by that repository.
 This version is advised when the container repository uses it only.
@@ -311,5 +319,6 @@ public interface MyRepository extends JPARepository<EntityClassName, idType>, Qu
          return query.replaceAll("original_user_alias", "rewritten_user_alias");
      }
 }
+END OF EXAMPLE
 
 //TODO Using Advanced LIKE Expressions, https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#jpa.query-methods

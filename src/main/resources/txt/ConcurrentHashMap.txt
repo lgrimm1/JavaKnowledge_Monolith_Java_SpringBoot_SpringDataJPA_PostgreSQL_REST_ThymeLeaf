@@ -21,6 +21,7 @@ import java.util.HashMap;
 HashMap<keyType, valueType> hm = new HashMap<>();
 ...
 ConcurrentHashMap<keyType, valueType> chm = new ConcurrentHashMap<>(hm);
+END OF EXAMPLE
 
 All methods of Map are available. Specific methods are below.
 
@@ -48,6 +49,7 @@ chm.forEach(4, (key, value) -> value, (value) -> ...); //parallelismThreshold: 4
 String key = chm.search(4, (key, value) -> {return value == 3 ? key : null;});
 //parallelismThreshold defines: in case the map contains minimum 4 elements, maximum 4 thread can execute operations on the map
 valueType value = chm.reduce(4, (k, v) -> v, (v1, v2) -> v1+v2); //transforms every pair to its value, then adds all values
+END OF EXAMPLE
 
 Differences between ConcurrentHashMap and HashMap:
     a. ConcurrentHashMap is thread-safe, HashMap is not

@@ -21,6 +21,7 @@ em.put(enumName.ENUM1, value);
 value = em.get(enumName.ENUM1);
 value = em.remove(enumName.ENUM1);
 boolean success = em.remove(enumName.ENUM1, value);
+END OF EXAMPLE
 
 With the putAll() method it is possible to insert elements from an other map type however, the other map should have the same enum as key type and valueType.
 

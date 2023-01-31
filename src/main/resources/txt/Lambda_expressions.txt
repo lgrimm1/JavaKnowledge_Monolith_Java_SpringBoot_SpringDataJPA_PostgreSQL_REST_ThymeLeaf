@@ -55,6 +55,7 @@ void methodName() {
 }
 //lambda:
 () -> {}
+END OF EXAMPLE
 
 EXAMPLE FOR DERIVING 1-STATEMENT SAM INTO LAMBDA:
 //SAM:
@@ -63,6 +64,7 @@ void methodName() {
 }
 //lambda:
 () -> statement
+END OF EXAMPLE
 
 EXAMPLE FOR DERIVING 1-STATEMENT-SAM-WITH-RETURN-VALUE INTO LAMBDA:
 //SAM:
@@ -71,6 +73,7 @@ EXAMPLE FOR DERIVING 1-STATEMENT-SAM-WITH-RETURN-VALUE INTO LAMBDA:
 }
 //lambda:
 () -> returnValue
+END OF EXAMPLE
 
 EXAMPLE FOR DERIVING MORE-STATEMENT SAM INTO LAMBDA:
 //SAM:
@@ -83,6 +86,7 @@ void methodName() {
     statement1;
     statement2;
 };
+END OF EXAMPLE
 
 EXAMPLE FOR DERIVING MORE-STATEMENT-SAM-WITH-RETURN-VALUE INTO LAMBDA:
 //SAM:
@@ -95,6 +99,7 @@ void methodName() {
     statement;
     return returnValue;
 };
+END OF EXAMPLE
 
 =================================================================================
 3. LAMBDA USED NOT IN-PLACE

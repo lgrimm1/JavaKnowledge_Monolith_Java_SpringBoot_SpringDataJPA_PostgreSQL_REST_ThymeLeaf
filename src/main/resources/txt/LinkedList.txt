@@ -14,6 +14,8 @@ EXAMPLE FOR CREATING LINKEDLIST INSTANCES:
 LinkedList<elementType> ll = new LinkedList<>();
 Queue<elementType> q = new LinkedList<>();
 Deque<elementType> d = new LinkedList<>();
+END OF EXAMPLE
+
 In case Queue and Deque, only methods of those interfaces will be available.
 
 Methods of LinkedList are the following:

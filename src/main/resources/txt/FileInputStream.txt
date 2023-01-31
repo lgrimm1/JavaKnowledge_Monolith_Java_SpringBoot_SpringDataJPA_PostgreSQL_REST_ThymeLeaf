@@ -29,6 +29,7 @@ try {
     fis.close();
 }
 catch (Exception e) {...}
+END OF EXAMPLE
 
 =>Stream
 =>InputStream

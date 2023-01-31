@@ -241,6 +241,7 @@ for (int i = 0; i < 10; i++) {
 String s = Arrays.toString(ia); //s: "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]"
 String[] sa = new String[]{"window", "door", "wall"};
 s = Arrays.toString(ia); //s: "[window, door, wall]"
+END OF EXAMPLE
 
 4.2. ARRAYS.DEEPTOSTRING
 ---------------------------------------------------------------------------------
@@ -255,6 +256,7 @@ double[][] da = new double[][]{
 	{5, 6},
 };
 String s = Arrays.deepToString(da); //s: "[[1, 2, 3], [4], [5, 6]]"
+END OF EXAMPLE
 
 =================================================================================
 5. ARRAY SORTING
@@ -430,3 +432,4 @@ class Main {
         }
     }
 }
+END OF EXAMPLE

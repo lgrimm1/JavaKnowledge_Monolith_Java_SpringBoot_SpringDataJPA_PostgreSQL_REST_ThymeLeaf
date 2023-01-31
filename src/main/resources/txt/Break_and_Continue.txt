@@ -82,6 +82,7 @@ for (int i = 0; i < n + 1; i++) {
 	}
 	sum += i;
 }
+END OF EXAMPLE
 
 Again, ruins the structure, avoid if possible.
 In nested loops, navigates only in the loop it was executed.
