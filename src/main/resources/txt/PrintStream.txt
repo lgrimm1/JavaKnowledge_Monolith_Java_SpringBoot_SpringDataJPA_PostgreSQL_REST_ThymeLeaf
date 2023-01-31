@@ -26,7 +26,7 @@ Constructor parameters of PrintStream:
 ||checkError()|checks if there is an error in the stream||
 ||close()|closes the stream||
 
-EXAMPLES FOR USAGE:
+EXAMPLE FOR USAGE:
 import java.io.FileOutputStream;
 import java.io.PrintStream;
 ...
@@ -43,6 +43,7 @@ try {
     fos.close(); //in case FileOutputStream was linked
 }
 catch (Exception e) {...} //in case the destination was not accessible by file stream, or manually thrown exception for PrintStream
+END OF EXAMPLE
 
 =>Stream
 =>OutputStream

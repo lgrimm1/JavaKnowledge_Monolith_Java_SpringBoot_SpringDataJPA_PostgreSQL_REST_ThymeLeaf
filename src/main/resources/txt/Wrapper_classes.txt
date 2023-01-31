@@ -28,13 +28,14 @@ All number-based wrapper classes have minimum and maximum constants like .MIN_VA
 All number-based wrapper classes are extended from Number abstract class.
 All wrapper classes have type conversion methods like .valueOf() and e.g. for Integer .parseInt().
 
-EXAMPLES:
+EXAMPLE FOR DECLARATION:
 int a = 2;
 Integer b = 3; //3 is a literal which means we give a primitive-type value to a wrapper-class variable; it is widening casting
 Character c = 'a'; //through widening casting
 Integer d = 6; //through widening casting
 Integer e = a + d; //through narrowing then widening castings; equals with the next:
 Integer e = Integer.valueOf((int) a + (int) b);
+END OF EXAMPLE
 
 Autoboxing: the compiler automatically converts a primitive type to its wrapper type.
 Unboxing: the compiler automatically converts a wrapper type to its primitive type.

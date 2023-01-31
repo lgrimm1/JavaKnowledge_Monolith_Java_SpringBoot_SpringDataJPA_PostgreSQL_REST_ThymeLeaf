@@ -39,6 +39,7 @@ EXAMPLE FOR DECLARING A LOGGER AND SETTING ITS LEVEL:
 Logger logger = Logger.getLogger(ClassName.class.getName()); //by convention the logger name space should come from caller class
 logger.setLevel(Level.INFO); //sets the level to INFO, means only log record from INFO to SEVERE levels will be passed.
 //logger.setLevel(null); //the level will come from the superclass; if there is not, steps through supers until finds one
+END OF EXAMPLE
 
 EXAMPLE FOR CREATING LOG EVENTS:
 logger.info(textString); //INFO-level record with textString as text; can be .severe, .warning etc.
@@ -46,6 +47,7 @@ logger.config(textString); //CONFIG-level record with textString as text; can be
 logger.log(LEVEL.WARNING, textString); //WARNING-level record; or:
 logger.log(LEVEL.WARNING, textString, ...[, ...]); //WARNING-level record, adds all arguments to the event text, eats more stack; or:
 logger.log(LEVEL.WARNING, textString, new Object[]{..., ...}); //eats less stack with more text components
+END OF EXAMPLE
 
 In any case of exceptions, it is advised to create an event with all the data available about the exception.
 
@@ -54,11 +56,12 @@ try {...}
 catch (Exception e) {
     logger.log(Level.SEVERE, e.toString(), e);
 }
+END OF EXAMPLE
 
 For a class, it is a good practice to put a logger declaration into the first declarations, and upon extending, implementing or importing, adding them to the main class.
 Next to .log, there are two other methods for creating an event:
-.logp: same as .log but takes class name and method name as arguments as well;
-.logrb: same as .logp but takes the resource bundle name as argument as well.
+    a. .logp: same as .log but takes class name and method name as arguments as well;
+    b. .logrb: same as .logp but takes the resource bundle name as argument as well.
 
 =================================================================================
 2. LOGRECORD
@@ -98,6 +101,7 @@ for (Handler handler : handlers) {
 Handler handler = new XxxHandler(); //e.g. ConsoleHandler();
 //setting up handler e.g. formatting, see later
 logger.addHandler(XxxHandler); //log records will be written to Xxx handler
+END OF EXAMPLE
 
 By extending, a handler can be customized.
 
@@ -123,6 +127,7 @@ public class handlerName extends XxxHandler { //XxxHandler is the handler to be 
         super.close();
     }
 }
+END OF EXAMPLE
 
 =================================================================================
 4. FILTERS, FORMATTERS
@@ -152,6 +157,7 @@ class Main {
     handler.setFormatter(formatterName); //rendering the formatter to the handler
     logger.addHandler(handler); //adding the formatted handler to a logger
 }
+END OF EXAMPLE
 
 =================================================================================
 5. LOGMANAGER
@@ -177,6 +183,7 @@ class ClassName {
     }
     ...
 }
+END OF EXAMPLE
 
 EXAMPLE FOR SETTING UP LOGMANAGER WITH DEFAULTS:
 import java.util.logging.*;
@@ -186,6 +193,7 @@ private static final LogManager logManager = LogManager.getLogManager();
 //adding loggers
 logManager.addLogger(ClassName.getLogger());
 ...
+END OF EXAMPLE
 
 EXAMPLE FOR SETTING UP THE NAMELESS LOGGER OF LOGMANAGER:
 import java.util.logging.*;
@@ -237,3 +245,4 @@ class Main {
 		}
 	}
 }
+END OF EXAMPLE

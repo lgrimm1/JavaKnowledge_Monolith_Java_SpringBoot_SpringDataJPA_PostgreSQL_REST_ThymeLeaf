@@ -248,9 +248,10 @@ After tried statements and caught exceptions, invokes .close() methods for all d
 The most safe try statement for objects need closing after process.
 Closing the resources will happen in reverse order (last first).
 
-EXAMPLES FOR RESOURCE DECLARATION:
+EXAMPLE FOR RESOURCE DECLARATION:
 Scanner sci = new Scanner(...)
 FileReader fr = new FileReader(...)
+END OF EXAMPLE
 
 More catch branches can be merged into one:
 catch (exceptionType1 | exceptionType2 exceptionVariable) {...}
@@ -261,10 +262,11 @@ catch (exceptionType1 | exceptionType2 exceptionVariable) {...}
 From Java9.
 The try header can handle resources declared before the try block.
 
-EXAMPLE:
+EXAMPLE FOR ENHANCED TRY-WITH-RESOURCES:
 Scanner sc = new Scanner(...);
 ...
 try (sc) {...}
+END OF EXAMPLE
 
 =================================================================================
 17. CHAINED STATEMENTS
@@ -294,7 +296,7 @@ variable2 = variable //holds the first class
 These methods will be executed in their respected order.
 Every method will result data the next method will work on. That said, new memory will be allocated with all statement.
 
-EXAMPLE 1 FOR CHAINED STATEMENTS:
+EXAMPLE FOR CHAINED STATEMENTS 1:
 ArrayList<String> sal = new ArrayList<>();
 ...
 sal.stream()
@@ -302,14 +304,16 @@ sal.stream()
     .map((p) -> p.toUpperCase()) //returns Stream
     .sorted() //returns Stream
     .forEach((p) -> System.out.println(p)); //no returned value
+END OF EXAMPLE
 
-EXAMPLE 2 FOR CHAINED STATEMENTS:
+EXAMPLE FOR CHAINED STATEMENTS 2:
 String s = ...;
 String s2 = s
     .toUpperCase() //returns String
     .substring(0, 4); //returns String
+END OF EXAMPLE
 
-EXAMPLE 3 FOR CHAINED STATEMENTS:
+EXAMPLE FOR CHAINED STATEMENTS 3:
 String[] sa = new String[]{...};
 StringBuilder sb = new StringBuilder();
 for (String s : sa) {
@@ -327,8 +331,9 @@ for (String s : sa) {
             .append(s);
     }
 }
+END OF EXAMPLE
 
-EXAMPLE 4 FOR CHAINED STATEMENTS:
+EXAMPLE FOR CHAINED STATEMENTS 4:
 ArrayList<Character> cal = new ArrayList<>();
 cal.add('A');
 cal.add('b');
@@ -337,3 +342,4 @@ int index = cal
 	.toString() //returns String
 	.toUpperCase() //returns String
 	.indexOf('B'); //returns int
+END OF EXAMPLE

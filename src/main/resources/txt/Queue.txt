@@ -7,7 +7,7 @@ Extended interfaces of Queue are Deque, BlockingQueue.
 Modelling of FIFO (First In First Out) data structure.
 Elements can not be primitive type.
 
-EXAMPLES FOR CREATE INSTANCES:
+EXAMPLE FOR CREATE INSTANCES:
 import java.util.Queue;
 ...
 Queue<String> animal1 = new LinkedList<>(); //LinkedList implementation of Queue
@@ -26,6 +26,7 @@ element = queue.element(); //returns the head of the queue, exception if queue i
 element = queue.peek(); //returns the head of the queue, null if queue is empty
 element = queue.remove(); //returns and removes the head of the queue, exception if queue is empty
 element = queue.poll(); //returns and removes the head of the queue, null if queue is empty
+END OF EXAMPLE
 
 =>Collection
 =>ArrayDeque

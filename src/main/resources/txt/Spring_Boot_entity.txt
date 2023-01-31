@@ -185,8 +185,9 @@ In case of using JPA, the entity will need all getters and setters in order to h
 
 In case a method argument must not be null, that argument can be marked with the @NonNull annotation. Please note, passing null to a @NonNull argument results an HTTP500 exception.
 
-EXAMPLES FOR MARKING A NON-NULL METHOD ARGUMENT:
+EXAMPLE FOR MARKING A NON-NULL METHOD ARGUMENT:
 public void EntityName(..., @NonNull parameterType, parameterName, ...) {...}
+END OF EXAMPLE
 
 2.4. ENTITY CLASS EXAMPLES
 ---------------------------------------------------------------------------------

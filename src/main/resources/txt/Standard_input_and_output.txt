@@ -14,11 +14,12 @@ Scanner sci = new Scanner(System.in);
 ...
 sci.close;
 
-EXAMPLES FOR OUTPUT:
+EXAMPLE FOR OUTPUT:
 System.out.println(text); //for a line
 System.out.print(text); //for without line end
 System.out.printf(formatString, text[, text, text...]); //for formatted output; rules of formatString equal with String formatting, look there
 System.out.format(formatString, text[, text, text...]); //for formatted output; rules of formatString equal with String formatting, look there
+END OF EXAMPLE
 
 =>System
 =>Scanner

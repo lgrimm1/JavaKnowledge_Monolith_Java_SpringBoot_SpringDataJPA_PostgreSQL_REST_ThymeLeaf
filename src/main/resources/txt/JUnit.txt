@@ -96,7 +96,7 @@ When the expected exception is Exception, for any thrown exception the test will
 The assertTimeout() and assertTimeoutPreemptively() methods are both used for examining running time of long-term codes.
 The assertTimeoutPreemptively() method, once the expected duration is exceeded, will stop the tested Executable, the assertTimeout() will not, the Executable must stop by itself.
 
-EXAMPLES FOR TESTED VARIABLES AND METHODS:
+EXAMPLE FOR TESTED VARIABLES AND METHODS:
 String s = ...;
 List<Long> list = ...;
 Iterable<Short> iter = List.of(...);
@@ -108,8 +108,9 @@ CustomClass2 testMethod2() {...} //no implemented equals() and hashCode() method
 boolean b = ...;
 List<String> lines1 = ...;
 Stream<String> lines2 = ...;
+END OF EXAMPLE
 
-EXAMPLES FOR ASSERTEQUALS(), ASSERTNOTEQUALS(), ASSERTARRAYEQUALS(), ASSERTITERABLEEQUALS(), ASSERTLINESMATCH(), ASSERTTRUE(), ASSERTFALSE():
+EXAMPLE FOR ASSERTEQUALS(), ASSERTNOTEQUALS(), ASSERTARRAYEQUALS(), ASSERTITERABLEEQUALS(), ASSERTLINESMATCH(), ASSERTTRUE(), ASSERTFALSE():
 @Test
 void assertEqualityTests() {
     Assertions.assertEquals("window", s);
@@ -135,8 +136,9 @@ void assertEqualityTests() {
     Assertions.assertTrue(b);
     Assertions.assertFalse(b);
 }
+END OF EXAMPLE
 
-EXAMPLES FOR ASSERTSAME(), ASSERTNOTSAME(), ASSERTNULL(), ASSERTNOTNULL(), ASSERTINSTANCEOF():
+EXAMPLE FOR ASSERTSAME(), ASSERTNOTSAME(), ASSERTNULL(), ASSERTNOTNULL(), ASSERTINSTANCEOF():
 @Test
 void assertObjectTests() {
     Assertions.assertSame(list, iter);
@@ -147,8 +149,9 @@ void assertObjectTests() {
 
     Assertions.assertInstanceOf(String.class, s);
 }
+END OF EXAMPLE
 
-EXAMPLES FOR ASSERTTHROWS() METHODS:
+EXAMPLE FOR ASSERTTHROWS() METHODS:
 @Test
 void testExpectedException() {
 	NumberFormatException thrown = Assertions.assertThrows(
@@ -157,6 +160,7 @@ void testExpectedException() {
 	        "NumberFormatException was expected");
 	Assertions.assertEquals("Some message that it was the expected", thrown.getMessage());
 }
+END OF EXAMPLE
 
 @Test
 void testExpectedExceptionWithParentType() {
@@ -165,7 +169,7 @@ void testExpectedExceptionWithParentType() {
 	        () -> {Integer.parseInt("One");});
 }
 
-EXAMPLES FOR ASSERTTIMEOUT() AND ASSERTPREEMPTIVELYTIMEOUT() METHODS:
+EXAMPLE FOR ASSERTTIMEOUT() AND ASSERTPREEMPTIVELYTIMEOUT() METHODS:
 @Test
 void durationTests() {
     Assertions.assertTimeout(
@@ -179,8 +183,9 @@ void durationTests() {
                     return value;}
             );
 }
+END OF EXAMPLE
 
-EXAMPLES FOR FAIL() METHOD:
+EXAMPLE FOR FAIL() METHOD:
 public class AppTest {
 	@Test
 	void testCase() {
@@ -192,6 +197,8 @@ public class AppTest {
 		return "not found good reason to pass";
 	}
 }
+END OF EXAMPLE
+
 =>Tests
 =>Assertion
 =>Mockito

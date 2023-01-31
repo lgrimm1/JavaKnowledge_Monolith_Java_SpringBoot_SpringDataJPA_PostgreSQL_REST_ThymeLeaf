@@ -245,10 +245,11 @@ EXAMPLE FOR AVOIDING VARIABLE TYPES IN LAMBDA:
 //use this:
 (var1, var2) -> ...
 
-EXAMPLES FOR USING BRACES WITH LAMBDA:
+EXAMPLE FOR USING BRACES WITH LAMBDA:
 () -> statement
 parameter -> statement
 (parameter1, parameter2, ...) -> statement
+END OF EXAMPLE
 
 EXAMPLE FOR AVOIDING RETURN STATEMENT IN LAMBDA:
 //instead of this:

@@ -106,7 +106,7 @@ A request has the next formula:
 The endpoint defines a group under which the different request types are checked at backend.
 In case there is no endpoint or under it no request type is defined in the web application, the backend will not send answer to the frontend.
 
-EXAMPLES FOR A REQUEST:
+EXAMPLE FOR A REQUEST:
 https://www.wind.com
 https://www.wind.com/category
 https://www.wind.com/category?strength=3
@@ -115,6 +115,7 @@ https://www.wind.com/category?strength=3&level=800&db=65
 https://www.wind.com/category/3
 https://www.wind.com/category/3/800/65
 https://www.wind.com/category/3?level=800&db=65
+END OF EXAMPLE
 
 Best practice for endpoints is that queries should be used in case of possible more dependent elements in the answer.
 
@@ -164,7 +165,7 @@ GET /stat/full          response: {"total": <double>, "count": <integer>, "avera
 
 This file can not be automatically used since contains human-friendly data as well but can be modified easily to be proper. In this form informs the frontend developer about exact data formulas.
 
-EXAMPLES FOR JSON COMMUNICATION FILE (BETWEEN SOFTWARES):
+EXAMPLE FOR JSON COMMUNICATION FILE (BETWEEN SOFTWARES):
 12
 false
 "abc"
@@ -173,6 +174,7 @@ null
 [false,true,false,false]
 {"date":"2010-12-06","type":"CARD","value":12.32,"description":"abc"}
 {[{"date":"2010-12-06","type":"CARD","value":12.32,"description":"abc"},{"date":"2010.06.12","type":"CASH","value":32.12,"description":"xyz"}]}
+END OF EXAMPLE
 
 The JSON is visualized better if formatted with spaces and line breaks. Such format is shown by browsers for better readability.
 
@@ -305,10 +307,11 @@ A protocol is created by defining an endpoint and providing request and response
 For API, it is important that the interface must show that it is an API and which version of it is published.
 That happens with naming the endpoints correctly.
 
-EXAMPLES FOR API ENDPOINT NAMINGS:
+EXAMPLE FOR API ENDPOINT NAMINGS:
 /api/v1/file-load
 /api/v5.2/get/12
 /api/v3/window?size=12&type="fastseal"
+END OF EXAMPLE
 
 For purpose, in case the API handles the tasks below, is called CRUD API:
     a. Create

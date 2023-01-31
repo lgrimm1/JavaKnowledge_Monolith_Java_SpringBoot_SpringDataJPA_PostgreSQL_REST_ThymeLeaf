@@ -122,15 +122,19 @@ d|f|c|C|s|S|h|X[\n|%n]
 	X: convert the number input to hexadecimal value (2 characters per byte, it is slower process)
 	\n, %n: new line character, platform-dependent
 
-EXAMPLES:
-"Total is: $%,.2f\n" ->
+EXAMPLE FOR FORMATTING RULES:
+"Total is: $%,.2f\n"
+//results:
 Total is:    103.40\n
 Total is:  3,212.12\n
 Total is: -3,564.99\n
-"%02X" ->
+
+"%02X"
+//results:
 04
 6F
 7A
+END OF EXAMPLE
 
 =================================================================================
 5. STRING-CHAR[]-ARRAYLIST<CHARACTER> CONVERSIONS

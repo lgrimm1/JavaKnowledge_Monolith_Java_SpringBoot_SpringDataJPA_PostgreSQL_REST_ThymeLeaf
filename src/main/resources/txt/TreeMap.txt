@@ -59,6 +59,7 @@ boolean exists = tm.containsKey(4); //true
 exists = tm.containsValue("X"); //false
 int size = tm.size(); //4
 tm.clear(); //{}
+END OF EXAMPLE
 
 =>Map
 =>SortedMap

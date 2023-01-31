@@ -13,7 +13,7 @@ Rotating a matrix means several processes in a chain. For rotating, the matrix h
     b. rotate counter-clockwise (-90 degrees): reverse rows then transpose
     c. rotate by 180 degrees: rotate twice in clockwise (or counter-clockwise) direction
 
-EXAMPLES FOR CHECKING SQUARED:
+EXAMPLE FOR CHECKING SQUARED:
 import java.util.ArrayList;
 ...
 public static boolean isMatrixSquare(int[][] matrix) {
@@ -28,6 +28,7 @@ public static boolean isMatrixSquare(int[][] matrix) {
 	}
 	return true;
 }
+
 public static boolean isMatrixListSquare(List<List<Integer>> matrixList) {
 	if (matrixList == null) {
 		return false;
@@ -43,6 +44,7 @@ public static boolean isMatrixListSquare(List<List<Integer>> matrixList) {
 	}
 	return true;
 }
+END OF EXAMPLE
 
 EXAMPLE FOR CONVERTING MATRIX TO MATRIX LIST:
 import java.util.ArrayList;
@@ -83,7 +85,7 @@ public static int[][] convertIntegerMatrixListToMatrix(List<List<Integer>> matri
 	return matrix;
 }
 
-EXAMPLES FOR TRANSPOSING A MATRIX (LIST):
+EXAMPLE FOR TRANSPOSING A MATRIX (LIST):
 import java.util.ArrayList;
 ...
 public static int[][] transposeSquareMatrix(int[][] squareMatrix) {
@@ -99,6 +101,7 @@ public static int[][] transposeSquareMatrix(int[][] squareMatrix) {
 	}
 	return newSquareMatrix;
 }
+
 public static List<List<Integer>> transposeSquareMatrixList(List<List<Integer>> squareMatrixList) {
     //check if matrix list is squared if not, return null
 	List<List<Integer>> newSquareMatrixList = new ArrayList<>();
@@ -114,8 +117,9 @@ public static List<List<Integer>> transposeSquareMatrixList(List<List<Integer>> 
 	}
 	return newSquareMatrixList;
 }
+END OF EXAMPLE
 
-EXAMPLES FOR REVERSING ROWS IN A MATRIX (LIST):
+EXAMPLE FOR REVERSING ROWS IN A MATRIX (LIST):
 import java.util.ArrayList;
 ...
 public static int[][] reverseRowsInMatrix(int[][] matrix) {
@@ -131,6 +135,7 @@ public static int[][] reverseRowsInMatrix(int[][] matrix) {
 	}
 	return newMatrix;
 }
+
 public static List<List<Integer>> reverseRowsInMatrixList(List<List<Integer>> matrixList) {
 	if (matrixList == null) {
 		return null;
@@ -143,6 +148,7 @@ public static List<List<Integer>> reverseRowsInMatrixList(List<List<Integer>> ma
 	}
 	return newMatrixList;
 }
+END OF EXAMPLE
 
 =>Array
 =>ArrayList

@@ -32,11 +32,12 @@ double a = ...;
 int b = (int) d; //the decimal part will be truncated which means the whole part of the original
 float c = (float) a; //can be processed only when the stored value can fit into the narrower type
 
-TYPICAL EXAMPLE:
+EXAMPLE FOR TYPICAL NARROWING CASTING:
 import java.io.File;
 ...
 File f = new File(...);
 int length = (int) f.size(); //f.size() is a file size in Byte, it can be bigger than INTEGER.MAXVALUE however in many cases methods can accept only int parameter for input
+END OF EXAMPLE
 
 =================================================================================
 3. TYPE CONVERSION
@@ -47,7 +48,7 @@ The .parseInt(), .parseDouble() etc. methods return a primitive-type value of th
 Calling a parser on a primitive type is fast, but a .valueOf() first creates a wrapper type then down-casts it to be a primitive one.
 Always use .valueOf() in case the source and the target are classes, and parsing when both are primitives. Otherwise, use .valueOf() if the target is a class.
 
-EXAMPLES FOR CONVERSIONS:
+EXAMPLE FOR CONVERSIONS:
 int a = ...;
 double b = ...;
 String c = String.valueOf(a); //value of a as a String
@@ -55,6 +56,7 @@ c = String.valueOf(b); //value of b as a String like -12.435
 double d = Double.parseDouble(s); //d would be "-12.435"; if conversion is not possible throws exception
 Double e = Double.valueOf(s); //s is converted into a wrapper class
 int f = Integer.parseInt(s); //conversion throws exception, "-12.435" is not an int
+END OF EXAMPLE
 
 =================================================================================
 4. HEXADECIMAL, BINARY AND OCTAL NUMBER CONVERSIONS

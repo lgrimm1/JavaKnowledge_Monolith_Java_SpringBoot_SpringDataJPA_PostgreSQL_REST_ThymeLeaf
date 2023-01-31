@@ -187,7 +187,7 @@ The methods described below are of IntStream, however the other primitive stream
 ||toArray()|converts the IntStream to int[]||
 ||limit(long maxSize)|limits the number of elements||
 
-EXAMPLES FOR CREATING INTSTREAM:
+EXAMPLE FOR CREATING INTSTREAM:
 import java.util.stream.Stream;
 import java.util.stream.IntStream;
 ...
@@ -198,6 +198,7 @@ Builder isBuilder = IntStream.builder();
 IntStream stream3 = isBuilder.build();
 //creating Stream<Integer> stream by any procedures
 IntStream stream4 = stream.mapToInt();
+END OF EXAMPLE
 
 EXAMPLE FOR CONVERTING AN INTSTREAM TO AN INTEGER STREAM:
 import java.util.stream.IntStream;
@@ -226,7 +227,7 @@ The .groupingBy() converts Streams elements to collection elements by grouping t
 The .partitioningBy() is a special kind of .groupingBy() where  elements are organized into exactly 2 groups based upon lambda condition passed as argument, the resulted groups are Lists, the keys are true and false.
 The .teeing() splits the Streams processing into two directions and on both directions executes a given collector method, then merges the two results into one. With this, an other processing flow is speared.
 
-EXAMPLES FOR COLLECTING INTO GENERIC COLLECTION:
+EXAMPLE FOR COLLECTING INTO GENERIC COLLECTION:
 import java.util.stream.Collectors.*;
 import java.util.*;
 ...
@@ -235,6 +236,7 @@ List<String> l = list.stream().collect(Collectors.toList());
 Map<String, Integer> map = list.stream().collect(Collectors.toMap(Function.identity(), String::length)); //on duplicates throws exception: key can be identical; or:
 Map<String, Integer> map = list.stream().collect(Collectors.toMap(string -> string, String::length)); //on duplicates throws exception: key can be identical
 Set<String> set = list.stream().collect(Collectors.toSet()); //no duplicates will be collected
+END OF EXAMPLE
 
 EXAMPLE FOR COLLECTING INTO MAP (INTEGER, STRING) WITH POSSIBLE DUPLICATED SOURCE ELEMENTS):
 import java.util.stream.Collectors.*;
@@ -247,7 +249,7 @@ Map<Integer, String> map = list.stream() //Stream<String>, possible duplicates
 		.map(string -> new String[]{String.valueOf(ai.getAndIncrement()), string}) //Stream<String[2]>
 		.collect(Collectors.toMap(array -> Integer.valueOf(array[0]), array -> array[1])); //Map<Integer, String>
 
-EXAMPLES FOR COLLECTING INTO MAP (INTEGER, STRING) WITH NO DUPLICATED SOURCE ELEMENTS):
+EXAMPLE FOR COLLECTING INTO MAP (INTEGER, STRING) WITH NO DUPLICATED SOURCE ELEMENTS):
 import java.util.stream.Collectors.*;
 import java.util.concurrent.atomic.*;
 import java.util.*;
@@ -264,8 +266,9 @@ Map<Integer, String> map = new HashSet<>(list) //Set<String>, no duplicates
 		.stream() //Stream<String>
 		.map(string -> new String[]{String.valueOf(ai.getAndIncrement()), string}) //Stream<String[2]>
 		.collect(Collectors.toMap(array -> Integer.valueOf(array[0]), array -> array[1])); //Map<Integer, String>
+END OF EXAMPLE
 
-EXAMPLES FOR COLLECTING INTO SPECIFIC COLLECTION:
+EXAMPLE FOR COLLECTING INTO SPECIFIC COLLECTION:
 import java.util.stream.Collectors.*;
 import java.util.*;
 ...
@@ -273,6 +276,7 @@ List<...> list = Arrays.asList(...); //source
 List<...> ul = list.stream().collect(Collectors.toUnmodifiableList());
 List<...> us = list.stream().collect(Collectors.toUnmodifiableSet()); //duplicates are filtered out
 LinkedList<...> ll = list.stream().collect(toCollection(LinkedList::new)); //via constructor of target
+END OF EXAMPLE
 
 EXAMPLE FOR COLLECTINGANDTHEN:
 import java.util.stream.Collectors.*;
@@ -282,7 +286,7 @@ List<...> list = Arrays.asList(...); //source
 List<...> result = list.stream()
         .collect(collectingAndThen(toList(), ImmutableList::copyOf)) //turn the result to be immutable
 
-EXAMPLES FOR JOINING:
+EXAMPLE FOR JOINING:
 import java.util.stream.Collectors.*;
 import java.util.*;
 ...
@@ -290,6 +294,7 @@ List<String> list = Arrays.asList("a", "b", "c"); //source
 String s = list.collect(Collectors.joining()); //"abc"
 s = list.collect(Collectors.joining("X")); //"aXbXc"
 s = list.collect(Collectors.joining("X", "PRE", "POST")); //"PREaXbXcPOST"
+END OF EXAMPLE
 
 EXAMPLE FOR COUNTING, STATISTICS (SUMMARIZING), AVERAGING, SUMMING, MAXBY, MINBY:
 import java.util.stream.Collectors.*;

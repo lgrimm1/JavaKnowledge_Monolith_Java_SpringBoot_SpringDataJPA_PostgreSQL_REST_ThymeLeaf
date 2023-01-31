@@ -155,7 +155,7 @@ s = uc.upperCase(s);
 =================================================================================
 In case the lambda is used only in-place, declaring the interface and using a reference on it is optional, not necessary.
 
-EXAMPLES FOR USING LAMBDA IN-PLACE:
+EXAMPLE FOR USING LAMBDA IN-PLACE:
 //use lambda as a variable passed to a method as parameter
 method(() -> statement);
 //or:
@@ -164,6 +164,7 @@ method((a, b) -> {
     statement2;
     return statement;
 });
+END OF EXAMPLE
 
 =================================================================================
 5. LAMBDA WITH GENERICS FUNCTIONAL INTERFACE
@@ -198,13 +199,14 @@ Replacer formulas of method reference:
 This exchange can increase code readability in case the ClassName is a relatively short one.
 In case the ClassName is too long, use the original lambda instead.
 
-EXAMPLES FOR CONVERTING LAMBDA TO METHOD REFERENCE:
+EXAMPLE FOR CONVERTING LAMBDA TO METHOD REFERENCE:
 //lambda formulas:
 () -> getSize()
 (windowSize) -> setSize(windowSize)
 //method reference formulas:
 DeclareNewWindowParameters::getSize
 DeclareNewWindowParameters::setSize
+END OF EXAMPLE
 
 =================================================================================
 7. PASSING LAMBDA AS METHOD ARGUMENT

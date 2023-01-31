@@ -217,7 +217,7 @@ public String getEmployeesByIdAndMonth(@PathVariable final Map<String, String> p
     return "Missing Parameters";
 }
 
-EXAMPLES FOR HANDLING THE DOT PROBLEM:
+EXAMPLE FOR HANDLING THE DOT PROBLEM:
 @GetMapping("/example/{firstValue}/{secondValue:.+}")
 public void example(@PathVariable("firstValue") String firstValue, @PathVariable("secondValue") String secondValue) {
     //...
@@ -226,6 +226,7 @@ public void example(@PathVariable("firstValue") String firstValue, @PathVariable
 public void example(@PathVariable("firstValue") String firstValue, @PathVariable("secondValue") String secondValue) {
     //...
 }
+END OF EXAMPLE
 
 EXAMPLE FOR HANDLING MORE ENDPOINTS WITH PARAMETERS (REQUIRED FLAG):
 @GetMapping(value = {"/api/employeeswithrequiredfalse", "/api/employeeswithrequiredfalse/{id}"})

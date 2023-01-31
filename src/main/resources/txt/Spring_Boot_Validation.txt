@@ -144,12 +144,12 @@ In case the whole object is not filled with data for checked fields (e.g. the in
 
 In case the validation fails, MethodArgumentNotValidException is raised and HTTP400 error code is sent back. The default message will be "Validation failed for object='objectName'. Error count: 1".
 
-EXAMPLES FOR VALIDATING IN CONTROLLER METHOD SIGNATURE:
+EXAMPLE FOR VALIDATING IN CONTROLLER METHOD SIGNATURE:
 public String methodName(@Valid ClassName variableName) {...}
 public String methodName(@Valid @ModelAttribute("HTMLAttributeName") ClassName variableName) {...}
 public ResponseEntity<String> methodName(@Valid ClassName variableName) {...}
 public ResponseEntity<String> methodName(@Valid @ModelAttribute("HTMLAttributeName") ClassName variableName) {...}
-
+END OF EXAMPLE
 
 EXAMPLE FOR NESTED ENTITY CLASS VALIDATION:
 public class NestedEntityClass {

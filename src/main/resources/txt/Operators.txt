@@ -103,17 +103,18 @@ instanceof (checks whether a variable is a member of class)
 ternary (short solution for a simple "if" condition)
 -> (lambda operator)
 
-EXAMPLES:
+EXAMPLE FOR OTHER OPERATORS:
 String s;
 boolean b = s instanceof String; //b == true
 int a = 10;
 int b = (a > 5) ? 12 : 6; //b == 12
 String s = (a % 2 == 1) : "even" : "odd"; //s: "odd"
 
-Lambda operator formula:
+//lambda operator formula:
 (parameter list) -> lambda body
-or
+//or:
 (parameter list) -> {lambda body}
+END OF EXAMPLE
 
 =================================================================================
 8. PRECEDENCE RULES

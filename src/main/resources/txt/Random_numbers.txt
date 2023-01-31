@@ -14,7 +14,7 @@ With is Java stays platform independent (does not use resource from outside Java
 The generator is within the Math class.
 It generates a double number in the [0, 1) interval.
 
-EXAMPLES FOR RANDOM NUMBERS:
+EXAMPLE FOR RANDOM NUMBERS:
 int m = ..., n = ...;
 double d = Math.random(); //floating number in [0, 1)
 d = Math.random() * n; //floating number in [0, n)
@@ -23,6 +23,7 @@ int i = (int) (Math.random() * n); //whole number in [0, n)
 i = (int) (Math.random() * (n + 1)); //whole number in [0, n]
 i = (int) (Math.random() * n) + m; //whole number in [m, m+n)
 i = (int) (Math.random() * (n + 1)) + m; //whole number in [m, m+n]
+END OF EXAMPLE
 
 =================================================================================
 2. PSEUDO-RANDOM NUMBERS
@@ -35,7 +36,7 @@ By using its methods, it is possible to export the whole stream from double, flo
 Asking numbers one-by-one, use methods like nextByte(), nextFloat().
 In order to set the seed, use the setSeed(long seed) method.
 
-EXAMPLES FOR PSEUDO-RANDOM NUMBERS:
+EXAMPLE FOR PSEUDO-RANDOM NUMBERS:
 import java.util.Random;
 ...
 Random rand = new Random(); //create the stream of numbers; or:
@@ -49,6 +50,7 @@ double d = rand.nextDouble(1); //floating number in [0, 1)
 d = rand.nextDouble(n); //floating number in [0, n)
 d = rand.nextDouble(n) + 1; //floating number in [1, n+1)
 d = rand.nextDouble(n) + m; //floating number in [m, m+n)
+END OF EXAMPLE
 
 =================================================================================
 3. SECURE RANDOM NUMBERS

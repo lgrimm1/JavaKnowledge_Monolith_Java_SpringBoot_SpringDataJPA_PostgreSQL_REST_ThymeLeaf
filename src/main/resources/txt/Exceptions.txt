@@ -29,7 +29,7 @@ In its try branch we put the sensitive expressions, statements which can result 
 In case there was none, the flow will continue with the finally block (if exists), closes the resources (if defined) and moves forward.
 In case an exception was raised, the flow jumps into the proper catch block (if defined; in case it is not defined, the exception remains unhandled), process it, then if there is, follows in the finally block, closes resources if defined, then moves forward.
 
-EXAMPLE:
+EXAMPLE FOR HANDLING EXCEPTION IN-PLACE:
 try {
     //statements which can raise exception
 }
@@ -40,6 +40,7 @@ catch (exceptionType e) {
 finally {
     //processed after successful try block, or after processed catch block
 }
+END OF EXAMPLE
 
 Must be aware that in case in the catch and/or the finally branch an other exception can be raised, with nesting an other try statement, it must be handled that as well.
 

@@ -12,6 +12,7 @@ Enables accessing package classes and interfaces, furthermore fields and methods
 =================================================================================
 1. NORMAL IMPORT
 =================================================================================
+EXAMPLE FOR NORMAL IMPORTS:
 import packageName; //all classes and interfaces from 1st level
 import packageName.className; //a class or interface from 1st level
 import packageName.className.methodName; //a method of a class or interface from 1st level
@@ -24,11 +25,12 @@ import packageName.subPackage.className.methodName; //a method of a class or int
 import packageName.subPackage.className.fieldName; //a field of a class or interface on 2nd level under the subPackage
 import packageName.subPackage.className.*; //all of a class or interface on 2nd level under the subPackage
 import packageName.subPackage.*; //all classed and interfaces on 2nd level under the subPackage
+END OF EXAMPLE
 
 After import, class(es) can be accessed by defining object(s) from.
-In case the class contains static method that can be accessed without defining an  instance first.
+In case the class contains static method that can be accessed without defining an instance first.
 
-EXAMPLE:
+EXAMPLE FOR USING STATIC METHODS FROM IMPORTED CLASSES:
 import packageName.className1;
 import packageName.subClassName.className2;
 import packageName.interfaceName;
@@ -37,6 +39,7 @@ class newClass extends className2 implements interFaceName {
 className1 obj = new className1();
 obj.methodName();
 className1.staticMethodName();
+END OF EXAMPLE
 
 =================================================================================
 2. STATIC IMPORT
@@ -46,8 +49,9 @@ Be aware: you can address things from a statically imported class with method na
 Of course, accessing the class is still allowed.
 For interfaces and inheriting, static import can not be used.
 
-EXAMPLE:
+EXAMPLE FOR STATIC IMPORT:
 import static packageName.className;
 ...
 methodName();
 className.methodName();
+END OF EXAMPLE

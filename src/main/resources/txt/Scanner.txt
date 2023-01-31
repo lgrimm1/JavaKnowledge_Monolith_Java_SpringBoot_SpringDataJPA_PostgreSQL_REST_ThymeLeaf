@@ -11,6 +11,7 @@ The sourceObject can be:
 After use must be closed by invoking .close() method.
 Closing a Scanner on System.in, will close the entire input stream on console so after that no console input can be received.
 
+Formulas:
 Scanner sc = new Scanner(...);
 boolean b = sc.hasNext() //is there possibility to read another data
 b = sc.hasNextLine() //same but for lines (line: has \n character or end-of-file at the end).
@@ -23,7 +24,7 @@ Scanner will use some default locale settings when reads data. It is possible to
 In case the addressed source is not ready (e.g. scanning a file or an input stream), use try statement.
 Scanner implements AutoClosable interface therefore it is possible to use try-with-resources statement with it.
 
-EXAMPLE:
+EXAMPLE FOR USING SCANNER:
 import java.util.Scanner;
 ...
 Scanner sci = new Scanner(System.in);
@@ -33,6 +34,7 @@ while (sci.hasNextLine()) {
 	//processing s
 }
 sci.close();
+END OF EXAMPLE
 
 EXAMPLE FOR BIG INPUTS:
 import java.util.Scanner;
@@ -41,6 +43,7 @@ import java.math.BigInteger;
 ...
 BigDecimal bd = sci.nextBigDecimal();
 BigInteger bi = sci.nextBigInteger();
+END OF EXAMPLE
 
 EXAMPLE FOR USING LOCALE SETTINGS AND TRY-WITH-RESOURCES:
 import java.util.Scanner;
@@ -48,6 +51,7 @@ import java.util.Scanner;
 try (Scanner sc = new Scanner(File file).useLocal(Locale locale)) {
 ...
 }
+END OF EXAMPLE
 
 =>String
 =>File_operations

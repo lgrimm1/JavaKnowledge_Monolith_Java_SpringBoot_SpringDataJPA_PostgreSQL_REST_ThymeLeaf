@@ -613,6 +613,7 @@ float sum = 0;
 for (float f : cal.get2()) {
     sum += f;
 }
+END OF EXAMPLE
 
 =================================================================================
 13. CLASS ORGANIZING
@@ -631,7 +632,7 @@ Classes can not be transmitted over the network. Exceptions are classes implemen
 =================================================================================
 A class can contain fields which have custom class types with their own constructors.
 
-These classes could be defined like this:
+EXAMPLE FOR NESTED CLASS AS FIELD (CONSTRUCTOR IN CONSTRUCTOR):
 class Class1 {
     //fields
     public Class1() {...} //constructor of Class1
@@ -648,8 +649,9 @@ class Class2 {
 class Main {
     Class2 variable = new Class2(); //this will automatically call constructor of Class1
 }
+END OF EXAMPLE
 
-An other solution could be to call Class1 constructor with the field declaration:
+EXAMPLE FOR NESTED CLASS AS FIELD (CONSTRUCTOR IN FIELD DECLARATION):
 class Class1 {
     //fields
     public Class1() {...} //constructor of Class1
@@ -662,7 +664,9 @@ class Class2 {
 class Main {
     Class2 variable = new Class2(); //this will automatically call constructor of Class1
 }
+END OF EXAMPLE
 
+In the above examples with every instance of Class2 a new instance of Class1 will be nested.
 These two solutions above are not comfortable:
     a. it is not possible to create independent unit test for Class1 and Class2 since the instantiating of Class1 happens along with instantiating Class2
     b. in case Class1 has been changed, class tests of Class2 must be revisited
@@ -701,6 +705,7 @@ class Main {
     //injection without holding a variable for the dependency
     Class2 variable2 = new Class2(new Class1());
 }
+END OF EXAMPLE
 
 In case more container classes would use dependency injection for the same class, there is a possibility that in time the heap will be full.
 If the object created from the injected class serves a common function for all (e.g. an email sender), best practice is to use singleton.
@@ -742,3 +747,4 @@ class Main {
     //injection without holding a variable for the dependency
     Class2 variable2 = new Class2(Class1.getInstance(...));
 }
+END OF EXAMPLE

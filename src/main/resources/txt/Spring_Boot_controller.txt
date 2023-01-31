@@ -132,20 +132,21 @@ Parameter versions of @ResponseStatus:
     c. HttpStatus status, reason = reasonString
     d. code = HttpStatus status, reason = reasonString
 
-EXAMPLES FOR MAPPING PARAMETERS:
+EXAMPLE FOR MAPPING PARAMETERS:
 @RequestMapping(path = "/endpoint", produces = MediaType.APPLICATION_XML_VALUE)
 @RequestMapping(method=GET, path = "/endpoint", produces = MediaType.APPLICATION_XML_VALUE)
 @GetMapping("/endpoint")
 @PutMapping(value = "/endpoint")
 @DeleteMapping(path = "/endpoint")
 @PostMapping(path = "/endpoint", consumes = MediaType.APPLICATION_JSON_VALUE)
+END OF EXAMPLE
 
 Using the @RequestMapping annotation for the whole class is useful when more controllers are defined and a controller covers a certain endpoint root (all endpoints starts with the same common part).
 Also, common sent and accepted media types can be defined here as well.
 It is possible to define a request type in this annotation explicitly, in this case the controller will let that request type to its methods only.
 In case the backend represents a true API with the aim that the controller will serve as an interface for any frontend or other backends, best practice is that the root endpoint must show that the interface is an API and the version of the interface. With this technique, different versions can be represented in different controller classes as well.
 
-EXAMPLES FOR USING @REQUESTMAPPING FOR A CLASS:
+EXAMPLE FOR USING @REQUESTMAPPING FOR A CLASS:
 @Controller
 @RequestMapping("/api/v1/abc")
 public class ControllerClass1 {
@@ -172,8 +173,9 @@ public class ControllerClass3 {
     @PutMapping("/ooo") //the whole endpoint will be: /api/v1/ooo, sends and accepts JSON
     public String method2() {...}
 }
+END OF EXAMPLE
 
-EXAMPLES FOR CONTENT TYPE DEFINITIONS:
+Some content type definitions:
     a. MediaType.APPLICATION_JSON_VALUE
     b. MediaType.APPLICATION_JSON_UTF8_VALUE
     c. MediaType.APPLICATION_XML_VALUE
@@ -279,7 +281,7 @@ Typical usage of BodyBuilder methods:
 
 With using HeaderBuilder, no properties of the response body can be set.
 
-EXAMPLES FOR CONTROLLER METHODS WITH RESPONSE ENTITY:
+EXAMPLE FOR CONTROLLER METHODS WITH RESPONSE ENTITY:
 @GetMapping("/endpoint1")
 public ResponseEntity<String> controllerMethod1(...) {
     return new ResponseEntity<>(value, HttpStatus.OK);
@@ -324,6 +326,7 @@ public ResponseEntity<String> controllerMethod6(...) {
             .header(headerName, headerValue)
             .body(value);
 }
+END OF EXAMPLE
 
 =================================================================================
 7. DIRECT RESPONSE MANIPULATION

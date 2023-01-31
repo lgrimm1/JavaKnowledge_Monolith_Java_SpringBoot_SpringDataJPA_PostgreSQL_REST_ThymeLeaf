@@ -31,19 +31,21 @@ java -disableassertions:arguments
 java -dsa:arguments //disables assertions in system classes; or:
 java -disablesystemassertions:arguments
 
-EXAMPLES FOR ENABLING ASSERTIONS:
+EXAMPLE FOR ENABLING ASSERTIONS:
 java -ea //evaluates assertions in all classes except system classes
 java -ea:className //evaluates assertions in className class and in all of its subclasses if they are exist
 java -ea:subClassName className //evaluates assertions in subClassName subclass of className class
 java -ea:packagePath... className //evaluates assertions in packagePath package and in its subpackages called from className class
 java -ea:... className //evaluates assertions in unnamed packages in the current working directory, called from className class
 java -esa //evaluates assertions in system classes
+END OF EXAMPLE
 
-EXAMPLE:
+EXAMPLE FOR USING ASSERTS:
 String[] sa = new String[3];
 //processing
 assert sa[1] != null; //throws the error in case sa[1] == null
 assert sa[2] == null : "sa[2] must be null"; //in case sa[2] != null, throws the error with the next detail: sa[2] must be null
+END OF EXAMPLE
 
 Using assertions helps to find bugs directly where they can appear.
 They are automatically removed from production code at runtime, so they will not slow down the flow.
@@ -77,25 +79,29 @@ END OF EXAMPLE
 ---------------------------------------------------------------------------------
 After a code part, in case there can be unwanted results, using assertions.
 
-EXAMPLE:
+EXAMPLE FOR CHECKING AGAINST VALUE:
 String[] sa = ...;
 ...
 assert sa.length == 6;
+END OF EXAMPLE
 
 2.2. UNREACHABLE CODE
 ---------------------------------------------------------------------------------
 Marking unreachable code: not executed code parts.
 
-EXAMPLE 1:
+EXAMPLE FOR CHECKING UNREACHABLE CODE:
+//In case the code is refactored and
+//the return statement is moved into an if branch,
+//the flow could reach the assertion
 int methodName() {
     ...
     return ...;
     ...
     assert false : "Unreachable code";
 }
-In case the code is refactored and the return statement is moved into an if branch, the flow could reach the assertion.
 
-EXAMPLE 2:
+//although the variable should receive 1..3 numbers,
+//reaching the assertion means it gets wrong value
 int oneTwoThree = ...;
 switch (oneTwoThree) {
     case 1 -> ...;
@@ -103,14 +109,14 @@ switch (oneTwoThree) {
     case 3 -> ...;
     default -> assert false : "Invalid value: " + oneTwoThree;
 }
-Although the variable should receive 1..3 numbers, reaching the assertion means it gets wrong value.
+END OF EXAMPLE
 
 2.3. DOCUMENTING
 ---------------------------------------------------------------------------------
 Checks the code which normally would be marked with a comment, and forcing the developer to check the code in case something had been changed above.
 This usage prevents the comment to be out-dated as well; having an out-dated comment means a mis-lead to the developer.
 
-EXAMPLE:
+EXAMPLE FOR DOCUMENTING WITH ASSERT:
 if (i % 2 == 0) {
     ...
 }
@@ -118,3 +124,4 @@ else {
     assert i % 2 == 1 : i; //this line is instead of this comment: //i % 2 == 1
     ...
 }
+END OF EXAMPLE

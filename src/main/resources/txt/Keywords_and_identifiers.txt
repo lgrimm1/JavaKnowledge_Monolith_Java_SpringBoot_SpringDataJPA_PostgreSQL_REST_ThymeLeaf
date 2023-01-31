@@ -9,8 +9,21 @@ KEYWORDS AND IDENTIFIERS
 
 Keywords: defined within Java and its libraries, can not used as identifiers.
 
-EXAMPLES:
-class, interface, public, static, final, void, if, else, switch, case, for, while, @Override
+EXAMPLE FOR KEYWORDS:
+class
+interface
+public
+static
+final
+void
+if
+else
+switch
+case
+for
+while
+@Override
+END OF EXAMPLE
 
 Identifiers:
 - no keywords
@@ -20,10 +33,11 @@ Identifiers:
 
 By Java common directives, in case the identifier consists of several words, they are written without separators but all words start with upcase letter whilst the first word starts with lowcase letter.
 
-EXAMPLES:
+EXAMPLE FOR IDENTIFIERS:
 door12
 dOoR12 //different from door1, but not following common directives
 newDoor
 textWhichHasNoMeaning
 $somethingImportant
 _anotherThing
+END OF EXAMPLE
