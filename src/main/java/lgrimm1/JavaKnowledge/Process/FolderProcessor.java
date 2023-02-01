@@ -14,7 +14,6 @@ import java.util.*;
  */
 public class FolderProcessor {
 
-	private final String iniFile = "JavaKnowledge.ini";
 	private final String superLine = generateRepeatedPattern("=", 81);
 	private final String subLine = generateRepeatedPattern("-", 81);
 	private final String tabInSpaces = generateRepeatedPattern(" ", 4);

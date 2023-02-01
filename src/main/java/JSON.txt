@@ -1,0 +1,4 @@
+Endpoints
+------------------------
+GET     /api/v1/root                                response body: [{"id": <long>, "visibleName": <String>, "fullName": <String>, "level": int, "link": <String>}, ...]
+GET     /api/v1/list?target=<title|text>&words=...  response body: [<String>]

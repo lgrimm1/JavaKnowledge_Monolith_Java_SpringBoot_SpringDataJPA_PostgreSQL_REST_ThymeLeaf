@@ -1,0 +1,41 @@
+APPLICATION WORK MODEL
+======================
+"Root" form
+    a. "search" field
+    b. "Search by title words" button -> "List of titles" form, if field is null or blank results full list
+    c. "Search by text" button -> "List of titles" form
+    d. hierarchic list of all titles & headers (links to static pages) -> static HTML page
+If "search" field is null or blank, search buttons result full list in "List of titles" form.
+
+"List of titles" form
+    a. "View page" button -> static HTML page
+    b. "Edit source page" button -> "Edit source" form
+    c. "Process source pages" button -> "Process results" form
+    d. "Back" button -> "Root" form
+First row is automatically selected upon loading.
+
+"Edit source" form
+    a. "page" multi-row edit field
+    b. "keyword x" buttons -> x keyword(s) copied to clipboard or inserted into edit field
+    c. "Save source page" button -> "Save results" form
+    d. "Back" button -> "Root" form
+
+"Save results" form
+    "Back to root" button -> "Root" form
+
+"Process results" form
+    "Back to root" button -> "Root" form
+
+
+CONTROLLER METHODS
+======================
+getRootHtml
+getAllTitles
+getTitlesByText
+getTitlesByTitleWords
+getHtmlByTitle
+getTxtByTitle
+modifyTxt
+createTxt
+generateHtmls
+
