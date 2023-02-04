@@ -13,19 +13,23 @@ public class TxtEntity {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_txt")
 	@Column(name = "id")
 	long id;
-	@Column(name = "source_text", nullable = false)
-	List<String> sourceText;
+	@Column(name = "content", nullable = false)
+	List<String> content;
+	@Column(name = "title_id", nullable = false, unique = true)
+	long titleId;
 
 	public TxtEntity() {
 	}
 
-	public TxtEntity(List<String> sourceText) {
-		this.sourceText = sourceText;
+	public TxtEntity(List<String> content, long titleId) {
+		this.content = content;
+		this.titleId = titleId;
 	}
 
-	public TxtEntity(long id, List<String> sourceText) {
+	public TxtEntity(long id, List<String> content, long titleId) {
 		this.id = id;
-		this.sourceText = sourceText;
+		this.content = content;
+		this.titleId = titleId;
 	}
 
 	public long getId() {
@@ -36,12 +40,20 @@ public class TxtEntity {
 		this.id = id;
 	}
 
-	public List<String> getSourceText() {
-		return sourceText;
+	public List<String> getContent() {
+		return content;
 	}
 
-	public void setSourceText(List<String> sourceText) {
-		this.sourceText = sourceText;
+	public void setContent(List<String> content) {
+		this.content = content;
+	}
+
+	public long getTitleId() {
+		return titleId;
+	}
+
+	public void setTitleId(long titleId) {
+		this.titleId = titleId;
 	}
 
 	@Override
@@ -49,19 +61,16 @@ public class TxtEntity {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
 		TxtEntity txtEntity = (TxtEntity) o;
-		return id == txtEntity.id && sourceText.equals(txtEntity.sourceText);
+		return id == txtEntity.id && titleId == txtEntity.titleId && content.equals(txtEntity.content);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, sourceText);
+		return Objects.hash(id, content, titleId);
 	}
 
 	@Override
 	public String toString() {
-		return "TxtEntity{" +
-				"id=" + id +
-				", sourceText=" + sourceText +
-				'}';
+		return "TxtEntity{}";
 	}
 }

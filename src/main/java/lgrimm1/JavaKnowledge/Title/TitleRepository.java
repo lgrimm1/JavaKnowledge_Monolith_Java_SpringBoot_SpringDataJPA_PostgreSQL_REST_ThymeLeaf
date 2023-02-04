@@ -1,4 +1,4 @@
-package lgrimm1.JavaKnowledge.Html;
+package lgrimm1.JavaKnowledge.Title;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -9,7 +9,11 @@ import org.springframework.stereotype.*;
 import java.util.*;
 
 @Repository
-public interface HtmlRepository extends JpaRepository<HtmlEntity, Long> {
+public interface TitleRepository extends JpaRepository<TitleEntity, Long> {
 
-	Optional<HtmlEntity> findByTitleId(long titleId);
+	Optional<TitleEntity> findByTitle(String title);
+
+	List<TitleEntity> findByTitleContainingAllIgnoreCase(String titlePart);
+
+	Optional<TitleEntity> findByFilename(String filename);
 }

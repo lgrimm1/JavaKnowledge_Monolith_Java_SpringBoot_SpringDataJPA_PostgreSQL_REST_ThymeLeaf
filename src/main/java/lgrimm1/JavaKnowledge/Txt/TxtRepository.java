@@ -6,6 +6,12 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.*;
 
+import java.util.*;
+
 @Repository
 public interface TxtRepository extends JpaRepository<TxtEntity, Long> {
+
+	List<TxtEntity> findByContentContainingAllIgnoreCase(String txtPart);
+
+	Optional<TxtEntity> findByTitleId(long titleId);
 }
