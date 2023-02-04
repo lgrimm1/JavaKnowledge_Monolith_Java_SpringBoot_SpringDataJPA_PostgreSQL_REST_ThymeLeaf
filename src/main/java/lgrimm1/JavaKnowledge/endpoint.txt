@@ -1,0 +1,40 @@
+Endpoints
+------------------------
+GET     /root                   request model: -
+                                response model: -
+                                response view: "root"
+
+POST    /search                 request model: {"searchText": <String>}
+                                response model: {"titles": [<String>, ...]}
+                                response view: "list"
+
+POST    /view                   request model: {"titles": [<String>, ...]}
+                                response view: static page(s)
+
+POST    /management             request model: -
+                                response model: {"titles": [<String>, ...]}
+                                response view: "management"
+
+POST    /source/new             request model: -
+                                response model: {"edit": false}
+                                response view: "source"
+
+POST    /source/edit            request model: {"titleToEdit": <String>}
+                                response model: {"title": <String>, "fileName": <String>, "content": [<String>, ...], "edit": true}
+                                response view: "source"
+
+POST    /delete                 request model: {"titles": [<String>, ...], "confirm": <boolean>}
+                                response model: {"titles": [<String>, ...], "message": <String>}
+                                response view: "management"
+
+POST    /generate               request model: -
+                                response model: {"titles": [<String>, ...], "message": <String>}
+                                response view: "management"
+
+POST    /add/{formulaName}      request model: {"title": <String>, "fileName": <String>, "content": [<String>, ...], "edit": <boolean>}
+                                response model: {"title": <String>, "fileName": <String>, "content": [<String>, ...], "edit": <boolean>}
+                                response view: "source"
+
+POST    /save                   request model: {"title": <String>, "fileName": <String>, "content": [<String>, ...], "edit": <boolean>}
+                                response model: {"title": <String>, "fileName": <String>, "content": [<String>, ...], "edit": <boolean>, "message": <String>}
+                                response view: "source"

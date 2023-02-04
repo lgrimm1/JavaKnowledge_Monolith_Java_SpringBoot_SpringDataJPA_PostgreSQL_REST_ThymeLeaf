@@ -5,4 +5,4 @@
 <p>Libraries: Java Core, Spring.Boot, Spring.Data JPA, Spring postgreSQL, Spring.Validation, MockMVC, Mockito</p>
 <p>Build system: Maven</p>
 <p>IDE: IntelliJ IDEA</p>
-<p>Demonstrated knowledge: Clean Code, Best Practices, Test-driven Development, Unit Test, Behaviour Test, Integrity Test, API, CRUD API, Model&View, external cURL test scenario, Streams</p>
+<p>Demonstrated knowledge: Clean Code, Best Practices, Test-driven Development, Unit Test, Behaviour Test, Integrity Test, Model&View, external cURL test scenario, Streams</p>
