@@ -143,7 +143,7 @@ The Entity class forms the data element itself.
 Although the Main class is very short in code, and some schools use it for inserting the Controller endpoints into it, furthermore the controller methods could contain processing code as well, the best practice is to keep the layers separated on class level, which structure creates and keeps modularity and independent unit tests become possible.
 There can be several controllers, their service classes and several repository classes. In case of complex class structure of data elements, storage, service and controller can be separated by the structure, best practice is to do so which further increases modularity. In such case the three layers will be formed by theoretically summarizing the right independent classes.
 
-A possible structure of classes of the three application layers:
+A possible structure of classes of independent application layers:
 1. package
     L entity class
         L subclasses
@@ -154,6 +154,20 @@ A possible structure of classes of the three application layers:
     L entity class
         L subclasses
     L repository class
+    L service class
+    L controller class
+web application class
+
+A possible structure of classes of application layers with common controller and service:
+1. package
+    L entity class
+        L subclasses
+    L repository class
+2. package
+    L entity class
+        L subclasses
+    L repository class
+common package
     L service class
     L controller class
 web application class
