@@ -19,61 +19,61 @@ public class CommonController {
 
 	@GetMapping("/root")
 	public String getRoot(Model model) {
-		model = commonService.getRoot(model);
+		commonService.getRoot(model);
 		return "root";
 	}
 
 	@PostMapping("/search")
 	public String searchPages(@ModelAttribute("search_text") String searchText, Model model) {
-		model = commonService.searchPages(searchText, model);
+		commonService.searchPages(searchText, model);
 		return "list";
 	}
 
 	@PostMapping("/view")
-	public String getPage(@ModelAttribute Map<String, String> attributes, Model model) {
-		model = commonService.getPage(attributes, model);
+	public String getPage(@ModelAttribute("titles") List<String> titles, Model model) {
+		commonService.getPage(titles, model);
 		return "static";
 	}
 
 	@PostMapping("management")
-	public String managePages(@ModelAttribute Map<String, String> attributes, Model model) {
-		model = commonService.managePages(attributes, model);
+	public String managePages(@ModelAttribute("search_text") String searchText, Model model) {
+		commonService.managePages(model);
 		return "management";
 	}
 
 	@PostMapping("/source/new")
-	public String createSourcePage(@ModelAttribute Map<String, String>attributes, Model model) {
-		model = commonService.createSourcePage(attributes, model);
+	public String createSourcePage(@ModelAttribute("titles") List<String> titles, @ModelAttribute("confirm") Boolean confirm, @ModelAttribute("message") String message, Model model) {
+		commonService.createSourcePage(model);
 		return "source";
 	}
 
 	@PostMapping("/source/edit")
-	public String editSourcePage(@ModelAttribute Map<String, String> attributes, Model model) {
-		model = commonService.editSourcePage(attributes, model);
-		return "source";
+	public String editSourcePage(@ModelAttribute("titles") List<String> titles, @ModelAttribute("confirm") Boolean confirm, @ModelAttribute("message") String message, Model model) {
+		commonService.editSourcePage(titles, model);
+		return model.containsAttribute("titles") ? "management" : "source";
 	}
 
 	@PostMapping("/delete")
-	public String deleteSourcePages(@ModelAttribute Map<String, String> attributes, Model model) {
-		model = commonService.deletePages(attributes, model);
+	public String deleteSourcePages(@ModelAttribute("titles") List<String> titles, @ModelAttribute("confirm") Boolean confirm, @ModelAttribute("message") String message, Model model) {
+		commonService.deletePages(titles, confirm, model);
 		return "management";
 	}
 
 	@PostMapping("/generate")
-	public String generatePages(@ModelAttribute Map<String, String> attributes, Model model) {
-		model = commonService.generatePages(attributes, model);
+	public String generatePages(@ModelAttribute("titles") List<String> titles, @ModelAttribute("confirm") Boolean confirm, @ModelAttribute("message") String message, Model model) {
+		commonService.generatePages(model);
 		return "management";
 	}
 
 	@PostMapping("/add/{formulaName}")
-	public String addFormula(@RequestParam("formula_name") String formulaName, @ModelAttribute Map<String, String> attributes, Model model) {
-		model = commonService.addFormula(formulaName, attributes, model);
+	public String addFormula(@RequestParam("formula_name") String formulaName, @ModelAttribute("title") String title, @ModelAttribute("file_name") String fileName, @ModelAttribute("content") List<String> content, @ModelAttribute("edit_existing_page") Boolean editExistingPage, @ModelAttribute("message") String message, Model model) {
+		commonService.addFormula(formulaName, title, fileName, content, editExistingPage, model);
 		return "source";
 	}
 
 	@PostMapping("/save")
-	public String savePage(@ModelAttribute Map<String, String> attributes, Model model) {
-		model = commonService.savePage(attributes, model);
+	public String savePage(@ModelAttribute("title") String title, @ModelAttribute("file_name") String fileName, @ModelAttribute("content") List<String> content, @ModelAttribute("edit_existing_page") Boolean editExistingPage, @ModelAttribute("message") String message, Model model) {
+		commonService.savePage(title, fileName, content, editExistingPage, model);
 		return "source";
 	}
 }
