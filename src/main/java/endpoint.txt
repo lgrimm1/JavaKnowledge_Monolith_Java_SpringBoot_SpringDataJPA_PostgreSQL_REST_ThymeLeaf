@@ -1,0 +1,42 @@
+Endpoints
+------------------------
+GET     /root                   request model:
+                                response model: {"searchText": <String>}
+                                response view: "root"
+
+POST    /search                 request model: {"searchText": <String>}
+                                response model: {"titles": [<String>, ...]}
+                                response view: "list"
+
+POST    /view                   request model: {"titles": [<String>, ...]}
+                                response view: static page(s)
+
+POST    /management             request model: {"searchText": <String>}
+                                response model: {"titles": [<String>, ...], "confirm": <boolean>, "message": <String>}
+                                response view: "management"
+
+POST    /source/new             request model: {"titles": [<String>, ...], "confirm": <boolean>, "message": <String>}
+                                response model: {"title": <String>, "fileName": <String>, "content": [<String>, ...], "editExistingPage": <boolean>, "message": <String>}
+                                response view: "source"
+
+POST    /source/edit            request model: {"titles": [<String>, ...], "confirm": <boolean>, "message": <String>}
+                                response model 1: {"title": <String>, "fileName": <String>, "content": [<String>, ...], "editExistingPage": <boolean>, "message": <String>}
+                                response view 1: "source"
+                                response model 2: {"titles": [<String>, ...], "confirm": <boolean>, "message": <String>}
+                                response view 2: "management"
+
+POST    /delete                 request model: {"titles": [<String>, ...], "confirm": <boolean>, "message": <String>}
+                                response model: {"titles": [<String>, ...], "confirm": <boolean>, "message": <String>}
+                                response view: "management"
+
+POST    /generate               request model: {"titles": [<String>, ...], "confirm": <boolean>, "message": <String>}
+                                response model: {"titles": [<String>, ...], "confirm": <boolean>, "message": <String>}
+                                response view: "management"
+
+POST    /add/{formulaName}      request model: {"title": <String>, "fileName": <String>, "content": [<String>, ...], "editExistingPage": <boolean>, "message": <String>}
+                                response model: {"title": <String>, "fileName": <String>, "content": [<String>, ...], "editExistingPage": <boolean>, "message": <String>}
+                                response view: "source"
+
+POST    /save                   request model: {"title": <String>, "fileName": <String>, "content": [<String>, ...], "editExistingPage": <boolean>, "message": <String>}
+                                response model: {"title": <String>, "fileName": <String>, "content": [<String>, ...], "editExistingPage": <boolean>, "message": <String>}
+                                response view: "source"

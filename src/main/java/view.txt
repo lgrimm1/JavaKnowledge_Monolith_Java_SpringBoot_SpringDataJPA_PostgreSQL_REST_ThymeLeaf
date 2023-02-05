@@ -9,6 +9,8 @@ Received data       Item                                        Endpoint        
                     "Search" button                             POST /search        {"searchText": <String>}
                     static links to pages                       -                   -
                     "Management" button                         POST /management    -
+Model: {"searchText": <String>}
+HTML attributes: search_text
 
 
 "list"
@@ -19,36 +21,42 @@ Received data       Item                                        Endpoint        
                     list of filtered titles
                     "View Page(s)" button                       POST /view          {"titles": [<String>, ...]}
                     "Back" button                               GET /root           -
+Model: {"titles": [<String>, ...]}
+HTML attributes: titles
 
 
 "management"
 Received data       Item                                        Endpoint            Sent data
 ----------          ----------                                  ----------          ----------
-{"titles": [<String>, ...], "titleToEdit": <String>, "message": <String>}
+{"titles": [<String>, ...], "message": <String>}
                     banner                                      GET /root           -
                     message text field
                     list of all titles
                     "New Source Page" button                    POST /source/new    -
-                    "Edit Source Page" button                   POST /source/edit   {"titleToEdit": <String>}
+                    "Edit Source Page" button                   POST /source/edit   {"titles": [<String>, ...]}
                     "Confirm deletion" checkbox
                     "Delete Source Page(s)" button              POST /delete        {"titles": [<String>, ...], "confirm": <boolean>}
                     "Generate Static Pages" button              POST /generate      -
                     "Back" button                               GET /root           -
+Model: {"titles": [<String>, ...], "confirm": <boolean>, "message": <String>}
+HTML attributes: titles, confirm, message
 
 
 "source"
 Received data       Item                                        Endpoint            Sent data
 ----------          ----------                                  ----------          ----------
-{"title": <String>, "fileName": <String>, "content": [<String>, ...], "edit": <boolean>, "message": <String>}
+{"title": <String>, "fileName": <String>, "content": [<String>, ...], "editExistingPage": <boolean>, "message": <String>}
                     banner                                      GET /root           -
                     title text field
                     file name text field
                     message text field
                     content multi-row text field
-                    "Append Header 1" button                    POST /add/header1   {"title": <String>, "fileName": <String>, "content": [<String>, ...], "edit": <boolean>}
-                    "Append Header 2" button                    POST /add/header2   {"title": <String>, "fileName": <String>, "content": [<String>, ...], "edit": <boolean>}
-                    "Append Table" button                       POST /add/table     {"title": <String>, "fileName": <String>, "content": [<String>, ...], "edit": <boolean>}
-                    "Append Example" button                     POST /add/example   {"title": <String>, "fileName": <String>, "content": [<String>, ...], "edit": <boolean>}
-                    "Append Reference" button                   POST /add/reference {"title": <String>, "fileName": <String>, "content": [<String>, ...], "edit": <boolean>}
-                    "Save" button                               POST /save          {"title": <String>, "fileName": <String>, "content": [<String>, ...], "edit": <boolean>}
+                    "Append Header 1" button                    POST /add/header1   {"title": <String>, "fileName": <String>, "content": [<String>, ...], "editExistingPage": <boolean>}
+                    "Append Header 2" button                    POST /add/header2   {"title": <String>, "fileName": <String>, "content": [<String>, ...], "editExistingPage": <boolean>}
+                    "Append Table" button                       POST /add/table     {"title": <String>, "fileName": <String>, "content": [<String>, ...], "editExistingPage": <boolean>}
+                    "Append Example" button                     POST /add/example   {"title": <String>, "fileName": <String>, "content": [<String>, ...], "editExistingPage": <boolean>}
+                    "Append Reference" button                   POST /add/reference {"title": <String>, "fileName": <String>, "content": [<String>, ...], "editExistingPage": <boolean>}
+                    "Save" button                               POST /save          {"title": <String>, "fileName": <String>, "content": [<String>, ...], "editExistingPage": <boolean>}
                     "Back" button                               POST /management    -
+Model: {"title": <String>, "fileName": <String>, "content": [<String>, ...], "editExistingPage": <boolean>, "message": <String>}
+HTML attributes: title, file_name, content, edit_existing_page, message

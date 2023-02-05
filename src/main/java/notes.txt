@@ -16,7 +16,7 @@ Views:
 "Management" view:
     a. first row is automatically selected
     b. more titles can be selected
-    c. if no or more titles are selected, Edit will reload "Management" with error message
+    c. if more titles are selected, Edit will reload "Management" with error message
     d. the confirm checkbox applies for Delete
 
 "Source" view:
