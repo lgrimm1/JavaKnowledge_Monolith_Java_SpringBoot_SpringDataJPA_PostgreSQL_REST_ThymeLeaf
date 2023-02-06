@@ -5,6 +5,7 @@ import org.springframework.stereotype.*;
 import org.springframework.ui.*;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.*;
 import java.util.*;
 
 @Controller
@@ -42,26 +43,26 @@ public class CommonController {
 	}
 
 	@PostMapping("/source/new")
-	public String createSourcePage(@ModelAttribute("titles") List<String> titles, @ModelAttribute("confirm") Boolean confirm, @ModelAttribute("message") String message, Model model) {
+	public String createSourcePage(@ModelAttribute("titles") List<String> titles, @ModelAttribute("files") List<File> files, @ModelAttribute("confirm") Boolean confirm, @ModelAttribute("message") String message, Model model) {
 		commonService.createSourcePage(model);
 		return "source";
 	}
 
 	@PostMapping("/source/edit")
-	public String editSourcePage(@ModelAttribute("titles") List<String> titles, @ModelAttribute("confirm") Boolean confirm, @ModelAttribute("message") String message, Model model) {
+	public String editSourcePage(@ModelAttribute("titles") List<String> titles, @ModelAttribute("files") List<File> files, @ModelAttribute("confirm") Boolean confirm, @ModelAttribute("message") String message, Model model) {
 		commonService.editSourcePage(titles, model);
 		return model.containsAttribute("titles") ? "management" : "source";
 	}
 
 	@PostMapping("/delete")
-	public String deleteSourcePages(@ModelAttribute("titles") List<String> titles, @ModelAttribute("confirm") Boolean confirm, @ModelAttribute("message") String message, Model model) {
+	public String deleteSourcePages(@ModelAttribute("titles") List<String> titles, @ModelAttribute("files") List<File> files, @ModelAttribute("confirm") Boolean confirm, @ModelAttribute("message") String message, Model model) {
 		commonService.deletePages(titles, confirm, model);
 		return "management";
 	}
 
-	@PostMapping("/generate")
-	public String generatePages(@ModelAttribute("titles") List<String> titles, @ModelAttribute("confirm") Boolean confirm, @ModelAttribute("message") String message, Model model) {
-		commonService.generatePages(model);
+	@PostMapping("/publish")
+	public String publishPages(@ModelAttribute("titles") List<String> titles, @ModelAttribute("files") List<File> files, @ModelAttribute("confirm") Boolean confirm, @ModelAttribute("message") String message, Model model) {
+		commonService.publishPages(model);
 		return "management";
 	}
 
@@ -75,5 +76,17 @@ public class CommonController {
 	public String savePage(@ModelAttribute("title") String title, @ModelAttribute("file_name") String fileName, @ModelAttribute("content") List<String> content, @ModelAttribute("edit_existing_page") Boolean editExistingPage, @ModelAttribute("message") String message, Model model) {
 		commonService.savePage(title, fileName, content, editExistingPage, model);
 		return "source";
+	}
+
+	@PostMapping("/import")
+	public String importTxt(@ModelAttribute("titles") List<String> titles, @ModelAttribute("files") List<File> files, @ModelAttribute("confirm") Boolean confirm, @ModelAttribute("message") String message, Model model) {
+		commonService.importTxt(files, confirm, model);
+		return "management";
+	}
+
+	@PostMapping("/generate")
+	public String generateHtml(@ModelAttribute("titles") List<String> titles, @ModelAttribute("files") List<File> files, @ModelAttribute("confirm") Boolean confirm, @ModelAttribute("message") String message, Model model) {
+		commonService.generateHtml(confirm, model);
+		return "management";
 	}
 }

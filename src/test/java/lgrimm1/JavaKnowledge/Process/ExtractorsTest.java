@@ -74,4 +74,8 @@ class ExtractorsTest {
 		Assertions.assertIterableEquals(needed, extractors.extractTable(tableInText, "  "));
 	}
 
+	@Test
+	void extractTitle() {
+		//TODO test extractTitle
+	}
 }

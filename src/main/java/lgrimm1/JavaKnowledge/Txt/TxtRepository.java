@@ -12,6 +12,4 @@ import java.util.*;
 public interface TxtRepository extends JpaRepository<TxtEntity, Long> {
 
 	List<TxtEntity> findByContentContainingAllIgnoreCase(String txtPart);
-
-	Optional<TxtEntity> findByTitleId(long titleId);
 }

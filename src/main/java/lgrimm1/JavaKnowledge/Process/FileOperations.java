@@ -14,8 +14,9 @@ import java.util.stream.*;
  * @see #getOSFileSeparator()
  * @see #deleteAllFilesInFolder(File)
  * @see #getListOfFiles(File, String)
+ * @see #generateFilename(String)
  */
-public class FileProcessor {
+public class FileOperations {
 
 	public boolean writeHtmlFile(File htmlFile, String content) {
 		try (FileWriter writer = new FileWriter(htmlFile, false)) {
@@ -140,4 +141,16 @@ public class FileProcessor {
 		}
 	}
 
+	public String generateFilename(String title) {
+		if (title == null || title.isBlank()) {
+			return "";
+		}
+		return title
+				.replaceAll("\t", " ")
+				.replaceAll(".", " ")
+				.replaceAll(":", " ")
+				.replaceAll(",", " ")
+				.replaceAll("  ", " ")
+				.replaceAll(" ", "_");
+	}
 }

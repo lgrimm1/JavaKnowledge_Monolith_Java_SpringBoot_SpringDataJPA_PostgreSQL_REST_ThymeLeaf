@@ -1,5 +1,5 @@
-FRONTEND MODEL
-======================
+Notes
+------------------------
 Views:
     a. root: start page
     b. list: search result page
@@ -17,7 +17,7 @@ Views:
     a. first row is automatically selected
     b. more titles can be selected
     c. if more titles are selected, Edit will reload "Management" with error message
-    d. the confirm checkbox applies for Delete
+    d. the confirm checkbox applies for Delete and ImportTxt
 
 "Source" view:
     the "Save" flow on endpoint depends on new or edit mode

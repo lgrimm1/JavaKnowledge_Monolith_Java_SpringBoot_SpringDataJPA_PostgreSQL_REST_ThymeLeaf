@@ -8,9 +8,9 @@ import java.util.*;
 
 import static org.mockito.Mockito.when;
 
-class FileProcessorTest {
+class FileOperationsTest {
 
-	FileProcessor fileProcessor = new FileProcessor();
+	FileOperations fileOperations = new FileOperations();
 
 	@Test
 	void checkFolderExistence() {
@@ -20,20 +20,20 @@ class FileProcessorTest {
 				.thenReturn(true);
 		when(folder.isFile())
 				.thenReturn(false);
-		Assertions.assertDoesNotThrow(() -> fileProcessor.checkFolderExistence(folder, "folder"));
+		Assertions.assertDoesNotThrow(() -> fileOperations.checkFolderExistence(folder, "folder"));
 
 		when(folder.exists())
 				.thenReturn(false);
 		when(folder.isFile())
 				.thenReturn(true);
-		Exception ex = Assertions.assertThrows(Exception.class, () -> fileProcessor.checkFolderExistence(folder, "folder"));
+		Exception ex = Assertions.assertThrows(Exception.class, () -> fileOperations.checkFolderExistence(folder, "folder"));
 		Assertions.assertEquals("There is no folder directory.", ex.getMessage());
 
 		when(folder.exists())
 				.thenReturn(true);
 		when(folder.isFile())
 				.thenReturn(true);
-		ex = Assertions.assertThrows(Exception.class, () -> fileProcessor.checkFolderExistence(folder, "folder"));
+		ex = Assertions.assertThrows(Exception.class, () -> fileOperations.checkFolderExistence(folder, "folder"));
 		Assertions.assertEquals("There is no folder directory.", ex.getMessage());
 	}
 
@@ -42,11 +42,11 @@ class FileProcessorTest {
 		File file = Mockito.mock(File.class);
 		when(file.length())
 				.thenReturn(0L);
-		Assertions.assertTrue(fileProcessor.readTextFile(file).isEmpty());
+		Assertions.assertTrue(fileOperations.readTextFile(file).isEmpty());
 
 		when(file.length())
 				.thenReturn(12L);
-		Assertions.assertTrue(fileProcessor.readTextFile(file).isEmpty());
+		Assertions.assertTrue(fileOperations.readTextFile(file).isEmpty());
 
 		//TODO FileReader test with Mockito
 	}
@@ -74,9 +74,9 @@ class FileProcessorTest {
 		when(folder.getName())
 				.thenReturn("Folder");
 
-		Assertions.assertEquals("File 1", fileProcessor.getFileName(file1));
-		Assertions.assertEquals("File 2", fileProcessor.getFileName(file2));
-		Assertions.assertTrue(fileProcessor.getFileName(folder).isEmpty());
+		Assertions.assertEquals("File 1", fileOperations.getFileName(file1));
+		Assertions.assertEquals("File 2", fileOperations.getFileName(file2));
+		Assertions.assertTrue(fileOperations.getFileName(folder).isEmpty());
 	}
 
 	@Test
@@ -91,14 +91,14 @@ class FileProcessorTest {
 		when(folder.getName())
 				.thenReturn("folderName");
 
-		Assertions.assertEquals(".xyz", fileProcessor.getExtension(file1));
-		Assertions.assertTrue(fileProcessor.getExtension(file2).isEmpty());
-		Assertions.assertTrue(fileProcessor.getExtension(folder).isEmpty());
+		Assertions.assertEquals(".xyz", fileOperations.getExtension(file1));
+		Assertions.assertTrue(fileOperations.getExtension(file2).isEmpty());
+		Assertions.assertTrue(fileOperations.getExtension(folder).isEmpty());
 	}
 
 	@Test
 	void getOSFileSeparator() {
-		Assertions.assertEquals(1, fileProcessor.getOSFileSeparator().length());
+		Assertions.assertEquals(1, fileOperations.getOSFileSeparator().length());
 	}
 
 	@Test
@@ -139,15 +139,15 @@ class FileProcessorTest {
 
 		when(sourceFolder.listFiles())
 				.thenReturn(null);
-		Assertions.assertTrue(fileProcessor.deleteAllFilesInFolder(sourceFolder));
+		Assertions.assertTrue(fileOperations.deleteAllFilesInFolder(sourceFolder));
 
 		when(sourceFolder.listFiles())
 				.thenReturn(new File[]{file1, file2, file3, file4});
-		Assertions.assertTrue(fileProcessor.deleteAllFilesInFolder(sourceFolder));
+		Assertions.assertTrue(fileOperations.deleteAllFilesInFolder(sourceFolder));
 
 		when(file3.delete())
 				.thenReturn(false);
-		Assertions.assertFalse(fileProcessor.deleteAllFilesInFolder(sourceFolder));
+		Assertions.assertFalse(fileOperations.deleteAllFilesInFolder(sourceFolder));
 	}
 
 	@Test
@@ -188,12 +188,16 @@ class FileProcessorTest {
 
 		when(sourceFolder.listFiles())
 				.thenReturn(null);
-		Assertions.assertTrue(fileProcessor.getListOfFiles(sourceFolder, ".txt").isEmpty());
+		Assertions.assertTrue(fileOperations.getListOfFiles(sourceFolder, ".txt").isEmpty());
 
 		when(sourceFolder.listFiles())
 				.thenReturn(new File[]{folder1, folder2, file1, file2, file3, file4});
-		Assertions.assertIterableEquals(List.of(file3, file4), fileProcessor.getListOfFiles(sourceFolder, ".txt"));
-		Assertions.assertIterableEquals(List.of(file1, file2, file3, file4), fileProcessor.getListOfFiles(sourceFolder, ""));
+		Assertions.assertIterableEquals(List.of(file3, file4), fileOperations.getListOfFiles(sourceFolder, ".txt"));
+		Assertions.assertIterableEquals(List.of(file1, file2, file3, file4), fileOperations.getListOfFiles(sourceFolder, ""));
 	}
 
+	@Test
+	void generateFilename() {
+		//TODO test generateFilename
+	}
 }

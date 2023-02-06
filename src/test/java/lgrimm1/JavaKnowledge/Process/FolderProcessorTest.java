@@ -7,18 +7,12 @@ import java.util.*;
 class FolderProcessorTest {
 	Extractors extractors = new Extractors();
 	PageProcessor pageProcessor = new PageProcessor(extractors);
-	FileProcessor fileProcessor = new FileProcessor();
-	FolderProcessor folderProcessor = new FolderProcessor(pageProcessor, fileProcessor);
+	FileOperations fileOperations = new FileOperations();
+	FolderProcessor folderProcessor = new FolderProcessor(pageProcessor, fileOperations);
 
 	@Test
 	void folderProcessor() {
 		//TODO folderProcessor test
-	}
-
-	@Test
-	void generateRepeatedPattern() {
-		Assertions.assertEquals("abcXYZabcXYZabcXYZ",
-				folderProcessor.generateRepeatedPattern("abcXYZ", 3));
 	}
 
 	@Test

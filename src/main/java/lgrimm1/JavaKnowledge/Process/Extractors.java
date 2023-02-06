@@ -7,6 +7,7 @@ import java.util.*;
  * @see #extractReference(String, String)
  * @see #extractTable(List, String)
  * @see #extractCells(String)
+ * @see #extractTitle(List, Formulas)
  */
 public class Extractors {
 
@@ -76,5 +77,15 @@ public class Extractors {
 			cells.add(s);
 		}
 		return cells;
+	}
+
+	/**
+	 * Returns empty string if title is not valid.
+	 */
+	public String extractTitle(List<String> txt, Formulas formulas) {
+		if (txt != null && txt.size() > 2 && txt.get(0).equals(formulas.SUPERLINE) && txt.get(2).equals(formulas.SUPERLINE) && !txt.get(1).isBlank()) {
+			return txt.get(1).trim().toUpperCase();
+		}
+		return "";
 	}
 }

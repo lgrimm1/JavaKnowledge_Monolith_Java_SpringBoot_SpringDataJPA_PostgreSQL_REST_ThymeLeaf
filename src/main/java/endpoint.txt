@@ -12,7 +12,7 @@ POST    /view                   request model: {"titles": [<String>, ...]}
                                 response view: static page(s)
 
 POST    /management             request model: {"searchText": <String>}
-                                response model: {"titles": [<String>, ...], "confirm": <boolean>, "message": <String>}
+                                response model: {"titles": [<String>, ...], "files": [<File>, ...], "confirm": <boolean>, "message": <String>}
                                 response view: "management"
 
 POST    /source/new             request model: {"titles": [<String>, ...], "confirm": <boolean>, "message": <String>}
@@ -25,12 +25,12 @@ POST    /source/edit            request model: {"titles": [<String>, ...], "conf
                                 response model 2: {"titles": [<String>, ...], "confirm": <boolean>, "message": <String>}
                                 response view 2: "management"
 
-POST    /delete                 request model: {"titles": [<String>, ...], "confirm": <boolean>, "message": <String>}
-                                response model: {"titles": [<String>, ...], "confirm": <boolean>, "message": <String>}
+POST    /delete                 request model: {"titles": [<String>, ...], "files": [<File>, ...], "confirm": <boolean>, "message": <String>}
+                                response model: {"titles": [<String>, ...], "files": [<File>, ...], "confirm": <boolean>, "message": <String>}
                                 response view: "management"
 
-POST    /generate               request model: {"titles": [<String>, ...], "confirm": <boolean>, "message": <String>}
-                                response model: {"titles": [<String>, ...], "confirm": <boolean>, "message": <String>}
+POST    /publish                request model: {"titles": [<String>, ...], "files": [<File>, ...], "confirm": <boolean>, "message": <String>}
+                                response model: {"titles": [<String>, ...], "files": [<File>, ...], "confirm": <boolean>, "message": <String>}
                                 response view: "management"
 
 POST    /add/{formulaName}      request model: {"title": <String>, "fileName": <String>, "content": [<String>, ...], "editExistingPage": <boolean>, "message": <String>}
@@ -40,3 +40,11 @@ POST    /add/{formulaName}      request model: {"title": <String>, "fileName": <
 POST    /save                   request model: {"title": <String>, "fileName": <String>, "content": [<String>, ...], "editExistingPage": <boolean>, "message": <String>}
                                 response model: {"title": <String>, "fileName": <String>, "content": [<String>, ...], "editExistingPage": <boolean>, "message": <String>}
                                 response view: "source"
+
+POST    /import                 request model: {"titles": [<String>, ...], "files": [<File>, ...], "confirm": <boolean>, "message": <String>}
+                                response model: {"titles": [<String>, ...], "files": [<File>, ...], "confirm": <boolean>, "message": <String>}
+                                response view: "management"
+
+POST    /generate               request model: {"titles": [<String>, ...], "files": [<File>, ...], "confirm": <boolean>, "message": <String>}
+                                response model: {"titles": [<String>, ...], "files": [<File>, ...], "confirm": <boolean>, "message": <String>}
+                                response view: "management"

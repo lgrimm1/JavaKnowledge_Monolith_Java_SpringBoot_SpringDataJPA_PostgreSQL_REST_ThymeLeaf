@@ -1,5 +1,5 @@
 Views
--------------
+------------------------
 "root"
 Received data       Item                                        Endpoint            Sent data
 ----------          ----------                                  ----------          ----------
@@ -36,10 +36,12 @@ Received data       Item                                        Endpoint        
                     "Edit Source Page" button                   POST /source/edit   {"titles": [<String>, ...]}
                     "Confirm deletion" checkbox
                     "Delete Source Page(s)" button              POST /delete        {"titles": [<String>, ...], "confirm": <boolean>}
-                    "Generate Static Pages" button              POST /generate      -
+                    "Generate Pages from Sources" button        POST /generate      -
+                    "Publish Static Pages" button               POST /publish       -
+                    "Import TXT Source Files"                   POST /import        {"files": [<File>, ...], "confirm": <boolean>}
                     "Back" button                               GET /root           -
-Model: {"titles": [<String>, ...], "confirm": <boolean>, "message": <String>}
-HTML attributes: titles, confirm, message
+Model: {"titles": [<String>, ...], "files": [<File>, ...], "confirm": <boolean>, "message": <String>}
+HTML attributes: titles, files, confirm, message
 
 
 "source"

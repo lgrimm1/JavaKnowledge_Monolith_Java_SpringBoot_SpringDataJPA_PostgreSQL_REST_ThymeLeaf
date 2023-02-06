@@ -10,6 +10,4 @@ import java.util.*;
 
 @Repository
 public interface HtmlRepository extends JpaRepository<HtmlEntity, Long> {
-
-	Optional<HtmlEntity> findByTitleId(long titleId);
 }

@@ -15,21 +15,17 @@ public class TxtEntity {
 	long id;
 	@Column(name = "content", nullable = false)
 	List<String> content;
-	@Column(name = "title_id", nullable = false, unique = true)
-	long titleId;
 
 	public TxtEntity() {
 	}
 
-	public TxtEntity(List<String> content, long titleId) {
+	public TxtEntity(List<String> content) {
 		this.content = content;
-		this.titleId = titleId;
 	}
 
-	public TxtEntity(long id, List<String> content, long titleId) {
+	public TxtEntity(long id, List<String> content) {
 		this.id = id;
 		this.content = content;
-		this.titleId = titleId;
 	}
 
 	public long getId() {
@@ -48,29 +44,24 @@ public class TxtEntity {
 		this.content = content;
 	}
 
-	public long getTitleId() {
-		return titleId;
-	}
-
-	public void setTitleId(long titleId) {
-		this.titleId = titleId;
-	}
-
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
 		TxtEntity txtEntity = (TxtEntity) o;
-		return id == txtEntity.id && titleId == txtEntity.titleId && content.equals(txtEntity.content);
+		return id == txtEntity.id && content.equals(txtEntity.content);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, content, titleId);
+		return Objects.hash(id, content);
 	}
 
 	@Override
 	public String toString() {
-		return "TxtEntity{}";
+		return "TxtEntity{" +
+				"id=" + id +
+				", content=" + content +
+				'}';
 	}
 }
