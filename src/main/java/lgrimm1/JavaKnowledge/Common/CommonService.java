@@ -21,9 +21,10 @@ public class CommonService {
 	private final ProcessRecords processRecords;
 	private final FileOperations fileOperations;
 	private final Extractors extractors;
+	private final ProcessPage processPage;
 
 	@Autowired
-	public CommonService(TitleRepository titleRepository, TxtRepository txtRepository, HtmlRepository htmlRepository, Formulas formulas, ProcessRecords processRecords, FileOperations fileOperations, Extractors extractors) {
+	public CommonService(TitleRepository titleRepository, TxtRepository txtRepository, HtmlRepository htmlRepository, Formulas formulas, ProcessRecords processRecords, FileOperations fileOperations, Extractors extractors, ProcessPage processPage) {
 		this.titleRepository = titleRepository;
 		this.txtRepository = txtRepository;
 		this.htmlRepository = htmlRepository;
@@ -31,6 +32,7 @@ public class CommonService {
 		this.processRecords = processRecords;
 		this.fileOperations = fileOperations;
 		this.extractors = extractors;
+		this.processPage = processPage;
 	}
 
 	public void getRoot(Model model) {
@@ -141,13 +143,16 @@ public class CommonService {
 				model.addAttribute("titles", titles);
 				model.addAttribute("files", new ArrayList<File>());
 				model.addAttribute("confirm", false);
-				model.addAttribute("message", String.valueOf(originalNumberOfTitles - titles.size()) + " of " + numberOfGivenTitles + " titles were deleted.");
+				model.addAttribute("message", (originalNumberOfTitles - titles.size()) + " of " + numberOfGivenTitles + " titles were deleted.");
 			}
 		}
 	}
 
 	public void publishPages(Model model) {
-		//TODO generate
+		model.addAttribute("titles", processRecords.getAllTitles(titleRepository));
+		model.addAttribute("files", new ArrayList<File>());
+		model.addAttribute("confirm", false);
+		model.addAttribute("message", processRecords.publishHtml(titleRepository, htmlRepository, fileOperations) + " HTML files were published.");
 	}
 
 	public void addFormula(String formulaName, String title, String fileName, List<String> content, Boolean editExistingPage, Model model) {
@@ -199,15 +204,25 @@ public class CommonService {
 					model.addAttribute("message", "There is no existing page with this title.");
 				}
 				else {
-					//TODO overwrite existing content
-					//TODO overwrite existing file
-					model.addAttribute("message", "Source page has been saved.");
+					txtRepository.deleteById(optionalTitleEntity.get().getTxtId());
+					htmlRepository.deleteById(optionalTitleEntity.get().getHtmlId());
+					titleRepository.deleteById(optionalTitleEntity.get().getId());
+					HtmlEntity htmlEntity = htmlRepository.save(new HtmlEntity(new ArrayList<>()));
+					TxtEntity txtEntity = txtRepository.save(new TxtEntity(content));
+					titleRepository.save(new TitleEntity(title, fileName, txtEntity.getId(), htmlEntity.getId()));
+					model.addAttribute("message", "Source page has been overwritten.");
 				}
 			}
 			else {
-				//TODO save content
-				//TODO save file
-				model.addAttribute("message", "Source page has been saved.");
+				if (optionalTitleEntity.isPresent()) {
+					model.addAttribute("message", "There is an existing page with this title.");
+				}
+				else {
+					HtmlEntity htmlEntity = htmlRepository.save(new HtmlEntity(new ArrayList<>()));
+					TxtEntity txtEntity = txtRepository.save(new TxtEntity(content));
+					titleRepository.save(new TitleEntity(title, fileName, txtEntity.getId(), htmlEntity.getId()));
+					model.addAttribute("message", "Source page has been saved.");
+				}
 			}
 		}
 		model.addAttribute("title", title);
@@ -229,7 +244,7 @@ public class CommonService {
 			model.addAttribute("titles", titles);
 			model.addAttribute("files", new ArrayList<File>());
 			model.addAttribute("confirm", false);
-			model.addAttribute("message", String.valueOf(notImportedFiles.size()) + " of " + files.size() + " files were not imported.");
+			model.addAttribute("message", notImportedFiles.size() + " of " + files.size() + " files were not imported.");
 		}
 	}
 
@@ -241,7 +256,11 @@ public class CommonService {
 			model.addAttribute("message", "Please confirm generating pages.");
 		}
 		else {
-			//TODO generate
+			long[] messageData = processRecords.generate(titleRepository, txtRepository, htmlRepository, formulas, processPage, extractors);
+			model.addAttribute("titles", processRecords.getAllTitles(titleRepository));
+			model.addAttribute("files", new ArrayList<File>());
+			model.addAttribute("confirm", false);
+			model.addAttribute("message", messageData[0] + " pages in " + messageData[1] + " seconds has been processed.");
 		}
 	}
 }

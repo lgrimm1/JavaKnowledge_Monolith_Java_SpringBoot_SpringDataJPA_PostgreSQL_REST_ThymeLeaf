@@ -4,26 +4,22 @@ import java.io.*;
 import java.time.*;
 import java.util.*;
 
-/**
- * Processes folder of source TXT files.
- * @see #folderProcessor()
- * @see #processTitles(List)
- * @see #stringListToString(List, String)
- * @see #getResourcesPath()
- */
 public class FolderProcessor {
 
-	private final PageProcessor pageProcessor;
+/*
+	private final ProcessPage processPage;
 	private final FileOperations fileOperations;
 
-	public FolderProcessor(PageProcessor pageProcessor, FileOperations fileOperations) {
-		this.pageProcessor = pageProcessor;
+	public FolderProcessor(ProcessPage processPage, FileOperations fileOperations) {
+		this.processPage = processPage;
 		this.fileOperations = fileOperations;
 	}
 
-	/**
+	*/
+/**
 	 * Returns the list of names of pages of which processing failed.
-	 */
+	 *//*
+
 	public List<String> folderProcessor() {
 		LocalTime startLocalTime = LocalTime.now();
 		String txtFolderName = getResourcesPath() + fileOperations.getOSFileSeparator() + "txt";
@@ -49,7 +45,7 @@ public class FolderProcessor {
 				namesOfNotProcessedFiles.add(fileName);
 			}
 			else {
-				String temp = stringListToString(pageProcessor.processTxt(
+				String temp = stringListToString(processPage.processTxt(
 						text,
 						titles,
 						fileName + "",
@@ -81,11 +77,13 @@ public class FolderProcessor {
 		return namesOfNotProcessedFiles;
 	}
 
-	/**
+	*/
+/**
 	 * Generates a root html code from all html files and their titles.
 	 * @param titles	the String&lt;Title&gt; of html filenames and titles.
 	 * @return			the List&lt;String&gt; of html code.
-	 */
+	 *//*
+
 	private List<String> processTitles(List<Title> titles) {
 		Comparator<Title> comparator = new Comparator<>() {
 			@Override
@@ -174,12 +172,5 @@ public class FolderProcessor {
 		}
 		return sb.toString();
 	}
-
-	public String getResourcesPath() {
-		return System.getProperty("user.dir") + fileOperations.getOSFileSeparator() +
-				"src" + fileOperations.getOSFileSeparator() +
-				"main" + fileOperations.getOSFileSeparator() +
-				"resources";
-	}
-
+*/
 }

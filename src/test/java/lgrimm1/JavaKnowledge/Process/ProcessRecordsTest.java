@@ -25,4 +25,9 @@ class ProcessRecordsTest {
 	void importTxtFiles() {
 		//TODO test importTxtFiles
 	}
+
+	@Test
+	void publishHtml() {
+		//TODO test puslishHtml
+	}
 }

@@ -5,6 +5,7 @@ import lgrimm1.JavaKnowledge.Title.*;
 import lgrimm1.JavaKnowledge.Txt.*;
 
 import java.io.*;
+import java.time.*;
 import java.util.*;
 
 /**
@@ -13,6 +14,8 @@ import java.util.*;
  * @see #deleteByTitles(List, TitleRepository, TxtRepository, HtmlRepository)
  * @see #getAllTitles(TitleRepository)
  * @see #importTxtFiles(List, TitleRepository, TxtRepository, HtmlRepository, FileOperations, Formulas, Extractors)
+ * @see #generate(TitleRepository, TxtRepository, HtmlRepository, Formulas, ProcessPage, Extractors)
+ * @see #publishHtml(TitleRepository, HtmlRepository, FileOperations)
  */
 public class ProcessRecords {
 
@@ -110,5 +113,56 @@ public class ProcessRecords {
 			}
 		}
 		return notImportedFiles;
+	}
+
+	/**
+	 * Returns int[] where 0th element is number of records, 1st element is needed time in seconds.
+	 */
+	public long[] generate(TitleRepository titleRepository,
+						   TxtRepository txtRepository,
+						   HtmlRepository htmlRepository,
+						   Formulas formulas,
+						   ProcessPage processPage,
+						   Extractors extractors) {
+		LocalTime startTime = LocalTime.now();
+		List<TitleEntity> titleEntities = titleRepository.findAll();
+		for (TitleEntity titleEntity : titleEntities) {
+			Optional<TxtEntity> optionalTxtEntity = txtRepository.findById(titleEntity.getTxtId());
+			if (optionalTxtEntity.isPresent()) {
+				String title = titleEntity.getTitle();
+				String filename = titleEntity.getFilename();
+				long txtId = optionalTxtEntity.get().getId();
+				List<String> html = processPage.processTxt(
+						optionalTxtEntity.get().getContent(),
+						title,
+						formulas.TAB_IN_SPACES,
+						formulas.TAB_IN_HTML,
+						formulas.SUPERLINE,
+						formulas.SUBLINE,
+						formulas.ROOT_HTML_NAME,
+						formulas.VERSIONS,
+						extractors);
+				htmlRepository.deleteById(titleEntity.getHtmlId());
+				long htmlId = htmlRepository.save(new HtmlEntity(html)).getId();
+				titleRepository.deleteById(titleEntity.getId());
+				titleRepository.save(new TitleEntity(title, filename, txtId, htmlId));
+			}
+		}
+		return new long[]{titleEntities.size(), Duration.between(startTime, LocalTime.now()).toSeconds()};
+	}
+
+	/**
+	 * Returns the number of published HTMLs.
+	 */
+	public long publishHtml(TitleRepository titleRepository, HtmlRepository htmlRepository, FileOperations fileOperations) {
+		return titleRepository.findAll().stream()
+				.filter(titleEntity -> htmlRepository.findById(titleEntity.getHtmlId()).isPresent())
+				.filter(titleEntity -> fileOperations.writeHtmlFile(
+						new File(fileOperations.getStaticPath() +
+								fileOperations.getOSFileSeparator() +
+								titleEntity.getFilename() +
+								".html"),
+						htmlRepository.findById(titleEntity.getHtmlId()).get().getContent()))
+				.count();
 	}
 }

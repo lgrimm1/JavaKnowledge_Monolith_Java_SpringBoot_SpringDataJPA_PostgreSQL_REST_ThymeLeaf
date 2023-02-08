@@ -2,25 +2,34 @@ package lgrimm1.JavaKnowledge.Process;
 
 import java.io.*;
 import java.util.*;
+import java.util.concurrent.atomic.*;
 import java.util.stream.*;
 
 /**
  * Handles file-level operations.<p>
- * @see #writeHtmlFile(File, String)
+ * @see #writeHtmlFile(File, List)
  * @see #readTextFile(File)
  * @see #checkFolderExistence(File, String)
  * @see #getFileName(File)
  * @see #getExtension(File)
  * @see #getOSFileSeparator()
- * @see #deleteAllFilesInFolder(File)
- * @see #getListOfFiles(File, String)
+ * @see #deleteAllFilesInFolder(File, String)
+// * @see #getListOfFiles(File, String)
  * @see #generateFilename(String)
+ * @see #getResourcesPath()
+ * @see #getStaticPath()
  */
 public class FileOperations {
 
-	public boolean writeHtmlFile(File htmlFile, String content) {
+	public boolean writeHtmlFile(File htmlFile, List<String> content) {
+		if (htmlFile == null || content == null || content.isEmpty()) {
+			return false;
+		}
+		StringBuilder sb = new StringBuilder();
+		content
+				.forEach(line -> sb.append(line).append("\n"));
 		try (FileWriter writer = new FileWriter(htmlFile, false)) {
-			writer.write(content);
+			writer.write(sb.toString());
 		}
 		catch (Exception e) {
 			return false;
@@ -32,13 +41,11 @@ public class FileOperations {
 	 * In case of any problem, returns an empty List.
 	 */
 	public List<String> readTextFile(File textFile) {
-		int fileSize;
-		char[] contentTemp;
+		char[] content;
 		int readSize;
 		try (FileReader reader = new FileReader(textFile)) {
-			fileSize = (int) textFile.length();
-			contentTemp = new char[fileSize];
-			readSize = reader.read(contentTemp);
+			content = new char[(int) textFile.length()];
+			readSize = reader.read(content);
 		}
 		catch (Exception e) {
 			return new ArrayList<>();
@@ -46,18 +53,13 @@ public class FileOperations {
 		if (readSize < 1) {
 			return new ArrayList<>();
 		}
-		contentTemp = Arrays.copyOfRange(contentTemp, 0, readSize);
-		String contentTemp2 = new String(contentTemp);
-		try (Scanner scs = new Scanner(contentTemp2)) {
-			List<String> lines = new ArrayList<>();
-			while (scs.hasNextLine()) {
-				lines.add(scs.nextLine());
-			}
-			return lines;
-		}
-		catch (Exception e) {
-			return new ArrayList<>();
-		}
+//		contentTemp = Arrays.copyOfRange(contentTemp, 0, readSize);
+/*
+		return Arrays.stream(new String(Arrays.copyOfRange(contentTemp, 0, readSize))
+				.split("\n")).toList();
+*/
+		return Arrays.stream(new String(content).split("\n"))
+				.toList();
 	}
 
 	/**
@@ -90,29 +92,27 @@ public class FileOperations {
 		return File.separator;
 	}
 
-	public boolean deleteAllFilesInFolder(File folder) {
-		List<File> listOfFiles = getListOfFiles(folder, "");
-		boolean ok = true;
-		int i = 0;
-		while (ok && (i < listOfFiles.size())) {
-			try {
-				if (listOfFiles.get(i).delete()) {
-					i++;
-				}
-				else {
-					ok = false;
-				}
-			}
-			catch (Exception e) {
-				ok = false;
-			}
+	/**
+	 * Returns the number of successfully deleted files.
+	 */
+	public long deleteAllFilesInFolder(File folder, String extensionWithSeparator) {
+		if (folder == null || !folder.exists() || !folder.isDirectory() || extensionWithSeparator == null) {
+			return 0;
 		}
-		return ok;
+		File[] files = folder.listFiles();
+		if (files == null || files.length == 0) {
+			return 0;
+		}
+		return Arrays.stream(files)
+				.filter(file -> getExtension(file).equalsIgnoreCase(extensionWithSeparator))
+				.filter(File::delete)
+				.count();
 	}
 
 	/**
 	 * In case extensionWithSeparator is empty, will get all files.
 	 */
+/*
 	public List<File> getListOfFiles(File folder, String extensionWithSeparator) {
 		try {
 			File[] filesAndFolders = folder.listFiles();
@@ -140,6 +140,7 @@ public class FileOperations {
 			return new ArrayList<>();
 		}
 	}
+*/
 
 	public String generateFilename(String title) {
 		if (title == null || title.isBlank()) {
@@ -153,4 +154,16 @@ public class FileOperations {
 				.replaceAll("  ", " ")
 				.replaceAll(" ", "_");
 	}
+
+	public String getResourcesPath() {
+		return System.getProperty("user.dir") + getOSFileSeparator() +
+				"src" + getOSFileSeparator() +
+				"main" + getOSFileSeparator() +
+				"resources";
+	}
+
+	public String getStaticPath() {
+		return getResourcesPath() + getOSFileSeparator() + "static";
+	}
+
 }
