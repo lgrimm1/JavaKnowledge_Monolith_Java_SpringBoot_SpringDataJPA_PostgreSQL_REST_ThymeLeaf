@@ -67,7 +67,7 @@ In order to have a stream, can use a collection as a source or generate data by 
 By using streams, the code can become more readable and shorter, however understanding what is happening needs more consideration.
 Streams are immutable.
 In order to have a stream, can use a collection as a source or generate data by the stream itself.
-Stream operations are parallel. In case the stream operation reads or writes an object, that object must bear with concurrent accesses. Furthermore, if a Stream writes and reads a not-concurrent variable (e.g. int, array, HashMap), exception or simply wrong data can infect the process flows. Approach stream operations as multithreaded operations and use e.g. atomic variables instead of primitives or wrapper classes.
+Stream operations are parallel. In case the stream operation reads or writes an object, that object must bear with concurrent accesses. Furthermore, if a Stream writes and reads a not-concurrent variable (e.g. int, array, HashMap), exception or simply wrong data can infect the process flows. Approach stream operations as multithreaded operations and use e.g. atomic variables instead of primitives or wrapper classes, also concurrent versions of Collections.
 
 EXAMPLE FOR CONVERTING STREAM FROM A LIST:
 import java.util.List;
