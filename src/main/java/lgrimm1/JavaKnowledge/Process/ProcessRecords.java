@@ -22,6 +22,9 @@ public class ProcessRecords {
 	public Set<String> searchBySearchText(String searchText,
 										  TitleRepository titleRepository,
 										  TxtRepository txtRepository) {
+		if (searchText == null || searchText.isBlank()) {
+			return new HashSet<>();
+		}
 		searchText = searchText.trim();
 		Set<String> titles = new HashSet<>();
 		List<String> words = new ArrayList<>(List.of(searchText.split(" ")));
@@ -46,10 +49,19 @@ public class ProcessRecords {
 		return titles;
 	}
 
-	public void deleteByTitles(List<String> titles,
+	/**
+	 * Returns the number of deleted titles.
+	 * Relation between title and TXT records is 1:1.
+	 * Based upon testing purposes, the number of records is counted via TitleRepository and TxtRepository as well.
+	 */
+	public long deleteByTitles(List<String> titles,
 							   TitleRepository titleRepository,
 							   TxtRepository txtRepository,
 							   HtmlRepository htmlRepository) {
+		if (titles == null || titles.isEmpty()) {
+			return 0;
+		}
+		long originalCount = titleRepository.count();
 		List<TitleEntity> titleEntities = titles.stream()
 				.map(titleRepository::findByTitle)
 				.filter(Optional::isPresent)
@@ -67,6 +79,7 @@ public class ProcessRecords {
 				.map(TitleEntity::getId)
 				.toList();
 		titleRepository.deleteAllById(ids);
+		return originalCount - txtRepository.count();
 	}
 
 	public List<String> getAllTitles(TitleRepository titleRepository) {
@@ -76,6 +89,9 @@ public class ProcessRecords {
 				.toList();
 	}
 
+	/**
+	 * Returns List of not-imported files.
+	 */
 	public List<File> importTxtFiles(List<File> files,
 									 TitleRepository titleRepository,
 									 TxtRepository txtRepository,
@@ -148,21 +164,29 @@ public class ProcessRecords {
 				titleRepository.save(new TitleEntity(title, filename, txtId, htmlId));
 			}
 		}
-		return new long[]{titleEntities.size(), Duration.between(startTime, LocalTime.now()).toSeconds()};
+		return new long[]{titleEntities.size(), Duration.between(startTime, LocalTime.now().plusSeconds(1)).toSeconds()};
 	}
 
 	/**
-	 * Returns the number of published HTMLs.
+	 * Returns long[2] where [0] is the number of pre-deleted HTML files, [1] is the number of published HTMLs.
 	 */
-	public long publishHtml(TitleRepository titleRepository, HtmlRepository htmlRepository, FileOperations fileOperations) {
-		return titleRepository.findAll().stream()
-				.filter(titleEntity -> htmlRepository.findById(titleEntity.getHtmlId()).isPresent())
-				.filter(titleEntity -> fileOperations.writeHtmlFile(
-						new File(fileOperations.getStaticPath() +
-								fileOperations.getOSFileSeparator() +
-								titleEntity.getFilename() +
-								".html"),
-						htmlRepository.findById(titleEntity.getHtmlId()).get().getContent()))
-				.count();
+	public long[] publishHtml(TitleRepository titleRepository, HtmlRepository htmlRepository, FileOperations fileOperations) {
+		File staticFolder = new File(fileOperations.getStaticPath());
+		if (!fileOperations.createNonExistentDirectory(staticFolder)) {
+			return new long[]{0, 0};
+		}
+		long deleted = fileOperations.deleteAllFilesInFolder(staticFolder, ".html");
+		return new long[]{
+				deleted,
+				titleRepository.findAll().stream()
+						.filter(titleEntity -> htmlRepository.findById(titleEntity.getHtmlId()).isPresent())
+						.filter(titleEntity -> fileOperations.writeHtmlFile(
+								new File(fileOperations.getStaticPath() +
+										fileOperations.getOSFileSeparator() +
+										titleEntity.getFilename() +
+										".html"),
+								htmlRepository.findById(titleEntity.getHtmlId()).get().getContent()))
+						.count()
+		};
 	}
 }

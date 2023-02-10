@@ -14,6 +14,9 @@ public class Formulas {
 	public final String LEVEL_1_SEPARATOR = ";";
 	public final String VERSIONS = "Up to Java 17, Spring 3";
 	public final String ROOT_HTML_NAME = "!JavaKnowledge";
+	enum FormulaType {
+		TITLE, HEADER_1, HEADER_2, TABLE, EXAMPLE, REFERENCE
+	}
 	public final String FORMULA_TITLE =
 			SUPERLINE + "\n" +
 			"TITLE\n" +
@@ -41,31 +44,21 @@ public class Formulas {
 	}
 
 	/**
-	 * In case of invalid name, returns empty String.
+	 * In case of invalid argument, returns empty String.
 	 */
 	public String getFormula(String formulaName) {
-		if (formulaName == null || formulaName.isBlank()) {
+		if (formulaName == null) {
 			return "";
 		}
-		if (formulaName.equalsIgnoreCase("title")) {
-			return FORMULA_TITLE;
-		}
-		if (formulaName.equalsIgnoreCase("header1")) {
-			return FORMULA_HEADER_1;
-		}
-		if (formulaName.equalsIgnoreCase("header2")) {
-			return FORMULA_HEADER_2;
-		}
-		if (formulaName.equalsIgnoreCase("table")) {
-			return FORMULA_TABLE;
-		}
-		if (formulaName.equalsIgnoreCase("example")) {
-			return FORMULA_EXAMPLE;
-		}
-		if (formulaName.equalsIgnoreCase("reference")) {
-			return FORMULA_REFERENCE;
-		}
-		return "";
+		return switch (formulaName.trim().toUpperCase()) {
+			case "TITLE" -> FORMULA_TITLE;
+			case "HEADER1" -> FORMULA_HEADER_1;
+			case "HEADER2" -> FORMULA_HEADER_2;
+			case "TABLE" -> FORMULA_TABLE;
+			case "EXAMPLE" -> FORMULA_EXAMPLE;
+			case "REFERENCE" -> FORMULA_REFERENCE;
+			default -> "";
+		};
 	}
 
 }

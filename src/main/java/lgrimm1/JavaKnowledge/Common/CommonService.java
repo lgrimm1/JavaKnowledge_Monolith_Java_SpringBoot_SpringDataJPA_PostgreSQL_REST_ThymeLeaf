@@ -136,14 +136,19 @@ public class CommonService {
 				model.addAttribute("message", "Please select existing titles you wish to delete.");
 			}
 			else {
-				long originalNumberOfTitles = titleRepository.count();
 				long numberOfGivenTitles = titles.size();
-				processRecords.deleteByTitles(titles, titleRepository, txtRepository, htmlRepository);
 				titles = processRecords.getAllTitles(titleRepository);
 				model.addAttribute("titles", titles);
 				model.addAttribute("files", new ArrayList<File>());
 				model.addAttribute("confirm", false);
-				model.addAttribute("message", (originalNumberOfTitles - titles.size()) + " of " + numberOfGivenTitles + " titles were deleted.");
+				model.addAttribute(
+						"message",
+						processRecords.deleteByTitles(
+								titles,
+								titleRepository,
+								txtRepository,
+								htmlRepository) +
+								" of " + numberOfGivenTitles + " titles were deleted.");
 			}
 		}
 	}
@@ -152,7 +157,8 @@ public class CommonService {
 		model.addAttribute("titles", processRecords.getAllTitles(titleRepository));
 		model.addAttribute("files", new ArrayList<File>());
 		model.addAttribute("confirm", false);
-		model.addAttribute("message", processRecords.publishHtml(titleRepository, htmlRepository, fileOperations) + " HTML files were published.");
+		long[] publishResults = processRecords.publishHtml(titleRepository, htmlRepository, fileOperations);
+		model.addAttribute("message",  publishResults[0] + " HTML files were pre-deleted, " + publishResults[1] + " were published.");
 	}
 
 	public void addFormula(String formulaName, String title, String fileName, List<String> content, Boolean editExistingPage, Model model) {
@@ -264,3 +270,5 @@ public class CommonService {
 		}
 	}
 }
+
+//TODO check all Stream operations for being parallel and its necessity.

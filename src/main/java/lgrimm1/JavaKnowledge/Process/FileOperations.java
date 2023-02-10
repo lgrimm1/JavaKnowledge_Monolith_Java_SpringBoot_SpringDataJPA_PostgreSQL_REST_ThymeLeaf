@@ -9,8 +9,7 @@ import java.util.stream.*;
  * Handles file-level operations.<p>
  * @see #writeHtmlFile(File, List)
  * @see #readTextFile(File)
- * @see #checkFolderExistence(File, String)
- * @see #getFileName(File)
+ * @see #createNonExistentDirectory(File)
  * @see #getExtension(File)
  * @see #getOSFileSeparator()
  * @see #deleteAllFilesInFolder(File, String)
@@ -21,6 +20,9 @@ import java.util.stream.*;
  */
 public class FileOperations {
 
+	/**
+	 * Overwrites possible existing file.
+	 */
 	public boolean writeHtmlFile(File htmlFile, List<String> content) {
 		if (htmlFile == null || content == null || content.isEmpty()) {
 			return false;
@@ -43,9 +45,9 @@ public class FileOperations {
 	public List<String> readTextFile(File textFile) {
 		char[] content;
 		int readSize;
-		try (FileReader reader = new FileReader(textFile)) {
+		try (FileReader fileReader = new FileReader(textFile)) {
 			content = new char[(int) textFile.length()];
-			readSize = reader.read(content);
+			readSize = fileReader.read(content);
 		}
 		catch (Exception e) {
 			return new ArrayList<>();
@@ -53,33 +55,25 @@ public class FileOperations {
 		if (readSize < 1) {
 			return new ArrayList<>();
 		}
-//		contentTemp = Arrays.copyOfRange(contentTemp, 0, readSize);
-/*
-		return Arrays.stream(new String(Arrays.copyOfRange(contentTemp, 0, readSize))
-				.split("\n")).toList();
-*/
-		return Arrays.stream(new String(content).split("\n"))
+		return Arrays.stream(
+						new String(content)
+								.replace("\r", "")
+								.split("\n")
+				)
 				.toList();
 	}
 
 	/**
-	 * In case of non-existence, the exception message will be: "There is no accessible <meanNameOfDirectory> directory.".
+	 * Returns true only when the folder already exists or successfully created.
 	 */
-	public void checkFolderExistence(File folder, String meanNameOfDirectory) {
-		if (!folder.exists() || folder.isFile()) {
-			throw new IllegalStateException("There is no " + meanNameOfDirectory + " directory.");
+	public boolean createNonExistentDirectory(File folder) {
+		if (folder == null) {
+			return false;
 		}
-	}
-
-	public String getFileName(File file) {
-		if (file.isFile()) {
-			String name = file.getName();
-			int p = name.lastIndexOf(".");
-			return (p == -1) ? name : name.substring(0, p);
+		if (!folder.exists()) {
+			return folder.mkdir();
 		}
-		else {
-			return "";
-		}
+		return folder.isDirectory();
 	}
 
 	public String getExtension(File file) {
@@ -104,6 +98,7 @@ public class FileOperations {
 			return 0;
 		}
 		return Arrays.stream(files)
+				.filter(File::isFile)
 				.filter(file -> getExtension(file).equalsIgnoreCase(extensionWithSeparator))
 				.filter(File::delete)
 				.count();
@@ -142,17 +137,29 @@ public class FileOperations {
 	}
 */
 
+	/**
+	 * Replaces TAB, dot, column, semicolumn, :, quote, double-quote and (repeated) SPACE characters to simple underline character, furthermore transforms the name to lowercase form, in order to form a proper filename.
+	 */
 	public String generateFilename(String title) {
 		if (title == null || title.isBlank()) {
 			return "";
 		}
-		return title
-				.replaceAll("\t", " ")
-				.replaceAll(".", " ")
-				.replaceAll(":", " ")
-				.replaceAll(",", " ")
-				.replaceAll("  ", " ")
-				.replaceAll(" ", "_");
+		StringBuilder sb = new StringBuilder();
+		Arrays.stream(title
+				.toLowerCase()
+				.replace("\t", " ")
+				.replace(".", " ")
+				.replace(":", " ")
+				.replace(",", " ")
+				.replace(";", " ")
+				.replace("'", " ")
+				.replace("\"", " ")
+				.replace("_", " ")
+				.split(" "))
+				.filter(word -> !word.isBlank())
+				.toList()
+				.forEach(word -> sb.append(word).append("_"));
+		return sb.deleteCharAt(sb.length() - 1).toString();
 	}
 
 	public String getResourcesPath() {

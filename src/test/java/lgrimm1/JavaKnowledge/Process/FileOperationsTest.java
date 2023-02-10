@@ -11,89 +11,120 @@ import static org.mockito.Mockito.when;
 class FileOperationsTest {
 
 	FileOperations fileOperations = new FileOperations();
+	String testResourcesPath = fileOperations.getResourcesPath() + fileOperations.getOSFileSeparator() + "test_resources";
 
 	@Test
-	void checkFolderExistence() {
-		File folder = Mockito.mock(File.class);
+	void writeHtmlFile() {
+		Assertions.assertFalse(fileOperations.writeHtmlFile(null, List.of("Line 1")));
+		Assertions.assertFalse(fileOperations.writeHtmlFile(new File("abc.xyz"), null));
+		Assertions.assertFalse(fileOperations.writeHtmlFile(new File("abc.xyz"), new ArrayList<>()));
 
-		when(folder.exists())
-				.thenReturn(true);
-		when(folder.isFile())
-				.thenReturn(false);
-		Assertions.assertDoesNotThrow(() -> fileOperations.checkFolderExistence(folder, "folder"));
-
-		when(folder.exists())
-				.thenReturn(false);
-		when(folder.isFile())
-				.thenReturn(true);
-		Exception ex = Assertions.assertThrows(Exception.class, () -> fileOperations.checkFolderExistence(folder, "folder"));
-		Assertions.assertEquals("There is no folder directory.", ex.getMessage());
-
-		when(folder.exists())
-				.thenReturn(true);
-		when(folder.isFile())
-				.thenReturn(true);
-		ex = Assertions.assertThrows(Exception.class, () -> fileOperations.checkFolderExistence(folder, "folder"));
-		Assertions.assertEquals("There is no folder directory.", ex.getMessage());
+		File fileWriterTestFile = new File(testResourcesPath + fileOperations.getOSFileSeparator() + "fileWriterTestFile");
+		Assertions.assertTrue(fileOperations.writeHtmlFile(fileWriterTestFile, List.of("Line 1", "Line 2")));
+		Assertions.assertTrue(fileOperations.writeHtmlFile(fileWriterTestFile, List.of("Line 1", "Line 2")));
+		fileWriterTestFile.delete();
 	}
 
 	@Test
 	void readTextFile() {
-		File file = Mockito.mock(File.class);
-		when(file.length())
-				.thenReturn(0L);
-		Assertions.assertTrue(fileOperations.readTextFile(file).isEmpty());
-
-		when(file.length())
-				.thenReturn(12L);
-		Assertions.assertTrue(fileOperations.readTextFile(file).isEmpty());
-
-		//TODO FileReader test with Mockito
-	}
-
-	@Test
-	void writeHtmlFile() {
-		//TODO FileWriter test with Mockito
-	}
-
-	@Test
-	void getFileName() {
-		File file1 = Mockito.mock(File.class);
-		when(file1.isFile())
-				.thenReturn(true);
-		when(file1.getName())
-				.thenReturn("File 1");
-		File file2 = Mockito.mock(File.class);
-		when(file2.isFile())
-				.thenReturn(true);
-		when(file2.getName())
-				.thenReturn("File 2.xyz");
-		File folder = Mockito.mock(File.class);
-		when(folder.isFile())
+		File notExistingFile = Mockito.mock(File.class);
+		when(notExistingFile.exists())
 				.thenReturn(false);
-		when(folder.getName())
-				.thenReturn("Folder");
+		when(notExistingFile.isFile())
+				.thenReturn(false);
+		when(notExistingFile.isDirectory())
+				.thenReturn(false);
 
-		Assertions.assertEquals("File 1", fileOperations.getFileName(file1));
-		Assertions.assertEquals("File 2", fileOperations.getFileName(file2));
-		Assertions.assertTrue(fileOperations.getFileName(folder).isEmpty());
+		File notFile = Mockito.mock(File.class);
+		when(notExistingFile.exists())
+				.thenReturn(true);
+		when(notFile.isFile())
+				.thenReturn(false);
+		when(notFile.isDirectory())
+				.thenReturn(true);
+
+		File notReadableFile = Mockito.mock(File.class);
+		when(notExistingFile.exists())
+				.thenReturn(true);
+		when(notReadableFile.isFile())
+				.thenReturn(true);
+		when(notReadableFile.isDirectory())
+				.thenReturn(false);
+		when(notReadableFile.canRead())
+				.thenReturn(false);
+
+		File readableEmptyFile = Mockito.mock(File.class);
+		when(readableEmptyFile.exists())
+				.thenReturn(true);
+		when(readableEmptyFile.isFile())
+				.thenReturn(true);
+		when(readableEmptyFile.isDirectory())
+				.thenReturn(false);
+		when(readableEmptyFile.canRead())
+				.thenReturn(true);
+		when(readableEmptyFile.length())
+				.thenReturn(0L);
+
+		Assertions.assertTrue(fileOperations.readTextFile(notExistingFile).isEmpty());
+		Assertions.assertTrue(fileOperations.readTextFile(notFile).isEmpty());
+		Assertions.assertTrue(fileOperations.readTextFile(notReadableFile).isEmpty());
+		Assertions.assertTrue(fileOperations.readTextFile(readableEmptyFile).isEmpty());
+
+		File fileReaderTestFile = new File(testResourcesPath +
+				fileOperations.getOSFileSeparator() +
+				"FileReaderTestFile.txt");
+
+		Assertions.assertEquals(
+				List.of(
+						"Line 1",
+						"Line 2"
+				), fileOperations.readTextFile(fileReaderTestFile));
 	}
 
 	@Test
-	void getFileExtension() {
-		File file1 = Mockito.mock(File.class);
-		when(file1.getName())
-				.thenReturn("fileName.xyz");
-		File file2 = Mockito.mock(File.class);
-		when(file2.getName())
-				.thenReturn("fileName");
-		File folder = Mockito.mock(File.class);
-		when(folder.getName())
-				.thenReturn("folderName");
+	void checkFolderExistence() {
+		File folderNotExistingNotCreatable = Mockito.mock(File.class);
+		when(folderNotExistingNotCreatable.exists())
+				.thenReturn(false);
+		when(folderNotExistingNotCreatable.mkdir())
+				.thenReturn(false);
 
-		Assertions.assertEquals(".xyz", fileOperations.getExtension(file1));
-		Assertions.assertTrue(fileOperations.getExtension(file2).isEmpty());
-		Assertions.assertTrue(fileOperations.getExtension(folder).isEmpty());
+		File folderNotExistingCreatable = Mockito.mock(File.class);
+		when(folderNotExistingCreatable.exists())
+				.thenReturn(false);
+		when(folderNotExistingCreatable.mkdir())
+				.thenReturn(true);
+
+		File folderExistingNotDirectory = Mockito.mock(File.class);
+		when(folderExistingNotDirectory.exists())
+				.thenReturn(true);
+		when(folderExistingNotDirectory.isDirectory())
+				.thenReturn(false);
+
+		File folderExistingDirectory = Mockito.mock(File.class);
+		when(folderExistingDirectory.exists())
+				.thenReturn(true);
+		when(folderExistingDirectory.isDirectory())
+				.thenReturn(true);
+
+		Assertions.assertFalse(fileOperations.createNonExistentDirectory(null));
+		Assertions.assertFalse(fileOperations.createNonExistentDirectory(folderNotExistingNotCreatable));
+		Assertions.assertTrue(fileOperations.createNonExistentDirectory(folderNotExistingCreatable));
+		Assertions.assertFalse(fileOperations.createNonExistentDirectory(folderExistingNotDirectory));
+		Assertions.assertTrue(fileOperations.createNonExistentDirectory(folderExistingDirectory));
+	}
+
+	@Test
+	void getExtension() {
+		File fileXyz = Mockito.mock(File.class);
+		when(fileXyz.getName())
+				.thenReturn("filename1.xyz");
+		File fileNoExtension = Mockito.mock(File.class);
+		when(fileNoExtension.getName())
+				.thenReturn("filename2");
+
+		Assertions.assertEquals(".xyz", fileOperations.getExtension(fileXyz));
+		Assertions.assertTrue(fileOperations.getExtension(fileNoExtension).isEmpty());
 	}
 
 	@Test
@@ -103,54 +134,90 @@ class FileOperationsTest {
 
 	@Test
 	void deleteAllFilesInFolder() {
-		//TODO review test deleteAllFilesInFolder
-/*
-		File file1 = Mockito.mock(File.class);
-		when(file1.isFile())
+		File fileNoExtension = Mockito.mock(File.class);
+		when(fileNoExtension.isFile())
 				.thenReturn(true);
-		when(file1.getName())
+		when(fileNoExtension.getName())
 				.thenReturn("file 1");
-		when(file1.delete())
+		when(fileNoExtension.delete())
 				.thenReturn(true);
 
-		File file2 = Mockito.mock(File.class);
-		when(file2.isFile())
+		File fileXyz = Mockito.mock(File.class);
+		when(fileXyz.isFile())
 				.thenReturn(true);
-		when(file2.getName())
+		when(fileXyz.getName())
 				.thenReturn("file 2.xyz");
-		when(file2.delete())
+		when(fileXyz.delete())
 				.thenReturn(true);
 
-		File file3 = Mockito.mock(File.class);
-		when(file3.isFile())
+		File fileHtml1 = Mockito.mock(File.class);
+		when(fileHtml1.isFile())
 				.thenReturn(true);
-		when(file3.getName())
-				.thenReturn("file 3.txt");
-		when(file3.delete())
-				.thenReturn(true);
-
-		File file4 = Mockito.mock(File.class);
-		when(file4.isFile())
-				.thenReturn(true);
-		when(file4.getName())
-				.thenReturn("file 4.txt");
-		when(file4.delete())
+		when(fileHtml1.getName())
+				.thenReturn("file 3.html");
+		when(fileHtml1.delete())
 				.thenReturn(true);
 
-		File sourceFolder = Mockito.mock(File.class);
+		File fileHtml2 = Mockito.mock(File.class);
+		when(fileHtml2.isFile())
+				.thenReturn(true);
+		when(fileHtml2.getName())
+				.thenReturn("file 4.html");
+		when(fileHtml2.delete())
+				.thenReturn(true);
 
-		when(sourceFolder.listFiles())
-				.thenReturn(null);
-		Assertions.assertTrue(fileOperations.deleteAllFilesInFolder(sourceFolder));
-
-		when(sourceFolder.listFiles())
-				.thenReturn(new File[]{file1, file2, file3, file4});
-		Assertions.assertTrue(fileOperations.deleteAllFilesInFolder(sourceFolder));
-
-		when(file3.delete())
+		File fileHtmlNotDeletable = Mockito.mock(File.class);
+		when(fileHtmlNotDeletable.isFile())
+				.thenReturn(true);
+		when(fileHtmlNotDeletable.getName())
+				.thenReturn("file 4.html");
+		when(fileHtmlNotDeletable.delete())
 				.thenReturn(false);
-		Assertions.assertFalse(fileOperations.deleteAllFilesInFolder(sourceFolder));
-*/
+
+		File sourceFolderNotExists = Mockito.mock(File.class);
+		when(sourceFolderNotExists.exists())
+				.thenReturn(false);
+
+		File sourceFolderNotDirectory1 = Mockito.mock(File.class);
+		when(sourceFolderNotDirectory1.exists())
+				.thenReturn(true);
+		when(sourceFolderNotDirectory1.isDirectory())
+				.thenReturn(false);
+
+		File sourceFolderNotDirectory2 = Mockito.mock(File.class);
+		when(sourceFolderNotDirectory2.exists())
+				.thenReturn(true);
+		when(sourceFolderNotDirectory2.isDirectory())
+				.thenReturn(true);
+		when(sourceFolderNotDirectory2.listFiles())
+				.thenReturn(null);
+
+		File sourceFolderEmptyDirectory = Mockito.mock(File.class);
+		when(sourceFolderEmptyDirectory.exists())
+				.thenReturn(true);
+		when(sourceFolderEmptyDirectory.isDirectory())
+				.thenReturn(true);
+		when(sourceFolderEmptyDirectory.listFiles())
+				.thenReturn(new File[0]);
+		
+		File sourceFolderNotEmptyDirectory = Mockito.mock(File.class);
+		when(sourceFolderNotEmptyDirectory.exists())
+				.thenReturn(true);
+		when(sourceFolderNotEmptyDirectory.isDirectory())
+				.thenReturn(true);
+		when(sourceFolderNotEmptyDirectory.listFiles())
+				.thenReturn(new File[]{fileNoExtension, fileXyz, fileHtml1, fileHtml2, fileHtmlNotDeletable});
+
+		Assertions.assertEquals(0, fileOperations.deleteAllFilesInFolder(null, null));
+		Assertions.assertEquals(0, fileOperations.deleteAllFilesInFolder(sourceFolderNotExists, ".html"));
+		Assertions.assertEquals(0, fileOperations.deleteAllFilesInFolder(sourceFolderNotDirectory1, ".html"));
+		Assertions.assertEquals(0, fileOperations.deleteAllFilesInFolder(null, ".html"));
+		Assertions.assertEquals(0, fileOperations.deleteAllFilesInFolder(sourceFolderNotDirectory2, ".html"));
+		Assertions.assertEquals(0, fileOperations.deleteAllFilesInFolder(sourceFolderEmptyDirectory, ".html"));
+		Assertions.assertEquals(2, fileOperations.deleteAllFilesInFolder(sourceFolderNotEmptyDirectory, ".html"));
+		Assertions.assertEquals(1, fileOperations.deleteAllFilesInFolder(sourceFolderNotEmptyDirectory, ""));
+		Assertions.assertEquals(2, fileOperations.deleteAllFilesInFolder(sourceFolderNotEmptyDirectory, ".HTML"));
+		Assertions.assertEquals(1, fileOperations.deleteAllFilesInFolder(sourceFolderNotEmptyDirectory, ".xyz"));
 	}
 
 /*
@@ -203,7 +270,9 @@ class FileOperationsTest {
 
 	@Test
 	void generateFilename() {
-		//TODO test generateFilename
+		Assertions.assertTrue(fileOperations.generateFilename(null).isEmpty());
+		Assertions.assertTrue(fileOperations.generateFilename("  ").isEmpty());
+		Assertions.assertEquals("abc_def_ghi_jkl_mno_pqr_stu", fileOperations.generateFilename("Abc\tdef.gHi:jkl,mno;     pqr stu"));
 	}
 
 	@Test
@@ -217,6 +286,11 @@ class FileOperationsTest {
 
 	@Test
 	void getStaticPath() {
-		//TODO test getStaticPath
+		String resourcePath = fileOperations.getStaticPath();
+
+		Assertions.assertTrue(resourcePath.contains("src") &&
+				resourcePath.contains("main") &&
+				resourcePath.contains("resources") &&
+				resourcePath.contains("static"));
 	}
 }

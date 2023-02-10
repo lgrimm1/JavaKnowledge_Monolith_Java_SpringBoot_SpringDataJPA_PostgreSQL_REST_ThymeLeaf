@@ -7,6 +7,7 @@ import java.util.*;
 class ExtractorsTest {
 
 	Extractors extractors = new Extractors();
+	Formulas formulas = new Formulas();
 	String tabInSpaces = "    ";
 
 	@Test
@@ -47,12 +48,12 @@ class ExtractorsTest {
 
 	@Test
 	void extractTable() {
-		List<String> tableInText = List.of(
+		List<String> originalText = List.of(
 				"||Header 1|Header 2|Header 3||",
 				"||Cell 11|Cell 12|Cell 13||",
 				"||Cell 21|Cell 22|Cell 23||"
 		);
-		List<String> needed = List.of(
+		List<String> expectedHtml = List.of(
 				"  <table>",
 				"    <tr>",
 				"      <th>Header 1</th>",
@@ -71,11 +72,32 @@ class ExtractorsTest {
 				"    </tr>",
 				"  </table>"
 		);
-		Assertions.assertIterableEquals(needed, extractors.extractTable(tableInText, "  "));
+		Assertions.assertIterableEquals(expectedHtml, extractors.extractTable(originalText, "  "));
 	}
 
 	@Test
-	void extractTitle() {
-		//TODO test extractTitle
+	void extractTitleWithEmptyText() {
+		List<String> originalText = new ArrayList<>();
+		Assertions.assertTrue(extractors.extractTitle(originalText, formulas).isEmpty());
+	}
+
+	@Test
+	void extractTitleWithNoLegalTitle() {
+		List<String> originalText = List.of(
+				"abcdef",
+				"",
+				"xyz"
+		);
+		Assertions.assertTrue(extractors.extractTitle(originalText, formulas).isEmpty());
+	}
+
+	@Test
+	void extractTitleWithLegalTitle() {
+		List<String> originalText = List.of(
+				formulas.SUPERLINE,
+				"Title Text",
+				formulas.SUPERLINE
+		);
+		Assertions.assertEquals("Title Text".toUpperCase(), extractors.extractTitle(originalText, formulas));
 	}
 }

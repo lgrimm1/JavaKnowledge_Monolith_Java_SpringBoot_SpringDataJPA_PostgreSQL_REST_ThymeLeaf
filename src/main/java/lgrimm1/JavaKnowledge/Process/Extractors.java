@@ -12,32 +12,27 @@ import java.util.*;
 public class Extractors {
 
 	/**
-	 * <b>Extracts reference components from a line.</b><p>
-	 * The line starts with =>.<p>
-	 * The first ; separates file reference from name reference inside the file, using it is optional.<p>
-	 * @param line	the String of line.
-	 * @return		the String[2] of reference: [0] is HTML-file or HTML-file#name, [1] is link text.
+	 * Extracts reference components from a line.
+	 * The first ; separates file reference from name reference inside the file, using it is optional.
+	 * Returns String[2] where [0] is HTML-file or HTML-file#name, [1] is link text.
 	 */
 	public String extractReference(String line, String tabInSpaces) {
 		line = line.substring(2);
 		String link, linkText;
 		int posHeader = line.indexOf(";");
 		if (posHeader == -1) { //only page, no header
-			link = line + "." + "html";
+			link = line + ".html";
 			linkText = "See: " + line;
 		}
 		else { //page with header
-			link = line.substring(0, posHeader) + "." + "html"+ "#" + line.substring(posHeader + 1);
+			link = line.substring(0, posHeader) + ".html#" + line.substring(posHeader + 1);
 			linkText = "See: " + line.substring(0, posHeader) + " / " + line.substring(posHeader + 1);
 		}
 		return tabInSpaces + "<a href=\"" + link + "\">" + linkText.replaceAll("_", " ") + "</a></br>";
 	}
 
 	/**
-	 * <b>Extracts table components and add it to html.</b>
-	 * @param tableText		the List&lt;String&gt; of table rows.
-	 * @param tabInSpaces 	the String of spaces replacing a TAB.
-	 * @return				the List&lt;String&gt; of html table
+	 * Extracts table components and add it to html.
 	 */
 	public List<String> extractTable(List<String> tableText,
 									String tabInSpaces) {
@@ -61,9 +56,7 @@ public class Extractors {
 	}
 
 	/**
-	 * <b>Extracts cells from a String, based upon the | separator character.</b>
-	 * @param s	the String of line.
-	 * @return	the ArrayList&lt;String&gt; of cells.
+	 * Extracts cells from a String, based upon the | separator character.
 	 */
 	private ArrayList<String> extractCells(String s) {
 		ArrayList<String> cells = new ArrayList<>();
@@ -83,7 +76,11 @@ public class Extractors {
 	 * Returns empty string if title is not valid.
 	 */
 	public String extractTitle(List<String> txt, Formulas formulas) {
-		if (txt != null && txt.size() > 2 && txt.get(0).equals(formulas.SUPERLINE) && txt.get(2).equals(formulas.SUPERLINE) && !txt.get(1).isBlank()) {
+		if (txt != null &&
+				txt.size() > 2 &&
+				txt.get(0).equals(formulas.SUPERLINE) &&
+				txt.get(2).equals(formulas.SUPERLINE) &&
+				!txt.get(1).isBlank()) {
 			return txt.get(1).trim().toUpperCase();
 		}
 		return "";
