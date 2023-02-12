@@ -49,11 +49,11 @@ Differences between List and Set:
     a. List can include duplicated elements
     b. List keeps order of its elements
 
-=>Collection
-=>ArrayList
-=>LinkedList
-=>Vector
-=>Stack
-=>Set
-=>Iterator
-=>ListIterator
+=>COLLECTION
+=>ARRAYLIST
+=>LINKEDLIST
+=>VECTOR
+=>STACK
+=>SET
+=>ITERATOR
+=>LISTITERATOR

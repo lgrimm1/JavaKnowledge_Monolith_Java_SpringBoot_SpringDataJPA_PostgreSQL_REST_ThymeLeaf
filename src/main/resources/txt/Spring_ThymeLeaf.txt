@@ -1,5 +1,5 @@
 =================================================================================
-SPRING.THYMELEAF
+SPRING THYMELEAF
 =================================================================================
 1. GENERALLY
 2. SETTING UP
@@ -7,10 +7,10 @@ SPRING.THYMELEAF
 4. FORMS
 5. FORM EXAMPLES
 
-=>Web_application
-=>Spring_Boot
-=>Spring_Boot_controller
-=>Serialization
+=>WEB APPLICATION
+=>SPRING BOOT
+=>SPRING BOOT CONTROLLER
+=>SERIALIZATION
 
 =================================================================================
 1. GENERALLY
@@ -21,7 +21,7 @@ Basically, the frontend sends requests to the backend on which the backend sends
 The answers are data which can be rendered into HTML, PHP etc. pages.
 Above the pages, frontend scripts can form an other layer with which data manipulation, visual elements etc. can be managed, also the data sent back to the server.
 
-The Spring.ThymeLeaf is an extension of Spring.Boot which enables using automated templates of frontend for backend communication in model&view mode.
+The Spring ThymeLeaf is an extension of Spring Boot which enables using automated templates of frontend for backend communication in model&view mode.
 A template is an JSON/HTML/XML/etc. page into which the answer is injected via defining HTML variables and e.g. Javascript codes.
 
 =================================================================================
@@ -39,7 +39,7 @@ Then inside, add the next (it is possible to define version tag with all depende
 			<artifactId>spring-boot-starter-thymeleaf</artifactId>
 		</dependency>
 
-Spring.ThymeLeaf will not work without dependencies of Spring.Boot framework since it is an extension of the framework. See the Setting up section there.
+Spring ThymeLeaf will not work without dependencies of Spring Boot framework since it is an extension of the framework. See the Setting up section there.
 
 Alternatively, use Spring Initializr to generate a new empty project with added ThymeLeaf.
 
@@ -49,10 +49,10 @@ Alternatively, use Spring Initializr to generate a new empty project with added 
 The server answer (if there is any) sends message to the frontend via filling out a template and sending that template.
 For a template, HTML, JSON etc. files can be created.
 The templates are placed under the src/main/resources/templates folder.
-In the template, in case the ThymeLeaf is referenced (see html tag), within almost all HTML tags the th parameters can be used which refers to ThymeLeaf. Such parameters are for handling data accessed through Spring.Boot framework via ThymeLeaf. In case no such data is accessed in a tag, the th parameters within should not be used.
+In the template, in case the ThymeLeaf is referenced (see html tag), within almost all HTML tags the th parameters can be used which refers to ThymeLeaf. Such parameters are for handling data accessed through Spring Boot framework via ThymeLeaf. In case no such data is accessed in a tag, the th parameters within should not be used.
 A template can be created in design-time and in run-time as well, latter before reaching it via GET, POST etc. query.
 Any variable can be sent in a template, ThymeLeaf recognizes all wrapper classes and theoretically all Collection types. It also can handle classes with subclasses. In order to send a primitive type to a template, convert it to wrapper class. Enums can be used only with tags which are designed to handle limited values e.g. radio input (see later).
-The HTML variable is called attribute. Its name can be different from Java variable name, the connection is made with using Model class in Spring.Boot/ThymeLeaf, see later.
+The HTML variable is called attribute. Its name can be different from Java variable name, the connection is made with using Model class in Spring Boot/ThymeLeaf, see later.
 The attribute names are case-sensitive.
 In case the return value(s) are needed, must use form(s) on the page, otherwise the template serves only as an output.
 

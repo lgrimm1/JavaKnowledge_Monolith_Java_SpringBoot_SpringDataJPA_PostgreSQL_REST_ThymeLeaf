@@ -8,12 +8,12 @@ The used annotation can be accessed in run-time through Reflection.
 2. ANNOTATIONS BY PLACING
 3. ANNOTATIONS BY FUNCTION
 
-=>Classes
-=>Methods
-=>Variables
-=>Type_casting_and_conversion
-=>Inheritance
-=>Methods;9. VARIABLE NUMBER OF ARGUMENTS (VARARGS)
+=>CLASSES
+=>METHODS
+=>VARIABLES
+=>TYPE CASTING AND CONVERSION
+=>INHERITANCE
+=>METHODS;9. VARIABLE NUMBER OF ARGUMENTS (VARARGS)
 
 =================================================================================
 1. ANNOTATIONS BY NUMBER OF PARAMETERS

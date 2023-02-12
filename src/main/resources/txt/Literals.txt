@@ -2,9 +2,10 @@
 LITERALS
 =================================================================================
 
-=>Variables
-=>Primitive_data_types
-=>Equality
+=>VARIABLES
+=>PRIMITIVE DATA TYPES
+=>EQUALITY
+=>RANDOM NUMBERS
 
 Literals are constants but no variables.
 For further use we render them to variables or pass them to methods.

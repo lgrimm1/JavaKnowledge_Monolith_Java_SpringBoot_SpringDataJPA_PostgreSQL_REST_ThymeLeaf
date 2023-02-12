@@ -24,8 +24,8 @@ Other typical version is when two layers are tested together and connections wit
 At the point of examination, use an assertion (Java core) or the Assertions class of JUnit.
 In case an independent unit test would not run without invoking other units in the process, best practice is to use the Mockito framework to emulate working of the other unit.
 
-=>Assertion
-=>JUnit
-=>Mockito
-=>Web_application
-=>Spring_Boot_tests
+=>ASSERTION
+=>JUNIT
+=>MOCKITO
+=>WEB APPLICATION
+=>SPRING BOOT TESTS

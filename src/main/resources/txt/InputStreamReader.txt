@@ -61,10 +61,10 @@ InputStreamReader inputStreamReader2 = new InputStreamReader(fileInputStream, Ch
 String s = inputStreamReader1.getEncoding(); //"Cp1252"
 s = inputStreamReader2.getEncoding(); //"UTF8"
 
-=>Stream
-=>Reader
-=>FileReader
-=>InputStream
-=>FileInputStream
-=>Charset
-=>Statements;15. TRY-WITH-RESOURCES STATEMENT
+=>STREAM
+=>READER
+=>FILEREADER
+=>INPUTSTREAM
+=>FILEINPUTSTREAM
+=>CHARSET
+=>STATEMENTS;15. TRY-WITH-RESOURCES STATEMENT

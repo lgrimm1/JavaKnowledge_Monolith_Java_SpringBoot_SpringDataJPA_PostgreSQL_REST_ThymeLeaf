@@ -2,7 +2,7 @@
 LISTITERATOR
 =================================================================================
 Interface which extends the Iterator interface.
-Especially good for iterating through a List and its implementing ArrayList, LinkedList, Vector or Stack.
+Especially good for iterating through a List, and it is implementing ArrayList, LinkedList, Vector or Stack.
 Provides two-directional movements through the elements.
 The List interface (and all its implementing classes) provides a listIterator() method to access its functionality.
 
@@ -30,6 +30,6 @@ liter.add(element); //inserts a new element on the position the ListIterator sta
 In case of LinkedList, the ListIterator will handle the reference fields within the node.
 Some of these methods throw exception in case of using them at the edges of the List e.g. calling previous() on the 1st element.
 
-=>Iterator
-=>List
-=>LinkedList
+=>ITERATOR
+=>LIST
+=>LINKEDLIST

@@ -1,5 +1,5 @@
 =================================================================================
-CHARSET
+LOCALE
 =================================================================================
 Represents a specific geographical, political, or cultural region.
 An operation is locale-sensitive in case requires a Locale to perform its task, e.g. optionally the Scanner.
@@ -72,6 +72,6 @@ Some methods of NumberFormat are below.
 ||NumberFormat.getCurrencyInstance(Locale locale)|returns a NumberFormat instance for currencies, based on given locale||
 ||NumberFormat.getPercentInstance(Locale locale)|returns a NumberFormat instance for percentages, based on given locale||
 
-=>ZonedDateTime
-=>Charset
-=>Scanner
+=>DATE, TIME, TIMEZONE, DURATION
+=>CHARSET
+=>SCANNER

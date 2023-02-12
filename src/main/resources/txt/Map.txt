@@ -48,12 +48,12 @@ keyType key;
 valueType value;
 hm.replaceAll((key, value) -> value + 3);
 
-=>HashMap
-=>EnumMap
-=>LinkedHashMap
-=>WeakHashMap
-=>TreeMap
-=>SortedMap
-=>NavigableMap
-=>ConcurrentMap
-=>Lambda_expressions
+=>HASHMAP
+=>ENUMMAP
+=>LINKEDHASHMAP
+=>WEAKHASHMAP
+=>TREEMAP
+=>SORTEDMAP
+=>NAVIGABLEMAP
+=>CONCURRENTMAP
+=>LAMBDA EXPRESSIONS

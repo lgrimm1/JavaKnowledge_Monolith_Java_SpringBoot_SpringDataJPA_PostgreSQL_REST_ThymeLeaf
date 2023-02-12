@@ -14,14 +14,15 @@ INHERITANCE
 11. GENERIC ALGORITHMS
 12. GENERICS CLASSES
 
-=>Access_modifiers
-=>Classes
-=>Methods
-=>Methods;9. VARIABLE NUMBER OF ARGUMENTS (VARARGS)
-=>Annotations
-=>Collection
-=>Lambda_expressions
-=>Classes;10. GENERICS CLASSES
+=>ACCESS MODIFIERS
+=>CLASSES
+=>METHODS
+=>METHODS;9. VARIABLE NUMBER OF ARGUMENTS (VARARGS)
+=>ANNOTATIONS
+=>COLLECTION
+=>LAMBDA EXPRESSIONS
+=>CLASSES;10. GENERICS CLASSES
+=>REFLECTION
 
 =================================================================================
 1. INHERITANCE

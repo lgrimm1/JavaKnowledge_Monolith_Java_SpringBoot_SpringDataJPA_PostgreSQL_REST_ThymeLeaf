@@ -38,8 +38,8 @@ String OS = System.getProperty("os.name"); //Windows 10
 System.getProperty("os.version");
 END OF EXAMPLE
 
-=>Standard_input_and_output
-=>Array
-=>GarbageCollector
-=>InputStream
-=>PrintStream
+=>STANDARD INPUT AND OUTPUT
+=>ARRAY
+=>GARBAGE COLLECTOR
+=>INPUTSTREAM
+=>PRINTSTREAM

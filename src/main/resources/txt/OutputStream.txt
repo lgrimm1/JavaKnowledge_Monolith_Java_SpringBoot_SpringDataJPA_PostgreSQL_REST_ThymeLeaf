@@ -41,12 +41,12 @@ try (OutputStream outputStream = new FileOutputStream(fileName)) {
 }
 catch (Exception e) {...} //in case the destination was not accessible
 
-=>Stream
-=>FileOutputStream
-=>ByteArrayOutputStream
-=>ObjectOutputStream
-=>StringBuilder
-=>BufferedOutputStream
-=>PrintStream
-=>File_operations
-=>Statements;15. TRY-WITH-RESOURCES STATEMENT
+=>STREAM
+=>FILEOUTPUTSTREAM
+=>BYTEARRAYOUTPUTSTREAM
+=>OBJECTOUTPUTSTREAM
+=>STRINGBUILDER
+=>BUFFEREDOUTPUTSTREAM
+=>PRINTSTREAM
+=>FILE OPERATIONS
+=>STATEMENTS;15. TRY-WITH-RESOURCES STATEMENT

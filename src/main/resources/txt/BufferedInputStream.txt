@@ -39,6 +39,6 @@ try {
 catch (Exception e) {...}
 END OF EXAMPLE
 
-=>Stream
-=>InputStream
-=>FileInputStream
+=>STREAM
+=>INPUTSTREAM
+=>FILEINPUTSTREAM

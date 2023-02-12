@@ -1,20 +1,20 @@
 =================================================================================
-SPRING.BOOT MAIN CLASS
+SPRING BOOT MAIN CLASS
 =================================================================================
 Under the src/main/java/<package> folder, the Main.java can be found or must be placed. Of course, can have different name in which case all Main references should be re-written to that name, please see below.
 This class contains the web application launcher.
-The @SpringBootApplication annotation marks that this is the launcher class. This annotation summarizes the next annotations, courtesy of Spring.Boot:
+The @SpringBootApplication annotation marks that this is the launcher class. This annotation summarizes the next annotations, courtesy of Spring Boot:
     a. @Configuration
     b. @EnableAutoConfiguration
     c. @EnableWebMvc
     d. @ComponentScan
 
 The @ComponentScan part:
-    a. instructs Spring.Boot that find and instantiate all classes marked with @Bean or @Component or @Repository or @Service or @Controller or @RestController annotation
+    a. instructs Spring Boot that find and instantiate all classes marked with @Bean or @Component or @Repository or @Service or @Controller or @RestController annotation
     b. in case the @Autowired annotation is used for class dependency injection (see later), the dependent class will be instantiated as singleton class
     b. in case the @Scope(value = "prototype") annotation is used for class dependency injection (see later), the dependent class will not be instantiated as singleton class
 
-The @EnableJpaRepositories annotation configures JPA, also instructs the Spring that the repository classes can be managed by Spring.Data JPA if the repository is an interface and extends JpaRepository.
+The @EnableJpaRepositories annotation configures JPA, also instructs the Spring that the repository classes can be managed by Spring Data JPA if the repository is an interface and extends JpaRepository.
 In case of in-memory storage (no database) solution, this annotation can be left out.
 
 Optional parameters of @EnableJpaRepositories annotation:
@@ -42,7 +42,7 @@ public class Main {
 }
 
 The application context means what objects and variables are created at a certain point of the program flow.
-In case of Spring.Boot, the context means the class and object structure existing when the flow reaches the SpringApplication.run(). It is possible to catch the context by storing the returned value of this method.
+In case of Spring Boot, the context means the class and object structure existing when the flow reaches the SpringApplication.run(). It is possible to catch the context by storing the returned value of this method.
 In Spring terminology all objects are beans (components).
 
 EXAMPLE FOR CATCHING CONTEXT:
@@ -66,5 +66,5 @@ In case the class dependency injection follows Spring best practices, any getBea
 In case a class is marked with @Scope(value = "prototype") annotation as well, Spring will not create singleton from that class but keep it as prototype.
 That is, when the web app is launched, an object will be created from it normally, but for every getBean() method, other instances will be made from the referred class.
 
-=>Spring_Boot
-=>Spring_Boot_tests;1. MAIN CLASS TEST
+=>SPRING BOOT
+=>SPRING BOOT TESTS;1. MAIN CLASS TEST

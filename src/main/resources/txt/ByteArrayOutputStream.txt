@@ -40,5 +40,5 @@ try {
 catch (Exception e) {...}
 END OF EXAMPLE
 
-=>Stream
-=>OutputStream
+=>STREAM
+=>OUTPUTSTREAM

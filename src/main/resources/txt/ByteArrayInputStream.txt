@@ -35,5 +35,5 @@ try {
 }
 catch (Exception e) {...}
 
-=>Stream
-=>InputStream
+=>STREAM
+=>INPUTSTREAM

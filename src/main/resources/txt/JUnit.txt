@@ -199,8 +199,8 @@ public class AppTest {
 }
 END OF EXAMPLE
 
-=>Tests
-=>Assertion
-=>Mockito
-=>Spring_Boot_tests
-=>Comparator
+=>TESTS
+=>ASSERTION
+=>MOCKITO
+=>SPRING BOOT TESTS
+=>COMPARATOR

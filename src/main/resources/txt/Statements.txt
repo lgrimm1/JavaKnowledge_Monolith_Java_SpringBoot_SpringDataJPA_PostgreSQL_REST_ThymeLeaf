@@ -19,14 +19,14 @@ STATEMENTS
 16. ENHANCED TRY-WITH-RESOURCES STATEMENT
 17. CHAINED STATEMENTS
 
-=>Break_and_Continue
-=>StringBuilder
-=>Stream
-=>String
-=>Variables
-=>Iteration
-=>Keywords_and_identifiers
-=>Operators
+=>BREAK AND CONTINUE STATEMENTS
+=>STRINGBUILDER
+=>STREAM
+=>STRING
+=>VARIABLES
+=>ITERATION
+=>KEYWORDS AND IDENTIFIERS
+=>OPERATORS
 
 =================================================================================
 1. GROUP OF STATEMENTS

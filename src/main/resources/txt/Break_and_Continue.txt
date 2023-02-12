@@ -6,8 +6,8 @@ BREAK AND CONTINUE STATEMENTS
 3. CONTINUE STATEMENT
 4. LABELED CONTINUE STATEMENT
 
-=>Statements
-=>Iteration
+=>STATEMENTS
+=>ITERATION
 
 =================================================================================
 1. BREAK STATEMENT

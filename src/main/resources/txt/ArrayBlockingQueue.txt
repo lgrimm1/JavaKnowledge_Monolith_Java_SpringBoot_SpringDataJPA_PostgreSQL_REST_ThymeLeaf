@@ -13,5 +13,5 @@ ArrayBlockingQueue<elementType> abq = new ArrayBlockingQueue<>(capacity);
 
 All methods from BlockingQueue is accessible.
 
-=>BlockingQueue
-=>Iterator
+=>BLOCKINGQUEUE
+=>ITERATOR

@@ -63,4 +63,4 @@ public record RecordName (FieldType1 fieldName1, FieldType2 fieldName2) {
 FieldType3 var3 = RecordName.fieldName3;
 returnType4 var4 = RecordName.methodName4(...);
 
-=>Classes;6. IMMUTABILITY
+=>CLASSES;6. IMMUTABILITY

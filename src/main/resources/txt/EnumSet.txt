@@ -32,8 +32,8 @@ Differences between EnumSet and EnumMap:
     a. EnumSet is stored as a sequence of bits, EnumMap is stored as arrays
     b. EnumSet is created with its methods e.g. allOf(), noneOf(), range(), of(), EnumMap is created with its constructor
 
-=>EnumMap
-=>Set
-=>Collection
-=>Classes;9. ENUMERATION CLASSES
-=>Serialization
+=>ENUMMAP
+=>SET
+=>COLLECTION
+=>CLASSES;9. ENUMERATION CLASSES
+=>SERIALIZATION

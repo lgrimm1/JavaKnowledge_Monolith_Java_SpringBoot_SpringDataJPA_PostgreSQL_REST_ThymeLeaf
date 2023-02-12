@@ -40,7 +40,7 @@ Iterator<elementType> iter = al.iterator();
 iter.forEachRemaining((value) -> System.out.print(value + ", ")); //roughly prints all remaining elements via passing a lambda expression
 END OF EXAMPLE
 
-=>Collection
-=>ListIterator
-=>List
-=>Lambda_expressions
+=>COLLECTION
+=>LISTITERATOR
+=>LIST
+=>LAMBDA EXPRESSIONS

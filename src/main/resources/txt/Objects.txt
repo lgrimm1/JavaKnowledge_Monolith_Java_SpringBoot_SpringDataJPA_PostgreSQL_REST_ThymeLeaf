@@ -2,9 +2,9 @@
 OBJECTS
 =================================================================================
 
-=>Variables
-=>Equality
-=>Classes
+=>VARIABLES
+=>EQUALITY
+=>CLASSES
 
 From classes many instances (objects) can be made.
 

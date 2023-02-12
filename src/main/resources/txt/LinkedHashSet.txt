@@ -23,7 +23,7 @@ Because the element adding order is stored, e.g. the toArray(), toString(), iter
 ||clone()|creates a copy||
 ||isEmpty()|true if no elements||
 
-=>Set
-=>Collection
-=>HashSet
-=>LinkedList
+=>SET
+=>COLLECTION
+=>HASHSET
+=>LINKEDLIST

@@ -1,7 +1,7 @@
 =================================================================================
-SPRING.BOOT CONFIGURATION
+SPRING BOOT CONFIGURATION
 =================================================================================
-This class is used to create pre-configuration of the Spring.Boot application for development purposes.
+This class is used to create pre-configuration of the Spring Boot application for development purposes.
 Useful when need e.g. records in the database at startup.
 
 The application classes are rendered into graph hierarchy by their package and class dependency injections. The configuration class applies on the package its defined and below in the hierarchy.
@@ -32,4 +32,4 @@ public class Config {
 	}
 }
 
-=>Spring_Boot_entity
+=>SPRING BOOT ENTITY

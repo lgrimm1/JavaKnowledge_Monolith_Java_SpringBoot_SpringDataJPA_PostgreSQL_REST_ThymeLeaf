@@ -1,5 +1,5 @@
 =================================================================================
-SPRING.BOOT VALIDATION
+SPRING BOOT VALIDATION
 =================================================================================
 1. GENERALLY
 2. SETTING UP
@@ -11,20 +11,20 @@ SPRING.BOOT VALIDATION
 8. STANDARD VALIDATION EXAMPLES
 9. CUSTOM VALIDATION ANNOTATION
 
-=>Spring_Boot
-=>Spring_Boot_entity_validation
-=>Spring_Boot_entity
-=>Spring_Boot_controller
-=>Spring_Boot_controller_tests
+=>SPRING BOOT
+=>SPRING BOOT ENTITY VALIDATION
+=>SPRING BOOT ENTITY
+=>SPRING BOOT CONTROLLER
+=>SPRING BOOT CONTROLLER TESTS
 
 =================================================================================
 1. GENERALLY
 =================================================================================
-The entity object of Spring.Boot manifests an element of the repository. In order to use an entity together with Spring.Data, Spring will use the default constructor of the entity class which means no pre-checking of field values. That said, all data checks should be coded in the Service layer beforehand, e.g. via applying to dedicated validation helper methods.
+The entity object of Spring Boot manifests an element of the repository. In order to use an entity together with Spring Data, Spring will use the default constructor of the entity class which means no pre-checking of field values. That said, all data checks should be coded in the Service layer beforehand, e.g. via applying to dedicated validation helper methods.
 For keeping data validation with the entity and integrate the validation into the Repository, Service or Communication layers, the Spring Validation extension is used.
 The extension contains JSR303 (this will be standard in Java core but Spring implemented it beforehand) and Hibernate Validator (implemented for Spring).
 Basically, before an entity object is created, the data will be checked and if not qualify, exception is raised.
-Failed validation can be handled via handler method (different answers for different errors) or being totally automatically handled by Spring.Validation.
+Failed validation can be handled via handler method (different answers for different errors) or being totally automatically handled by Spring Validation.
 Validation can be applied to all Spring beans.
 
 Validation declared on fields of a class creates a validation layer above the class. That said, belongs to that class entirely as a condition set.
@@ -53,7 +53,7 @@ Then inside, add the next (it is possible to define version tag with all depende
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-validation</artifactId>
 		</dependency>
-Spring.Validation will not work without dependencies of Spring.Boot framework since it is an extension of the framework. See the Setting up section there.
+Spring Validation will not work without dependencies of Spring Boot framework since it is an extension of the framework. See the Setting up section there.
 
 Alternatively, use Spring Initializr to create a ready-to-use empty project with Validation added.
 
@@ -64,7 +64,7 @@ Checking the data when an instance is created from the entity class and filled w
     a. the constructor uses default values when data is not appropriate (in case of JPA which uses default constructor, this is not a good way, and frontend will not receive error)
     b. the service manipulates the object values (will not be visible in the entity class, frontend can receive error if coded that way)
     c. the controller manipulates data (and sends error to frontend in return value, coding is still needed)
-    c. valid data is defined in entity class, the Spring.Boot will check validity at controller endpoint (automatically sent error if needed without entering to controller method with the flow)
+    c. valid data is defined in entity class, the Spring Boot will check validity at controller endpoint (automatically sent error if needed without entering to controller method with the flow)
 
 For data validity, automatism is preferred and prevents unnecessary coding (best practice).
 Automatism is reached by using validation annotations.

@@ -28,9 +28,9 @@ Vector<elementType> vector = new Vector<>(); //declaration and memory allocation
 ||toString()|converts the Vector to a String||
 ||contains()|checks whether the Vector contains the given value||
 
-=>List
-=>Collection
-=>ArrayList
-=>Stack
-=>Iterator
-=>ListIterator
+=>LIST
+=>COLLECTION
+=>ARRAYLIST
+=>STACK
+=>ITERATOR
+=>LISTITERATOR

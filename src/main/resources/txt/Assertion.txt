@@ -4,11 +4,11 @@ ASSERTION
 1. ASSERTIONS
 2. USAGE TYPES
 
-=>Tests
-=>Classes
-=>Packages
-=>Logging
-=>JUnit
+=>TESTS
+=>CLASSES
+=>PACKAGES
+=>LOGGING
+=>JUNIT
 
 =================================================================================
 1. ASSERTIONS

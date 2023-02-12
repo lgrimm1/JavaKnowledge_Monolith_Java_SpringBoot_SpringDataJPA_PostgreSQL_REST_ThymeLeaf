@@ -6,12 +6,12 @@ REFLECTION
 3. THE FIELD CLASS
 4. THE CONSTRUCTOR CLASS
 
-=>Classes
-=>Methods
-=>Inheritance
-=>Array
-=>Iteration
-=>Exceptions
+=>CLASSES
+=>METHODS
+=>INHERITANCE
+=>ARRAY
+=>ITERATION
+=>EXCEPTIONS
 
 =================================================================================
 1. THE CLASS CLASS

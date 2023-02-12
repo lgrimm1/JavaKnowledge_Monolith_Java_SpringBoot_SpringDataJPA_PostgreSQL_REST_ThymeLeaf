@@ -12,14 +12,15 @@ METHODS
 9. VARIABLE NUMBER OF ARGUMENTS (VARARGS)
 10. METHOD ORGANIZING
 
-=>Access_modifiers
-=>Classes
-=>Inheritance
-=>Primitive_data_types
-=>Objects
-=>Classes;10. GENERICS CLASSES
-=>Annotations
-=>Classes;3. NEW METHOD, METHOD OVERRIDE, METHOD OVERLOAD
+=>ACCESS MODIFIERS
+=>CLASSES
+=>INHERITANCE
+=>PRIMITIVE DATA TYPES
+=>OBJECTS
+=>CLASSES;10. GENERICS CLASSES
+=>ANNOTATIONS
+=>CLASSES;3. NEW METHOD, METHOD OVERRIDE, METHOD OVERLOAD
+=>REFLECTION
 
 =================================================================================
 1. DECLARATION

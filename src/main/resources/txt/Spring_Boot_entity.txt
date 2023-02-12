@@ -1,5 +1,5 @@
 =================================================================================
-SPRING.BOOT ENTITY
+SPRING BOOT ENTITY
 =================================================================================
 Before any development of the repository class, an entity must be defined.
 This class forms the basic element type which will be sent and received to-from the in-memory container or the database by the repository class, and processed by the service class.
@@ -10,13 +10,13 @@ It is advised to express the toString() method of the entity as well.
 1. NO-JPA ENTITY CLASS
 2. JPA ENTITY CLASS
 
-=>Spring_Boot
-=>Spring_Boot_Validation
-=>Serialization
-=>PostgreSQL
-=>Spring_Boot_tests;2. ENTITY TEST
-=>Spring_Boot_controller#9. IMPLEMENT REST CRUD API
-=>Spring_Boot_configuration
+=>SPRING BOOT
+=>SPRING BOOT VALIDATION
+=>SERIALIZATION
+=>POSTGRESQL
+=>SPRING BOOT TESTS;2. ENTITY TEST
+=>SPRING BOOT CONTROLLER;9. IMPLEMENT REST CRUD API
+=>SPRING BOOT CONFIGURATION
 
 =================================================================================
 1. NO-JPA ENTITY CLASS
@@ -76,7 +76,7 @@ The db-name is name of the database, username is the user which we want to use t
 The default username under postgreSQL is postgres.
 
 The entity will represent a row in a table, also carries the backend and database behaviour connected to the correspondent table via annotations.
-The Spring.Data framework (especially the database dependency) will handle the conversion processes from-to the database.
+The Spring Data framework (especially the database dependency) will handle the conversion processes from-to the database.
 
 The JPA software development aims for the backend. The database itself is not part of the backend which means the new database is needed for software development only.
 All application launch starts with that Hibernate in the background fills the database with tables and other elements.
@@ -94,7 +94,7 @@ The class must be public and must not be final in order to let Spring accessing 
 The entity class is marked with Spring (Hibernate) class-level annotations.
 
 ||Annotation|Description||
-||@Entity|marks that the class is a Spring.Data entity||
+||@Entity|marks that the class is a Spring Data entity||
 ||@Table|defines the corresponding table name in the database in case the two are not the same (most cases)||
 ||@NamedQuery|optional; defines a domain-level query on the entity and renders it to a query method signature from within the domain||
 
@@ -178,7 +178,7 @@ If needed, transient fields can be connected to table columns as well, by using 
 
 2.3. METHODS
 ---------------------------------------------------------------------------------
-The default constructor is needed by the Spring.JPA. By defining it, the class will not be immutable by definition.
+The default constructor is needed by the Spring JPA. By defining it, the class will not be immutable by definition.
 Custom constructors (which serve as collective setter method as well) is optional.
 When implementing CRUD API, two additional constructors are needed: one with all fields except the ID, and one with all fields.
 In case of using JPA, the entity will need all getters and setters in order to have access to them. However, with this the entity will not be immutable by definition.

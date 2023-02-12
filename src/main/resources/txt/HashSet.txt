@@ -8,10 +8,11 @@ HashSet is not synchronized, after modifying by a thread, need external synchron
 1. GENERALLY
 2. CONVERT TO ARRAY AND BACK
 
-=>Set
-=>Collection
-=>TreeSet
-=>Stream
+=>SET
+=>LINKEDHASHSET
+=>COLLECTION
+=>TREESET
+=>STREAM
 
 =================================================================================
 1. GENERALLY

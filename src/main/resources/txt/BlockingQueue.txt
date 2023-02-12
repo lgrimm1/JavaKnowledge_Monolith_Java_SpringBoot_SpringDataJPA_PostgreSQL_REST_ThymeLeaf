@@ -66,8 +66,8 @@ try {
 catch {...} //in case take() is interrupted
 END OF EXAMPLE
 
-=>Queue
-=>ArrayBlockingQueue
-=>LinkedBlockingQueue
-=>Iterator
-=>Collection
+=>QUEUE
+=>ARRAYBLOCKINGQUEUE
+=>LINKEDBLOCKINGQUEUE
+=>ITERATOR
+=>COLLECTION

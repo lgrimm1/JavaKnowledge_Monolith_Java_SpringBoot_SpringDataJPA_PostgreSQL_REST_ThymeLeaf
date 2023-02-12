@@ -5,9 +5,9 @@ Enables accessing package classes and interfaces, furthermore fields and methods
 1. NORMAL IMPORT
 2. STATIC IMPORT
 
-=>Classes
-=>Methods
-=>Access_modifiers
+=>CLASSES
+=>METHODS
+=>ACCESS MODIFIERS
 
 =================================================================================
 1. NORMAL IMPORT

@@ -2,12 +2,12 @@
 PRIMITIVE DATA TYPES
 =================================================================================
 
-=>Literals
-=>Variables
-=>Equality
-=>Wrapper_classes
-=>String
-=>Type_casting_and_conversion
+=>LITERALS
+=>VARIABLES
+=>EQUALITY
+=>WRAPPER CLASSES
+=>STRING
+=>TYPE CASTING AND CONVERSION
 
 The Java is a statically typized language, so all variables must be declared before use.
 Referenced types are e.g. String s = "Java"; where s is an object of String class.

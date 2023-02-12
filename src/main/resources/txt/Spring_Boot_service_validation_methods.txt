@@ -1,5 +1,5 @@
 =================================================================================
-SPRING.BOOT SERVICE VALIDATION METHODS
+SPRING BOOT SERVICE VALIDATION METHODS
 =================================================================================
 In order to have validation and for validation fails error messages, conditions and exceptions will be used.
 Basically, for exceptions, HTTP500 error code is preferred.
@@ -60,7 +60,7 @@ public SeriesEntity getEntityById(long id) {
 	return optionalSeriesEntity.get();
 }
 
-=>Spring_Boot
-=>Spring_Boot_entity_validation
-=>Spring_Boot_entity
-=>Spring_Boot_service
+=>SPRING BOOT
+=>SPRING BOOT ENTITY VALIDATION
+=>SPRING BOOT ENTITY
+=>SPRING BOOT SERVICE

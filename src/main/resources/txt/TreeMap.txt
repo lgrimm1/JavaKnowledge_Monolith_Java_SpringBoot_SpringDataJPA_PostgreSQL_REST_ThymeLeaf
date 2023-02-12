@@ -61,8 +61,8 @@ int size = tm.size(); //4
 tm.clear(); //{}
 END OF EXAMPLE
 
-=>Map
-=>SortedMap
-=>NavigableMap
-=>Comparator
-=>Lambda_expressions
+=>MAP
+=>SORTEDMAP
+=>NAVIGABLEMAP
+=>COMPARATOR
+=>LAMBDA EXPRESSIONS

@@ -4,10 +4,10 @@ PACKAGES
 1. ORGANIZING PACKAGES
 2. UNNAMED PACKAGES
 
-=>Import
-=>Classes
-=>Methods
-=>Inheritance
+=>IMPORT
+=>CLASSES
+=>METHODS
+=>INHERITANCE
 
 =================================================================================
 1. ORGANIZING PACKAGES

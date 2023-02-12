@@ -30,9 +30,9 @@ Because the element adding order is stored, e.g. the toArray(), toString(), iter
 ||pollFirst()|returns and removes the 1st element||
 ||pollLast()|returns and removes the last element||
 
-=>Set
-=>Collection
-=>SortedSet
-=>TreeSet
-=>Iterator
+=>SET
+=>COLLECTION
+=>SORTEDSET
+=>TREESET
+=>ITERATOR
 

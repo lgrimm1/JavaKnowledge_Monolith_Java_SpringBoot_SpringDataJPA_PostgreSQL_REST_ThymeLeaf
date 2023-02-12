@@ -40,6 +40,6 @@ try (StringReader stringReader = new StringReader(string)) {
 }
 catch (Exception e) {...} //in case the source was not accessible
 
-=>Stream
-=>Reader
-=>Statements;15. TRY-WITH-RESOURCES STATEMENT
+=>STREAM
+=>READER
+=>STATEMENTS;15. TRY-WITH-RESOURCES STATEMENT

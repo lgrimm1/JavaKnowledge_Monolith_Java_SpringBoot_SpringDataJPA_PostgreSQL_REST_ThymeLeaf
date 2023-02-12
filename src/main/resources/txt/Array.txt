@@ -11,17 +11,17 @@ ARRAY
 8. CONVERT TO HASHSET AND BACK
 9. COMPLEX ELEMENT TYPE
 
-=>Variables
-=>Primitive_data_types
-=>Objects
-=>Iteration
-=>ArrayList
-=>Comparator
-=>Collection
-=>StringBuilder
-=>HashSet
-=>Stream
-=>Matrix
+=>VARIABLES
+=>PRIMITIVE DATA TYPES
+=>OBJECTS
+=>ITERATION
+=>ARRAYLIST
+=>COMPARATOR
+=>COLLECTION
+=>STRINGBUILDER
+=>HASHSET
+=>STREAM
+=>MATRIX
 
 =================================================================================
 1. ARRAY DIMENSIONS, TYPES, ITERATING

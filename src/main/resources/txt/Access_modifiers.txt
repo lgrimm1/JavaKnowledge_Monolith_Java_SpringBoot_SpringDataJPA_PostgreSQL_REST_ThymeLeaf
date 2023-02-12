@@ -5,11 +5,11 @@ ACCESS MODIFIERS
 2. STATIC
 3. FINAL
 
-=>Classes
-=>Methods
-=>Variables
-=>Inheritance
-=>Import
+=>CLASSES
+=>METHODS
+=>VARIABLES
+=>INHERITANCE
+=>IMPORT
 
 =================================================================================
 1. PUBLIC, PROTECTED, DEFAULT, PRIVATE

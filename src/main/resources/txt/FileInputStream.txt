@@ -31,6 +31,6 @@ try {
 catch (Exception e) {...}
 END OF EXAMPLE
 
-=>Stream
-=>InputStream
-=>ObjectInputStream
+=>STREAM
+=>INPUTSTREAM
+=>OBJECTINPUTSTREAM

@@ -7,12 +7,12 @@ Converting a type to an other type.
 3. TYPE CONVERSION
 4. HEXADECIMAL, BINARY AND OCTAL NUMBER CONVERSIONS
 
-=>Primitive_data_types
-=>Wrapper_classes
-=>String
-=>Variables
-=>Objects
-=>Statements
+=>PRIMITIVE DATA TYPES
+=>WRAPPER CLASSES
+=>STRING
+=>VARIABLES
+=>OBJECTS
+=>STATEMENTS
 
 =================================================================================
 1. WIDENING (IMPLICIT) CASTING

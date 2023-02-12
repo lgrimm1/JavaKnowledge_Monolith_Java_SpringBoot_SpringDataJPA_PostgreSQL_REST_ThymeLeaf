@@ -11,10 +11,10 @@ There are several logging frameworks with full support for logging, e.g. Log4j (
 4. FILTERS, FORMATTERS
 5. LOGMANAGER
 
-=>Classes
-=>Standard_input_and_output
-=>File_operations
-=>Assertion
+=>CLASSES
+=>STANDARD INPUT AND OUTPUT
+=>FILE OPERATIONS
+=>ASSERTION
 
 =================================================================================
 1. LOGGERS

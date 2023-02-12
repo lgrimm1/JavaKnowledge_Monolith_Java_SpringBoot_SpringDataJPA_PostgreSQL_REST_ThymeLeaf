@@ -7,11 +7,11 @@ WEB APPLICATION
 4. CURL
 5. API
 
-=>Spring_Boot
-=>Spring_ThymeLeaf
-=>Serialization
-=>Tests
-=>Spring_Boot_tests
+=>SPRING BOOT
+=>SPRING THYMELEAF
+=>SERIALIZATION
+=>TESTS
+=>SPRING BOOT TESTS
 
 =================================================================================
 1. FRONTEND-BACKEND STRUCTURE, WORK CONCEPT
@@ -36,7 +36,7 @@ The Communication layer is built up from the next components:
     b. mapping
     c. controller
 
-The dispatcher servlet receives the requests from the outside, converts it to readable information and forwards them to the inner processing parts, later receives view from the inner processing parts and sends them to the outside. Usually maintained by a framework like Spring.Boot.
+The dispatcher servlet receives the requests from the outside, converts it to readable information and forwards them to the inner processing parts, later receives view from the inner processing parts and sends them to the outside. Usually maintained by a framework like Spring Boot.
 Mapping means the information is divided by request type and endpoint.
 The controller contains backend methods which receive the mapped incoming requests, start processing them, have the results and send those to the framework.
 
@@ -66,10 +66,10 @@ For all responses, the dispatcher servlet sends not just the response but an HTM
     c. 3xx (redirect)
     d. 4xx (the client asked for something the server could not or would not deliver, e.g. 404 = page not found)
     e. 5xx (server-side error)
-For all the possible HTML codes in verbal form, visit Spring.Boot tests (StatusResultMatcher methods).
+For all the possible HTML codes in verbal form, visit Spring Boot tests (StatusResultMatcher methods).
 
 Building a whole web application needs much complexity in code.
-For simplification, using the Spring.Boot framework is advised.
+For simplification, using the Spring Boot framework is advised.
 
 =================================================================================
 2. REQUESTS AND RESPONSES

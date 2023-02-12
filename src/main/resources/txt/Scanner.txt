@@ -53,8 +53,8 @@ try (Scanner sc = new Scanner(File file).useLocal(Locale locale)) {
 }
 END OF EXAMPLE
 
-=>String
-=>File_operations
-=>Standard_input_and_output
-=>Locale
-=>Statements;15. TRY-WITH-RESOURCES STATEMENT
+=>STRING
+=>FILE OPERATIONS
+=>STANDARD INPUT AND OUTPUT
+=>LOCALE
+=>STATEMENTS;15. TRY-WITH-RESOURCES STATEMENT

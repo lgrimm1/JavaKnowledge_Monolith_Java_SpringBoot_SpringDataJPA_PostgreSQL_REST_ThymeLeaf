@@ -17,9 +17,9 @@ The root class for all exceptions is Exception. That said, can be many kind of e
 2. EXCEPTIONS HANDLED OUTSIDE THE PLACE
 3. SUPPRESSED EXCEPTION
 
-=>Statements
-=>Methods
-=>Annotations
+=>STATEMENTS
+=>METHODS
+=>ANNOTATIONS
 
 =================================================================================
 1. EXCEPTIONS HANDLED IN PLACE

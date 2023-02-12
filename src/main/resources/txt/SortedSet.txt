@@ -28,8 +28,8 @@ Because the element adding order is stored, e.g. the toArray(), toString(), iter
 ||tailSet(element)|returns all elements after the given element, including the given element||
 ||subSet(element1, element2)|returns all elements between the two given elements, element1 is included||
 
-=>NavigableSet
-=>TreeSet
-=>Set
-=>Collection
-=>Comparator
+=>NAVIGABLESET
+=>TREESET
+=>SET
+=>COLLECTION
+=>COMPARATOR

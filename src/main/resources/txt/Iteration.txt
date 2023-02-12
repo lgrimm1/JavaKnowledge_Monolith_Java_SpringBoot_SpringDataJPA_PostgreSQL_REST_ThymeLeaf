@@ -8,11 +8,11 @@ ITERATION
 5. RECURSION
 6. INFINITE LOOP
 
-=>Statements
-=>Operators
-=>Keywords_and_identifiers
-=>Array
-=>ArrayList
+=>STATEMENTS
+=>OPERATORS
+=>KEYWORDS AND IDENTIFIERS
+=>ARRAY
+=>ARRAYLIST
 
 =================================================================================
 1. FOR LOOP

@@ -7,8 +7,8 @@ class HelloWorld {
 	}
 }
 
-=>Classes
-=>Methods
-=>Access_modifiers
-=>Standard_input_and_output
-=>Literals
+=>CLASSES
+=>METHODS
+=>ACCESS MODIFIERS
+=>STANDARD INPUT AND OUTPUT
+=>LITERALS

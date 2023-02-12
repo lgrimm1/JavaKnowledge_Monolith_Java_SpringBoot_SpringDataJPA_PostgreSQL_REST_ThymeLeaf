@@ -107,5 +107,5 @@ class Class2 {
     private Class1 variable1;
 }
 
-=>Classes;13. CLASS DEPENDENCY INJECTION
-=>Spring_Boot
+=>CLASSES;13. CLASS DEPENDENCY INJECTION
+=>SPRING BOOT

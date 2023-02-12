@@ -54,10 +54,10 @@ int lastElement = numbers.peekLast(); //2
 int removedNumber1 = numbers.pollFirst(); //3, [1, 2]
 int removedNumber2 = numbers.pollLast(); //2, [1]
 
-=>Queue
-=>ArrayDeque
-=>LinkedList
-=>BlockingDeque
-=>Stack
-=>Iterator
-=>Collection
+=>QUEUE
+=>ARRAYDEQUE
+=>LINKEDLIST
+=>BLOCKINGDEQUE
+=>STACK
+=>ITERATOR
+=>COLLECTION

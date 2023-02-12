@@ -44,7 +44,7 @@ try (FileReader fileReader = new FileReader(fileName); BufferedReader bufferedRe
 }
 catch (Exception e) {...}
 
-=>Stream
-=>Reader
-=>FileReader
-=>Statements;15. TRY-WITH-RESOURCES STATEMENT
+=>STREAM
+=>READER
+=>FILEREADER
+=>STATEMENTS;15. TRY-WITH-RESOURCES STATEMENT

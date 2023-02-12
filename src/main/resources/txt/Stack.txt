@@ -20,9 +20,9 @@ boolean b = stack.empty(); //checks whether the stack is empty
 Utilizing push(), pop(), peek() in a frame of condition with empty() provides the functionality of a stack structure.
 However, by inheriting Vector, it is not data-safe (data can be read from other positions and toString() shows the push() order instead of pop order) nor thread-safe, and has no extended functionality for stack data structure. Use ArrayDeque class (implementing Deque interface) instead.
 
-=>List
-=>Vector
-=>Collection
-=>ArrayDeque
-=>Iterator
-=>ListIterator
+=>LIST
+=>VECTOR
+=>COLLECTION
+=>ARRAYDEQUE
+=>ITERATOR
+=>LISTITERATOR

@@ -50,8 +50,8 @@ Charset cs = new Charset(String canonicalName, String[] aliases);
 ||isRegistered()|checks whether the charset is registered into IANA||
 ||toString()|returns verbal description of the charset||
 
-=>InputStreamReader
-=>OutputStreamWriter
-=>FileReader
-=>PrintWriter
-=>Locale
+=>INPUTSTREAMREADER
+=>OUTPUTSTREAMWRITER
+=>FILEREADER
+=>PRINTWRITER
+=>LOCALE

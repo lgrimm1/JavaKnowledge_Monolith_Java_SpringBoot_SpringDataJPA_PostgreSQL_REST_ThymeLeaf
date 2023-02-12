@@ -51,6 +51,6 @@ char d = cal.get(0); //unboxing from wrapper class
 Float[] fa = new Float[]{12.5, 34.6}; //wrapper element type, autoboxing from 2 primitive types
 END OF EXAMPLE
 
-=>Primitive_data_types
-=>Variables
-=>Type_casting_and_conversion
+=>PRIMITIVE DATA TYPES
+=>VARIABLES
+=>TYPE CASTING AND CONVERSION

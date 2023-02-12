@@ -14,16 +14,16 @@ In case of using file/folder list, File.pathSeparator constant will give OS inde
 7. LIST FILES AND FOLDERS
 8. READ AND WRITE INPUTSTREAMS
 
-=>Statements
-=>Iteration
-=>Exceptions
-=>Scanner
-=>Array
-=>Import
-=>FileReader
-=>FileWriter
-=>InputStream
-=>OutputStream
+=>STATEMENTS
+=>ITERATION
+=>EXCEPTIONS
+=>SCANNER
+=>ARRAY
+=>IMPORT
+=>FILEREADER
+=>FILEWRITER
+=>INPUTSTREAM
+=>OUTPUTSTREAM
 
 =================================================================================
 1. INFORMATION

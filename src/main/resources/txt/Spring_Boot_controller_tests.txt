@@ -1,5 +1,5 @@
 =================================================================================
-SPRING.BOOT CONTROLLER TESTS
+SPRING BOOT CONTROLLER TESTS
 =================================================================================
 For controller classes, based upon the best practices, the Communication layer of the backend should be as thin as it is possible. Therefore, following best practices, for all other processes tests should be developed but for the controllers, it can be skipped.
 That said, testing the Communication layer which equals with testing the controller classes, is simplified for sending requests to the layer.
@@ -8,15 +8,15 @@ That said, testing the Communication layer which equals with testing the control
 2. CONTROLLER CLASS TESTS WITH STARTED WEB APPLICATION
 3. CONTROLLER CLASS TESTS IN MOCKED ENVIRONMENT
 
-=>Spring_Boot
-=>Spring_Boot_tests
-=>Spring_Boot_configuration
-=>Mockito
-=>JUnit
-=>Spring_Boot_controller
+=>SPRING BOOT
+=>SPRING BOOT TESTS
+=>SPRING BOOT CONFIGURATION
+=>MOCKITO
+=>JUNIT
+=>SPRING BOOT CONTROLLER
 =>Spring_Validation
-=>Web_application;4. CURL
-=>Serialization
+=>WEB APPLICATION;4. CURL
+=>SERIALIZATION
 
 =================================================================================
 1. CONTROLLER CLASS TESTS WITH CURL
@@ -195,7 +195,7 @@ public class ControllerCurlTest {
 2. CONTROLLER CLASS TESTS WITH STARTED WEB APPLICATION
 =================================================================================
 The @SpringBootTest in a class marks that the class is for testing a controller class.
-For all tests, the Spring.Boot will start the web service (servlet) layer, practically the whole web application.
+For all tests, the Spring Boot will start the web service (servlet) layer, practically the whole web application.
 The @Autowired annotation expresses injection the marked class (e.g. the controller) into the test class before starting up the app. In case of using the TestRestTemplate class with this annotation, the given class will handle the storage and the service layers together automatically.
 
 The application layers will be cached by default so Spring will not start-stop the application per test method.
@@ -216,7 +216,7 @@ In case of the latter version, an additional @Value (under older Spring versions
 The @LocalServerPort is deprecated under newer Spring versions, and because the servlet is started along with the context which is cached, can lead to unwanted errors and conflicts.
 In case the servlet startup and loading the context can be tested via testing the Main class, furthermore the controller class can be tested in a mocked web environment, the test cases will be separated from the startup and there should not be problems due to cached context either, see the next session.
 
-In case the test of Spring.Boot dependency is not added to the project, your may add the next dependency to your pom.xml:
+In case the test of Spring Boot dependency is not added to the project, your may add the next dependency to your pom.xml:
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-test</artifactId>
@@ -294,7 +294,7 @@ Although the BigDecimal has proper automatism for serialization and deserializat
 Due to these, when using lower versions of MockMVC, the receiver object can contain Long, Integer, long and int types for whole numbers, but for float numbers in object, use BigDecimal as type.
 In such cases, only for test purposes should the BigDecimal problem be handled, without modifying the original data model.
 
-When MockMVC is used along with Spring.Data JPA, an important issue can appear.
+When MockMVC is used along with Spring Data JPA, an important issue can appear.
 Normally, the main application class carries the @EnableJPARepositories annotation which instructs Hibernate (which is part of JPA core) to collect the repository beans. That said, the Spring layer of the application must be fully started up in order to enable Hibernate to search for beans in the class hierarchy.
 The MockMVC controller test environment does not start the whole Spring framework therefore it is not possible for Hibernate to search for Spring beans. Furthermore, the test class is part of a lower level in the hierarchy.
 Solution is to instruct JPA to re-calibrate the search graph with the MockMVC test class as start by using the @AutoConfigureDataJpa annotation for the particular MockMVC controller test class.
@@ -345,7 +345,7 @@ Using the above defined MockMVC components are optional, mainly depends on the p
 The HTTP response codes match with HTTP statuses.
 
 With perform() method the test case is set. Order of the perform steps is important: the media types must be set before the content is defined.
-Optionally, the MockMVC can be forced to print information about the results of performed action with the print() method. By default, the same information will appear when using Spring.Data JPA because Hibernate is verbal.
+Optionally, the MockMVC can be forced to print information about the results of performed action with the print() method. By default, the same information will appear when using Spring Data JPA because Hibernate is verbal.
 Every andExpect() method means an assertion for its argument.
 
 Some expected statuses (look for more under StatusResultMatcher methods below):

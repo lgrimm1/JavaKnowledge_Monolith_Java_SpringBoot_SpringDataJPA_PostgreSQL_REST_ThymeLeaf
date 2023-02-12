@@ -50,7 +50,7 @@ try (StringWriter stringWriter = new StringWriter(string)) {
 }
 catch (Exception e) {...} //in case the source was not accessible or the buffer was not created
 
-=>Stream
-=>Reader
-=>StringBuilder
-=>Statements;15. TRY-WITH-RESOURCES STATEMENT
+=>STREAM
+=>READER
+=>STRINGBUILDER
+=>STATEMENTS;15. TRY-WITH-RESOURCES STATEMENT

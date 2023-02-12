@@ -45,8 +45,8 @@ try {
 catch (Exception e) {...} //in case the destination was not accessible by file stream, or manually thrown exception for PrintStream
 END OF EXAMPLE
 
-=>Stream
-=>OutputStream
-=>FileOutputStream
-=>Standard_input_and_output
-=>String;4. STRING FORMATTING
+=>STREAM
+=>OUTPUTSTREAM
+=>FILEOUTPUTSTREAM
+=>STANDARD INPUT AND OUTPUT
+=>STRING;4. STRING FORMATTING

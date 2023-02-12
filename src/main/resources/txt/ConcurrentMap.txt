@@ -22,5 +22,5 @@ Includes all methods of Map interface. Specific methods are below.
 ||forEach()|returns an Iterator of the entries||
 ||merge()|merges the given value to with the old value in the map at the given key, if key is absent, equals with put||
 
-=>Map
-=>ConcurrentHashMap
+=>MAP
+=>CONCURRENTHASHMAP

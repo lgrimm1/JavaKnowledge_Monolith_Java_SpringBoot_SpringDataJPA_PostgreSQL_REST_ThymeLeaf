@@ -61,11 +61,11 @@ String s = fileWriter1.getEncoding(); //"Cp1252"
 s = fileWriter2.getEncoding(); //"UTF8"
 END OF EXAMPLE
 
-=>Stream
-=>Writer
-=>OutputStream
-=>FileOutputStream
-=>Charset
-=>File_operations
-=>BufferedWriter
-=>Statements;15. TRY-WITH-RESOURCES STATEMENT
+=>STREAM
+=>WRITER
+=>OUTPUTSTREAM
+=>FILEOUTPUTSTREAM
+=>CHARSET
+=>FILE OPERATIONS
+=>BUFFEREDWRITER
+=>STATEMENTS;15. TRY-WITH-RESOURCES STATEMENT

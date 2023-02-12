@@ -32,10 +32,10 @@ for (char c : ca) {
 }
 String s = sb.toString();
 
-=>String
-=>OutputStream
-=>Writer
-=>Array;2.2. DEEP COPY WITH ITERATION
-=>GarbageCollector
-=>ArrayList
-=>StringWriter
+=>STRING
+=>OUTPUTSTREAM
+=>WRITER
+=>ARRAY;2.2. DEEP COPY WITH ITERATION
+=>GARBAGE COLLECTOR
+=>ARRAYLIST
+=>STRINGWRITER

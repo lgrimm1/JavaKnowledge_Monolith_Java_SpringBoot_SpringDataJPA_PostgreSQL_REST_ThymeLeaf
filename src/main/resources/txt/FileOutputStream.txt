@@ -33,6 +33,6 @@ try {
 }
 catch (Exception e) {...}
 
-=>Stream
-=>OutputStream
-=>ObjectOutputStream
+=>STREAM
+=>OUTPUTSTREAM
+=>OBJECTOUTPUTSTREAM

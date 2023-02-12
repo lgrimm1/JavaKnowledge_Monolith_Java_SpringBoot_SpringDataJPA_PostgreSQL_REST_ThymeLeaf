@@ -1,12 +1,12 @@
 =================================================================================
-SPRING.BOOT REQUESTS
+SPRING BOOT REQUESTS
 =================================================================================
 1. GET REQUESTS
 2. POST, PUT, DELETE, OPTIONS, PATCH, HEAD REQUESTS
 3. PARAMETERS IN REQUEST
 
-=>Spring_Boot
-=>Spring_Boot_controller
+=>SPRING BOOT
+=>SPRING BOOT CONTROLLER
 
 =================================================================================
 1. GET REQUESTS

@@ -6,22 +6,22 @@ ARRAYLIST
 3. ARRAYLIST CONVERTING TO 1D ARRAY AND BACK
 4. ARRAYLIST CONVERTING TO HASHMAP AND BACK
 
-=>Variables
-=>Primitive_data_types
-=>Objects
-=>Iteration
-=>List
-=>LinkedList
-=>Collection
-=>Vector
-=>Array
-=>Comparator
-=>Iterator
-=>ListIterator
-=>Lambda_expressions
-=>HashMap
-=>Stream
-=>Matrix
+=>VARIABLES
+=>PRIMITIVE DATA TYPES
+=>OBJECTS
+=>ITERATION
+=>LIST
+=>LINKEDLIST
+=>COLLECTION
+=>VECTOR
+=>ARRAY
+=>COMPARATOR
+=>ITERATOR
+=>LISTITERATOR
+=>LAMBDA EXPRESSIONS
+=>HASHMAP
+=>STREAM
+=>MATRIX
 
 =================================================================================
 1. ARRAYLIST IN GENERAL, METHODS

@@ -10,12 +10,12 @@ OPERATORS
 7. OTHER
 8. PRECEDENCE RULES
 
-=>Literals
-=>Primitive_data_types
-=>Variables
-=>Lambda_expressions
-=>Statements
-=>Iteration
+=>LITERALS
+=>PRIMITIVE DATA TYPES
+=>VARIABLES
+=>LAMBDA EXPRESSIONS
+=>STATEMENTS
+=>ITERATION
 
 =================================================================================
 1. ARITHMETIC

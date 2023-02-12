@@ -13,5 +13,5 @@ LinkedBlockingQueue<elementType> abq = new LinkedBlockingQueue<>(capacity);
 
 All methods from BlockingQueue is accessible.
 
-=>BlockingQueue
-=>Iterator
+=>BLOCKINGQUEUE
+=>ITERATOR

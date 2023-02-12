@@ -8,16 +8,16 @@ LAMBDA EXPRESSIONS
 5. LAMBDA WITH GENERICS FUNCTIONAL INTERFACE
 6. METHOD REFERENCE
 
-=>Classes
-=>Inheritance
-=>ArrayList
-=>ConcurrentHashMap
-=>Iterator
-=>LinkedList
-=>Map
-=>Set
-=>TreeMap
-=>Inheritance;7.4. GENERICS FUNCTIONAL INTERFACE
+=>CLASSES
+=>INHERITANCE
+=>ARRAYLIST
+=>CONCURRENTHASHMAP
+=>ITERATOR
+=>LINKEDLIST
+=>MAP
+=>SET
+=>TREEMAP
+=>INHERITANCE;7.4. GENERICS FUNCTIONAL INTERFACE
 
 =================================================================================
 1. LAMBDA GENERALLY

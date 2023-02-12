@@ -24,9 +24,9 @@ Differences between HashSet and TreeSet:
     b. TreeSet provides navigation methods along the elements, HashSet does not
     c. HashSet is faster for basic operations like add, remove, contains and size than TreeMap
 
-=>SortedSet
-=>NavigableSet
-=>Set
-=>Collection
-=>Comparator
-=>HashSet
+=>SORTEDSET
+=>NAVIGABLESET
+=>SET
+=>COLLECTION
+=>COMPARATOR
+=>HASHSET

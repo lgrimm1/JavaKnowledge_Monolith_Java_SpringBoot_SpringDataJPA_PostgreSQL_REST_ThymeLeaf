@@ -11,12 +11,12 @@ There can be data overflow in ordering number-type class elements. In case the f
 3. CUSTOM USE (COMPARATOR)
 4. CHAINED COMPARATORS
 
-=>Primitive_data_types
-=>Objects
-=>Operators
-=>Equality
-=>ArrayList
-=>PriorityQueue
+=>PRIMITIVE DATA TYPES
+=>OBJECTS
+=>OPERATORS
+=>EQUALITY
+=>ARRAYLIST
+=>PRIORITYQUEUE
 
 =================================================================================
 1. SIMPLE USE ON WRAPPER ELEMENT TYPES

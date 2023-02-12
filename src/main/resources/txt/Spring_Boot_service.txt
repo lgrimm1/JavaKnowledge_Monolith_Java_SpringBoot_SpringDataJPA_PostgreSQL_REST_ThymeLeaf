@@ -1,5 +1,5 @@
 =================================================================================
-SPRING.BOOT SERVICE
+SPRING BOOT SERVICE
 =================================================================================
 This class provides methods serving the controller, also storage instances and other methods.
 It is the core of web app, equals with the Business layer. There can be more service classes, depending on the project structure.
@@ -49,6 +49,6 @@ public class ServiceClassName {
 
 In case the repository and the entity is handled by JPA, coming from design, it is possible to manage entity management via the repository or via the service.
 
-=>Spring_Boot
-=>Spring_Boot_tests;4. SERVICE CLASS TESTS
-=>Spring_Boot_service_validation_methods
+=>SPRING BOOT
+=>SPRING BOOT TESTS;4. SERVICE CLASS TESTS
+=>SPRING BOOT SERVICE VALIDATION METHODS

@@ -28,10 +28,10 @@ element = queue.remove(); //returns and removes the head of the queue, exception
 element = queue.poll(); //returns and removes the head of the queue, null if queue is empty
 END OF EXAMPLE
 
-=>Collection
-=>ArrayDeque
-=>LinkedList
-=>PriorityQueue
-=>Deque
-=>BlockingQueue
-=>Iterator
+=>COLLECTION
+=>ARRAYDEQUE
+=>LINKEDLIST
+=>PRIORITYQUEUE
+=>DEQUE
+=>BLOCKINGQUEUE
+=>ITERATOR

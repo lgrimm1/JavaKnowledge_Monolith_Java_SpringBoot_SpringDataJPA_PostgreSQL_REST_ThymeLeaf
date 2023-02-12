@@ -46,8 +46,8 @@ pq.add(2); //original order: [4, 1, 2]
 String s = pq.poll(); //returns 4, original order: [1, 2]
 String s = pq.poll(); //returns 2, original order: [1]
 
-=>Queue
-=>Comparator
-=>Iterator
-=>Inheritance
-=>Collection
+=>QUEUE
+=>COMPARATOR
+=>ITERATOR
+=>INHERITANCE
+=>COLLECTION

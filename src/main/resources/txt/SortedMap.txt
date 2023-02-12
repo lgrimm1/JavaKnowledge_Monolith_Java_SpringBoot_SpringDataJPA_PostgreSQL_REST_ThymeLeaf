@@ -23,6 +23,6 @@ Specific methods are below.
 ||tailMap(key)|returns all entries with keys greater than passed key||
 ||subMap(key1, key2)|returns all entries with keys within [key1, key2) interval||
 
-=>Map
-=>TreeMap
-=>NavigableMap
+=>MAP
+=>TREEMAP
+=>NAVIGABLEMAP

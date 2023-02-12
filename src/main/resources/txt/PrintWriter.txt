@@ -55,8 +55,8 @@ try (FileWriter fileWriter = new FileWriter(fileName); PrintWriter printWriter =
 catch (Exception e) {...} //in case the destination or the accessed writer was not accessible on declaring
 END OF EXAMPLE
 
-=>Stream
-=>Writer
-=>Charset
-=>String;4. STRING FORMATTING
-=>Statements;15. TRY-WITH-RESOURCES STATEMENT
+=>STREAM
+=>WRITER
+=>CHARSET
+=>STRING;4. STRING FORMATTING
+=>STATEMENTS;15. TRY-WITH-RESOURCES STATEMENT

@@ -77,13 +77,13 @@ Differences between ArrayDeque and LinkedList:
     c. LinkedList nodes contain data plus addresses of next and prev therefore needs more memory than ArrayDeque
     d. ArrayDeque is faster than LinkedList
 
-=>List
-=>Queue
-=>Deque
-=>ArrayList
-=>Collection
-=>Queue
-=>Iterator
-=>ListIterator
-=>ArrayDeque
-=>Lambda_expressions
+=>LIST
+=>QUEUE
+=>DEQUE
+=>ARRAYLIST
+=>COLLECTION
+=>QUEUE
+=>ITERATOR
+=>LISTITERATOR
+=>ARRAYDEQUE
+=>LAMBDA EXPRESSIONS

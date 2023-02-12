@@ -150,6 +150,6 @@ public static List<List<Integer>> reverseRowsInMatrixList(List<List<Integer>> ma
 }
 END OF EXAMPLE
 
-=>Array
-=>ArrayList
-=>Stream
+=>ARRAY
+=>ARRAYLIST
+=>STREAM

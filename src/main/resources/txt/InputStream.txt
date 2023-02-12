@@ -44,10 +44,10 @@ try (InputStream inputStream = new FileInputStream(fileName)) {
 }
 catch (Exception e) {...} //in case the source was not accessible
 
-=>Stream
-=>FileInputStream
-=>ByteArrayInputStream
-=>ObjectInputStream
-=>BufferedInputStream
-=>File_operations
-=>Statements;15. TRY-WITH-RESOURCES STATEMENT
+=>STREAM
+=>FILEINPUTSTREAM
+=>BYTEARRAYINPUTSTREAM
+=>OBJECTINPUTSTREAM
+=>BUFFEREDINPUTSTREAM
+=>FILE OPERATIONS
+=>STATEMENTS;15. TRY-WITH-RESOURCES STATEMENT

@@ -1,5 +1,5 @@
 =================================================================================
-ZONEDDATETIME
+DATE, TIME, TIMEZONE, DURATION
 =================================================================================
 
 1. ZONEDATETIME AND ITS COMPONENTS
@@ -10,7 +10,7 @@ ZONEDDATETIME
 6. CALCULATIONS
 7. GETTING PARAMETERS
 
-=>Locale
+=>LOCALE
 
 =================================================================================
 1. ZONEDATETIME AND ITS COMPONENTS

@@ -50,7 +50,7 @@ try (FileWriter fileWriter = new FileWriter(fileName); BufferedWriter bufferedWr
 catch (Exception e) {...}
 END OF EXAMPLE
 
-=>Stream
-=>Writer
-=>FileWriter
-=>Statements;15. TRY-WITH-RESOURCES STATEMENT
+=>STREAM
+=>WRITER
+=>FILEWRITER
+=>STATEMENTS;15. TRY-WITH-RESOURCES STATEMENT

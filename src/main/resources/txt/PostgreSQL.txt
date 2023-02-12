@@ -9,9 +9,9 @@ Database names, column names, index names etc. should be lowercase.
 3. INDEX (KEY) TYPES
 4. BACKEND CONNECTION PARAMETERS
 
-=>Spring_Boot
-=>Spring_Boot_entity
-=>Spring_Boot_repository
+=>SPRING BOOT
+=>SPRING BOOT ENTITY
+=>SPRING BOOT REPOSITORY
 
 =================================================================================
 1. SETTING UP

@@ -6,9 +6,9 @@ The == operator checks equality.
 2. EQUALITY BETWEEN VALUES OF PRIMITIVE VARIABLES
 3. EQUALITY BETWEEN REFERENCES OF OBJECTS
 
-=>Literals
-=>Variables
-=>Objects
+=>LITERALS
+=>VARIABLES
+=>OBJECTS
 
 =================================================================================
 1. EQUALITY BETWEEN LITERALS

@@ -7,13 +7,13 @@ From newer Java versions, streams are also used for manipulating a series of dat
 1. STREAMS FOR HANDLING INPUT AND OUTPUT DATA
 2. STREAMS FOR MANIPULATING SERIES OF DATA
 
-=>InputStream
-=>OutputStream
-=>Reader
-=>Writer
-=>Collection
-=>Threads
-=>Threads;2. ATOMIC CLASSES FOR CONCURRENT USE OF PRIMITIVES
+=>INPUTSTREAM
+=>OUTPUTSTREAM
+=>READER
+=>WRITER
+=>COLLECTION
+=>THREADS
+=>THREADS;2. ATOMIC CLASSES FOR CONCURRENT USE OF PRIMITIVES
 
 =================================================================================
 1. STREAMS FOR HANDLING INPUT AND OUTPUT DATA

@@ -46,8 +46,8 @@ try {
 }
 catch (Exception e) {...}
 
-=>Stream
-=>OutputStream
-=>ObjectInputStream
-=>FileOutputStream
-=>Serialization
+=>STREAM
+=>OUTPUTSTREAM
+=>OBJECTINPUTSTREAM
+=>FILEOUTPUTSTREAM
+=>SERIALIZATION

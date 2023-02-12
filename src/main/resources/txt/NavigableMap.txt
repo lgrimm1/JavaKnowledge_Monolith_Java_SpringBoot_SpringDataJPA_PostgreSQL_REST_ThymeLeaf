@@ -33,6 +33,6 @@ Specific methods are below.
 ||pollFirstEntry()|returns and removes the first entry (the entry with the lowest key)||
 ||pollLastEntry()|returns and removes the last entry (the entry with the highest key)||
 
-=>Map
-=>SortedMap
-=>TreeMap
+=>MAP
+=>SORTEDMAP
+=>TREEMAP

@@ -33,6 +33,6 @@ Differences between HashMap and WeakHashMap:
     a. HashMap keys are strong reference type, WeakHashMap keys are weak reference type
     b. by the GC, released (not used) keys will be left in HashMap while will be freed in WeakHashMap
 
-=>Map
-=>GarbageCollector
-=>HashMap
+=>MAP
+=>GARBAGE COLLECTOR
+=>HASHMAP

@@ -5,18 +5,18 @@ VARIABLES
 2. VARIABLE TYPES
 3. OBJECT POOLS
 
-=>Literals
-=>Primitive_data_types
-=>Wrapper_classes
-=>String
-=>Access_modifiers
-=>Annotations
-=>GarbageCollector
-=>Type_casting_and_conversion
-=>Statements
-=>Classes
-=>Classes;11. MULTI-TYPE VARIABLES
-=>Objects
+=>LITERALS
+=>PRIMITIVE DATA TYPES
+=>WRAPPER CLASSES
+=>STRING
+=>ACCESS MODIFIERS
+=>ANNOTATIONS
+=>GARBAGE COLLECTOR
+=>TYPE CASTING AND CONVERSION
+=>STATEMENTS
+=>CLASSES
+=>CLASSES;11. MULTI-TYPE VARIABLES
+=>OBJECTS
 
 =================================================================================
 1. DECLARATION OF VARIABLES

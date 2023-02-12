@@ -8,13 +8,13 @@ STRING
 5. STRING-CHAR[]-ARRAYLIST<CHARACTER> CONVERSIONS
 6. STRING METHODS
 
-=>Wrapper_classes
-=>Type_casting_and_conversion;3. TYPE CONVERSION
-=>Equality
-=>Standard_input_and_output
-=>PrintStream
-=>StringBuilder
-=>PrintWriter
+=>WRAPPER CLASSES
+=>TYPE CASTING AND CONVERSION;3. TYPE CONVERSION
+=>EQUALITY
+=>STANDARD INPUT AND OUTPUT
+=>PRINTSTREAM
+=>STRINGBUILDER
+=>PRINTWRITER
 
 =================================================================================
 1. STRING OBJECT

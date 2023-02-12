@@ -13,8 +13,8 @@ When with the solution the response body is accessible and the exception handler
 When the response body is not accessible, the body will be practically null, the solution will not be REST compatible, and Spring will send a default HTTP error page back with an HTTP error code and additional error message, see later session.
 For the latter, workaround can be releasing the REST standard for exception handling which is not advised.
 
-=>Spring_Boot
-=>Spring_Boot_controller
+=>SPRING BOOT
+=>SPRING BOOT CONTROLLER
 
 1. EXCEPTION HANDLER
 2. HANDLER EXCEPTION RESOLVER
@@ -189,7 +189,7 @@ public Foo findById(@PathVariable("id") Long id, HttpServletResponse response) {
 5. THE DEFAULT ERROR PAGE
 =================================================================================
 1. SPRING ERROR PAGE
-2. SPRING.BOOT ERROR PAGE
+2. SPRING BOOT ERROR PAGE
 
 1. SPRING ERROR PAGE
 ---------------------------------------------------------------------------------
@@ -220,9 +220,9 @@ public class ErrorController {
     }
 }
 
-2. SPRING.BOOT ERROR PAGE
+2. SPRING BOOT ERROR PAGE
 ---------------------------------------------------------------------------------
-Spring.Boot provides a fallback page called Whitelabel Error Page for HTML requests.
+Spring Boot provides a fallback page called Whitelabel Error Page for HTML requests.
 For RESTful, non-HTML requests it provides a JSON answer.
 
 EXAMPLE FOR JSON ERROR ANSWER:

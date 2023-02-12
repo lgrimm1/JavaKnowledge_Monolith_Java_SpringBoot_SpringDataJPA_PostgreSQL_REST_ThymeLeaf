@@ -2,10 +2,10 @@
 KEYWORDS AND IDENTIFIERS
 =================================================================================
 
-=>Variables
-=>Statements
-=>Iteration
-=>Access_modifiers
+=>VARIABLES
+=>STATEMENTS
+=>ITERATION
+=>ACCESS MODIFIERS
 
 Keywords: defined within Java and its libraries, can not used as identifiers.
 

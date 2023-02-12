@@ -8,14 +8,14 @@ SERIALIZATION
 4. CHECK IF A CLASS IS SERIALIZABLE
 5. CONVERT OBJECT TO JSON STRING
 
-=>Web_application
-=>Spring_Boot
-=>Spring_Boot_entity
-=>Spring_Boot_controller
-=>Spring_ThymeLeaf
-=>Classes
-=>ObjectInputStream
-=>ObjectOutputStream
+=>WEB APPLICATION
+=>SPRING BOOT
+=>SPRING BOOT ENTITY
+=>SPRING BOOT CONTROLLER
+=>SPRING THYMELEAF
+=>CLASSES
+=>OBJECTINPUTSTREAM
+=>OBJECTOUTPUTSTREAM
 
 =================================================================================
 1. GENERALLY
@@ -137,7 +137,7 @@ boolean isSerializable(Object object) {
 =================================================================================
 There are three ways to convert an object to JSON: by using built-in Jackson, external Jackson and external GSON libraries.
 The built-in Jackson, based upon tests, can not deal with more complex objects (e.g. which contain LocalDate field).
-The older Spring.Boot framework used the built-in Jackson parser, however, in the newer versions they changed their parser to be more flexible.
+The older Spring Boot framework used the built-in Jackson parser, however, in the newer versions they changed their parser to be more flexible.
 
 EXAMPLE FOR CONVERTING OBJECT TO JSON STRING (BUILT-IN JACKSON, ESCAPED QUOTE MARKS):
 import com.fasterxml.jackson.core.*;

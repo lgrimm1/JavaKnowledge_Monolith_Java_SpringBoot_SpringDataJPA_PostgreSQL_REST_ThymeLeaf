@@ -7,14 +7,14 @@ Its extending class is LinkedHashMap.
 1. GENERALLY
 2. CONVERT TO ARRAYLIST AND BACK
 
-=>Map
-=>TreeMap
-=>LinkedHashMap
-=>WeakHashMap
-=>GarbageCollector
-=>ConcurrentHashMap
-=>ArrayList
-=>Stream
+=>MAP
+=>TREEMAP
+=>LINKEDHASHMAP
+=>WEAKHASHMAP
+=>GARBAGE COLLECTOR
+=>CONCURRENTHASHMAP
+=>ARRAYLIST
+=>STREAM
 
 =================================================================================
 1. GENERALLY

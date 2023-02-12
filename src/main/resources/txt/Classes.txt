@@ -16,18 +16,19 @@ CLASSES
 13. CLASS ORGANIZING
 14. CLASS DEPENDENCY INJECTION
 
-=>Access_modifiers
-=>Variables
-=>Methods
-=>Inheritance
-=>EnumMap
-=>Primitive_data_types
-=>Collection
-=>Array
-=>Serialization
-=>Mockito
-=>GarbageCollector
-=>Record
+=>ACCESS MODIFIERS
+=>VARIABLES
+=>METHODS
+=>INHERITANCE
+=>ENUMMAP
+=>PRIMITIVE DATA TYPES
+=>COLLECTION
+=>ARRAY
+=>SERIALIZATION
+=>MOCKITO
+=>GARBAGE COLLECTOR
+=>RECORD
+=>REFLECTION
 
 =================================================================================
 1. DECLARATION

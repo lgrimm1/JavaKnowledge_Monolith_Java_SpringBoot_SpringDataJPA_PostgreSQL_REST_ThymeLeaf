@@ -68,10 +68,10 @@ String s = outputStreamWriter1.getEncoding(); //"Cp1252"
 s = outputStreamWriter2.getEncoding(); //"UTF8"
 END OF EXAMPLE
 
-=>Stream
-=>Writer
-=>FileWriter
-=>OutputStream
-=>FileOutputStream
-=>Charset
-=>Statements;15. TRY-WITH-RESOURCES STATEMENT
+=>STREAM
+=>WRITER
+=>FILEWRITER
+=>OUTPUTSTREAM
+=>FILEOUTPUTSTREAM
+=>CHARSET
+=>STATEMENTS;15. TRY-WITH-RESOURCES STATEMENT

@@ -42,10 +42,10 @@ try (Writer w = new FileWriter(fileName)) {
 catch (Exception e) {...} //in case the destination was not accessible
 END OF EXAMPLE
 
-=>Stream
-=>StringBuilder
-=>OutputStreamWriter
-=>BufferedWriter
-=>StringWriter
-=>PrintWriter
-=>Statements;15. TRY-WITH-RESOURCES STATEMENT
+=>STREAM
+=>STRINGBUILDER
+=>OUTPUTSTREAMWRITER
+=>BUFFEREDWRITER
+=>STRINGWRITER
+=>PRINTWRITER
+=>STATEMENTS;15. TRY-WITH-RESOURCES STATEMENT

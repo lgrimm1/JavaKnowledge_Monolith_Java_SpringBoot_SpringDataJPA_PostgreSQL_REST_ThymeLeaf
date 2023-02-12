@@ -5,17 +5,17 @@ COLLECTION
 2. COMPLEX ELEMENT TYPE
 3. GENERIC ALGORITHMS OF COLLECTIONS
 
-=>List
-=>Set
-=>Queue
-=>Iterator
-=>ArrayList
-=>Array
-=>Comparator
-=>ArrayList;2. ARRAYLIST SORTING
-=>Inheritance
-=>GarbageCollector
-=>Stream
+=>LIST
+=>SET
+=>QUEUE
+=>ITERATOR
+=>ARRAYLIST
+=>ARRAY
+=>COMPARATOR
+=>ARRAYLIST;2. ARRAYLIST SORTING
+=>INHERITANCE
+=>GARBAGE COLLECTOR
+=>STREAM
 
 =================================================================================
 1. COLLECTIONS GENERALLY

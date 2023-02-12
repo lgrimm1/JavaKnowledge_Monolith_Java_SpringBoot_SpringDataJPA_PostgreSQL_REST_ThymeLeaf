@@ -2,12 +2,12 @@
 GARBAGE COLLECTOR
 =================================================================================
 
-=>Primitive_data_types
-=>Objects
-=>Array
-=>ArrayList
-=>StringBuilder
-=>System
+=>PRIMITIVE DATA TYPES
+=>OBJECTS
+=>ARRAY
+=>ARRAYLIST
+=>STRINGBUILDER
+=>SYSTEM
 
 The developer should not take care of freeing memory. Instead, the automated Garbage Collector (GC) handles it.
 The GC is a process which runs at near idle state of the application, or when the sources are low. This is due to optimization where the weight is on the fast and effective application executing.
