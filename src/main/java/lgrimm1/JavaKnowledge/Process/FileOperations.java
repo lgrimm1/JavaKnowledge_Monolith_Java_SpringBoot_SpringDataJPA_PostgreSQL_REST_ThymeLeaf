@@ -11,7 +11,6 @@ import java.util.*;
  * @see #getExtension(File)
  * @see #getOSFileSeparator()
  * @see #deleteAllFilesInFolder(File, String)
-// * @see #getListOfFiles(File, String)
  * @see #generateFilename(String)
  * @see #getResourcesPath()
  * @see #getStaticPath()
@@ -103,7 +102,9 @@ public class FileOperations {
 	}
 
 	/**
-	 * Replaces TAB, dot, column, semicolon, :, quote, double-quote and (repeated) SPACE characters to simple underline character, furthermore transforms the name to lowercase form, in order to form a proper filename.
+	 * Replaces TAB, dot, column, semicolon, :, quote, double-quote and (repeated) SPACE characters
+	 * to simple underline character,
+	 * furthermore transforms the name to lowercase form, in order to form a proper filename.
 	 */
 	public String generateFilename(String title) {
 		if (title == null || title.isBlank()) {

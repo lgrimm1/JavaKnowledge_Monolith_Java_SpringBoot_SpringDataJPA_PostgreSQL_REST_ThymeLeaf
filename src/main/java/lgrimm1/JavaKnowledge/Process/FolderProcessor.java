@@ -5,6 +5,7 @@ import java.time.*;
 import java.util.*;
 
 public class FolderProcessor {
+//TODO Review the necessity of this class
 
 /*
 	private final ProcessPage processPage;

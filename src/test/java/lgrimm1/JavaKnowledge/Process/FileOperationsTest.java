@@ -22,7 +22,7 @@ class FileOperationsTest {
 		File fileWriterTestFile = new File(testResourcesPath + fileOperations.getOSFileSeparator() + "fileWriterTestFile");
 		Assertions.assertTrue(fileOperations.writeHtmlFile(fileWriterTestFile, List.of("Line 1", "Line 2")));
 		Assertions.assertTrue(fileOperations.writeHtmlFile(fileWriterTestFile, List.of("Line 1", "Line 2")));
-		fileWriterTestFile.delete();
+		System.out.println("Deletion success of test file: " + fileWriterTestFile.delete());
 	}
 
 	@Test
@@ -219,54 +219,6 @@ class FileOperationsTest {
 		Assertions.assertEquals(2, fileOperations.deleteAllFilesInFolder(sourceFolderNotEmptyDirectory, ".HTML"));
 		Assertions.assertEquals(1, fileOperations.deleteAllFilesInFolder(sourceFolderNotEmptyDirectory, ".xyz"));
 	}
-
-/*
-	@Test
-	void getListOfFiles() {
-		File folder1 = Mockito.mock(File.class);
-		when(folder1.isFile())
-				.thenReturn(false);
-		when(folder1.getName())
-				.thenReturn("folder 1");
-		File folder2 = Mockito.mock(File.class);
-		when(folder2.isFile())
-				.thenReturn(false);
-		when(folder2.getName())
-				.thenReturn("folder 2");
-		File file1 = Mockito.mock(File.class);
-		when(file1.isFile())
-				.thenReturn(true);
-		when(file1.getName())
-				.thenReturn("file 1");
-		File file2 = Mockito.mock(File.class);
-		when(file2.isFile())
-				.thenReturn(true);
-		when(file2.getName())
-				.thenReturn("file 2.xyz");
-		File file3 = Mockito.mock(File.class);
-		when(file3.isFile())
-				.thenReturn(true);
-		when(file3.getName())
-				.thenReturn("file 3.txt");
-		File file4 = Mockito.mock(File.class);
-		when(file4.isFile())
-				.thenReturn(true);
-		when(file4.getName())
-				.thenReturn("file 4.txt");
-		File file5 = Mockito.mock(File.class);
-
-		File sourceFolder = Mockito.mock(File.class);
-
-		when(sourceFolder.listFiles())
-				.thenReturn(null);
-		Assertions.assertTrue(fileOperations.getListOfFiles(sourceFolder, ".txt").isEmpty());
-
-		when(sourceFolder.listFiles())
-				.thenReturn(new File[]{folder1, folder2, file1, file2, file3, file4});
-		Assertions.assertIterableEquals(List.of(file3, file4), fileOperations.getListOfFiles(sourceFolder, ".txt"));
-		Assertions.assertIterableEquals(List.of(file1, file2, file3, file4), fileOperations.getListOfFiles(sourceFolder, ""));
-	}
-*/
 
 	@Test
 	void generateFilename() {

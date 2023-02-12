@@ -123,7 +123,11 @@ public class ProcessRecords {
 						}
 						TxtEntity txtEntity = txtRepository.save(new TxtEntity(txt.subList(3, txt.size())));
 						HtmlEntity htmlEntity = htmlRepository.save(new HtmlEntity(new ArrayList<>()));
-						titleRepository.save(new TitleEntity(title, fileOperations.generateFilename(title), txtEntity.getId(), htmlEntity.getId()));
+						titleRepository.save(new TitleEntity(
+								title,
+								fileOperations.generateFilename(title),
+								txtEntity.getId(),
+								htmlEntity.getId()));
 					}
 				}
 			}
@@ -162,13 +166,18 @@ public class ProcessRecords {
 				titleRepository.save(new TitleEntity(title, filename, txtId, htmlId));
 			}
 		}
-		return new long[]{titleEntities.size(), Duration.between(startTime, LocalTime.now().plusSeconds(1)).toSeconds()};
+		return new long[]{
+				titleEntities.size(),
+				Duration.between(startTime, LocalTime.now().plusSeconds(1)).toSeconds()
+		};
 	}
 
 	/**
 	 * Returns long[2] where [0] is the number of pre-deleted HTML files, [1] is the number of published HTMLs.
 	 */
-	public long[] publishHtml(TitleRepository titleRepository, HtmlRepository htmlRepository, FileOperations fileOperations) {
+	public long[] publishHtml(TitleRepository titleRepository,
+							  HtmlRepository htmlRepository,
+							  FileOperations fileOperations) {
 		File staticFolder = new File(fileOperations.getStaticPath());
 		if (!fileOperations.createNonExistentDirectory(staticFolder)) {
 			return new long[]{0, 0};

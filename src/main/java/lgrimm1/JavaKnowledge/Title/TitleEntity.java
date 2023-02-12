@@ -85,7 +85,11 @@ public class TitleEntity {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
 		TitleEntity that = (TitleEntity) o;
-		return id == that.id && txtId == that.txtId && htmlId == that.htmlId && title.equals(that.title) && filename.equals(that.filename);
+		return id == that.id &&
+				txtId == that.txtId &&
+				htmlId == that.htmlId &&
+				title.equals(that.title) &&
+				filename.equals(that.filename);
 	}
 
 	@Override

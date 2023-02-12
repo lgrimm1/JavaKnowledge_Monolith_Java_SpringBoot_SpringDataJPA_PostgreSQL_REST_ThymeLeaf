@@ -39,7 +39,11 @@ public class Extractors {
 					.orElse("");
 			linkText = "See: " + title + " / " + header;
 		}
-		return link.isEmpty() ? formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + linkText + "</br>" : formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "<a href=\"" + link + "\">" + linkText + "</a></br>";
+		return link.isEmpty() ?
+				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + linkText + "</br>" :
+				formulas.getConstant(
+						Formulas.ConstantName.TAB_IN_SPACES) +
+						"<a href=\"" + link + "\">" + linkText + "</a></br>";
 	}
 
 	/**
@@ -50,17 +54,24 @@ public class Extractors {
 		List<String> tableInHtml = new ArrayList<>();
 		tableInHtml.add(formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "<table>");
 		for (int i = 0; i < tableText.size(); i++) {
-			tableInHtml.add(formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "<tr>");
+			tableInHtml.add(formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
+					formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "<tr>");
 			ArrayList<String> cells = extractCells(tableText.get(i).replace("||", ""));
 			for (String s : cells) {
 				if (i == 0) {
-					tableInHtml.add(formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "<th>" + s + "</th>");
+					tableInHtml.add(formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
+							formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
+							formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
+							"<th>" + s + "</th>");
 				}
 				else {
-					tableInHtml.add(formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "<td>" + s + "</td>");
+					tableInHtml.add(formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
+							formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
+							formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "<td>" + s + "</td>");
 				}
 			}
-			tableInHtml.add(formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "</tr>");
+			tableInHtml.add(formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
+					formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "</tr>");
 		}
 		tableInHtml.add(formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "</table>");
 		return tableInHtml;
