@@ -11,7 +11,9 @@ import static org.mockito.Mockito.when;
 class FileOperationsTest {
 
 	FileOperations fileOperations = new FileOperations();
-	String testResourcesPath = fileOperations.getResourcesPath() + fileOperations.getOSFileSeparator() + "test_resources";
+	String testResourcesPath = fileOperations.getResourcesPath() +
+			fileOperations.getOSFileSeparator() +
+			"test_resources";
 
 	@Test
 	void writeHtmlFile() {
@@ -19,7 +21,8 @@ class FileOperationsTest {
 		Assertions.assertFalse(fileOperations.writeHtmlFile(new File("abc.xyz"), null));
 		Assertions.assertFalse(fileOperations.writeHtmlFile(new File("abc.xyz"), new ArrayList<>()));
 
-		File fileWriterTestFile = new File(testResourcesPath + fileOperations.getOSFileSeparator() + "fileWriterTestFile");
+		File fileWriterTestFile = new File(testResourcesPath + fileOperations.getOSFileSeparator() +
+				"fileWriterTestFile");
 		Assertions.assertTrue(fileOperations.writeHtmlFile(fileWriterTestFile, List.of("Line 1", "Line 2")));
 		Assertions.assertTrue(fileOperations.writeHtmlFile(fileWriterTestFile, List.of("Line 1", "Line 2")));
 		System.out.println("Deletion success of test file: " + fileWriterTestFile.delete());
@@ -208,23 +211,34 @@ class FileOperationsTest {
 		when(sourceFolderNotEmptyDirectory.listFiles())
 				.thenReturn(new File[]{fileNoExtension, fileXyz, fileHtml1, fileHtml2, fileHtmlNotDeletable});
 
-		Assertions.assertEquals(0, fileOperations.deleteAllFilesInFolder(null, null));
-		Assertions.assertEquals(0, fileOperations.deleteAllFilesInFolder(sourceFolderNotExists, ".html"));
-		Assertions.assertEquals(0, fileOperations.deleteAllFilesInFolder(sourceFolderNotDirectory1, ".html"));
-		Assertions.assertEquals(0, fileOperations.deleteAllFilesInFolder(null, ".html"));
-		Assertions.assertEquals(0, fileOperations.deleteAllFilesInFolder(sourceFolderNotDirectory2, ".html"));
-		Assertions.assertEquals(0, fileOperations.deleteAllFilesInFolder(sourceFolderEmptyDirectory, ".html"));
-		Assertions.assertEquals(2, fileOperations.deleteAllFilesInFolder(sourceFolderNotEmptyDirectory, ".html"));
-		Assertions.assertEquals(1, fileOperations.deleteAllFilesInFolder(sourceFolderNotEmptyDirectory, ""));
-		Assertions.assertEquals(2, fileOperations.deleteAllFilesInFolder(sourceFolderNotEmptyDirectory, ".HTML"));
-		Assertions.assertEquals(1, fileOperations.deleteAllFilesInFolder(sourceFolderNotEmptyDirectory, ".xyz"));
+		Assertions.assertEquals(0,
+				fileOperations.deleteAllFilesInFolder(null, null));
+		Assertions.assertEquals(0,
+				fileOperations.deleteAllFilesInFolder(sourceFolderNotExists, ".html"));
+		Assertions.assertEquals(0,
+				fileOperations.deleteAllFilesInFolder(sourceFolderNotDirectory1, ".html"));
+		Assertions.assertEquals(0,
+				fileOperations.deleteAllFilesInFolder(null, ".html"));
+		Assertions.assertEquals(0,
+				fileOperations.deleteAllFilesInFolder(sourceFolderNotDirectory2, ".html"));
+		Assertions.assertEquals(0,
+				fileOperations.deleteAllFilesInFolder(sourceFolderEmptyDirectory, ".html"));
+		Assertions.assertEquals(2,
+				fileOperations.deleteAllFilesInFolder(sourceFolderNotEmptyDirectory, ".html"));
+		Assertions.assertEquals(1,
+				fileOperations.deleteAllFilesInFolder(sourceFolderNotEmptyDirectory, ""));
+		Assertions.assertEquals(2,
+				fileOperations.deleteAllFilesInFolder(sourceFolderNotEmptyDirectory, ".HTML"));
+		Assertions.assertEquals(1,
+				fileOperations.deleteAllFilesInFolder(sourceFolderNotEmptyDirectory, ".xyz"));
 	}
 
 	@Test
 	void generateFilename() {
 		Assertions.assertTrue(fileOperations.generateFilename(null).isEmpty());
 		Assertions.assertTrue(fileOperations.generateFilename("  ").isEmpty());
-		Assertions.assertEquals("abc_def_ghi_jkl_mno_pqr_stu", fileOperations.generateFilename("Abc\tdef.gHi:jkl,mno;     pqr stu"));
+		Assertions.assertEquals("abc_def_ghi_jkl_mno_pqr_stu",
+				fileOperations.generateFilename("Abc\tdef.gHi:jkl,mno;     pqr stu"));
 	}
 
 	@Test

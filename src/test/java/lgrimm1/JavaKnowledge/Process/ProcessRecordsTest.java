@@ -40,13 +40,37 @@ class ProcessRecordsTest {
 
 		when(titleRepository.findByTitleContainingAllIgnoreCase("Word1"))
 				.thenReturn(List.of(
-						new TitleEntity(2L, "Title with word1", "title_with_word1", 3L, 4L),
-						new TitleEntity(3L, "Title with word1 word2 word3", "title_with_word1_word2_word3", 6L, 7L)
+						new TitleEntity(
+								2L,
+								"Title with word1",
+								"title_with_word1",
+								3L,
+								4L
+						),
+						new TitleEntity(
+								3L,
+								"Title with word1 word2 word3",
+								"title_with_word1_word2_word3",
+								6L,
+								7L
+						)
 				));
 		when(titleRepository.findByTitleContainingAllIgnoreCase("WORD2"))
 				.thenReturn(List.of(
-						new TitleEntity(4L, "Title with word2", "title_with_word2", 10L, 11L),
-						new TitleEntity(3L, "Title with word1 word2 word3", "title_with_word1_word2_word3", 6L, 7L)
+						new TitleEntity(
+								4L,
+								"Title with word2",
+								"title_with_word2",
+								10L,
+								11L
+						),
+						new TitleEntity(
+								3L,
+								"Title with word1 word2 word3",
+								"title_with_word1_word2_word3",
+								6L,
+								7L
+						)
 				));
 
 		when(txtRepository.findByContentContainingAllIgnoreCase("Word1"))
@@ -61,9 +85,21 @@ class ProcessRecordsTest {
 		when(titleRepository.findByTxtId(20L))
 				.thenReturn(Optional.empty());
 		when(titleRepository.findByTxtId(6L))
-				.thenReturn(Optional.of(new TitleEntity(3L, "Title with word1 word2 word3", "title_with_word1_word2_word3", 6L, 7L)));
+				.thenReturn(Optional.of(new TitleEntity(
+						3L,
+						"Title with word1 word2 word3",
+						"title_with_word1_word2_word3",
+						6L,
+						7L
+				)));
 		when(titleRepository.findByTxtId(30L))
-				.thenReturn(Optional.of(new TitleEntity(40L, "Another Title with another words", "another_title_with_another_words", 30L, 7L)));
+				.thenReturn(Optional.of(new TitleEntity(
+						40L,
+						"Another Title with another words",
+						"another_title_with_another_words",
+						30L,
+						7L
+				)));
 
 		Assertions.assertEquals(Set.of(
 				"Title with word1",
@@ -80,16 +116,38 @@ class ProcessRecordsTest {
 	@Test
 	void deleteByTitles() {
 		when(titleRepository.findByTitle("title 1"))
-				.thenReturn(Optional.of(new TitleEntity(1L, "title 1", "title_1", 11L, 21L)));
+				.thenReturn(Optional.of(new TitleEntity(
+						1L,
+						"title 1",
+						"title_1",
+						11L,
+						21L
+				)));
 		when(titleRepository.findByTitle("title 2"))
-				.thenReturn(Optional.of(new TitleEntity(2L, "title 2", "title_2", 12L, 22L)));
+				.thenReturn(Optional.of(new TitleEntity(
+						2L,
+						"title 2",
+						"title_2",
+						12L,
+						22L
+				)));
 		when(titleRepository.findByTitle("title 3"))
 				.thenReturn(Optional.empty());
 		when(titleRepository.count())
 				.thenReturn(2L);
 
-		Assertions.assertEquals(0, processRecords.deleteByTitles(null, titleRepository, txtRepository, htmlRepository));
-		Assertions.assertEquals(0, processRecords.deleteByTitles(new ArrayList<>(), titleRepository, txtRepository, htmlRepository));
+		Assertions.assertEquals(0, processRecords.deleteByTitles(
+				null,
+				titleRepository,
+				txtRepository,
+				htmlRepository
+		));
+		Assertions.assertEquals(0, processRecords.deleteByTitles(
+				new ArrayList<>(),
+				titleRepository,
+				txtRepository,
+				htmlRepository
+		));
 
 		Assertions.assertEquals(2, processRecords.deleteByTitles(List.of(
 				"title 1",
@@ -119,7 +177,10 @@ class ProcessRecordsTest {
 				.thenReturn("static_path");
 		when(fileOperations.createNonExistentDirectory(new File("static_path")))
 				.thenReturn(false);
-		Assertions.assertArrayEquals(new long[]{0, 0}, processRecords.publishHtml(titleRepository, htmlRepository, fileOperations));
+		Assertions.assertArrayEquals(
+				new long[]{0, 0},
+				processRecords.publishHtml(titleRepository, htmlRepository, fileOperations
+				));
 	}
 
 	@Test
@@ -153,6 +214,9 @@ class ProcessRecordsTest {
 		when(fileOperations.writeHtmlFile(new File("static_path/title_2.html"), List.of("Content 12")))
 				.thenReturn(false);
 
-		Assertions.assertArrayEquals(new long[]{10L, 1L}, processRecords.publishHtml(titleRepository, htmlRepository, fileOperations));
+		Assertions.assertArrayEquals(
+				new long[]{10L, 1L},
+				processRecords.publishHtml(titleRepository, htmlRepository, fileOperations
+				));
 	}
 }

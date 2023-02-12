@@ -62,6 +62,13 @@ class ProcessPageTest {
 
 		Assertions.assertEquals(
 				expectedHtml,
-				processPage.processTxt(txtContent, "Title Words", titleRepository, formulas, extractors, htmlGenerators));
+				processPage.processTxt(
+						txtContent,
+						"Title Words",
+						titleRepository,
+						formulas,
+						extractors,
+						htmlGenerators
+				));
 	}
 }

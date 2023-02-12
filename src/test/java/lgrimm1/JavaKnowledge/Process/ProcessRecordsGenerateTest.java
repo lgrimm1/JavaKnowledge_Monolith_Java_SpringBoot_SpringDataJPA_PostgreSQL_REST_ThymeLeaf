@@ -180,7 +180,15 @@ class ProcessRecordsGenerateTest {
 						"New Line 52"
 				)));
 
-		long[] result = processRecords.generate(titleRepository, txtRepository, htmlRepository, formulas, processPage, extractors, htmlGenerators);
+		long[] result = processRecords.generate(
+				titleRepository,
+				txtRepository,
+				htmlRepository,
+				formulas,
+				processPage,
+				extractors,
+				htmlGenerators
+		);
 		Assertions.assertEquals(5, result[0]);
 		Assertions.assertTrue(result[1] > 0);
 	}

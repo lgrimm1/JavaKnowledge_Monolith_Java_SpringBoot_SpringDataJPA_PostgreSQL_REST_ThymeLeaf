@@ -29,16 +29,24 @@ class ExtractorsTest {
 		String line = "=>Title Text";
 
 		when(titleRepository.findByTitle("Title Text"))
-				.thenReturn(Optional.of(new TitleEntity(1L, "Title Text", "title_text", 1L, 1L)));
+				.thenReturn(Optional.of(new TitleEntity(
+						1L,
+						"Title Text",
+						"title_text",
+						1L,
+						1L
+				)));
 		Assertions.assertEquals(
-				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "<a href=\"title_text.html\">See: Title Text</a></br>",
+				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
+						"<a href=\"title_text.html\">See: Title Text</a></br>",
 				extractors.extractReference(line, formulas, titleRepository)
 		);
 
 		when(titleRepository.findByTitle("Title Text"))
 				.thenReturn(Optional.empty());
 		Assertions.assertEquals(
-				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "See: Title Text</br>",
+				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
+						"See: Title Text</br>",
 				extractors.extractReference(line, formulas, titleRepository)
 		);
 	}
@@ -48,16 +56,23 @@ class ExtractorsTest {
 		String line = "=>Title Text;1.2. Header Word";
 
 		when(titleRepository.findByTitle("Title Text"))
-				.thenReturn(Optional.of(new TitleEntity(1L, "Title Text", "title_text", 1L, 1L)));
+				.thenReturn(Optional.of(new TitleEntity(1L,
+						"Title Text",
+						"title_text",
+						1L,
+						1L
+				)));
 		Assertions.assertEquals(
-				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "<a href=\"title_text.html#1.2. Header Word\">See: Title Text / 1.2. Header Word</a></br>",
+				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
+						"<a href=\"title_text.html#1.2. Header Word\">See: Title Text / 1.2. Header Word</a></br>",
 				extractors.extractReference(line, formulas, titleRepository)
 		);
 
 		when(titleRepository.findByTitle("Title Text"))
 				.thenReturn(Optional.empty());
 		Assertions.assertEquals(
-				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "See: Title Text / 1.2. Header Word</br>",
+				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
+						"See: Title Text / 1.2. Header Word</br>",
 				extractors.extractReference(line, formulas, titleRepository)
 		);
 	}
@@ -71,21 +86,45 @@ class ExtractorsTest {
 		);
 		List<String> expectedHtml = List.of(
 				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "<table>",
-				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "<tr>",
-				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "<th>Header 1</th>",
-				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "<th>Header 2</th>",
-				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "<th>Header 3</th>",
-				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "</tr>",
-				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "<tr>",
-				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "<td>Cell 11</td>",
-				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "<td>Cell 12</td>",
-				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "<td>Cell 13</td>",
-				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "</tr>",
-				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "<tr>",
-				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "<td>Cell 21</td>",
-				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "<td>Cell 22</td>",
-				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "<td>Cell 23</td>",
-				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "</tr>",
+				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
+						formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "<tr>",
+				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
+						formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
+						formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "<th>Header 1</th>",
+				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
+						formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
+						formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "<th>Header 2</th>",
+				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
+						formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
+						formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "<th>Header 3</th>",
+				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
+						formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "</tr>",
+				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
+						formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "<tr>",
+				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
+						formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
+						formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "<td>Cell 11</td>",
+				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
+						formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
+						formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "<td>Cell 12</td>",
+				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
+						formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
+						formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "<td>Cell 13</td>",
+				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
+						formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "</tr>",
+				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
+						formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "<tr>",
+				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
+						formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
+						formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "<td>Cell 21</td>",
+				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
+						formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
+						formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "<td>Cell 22</td>",
+				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
+						formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
+						formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "<td>Cell 23</td>",
+				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
+						formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "</tr>",
 				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "</table>"
 		);
 		Assertions.assertIterableEquals(expectedHtml, extractors.extractTable(originalText, formulas));

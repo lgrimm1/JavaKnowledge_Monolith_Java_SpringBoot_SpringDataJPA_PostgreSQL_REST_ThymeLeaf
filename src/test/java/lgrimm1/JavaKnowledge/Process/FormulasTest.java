@@ -36,7 +36,10 @@ class FormulasTest {
 		Assertions.assertEquals(formulas.SUBLINE, formulas.getConstant(Formulas.ConstantName.SUBLINE));
 		Assertions.assertEquals(formulas.TAB_IN_SPACES, formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES));
 		Assertions.assertEquals(formulas.TAB_IN_HTML, formulas.getConstant(Formulas.ConstantName.TAB_IN_HTML));
-		Assertions.assertEquals(formulas.LEVEL_1_SEPARATOR, formulas.getConstant(Formulas.ConstantName.LEVEL_1_SEPARATOR));
+		Assertions.assertEquals(
+				formulas.LEVEL_1_SEPARATOR,
+				formulas.getConstant(Formulas.ConstantName.LEVEL_1_SEPARATOR)
+		);
 		Assertions.assertEquals(formulas.VERSIONS, formulas.getConstant(Formulas.ConstantName.VERSIONS));
 		Assertions.assertEquals(formulas.ROOT_HTML_NAME, formulas.getConstant(Formulas.ConstantName.ROOT_HTML_NAME));
 	}

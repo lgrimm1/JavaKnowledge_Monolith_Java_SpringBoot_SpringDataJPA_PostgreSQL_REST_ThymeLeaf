@@ -193,8 +193,12 @@ class HtmlGeneratorsTest {
 				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "<title>" + title + "</title>",
 				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "<style>",
 				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "table, th, td {",
-				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "border: 1px solid black;",
-				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "border-collapse: collapse;",
+				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
+						formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
+						"border: 1px solid black;",
+				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
+						formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
+						"border-collapse: collapse;",
 				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "}",
 				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "h1, h2, h3 {color:red;}",
 				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "h4 {color:blue;}",
@@ -202,7 +206,8 @@ class HtmlGeneratorsTest {
 				"</head>",
 				"<body>",
 				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "<a name=\"top\"></a>",
-				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + formulas.getConstant(Formulas.ConstantName.VERSIONS) + "<br>",
+				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
+						formulas.getConstant(Formulas.ConstantName.VERSIONS) + "<br>",
 				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "<h1>" + title + "</h1>"
 		);
 		Assertions.assertEquals(neededFirstTags, htmlGenerators.generateFirstTags(title, formulas));
@@ -212,8 +217,11 @@ class HtmlGeneratorsTest {
 	void generateLastTags() {
 		List<String> neededLastTags = List.of(
 				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "<br>",
-				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "<a href=\"#top\">Back to top of page</a><br>",
-				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "<a href=\""+ formulas.getConstant(Formulas.ConstantName.ROOT_HTML_NAME) +"\">Back to root page</a><br>",
+				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
+						"<a href=\"#top\">Back to top of page</a><br>",
+				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
+						"<a href=\""+ formulas.getConstant(Formulas.ConstantName.ROOT_HTML_NAME) +
+						"\">Back to root page</a><br>",
 				"</body>",
 				"</html>"
 		);
@@ -223,8 +231,10 @@ class HtmlGeneratorsTest {
 	@Test
 	void changeToHtmlCharsInLine() {
 		Assertions.assertEquals(
-				"&lt;tag>" + formulas.getConstant(Formulas.ConstantName.TAB_IN_HTML) + "text" + formulas.getConstant(Formulas.ConstantName.TAB_IN_HTML) + "text>tag2&lt;",
-				htmlGenerators.changeToHtmlCharsInLine("<tag>" + formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "text\ttext>tag2<", formulas));
+				"&lt;tag>" + formulas.getConstant(Formulas.ConstantName.TAB_IN_HTML) + "text" +
+						formulas.getConstant(Formulas.ConstantName.TAB_IN_HTML) + "text>tag2&lt;",
+				htmlGenerators.changeToHtmlCharsInLine("<tag>" +
+						formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "text\ttext>tag2<", formulas));
 	}
 
 	@Test
@@ -244,8 +254,10 @@ class HtmlGeneratorsTest {
 		List<String> needed = List.of(
 				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "Text 1<br>",
 				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "Text 2<br>",
-				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "<a href=\"#Header 1\">" + formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "Header 1</a><br>",
-				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "<a href=\"#Header 2\">" + formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "Header 2</a><br>",
+				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "<a href=\"#Header 1\">" +
+						formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "Header 1</a><br>",
+				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "<a href=\"#Header 2\">" +
+						formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "Header 2</a><br>",
 				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "<br>",
 				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "<h2>Header 1</h2>",
 				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "Text 3<br>",
