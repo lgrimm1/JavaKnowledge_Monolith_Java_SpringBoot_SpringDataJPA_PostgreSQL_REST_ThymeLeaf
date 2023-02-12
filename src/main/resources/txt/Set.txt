@@ -35,6 +35,23 @@ All methods of Collection interface are available.
 ||contains()|checks whether the given value is element of the set||
 ||containsAll()|checks whether all elements of the given collection are elements of the set||
 ||hashCode()|returns hash code of the element (address of the element) of the set||
+||of()|creates an immutable Set from given parameter(s)||
+
+The of() method creates immutable Collection. That said, it is a very fast way to declare a Set with its content for e.g. testing purposes but adding, modifying or deleting elements will be impossible.
+Solution is using the constructor of the particular Set subclass on the immutable Set to make it mutable.
+
+EXAMPLE FOR CONVERTING IMMUTABLE LIST TO MUTABLE:
+Set<String> immutableSet = Set.of(
+        "line 1",
+        "line 2"
+);
+Set<String> mutableSet = new HashSet<>(immutableSet);
+...
+Set<Long> mutableSet = new HashSet<>(Set.of(
+        "line 1",
+        "line 2"
+));
+END OF EXAMPLE
 
 ||Mathematical operation|Method||
 ||union|addAll()||

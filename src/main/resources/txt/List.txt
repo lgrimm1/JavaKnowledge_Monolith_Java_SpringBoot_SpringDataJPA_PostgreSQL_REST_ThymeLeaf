@@ -27,6 +27,23 @@ These instances can use methods in the List interface.
 ||size()|returns the number of elements||
 ||toArray()|convert the List to an array||
 ||contains()|returns true if the List contains the element||
+||of()|creates an immutable List from given parameter(s)||
+
+The of() method creates immutable Collection. That said, it is a very fast way to declare a List with its content for e.g. testing purposes but adding, modifying or deleting elements will be impossible.
+Solution is using the constructor of the particular List subclass on the immutable List to make it mutable.
+
+EXAMPLE FOR CONVERTING IMMUTABLE LIST TO MUTABLE:
+List<String> immutableList = List.of(
+        "line 1",
+        "line 2"
+);
+List<String> mutableList = new ArrayList<>(immutableList);
+...
+List<Long> mutableList = new ArrayList<>(List.of(
+        "line 1",
+        "line 2"
+));
+END OF EXAMPLE
 
 Differences between List and Set:
     a. List can include duplicated elements

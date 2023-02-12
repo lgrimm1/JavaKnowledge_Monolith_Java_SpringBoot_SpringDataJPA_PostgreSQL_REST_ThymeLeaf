@@ -103,6 +103,14 @@ List<type> list = stream.collect(Collectors.toList());
 ||reduce(int identity, lambda)|processes the stream to accumulate a single value of type equals with stream element type||
 ||forEach(lambda)|iterates through, executes lambda on all elements||
 ||iterator()|returns an Iterator||
+||of()|creates an immutable Stream from given parameter(s)||
+||toList()|creates an immutable List from the Stream||
+||toSet()|creates an immutable Set from the Stream||
+||collect()|exports the Stream to a mutable Collection, see later||
+
+The of() method creates immutable Stream. That said, it is a very fast way to declare a Stream with its content for e.g. testing purposes but modifying elements will be impossible.
+Also, the toList() and toSet() methods export the Stream to immutable Collection.
+If that is not acceptable, solution is using the collect() method of Stream to export the content to mutable List ot Set, see later.
 
 EXAMPLE FOR GENERATING MINIMUM, MAXIMUM, TOTAL AND AVERAGE FROM STREAM:
 import java.util.stream.Stream;
