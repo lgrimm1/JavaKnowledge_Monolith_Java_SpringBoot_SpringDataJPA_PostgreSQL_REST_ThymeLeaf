@@ -22,9 +22,10 @@ public class CommonService {
 	private final FileOperations fileOperations;
 	private final Extractors extractors;
 	private final ProcessPage processPage;
+	private final HtmlGenerators htmlGenerators;
 
 	@Autowired
-	public CommonService(TitleRepository titleRepository, TxtRepository txtRepository, HtmlRepository htmlRepository, Formulas formulas, ProcessRecords processRecords, FileOperations fileOperations, Extractors extractors, ProcessPage processPage) {
+	public CommonService(TitleRepository titleRepository, TxtRepository txtRepository, HtmlRepository htmlRepository, Formulas formulas, ProcessRecords processRecords, FileOperations fileOperations, Extractors extractors, ProcessPage processPage, HtmlGenerators htmlGenerators) {
 		this.titleRepository = titleRepository;
 		this.txtRepository = txtRepository;
 		this.htmlRepository = htmlRepository;
@@ -33,6 +34,7 @@ public class CommonService {
 		this.fileOperations = fileOperations;
 		this.extractors = extractors;
 		this.processPage = processPage;
+		this.htmlGenerators = htmlGenerators;
 	}
 
 	public void getRoot(Model model) {
@@ -262,7 +264,7 @@ public class CommonService {
 			model.addAttribute("message", "Please confirm generating pages.");
 		}
 		else {
-			long[] messageData = processRecords.generate(titleRepository, txtRepository, htmlRepository, formulas, processPage, extractors);
+			long[] messageData = processRecords.generate(titleRepository, txtRepository, htmlRepository, formulas, processPage, extractors, htmlGenerators);
 			model.addAttribute("titles", processRecords.getAllTitles(titleRepository));
 			model.addAttribute("files", new ArrayList<File>());
 			model.addAttribute("confirm", false);

@@ -14,7 +14,7 @@ import java.util.*;
  * @see #deleteByTitles(List, TitleRepository, TxtRepository, HtmlRepository)
  * @see #getAllTitles(TitleRepository)
  * @see #importTxtFiles(List, TitleRepository, TxtRepository, HtmlRepository, FileOperations, Formulas, Extractors)
- * @see #generate(TitleRepository, TxtRepository, HtmlRepository, Formulas, ProcessPage, Extractors)
+ * @see #generate(TitleRepository, TxtRepository, HtmlRepository, Formulas, ProcessPage, Extractors, HtmlGenerators)
  * @see #publishHtml(TitleRepository, HtmlRepository, FileOperations)
  */
 public class ProcessRecords {
@@ -139,7 +139,8 @@ public class ProcessRecords {
 						   HtmlRepository htmlRepository,
 						   Formulas formulas,
 						   ProcessPage processPage,
-						   Extractors extractors) {
+						   Extractors extractors,
+						   HtmlGenerators htmlGenerators) {
 		LocalTime startTime = LocalTime.now();
 		List<TitleEntity> titleEntities = titleRepository.findAll();
 		for (TitleEntity titleEntity : titleEntities) {
@@ -151,13 +152,10 @@ public class ProcessRecords {
 				List<String> html = processPage.processTxt(
 						optionalTxtEntity.get().getContent(),
 						title,
-						formulas.TAB_IN_SPACES,
-						formulas.TAB_IN_HTML,
-						formulas.SUPERLINE,
-						formulas.SUBLINE,
-						formulas.ROOT_HTML_NAME,
-						formulas.VERSIONS,
-						extractors);
+						titleRepository,
+						formulas,
+						extractors,
+						htmlGenerators);
 				htmlRepository.deleteById(titleEntity.getHtmlId());
 				long htmlId = htmlRepository.save(new HtmlEntity(html)).getId();
 				titleRepository.deleteById(titleEntity.getId());
@@ -179,13 +177,16 @@ public class ProcessRecords {
 		return new long[]{
 				deleted,
 				titleRepository.findAll().stream()
-						.filter(titleEntity -> htmlRepository.findById(titleEntity.getHtmlId()).isPresent())
-						.filter(titleEntity -> fileOperations.writeHtmlFile(
-								new File(fileOperations.getStaticPath() +
-										fileOperations.getOSFileSeparator() +
-										titleEntity.getFilename() +
-										".html"),
-								htmlRepository.findById(titleEntity.getHtmlId()).get().getContent()))
+						.filter(titleEntity ->
+								htmlRepository.findById(titleEntity.getHtmlId()).isPresent() &&
+										fileOperations.writeHtmlFile(
+												new File(fileOperations.getStaticPath() +
+														fileOperations.getOSFileSeparator() +
+														titleEntity.getFilename() +
+														".html"),
+												htmlRepository.findById(titleEntity.getHtmlId()).get().getContent()
+										)
+						)
 						.count()
 		};
 	}

@@ -1,11 +1,13 @@
 package lgrimm1.JavaKnowledge.Process;
 
+import lgrimm1.JavaKnowledge.Title.*;
+
 import java.util.*;
 
 /**
  * Extractors of special data.
- * @see #extractReference(String, String)
- * @see #extractTable(List, String)
+ * @see #extractReference(String, Formulas, TitleRepository)
+ * @see #extractTable(List, Formulas)
  * @see #extractCells(String)
  * @see #extractTitle(List, Formulas)
  */
@@ -14,44 +16,53 @@ public class Extractors {
 	/**
 	 * Extracts reference components from a line.
 	 * The first ; separates file reference from name reference inside the file, using it is optional.
-	 * Returns String[2] where [0] is HTML-file or HTML-file#name, [1] is link text.
+	 * In case there is no matching title in TitleRepository, instead of link a text will be returned.
 	 */
-	public String extractReference(String line, String tabInSpaces) {
+	public String extractReference(String line, Formulas formulas, TitleRepository titleRepository) {
 		line = line.substring(2);
-		String link, linkText;
+		String title, link, linkText;
 		int posHeader = line.indexOf(";");
 		if (posHeader == -1) { //only page, no header
-			link = line + ".html";
-			linkText = "See: " + line;
+			title = line;
+			Optional<TitleEntity> optionalTitleEntity = titleRepository.findByTitle(title);
+			link = optionalTitleEntity
+					.map(titleEntity -> titleEntity.getFilename() + ".html")
+					.orElse("");
+			linkText = "See: " + title;
 		}
 		else { //page with header
-			link = line.substring(0, posHeader) + ".html#" + line.substring(posHeader + 1);
-			linkText = "See: " + line.substring(0, posHeader) + " / " + line.substring(posHeader + 1);
+			title = line.substring(0, posHeader);
+			String header = line.substring(posHeader + 1);
+			Optional<TitleEntity> optionalTitleEntity = titleRepository.findByTitle(title);
+			link = optionalTitleEntity
+					.map(titleEntity -> titleEntity.getFilename() + ".html#" + header)
+					.orElse("");
+			linkText = "See: " + title + " / " + header;
 		}
-		return tabInSpaces + "<a href=\"" + link + "\">" + linkText.replaceAll("_", " ") + "</a></br>";
+		return link.isEmpty() ? formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + linkText + "</br>" : formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "<a href=\"" + link + "\">" + linkText + "</a></br>";
 	}
 
 	/**
-	 * Extracts table components and add it to html.
+	 * Extracts table components.
 	 */
 	public List<String> extractTable(List<String> tableText,
-									String tabInSpaces) {
+									Formulas formulas) {
 		List<String> tableInHtml = new ArrayList<>();
-		tableInHtml.add(tabInSpaces + "<table>");
+		tableInHtml.add(formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "<table>");
 		for (int i = 0; i < tableText.size(); i++) {
-			tableInHtml.add(tabInSpaces + tabInSpaces + "<tr>");
+			tableInHtml.add(formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "<tr>");
 			ArrayList<String> cells = extractCells(tableText.get(i).replace("||", ""));
 			for (String s : cells) {
 				if (i == 0) {
-					tableInHtml.add(tabInSpaces + tabInSpaces + tabInSpaces + "<th>" + s + "</th>");
+					tableInHtml.add(formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "<th>" + s + "</th>");
 				}
 				else {
-					tableInHtml.add(tabInSpaces + tabInSpaces + tabInSpaces + "<td>" + s + "</td>");
+					tableInHtml.add(formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "<td>" + s + "</td>");
 				}
 			}
-			tableInHtml.add(tabInSpaces + tabInSpaces + "</tr>");
+			tableInHtml.add(formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "</tr>");
 		}
-		tableInHtml.add(tabInSpaces + "</table>");
+		tableInHtml.add(formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "</table>");
 		return tableInHtml;
 	}
 
@@ -78,8 +89,8 @@ public class Extractors {
 	public String extractTitle(List<String> txt, Formulas formulas) {
 		if (txt != null &&
 				txt.size() > 2 &&
-				txt.get(0).equals(formulas.SUPERLINE) &&
-				txt.get(2).equals(formulas.SUPERLINE) &&
+				txt.get(0).equals(formulas.getConstant(Formulas.ConstantName.SUPERLINE)) &&
+				txt.get(2).equals(formulas.getConstant(Formulas.ConstantName.SUPERLINE)) &&
 				!txt.get(1).isBlank()) {
 			return txt.get(1).trim().toUpperCase();
 		}

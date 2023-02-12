@@ -2,8 +2,10 @@ package lgrimm1.JavaKnowledge.Process;
 
 /**
  * Carries constants and formulas.
+ * Fields are opened for public due to testing purposes, protected with final access modifiers.
  * @see #generateRepeatedPattern(String, int)
  * @see #getFormula(String)
+ * @see #getConstant(ConstantName)
  */
 public class Formulas {
 
@@ -14,9 +16,10 @@ public class Formulas {
 	public final String LEVEL_1_SEPARATOR = ";";
 	public final String VERSIONS = "Up to Java 17, Spring 3";
 	public final String ROOT_HTML_NAME = "!JavaKnowledge";
-	enum FormulaType {
-		TITLE, HEADER_1, HEADER_2, TABLE, EXAMPLE, REFERENCE
+	public enum ConstantName {
+		SUPERLINE, SUBLINE, TAB_IN_SPACES, TAB_IN_HTML, LEVEL_1_SEPARATOR, VERSIONS, ROOT_HTML_NAME
 	}
+
 	public final String FORMULA_TITLE =
 			SUPERLINE + "\n" +
 			"TITLE\n" +
@@ -59,6 +62,19 @@ public class Formulas {
 			case "REFERENCE" -> FORMULA_REFERENCE;
 			default -> "";
 		};
+	}
+
+	public String getConstant(ConstantName constantName) {
+		return switch (constantName) {
+			case SUPERLINE -> SUPERLINE;
+			case SUBLINE -> SUBLINE;
+			case TAB_IN_SPACES -> TAB_IN_SPACES;
+			case TAB_IN_HTML -> TAB_IN_HTML;
+			case LEVEL_1_SEPARATOR -> LEVEL_1_SEPARATOR;
+			case VERSIONS -> VERSIONS;
+			case ROOT_HTML_NAME -> ROOT_HTML_NAME;
+		};
+
 	}
 
 }

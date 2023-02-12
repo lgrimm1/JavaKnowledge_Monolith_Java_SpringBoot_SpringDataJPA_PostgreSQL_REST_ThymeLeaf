@@ -20,6 +20,7 @@ class ProcessRecordsGenerateTest {
 	Formulas formulas;
 	Extractors extractors;
 	ProcessPage processPage;
+	HtmlGenerators htmlGenerators;
 
 	@BeforeEach
 	void setUp() {
@@ -30,6 +31,7 @@ class ProcessRecordsGenerateTest {
 		formulas = Mockito.mock(Formulas.class);
 		extractors = Mockito.mock(Extractors.class);
 		processPage = Mockito.mock(ProcessPage.class);
+		htmlGenerators = Mockito.mock(HtmlGenerators.class);
 	}
 
 	@Test
@@ -73,13 +75,10 @@ class ProcessRecordsGenerateTest {
 						"Line 12"
 				),
 				"Title 1",
-				formulas.TAB_IN_SPACES,
-				formulas.TAB_IN_HTML,
-				formulas.SUPERLINE,
-				formulas.SUBLINE,
-				formulas.ROOT_HTML_NAME,
-				formulas.VERSIONS,
-				extractors))
+				titleRepository,
+				formulas,
+				extractors,
+				htmlGenerators))
 				.thenReturn(List.of(
 						"New Line 11",
 						"New Line 12"
@@ -90,13 +89,10 @@ class ProcessRecordsGenerateTest {
 						"Line 22"
 				),
 				"Title 2",
-				formulas.TAB_IN_SPACES,
-				formulas.TAB_IN_HTML,
-				formulas.SUPERLINE,
-				formulas.SUBLINE,
-				formulas.ROOT_HTML_NAME,
-				formulas.VERSIONS,
-				extractors))
+				titleRepository,
+				formulas,
+				extractors,
+				htmlGenerators))
 				.thenReturn(List.of(
 						"New Line 21",
 						"New Line 22"
@@ -107,13 +103,10 @@ class ProcessRecordsGenerateTest {
 						"Line 32"
 				),
 				"Title 3",
-				formulas.TAB_IN_SPACES,
-				formulas.TAB_IN_HTML,
-				formulas.SUPERLINE,
-				formulas.SUBLINE,
-				formulas.ROOT_HTML_NAME,
-				formulas.VERSIONS,
-				extractors))
+				titleRepository,
+				formulas,
+				extractors,
+				htmlGenerators))
 				.thenReturn(List.of(
 						"New Line 31",
 						"New Line 32"
@@ -124,13 +117,10 @@ class ProcessRecordsGenerateTest {
 						"Line 42"
 				),
 				"Title 4",
-				formulas.TAB_IN_SPACES,
-				formulas.TAB_IN_HTML,
-				formulas.SUPERLINE,
-				formulas.SUBLINE,
-				formulas.ROOT_HTML_NAME,
-				formulas.VERSIONS,
-				extractors))
+				titleRepository,
+				formulas,
+				extractors,
+				htmlGenerators))
 				.thenReturn(List.of(
 						"New Line 41",
 						"New Line 42"
@@ -141,13 +131,10 @@ class ProcessRecordsGenerateTest {
 						"Line 52"
 				),
 				"Title 5",
-				formulas.TAB_IN_SPACES,
-				formulas.TAB_IN_HTML,
-				formulas.SUPERLINE,
-				formulas.SUBLINE,
-				formulas.ROOT_HTML_NAME,
-				formulas.VERSIONS,
-				extractors))
+				titleRepository,
+				formulas,
+				extractors,
+				htmlGenerators))
 				.thenReturn(List.of(
 						"New Line 51",
 						"New Line 52"
@@ -193,7 +180,7 @@ class ProcessRecordsGenerateTest {
 						"New Line 52"
 				)));
 
-		long[] result = processRecords.generate(titleRepository, txtRepository, htmlRepository, formulas, processPage, extractors);
+		long[] result = processRecords.generate(titleRepository, txtRepository, htmlRepository, formulas, processPage, extractors, htmlGenerators);
 		Assertions.assertEquals(5, result[0]);
 		Assertions.assertTrue(result[1] > 0);
 	}

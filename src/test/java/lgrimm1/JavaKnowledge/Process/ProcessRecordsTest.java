@@ -3,15 +3,13 @@ package lgrimm1.JavaKnowledge.Process;
 import lgrimm1.JavaKnowledge.Html.*;
 import lgrimm1.JavaKnowledge.Title.*;
 import lgrimm1.JavaKnowledge.Txt.*;
-import org.hibernate.annotations.*;
 import org.junit.jupiter.api.*;
 import org.mockito.*;
 
 import java.io.*;
 import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 class ProcessRecordsTest {
 

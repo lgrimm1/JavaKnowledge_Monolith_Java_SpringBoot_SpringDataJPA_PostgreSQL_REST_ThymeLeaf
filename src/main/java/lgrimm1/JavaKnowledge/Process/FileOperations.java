@@ -2,8 +2,6 @@ package lgrimm1.JavaKnowledge.Process;
 
 import java.io.*;
 import java.util.*;
-import java.util.concurrent.atomic.*;
-import java.util.stream.*;
 
 /**
  * Handles file-level operations.<p>
@@ -105,40 +103,7 @@ public class FileOperations {
 	}
 
 	/**
-	 * In case extensionWithSeparator is empty, will get all files.
-	 */
-/*
-	public List<File> getListOfFiles(File folder, String extensionWithSeparator) {
-		try {
-			File[] filesAndFolders = folder.listFiles();
-			if (filesAndFolders != null) {
-				if (extensionWithSeparator.isEmpty()) {
-					return Arrays.stream(filesAndFolders)
-							.filter(File::isFile)
-							.sorted()
-							.collect(Collectors.toCollection(ArrayList::new));
-				}
-				else {
-					return Arrays.stream(filesAndFolders)
-							.filter(File::isFile)
-							.filter(file -> (getExtension(file).equalsIgnoreCase(extensionWithSeparator)))
-							.sorted()
-							.collect(Collectors.toCollection(ArrayList::new));
-				}
-
-			}
-			else {
-				return new ArrayList<>();
-			}
-		}
-		catch (Exception e) {
-			return new ArrayList<>();
-		}
-	}
-*/
-
-	/**
-	 * Replaces TAB, dot, column, semicolumn, :, quote, double-quote and (repeated) SPACE characters to simple underline character, furthermore transforms the name to lowercase form, in order to form a proper filename.
+	 * Replaces TAB, dot, column, semicolon, :, quote, double-quote and (repeated) SPACE characters to simple underline character, furthermore transforms the name to lowercase form, in order to form a proper filename.
 	 */
 	public String generateFilename(String title) {
 		if (title == null || title.isBlank()) {
