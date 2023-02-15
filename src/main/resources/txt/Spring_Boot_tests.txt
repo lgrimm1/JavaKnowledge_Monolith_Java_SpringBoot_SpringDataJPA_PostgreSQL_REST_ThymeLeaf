@@ -112,6 +112,9 @@ As normally, under the src/test/java/<package> folder, the tests will be created
 Service classes need creating their corresponding storage instances first since these objects are needed for class dependency injection in constructors of the service classes. In case this version is followed, the tests will be dependent since the storage classes will be used during tests.
 Best practice in order to gain independent unit tests, is to use mocked repository (storage) classes injected into the right controllers.
 
+In model&view mode, in case of best practice, the controller class is thin, the controller method passes the Model object to the service method to manipulate.
+That said, examining the Model object in service class is appropriate.
+
 EXAMPLE FOR SERVICE CLASS TEST CLASS (NOT INDEPENDENT UNIT TEST):
 import org.junit.jupiter.api.*;
 
@@ -169,3 +172,5 @@ END OF EXAMPLE
 5. CONTROLLER CLASS TESTS
 =================================================================================
 Visit the Spring_Boot_controller_tests page for description.
+
+//TODO https://www.baeldung.com/spring-boot-testing

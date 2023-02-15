@@ -97,3 +97,5 @@ Mockito.verify(testfolder, Mockito.times(1)).listFiles(); //true
 
 list = Arrays.asList(testfolder.listFiles());
 Mockito.verify(testfolder, Mockito.times(2)).listFiles(); //true
+
+//TODO https://www.vogella.com/tutorials/Mockito/article.html

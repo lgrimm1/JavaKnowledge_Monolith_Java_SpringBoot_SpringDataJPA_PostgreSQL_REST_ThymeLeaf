@@ -1,0 +1,144 @@
+=================================================================================
+JUNIT DYNAMIC AND PARAMETERIZED TESTS
+=================================================================================
+1. DYNAMIC TESTS (TEST FACTORY)
+2. PARAMETERIZED TESTS
+
+=>JUNIT
+
+=================================================================================
+1. DYNAMIC TESTS (TEST FACTORY)
+=================================================================================
+A test method can be marked with @TestFactory annotation in case more test should be invoked but with different input and expected data.
+The tests will be organized into Iterable or Collection or Stream. Upon starting the test, JUnit will invoke all tests stored in these objects.
+
+Be aware that @BeforeEach and @AfterEach methods will not be launched before and after, which means the test must contain these codes independently if needed.
+Because this test variant changes the tests invoked by JUnit, the variant is called dynamic test.
+
+The return value of the test factory method must be one of these:
+    a. Iterable<DynamicTest>
+    b. Collection<DynamicTest>
+    c. Stream<DynamicTest>
+
+The test input data and their respective expected result should be defined as rows (elements) in a 2D array (matrix) or Collection (e.g. List) or Iterable.
+The elements (in the below example entries) should be mapped into a Callable of which the return value has two components:
+    a. a String of description of actual test case (e.g. a + b = c with actual input and expected data)
+    b. an Assertion with the actual data
+
+EXAMPLE FOR DYNAMIC TESTS (TEST FACTORY, STREAM):
+import static org.junit.jupiter.api.DynamicTest.dynamicTest;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DynamicTest;
+import org.junit.jupiter.api.TestFactory;
+import java.util.*;
+import java.util.stream.Stream;
+
+class TestClass {
+    @TestFactory
+    Stream<DynamicTest> testMethodName() {
+        //create instance of the class which or of which method should be tested
+        ClassName object = new ClassName(...);
+
+        //define test data from inputs and expected results
+        int[][] data = new int[][]{...};
+
+        //define return object containing dynamic test parameters
+        return Arrays.stream(
+                .map(entry -> {
+                        int input1 = entry[0];
+                        int input2 = entry[1];
+                        ...
+                        int expected = entry[...];
+                        return dynamicTest(
+                                "description of actual test case",
+                                () -> Assertions.assertEquals(expected, object.testedMethod(input1, input2, ...))
+                        );
+                })
+        );
+    }
+}
+END OF EXAMPLE
+
+=================================================================================
+2. PARAMETERIZED TESTS
+=================================================================================
+In order to use this variant, dependency must be added to the pom.xml first:
+    <dependency>
+        <groupId>org.junit.jupiter</groupId>
+        <artifactId>junit-jupiter-params</artifactId>
+        <version>5.7.2</version>
+        <scope>test</scope>
+    </dependency>
+
+The parameterized test method must be static and must return a Collection, an Iterator, a Stream or an Array.
+The test method will be called for each test case independently (parallel).
+Also, @BeforeEach and @AfterEach methods will be launched normally.
+That said, this variant works as a batch for test methods.
+
+The test input data and their respective expected result should be defined as rows (elements) in a 2D array (matrix) or Collection (e.g. List) or Iterable. This must be served by an independent static helper method. The reason is that this method will be called upon all test method invoking.
+
+The test method must be marked with @ParameterizedTest annotation, and with @MethodSource annotation the data serving method should be referenced.
+
+EXAMPLE FOR PARAMETERIZED TEST:
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
+
+class TestClass {
+
+    //define test data from inputs and expected results
+    public static int[][] dataProvider() {
+        return new int[][]{...};
+    }
+
+    //define parameterized test method
+    @ParameterizedTest
+    @MethodSource(value =  "dataProvider")
+    public static void testMethodName(int[] entry) {
+        //create instance of the class which or of which method should be tested
+        ClassName object = new ClassName(...);
+
+        int input1 = entry[0];
+        int input2 = entry[1];
+        ...
+        int expected = entry[...];
+        //Assertions.assertEquals(expected, tester.multiply(m1, m2));
+        assertEquals(expected, object.testedMethod(input1, input2, ...));
+    }
+}
+END OF EXAMPLE
+
+Instead of @MethodSource, other data sources can be used as well.
+
+||Annotation with example|Usage||
+||@ValueSource(ints = { 1, 2, 3 })|defines input test values as array, possible types are int, long, double, String||
+||@EnumSource(value = Months.class, names = {"JANUARY", "FEBRUARY"})|uses enums of the given class as input values, optionally can be narrowed down with names parameter||
+||@CsvSource({ "foo, 1", "'baz, qux', 3" })|expects Strings to be parsed as CSV (delimiter is colon), see details below||
+||@ArgumentsSource(MyArgumentsProvider.class)|specifies a class that provides the test data where the referenced class has to implement the ArgumentsProvider interface.||
+
+The @CsvSource annotation defines the number of arguments in the test method signature.
+
+EXAMPLE FOR @CSVSOURCE:
+@CsvSource({ "foo, 1", "'baz, qux', 3" })
+void testMethod(String first, int second) {...}
+END OF EXAMPLE
+
+JUnit tries to convert input data to fit to argument types in test method signature. In case custom converter is needed, using the @ConvertWith annotation together with a custom converter class which implements the ArgumentConverter interface (e.g. SimpleArgumentConverter).
+
+EXAMPLE FOR CUSTOM INPUT DATA CONVERTER:
+@ParameterizedTest
+@ValueSource(ints = {1, 12, 42})
+void testWithExplicitArgumentConversion(@ConvertWith(ToOctalStringArgumentConverter.class) String argument) {
+    System.err.println(argument);
+    assertNotNull(argument);
+}
+static class ToOctalStringArgumentConverter extends SimpleArgumentConverter {
+    @Override
+    protected Object convert(Object source, Class<?> targetType) {
+        assertEquals(Integer.class, source.getClass(), "Can only convert from Integers.");
+        assertEquals(String.class, targetType, "Can only convert to String");
+        return Integer.toOctalString((Integer) source);
+    }
+}
+END OF EXAMPLE
