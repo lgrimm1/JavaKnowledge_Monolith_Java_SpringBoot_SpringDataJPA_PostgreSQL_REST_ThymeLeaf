@@ -25,7 +25,15 @@ public class CommonService {
 	private final HtmlGenerators htmlGenerators;
 
 	@Autowired
-	public CommonService(TitleRepository titleRepository, TxtRepository txtRepository, HtmlRepository htmlRepository, Formulas formulas, ProcessRecords processRecords, FileOperations fileOperations, Extractors extractors, ProcessPage processPage, HtmlGenerators htmlGenerators) {
+	public CommonService(TitleRepository titleRepository,
+						 TxtRepository txtRepository,
+						 HtmlRepository htmlRepository,
+						 Formulas formulas,
+						 ProcessRecords processRecords,
+						 FileOperations fileOperations,
+						 Extractors extractors,
+						 ProcessPage processPage,
+						 HtmlGenerators htmlGenerators) {
 		this.titleRepository = titleRepository;
 		this.txtRepository = txtRepository;
 		this.htmlRepository = htmlRepository;
@@ -42,7 +50,8 @@ public class CommonService {
 	}
 
 	/**
-	 * Finds titles which contain any word of the given text, furthermore titles of which their TXT content contains the whole given text.
+	 * Finds titles which contain any word of the given text, furthermore
+	 * titles of which their TXT content contains the whole given text.
 	 * The search trims the given text and ignores case.
 	 * In case there is no search text given, returns all titles.
 	 */

@@ -14,7 +14,7 @@ public class Formulas {
 	public final String TAB_IN_SPACES = generateRepeatedPattern(" ", 4);
 	public final String TAB_IN_HTML = generateRepeatedPattern("&nbsp;", 4);
 	public final String LEVEL_1_SEPARATOR = ";";
-	public final String VERSIONS = "Up to Java 17, Spring 3";
+	public final String VERSIONS = "Up to Java 17, Spring 3, JUnit 5";
 	public final String ROOT_HTML_NAME = "!JavaKnowledge";
 	public enum ConstantName {
 		SUPERLINE, SUBLINE, TAB_IN_SPACES, TAB_IN_HTML, LEVEL_1_SEPARATOR, VERSIONS, ROOT_HTML_NAME
