@@ -100,7 +100,7 @@ INTELLIJ IDEA
 1.7. EDITING
 ---------------------------------------------------------------------------------
 ||Shortcut|Description||
-||ALT SHF INS|vertical selection mode, exit for Escape||
+||ALT SHF INS|vertical selection mode, exit for same combination||
 ||CTR D|duplicate selected text in a line horizontally, duplicate line or selection of lines||
 ||CTR Y|delete line||
 ||ALT SHF UP|move line up on line, move method up on signature||

@@ -24,12 +24,14 @@ In case of using file/folder list, File.pathSeparator constant will give OS inde
 =>FILEWRITER
 =>INPUTSTREAM
 =>OUTPUTSTREAM
+=>FILES
 
 =================================================================================
 1. INFORMATION
 =================================================================================
+EXAMPLE FOR GETTING INFORMATION OF FILE:
 import java.io.File;
-import java.nio.file.Path;
+import java.nio.file.*;
 ...
 String path = ...; //can be relative, absolute, or even just a filename in which case the application folder and JAVAPATH will be checked
 String extension = ...;
@@ -55,7 +57,7 @@ try {
 	    fileExtension = ""; //no extension
 	}
 	filePath = f.getParent(); //without the ending \ sign; in case of relative path, will return relative path
-	fullName = f.getPath(); //filename with file path, equals with f.getParent() + File.pathSeparator + f.getName()
+	fullName = f.getPath(); //filename with file path, equals with f.getParent() + File.separator + f.getName()
 	fileAbsolutePath = filePath.getCanonicalPath(); //without the ending \ sign; returns absolute path
 	fileDriver = ((fileAbsolutePath.length() > 1) && (fileAbsolutePath.charAt(1) == ':')) ? fileAbsolutePath.substring(0, 2) : ""; //letter plus the : sign, or ""
 	Path p1 = Path.of(f);
@@ -66,10 +68,12 @@ try {
 catch (Exception e) {
 	...
 }
+END OF EXAMPLE
 
 =================================================================================
 2. CREATE AND DELETE
 =================================================================================
+EXAMPLE FOR CREATING AND DELETING FILE:
 import java.io.File;
 ...
 String path = ...;
@@ -86,10 +90,12 @@ try {
 catch (Exception e) {
 	...
 }
+END OF EXAMPLE
 
 =================================================================================
 3. RENAME AND MOVE
 =================================================================================
+EXAMPLE FOR RENAMING AND MOVING FILE:
 import java.io.File;
 ...
 String oldPathAndName = ...;
@@ -103,103 +109,155 @@ try {
 catch (Exception e) {
 	...
 }
+END OF EXAMPLE
 
 =================================================================================
 4. READ
 =================================================================================
+EXAMPLE FOR READING FILE (VIA FILEREADER):
 import java.io.File;
 import java.io.FileReader;
 ...
-char[] data;
 String path = ...;
-File f = new File(path);
+File file = new File(path);
+char[] content;
+
 boolean success = false;
-try {
-	FileReader fr = new FileReader(path); //or:
-	FileReader fr = new FileReader(f);
-	success = fr.read(data); //the parameter is the target
+try (FileReader fileReader = new FileReader(path)) { //or:
+try (FileReader fileReader = new FileReader(file)) {
+    content = new char[(int) file.length()];
+	success = fileReader.read(content); //the parameter is the target
 }
 catch (Exception e) {
 	...
 }
-finally {
-	fr.close();
+END OF EXAMPLE
+
+EXAMPLE FOR READING FILE (VIA FILES):
+import java.io.File;
+import java.nio.file.*;
+import java.util.*;
+...
+String path = ...;
+File file = new File(path);
+List<String> content;
+byte[] byteContent;
+
+boolean success = false;
+try {
+	content = Files.readAllLines(file.toPath()); //or:
+	byteContent = Files.readAllBytes(file.toPath);
+	success = true;
 }
+catch (Exception e) {
+	...
+}
+END OF EXAMPLE
 
 =================================================================================
 5. WRITE
 =================================================================================
+EXAMPLE FOR WRITING FILE (VIA FILEWRITER):
 import java.io.File;
 import java.io.FileWriter;
 ...
-int asciiData = ...;
-char[] caData = ...;
-String strData = ...;
+int asciiContent = ...;
+char[] caContent = ...;
+String strContent = ...;
 int startIndex = ..., length = ...;
 String path = ...;
-File f = new File(path);
+File file = new File(path);
 boolean append = true;
+
 boolean success = false;
-try {
-	FileWriter fw = new FileWriter(path); //or:
-	FileWriter fw = new FileWriter(f);
-	success = fw.write(asciiData); //a character based upon the ascii code, for 1st overwrites the file then appends it; or:
-	success = fw.write(caData); //for 1st overwrites the file then appends; or:
-	success = fw.write(caData, append); //the boolean marks appending; or:
-	success = fw.write(caData, startIndex, length); //extracts from caData, for 1st overwrites the file then appends; or:
-	success = fw.write(strData); //for 1st overwrites the file then appends; or:
-	success = fw.write(strData, append); //the boolean marks appending; or:
-	success = fw.write(strData, startIndex, length); //extracts from strData, for 1st overwrites the file then appends
+try (FileWriter fileWriter = new FileWriter(path)) { //or:
+try (FileWriter fileWriter = new FileWriter(file)) {
+	success = fileWriter.write(asciiContent); //a character based upon the ascii code, for 1st overwrites the file then appends it; or:
+	success = fileWriter.write(caContent); //for 1st overwrites the file then appends; or:
+	success = fileWriter.write(caContent, append); //the boolean marks appending; or:
+	success = fileWriter.write(caContent, startIndex, length); //extracts from caContent, for 1st overwrites the file then appends; or:
+	success = fileWriter.write(strContent); //for 1st overwrites the file then appends; or:
+	success = fileWriter.write(strContent, append); //the boolean marks appending; or:
+	success = fileWriter.write(strContent, startIndex, length); //extracts from strContent, for 1st overwrites the file then appends
 }
 catch (Exception e) {
 	...
 }
-finally {
-	fw.close();
+END OF EXAMPLE
+
+EXAMPLE FOR WRITING FILE (VIA FILES):
+import java.io.File;
+import java.nio.file.*;
+import java.util.*;
+...
+String path = ...;
+File file = new File(path);
+List<String> content = ...;
+byte[] byteContent = ...;
+
+boolean success = false;
+try {
+	Files.write(file.toPath(), content, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING); //overwrites, or:
+	Files.write(file.toPath(), content, StandardOpenOption.CREATE, StandardOpenOption.APPEND); //appends, or:
+	Files.write(file.toPath(), byteContent, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING); //overwrites, or:
+	Files.write(file.toPath(), byteContent, StandardOpenOption.CREATE, StandardOpenOption.APPEND); //appends
+	success = true;
 }
+catch (Exception e) {
+	...
+}
+END OF EXAMPLE
 
 =================================================================================
 6. SCANNER
 =================================================================================
+EXAMPLE FOR USING SCANNER FOR READING FILE:
 import java.util.Scanner;
 import java.io.File;
 ...
 File data = new File(...);
 String line;
-try {
-	Scanner scf = new Scanner(data);
-	while (scf.hasNextLine()) {
-		line = sc.nextLine();
+try (Scanner scanner = new Scanner(data)) {
+	while (scanner.hasNextLine()) {
+		line = scanner.nextLine();
 		//processing
 	}
 }
 catch (Exception e) {
 	...
 }
-finally {
-		scf.close();
-}
+END OF EXAMPLE
 
 =================================================================================
 7. LIST FILES AND FOLDERS
 =================================================================================
+EXAMPLE FOR LISTING FILES AND FOLDERS:
 import java.io.File;
+import java.util.stream.Stream;
 ...
 String path = ...; //folder path without ending \
-File d = new File(path);
+File directory = new File(path);
 String[] list1;
 File[] list2;
 try {
-	list1 = d.list();
-	list2 = d.listFiles();
+	list1 = directory.list();
+	list2 = directory.listFiles();
 }
 catch (Exception e) {
 	...
 }
+List<File> files = Arrays.toStream(list2)
+        .filter(File::isFile)
+        .toList();
+List<File> directories = Arrays.toStream(list2)
+        .filter(File::isDirectory)
+        .toList();
+END OF EXAMPLE
 
 =================================================================================
 8. READ AND WRITE INPUTSTREAMS
 =================================================================================
+EXAMPLE FOR USING INPUTSTREAMS (READING, WRITING FILES):
 import java.io.File;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -209,19 +267,19 @@ String sourcePath = ...;
 String destinationPath = ...;
 File sourceFile = new File(sourcePath);
 File destinationFile = new File(destinationPath);
-try {
+try (
+        FileInputStream fileInputStream = new FileInputStream(sourcePath);
+        FileOutputStream fileOutputStream = new FileOutputStream(destinationPath);
+) { //or:
+try (
+        FileInputStream fileInputStream = new FileInputStream(sourceFile);
+        FileOutputStream fileOutputStream = new FileOutputStream(destinationFile);
+) {
 	data = new byte[(int) sourceFile.length()]; //in case file size < 2 GB or else use BigFile class
-	FileInputStream fis = new FileInputStream(sourcePath); //or:
-	FileInputStream fis = new FileInputStream(sourceFile);
-	fis.read(data);
-	FileOutputStream fos = new FileOutputStream(destinationPath); //or:
-	FileOutputStream fos = new FileOutputStream(destinationFile);
-	fos.write(data);
+	fileInputStream.read(data);
+	fileOutputStream.write(data);
 }
 catch (Exception e) {
 	...
 }
-finally {
-	fis.close();
-	fos.close();
-}
+END OF EXAMPLE

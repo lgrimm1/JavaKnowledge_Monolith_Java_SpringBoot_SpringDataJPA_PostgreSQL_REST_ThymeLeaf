@@ -1,0 +1,335 @@
+=================================================================================
+FILES
+=================================================================================
+This class is designed for handle file and directory reading, writing, setting in a simple and effective way.
+Most of its functions are delegated to platform operations by the JVM which makes them platform-independent.
+
+1. FILES METHODS
+2. STANDARD OPEN OPTIONS
+3. WALK FILE TREE
+
+=>FILE OPERATIONS
+=>INPUTSTREAM
+=>OUTPUTSTREAM
+=>BUFFEREDREADER
+=>BUFFEREDWRITER
+=>COLLECTION
+=>LIST
+
+=================================================================================
+1. FILES METHODS
+=================================================================================
+The methods have connections towards InputStream, OutputStream, BufferedReader, BufferedWriter and Iterable (reaches all Collection classes which implement it e.g. List).
+
+||Method|Description||
+||copy()|copies InputStream to a byte file, or a byte file to OutputStream, or a file to another||
+||createDirectory()|creates a new directory||
+||createDirectories()|creates a new directory along with all parent directories||
+||createFile()|creates a new file, fails if already exists||
+||delete()|deletes a file||
+||deleteIfExists()|deletes a file if exists||
+||getAttribute()|gets value of a file attribute||
+||getLastModifiedTime(), getOwner()|gets the correspondent property||
+||exists(), notExists()|tests the file for existence||
+||isDirectory(), isExecutable(), isHidden(), isReadable(), isWritable()|gets the correspondent property||
+||isSameFile()|tests two given files for psychical equality||
+||move()|moves or renames a file||
+||newBufferedReader(), newBufferedWriter()|opens or creates a file for reading or writing and attaches it to BufferedReader or BufferedWriter||
+||newByteChannel()|opens or creates a file and returns an attached seekable byte channel||
+||newDirectoryStream|opens a directory for iteration over all entries in it||
+||newInputStream(), newOutputStream()|opens a file and attaches an InputStream or OutputStream to read or writes bytes from-to the file||
+||readAllBytes(), readAllLines()|reads the content of a file as a whole||
+||setAttribute()|sets an attribute||
+||setLastModifiedTime(), setOwner()|sets the correspondent property||
+||size()|gets the file size in bytes as a long number||
+||walkFileTree()|walks a file tree||
+||write()|writes bytes or lines to a file||
+
+EXAMPLE FOR READING FILE:
+import java.io.File;
+import java.nio.file.*;
+import java.util.*;
+...
+String path = ...;
+File file = new File(path);
+List<String> content;
+byte[] byteContent;
+
+boolean success = false;
+try {
+	content = Files.readAllLines(file.toPath()); //or:
+	byteContent = Files.readAllBytes(file.toPath);
+	success = true;
+}
+catch (Exception e) {
+	...
+}
+END OF EXAMPLE
+
+EXAMPLE FOR WRITING FILE:
+import java.io.File;
+import java.nio.file.*;
+import java.util.*;
+...
+String path = ...;
+File file = new File(path);
+List<String> content = ...;
+byte[] byteContent = ...;
+
+boolean success = false;
+try {
+	Files.write(file.toPath(), content, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING); //overwrites, or:
+	Files.write(file.toPath(), content, StandardOpenOption.CREATE, StandardOpenOption.APPEND); //appends, or:
+	Files.write(file.toPath(), byteContent, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING); //overwrites, or:
+	Files.write(file.toPath(), byteContent, StandardOpenOption.CREATE, StandardOpenOption.APPEND); //appends
+	success = true;
+}
+catch (Exception e) {
+	...
+}
+END OF EXAMPLE
+
+=================================================================================
+2. STANDARD OPEN OPTIONS
+=================================================================================
+The OpenOption is an interface. The StandardOpenOption implements it and serves constants which define how to open a file. Use this class with e.g. reading or writing file content.
+
+||Option|Description||
+||APPEND|if the file is opened for WRITE access then bytes will be written to the end of the file rather than the beginning||
+||CREATE|creates a new file if it does not exist||
+||CREATE_NEW|creates a new file, failing if the file already exists||
+||DELETE_ON_CLOSE|deletes on close||
+||DSYNC|requires that every update to the file's content be written synchronously to the underlying storage device||
+||READ|opens for read access||
+||SPARSE|sparses file||
+||SYNC|requires that every update to the file's content or metadata be written synchronously to the underlying storage device||
+||TRUNCATE_EXISTING|if the file already exists and it is opened for WRITE access, then its length is truncated to 0||
+||WRITE|opens for write access||
+
+Typical constant combinations:
+    a. StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING (upon opening, create if non-existent, truncate content to zero if exists)
+    b. StandardOpenOption.CREATE, StandardOpenOption.APPEND (upon opening, create if non-existent, append if exists)
+
+=================================================================================
+3. WALK FILE TREE
+=================================================================================
+In order to visit and manipulate all files in hierarchy under a certain root directory, Files offers the walkFileTree() method.
+In order to use this method, extending the SimpleFileVisitor generic class is needed.
+
+EXAMPLE FOR WALKFILETREE (COPY OR MOVE):
+/**
+ * Copies or moves a single folder or file, or a folder with its sub-tree.
+ * For the sub-tree processing, uses walkFileTree alongside with CopyMoveFileVisitor sub-class.
+ * In case the source is a file, the sub-tree option is ignored.
+ * In some cases OS attributes will be copied even with copyAttributes set to false.
+ * In case of inaccessible source and/or destination paths, returns null.
+ * In case of success, returns empty List.
+ * In case of partial success, returns a List of Path containing folders/root of folder-trees and files which were not processed successfully.
+ */
+public static Path[] copyMove(File sourceFileOrFolder, File targetFolder, boolean withSubTree, boolean copyAttributes, boolean overwrite, boolean move) {
+	CopyOption[] copyOptions = new CopyOption[]{};
+	List<Path> failedPaths;
+	Path sourceRoot;
+	Path destinationRoot;
+
+	boolean ok = ...; //check existence of source and destination
+	if (ok) {
+		if (copyAttributes && overwrite) {
+			copyOptions = new CopyOption[]{StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.COPY_ATTRIBUTES};
+		}
+		else if (copyAttributes) {
+			copyOptions = new CopyOption[]{StandardCopyOption.COPY_ATTRIBUTES};
+		}
+		else if (overwrite) {
+			copyOptions = new CopyOption[]{StandardCopyOption.REPLACE_EXISTING};
+		}
+		sourceRoot = sourceFileOrFolder.toPath();
+		if (sourceFileOrFolder.isFile()) {
+			destinationRoot = (new File(targetFolder.getPath() + File.separator + sourceFileOrFolder.getName())).toPath();
+		}
+		else { // folder
+			destinationRoot = (new File(targetFolder.getPath() + File.separator + sourceFileOrFolder.getName())).toPath();
+		}
+		if (sourceFileOrFolder.isDirectory() && withSubTree) { // copy/move folder with its subtree
+			CustomFileVisitor customFileVisitor = new CustomFileVisitor(sourceRoot, destinationRoot, copyOptions, move);
+			try {
+				Files.walkFileTree(sourceRoot, customFileVisitor);
+			}
+			catch (Exception e) {
+				// ignoring, all exceptions are handled within CustomFileVisitor
+			}
+			failedPaths = customFileVisitor.getSkippedPaths();
+		}
+		else { // copy/move single file or folder (file OR not with subtree)
+			try {
+				Files.copy(sourceRoot, destinationRoot, copyOptions);
+				if (destinationRoot.toFile().exists()) {
+					if (move) {
+						if (sourceFileOrFolder.delete()) {
+							failedPaths = new ArrayList<>();
+						}
+						else {
+							failedPaths = List.of(sourceRoot);
+						}
+					}
+					else {
+						failedPaths = new ArrayList<>();
+					}
+
+				}
+				else {
+					failedPaths = List.of(sourceRoot);
+				}
+			}
+			catch (Exception e) {
+				failedPaths = List.of(sourceRoot);
+			}
+		}
+	}
+	return failedPaths;
+}
+END OF EXAMPLE
+
+EXAMPLE FOR EXTENDING SIMPLEFILEVISITOR (COPY-MOVE TREE):
+class CustomFileVisitor extends SimpleFileVisitor<Path> {
+	private final Path SOURCEROOT;
+	private final Path DESTINATIONROOT;
+	private final CopyOption[] OPTIONS;
+	private final boolean MOVE;
+	private final ArrayList<Path> SKIPPEDPATHS = new ArrayList<>();
+
+	public CustomFileVisitor(Path sourceRoot, Path destinationRoot, CopyOption[] options, boolean move) {
+		this.SOURCEROOT = sourceRoot;
+		this.DESTINATIONROOT = destinationRoot;
+		this.OPTIONS = options;
+		this.MOVE = move;
+	}
+
+	/**
+	 * Action on the actual directory before processing its sub-files and sub-tree.
+	 * In case of errors adds the Path to skipped paths and skips the sub-files and the sub-tree.
+	 * Returns FileVisitResult.CONTINUE or FileVisitResult.SKIP_SUBTREE.
+	 */
+	@Override
+	public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) {
+		Path newDir = DESTINATIONROOT.resolve(SOURCEROOT.relativize(dir));
+		//action on actual folder, here: copy or move or add to skipped list
+		try {
+			Files.copy(dir, newDir, OPTIONS);
+			if (!newDir.toFile().exists()) {
+				this.SKIPPEDPATHS.add(dir);
+				return FileVisitResult.SKIP_SUBTREE;
+			}
+		}
+		catch (FileAlreadyExistsException e) {
+			// Ignoring.
+		}
+		catch (DirectoryNotEmptyException e) {
+			// Ignoring.
+		}
+		catch (IOException e) {
+			this.SKIPPEDPATHS.add(dir);
+			return FileVisitResult.SKIP_SUBTREE;
+		}
+		catch (SecurityException e) {
+			this.SKIPPEDPATHS.add(dir);
+			return FileVisitResult.SKIP_SUBTREE;
+		}
+		catch (UnsupportedOperationException e) {
+			this.SKIPPEDPATHS.add(dir);
+			return FileVisitResult.SKIP_SUBTREE;
+		}
+		return FileVisitResult.CONTINUE;
+	}
+
+	/**
+	 * <b>Action on a sub-file under the pre-processed folder.
+	 * In case of any errors, adds the Path to skipped paths and continue with the next file.
+	 * Returns FileVisitResult.CONTINUE.
+	 */
+	@Override
+	public FileVisitResult visitFile(Path file, BasicFileAttributes attr) {
+/*
+			if (attr.isSymbolicLink()) {
+				System.out.format("Symbolic link: %s ", file);
+			} else if (attr.isRegularFile()) {
+				System.out.format("Regular file: %s ", file);
+			} else {
+				System.out.format("Other: %s ", file);
+			}
+			System.out.println("(" + attr.size() + "bytes)");
+			copyFile(file, this.DESTINATIONROOT.resolve(this.SOURCEROOT.relativize(file)), prompt, preserve);
+*/
+		Path newFile = DESTINATIONROOT.resolve(SOURCEROOT.relativize(file));
+		//action, here: copy or move
+		try {
+			Files.copy(file, newFile, OPTIONS);
+			if (newFile.toFile().exists()) {
+				if (MOVE && !file.toFile().delete()) {
+					this.SKIPPEDPATHS.add(file);
+				}
+			}
+			else {
+				this.SKIPPEDPATHS.add(file);
+			}
+		}
+		catch (UnsupportedOperationException e) {
+			this.SKIPPEDPATHS.add(file);
+		}
+		catch (FileAlreadyExistsException e) {
+			this.SKIPPEDPATHS.add(file);
+		}
+		catch (DirectoryNotEmptyException e) {
+			// Ignoring.
+		}
+		catch (IOException e) {
+			this.SKIPPEDPATHS.add(file);
+		}
+		catch (SecurityException e) {
+			this.SKIPPEDPATHS.add(file);
+		}
+		return FileVisitResult.CONTINUE;
+	}
+
+	/**
+	 * Action on actual directory after visited its sub-files and folders.
+	 * In case the whole tree was skipped during pre-processing, this method should not be invoked.
+	 * In case of action error, adds the Path to skipped paths and continue with the next folder.
+	 * In case there was an exception thrown on visiting sub-files or sub-folders, process the given IOException, otherwise it is null.
+	 * Returns FileVisitResult.CONTINUE or stop the process by returning correspondent constant.
+	 */
+	@Override
+	public FileVisitResult postVisitDirectory(Path dir, IOException exc) {
+	    //action, here: delete after copy or move
+		if (MOVE && DESTINATIONROOT.resolve(SOURCEROOT.relativize(dir)).toFile().exists()) {
+			try {
+				if (!dir.toFile().delete()) {
+					this.SKIPPEDPATHS.add(dir);
+				}
+			}
+			catch (Exception e) {
+				this.SKIPPEDPATHS.add(dir);
+			}
+		}
+		return FileVisitResult.CONTINUE;
+	}
+
+	/**
+	 * Triggers when a visit failed.
+	 * In case this method is not overridden, IOException is thrown at any exceptions and the all process exits.
+	 * Due to handling errors in-situ (in pre/post-processing of folders or processing files), there is nothing to do here.
+	 * Returns FileVisitResult.CONTINUE or stop the process by returning correspondent constant.
+	 */
+	@Override
+	public FileVisitResult visitFileFailed(Path file, IOException exc) {
+		return FileVisitResult.CONTINUE;
+	}
+
+	/**
+	 * Returns the skipped paths.
+	 */
+	public ArrayList<Path> getSkippedPaths() {
+		return this.SKIPPEDPATHS;
+	}
+}
+END OF EXAMPLE
