@@ -1,12 +1,13 @@
 package lgrimm1.JavaKnowledge.Process;
 
 import java.io.*;
+import java.nio.file.*;
 import java.util.*;
 
 /**
  * Handles file-level operations.<p>
- * @see #writeHtmlFile(File, List)
- * @see #readTextFile(File)
+ * @see #writeFile(File, List)
+ * @see #readFile(File)
  * @see #createNonExistentDirectory(File)
  * @see #getExtension(File)
  * @see #getOSFileSeparator()
@@ -20,18 +21,15 @@ public class FileOperations {
 	/**
 	 * Overwrites possible existing file.
 	 */
-	public boolean writeHtmlFile(File htmlFile, List<String> content) {
+	public boolean writeFile(File htmlFile, List<String> content) {
 		if (htmlFile == null || content == null || content.isEmpty()) {
 			return false;
 		}
-		StringBuilder sb = new StringBuilder();
-		content
-				.forEach(line -> sb.append(line).append("\n"));
-		try (FileWriter writer = new FileWriter(htmlFile, false)) {
-			writer.write(sb.toString());
+		try {
+			Files.write(htmlFile.toPath(), content, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
 		}
 		catch (Exception e) {
-			return false;
+		    return false;
 		}
 		return true;
 	}
@@ -39,25 +37,18 @@ public class FileOperations {
 	/**
 	 * In case of any problem, returns an empty List.
 	 */
-	public List<String> readTextFile(File textFile) {
-		char[] content;
-		int readSize;
-		try (FileReader fileReader = new FileReader(textFile)) {
-			content = new char[(int) textFile.length()];
-			readSize = fileReader.read(content);
+	public List<String> readFile(File textFile) {
+		if (textFile == null) {
+			return new ArrayList<>();
+		}
+		List<String> content;
+		try {
+			content = Files.readAllLines(textFile.toPath());
 		}
 		catch (Exception e) {
 			return new ArrayList<>();
 		}
-		if (readSize < 1) {
-			return new ArrayList<>();
-		}
-		return Arrays.stream(
-						new String(content)
-								.replace("\r", "")
-								.split("\n")
-				)
-				.toList();
+		return content;
 	}
 
 	/**

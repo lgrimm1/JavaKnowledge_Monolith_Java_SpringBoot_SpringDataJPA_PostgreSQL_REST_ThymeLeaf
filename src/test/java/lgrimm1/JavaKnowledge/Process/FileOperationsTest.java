@@ -1,9 +1,11 @@
 package lgrimm1.JavaKnowledge.Process;
 
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.io.*;
 import org.mockito.*;
 
 import java.io.*;
+import java.nio.file.*;
 import java.util.*;
 
 import static org.mockito.Mockito.when;
@@ -11,77 +13,68 @@ import static org.mockito.Mockito.when;
 class FileOperationsTest {
 
 	FileOperations fileOperations = new FileOperations();
-	String testResourcesPath = fileOperations.getResourcesPath() +
-			fileOperations.getOSFileSeparator() +
-			"test_resources";
 
 	@Test
-	void writeHtmlFile() {
-		Assertions.assertFalse(fileOperations.writeHtmlFile(null, List.of("Line 1")));
-		Assertions.assertFalse(fileOperations.writeHtmlFile(new File("abc.xyz"), null));
-		Assertions.assertFalse(fileOperations.writeHtmlFile(new File("abc.xyz"), new ArrayList<>()));
-
-		File fileWriterTestFile = new File(testResourcesPath + fileOperations.getOSFileSeparator() +
-				"fileWriterTestFile");
-		Assertions.assertTrue(fileOperations.writeHtmlFile(fileWriterTestFile, List.of("Line 1", "Line 2")));
-		Assertions.assertTrue(fileOperations.writeHtmlFile(fileWriterTestFile, List.of("Line 1", "Line 2")));
-		System.out.println("Deletion success of test file: " + fileWriterTestFile.delete());
+	void writeFileWithWrongData() {
+		Assertions.assertFalse(fileOperations.writeFile(null, List.of("Line 1")));
+		Assertions.assertFalse(fileOperations.writeFile(new File("abc.xyz"), null));
+		Assertions.assertFalse(fileOperations.writeFile(new File("abc.xyz"), new ArrayList<>()));
 	}
 
 	@Test
-	void readTextFile() {
-		File notExistingFile = Mockito.mock(File.class);
-		when(notExistingFile.exists())
-				.thenReturn(false);
-		when(notExistingFile.isFile())
-				.thenReturn(false);
-		when(notExistingFile.isDirectory())
-				.thenReturn(false);
+	void readFileWithWrongData() {
+		Assertions.assertTrue(fileOperations.readFile(null).isEmpty());
+	}
 
-		File notFile = Mockito.mock(File.class);
-		when(notExistingFile.exists())
-				.thenReturn(true);
-		when(notFile.isFile())
+	@Test
+	void writeNotAccessibleFile() {
+		File file = Mockito.mock(File.class);
+		when(file.exists())
 				.thenReturn(false);
-		when(notFile.isDirectory())
-				.thenReturn(true);
-
-		File notReadableFile = Mockito.mock(File.class);
-		when(notExistingFile.exists())
-				.thenReturn(true);
-		when(notReadableFile.isFile())
-				.thenReturn(true);
-		when(notReadableFile.isDirectory())
+		when(file.isDirectory())
 				.thenReturn(false);
-		when(notReadableFile.canRead())
+		when(file.isFile())
 				.thenReturn(false);
-
-		File readableEmptyFile = Mockito.mock(File.class);
-		when(readableEmptyFile.exists())
-				.thenReturn(true);
-		when(readableEmptyFile.isFile())
-				.thenReturn(true);
-		when(readableEmptyFile.isDirectory())
-				.thenReturn(false);
-		when(readableEmptyFile.canRead())
-				.thenReturn(true);
-		when(readableEmptyFile.length())
+		when(file.length())
 				.thenReturn(0L);
+		when(file.canRead())
+				.thenReturn(false);
 
-		Assertions.assertTrue(fileOperations.readTextFile(notExistingFile).isEmpty());
-		Assertions.assertTrue(fileOperations.readTextFile(notFile).isEmpty());
-		Assertions.assertTrue(fileOperations.readTextFile(notReadableFile).isEmpty());
-		Assertions.assertTrue(fileOperations.readTextFile(readableEmptyFile).isEmpty());
+		Assertions.assertFalse(fileOperations.writeFile(file, new ArrayList<>()));
+	}
 
-		File fileReaderTestFile = new File(testResourcesPath +
-				fileOperations.getOSFileSeparator() +
-				"FileReaderTestFile.txt");
+	@Test
+	void readNonExistentFile() {
+		File file = Mockito.mock(File.class);
+		when(file.exists())
+				.thenReturn(false);
+		when(file.isDirectory())
+				.thenReturn(false);
+		when(file.isFile())
+				.thenReturn(false);
+		when(file.length())
+				.thenReturn(0L);
+		when(file.canRead())
+				.thenReturn(false);
 
-		Assertions.assertEquals(
-				List.of(
-						"Line 1",
-						"Line 2"
-				), fileOperations.readTextFile(fileReaderTestFile));
+		Assertions.assertTrue(fileOperations.readFile(file).isEmpty());
+	}
+
+	@Test
+	void writeFileReadFile(@TempDir Path tempPath) {
+		Path file = tempPath.resolve("test_file");
+		List<String> data = List.of(
+				"Line 1",
+				"Line 2"
+		);
+
+		Assertions.assertTrue(fileOperations.writeFile(file.toFile(), data));
+		Assertions.assertTrue(file.toFile().exists() && file.toFile().isFile());
+		Assertions.assertEquals(data, fileOperations.readFile(file.toFile()));
+
+		Assertions.assertTrue(fileOperations.writeFile(file.toFile(), data));
+		Assertions.assertTrue(file.toFile().exists() && file.toFile().isFile());
+		Assertions.assertEquals(data, fileOperations.readFile(file.toFile()));
 	}
 
 	@Test

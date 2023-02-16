@@ -209,9 +209,9 @@ class ProcessRecordsTest {
 		when(htmlRepository.findById(3L))
 				.thenReturn(Optional.empty());
 
-		when(fileOperations.writeHtmlFile(new File("static_path/title_1.html"), List.of("Content 11")))
+		when(fileOperations.writeFile(new File("static_path/title_1.html"), List.of("Content 11")))
 				.thenReturn(true);
-		when(fileOperations.writeHtmlFile(new File("static_path/title_2.html"), List.of("Content 12")))
+		when(fileOperations.writeFile(new File("static_path/title_2.html"), List.of("Content 12")))
 				.thenReturn(false);
 
 		Assertions.assertArrayEquals(

@@ -105,7 +105,7 @@ public class ProcessRecords {
 				notImportedFiles.add(file);
 			}
 			else {
-				List<String> txt = fileOperations.readTextFile(file);
+				List<String> txt = fileOperations.readFile(file);
 				if (txt.isEmpty()) {
 					notImportedFiles.add(file);
 				}
@@ -188,7 +188,7 @@ public class ProcessRecords {
 				titleRepository.findAll().stream()
 						.filter(titleEntity ->
 								htmlRepository.findById(titleEntity.getHtmlId()).isPresent() &&
-										fileOperations.writeHtmlFile(
+										fileOperations.writeFile(
 												new File(fileOperations.getStaticPath() +
 														fileOperations.getOSFileSeparator() +
 														titleEntity.getFilename() +

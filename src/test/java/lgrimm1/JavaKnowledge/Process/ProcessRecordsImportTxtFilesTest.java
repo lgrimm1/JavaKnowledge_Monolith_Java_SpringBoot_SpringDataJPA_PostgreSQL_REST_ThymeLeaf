@@ -91,28 +91,28 @@ class ProcessRecordsImportTxtFilesTest {
 		when(emptyTxtFile.canRead())
 				.thenReturn(true);
 
-		when(fileOperations.readTextFile(txtFile1))
+		when(fileOperations.readFile(txtFile1))
 				.thenReturn(List.of(
 						"Line 11",
 						"Line 12",
 						"Line 13",
 						"Line 14"
 				));
-		when(fileOperations.readTextFile(txtFile2))
+		when(fileOperations.readFile(txtFile2))
 				.thenReturn(List.of(
 						"Line 21",
 						"Line 22",
 						"Line 23",
 						"Line 24"
 				));
-		when(fileOperations.readTextFile(txtFile3))
+		when(fileOperations.readFile(txtFile3))
 				.thenReturn(List.of(
 						"Line 31",
 						"Line 32",
 						"Line 33",
 						"Line 34"
 				));
-		when(fileOperations.readTextFile(emptyTxtFile))
+		when(fileOperations.readFile(emptyTxtFile))
 				.thenReturn(new ArrayList<>());
 
 		when(extractors.extractTitle(List.of(
