@@ -171,6 +171,6 @@ END OF EXAMPLE
 =================================================================================
 5. CONTROLLER CLASS TESTS
 =================================================================================
-Visit the Spring_Boot_controller_tests page for description.
+Visit the SPRING BOOT CONTROLLER TESTS page for description.
 
 //TODO https://www.baeldung.com/spring-boot-testing

@@ -11,6 +11,7 @@ PRACTICES
 8. USING RIGHT RETURN VALUES FOR BETTER INTEGRATION
 9. GET APPLICATION PATHS
 10. FAVORING COMPOSITION OVER INHERITANCE
+11. QUALITY SOURCES OF JAVA AND FRAMEWORKS
 
 =================================================================================
 1. INCREASE ARRAY INDEX, JUMP TO FIRST ELEMENT WHEN REACHING LAST
@@ -384,3 +385,9 @@ class AnnualData extends StatData {
 class MonthData extends StatData {
     private int month;
 }
+
+=================================================================================
+11. QUALITY SOURCES OF JAVA AND FRAMEWORKS
+=================================================================================
+https://www.baeldung.com
+https://www.bezkoder.com

@@ -1,0 +1,113 @@
+SPRING DATA JPA DATABASE CONNECTION
+
+Under the same (src/main/resources) folder, the next file should be created:
+    application.properties
+This file contains configuration and environment-specific settings of the application, mainly for Hibernate (part of Spring Data JPA core).
+
+||Database access parameters|Description||
+||spring.datasource.driverClassName|what driver Hibernate should use for the database, needed when JPA uses Hibernate for this configuration||
+||spring.datasource.url|the database URL||
+||spring.datasource.username|login data of the database||
+||spring.datasource.password|login data of the database||
+
+||Database management parameters|Description||
+||spring.jpa.properties.hibernate.jdbc.lob.non_contextual_creation|optional||
+||spring.jpa.properties.hibernate.dialect|in what dialect the SQL command should be written||
+||spring.jpa.hibernate.ddl-auto|how Hibernate should initialize the database||
+||spring.jpa.show-sql|sets visibility of executed SQL commands on console||
+||spring.jpa.properties.hibernate.format_sql|sets formatting on printed SQL commands on console, optional||
+
+||H2 parameters|Description||
+||spring.h2.console.enabled|Spring starts H2 Database administration tool at http://localhost:8080 with /h2-console endpoint (path) by default||
+||spring.h2.console.path|modifies the default endpoint (path) of the H2 Database administration tool||
+
+||Logging parameters|Description||
+||logging.level.org.hibernate.SQL|for DEBUG value prints SQL debug information on console, optional||
+||logging.level.org.hibernate.type.descriptor.sql|for TRACE value prints SQL debug information on console for prepared statements, optional||
+
+||Other parameters|Description||
+||server.error.include-message|sets whether the server error messages should be sent to the frontend, optional, needed for Spring Validation||
+
+The database communicates through a port defined at installation. The default ports are:
+    a. mySQL: 3306
+    b. postgreSQL: 5432
+    c. Oracle: 1521
+    d. SQL Server: 1434
+
+The database login data (username and password) can be default which comes from the database installation or can be unique which was pre-prepared in the database.
+Default usernames:
+    a. mySQL: root
+    b. postgreSQL: postgres
+
+The spring.jpa.hibernate.ddl-auto parameter can have the next values:
+    a. create (will create the database structure if it does not exist)
+    b. create-drop (will create the database structure if it does not exist, deletes it when the backend is stopped)
+    c. validate (for production)
+    d. update (will not create but update with model changing)
+While pure backend development is ongoing, create-drop is proper since the structure is not finalized.
+Once the database (entity) design time is over, create or validate is proper.
+When the system goes alive, after creating the structure, update will serve.
+
+EXAMPLE FOR CONNECTION DATA (APPLICATION.PROPERTIES FILE, H2):
+spring.datasource.driverClassName = org.h2.Driver
+spring.datasource.url = jdbc:h2:mem:databaseName #in-memory database, or:
+spring.datasource.url = jdbc:h2:file:[path/databaseName] #disk-based database
+spring.datasource.username =
+spring.datasource.password =
+
+spring.jpa.properties.hibernate.dialect = org.hibernate.dialect.H2Dialect
+spring.jpa.hibernate.ddl-auto = create-drop
+spring.jpa.show-sql = true
+spring.jpa.properties.hibernate.format_sql = true
+
+spring.h2.console.enabled = true #default path: /h2-console
+spring.h2.console.path = /h2-ui
+END OF EXAMPLE
+
+EXAMPLE FOR CONNECTION DATA (APPLICATION.PROPERTIES FILE, MYSQL):
+spring.datasource.url = jdbc:mysql://localhost:3306/databaseName?useSSL=false
+spring.datasource.username =
+spring.datasource.password =
+
+spring.jpa.properties.hibernate.dialect = org.hibernate.dialect.MySQL5InnoDBDialect
+spring.jpa.hibernate.ddl-auto = create-drop
+spring.jpa.show-sql = true
+spring.jpa.properties.hibernate.format_sql = true
+END OF EXAMPLE
+
+EXAMPLE FOR CONNECTION DATA (APPLICATION.PROPERTIES FILE, POSTGRESQL):
+spring.datasource.url = jdbc:postgresql://localhost:5432/databaseName
+spring.datasource.username =
+spring.datasource.password =
+
+spring.jpa.properties.hibernate.jdbc.lob.non_contextual_creation = true
+spring.jpa.properties.hibernate.dialect = org.hibernate.dialect.PostgreSQLDialect
+spring.jpa.hibernate.ddl-auto = create-drop
+spring.jpa.show-sql = true
+spring.jpa.properties.hibernate.format_sql = true
+END OF EXAMPLE
+
+EXAMPLE FOR CONNECTION DATA (APPLICATION.PROPERTIES FILE, ORACLE):
+spring.datasource.driver-class-name = oracle.jdbc.OracleDriver
+spring.datasource.url = jdbc:oracle:thin:@localhost:1521/databaseName
+spring.datasource.username =
+spring.datasource.password =
+
+spring.jpa.properties.hibernate.dialect = org.hibernate.dialect.PostgreSQLDialect
+spring.jpa.hibernate.ddl-auto = create-drop
+spring.jpa.show-sql = true
+spring.jpa.properties.hibernate.format_sql = true
+END OF EXAMPLE
+
+EXAMPLE FOR CONNECTION DATA (APPLICATION.PROPERTIES FILE, SQL SERVER):
+spring.datasource.url = jdbc:sqlserver://localhost:1434;encrypt=true;trustServerCertificate=true;databaseName=databaseName
+spring.datasource.username =
+spring.datasource.password =
+
+spring.jpa.properties.hibernate.dialect = org.hibernate.dialect.SQLServerDialect
+spring.jpa.hibernate.ddl-auto = create-drop
+spring.jpa.show-sql = true
+spring.jpa.properties.hibernate.format_sql = true
+END OF EXAMPLE
+
+=>SPRING BOOT

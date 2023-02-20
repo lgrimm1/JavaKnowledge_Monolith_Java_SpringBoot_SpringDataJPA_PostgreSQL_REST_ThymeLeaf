@@ -28,6 +28,7 @@ In case the Spring Boot is used alongside with the Spring ThymeLeaf the template
 =>SPRING THYMELEAF
 =>SPRING CLASS DEPENDENCIES
 =>CLASSES;13. CLASS DEPENDENCY INJECTION
+=>SPRING DATA JPA DATABASE CONNECTION
 =>SPRING BOOT MAIN CLASS
 =>SPRING BOOT ENTITY
 =>SPRING BOOT REPOSITORY
@@ -45,7 +46,8 @@ In case the Spring Boot is used alongside with the Spring ThymeLeaf the template
 =================================================================================
 1.1. MANUALLY
 1.2. WITH SPRING INITIALIZR
-1.3. PRE-SETTINGS
+1.3. DATABASE CONNECTION
+1.4. PRE-SETTINGS
 
 1.1. MANUALLY
 ---------------------------------------------------------------------------------
@@ -55,11 +57,6 @@ Alternative way is to type "mvn compile" to make Maven to find and install all w
 The parent tag marks the version root of dependencies.
 The dependencies are modular: add anything you need and leave anything you do not.
 The Spring Web provides web support for REST API and Spring MVC, and uses Apache Tomcat as default container.
-The Spring Data JPA provides interface towards databases.
-On database side, the H2 Database provides a fast in-memory SQL, the postgreSQL provides the named SQL solution; can be replaced with Oracle (SQL), MongoDB (noSQL) etc.
-In case the Storage layer is a file-level or a List-based in-memory solution, no dependency should be used for storaging (here: H2 Database and postgreSQL).
-In case of not in-memory nor file-level database solution, installing and-or creating access to the specific database is necessary.
-Spring Boot (Spring Data JPA) can handle more data connections parallel. That said, more dependencies can be inserted if more solutions are needed.
 The Spring Test dependency is part of the Spring Boot.
 
 Under the modelVersion tag, above dependencies:
@@ -77,28 +74,60 @@ If there is not, create a block under the properties block:
 Then inside, add the next (it is possible to define version tag with all dependencies, in case no version tag, the best compatible version read from the parent tag, will be used by Maven):
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-jpa</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.h2database</groupId>
-			<artifactId>h2</artifactId>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.postgresql</groupId>
-			<artifactId>postgresql</artifactId>
-			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-Under dependencies (during tests, this element was not found by Intellij/Maven, remains red in pom.xml but causes no error):
+
+On database side, several database systems can be added.
+In case the Storage layer is a file-level or a List-based in-memory solution, no database dependency should be added.
+In case of not in-memory nor file-level database solution, installing and-or creating access to the specific database is necessary.
+The Spring Data JPA provides the interface towards databases. Add it only when database dependency is added as well.
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+
+Data JPA can work together with the next database systems:
+    a. H2 (fast in-memory SQL)
+    b. mySQL
+    c. postgreSQL (postgres)
+    d. Oracle
+    e. SQL Server
+
+Spring Boot (Spring Data JPA) can handle more data connections parallel. That said, more dependencies can be inserted if more solutions are needed.
+Depending on which database system should be used along with Data JPA, add one or more dependencies from the next options:
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+        <dependency>
+        	<groupId>mysql</groupId>
+        	<artifactId>mysql-connector-java</artifactId>
+        	<scope>runtime</scope>
+        </dependency>
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+        <dependency>
+        	<groupId>com.oracle.database.jdbc</groupId>
+        	<artifactId>ojdbc8</artifactId>
+	        <scope>12.2.0.1</scope>
+        </dependency>
+        <dependency>
+        	<groupId>com.microsoft.sqlserver</groupId>
+        	<artifactId>mssql-jdbc</artifactId>
+        	<scope>runtime</scope>
+        </dependency>
+
+Finally, under dependencies (during tests, this element was not found by Intellij/Maven, remains red in pom.xml but causes no error):
 	<build>
 		<plugins>
 			<plugin>
@@ -116,7 +145,14 @@ Any frameworks, dependencies, Java version, IDE name can be chosen, and the webs
 It is very convenient way in case of a new project and can be used for extending an existing one by checking files and directories against.
 The Spring Test dependency is automatically added.
 
-1.3. PRE-SETTINGS
+1.3. DATABASE CONNECTION
+---------------------------------------------------------------------------------
+Under the same (src/main/resources) folder, the next file should be created:
+    application.properties
+This file contains configuration and environment-specific properties of the application, mainly for Hibernate (part of Spring Data JPA core).
+Visit the SPRING DATA JPA DATABASE CONNECTION page for details.
+
+1.4. PRE-SETTINGS
 ---------------------------------------------------------------------------------
 While the database is not connected, the application will fail to start.
 Therefore, during development it is advised to rem-out the JPA dependency.
@@ -176,10 +212,6 @@ Under the src/main/resources folder, the next folders should be created:
     a. static (contains the frontend)
     b. templates (contains pre-set of pages handled with backend web development)
 
-Under the same (src/main/resources) folder, the next file should be created:
-    application.properties
-This file contains configuration and environment-specific properties of the application.
-
 Spring Boot uses automatism when the web application starts (invoking Main class):
     a. Spring Boot finds all controller classes marked with annotation (see later) and invokes their constructors
     b. in case these classes contain injected class dependencies, for those classes their constructors will be invoked
@@ -188,32 +220,32 @@ Spring Boot uses automatism when the web application starts (invoking Main class
 =================================================================================
 3. CLASS DEPENDENCIES IN SPRING
 =================================================================================
-Visit the Spring_class_dependencies page for description.
+Visit the SPRING CLASS DEPENDENCIES page for description.
 
 =================================================================================
 4. MAIN (APPLICATION) CLASS
 =================================================================================
-Visit the Spring_Boot_Main_class page for description.
+Visit the SPRING BOOT MAIN CLASS page for description.
 
 =================================================================================
 5. ENTITY
 =================================================================================
-Visit the Spring_Boot_entity page for description.
+Visit the SPRING BOOT ENTITY page for description.
 
 =================================================================================
 6. REPOSITORY
 =================================================================================
-Visit the Spring_Boot_repository page for description.
+Visit the SPRING BOOT REPOSITORY page for description.
 
 =================================================================================
 7. SERVICE CLASS
 =================================================================================
-Visit the Spring_Boot_service page for description.
+Visit the SPRING BOOT SERVICE page for description.
 
 =================================================================================
 8. CONTROLLER CLASS
 =================================================================================
-Visit the Spring_Boot_controller page for description.
+Visit the SPRING BOOT CONTROLLER page for description.
 
 =================================================================================
 9. JSON AND XML CONVERSION

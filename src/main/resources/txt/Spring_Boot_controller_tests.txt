@@ -35,7 +35,7 @@ Tests will reach all the layers of the backend, database is included.
 The cURL commands should be placed under the src/main/resources/cURL folder under Maven.
 The cUrl tests can be used for testing out a single function or a scenario.
 
-For a single function, when the aim is to reach existing data from the storage, that data must be recorded beforehand, practically when the application starts up (see Spring_Boot_configuration page).
+For a single function, when the aim is to reach existing data from the storage, that data must be recorded beforehand, practically when the application starts up (see SPRING BOOT CONFIGURATION page).
 The single function tests should follow the test cases defined in the service unit test class.
 
 For a test scenario, more cURL commands are used from a batch file. In this case when some commands are aiming for creating data in the database, no need to prepare data through configuration.

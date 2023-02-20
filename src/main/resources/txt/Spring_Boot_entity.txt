@@ -73,7 +73,7 @@ For console, the next SQL commands are needed:
     CREATE DATABASE db-name;
     GRANT ALL PRIVILEGES ON DATABASE "db-name" TO username;
 The db-name is name of the database, username is the user which we want to use to manage the database, both are set in the application.properties file.
-The default username under postgreSQL is postgres.
+The default username e.g. under postgreSQL is postgres.
 
 The entity will represent a row in a table, also carries the backend and database behaviour connected to the correspondent table via annotations.
 The Spring Data framework (especially the database dependency) will handle the conversion processes from-to the database.
@@ -110,7 +110,7 @@ The @NamedQuery annotation has the next parameters:
     b. query = "JPQL expression"
 By using it, the query will be bounded to the domain class and will be accessible by calling the method in static mode:
     variable = EntityClassName.queryMethodName();
-For JPQL examples see the Spring_Boot_repository page.
+For JPQL examples see the SPRING BOOT REPOSITORY page.
 By using this annotation on a domain class, annotation-based configuration is created.
 
 2.2. FIELDS

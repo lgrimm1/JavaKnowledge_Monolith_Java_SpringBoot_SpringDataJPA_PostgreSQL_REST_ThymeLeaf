@@ -1,0 +1,207 @@
+=================================================================================
+SPRING BOOT REPOSITORY QUERY EXAMPLES
+=================================================================================
+1. DEFAULT QUERIES
+2. DERIVED QUERIES
+3. CUSTOM QUERIES
+
+=>SPRING BOOT REPOSITORY
+
+=================================================================================
+1. DEFAULT QUERIES
+=================================================================================
+EXAMPLE FOR USAGE OF DEFAULT QUERIES:
+/*
+repository class: Repository, repository object: repo
+entity class: Entity; entity fields:
+@Id long id
+String field1
+int field2
+boolean field3
+*/
+
+long id = ...;
+List<Long> listIds = ...;
+Set<Long> setIds = ...;
+Iterable<Long> iterableIds = ...;
+
+Entity entity = new Entity(...);
+List<Long> listEntities = ...;
+Set<Long> setEntities = ...;
+Iterable<Long> iterableEntities = ...;
+
+long count = repo.count();
+
+boolean exists = repo.existsById(id);
+Optional<Entity> optionalEntity = repo.getReferenceById(id);
+Optional<Entity> optionalEntity = repo.findById(id);
+List<Entity> entities = repo.findAll();
+List<Entity> entities = repo.findAllById(listIds);
+List<Entity> entities = repo.findAllById(setIds);
+List<Entity> entities = repo.findAllById(iterableIds);
+
+Entity newEntity = save(entity);
+repo.flush();
+
+repo.delete(entity);
+repo.deleteAll(listEntities);
+repo.deleteAll(setEntities);
+repo.deleteAll(iterableEntities);
+repo.deleteById(id);
+repo.deleteAllById(listIds);
+repo.deleteAllById(setIds);
+repo.deleteAllById(iterableIds);
+repo.deleteAll();
+END OF EXAMPLE
+
+=================================================================================
+2. DERIVED QUERIES
+=================================================================================
+EXAMPLE FOR DERIVED QUERIES:
+/*
+entity class: Entity; entity fields:
+@Id long id
+String field1
+int field2
+boolean field3
+@Temporal(TemporalType.DATE) LocalDate field4
+*/
+
+//find all
+@Query("SELECT e FROM Entity e")
+@Query(value = "SELECT * FROM Entity", nativeQuery = true)
+List<Entity> findAll();
+
+//find first by text
+//for finding the first, there is no similar in JPQL
+Optional<Entity> findFirstByField1(String text);
+List<Entity> findFirstByField1(String text);
+
+//find first 10 by number
+//for finding the first/top 10, there is no similar in JPQL
+List<Entity> findFirst10ByField2(int number);
+List<Entity> findTop10ByField2(int number);
+
+//find all by partial text, ignore case
+@Query("SELECT e FROM Entity e WHERE UPPER(e.field1) LIKE UPPER(%?1%)")
+@Query(value = "SELECT * FROM Entity e WHERE UPPER(e.field1) LIKE UPPER(%?1%)", nativeQuery = true)
+List<Entity> findByField1IgnoreCase(String partialText);
+
+//find all by true condition
+@Query("SELECT e FROM Entity e WHERE e.field3 = true")
+@Query(value = "SELECT * FROM Entity e WHERE e.field3 = true", nativeQuery = true)
+List<Entity> findByField3();
+
+//find all by condition
+@Query("SELECT e FROM Entity e WHERE e.field3 = ?1")
+@Query(value = "SELECT * FROM Entity e WHERE e.field3 = ?1", nativeQuery = true)
+List<Entity> findByField3(boolean condition);
+
+//find all by two fields
+@Query("SELECT e FROM Entity e WHERE e.field1 = ?1 AND e.field2 = ?2")
+@Query(value = "SELECT * FROM Entity e WHERE e.field1 = ?1 AND e.field2 = ?2", nativeQuery = true)
+List<Entity> findByField1AndField2(String text, int number);
+
+//find all, reverse ordering by field2
+@Query("SELECT e FROM Entity e ORDER BY e.field2 DESC")
+@Query(value = "SELECT * FROM Entity e ORDER BY e.field2 DESC", nativeQuery = true)
+List<Entity> findAllOrderByField2Desc(String text);
+
+//find all, ignore case, ordering by field1 then field2
+@Query("SELECT e FROM Entity e WHERE UPPER(e.field1) = UPPER(?1) ORDER BY e.field1 ASC ORDER BY e.field2 DESC")
+@Query(value = "SELECT * FROM Entity e WHERE UPPER(e.field1) = UPPER(?1) ORDER BY e.field1 ASC ORDER BY e.field2 DESC", nativeQuery = true)
+List<Entity> findByField1IgnoreCaseOrderByField1AscField2Desc(String text);
+
+//find by maximum number
+@Query(value = "SELECT * FROM Entity e WHERE e.field2 <= ?1", nativeQuery = true)
+List<Entity> findByField2LessThanEqual(int number);
+
+//find by minimum date
+@Query(value = "SELECT * FROM Entity e WHERE e.field4 >= ?1", nativeQuery = true)
+List<Tutorial> findByField4GreaterThanEqual(LocalDate date);
+
+//find by number interval
+@Query(value = "SELECT * FROM Entity e WHERE e.field2 BETWEEN ?1 AND ?2", nativeQuery = true)
+List<Tutorial> findByField2Between(int start, int end);
+
+//find by date interval
+@Query(value = "SELECT * FROM Entity e WHERE e.field4 BETWEEN ?1 AND ?2", nativeQuery = true)
+List<Tutorial> findByField4Between(LocalDate start, LocalDate end);
+END OF EXAMPLE
+
+=================================================================================
+3. CUSTOM QUERIES
+=================================================================================
+EXAMPLE FOR CUSTOM QUERIES:
+/*
+repository class: Repository, repository object: repo
+entity class: Entity; entity fields:
+@Id long id
+String[] field1
+String field2
+*/
+
+//find all by partial text, ignore case
+@Query("SELECT e FROM Entity e WHERE UPPER(e.field2) LIKE UPPER(%?1%)")
+@Query(value = "SELECT * FROM Entity e WHERE UPPER(e.field2) LIKE UPPER(%?1%)", nativeQuery = true)
+List<Entity> customMethodName(String partialText);
+
+//find all by text in string-array column
+//this query is not supported by JPQL
+@Query(value = "SELECT * FROM Entity e WHERE ANY(e.field1) = ?1", nativeQuery = true)
+List<Entity> customMethodName(String text);
+
+//find all by partial text in string-array column, ignore case
+//this query is not supported by JPQL
+@Query(value = "SELECT * FROM Entity e WHERE UPPER(ANY(e.field1)) LIKE UPPER(%?1%)", nativeQuery = true)
+List<Entity> customMethodName(String partialText);
+
+//find all, dynamic sort by field2
+@Query("SELECT e FROM Entity e")
+//this query is not supported for native SQL
+List<Entity> customMethodName(Sort sort);
+...
+Sort sort = Sort.of("field2").ascending();
+List<Entity> entities = repo.customMethodName(sort);
+
+//find all, paged
+@Query("SELECT e FROM Entity e")
+@Query(value = "SELECT * FROM Entity", nativeQuery = true)
+Page<Entity> customMethodName(Pageable pageable);
+...
+int pageNumber = ...;
+int pageSize = ...;
+Pageable pageable = PageRequest.of(pageNumber, pageSize);
+List<Entity> entities = repo.customMethodName(pageable).getContent();
+
+//find all, paged, dynamic reverse sort by field2 via pagination
+@Query("SELECT e FROM Entity e")
+@Query(value = "SELECT * FROM Entity", nativeQuery = true)
+Page<Entity> customMethodName(Pageable pageable);
+...
+int pageNumber = ...;
+int pageSize = ...;
+Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.of("field2").descending());
+List<Entity> entities = repo.customMethodName(pageable).getContent();
+
+//find all by partial text from the left, dynamic sort by field2 via pagination
+@Query("SELECT e FROM Entity e WHERE LOWER(e.field2) LIKE LOWER(?1%)")
+@Query(value = "SELECT * FROM Entity e WHERE LOWER(e.field2) LIKE LOWER(?1%)", nativeQuery = true)
+Page<Entity> customMethodName(String partialText, Pageable pageable);
+...
+int pageNumber = 0;
+int pageSize = repo.count();
+Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by("field2").ascending());
+List<Entity> entities = repo.customMethodName("partial text", pageable).getContent();
+
+//update an entity via query
+@Transactional
+@Modifying
+@Query("UPDATE Entity e SET e.field2 = "new text" WHERE e.id = ?1", nativeQuery = true)
+@Query(value = "UPDATE Entity SET field2 = "new text" WHERE id = ?1", nativeQuery = true)
+int customMethodName(Long id);
+END OF EXAMPLE
+
+//TODO https://www.bezkoder.com/spring-jpa-query/
+//TODO Define Repository for JPA Native Query methods, https://www.bezkoder.com/jpa-repository-query/
+

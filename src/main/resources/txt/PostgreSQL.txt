@@ -93,23 +93,4 @@ Also, the Java int and Integer types are matching with the next postgres type:
 4. BACKEND CONNECTION PARAMETERS
 =================================================================================
 These parameters are declared in the application.properties file under the project directory.
-Some of the usable parameters are described below.
-
-||Parameter|Description||
-||spring.jpa.show-sql|sets visibility of executed SQL commands on console||
-||spring.jpa.properties.hibernate.format_sql|sets formatting on printed SQL commands on console||
-||logging.level.org.hibernate.SQL|for DEBUG value prints SQL debug information on console||
-||logging.level.org.hibernate.type.descriptor.sql|for TRACE value prints SQL debug information on console for prepared statements||
-||server.error.include-message|sets whether the server error messages should be sent to the frontend||
-
-EXAMPLE FOR CONNECTION DATA (APPLICATION.PROPERTIES FILE FOR POSTGRESQL, JPA):
-spring.datasource.url=jdbc:postgresql://localhost:5432/dataBaseName
-spring.datasource.username=
-spring.datasource.password=
-spring.jpa.hibernate.ddl-auto=create-drop
-spring.jpa.show-sql=true
-spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
-spring.jpa.properties.hibernate.format_sql=true
-
-server.error.include-message=always
-END OF EXAMPLE
+Visit SPRING DATA JPA DATABASE CONNECTION page for more details.

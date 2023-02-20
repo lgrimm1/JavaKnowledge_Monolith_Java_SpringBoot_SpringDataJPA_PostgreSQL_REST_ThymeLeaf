@@ -9,6 +9,8 @@ That said, that class will be responsible for storage management.
 
 =>SPRING BOOT
 =>POSTGRESQL
+=>SPRING DATA JPA
+=>SPRING BOOT REPOSITORY QUERY EXAMPLES
 =>SPRING BOOT TESTS;3. REPOSITORY TESTS
 
 =================================================================================
@@ -44,9 +46,12 @@ END OF EXAMPLE
 2. REPOSITORY INTERFACE, JPA
 =================================================================================
 2.1. DEFAULT INTERFACE
-2.2. QUERY METHODS
-2.3. NAMED QUERIES
-2.4. QUERY REWRITER
+2.2. DERIVED QUERY METHODS
+2.3. CUSTOM QUERY METHODS
+2.4. QUERY EXAMPLES
+2.5. QUERY IN ARRAY COLUMN
+2.6. NAMED QUERIES
+2.7. QUERY REWRITER
 
 2.1. DEFAULT INTERFACE
 ---------------------------------------------------------------------------------
@@ -71,23 +76,20 @@ import org.springframework.stereotype.*;
 
 @Repository
 public interface RepositoryClassName extends JpaRepository<EntityClassName, TypeOfID> {
-//optional fields
-//optional query methods
-//optional overridden methods
-//optional custom methods
+    //optional fields
+    //optional overridden default methods
+    //optional derived query methods
+    //optional custom query methods
+    //optional helper methods
 }
 END OF EXAMPLE
 
-In case of using a database, the next parameters should be defined for the connection:
-    a. path to the SQL server with port (e.g. protocol is postgresql://, for local development localhost:5432 is fine, port number is default and defined during installation)
-    b. name of the database
-    c. authorisation data (for connection to the database)
-    d. JPA parameters (in case JPA is used under Spring Boot for connecting the storage level to the database)
-These parameters are declared in the application.properties file under the project directory.
+In case of using a database, database access and other parameters must be defined in the application.properties file under the project directory, visit the SPRING DATA JPA DATABASE CONNECTION page for details.
 
 By extending the JPA repository, the next inherited methods will be accessible. The access can happen from within the repository class or from the service class into which the repository was injected.
 The entity is the element of the table of the database defined with @Entity under Spring, accessible via the repository.
 Coming from design, it is possible to manage entity management via the repository or via the service.
+These methods are satisfying basic needs of handling database data, mainly satisfying CRUD functions.
 
 ||Method|Description||
 ||existsById(id)|returns existence of the entity by the ID||
@@ -104,15 +106,15 @@ Coming from design, it is possible to manage entity management via the repositor
 ||deleteAllById(iterableOfIds)|finds and deletes entities by their IDs of the passed Iterable||
 ||deleteAll|empties the repository||
 
-2.2. QUERY METHODS
+2.2. DERIVED QUERY METHODS
 ---------------------------------------------------------------------------------
-The default interface is for saving data and finding-managing data by the ID.
+The default interface is for saving data and finding-managing data by the ID (CRUD functions).
 In case of other or overridden methods are needed, can be coded on repository level.
 
-The JPA repository has conventions for new query methods. That said, all new query methods should be defined as abstract and JPA will fill them with code.
-In case the method name is built from keywords (see later), JPA will automatically fill the method with the right code. For increasing readability, optionally the @Query annotation can be used for such method.
-In case the method name does not follow naming conventions, must the @Query annotation be used for that method which must mark the SQL (JPQL) expression the method should invoke.
-A query method usually has argument list, its variable names must be used in the method name, and or must be marked in the query with ?1, ?2, ... respectively.
+The JPA repository offers conventions for new query methods, by utilizing them derived methods can be defined.
+All derived query methods should be defined as abstract only.
+Names of derived query methods are built from given keywords (see later), JPA will automatically fill the method with the right code.
+A derived query method usually has argument list, its variable names must be used in the method name in respective order.
 
 The main keywords are for identifying the main purpose of the query.
 The find keyword can be replaced with read, get, query, search or stream keywords. In case of stream, a Stream result type would be advised.
@@ -168,12 +170,13 @@ Except for AllIgnoreCase and AllIgnoringCase, every additional keywords can be u
 
 Using the Distinct keyword needs careful consideration:
     a. SELECT DISTINCT u FROM User u (because it includes User.id, nothing will be duplicated, result will be the whole table e.g. in a List<User>)
-    b. select DISTINCT u.lastname FROM User u (narrows the query for User.lastname and finds unique values for that, result can be either List<User> and List<String>)
+    b. SELECT DISTINCT u.lastname FROM User u (narrows the query for User.lastname and finds unique values for that, result can be either List<User> and List<String>)
     c. countDistinctByLastname(String lastname) (equals with SELECT COUNT(DISTINCT u.id) FROM User u WHERE u.lastname = ?1, because u.id contains unique values, result equals with countByLastname(String lastname))
 In case of better verbal and cleaner query, it can be advised to use the @Query annotation with custom method name.
 
 The return value of the query method depends on the query.
 Basically, the return value can be single (e.g. the entity class or a primitive) or multiple (e.g. a Collection subtype like List).
+In case of single, the query can produce result or null. The syntax will be correct when the return value is a class, however, packaging the result type into an Optional is preferred for preventing runtime exception when invoking the query does not find matching data. Also, instead of Optional, List can be used of which size will be zero in case of no found element.
 In case a query could result multiple values it is advised to define multiple return value for the method. By defining single and the query returns single in a specific case, no error will appear but because the method is capable to produce multiple elements, in such situation, IncorrectResultSizeDataAccessException will be raised.
 For geospatial returned data, GeoResult (single) or result wrapper like GeoPage or GeoResults as multiple data can be used.
 In case the method return type is different from what the query would produce but convertible, JPA will convert it automatically, if not possible, exception will be raised.
@@ -204,45 +207,86 @@ Return types can be:
     w. Maybe<T> (a RxJava Maybe emitting zero or one element using reactive repositories; expects the query method to return one result at most; if no result is found, Mono.empty() is returned; more than one result triggers an IncorrectResultSizeDataAccessException)
     x. Flowable<T> (a RxJava Flowable emitting zero, one, or many elements using reactive repositories; queries returning Flowable can emit also an infinite number of elements)
 
-EXAMPLE FOR CUSTOM JPA REPOSITORY INTERFACE:
-//entity fields: @Id long id; String field1; String field2; int field3;
-package PackageName;
+//TODO https://www.baeldung.com/spring-data-jpa-query
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
-import org.springframework.stereotype.*;
+2.3. CUSTOM QUERY METHODS
+---------------------------------------------------------------------------------
+The @Query method-level annotation is used for a query method:
+    a. for increasing readability of name of a derived query method (usage is optional)
+    b. for defining JPQL or native SQL expression of the query (custom query methods; usage is a must)
 
-@Repository
-public interface RepositoryClassName extends JpaRepository<EntityClassName, TypeOfID> {
+The JPQL stands for Jakarta Persistence Query Language (former Java Persistence Query Language), it is a platform-independent object-oriented query language defined as part of the Jakarta Persistence API (JPA; formerly Java Persistence API) specification. JPQL is inspired by SQL, and its queries resemble SQL queries in syntax, but operate against JPA entity objects stored in a relational database rather than directly with database tables.
+The JPQL only supports a subset of SQL standard. If you want to make complex queries, use native SQL query.
+Spring Data JPA does not adjust the query to specific SQL dialect of the database, so ensure that the provided statement is supported by RDBMS.
 
-    //find first, if not found, Optional will be empty
-    //for finding the first, there is no similar in JPQL
-    Optional<EntityClass> findFirstByField1(String field1);
+The query method arguments are accessed in the query with:
+    a. positional parameters (?1, ?2, ... respectively)
+    b. named parameters (:argumentName1, :argumentName2)
+In case of named parameters, when the referenced :argumentNameX needs emphasis, the @Param annotation is needed in method signature.
 
-    //find first 10, if found nothing, List will be empty
-    //for finding the first/top 10, there is no similar in JPQL
-    List<EntityClass> findFirst10ByField1(String field1);
-
-    //find all by two fields, if not found, List will be empty
-    Query("SELECT s FROM EntityClassName s WHERE s.field1 = ?1 AND s.field3 = ?2")
-    List<EntityClass> findByField1AndField3(String field1, int field3);
-
-    //find all by two fields and convert into Stream, if not found, Stream will be empty
-    Query("SELECT s FROM EntityClassName s WHERE s.field1 = ?1 AND s.field2 = ?2")
-    Stream<EntityClass> findByField1AndField2(String field1, String field2);
-
-    //find all, ignore case, ordering by field1 then field2, if not found, List will be empty
-    Query("SELECT s FROM EntityClassName s WHERE UPPER(s.field1) = UPPER(?1) ORDER BY s.field1 ASC ORDER BY s.field2 DESC")
-    List<EntityClass> findByField1IgnoreCaseOrderByField1AscField2Desc(String name);
-}
+EXAMPLE FOR POSITIONAL PARAMETERS:
+@Query("SELECT e FROM Entity e WHERE e.title = ?1 AND e.year = ?2")
+List<Entity> entities = findEntities(String s, int n);
 END OF EXAMPLE
 
-2.3. NAMED QUERIES
+EXAMPLE FOR NAMED PARAMETERS:
+@Query("SELECT e FROM Entity e WHERE e.title = :title AND e.year = :year") //JPQL
+@Query(value = "SELECT * FROM Entity e WHERE e.title = :title AND e.year = :year", nativeQuery = true) //native SQL
+List<Entity> entities = findEntities(String title, int year); //no emphasis
+List<Entity> entities = findEntities(@Param("title") String s, @Param("year") int n); //emphasis
+END OF EXAMPLE
+
+The arguments of @Query annotations can be:
+    a. "JPQL expression"
+    b. value = "JPQL expression"
+    c. value = "native SQL expression", nativeQuery = true
+
+Custom query methods must not use keywords of derived query methods since Spring uses names of derived methods over @Query expressions in priority.
+The native SQL contains the CONCAT() function which concatenates its arguments into one text (e.g. "CONCAT('%', ?1,'%')").
+In order to match value case-insensitively, the column value and the method parameter should be modified with UPPER() or LOWER() function (e.g. "UPPER(e.title) LIKE UPPER(?1%)").
+
+Method arguments can overwrite the query expression, this is called dynamic sorting, paging etc. Meaning, the expression is invoked but after that, the query method will invoke the dynamic operation on the results before passing the results to its caller side.
+When using dynamic modification, avoid using similar expression part in the query (would take more operation time, result can be unpredicted).
+
+Dynamic sorting means that to the method signature a Sort object is added. That said, the query expression should not contain ORDER BY part but the method signature will modify the expression by adding sorting afterwards.
+Spring Data JPA does not currently support dynamic sorting for native SQL queries (will raise InvalidJpaQueryMethodException), because it would have to manipulate the actual query declared, which it cannot do reliably for native SQL.
+For native SQL, add Pageable object instead, see examples.
+For sorting, use an object variant:
+    a. Sort sort = Sort.by("fieldName").ascending();
+    b. Sort sort = Sort.by("fieldName").descending();
+Then add this object to the query method argument list:
+    List<EntityClass> methodName([other parameters, ], Sort sort);
+The List of entities can be queried by invoking:
+    List<EntityClass> = methodName(..., sort);
+
+Dynamic pagination means that the query presents only one part of the whole set of results, and with paging command will present the next package in order. By using it the data traffic between the database and the backend is reduced, the operation becomes faster.
+With pagination, sorting and filtering is possible as well.
+For pagination, use an object variant:
+    a. Pageable pageable = PageRequest.of(pageNumber, pageSize); //no sorting
+    b. Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by("fieldName").ascending());
+    c. Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by("fieldName").descending());
+Then add this object to the query method argument list:
+    Page<EntityClass> methodName([other parameters, ]Pageable pageable);
+The List of entities of a page can be queried and extracted by invoking:
+    List<EntityClass> = methodName(..., pageable).getContent();
+
+2.4. QUERY EXAMPLES
+---------------------------------------------------------------------------------
+Visit the SPRING BOOT REPOSITORY QUERY EXAMPLES page for derived and custom query examples.
+
+2.5. QUERY IN ARRAY COLUMN
+---------------------------------------------------------------------------------
+Some of the databases offer array-based versions of their column types such as integer[] or text[].
+Their counterparts in Java can be (following the example above) int[] or String[], or Collection type (List of Integer, List of String).
+Spring Boot pairs these types automatically.
+In case Data JPA is used but without Spring Boot, queries accessing these arrays are not obvious, converting the column values to a String is necessary before a query method with that column would be invoked.
+In other ways, upon comparing data in query method, the array-type column must be converted into String first, then the comparing will be invoked on the String.
+See the SPRING DATA JPA page for more details.
+
+2.6. NAMED QUERIES
 ---------------------------------------------------------------------------------
 Custom named queries can be rendered to the domain class:
-    a. annotation-based configuration (see on Spring_Boot_entity page)
+    a. annotation-based configuration (see on SPRING BOOT ENTITY page)
     b. JPA named queries
 
 The JPA named queries are defined in XML configuration metafile while attached to the repository with additional method declaration of the repository interface.
@@ -271,7 +315,7 @@ EXAMPLE FOR INVOKING THE NAMED QUERY:
 List<User> list = User.findByLastname(lastname);
 END OF EXAMPLE
 
-2.4. QUERY REWRITER
+2.7. QUERY REWRITER
 ---------------------------------------------------------------------------------
 In the previous variants queries are a priori defined.
 These queries are sent to the EntityManager of Hibernate upon usage.

@@ -228,7 +228,7 @@ In the method signature, an optional argument marked with @ModelAttribute annota
 In the method signature, a Model object should be placed as argument, in case data should be sent towards the frontend.
 The Model object contains data prepared to be sent. Any kind of object can be added to the Model.
 
-See Spring_Boot_requests page for code examples.
+See SPRING BOOT REQUESTS page for code examples.
 
 =================================================================================
 5. CONTROLLER OBJECT MODE
@@ -240,7 +240,7 @@ The return value can be any type or a Map with String keys and values where keys
 In the method signature, every incoming object (sent by frontend) must be marked with @RequestBody annotation.
 Alternatively, all incoming objects can be rendered into one Map of String keys and values, also marked with @RequestBody annotation.
 
-See Spring_Boot_requests page for code examples.
+See SPRING BOOT REQUESTS page for code examples.
 
 =================================================================================
 6. RESPONSE ENTITY
@@ -253,7 +253,7 @@ Whilst using ResponseEntity can make a specific controller method customizable f
 
 In some cases when not using String-type ResponseEntity, exception can be raised upon sending the method return value.
 For such cases an exception handler method (marked with the @ExceptionHandler annotation) is needed among controller methods. When an endpoint raises exception, this method will run. The return code of this method is defined with the @ResponseStatus annotation.
-Visit the Spring_exception_handling page for description.
+Visit the SPRING EXCEPTION HANDLING page for description.
 
 Constructor argument variations:
     a. responseBodyObject, HttpStatus
@@ -353,7 +353,7 @@ When an endpoint fails, an exception is raised and a HTTP500 error code is sent 
 (For reference, when there is no proper endpoint or method signature for a request, HTTP error code will be sent back but no exception will be raised.)
 For such cases one or more handler methods must be defined.
 
-Visit the Spring_exception_handling page for description.
+Visit the SPRING EXCEPTION HANDLING page for description.
 
 =================================================================================
 9. IMPLEMENT REST CRUD API

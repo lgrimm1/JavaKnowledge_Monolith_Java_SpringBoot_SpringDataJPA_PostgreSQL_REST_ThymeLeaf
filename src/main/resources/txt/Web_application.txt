@@ -66,7 +66,7 @@ For all responses, the dispatcher servlet sends not just the response but an HTM
     c. 3xx (redirect)
     d. 4xx (the client asked for something the server could not or would not deliver, e.g. 404 = page not found)
     e. 5xx (server-side error)
-For all the possible HTML codes in verbal form, visit Spring Boot tests (StatusResultMatcher methods).
+For all the possible HTML codes in verbal form, visit the SPRING BOOT TESTS page (StatusResultMatcher methods).
 
 Building a whole web application needs much complexity in code.
 For simplification, using the Spring Boot framework is advised.
