@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.*;
 import org.springframework.ui.*;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.*;
 
 import java.io.*;
 import java.util.*;
@@ -19,15 +20,13 @@ public class CommonController {
 	}
 
 	@GetMapping("/root")
-	public String getRoot(Model model) {
-		commonService.getRoot(model);
-		return "root";
+	public ModelAndView getRoot(Model model) {
+		return commonService.getRoot(new ModelAndView("root", model.asMap()));
 	}
 
 	@PostMapping("/search")
-	public String searchPages(@ModelAttribute("search_text") String searchText, Model model) {
-		commonService.searchPages(searchText, model);
-		return "list";
+	public ModelAndView searchPages(@ModelAttribute("search_text") String searchText, Model model) {
+		return commonService.searchPages(searchText, new ModelAndView("list", model.asMap()));
 	}
 
 	@PostMapping("/view")

@@ -1,6 +1,7 @@
 package lgrimm1.JavaKnowledge.Process;
 
 import lgrimm1.JavaKnowledge.Title.*;
+import org.springframework.stereotype.*;
 
 import java.util.*;
 
@@ -8,6 +9,7 @@ import java.util.*;
  * Translates a TXT content to an HTML content, forming a knowledge page.
  * @see #processTxt(List, String, TitleRepository, Formulas, Extractors, HtmlGenerators)
  */
+@Component
 public class ProcessPage {
 
 	/**

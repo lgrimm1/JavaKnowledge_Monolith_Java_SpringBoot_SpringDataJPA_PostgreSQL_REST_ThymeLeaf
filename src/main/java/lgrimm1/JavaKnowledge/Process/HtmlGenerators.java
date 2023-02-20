@@ -1,6 +1,7 @@
 package lgrimm1.JavaKnowledge.Process;
 
 import lgrimm1.JavaKnowledge.Title.*;
+import org.springframework.stereotype.*;
 
 import java.util.*;
 
@@ -12,6 +13,7 @@ import java.util.*;
  * @see #changeToHtmlCharsInLine(String, Formulas)
  * @see #collectAndReferenceHeaders(List, Formulas)
  */
+@Component
 public class HtmlGenerators {
 
 	public List<String> generateMainContent(List<String> text,

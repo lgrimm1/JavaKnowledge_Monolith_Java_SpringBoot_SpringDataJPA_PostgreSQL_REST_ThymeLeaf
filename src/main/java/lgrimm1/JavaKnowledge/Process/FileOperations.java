@@ -1,5 +1,7 @@
 package lgrimm1.JavaKnowledge.Process;
 
+import org.springframework.stereotype.*;
+
 import java.io.*;
 import java.nio.file.*;
 import java.util.*;
@@ -16,6 +18,7 @@ import java.util.*;
  * @see #getResourcesPath()
  * @see #getStaticPath()
  */
+@Component
 public class FileOperations {
 
 	/**

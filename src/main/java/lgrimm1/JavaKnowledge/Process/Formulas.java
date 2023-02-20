@@ -1,5 +1,8 @@
 package lgrimm1.JavaKnowledge.Process;
 
+import org.springframework.context.annotation.*;
+import org.springframework.stereotype.*;
+
 /**
  * Carries constants and formulas.
  * Fields are opened for public due to testing purposes, protected with final access modifiers.
@@ -7,6 +10,7 @@ package lgrimm1.JavaKnowledge.Process;
  * @see #getFormula(String)
  * @see #getConstant(ConstantName)
  */
+@Component
 public class Formulas {
 
 	public final String SUPERLINE = generateRepeatedPattern("=", 81);

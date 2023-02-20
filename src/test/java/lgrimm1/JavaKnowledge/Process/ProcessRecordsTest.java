@@ -73,13 +73,13 @@ class ProcessRecordsTest {
 						)
 				));
 
-		when(txtRepository.findByContentContainingAllIgnoreCase("Word1"))
+		when(txtRepository.findEntityByItsPartiallyContainedText("Word1"))
 				.thenReturn(List.of(
 						new TxtEntity(20L, List.of("SOME text WITH WorD1 in IT.")),
 						new TxtEntity(6L, List.of("other TEXT with word1 in it")),
 						new TxtEntity(30L, List.of("some other TEXT with word1 in it"))
 				));
-		when(txtRepository.findByContentContainingAllIgnoreCase("WORD2"))
+		when(txtRepository.findEntityByItsPartiallyContainedText("WORD2"))
 				.thenReturn(new ArrayList<>());
 
 		when(titleRepository.findByTxtId(20L))

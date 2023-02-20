@@ -7,6 +7,7 @@ import lgrimm1.JavaKnowledge.Txt.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.*;
 import org.springframework.ui.*;
+import org.springframework.web.servlet.*;
 
 import java.io.*;
 import java.util.*;
@@ -45,8 +46,9 @@ public class CommonService {
 		this.htmlGenerators = htmlGenerators;
 	}
 
-	public void getRoot(Model model) {
-		model.addAttribute("search_text", "");
+	public ModelAndView getRoot(ModelAndView modelAndView) {
+		modelAndView.addObject("search_text", "");
+		return modelAndView;
 	}
 
 	/**
@@ -55,19 +57,20 @@ public class CommonService {
 	 * The search trims the given text and ignores case.
 	 * In case there is no search text given, returns all titles.
 	 */
-	public void searchPages(String searchText, Model model) {
+	public ModelAndView searchPages(String searchText, ModelAndView modelAndView) {
 		if (searchText == null || searchText.isBlank()) {
-			model.addAttribute("titles", processRecords.getAllTitles(titleRepository));
+			modelAndView.addObject("titles", processRecords.getAllTitles(titleRepository));
 		}
 		else {
 			Set<String> titles = processRecords.searchBySearchText(searchText, titleRepository, txtRepository);
-			model.addAttribute(
+			modelAndView.addObject(
 					"titles",
 					titles.stream()
 							.sorted()
 							.toList()
 			);
 		}
+		return modelAndView;
 	}
 
 	public void getPage(List<String> titles, Model model) {

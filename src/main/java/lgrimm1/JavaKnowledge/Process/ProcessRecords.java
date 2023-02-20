@@ -3,6 +3,7 @@ package lgrimm1.JavaKnowledge.Process;
 import lgrimm1.JavaKnowledge.Html.*;
 import lgrimm1.JavaKnowledge.Title.*;
 import lgrimm1.JavaKnowledge.Txt.*;
+import org.springframework.stereotype.*;
 
 import java.io.*;
 import java.time.*;
@@ -17,6 +18,7 @@ import java.util.*;
  * @see #generate(TitleRepository, TxtRepository, HtmlRepository, Formulas, ProcessPage, Extractors, HtmlGenerators)
  * @see #publishHtml(TitleRepository, HtmlRepository, FileOperations)
  */
+@Component
 public class ProcessRecords {
 
 	public Set<String> searchBySearchText(String searchText,
@@ -39,7 +41,7 @@ public class ProcessRecords {
 			);
 		}
 		titles.addAll(
-				txtRepository.findByContentContainingAllIgnoreCase(searchText).stream()
+				txtRepository.findEntityByItsPartiallyContainedText(searchText).stream()
 						.map(TxtEntity::getId)
 						.map(titleRepository::findByTxtId)
 						.filter(Optional::isPresent)

@@ -1,6 +1,7 @@
 package lgrimm1.JavaKnowledge.Process;
 
 import lgrimm1.JavaKnowledge.Title.*;
+import org.springframework.stereotype.*;
 
 import java.util.*;
 
@@ -11,6 +12,7 @@ import java.util.*;
  * @see #extractCells(String)
  * @see #extractTitle(List, Formulas)
  */
+@Component
 public class Extractors {
 
 	/**
