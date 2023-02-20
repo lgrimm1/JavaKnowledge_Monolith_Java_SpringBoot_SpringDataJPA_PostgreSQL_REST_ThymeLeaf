@@ -4,6 +4,7 @@ SPRING BOOT REPOSITORY QUERY EXAMPLES
 1. DEFAULT QUERIES
 2. DERIVED QUERIES
 3. CUSTOM QUERIES
+4. QUERIES WITH DYNAMIC SORTING, PAGINATION
 
 =>SPRING BOOT REPOSITORY
 
@@ -113,18 +114,22 @@ List<Entity> findAllOrderByField2Desc(String text);
 List<Entity> findByField1IgnoreCaseOrderByField1AscField2Desc(String text);
 
 //find by maximum number
+@Query("SELECT e FROM Entity e WHERE e.field2 <= ?1")
 @Query(value = "SELECT * FROM Entity e WHERE e.field2 <= ?1", nativeQuery = true)
 List<Entity> findByField2LessThanEqual(int number);
 
 //find by minimum date
+@Query("SELECT e FROM Entity e WHERE e.field4 >= ?1")
 @Query(value = "SELECT * FROM Entity e WHERE e.field4 >= ?1", nativeQuery = true)
 List<Tutorial> findByField4GreaterThanEqual(LocalDate date);
 
 //find by number interval
+@Query("SELECT e FROM Entity e WHERE e.field2 BETWEEN ?1 AND ?2")
 @Query(value = "SELECT * FROM Entity e WHERE e.field2 BETWEEN ?1 AND ?2", nativeQuery = true)
 List<Tutorial> findByField2Between(int start, int end);
 
 //find by date interval
+@Query("SELECT e FROM Entity e WHERE e.field4 BETWEEN ?1 AND ?2")
 @Query(value = "SELECT * FROM Entity e WHERE e.field4 BETWEEN ?1 AND ?2", nativeQuery = true)
 List<Tutorial> findByField4Between(LocalDate start, LocalDate end);
 END OF EXAMPLE
@@ -156,13 +161,54 @@ List<Entity> customMethodName(String text);
 @Query(value = "SELECT * FROM Entity e WHERE UPPER(ANY(e.field1)) LIKE UPPER(%?1%)", nativeQuery = true)
 List<Entity> customMethodName(String partialText);
 
+//update an entity via query
+@Transactional
+@Modifying
+@Query("UPDATE Entity e SET e.field2 = "new text" WHERE e.id = ?1")
+@Query(value = "UPDATE Entity SET field2 = "new text" WHERE id = ?1", nativeQuery = true)
+int customMethodName(Long id);
+END OF EXAMPLE
+
+=================================================================================
+4. QUERIES WITH DYNAMIC SORTING, PAGINATION
+=================================================================================
+EXAMPLE FOR QUERIES WITH DYNAMIC SORTING, PAGINATION:
+/*
+repository class: Repository, repository object: repo
+entity class: Entity; entity fields:
+@Id long id
+String field1
+int field2
+*/
+
 //find all, dynamic sort by field2
 @Query("SELECT e FROM Entity e")
 //this query is not supported for native SQL
 List<Entity> customMethodName(Sort sort);
 ...
-Sort sort = Sort.of("field2").ascending();
+Sort sort = Sort.by("field2");
 List<Entity> entities = repo.customMethodName(sort);
+
+//find all, dynamic sort by field1 then field2 reversed
+@Query("SELECT e FROM Entity e")
+//this query is not supported for native SQL
+List<Entity> customMethodName(Sort sort);
+...
+Sort sort = Sort.by("field1")
+        .and(Sort.by("field2").descending());
+List<Entity> entities = repo.customMethodName(sort);
+
+//find all by number, dynamic sort by field1 then field2 reversed, via Order objects
+@Query("SELECT e FROM Entity e WHERE e.field2 = ?1")
+//this query is not supported for native SQL
+List<Entity> customMethodName(int number, Sort sort);
+...
+List<Order> orderList = List.of(
+    new Order(Sort.Direction.ASC, "field1"),
+    new Order(Sort.Direction.DESC, "field2")
+);
+int actualNumber = ...;
+List<Entity> entities = repo.customMethodName(actualNumber, Sort.by(orderList));
 
 //find all, paged
 @Query("SELECT e FROM Entity e")
@@ -181,27 +227,20 @@ Page<Entity> customMethodName(Pageable pageable);
 ...
 int pageNumber = ...;
 int pageSize = ...;
-Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.of("field2").descending());
+Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by("field2").descending());
 List<Entity> entities = repo.customMethodName(pageable).getContent();
 
-//find all by partial text from the left, dynamic sort by field2 via pagination
+//find all by partial text from the left, dynamic sort by field2 then by field1 reversed via pagination
 @Query("SELECT e FROM Entity e WHERE LOWER(e.field2) LIKE LOWER(?1%)")
 @Query(value = "SELECT * FROM Entity e WHERE LOWER(e.field2) LIKE LOWER(?1%)", nativeQuery = true)
 Page<Entity> customMethodName(String partialText, Pageable pageable);
 ...
 int pageNumber = 0;
 int pageSize = repo.count();
-Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by("field2").ascending());
+Sort sort = Sort.by("field2").and(Sort.by("field1").descending());
+Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
 List<Entity> entities = repo.customMethodName("partial text", pageable).getContent();
-
-//update an entity via query
-@Transactional
-@Modifying
-@Query("UPDATE Entity e SET e.field2 = "new text" WHERE e.id = ?1", nativeQuery = true)
-@Query(value = "UPDATE Entity SET field2 = "new text" WHERE id = ?1", nativeQuery = true)
-int customMethodName(Long id);
 END OF EXAMPLE
 
-//TODO https://www.bezkoder.com/spring-jpa-query/
 //TODO Define Repository for JPA Native Query methods, https://www.bezkoder.com/jpa-repository-query/
 

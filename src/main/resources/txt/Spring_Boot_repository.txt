@@ -48,10 +48,12 @@ END OF EXAMPLE
 2.1. DEFAULT INTERFACE
 2.2. DERIVED QUERY METHODS
 2.3. CUSTOM QUERY METHODS
-2.4. QUERY EXAMPLES
-2.5. QUERY IN ARRAY COLUMN
-2.6. NAMED QUERIES
-2.7. QUERY REWRITER
+2.4. QUERIES WITH DYNAMIC SORTING
+2.5. QUERIES WITH DYNAMIC PAGINATION
+2.6. QUERY EXAMPLES
+2.7. QUERY IN ARRAY COLUMN
+2.8. NAMED QUERIES
+2.9. QUERY REWRITER
 
 2.1. DEFAULT INTERFACE
 ---------------------------------------------------------------------------------
@@ -64,6 +66,9 @@ The best solution is to engage with an in-memory or in-server database. Such dat
 The JpaRepository is a generics for handling basic repository functions like CRUD (Create, Retrieve, Update, Delete). Two types it needs in declaration:
     a. EntityClassName: the class of the entity it manages
     b. TypeOfID: the type of the entity ID field e.g. String or Long
+
+It is important that all functionality provided by the interface, will be translated into SQL commands by Hibernate and sent to the database as queries.
+That said, the database will interpret and process, then send data back to the backend.
 
 EXAMPLE FOR A REPOSITORY INTERFACE (JPA):
 package PackageName;
@@ -110,6 +115,9 @@ These methods are satisfying basic needs of handling database data, mainly satis
 ---------------------------------------------------------------------------------
 The default interface is for saving data and finding-managing data by the ID (CRUD functions).
 In case of other or overridden methods are needed, can be coded on repository level.
+
+It is important that all functionality provided by the interface, will be translated into SQL commands by Hibernate and sent to the database as queries.
+That said, the database will interpret and process, then send data back to the backend.
 
 The JPA repository offers conventions for new query methods, by utilizing them derived methods can be defined.
 All derived query methods should be defined as abstract only.
@@ -215,6 +223,9 @@ The @Query method-level annotation is used for a query method:
     a. for increasing readability of name of a derived query method (usage is optional)
     b. for defining JPQL or native SQL expression of the query (custom query methods; usage is a must)
 
+It is important that all functionality provided by the interface, will be translated into SQL commands by Hibernate and sent to the database as queries.
+That said, the database will interpret and process, then send data back to the backend.
+
 The JPQL stands for Jakarta Persistence Query Language (former Java Persistence Query Language), it is a platform-independent object-oriented query language defined as part of the Jakarta Persistence API (JPA; formerly Java Persistence API) specification. JPQL is inspired by SQL, and its queries resemble SQL queries in syntax, but operate against JPA entity objects stored in a relational database rather than directly with database tables.
 The JPQL only supports a subset of SQL standard. If you want to make complex queries, use native SQL query.
 Spring Data JPA does not adjust the query to specific SQL dialect of the database, so ensure that the provided statement is supported by RDBMS.
@@ -245,36 +256,75 @@ Custom query methods must not use keywords of derived query methods since Spring
 The native SQL contains the CONCAT() function which concatenates its arguments into one text (e.g. "CONCAT('%', ?1,'%')").
 In order to match value case-insensitively, the column value and the method parameter should be modified with UPPER() or LOWER() function (e.g. "UPPER(e.title) LIKE UPPER(?1%)").
 
+2.4. QUERIES WITH DYNAMIC SORTING
+---------------------------------------------------------------------------------
 Method arguments can overwrite the query expression, this is called dynamic sorting, paging etc. Meaning, the expression is invoked but after that, the query method will invoke the dynamic operation on the results before passing the results to its caller side.
 When using dynamic modification, avoid using similar expression part in the query (would take more operation time, result can be unpredicted).
 
 Dynamic sorting means that to the method signature a Sort object is added. That said, the query expression should not contain ORDER BY part but the method signature will modify the expression by adding sorting afterwards.
-Spring Data JPA does not currently support dynamic sorting for native SQL queries (will raise InvalidJpaQueryMethodException), because it would have to manipulate the actual query declared, which it cannot do reliably for native SQL.
-For native SQL, add Pageable object instead, see examples.
-For sorting, use an object variant:
-    a. Sort sort = Sort.by("fieldName").ascending();
-    b. Sort sort = Sort.by("fieldName").descending();
-Then add this object to the query method argument list:
-    List<EntityClass> methodName([other parameters, ], Sort sort);
+Spring Data JPA does not currently support dynamic sorting for native SQL queries (will raise InvalidJpaQueryMethodException), because it would have to manipulate the actual query declared, which it cannot do reliably for native SQL. For native SQL, add Pageable object instead, see examples.
+
+In the repository interface, a Sort object can be given as the last argument of the query method:
+    List<EntityClass> queryMethodName([other parameters, ]Sort sort);
+This argument will receive dynamic sorting properties upon invoking in the Business Layer.
+
+The passed sorting properties can be defined:
+    a. by declaring a variable (re-usable)
+    b. directly passed to the query method upon invoking (no variable, use-once)
+
+A Sort object can be created by calling the by() static method of Sort:
+    a. Sort sort = Sort.by("fieldName"); //natural sorting
+    b. Sort sort = Sort.by("fieldName").descending(); //reversed sorting
+
+In case of hierarchic sorting, sorting levels can be added by chaining the and() method of Sort to the previous Sort object:
+    Sort sort = Sort.by("fieldName1")[.descending()]
+            .and(Sort.by("fieldName2")[.descending()])
+            .and(...);
+
+The hierarchic sorting is possible via creating Order objects for every sorting levels, render them into a List, and passing this List (or an element or a sublist of it) to the by() method:
+    Sort sort = Sort.by(orders);
+
+An Order object can be created:
+    a. Order order = new Order(Sort.Direction.ASC, "fieldName");
+    b. Order order = new Order(Sort.Direction.DESC, "fieldName");
+
 The List of entities can be queried by invoking:
-    List<EntityClass> = methodName(..., sort);
+    a. List<EntityClass> = repositoryName.queryMethodName([other parameters, ]sort);
+    b. List<EntityClass> = repositoryName.queryMethodName([other parameters, ]Sort.by(...));
 
-Dynamic pagination means that the query presents only one part of the whole set of results, and with paging command will present the next package in order. By using it the data traffic between the database and the backend is reduced, the operation becomes faster.
-With pagination, sorting and filtering is possible as well.
-For pagination, use an object variant:
-    a. Pageable pageable = PageRequest.of(pageNumber, pageSize); //no sorting
-    b. Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by("fieldName").ascending());
-    c. Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by("fieldName").descending());
-Then add this object to the query method argument list:
-    Page<EntityClass> methodName([other parameters, ]Pageable pageable);
-The List of entities of a page can be queried and extracted by invoking:
-    List<EntityClass> = methodName(..., pageable).getContent();
-
-2.4. QUERY EXAMPLES
+2.5. QUERIES WITH DYNAMIC PAGINATION
 ---------------------------------------------------------------------------------
-Visit the SPRING BOOT REPOSITORY QUERY EXAMPLES page for derived and custom query examples.
+Dynamic pagination means that the query presents only one part of the whole set of results, and with paging command will present the next package in order. By using it the data traffic between the database and the backend becomes reduced, the operation becomes faster.
+With pagination, sorting and filtering is possible as well.
 
-2.5. QUERY IN ARRAY COLUMN
+In the repository interface, a Pageable object can be given as the last argument of the query method:
+    Page<EntityClass> queryMethodName([other parameters, ]Pageable pageable);
+This argument will receive dynamic paging properties upon invoking in the Business Layer.
+
+The passed paging properties can be defined:
+    a. by declaring a variable (re-usable)
+    b. directly passed to the query method upon invoking (no variable, use-once)
+
+A Pageable object can be created by calling the of() static method of PageRequest:
+    a. Pageable pageable = PageRequest.of(pageNumber, pageSize); //no sorting
+    b. Pageable pageable = PageRequest.of(pageNumber, pageSize, sort); //with sorting, sort is instance of Sort
+
+A page request queried by invoking:
+    a. Page<EntityClass> page = repositoryName.queryMethodName([other parameters, ]pageable);
+    b. Page<EntityClass> page = repositoryName.queryMethodName([other parameters, ]PageRequest.of(...));
+
+The List of entities of a page can be extracted by invoking:
+    a. List<EntityClass> = page.getContent();
+    b. List<EntityClass> = repositoryName.queryMethodName([other parameters, ]pageable).getContent();
+    c. List<EntityClass> = repositoryName.queryMethodName([other parameters, ]PageRequest.of(...)).getContent();
+
+//TODO Bring Pagination and Sorting together, https://www.bezkoder.com/spring-boot-pagination-sorting-example/
+
+2.6. QUERY EXAMPLES
+---------------------------------------------------------------------------------
+Visit the SPRING BOOT REPOSITORY QUERY EXAMPLES page for derived, custom and dynamic query examples.
+
+2.7. QUERY IN ARRAY COLUMN
 ---------------------------------------------------------------------------------
 Some of the databases offer array-based versions of their column types such as integer[] or text[].
 Their counterparts in Java can be (following the example above) int[] or String[], or Collection type (List of Integer, List of String).
@@ -283,7 +333,7 @@ In case Data JPA is used but without Spring Boot, queries accessing these arrays
 In other ways, upon comparing data in query method, the array-type column must be converted into String first, then the comparing will be invoked on the String.
 See the SPRING DATA JPA page for more details.
 
-2.6. NAMED QUERIES
+2.8. NAMED QUERIES
 ---------------------------------------------------------------------------------
 Custom named queries can be rendered to the domain class:
     a. annotation-based configuration (see on SPRING BOOT ENTITY page)
@@ -315,7 +365,7 @@ EXAMPLE FOR INVOKING THE NAMED QUERY:
 List<User> list = User.findByLastname(lastname);
 END OF EXAMPLE
 
-2.7. QUERY REWRITER
+2.9. QUERY REWRITER
 ---------------------------------------------------------------------------------
 In the previous variants queries are a priori defined.
 These queries are sent to the EntityManager of Hibernate upon usage.
