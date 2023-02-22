@@ -15,6 +15,7 @@ For the latter, workaround can be releasing the REST standard for exception hand
 
 =>SPRING BOOT
 =>SPRING BOOT CONTROLLER
+=>SPRING MODELANDVIEW
 
 1. EXCEPTION HANDLER
 2. HANDLER EXCEPTION RESOLVER
@@ -29,7 +30,7 @@ The @ExceptionHandler is the oldest solution in Spring.
 It is a method declared in a controller class and handles a certain number of exceptions within that controller.
 In order to use only one exception to work with, use e.g. the RuntimeException class.
 This solution is compatible with REST when sends ResponseEntity back.
-Choosing String for ResponseEntity type can lead to model&view mode, choosing any class leads to object mode.
+Choosing String for ResponseEntity type can lead to view mode, choosing any class leads to object mode.
 
 This handler is not capable of handling exceptions globally within the application, not suited for general exception handling.
 Workaround is to create a base controller class with an exception handler method and all controllers are inherited from that superclass.
@@ -38,6 +39,7 @@ The workaround is not suited for all development situations e.g. when the contro
 EXAMPLE FOR EXCEPTION HANDLER METHOD (NO-REST):
 @ExceptionHandler({IOException.class[, ...]})
 public void handleException() {...}
+END OF EXCEPTION
 
 EXAMPLE FOR EXCEPTION HANDLER METHOD (REST, OBJECT MODE):
 @ExceptionHandler({IOException.class[, ...]})
@@ -45,6 +47,7 @@ public ResponseEntity<String> handleException(IOException ex) {
     //prepare ResponseEntity responseEntity
     return responseEntity;
 }
+END OF EXCEPTION
 
 =================================================================================
 2. HANDLER EXCEPTION RESOLVER
@@ -82,6 +85,7 @@ EXAMPLE FOR RESPONSE STATUS EXCEPTION RESOLVER (METHOD, NO-REST):
 @ResponseStatus(value = HttpStatus.NOT_FOUND) //or:
 @ResponseStatus(HttpStatus.BAD_REQUEST, reason = reasonText)
 public void onIllegalArgumentException(RuntimeException exception) {...}
+END OF EXCEPTION
 
 EXAMPLE FOR RESPONSE STATUS EXCEPTION RESOLVER (METHOD, REST):
 @ResponseStatus(value = HttpStatus.NOT_FOUND) //or:
@@ -90,6 +94,7 @@ public ResponseEntity<String> onIllegalArgumentException(RuntimeException except
     //prepare ResponseEntity responseEntity
     return responseEntity;
 }
+END OF EXCEPTION
 
 EXAMPLE FOR RESPONSE STATUS EXCEPTION RESOLVER (CLASS, NO-REST):
 @ResponseStatus(value = HttpStatus.NOT_FOUND) //or:
@@ -108,13 +113,14 @@ public class MyResourceNotFoundException extends RuntimeException {
         super(cause);
     }
 }
+END OF EXCEPTION
 
 2.3. CUSTOM HANDLER EXCEPTION RESOLVER
 ---------------------------------------------------------------------------------
 Combination of the previous two.
 This version works via a handler class.
 This version lets having access to the request itself.
-Returns a model (ModelAndView object) which means this solution is REST compatible, model&view mode.
+Returns a model (ModelAndView object) which means this solution is REST compatible, object/model&view mode.
 
 EXAMPLE FOR CUSTOM HANDLER EXCEPTION RESOLVER:
 @Component
@@ -141,12 +147,13 @@ public class RestResponseStatusExceptionResolver extends AbstractHandlerExceptio
         return new ModelAndView(); //or create a new instance and then fill it with the body content
     }
 }
+END OF EXCEPTION
 
 =================================================================================
 3. CONTROLLER ADVISE
 =================================================================================
 Since Spring 3.2 using of global @ExceptionHandler with the @ControllerAdvice annotation is possible.
-Utilizes the ResponseEntity (REST compatible). Choosing String for ResponseEntity type can lead to model&view mode, choosing any class leads to object mode.
+Utilizes the ResponseEntity (REST compatible). Choosing String for ResponseEntity type can lead to view mode, choosing any class leads to object mode.
 
 The exceptions declared with @ExceptionHandler must match to the exception used as the argument of the method.
 In case not, no compiler error will be raised but in runtime when the flow reaches the handler, IllegalStateException will be raised.
@@ -162,6 +169,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
         return handleExceptionInternal(ex, bodyOfResponse, new HttpHeaders(), HttpStatus.CONFLICT, request);
     }
 }
+END OF EXCEPTION
 
 =================================================================================
 4. RESPONSE STATUS EXCEPTION
@@ -184,6 +192,7 @@ public Foo findById(@PathVariable("id") Long id, HttpServletResponse response) {
          throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Foo Not Found", exc);
     }
 }
+END OF EXCEPTION
 
 =================================================================================
 5. THE DEFAULT ERROR PAGE
@@ -205,6 +214,7 @@ EXAMPLE FOR CUSTOMIZING WEB.XML:
 <error-page>
     <location>/error</location>
 </error-page>
+END OF EXCEPTION
 
 EXAMPLE FOR A CONTROLLER HANDLING THE CUSTOM ERROR PAGE:
 @Controller
@@ -219,6 +229,7 @@ public class ErrorController {
         return map;
     }
 }
+END OF EXCEPTION
 
 2. SPRING BOOT ERROR PAGE
 ---------------------------------------------------------------------------------
@@ -233,6 +244,7 @@ EXAMPLE FOR JSON ERROR ANSWER:
     "message": "Error processing the request!",
     "path": "/my-endpoint-with-exceptions"
 }
+END OF EXCEPTION
 
 In order to customize the error page, should create ErrorAttributes and ErrorController beans, and inject these beans into whatever controller we want to.
 
@@ -251,6 +263,7 @@ public class MyCustomErrorAttributes extends DefaultErrorAttributes {
         return errorAttributes;
     }
 }
+END OF EXCEPTION
 
 EXAMPLE FOR ERRORCONTROLLER BEAN:
 @Component
@@ -265,3 +278,4 @@ public class MyErrorController extends BasicErrorController {
     //...
     }
 }
+END OF EXCEPTION

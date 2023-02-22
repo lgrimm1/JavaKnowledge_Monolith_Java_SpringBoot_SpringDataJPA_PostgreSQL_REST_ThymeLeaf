@@ -9,6 +9,7 @@ WEB APPLICATION
 
 =>SPRING BOOT
 =>SPRING THYMELEAF
+=>SPRING MODELANDVIEW
 =>SERIALIZATION
 =>TESTS
 =>SPRING BOOT TESTS
@@ -41,9 +42,10 @@ Mapping means the information is divided by request type and endpoint.
 The controller contains backend methods which receive the mapped incoming requests, start processing them, have the results and send those to the framework.
 
 The data is received with a request or sent with a response.
-The controller can serve data in two main modes:
-    a. view: the response will navigate a web page or a template along with data
-    b. object: the response contains data without navigation
+The transferred data package is called payload.
+The controller can serve payloads in two main modes:
+    a. view: the response will navigate a web page or a template along with model data
+    b. object: the response contains data without navigation, following data transfer standards (e.g. REST)
 
 Generally, at backend for different tasks different threads are launched.
 The main() method starts these threads then should go to wait.
@@ -56,9 +58,13 @@ In case the project is organized around different packages where a package conta
 In case the application would contain only one such package, it can be organized by keeping element classes in a package, the classes representing the three web app layers in a separate one.
 In case the class system is complex, there can be sub-packages under the present ones for both solutions.
 
-On frontend side, for answers, templates can be defined.
+On frontend side, there can be three main solutions:
+    a. for visualizing data, static pages can be used
+    b. for receiving data from the backend dynamically, and optionally sending data back as well, templates can be used
+    c. for complex solutions, frontend development is necessary
+
 A template is an JSON/HTML/XML/etc. page into which the answer is injected via defining HTML variables and frontend (e.g. Javascript) codes.
-Templates can be used only when the controller works in model&view mode.
+Earlier, templates could be utilized only when the controller worked in view mode only. Today, object mode can be used as well via ModelAndView (in latter case object mode is commonly called Model&View mode).
 
 For all responses, the dispatcher servlet sends not just the response but an HTML code as well:
     a. 1xx (transient response, more is coming)
@@ -265,23 +271,24 @@ In order to keep readability for the command in command line, when typing, use t
 Testing endpoints is possible by e.g. write batched cURL commands with JSON formulas in outer files and checking results against expected.
 The JSON in external file can be either un-formatted or formatted.
 
-EXAMPLE FOR SENDING A PUT REQUEST WITH QUERY:
+EXAMPLE FOR SENDING REQUESTS:
+//PUT with query
 curl -X PUT https://www.wind.com/category?strength=3&level=800&db=65
 
-EXAMPLE FOR A POST REQUEST WITH JSON DATA AND CONTENT-TYPE HEADERS:
+//POST with JSON data and content-type headers:
 curl -i -H "Accept: application/json" -H "Content-Type: application/json" --data '{"variable1": "value1", "variable2": "value2"}' "https://server/endpoint"
 
-EXAMPLE FOR A POST REQUEST WITH JSON DATA AND CONTENT-TYPE HEADERS (WITH LINE BREAKS, WINDOWS):
+//POST with JSON data and content-type headers (with line breaks, Windows)
 curl -i -H "Accept: application/json" -H "Content-Type: application/json" ^
 --data '{"variable1": "value1", "variable2": "value2"}' ^
 "https://server/endpoint"
 
-EXAMPLE FOR A POST REQUEST WITH JSON DATA AND CONTENT-TYPE HEADERS (WITH LINE BREAKS, LINUX):
+//POST with JSON data and content-type headers (with line breaks, Linux)
 curl -i -H "Accept: application/json" -H "Content-Type: application/json" \
 --data '{"variable1": "value1", "variable2": "value2"}' \
 "https://server/endpoint"
 
-EXAMPLE FOR USING FORMATTED EXTERNAL JSON FILE IN A PUT REQUEST:
+//PUT with using formatted external JSON file
 put.json:
 {
 "variable1": "value1",
@@ -289,6 +296,7 @@ put.json:
 }
 command line:
 curl -X PUT --upload-file "put_example.json" "https://server/endpoint"
+END OF EXAMPLE
 
 =================================================================================
 5. API

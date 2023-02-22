@@ -11,6 +11,7 @@ It is advised to express the toString() method of the entity as well.
 2. JPA ENTITY CLASS
 
 =>SPRING BOOT
+=>SPRING DATA JPA DATABASE CONNECTION
 =>SPRING BOOT VALIDATION
 =>SERIALIZATION
 =>POSTGRESQL
@@ -60,6 +61,7 @@ public class EntityClassName {
 				'}';
 	}
 }
+END OF EXAMPLE
 
 =================================================================================
 2. JPA ENTITY CLASS
@@ -74,14 +76,15 @@ For console, the next SQL commands are needed:
     GRANT ALL PRIVILEGES ON DATABASE "db-name" TO username;
 The db-name is name of the database, username is the user which we want to use to manage the database, both are set in the application.properties file.
 The default username e.g. under postgreSQL is postgres.
+Visit the SPRING DATA JPA DATABASE CONNECTION page for the know-how of application.properties file content.
 
 The entity will represent a row in a table, also carries the backend and database behaviour connected to the correspondent table via annotations.
 The Spring Data framework (especially the database dependency) will handle the conversion processes from-to the database.
 
-The JPA software development aims for the backend. The database itself is not part of the backend which means the new database is needed for software development only.
+The JPA software development aims for the backend. The database itself is not part of the backend which means the new database is needed for software development only at first.
 All application launch starts with that Hibernate in the background fills the database with tables and other elements.
 Every action with the repository will be rendered to SQL commands by Hibernate and also sent to the database.
-All application ends with that Hibernate empties the database for rows, tables and everything else.
+All application ends with that Hibernate empties the database for rows, tables and everything else unless configured differently or the software is in production. Visit the SPRING DATA JPA DATABASE CONNECTION page for further details.
 
 2.1. GENERAL CLASS STRUCTURE
 2.2. FIELDS
@@ -246,6 +249,7 @@ public class EntityClassName {
 				'}';
 	}
 }
+END OF EXAMPLE
 
 EXAMPLE FOR CALCULATED ENTITY FIELD (TRANSIENT):
 package PackageName;
@@ -293,6 +297,7 @@ public class EntityClassName {
 
     //equals(), hashCode(), toString() methods for all fields
 }
+END OF EXAMPLE
 
 //TODO https://www.baeldung.com/hibernate-one-to-many
 //TODO https://www.baeldung.com/jpa-many-to-many

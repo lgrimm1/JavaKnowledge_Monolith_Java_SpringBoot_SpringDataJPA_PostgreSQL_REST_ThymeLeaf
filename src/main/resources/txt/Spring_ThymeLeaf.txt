@@ -11,6 +11,7 @@ SPRING THYMELEAF
 =>SPRING BOOT
 =>SPRING BOOT CONTROLLER
 =>SERIALIZATION
+=>SPRING MODELANDVIEW
 
 =================================================================================
 1. GENERALLY
@@ -21,7 +22,7 @@ Basically, the frontend sends requests to the backend on which the backend sends
 The answers are data which can be rendered into HTML, PHP etc. pages.
 Above the pages, frontend scripts can form an other layer with which data manipulation, visual elements etc. can be managed, also the data sent back to the server.
 
-The Spring ThymeLeaf is an extension of Spring Boot which enables using automated templates of frontend for backend communication in model&view mode.
+The Spring ThymeLeaf is an extension of Spring Boot which enables using automated templates of frontend for backend communication in view and object mode, for the latter, via utilizing the ModelAndView object.
 A template is an JSON/HTML/XML/etc. page into which the answer is injected via defining HTML variables and e.g. Javascript codes.
 
 =================================================================================
@@ -51,8 +52,8 @@ For a template, HTML, JSON etc. files can be created.
 The templates are placed under the src/main/resources/templates folder.
 In the template, in case the ThymeLeaf is referenced (see html tag), within almost all HTML tags the th parameters can be used which refers to ThymeLeaf. Such parameters are for handling data accessed through Spring Boot framework via ThymeLeaf. In case no such data is accessed in a tag, the th parameters within should not be used.
 A template can be created in design-time and in run-time as well, latter before reaching it via GET, POST etc. query.
-Any variable can be sent in a template, ThymeLeaf recognizes all wrapper classes and theoretically all Collection types. It also can handle classes with subclasses. In order to send a primitive type to a template, convert it to wrapper class. Enums can be used only with tags which are designed to handle limited values e.g. radio input (see later).
-The HTML variable is called attribute. Its name can be different from Java variable name, the connection is made with using Model class in Spring Boot/ThymeLeaf, see later.
+Any variable can be sent in a template, ThymeLeaf recognizes all wrapper classes and theoretically all Collection types. It also can handle classes with subclasses. In order to send a primitive type to a template, convert it to wrapper class. Enums can be used only with tags which are designed to handle limited values e.g. radio input (see later), otherwise use String as instead.
+The HTML variable is called attribute. Its name can be different from Java variable name, the connection is made with using Model class in Spring Boot, see later.
 The attribute names are case-sensitive.
 In case the return value(s) are needed, must use form(s) on the page, otherwise the template serves only as an output.
 
@@ -67,6 +68,7 @@ EXAMPLE FOR A GENERAL THYMELEAF HTML TEMPLATE:
 <!-- code -->
 </body>
 </html>
+END OF EXAMPLE
 
 The template tag parameters can be:
     a. text (only if there is a reference to an attribute, otherwise normal use for the text of the tag is needed)
@@ -94,6 +96,7 @@ class Person implements Serializable {
 Person p;
 //collection variable
 List<Person> personList;
+END OF EXAMPLE
 
 EXAMPLE FOR A THYMELEAF TEMPLATE (HTML SIDE, ATTRIBUTES):
 //template:
@@ -136,6 +139,7 @@ EXAMPLE FOR A THYMELEAF TEMPLATE (HTML SIDE, ATTRIBUTES):
 </table>
 </body>
 </html>
+END OF EXAMPLE
 
 =================================================================================
 4. FORMS
@@ -326,6 +330,7 @@ EXAMPLE FOR HTML FIELDSET (GROUPING OF PARTS OF THE FORM):
     <legend>Group title</legend> <!-- optional -->
     <!-- labels, inputs, textareas etc. -->
 </fieldset>
+END OF EXAMPLE
 
 EXAMPLE FOR USING FORM 1 (JAVA CODE):
 enum Gender {
@@ -366,6 +371,7 @@ public String/void personForm(@ModelAttribute Person person, Model model) {
 	}
 	//optionally return template of error;
 }
+END OF EXAMPLE
 
 EXAMPLE FOR USING FORM 1 (HTML CODE, ORGANIZED WITH TABLE):
 <!-- personForm -->
@@ -421,6 +427,7 @@ EXAMPLE FOR USING FORM 1 (HTML CODE, ORGANIZED WITH TABLE):
 </form>
 </body>
 </html>
+END OF EXAMPLE
 
 EXAMPLE FOR USING FORM 1 (HTML CODE, NOT ORGANIZED WITH TABLE):
 <!-- personForm -->
@@ -456,6 +463,7 @@ EXAMPLE FOR USING FORM 1 (HTML CODE, NOT ORGANIZED WITH TABLE):
 </form>
 </body>
 </html>
+END OF EXAMPLE
 
 EXAMPLE FOR USING FORM 2 (JAVA CODE):
 class Fruit {
@@ -463,6 +471,7 @@ class Fruit {
     Integer quantity;
     String remarks;
 }
+END OF EXAMPLE
 
 EXAMPLE FOR USING FORM 2 (HTML CODE, LIST PARAMETER):
 <!DOCTYPE HTML>
@@ -500,6 +509,7 @@ EXAMPLE FOR USING FORM 2 (HTML CODE, LIST PARAMETER):
 </form>
 </body>
 </html>
+END OF EXAMPLE
 
 EXAMPLE FOR USING FORM 2 (HTML CODE, SELECT AND TEXTAREA PARAMETERS):
 <!DOCTYPE HTML>
@@ -532,3 +542,4 @@ EXAMPLE FOR USING FORM 2 (HTML CODE, SELECT AND TEXTAREA PARAMETERS):
 </form>
 </body>
 </html>
+END OF EXAMPLE

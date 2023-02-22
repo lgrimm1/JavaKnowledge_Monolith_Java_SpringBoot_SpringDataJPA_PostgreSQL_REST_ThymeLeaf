@@ -7,6 +7,7 @@ SPRING BOOT REQUESTS
 
 =>SPRING BOOT
 =>SPRING BOOT CONTROLLER
+=>SPRING MODELANDVIEW
 
 =================================================================================
 1. GET REQUESTS
@@ -22,8 +23,11 @@ About GET requests in controller class:
     h. the passedObjectName (see below) will receive some_value, coming from parameter_name_in_request parameter in request
     i. if required=true (see below), the request reaches the endpoint only when that parameter was passed
     j. if no value is given in the request, passedObjectName will take the defaultValue value (see below), in case no default is defined, null will be passed
-    k. the Model model (see below) will be used when an answer will be rendered using the template which name is returned by the method, the added attributes can be referenced within the template
-    l. with GET request, no request body should be sent and received, if needed use other request types
+    k. the Model model (see below) will be used for storing response data in view mode or in object/model&view mode
+    l. in view mode the returned value will be the name of the targeted template
+    m. in object/model&view mode the returned value will be a ModelAndView object
+    n. in object mode the returned value will be an object
+    o. with GET request, no request body should be sent and received, if needed use other request types
 
 Relations between GET request parameter and passed parameter:
     a. endpoint: runtime error, no parameter passed from browser but needed on server side
@@ -40,25 +44,25 @@ In case of name parameter only, using "..." is satisfying.
 In case of required = false or not defined, and the parameter is not defined in the GET query, the method argument will receive null.
 In case the default value is defined and there is no value in the query for that, the method argument will receive the default value.
 
-EXAMPLE FOR METHOD HANDLING A GET REQUEST WITH QUERY (TEMPLATES):
+EXAMPLE FOR METHOD HANDLING A GET REQUEST WITH QUERY (VIEW MODE, MODEL IN RETURNED PAYLOAD, TARGETED TEMPLATE):
 @GetMapping("/endpointName")
 public String methodName(@RequestParam("parameter_name1") passedObjectType1 passedObjectName1[, @RequestParam("parameter_name2") passedObjectType2 passedObjectName2, ...], Model model) {
     return serviceName.serviceMethod(passedObjectName1[, passedObjectName2, ...], model);
 }
 ...
-public static String serviceMethod(passedObjectType1 passedObjectName1[, passedObjectType2 passedObjectName2, ...], Model model) {
+public String serviceMethod(passedObjectType1 passedObjectName1[, passedObjectType2 passedObjectName2, ...], Model model) {
     if (testing passedObjectNameX for properness) {
         //processing passedObjectNameX
 	    model.addAttribute("html_attribute_name", object_variable_or_object_or_literal); //added things in case of success
-	    return "endpointName_template_for_success[]"; //extension is optional and can be different
+	    return "endpointName_template_for_success[]"; //extension is optional and can be .html or different
     }
     model.addAttribute("html_attribute_name", object_variable_or_object_or_literal); //added things in case of failure
-	return "endpointName_template_for_error[]"; //extension is optional and can be different, template can be identical to success template
+	return "endpointName_template_for_error[]"; //extension is optional and can be .html or different, template can be identical to success template
 	}
 }
 END OF EXAMPLE
 
-EXAMPLE FOR METHOD HANDLING A GET REQUEST WITH QUERY (OBJECT AS RESPONSE):
+EXAMPLE FOR METHOD HANDLING A GET REQUEST WITH QUERY (OBJECT MODE, ANY OBJECT IN RETURNED PAYLOAD):
 class ResponseClassName {...} //somewhere in Business layer
 ...
 @GetMapping("/endpointName")
@@ -67,12 +71,35 @@ public ResponseClassName methodName(@RequestParam("parameter_name1") passedObjec
     return serviceName.serviceMethod(passedObjectName1[, passedObjectName2, ...]);
 }
 ...
-public int ResponseClassName serviceMethod(passedObjectType1 passedObjectName1[, passedObjectType2 passedObjectName2, ...]) {
+public ResponseClassName serviceMethod(passedObjectType1 passedObjectName1[, passedObjectType2 passedObjectName2, ...]) {
     if (testing passedObjectNameX for properness) {
         //processing passedObjectNameX
 	    return new ResponseClassName(...); //construct with variables and literals to be sent to frontend in case of success
     }
     return new ResponseClassName(...); //construct with variables and literals to be sent to frontend in case of failure
+	}
+}
+END OF EXAMPLE
+
+EXAMPLE FOR METHOD HANDLING A GET REQUEST WITH QUERY (OBJECT/MODEL&VIEW MODE, MODELANDVIEW AS RETURNED PAYLOAD):
+class ResponseClassName {...} //somewhere in Business layer
+...
+@GetMapping("/endpointName")
+@ResponseBody
+public ModelAndView methodName(@RequestParam("parameter_name1") passedObjectType1 passedObjectName1[, @RequestParam("parameter_name2") passedObjectType2 passedObjectName2, ...], Model model) {
+    return serviceName.serviceMethod(passedObjectName1[, passedObjectName2, ...], new ModelAndView("view_name", model.asMap()));
+}
+...
+public ModelAndView serviceMethod(passedObjectType1 passedObjectName1[, passedObjectType2 passedObjectName2, ...], ModelAndView modelAndView) {
+    if (testing passedObjectNameX for properness) {
+        //processing passedObjectNameX
+        modelAndView.addObject("html_attribute_name", object_variable_or_object_or_literal); //added things in case of success
+		modelAndView.setViewName("view_name"); //optionally, if needed
+	    return modelAndView;
+    }
+    modelAndView.addObject("html_attribute_name", object_variable_or_object_or_literal); //added things in case of failure
+	modelAndView.setViewName("view_name"); //optionally, if needed
+    return modelAndView;
 	}
 }
 END OF EXAMPLE
@@ -92,41 +119,46 @@ About POST, PUT, DELETE, OPTIONS, PATCH, HEAD requests in controller class:
     e. the request body will be hidden from URL field of the browser (from the URL field always GET arrives)
     f. passedObjectName (see below) will receive some_value from the sender page in browser
     g. if no value is given in the request, passedObjectName will take the defaultValue value (see below), in case no default is defined, null will be passed
-    h. the Model model (see below) will be used when the response will be rendered using a template which name is returned by the method
-    i. the request body can contain more variables but all will be rendered into one transfer object or a Map object where keys are variable names
+    h. the Model model (see below) will be used for storing response data in view mode or in object/model&view mode
+    i. in view mode the returned value will be the name of the targeted template
+    j. in object/model&view mode the returned value will be a ModelAndView object
+    k. in object mode the returned value will be an object
+    l. the request body can contain more variables but all will be rendered into one transfer object or a Map object where keys are variable names
 
-EXAMPLE FOR METHOD HANDLING A POST OR PUT OR DELETE REQUEST (MODEL&VIEW MODE):
+EXAMPLE FOR METHOD HANDLING A POST, PUT, PATCH, DELETE REQUEST (VIEW MODE):
 @PostMapping("/endpointName") //or:
 @PutMapping("/endpointName") //or:
+@PatchMapping("/endpointName") //or:
 @DeleteMapping("/endpointName")
 public String methodName(@ModelAttribute passedObjectType1 passedObjectName1[, @ModelAttribute passedObjectType2 passedObjectName2, ...], Model model) {
     return serviceName.serviceMethod(passedObjectName1[, passedObjectName2, ...], model);
 }
 ...
-public static String serviceMethod(passedObjectType1 passedObjectName1[, passedObjectType2 passedObjectName2, ...], Model model) {
+public String serviceMethod(passedObjectType1 passedObjectName1[, passedObjectType2 passedObjectName2, ...], Model model) {
     if (testing passedObjectNameX for properness) {
         //processing passedObjectNameX
 	    model.addAttribute("html_attribute_name", object_variable_or_object_or_literal); //added things in case of success
-	    return "endpointName_template_for_success[]"; //extension is optional and can be different
+	    return "endpointName_template_for_success"; //extension is optional and can be different
     }
     model.addAttribute("html_attribute_name", object_variable_or_object_or_literal); //added things in case of failure
-	return "endpointName_template_for_error[]"; //extension is optional and can be different, template can be identical to success template
+	return "endpointName_template_for_error"; //extension is optional and can be different, template can be identical to success template
 	}
 }
 
-EXAMPLE FOR METHOD HANDLING A POST OR PUT OR DELETE REQUEST (OBJECT AS REQUEST BODY, OBJECT MODE):
+EXAMPLE FOR METHOD HANDLING A POST, PUT, PATCH, DELETE REQUEST (OBJECT AS REQUEST BODY, OBJECT MODE):
 class RequestClassName {...} //somewhere in Business layer
 class ResponseClassName {...} //somewhere in Business layer
 ...
 @PostMapping("/endpointName") //or:
 @PutMapping("/endpointName") //or:
+@PatchMapping("/endpointName") //or:
 @DeleteMapping("/endpointName")
 @ResponseBody
 public ResponseClassName methodName(@RequestBody RequestClassName requestObjectName) {
     return serviceName.serviceMethod(requestObjectName);
 }
 ...
-public int ResponseClassName serviceMethod(RequestClassName requestObjectName) {
+public ResponseClassName serviceMethod(RequestClassName requestObjectName) {
     if (testing fields of requestObjectName for properness) {
         //processing fields of requestObjectName
 	    return new ResponseClassName(...); //construct with variables and literals to be sent to frontend in case of success
@@ -135,11 +167,12 @@ public int ResponseClassName serviceMethod(RequestClassName requestObjectName) {
 	}
 }
 
-EXAMPLE FOR METHOD HANDLING A POST OR PUT OR DELETE REQUEST (MAP AS REQUEST BODY, OBJECT MODE):
+EXAMPLE FOR METHOD HANDLING A POST, PUT, PATCH, DELETE REQUEST (MAP AS REQUEST BODY, OBJECT MODE):
 class ResponseClassName {...} //somewhere in Business layer
 ...
 @PostMapping("/endpointName") //or:
 @PutMapping("/endpointName") //or:
+@PatchMapping("/endpointName") //or:
 @DeleteMapping("/endpointName")
 @ResponseBody
 public ResponseClassName methodName(@RequestBody final Map<String, String> requestMapName) {
@@ -147,13 +180,34 @@ public ResponseClassName methodName(@RequestBody final Map<String, String> reque
     return serviceName.serviceMethod(requestMapName.get(variableName1[, variableName2, ...]));
 }
 ...
-public int ResponseClassName serviceMethod(Map<String, String> requestMapName) { //or:
-public int ResponseClassName serviceMethod(String variableName1[, String variableName2, ...]) {
+public ResponseClassName serviceMethod(Map<String, String> requestMapName) { //or:
+public ResponseClassName serviceMethod(String variableName1[, String variableName2, ...]) {
     if (testing requestMapName.get(variableName)s for properness) {
         //processing requestMapName.get(variableName)s
 	    return new ResponseClassName(...); //construct with variables and literals to be sent to frontend in case of success
     }
     return new ResponseClassName(...); //construct with variables and literals to be sent to frontend in case of failure
+	}
+}
+
+EXAMPLE FOR METHOD HANDLING A POST, PUT, PATCH, DELETE REQUEST (OBJECT/MODELANDVIEW MODE):
+@PostMapping("/endpointName") //or:
+@PutMapping("/endpointName") //or:
+@PatchMapping("/endpointName") //or:
+@DeleteMapping("/endpointName")
+@ResponseBody
+public ModelAndView methodName(@ModelAttribute passedObjectType1 passedObjectName1[, @ModelAttribute passedObjectType2 passedObjectName2, ...], Model model) {
+    return serviceName.serviceMethod(passedObjectName1[, passedObjectName2, ...], new ModelAndView("view_name", model.asMap());
+}
+...
+public ModelAndView serviceMethod(passedObjectType1 passedObjectName1[, passedObjectType2 passedObjectName2, ...], ModelAndView modelAndView) {
+    if (testing passedObjectNameX for properness) {
+        //processing passedObjectNameX
+	    modelAndView.addObject("html_attribute_name", object_variable_or_object_or_literal); //added things in case of success
+	    return modelAndView;
+    }
+    modelAndView.addObject("html_attribute_name", object_variable_or_object_or_literal); //added things in case of failure
+	return modelAndView;
 	}
 }
 

@@ -15,6 +15,7 @@ SPRING BOOT TESTS
 =>SPRING BOOT ENTITY
 =>SPRING BOOT REPOSITORY
 =>SPRING BOOT SERVICE
+=>SPRING MODELANDVIEW
 =>SPRING BOOT CONTROLLER TESTS
 
 =================================================================================
@@ -112,8 +113,12 @@ As normally, under the src/test/java/<package> folder, the tests will be created
 Service classes need creating their corresponding storage instances first since these objects are needed for class dependency injection in constructors of the service classes. In case this version is followed, the tests will be dependent since the storage classes will be used during tests.
 Best practice in order to gain independent unit tests, is to use mocked repository (storage) classes injected into the right controllers.
 
-In model&view mode, in case of best practice, the controller class is thin, the controller method passes the Model object to the service method to manipulate.
-That said, examining the Model object in service class is appropriate.
+In view mode, in case of best practice, the controller class should be thin, the controller method passes the Model object to the service method to manipulate.
+The Model object is constructed by Spring, and there is no public method to create a new one. That said, examining the Model object in service class is not possible.
+Workaround is, the service method must return a Map of objects and to the Model object this Map should be added in the controller class. The controller class will not be the thinnest but acceptable in view mode.
+
+In object/model&view mode, in case of best practice, the controller class is thin, the controller method passes a new ModelAndView object to the service method to manipulate.
+That said, examining the ModelAndView object in service class for the stored data, view name and HTTP response code (if needed) is appropriate.
 
 EXAMPLE FOR SERVICE CLASS TEST CLASS (NOT INDEPENDENT UNIT TEST):
 import org.junit.jupiter.api.*;
@@ -136,7 +141,7 @@ class ServiceTest {
 }
 END OF EXAMPLE
 
-EXAMPLE FOR SERVICE CLASS TEST CLASS (MOCKING, INDEPENDENT UNIT TEST):
+EXAMPLE FOR SERVICE CLASS TEST CLASS (MOCKING, INDEPENDENT UNIT TEST, OBJECT MODE):
 import org.junit.jupiter.api.*;
 import org.mockito.Mockito;
 import org.mockito.*;
@@ -161,9 +166,44 @@ class ServiceTest {
     //tests of service class
 	@Test
 	void testName() {
-	    //setting up local behaviours
+	    //setting up local behaviours for repository
 
 	    Assertions.assertEquals(new Element(12, "abc", 3.14d), serviceName.get(12));
+	}
+}
+END OF EXAMPLE
+
+EXAMPLE FOR SERVICE CLASS TEST CLASS (MOCKING, INDEPENDENT UNIT TEST, OBJECT/MODELANDVIEW MODE):
+import org.junit.jupiter.api.*;
+import org.mockito.Mockito;
+import org.mockito.*;
+import static org.mockito.Mockito.when;
+
+class ServiceTest {
+
+	RepositoryClassName repositoryName;
+	ServiceClassName serviceName;
+
+	@BeforeEach
+	void setUp() {
+		repositoryName = Mockito.mock(RepositoryClassName.class);
+		//setting up common mocked behaviours
+		//e.g. in case the Element is a class declared elsewhere, and
+		//repositoryName.getElement(int id) would return an Element with the passed ID, and
+		//the service get() method calls repositoryName.getElement(...), then mocking:
+		when(repositoryName.getElement(12)).thenReturn(new Element(12, "abc", 3.14d));
+		serviceName = new ServiceClassName(repositoryName);
+	}
+
+    //tests of service class
+	@Test
+	void testName() {
+	    //setting up local behaviours for repository
+
+        ModelAndView modelAndView = serviceName.get(12);
+	    Assertions.assertEquals(1, modelAndView.getModel().size());
+	    Assertions.assertTrue(serviceName.get(12).getModel().get("element") instanceof Element);
+	    Assertions.assertEquals(new Element(12, "abc", 3.14d), (Element) serviceName.get(12).getModel().get("element"));
 	}
 }
 END OF EXAMPLE

@@ -1,5 +1,6 @@
+=================================================================================
 SPRING DATA JPA DATABASE CONNECTION
-
+=================================================================================
 Under the same (src/main/resources) folder, the next file should be created:
     application.properties
 This file contains configuration and environment-specific settings of the application, mainly for Hibernate (part of Spring Data JPA core).

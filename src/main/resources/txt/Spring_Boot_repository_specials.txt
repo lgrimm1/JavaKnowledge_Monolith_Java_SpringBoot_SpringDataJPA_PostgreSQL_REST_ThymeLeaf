@@ -1,0 +1,119 @@
+=================================================================================
+SPRING BOOT REPOSITORY SPECIALS
+=================================================================================
+=>SPRING BOOT REPOSITORY
+
+1. MAPPING POSTGRESQL ARRAY
+2. NAMED QUERIES
+3. QUERY REWRITER
+
+=================================================================================
+1. MAPPING POSTGRESQL ARRAY
+=================================================================================
+Some of the databases offer array-based versions of their column types such as integer[] or text[].
+Their counterparts in Java can be (following the example above) int[] or String[], or Collection type (List of Integer, List of String).
+Spring Boot pairs these types automatically.
+In case Data JPA is used but without Spring Boot, queries accessing these arrays are not obvious, converting the column values to a String is necessary before a query method with that column would be invoked.
+In other ways, upon comparing data in query method, the array-type column must be converted into String first, then the comparing will be invoked on the String.
+
+A query in SQL would be like this:
+    select * from employee where ARRAY_TO_STRING(keywords, ‘,’) LIKE ‘%lunch%’;
+
+Defining the ARRAY_TO_STRING SQL method above needs the steps below:
+    a. define a custom dialect to register the sql function in JPA
+
+EXAMPLE FOR DEFINITION OF CUSTOM DIALECT:
+public class CustomDialect extends PostgreSQL94Dialect {
+    public CustomDialect() {
+        super();
+        registerFunction("array_to_string", new StandardSQLFunction("array_to_string"));
+    }
+}
+END OF EXAMPLE
+
+//TODO https://www.baeldung.com/hibernate-custom-types
+//TODO https://www.baeldung.com/java-hibernate-map-postgresql-array
+
+=================================================================================
+2. NAMED QUERIES
+=================================================================================
+Custom named queries can be rendered to the domain class:
+    a. annotation-based configuration (see on SPRING BOOT ENTITY page)
+    b. JPA named queries
+
+The JPA named queries are defined in XML configuration metafile while attached to the repository with additional method declaration of the repository interface.
+These queries are read at every call runtime.
+The configuration metafile directory should be placed on the domain class path and named META-INF.
+The file itself should be named orm.xml.
+The named query will be accessible by invoking the DomainClassName.methodName(...) in the code.
+In case the invoked query can not be found in the metafile, JPA will try to understand it by the name of the method by looking for keyword, see above.
+
+Although using named queries are valid strategy for a limited number of queries, this technique ties them to the entity instead of the repository where their place should be.
+Therefore, using them does not fit to best practices.
+
+EXAMPLE FOR A NAMED QUERY DEFINITION:
+<named-query name="User.findByLastname">
+    <query>select u from User u where u.lastname = ?1</query>
+</named-query>
+END OF EXAMPLE
+
+The abstract method which uses the query definition, should be added to the repository interface.
+
+EXAMPLE FOR THE ABSTRACT METHOD REFERENCING TO THE QUERY DEFINITION:
+List<User> findByLastname(String lastname);
+END OF EXAMPLE
+
+EXAMPLE FOR INVOKING THE NAMED QUERY:
+List<User> list = User.findByLastname(lastname);
+END OF EXAMPLE
+
+=================================================================================
+3. QUERY REWRITER
+=================================================================================
+In the previous variants queries are a priori defined.
+These queries are sent to the EntityManager of Hibernate upon usage.
+It is possible to alternate a pre-defined query before it reaches the manager by utilizing the QueryRewriter:
+    a. via custom QueryRewriter class
+    b. via extending the repository interface with QueryRewriter
+
+When the rewriter is expressed via class, in case such query is invoked, JPA will search for a QueryRewriter bean. That said, the class should be marked with @Component annotation or should be lifted into the configuration class of the entity as a @Bean.
+This version is advised when e.g. more services or more repositories would access the same rewriter.
+
+EXAMPLE FOR REPOSITORY INTERFACE WITH QUERY METHODS REFERENCING TO QUERY REWRITER (SQL AND JPQL):
+public interface MyRepository extends JPARepository<EntityClassName, idType> {
+    @Query(value = "select original_user_alias.* from SD_USER original_user_alias", nativeQuery = true, queryRewriter = MyQueryRewriter.class)
+    List<User> findByNativeQuery(String param);
+
+    @Query(value = "select original_user_alias from User original_user_alias", queryRewriter = MyQueryRewriter.class)
+    List<User> findByNonNativeQuery(String param);
+}
+END OF EXAMPLE
+
+EXAMPLE FOR CUSTOM QUERY REWRITER CLASS:
+@Component
+public class MyQueryRewriter implements QueryRewriter {
+
+     @Override
+     public String rewrite(String query, Sort sort) {
+         return query.replaceAll("original_user_alias", "rewritten_user_alias");
+     }
+}
+END OF EXAMPLE
+
+When the rewriter is part of the repository, will be used only by that repository.
+This version is advised when the container repository uses it only.
+
+EXAMPLE FOR INTEGRATED QUERY REWRITER:
+public interface MyRepository extends JPARepository<EntityClassName, idType>, QueryRewriter {
+    @Query(value = "select original_user_alias.* from SD_USER original_user_alias", nativeQuery = true, queryRewriter = MyRepository.class)
+    List<User> findByNativeQuery(String param);
+
+    @Query(value = "select original_user_alias from User original_user_alias", queryRewriter = MyRepository.class)
+    List<User> findByNonNativeQuery(String param);
+
+     @Override
+     public String rewrite(String query, Sort sort) {
+         return query.replaceAll("original_user_alias", "rewritten_user_alias");
+     }
+}
+END OF EXAMPLE

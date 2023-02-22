@@ -16,6 +16,7 @@ PRACTICES
 =================================================================================
 1. INCREASE ARRAY INDEX, JUMP TO FIRST ELEMENT WHEN REACHING LAST
 =================================================================================
+EXAMPLE FOR LOOP AND RESTARTING THE CYCLE IN AN ARRAY:
 int index = 0;
 int capacity = ...;
 
@@ -23,10 +24,12 @@ void push(int newValue) {
     array[index] = newValue;
     index = ++index % capacity; //increases until reaches capacity then it jumps back to 0
 }
+END OF EXAMPLE
 
 =================================================================================
 2. INCREASE ARRAY CAPACITY
 =================================================================================
+EXAMPLE FOR MODIFYING ARRAY CAPACITY:
 int capacity = ...;
 int[] array = new int[capacity];
 int index = 0;
@@ -40,10 +43,12 @@ void push(int newValue) {
         capacity *= 2;
     }
 }
+END OF EXAMPLE
 
 =================================================================================
 3. INDEXOF WITH STREAM
 =================================================================================
+EXAMPLE FOR FINDING AN ELEMENT VIA STREAM:
 class ClassName {
     private long id;
     //fields, constructors, getters
@@ -69,6 +74,7 @@ int indexOf(long id) {
 			.findFirst();
 	return optionalInt.isEmpty() ? -1 : optionalInt.getAsInt();
 }
+END OF EXAMPLE
 
 =================================================================================
 4. GIT COMMANDS
@@ -152,12 +158,14 @@ EXAMPLE FOR INSERTING NEW REMOTE DEPENDENCY IN POM.XML:
   <artifactId>commons-math3</artifactId>
   <version>3.6.1</version>
 </dependency>
+END OF EXAMPLE
 
 EXAMPLE FOR IMPORTING DEPENDENCY IN CODE (CONNECTED TO PREVIOUS EXAMPLE):
 import org.apache.commons.math3.util.CombinatoricsUtils;
 ...
 int n = ...;
 int f = (int) CombinatoricsUtils.factorial(n);
+END OF EXAMPLE
 
 The development lifecycle is rendered into Maven commands. These commands can be accessed through the IDE but can be different in other IDEs. All IDE should have terminal in which accessing Maven is universalized.
 
@@ -189,6 +197,7 @@ public void push(int key) {
     lastIndex = (++lastIndex) % capacity;
     array[lastIndex] = key;
 }
+END OF EXAMPLE
 
 O(n) = n means that the numbers of executions depends on the number of data (linear). Typically, processing collections by their elements.
 
@@ -200,6 +209,7 @@ public long total(int[] array) {
     }
     return total; //does not count into complexity because for higher length of arrays, it will not change the scale
 }
+END OF EXAMPLE
 
 O(n) = n^2 is usually goes for minimum needed complexity of sorting processes. Using iteration or recursion does not matter.
 The less optimized sorting uses to indexes, with element under the low index all other elements will be compared.
@@ -222,9 +232,11 @@ Best practices are:
 
 EXAMPLE FOR METHOD REFERENCE:
 ClassName::methodName
+END OF EXAMPLE
 
 EXAMPLE FOR LAMBDA INSTEAD OF METHOD REFERENCE:
 () -> methodName()
+END OF EXAMPLE
 
 EXAMPLE FOR ORGANIZING BLOCK-BODY LAMBDA:
 //instead of this:
@@ -239,12 +251,14 @@ private returnValue methodName(...) {
 }
 ...
 (...) -> methodName(...)
+END OF EXAMPLE
 
 EXAMPLE FOR AVOIDING VARIABLE TYPES IN LAMBDA:
 //instead of this:
 (type1 var1, type2 var2) -> ...
 //use this:
 (var1, var2) -> ...
+END OF EXAMPLE
 
 EXAMPLE FOR USING BRACES WITH LAMBDA:
 () -> statement
@@ -257,6 +271,7 @@ EXAMPLE FOR AVOIDING RETURN STATEMENT IN LAMBDA:
 () -> return methodName()
 //use this:
 () -> methodName()
+END OF EXAMPLE
 
 =================================================================================
 8. USING RIGHT RETURN VALUES FOR BETTER INTEGRATION
@@ -275,6 +290,7 @@ import java.util.stream.IntStream;
 public List<Integer> newNumbers() {
     return IntStream.rangeClosed(1, 10).boxed().toList();
 }
+END OF EXAMPLE
 
 EXAMPLE 2 FOR USING INTERFACE AS RETURN TYPE:
 import java.util.ArrayList;
@@ -287,6 +303,7 @@ private static List<Integer> generateCircledPermutations(int number) {
     return permutations;
 }
 //on the caller's side, the caller statement can put the return value into a List, an ArrayList, a LinkedList etc.
+END OF EXAMPLE
 
 =================================================================================
 9. GET APPLICATION PATHS
@@ -318,6 +335,7 @@ public static String[] listAppFoldersIntelliJMaven() {
 			userDir + File.separator + "src" + File.separator + "main" + File.separator + "java"
 	};
 }
+END OF EXAMPLE
 
 9.2. MAVEN TEST RESOURCES PATHS
 ---------------------------------------------------------------------------------
@@ -329,16 +347,19 @@ EXAMPLE 1 FOR GETTING TEST RESOURCES FOLDER:
 import java.io.File;
 ..
 String absolutePath = (new File("src" + File.separator + "test" + File.separator + "resources")).getAbsolutePath();
+END OF EXAMPLE
 
 EXAMPLE 2 FOR GETTING TEST RESOURCES FOLDER:
 import java.nio.file.Paths;
 ..
 String absolutePath = Paths.get("src","test","resources").toFile().getAbsolutePath();
+END OF EXAMPLE
 
 EXAMPLE FOR GETTING TARGET RESOURCES FOLDER:
 import java.io.File;
 ...
 String absolutePath = (new File(getClass().getClassLoader().getResource("example_resource.txt").getFile())).getAbsolutePath();
+END OF EXAMPLE
 
 =================================================================================
 10. FAVORING COMPOSITION OVER INHERITANCE
@@ -358,6 +379,7 @@ class AnnualData {
 class MonthData extends AnnualData {
     private int month;
 }
+END OF EXAMPLE
 
 In the above code the inheritance does not express that the MonthData is a special kind of AnnualData.
 Also, the subclass is fragile, can harm encapsulation, any changes in the super class can break the subclass.
@@ -374,6 +396,7 @@ class MonthData {
     private int month;
     private int total;
 }
+END OF EXAMPLE
 
 EXAMPLE FOR RIGHT USAGE OF CODE (INHERITANCE AND COMPOSITION):
 class StatData {
@@ -385,6 +408,7 @@ class AnnualData extends StatData {
 class MonthData extends StatData {
     private int month;
 }
+END OF EXAMPLE
 
 =================================================================================
 11. QUALITY SOURCES OF JAVA AND FRAMEWORKS

@@ -38,6 +38,7 @@ public class HtmlGenerators {
 						"<h2>" + text.get(textIndex + 1) + "</h2>");
 				textIndex += 3;
 			}
+
 			//header2
 			else if ((text.size() > textIndex + 1) &&
 					(text.get(textIndex + 1).equals(formulas.getConstant(Formulas.ConstantName.SUBLINE)))) {
@@ -52,6 +53,7 @@ public class HtmlGenerators {
 						"<h3>" + text.get(textIndex) + "</h3>");
 				textIndex += 2;
 			}
+
 			//table
 			else if ((text.get(textIndex).length() > 3) && (text.get(textIndex).startsWith("||"))) {
 				int textIndex2 = textIndex + 1;
@@ -63,6 +65,7 @@ public class HtmlGenerators {
 				html.addAll(extractors.extractTable(text.subList(textIndex, textIndex2), formulas));
 				textIndex = textIndex2;
 			}
+
 			//example
 			else if (text.get(textIndex).contains("EXAMPLE FOR")) {
 				html.add(formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
@@ -78,11 +81,16 @@ public class HtmlGenerators {
 				html.add(formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "</textarea>");
 				textIndex = textIndex2 + 1;
 			}
+
 			//reference
 			else if ((text.get(textIndex).startsWith("=>"))) {
 				html.add(extractors.extractReference(text.get(textIndex), formulas, titleRepository));
 				textIndex++;
 			}
+
+			//development remarks
+			//TODO skip the single TODO lines
+
 			//normal text
 			else {
 				html.add(formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + text.get(textIndex) + "</br>");

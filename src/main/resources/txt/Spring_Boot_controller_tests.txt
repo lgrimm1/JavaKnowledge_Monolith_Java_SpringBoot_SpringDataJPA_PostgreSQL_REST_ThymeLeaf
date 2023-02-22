@@ -3,6 +3,7 @@ SPRING BOOT CONTROLLER TESTS
 =================================================================================
 For controller classes, based upon the best practices, the Communication layer of the backend should be as thin as it is possible. Therefore, following best practices, for all other processes tests should be developed but for the controllers, it can be skipped.
 That said, testing the Communication layer which equals with testing the controller classes, is simplified for sending requests to the layer.
+Exception is in view mode when, based upon testing needs, setting up the Model object for response should be done in the correspondent controller method, therefore testing this is necessary.
 
 1. CONTROLLER CLASS TESTS WITH CURL
 2. CONTROLLER CLASS TESTS WITH STARTED WEB APPLICATION
@@ -14,6 +15,7 @@ That said, testing the Communication layer which equals with testing the control
 =>MOCKITO
 =>JUNIT
 =>SPRING BOOT CONTROLLER
+=>SPRING MODELANDVIEW
 =>Spring_Validation
 =>WEB APPLICATION;4. CURL
 =>SERIALIZATION
@@ -23,6 +25,7 @@ That said, testing the Communication layer which equals with testing the control
 =================================================================================
 Before the test runs, the web application must be started up.
 The cURL tests are used to test the application from the outside which means integrity test. That said, the whole application must be started beforehand.
+This kind of testing is possible for controller methods in object mode.
 
 1.1. EXTERNAL CURL TESTS
 1.2. INTERNAL CURL TESTS
@@ -197,6 +200,7 @@ public class ControllerCurlTest {
 The @SpringBootTest in a class marks that the class is for testing a controller class.
 For all tests, the Spring Boot will start the web service (servlet) layer, practically the whole web application.
 The @Autowired annotation expresses injection the marked class (e.g. the controller) into the test class before starting up the app. In case of using the TestRestTemplate class with this annotation, the given class will handle the storage and the service layers together automatically.
+This kind of testing is possible for controller methods in any mode.
 
 The application layers will be cached by default so Spring will not start-stop the application per test method.
 In case the test modifies the context (e.g. the state of a singleton bean or the state of an embedded database) and that modification could have an effect on other test results, usage of @DirtiesContext annotation is needed. When the flow reaches this annotation, the context will be emptied and reloaded.
@@ -283,6 +287,7 @@ This kind of testing will not start the web service but mock it. The direct Comm
 From the mocked environment we can send requests to the controller like it would arrive from the outside, and check the controller response as it would be sent out.
 Due to the two statements above, testing the startup itself is necessary, see the main class test earlier.
 With the structure above, in case of normally mocking the service classes as well, independent unit testing becomes possible.
+This kind of testing is possible for controller methods in any mode.
 
 For separating the service class(es) and their methods, they will be mocked by using Mockito.
 For separating the web layer, the MockMVC will be used which is part of the Spring frameworks.
@@ -329,10 +334,11 @@ public class ControllerTest {
 
     //test cases marked with @Test annotation.
 }
+END OF EXAMPLE
 
 In test cases, first task is mocking the correspondent service method with Mockito.
 As second task, with MockMVC, the next data should be defined:
-    a. incoming request type (get, post, put, delete)
+    a. incoming request type (get, post, put, patch, delete)
     b. endpoint (with query if there is)
     c. incoming media type (if there is incoming data)
     d. accepted incoming media type (if there is incoming data)
@@ -358,7 +364,29 @@ Some expected statuses (look for more under StatusResultMatcher methods below):
     g. notFound()
     h. notModified()
 
-EXAMPLE FOR A TEST CASE METHOD (PUT ON /ENDPOINT, JSON REQUEST BODY AND EXPECTED RESPONSE BODY, EXPECTED HTTP200 SUCCESS CODE):
+EXAMPLE FOR A TEST CASE METHOD (PUT ON /ENDPOINT, OBJECT MODE, JSON REQUEST BODY AND EXPECTED RESPONSE BODY, EXPECTED HTTP200 SUCCESS CODE):
+@Test
+public void testCaseName() throws Exception {
+    //mocking service method
+	when(purchaseService.serviceMethodName(...))
+			.thenReturn(...);
+
+	//mocking web layer and controller
+	mockMvc
+	        .perform(put("/endpoint")
+					.contentType(MediaType.APPLICATION_JSON_VALUE)
+					.accept(MediaType.APPLICATION_JSON_VALUE))
+					.content(...)
+			.andDo(print())
+			.andExpect(status().isOk())
+			.andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+			.andExpect(content().json(...)); //or:
+			.andExpect(content().string(...)); //or:
+			.andExpect(content().string(containsString(...)));
+}
+
+EXAMPLE FOR A TEST CASE METHOD (PUT ON /ENDPOINT, OBJECT/MODELANDVIEW MODE, EXPECTED HTTP200 SUCCESS CODE):
+//TODO modify the test example based on research
 @Test
 public void testCaseName() throws Exception {
     //mocking service method
@@ -397,7 +425,7 @@ Every request type has a method in MockMvcRequestBuilders:
 
 Variants of get()/.../head() method parameters:
     a. String URI (which means endpoint; object mode)
-    b. String urlTemplate[, Object... uriVariables] (model&view mode)
+    b. String urlTemplate[, Object... uriVariables] (view mode)
 
 Variants of request() method parameters:
     a. HttpMethod method, String URI (URI means the whole endpoint path)

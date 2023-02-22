@@ -9,8 +9,8 @@ That said, that class will be responsible for storage management.
 
 =>SPRING BOOT
 =>POSTGRESQL
-=>SPRING DATA JPA
 =>SPRING BOOT REPOSITORY QUERY EXAMPLES
+=>SPRING BOOT REPOSITORY SPECIALS
 =>SPRING BOOT TESTS;3. REPOSITORY TESTS
 
 =================================================================================
@@ -45,23 +45,30 @@ END OF EXAMPLE
 =================================================================================
 2. REPOSITORY INTERFACE, JPA
 =================================================================================
-2.1. DEFAULT INTERFACE
-2.2. DERIVED QUERY METHODS
-2.3. CUSTOM QUERY METHODS
-2.4. QUERIES WITH DYNAMIC SORTING
-2.5. QUERIES WITH DYNAMIC PAGINATION
-2.6. QUERY EXAMPLES
-2.7. QUERY IN ARRAY COLUMN
-2.8. NAMED QUERIES
-2.9. QUERY REWRITER
+2.1. ABOUT SPRING DATA JPA
+2.2. DEFAULT INTERFACE
+2.3. DERIVED QUERY METHODS
+2.4. CUSTOM QUERY METHODS
+2.5. QUERIES WITH DYNAMIC SORTING
+2.6. QUERIES WITH DYNAMIC PAGINATION
+2.7. QUERY EXAMPLES
+2.8. SPECIALS
 
-2.1. DEFAULT INTERFACE
+2.1. ABOUT SPRING DATA JPA
+---------------------------------------------------------------------------------
+The Spring Data JPA framework is designed to make a bridge between backend repositories and databases.
+Utilizing this framework is different when using without and with Spring Boot (annotations, interfaces etc). Generally, through Spring Boot it became easier, simpler and faster for coding.
+The reason is that Spring Boot is designed to be the top bridge above different Spring frameworks.
+
+The JPA stands for Jakarta Persistence API (before Spring 3, Java Persistence API).
+
+2.2. DEFAULT INTERFACE
 ---------------------------------------------------------------------------------
 In case of JPA solution, instead of class the repository will be an interface which extends JpaRepository.
 In this case there is no need to define any fields or methods, by default it will provide the basic functionality of the repository for Spring Boot.
 In order to define an interface as repository, the @Repository annotation is needed.
 The interface must be public in order to let Spring accessing it.
-The best solution is to engage with an in-memory or in-server database. Such database can be H2 (in-memory) or postgreSQL (or postgres) or MySQL or Oracle etc. In this version the Spring Boot must connect to the storage by using application.properties file under the src/main/resources directory.
+The best solution is to engage with an in-memory or in-server database. Such database can be H2 (in-memory) or postgreSQL (or postgres) or mySQL or Oracle etc. In this version the Spring Boot must connect to the storage by using application.properties file under the src/main/resources directory.
 
 The JpaRepository is a generics for handling basic repository functions like CRUD (Create, Retrieve, Update, Delete). Two types it needs in declaration:
     a. EntityClassName: the class of the entity it manages
@@ -78,6 +85,11 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Order;
 
 @Repository
 public interface RepositoryClassName extends JpaRepository<EntityClassName, TypeOfID> {
@@ -111,7 +123,7 @@ These methods are satisfying basic needs of handling database data, mainly satis
 ||deleteAllById(iterableOfIds)|finds and deletes entities by their IDs of the passed Iterable||
 ||deleteAll|empties the repository||
 
-2.2. DERIVED QUERY METHODS
+2.3. DERIVED QUERY METHODS
 ---------------------------------------------------------------------------------
 The default interface is for saving data and finding-managing data by the ID (CRUD functions).
 In case of other or overridden methods are needed, can be coded on repository level.
@@ -217,7 +229,7 @@ Return types can be:
 
 //TODO https://www.baeldung.com/spring-data-jpa-query
 
-2.3. CUSTOM QUERY METHODS
+2.4. CUSTOM QUERY METHODS
 ---------------------------------------------------------------------------------
 The @Query method-level annotation is used for a query method:
     a. for increasing readability of name of a derived query method (usage is optional)
@@ -256,7 +268,7 @@ Custom query methods must not use keywords of derived query methods since Spring
 The native SQL contains the CONCAT() function which concatenates its arguments into one text (e.g. "CONCAT('%', ?1,'%')").
 In order to match value case-insensitively, the column value and the method parameter should be modified with UPPER() or LOWER() function (e.g. "UPPER(e.title) LIKE UPPER(?1%)").
 
-2.4. QUERIES WITH DYNAMIC SORTING
+2.5. QUERIES WITH DYNAMIC SORTING
 ---------------------------------------------------------------------------------
 Method arguments can overwrite the query expression, this is called dynamic sorting, paging etc. Meaning, the expression is invoked but after that, the query method will invoke the dynamic operation on the results before passing the results to its caller side.
 When using dynamic modification, avoid using similar expression part in the query (would take more operation time, result can be unpredicted).
@@ -266,7 +278,7 @@ Spring Data JPA does not currently support dynamic sorting for native SQL querie
 
 In the repository interface, a Sort object can be given as the last argument of the query method:
     List<EntityClass> queryMethodName([other parameters, ]Sort sort);
-This argument will receive dynamic sorting properties upon invoking in the Business Layer.
+This argument will receive dynamic sorting properties upon invoking in the Business layer.
 
 The passed sorting properties can be defined:
     a. by declaring a variable (re-usable)
@@ -292,14 +304,14 @@ The List of entities can be queried by invoking:
     a. List<EntityClass> = repositoryName.queryMethodName([other parameters, ]sort);
     b. List<EntityClass> = repositoryName.queryMethodName([other parameters, ]Sort.by(...));
 
-2.5. QUERIES WITH DYNAMIC PAGINATION
+2.6. QUERIES WITH DYNAMIC PAGINATION
 ---------------------------------------------------------------------------------
 Dynamic pagination means that the query presents only one part of the whole set of results, and with paging command will present the next package in order. By using it the data traffic between the database and the backend becomes reduced, the operation becomes faster.
 With pagination, sorting and filtering is possible as well.
 
 In the repository interface, a Pageable object can be given as the last argument of the query method:
     Page<EntityClass> queryMethodName([other parameters, ]Pageable pageable);
-This argument will receive dynamic paging properties upon invoking in the Business Layer.
+This argument will receive dynamic paging properties upon invoking in the Business layer.
 
 The passed paging properties can be defined:
     a. by declaring a variable (re-usable)
@@ -308,6 +320,8 @@ The passed paging properties can be defined:
 A Pageable object can be created by calling the of() static method of PageRequest:
     a. Pageable pageable = PageRequest.of(pageNumber, pageSize); //no sorting
     b. Pageable pageable = PageRequest.of(pageNumber, pageSize, sort); //with sorting, sort is instance of Sort
+The pageNumber must be non-negative, first page is the zeroth.
+The pageSize means the number of entities the returned package contains, must be positive.
 
 A page request queried by invoking:
     a. Page<EntityClass> page = repositoryName.queryMethodName([other parameters, ]pageable);
@@ -318,101 +332,53 @@ The List of entities of a page can be extracted by invoking:
     b. List<EntityClass> = repositoryName.queryMethodName([other parameters, ]pageable).getContent();
     c. List<EntityClass> = repositoryName.queryMethodName([other parameters, ]PageRequest.of(...)).getContent();
 
-//TODO Bring Pagination and Sorting together, https://www.bezkoder.com/spring-boot-pagination-sorting-example/
+||Pageable method|Description||
+||first()|queries the first page||
+||previousOrFirst()|queries the previous page or the first if the actual is the first||
+||next()|queries the next page||
+||hasPrevious()|is there a page before the actual||
+||toOptional()|packages the Pageable into an Optional||
+||getOffset()|gets the offset based on the actual number of page and the page size||
+||getPageNumber()|returns the actual page number||
+||getPageSize()|returns the size of page (number of contained entities)||
+||getSort()|returns the sorting parameters as a Sort||
+||getSortOr(Sort sort)|returns the sorting parameters or the given argument if Pageable is unsorted||
+||isPaged()|returns whether the Pageable contains pagination information||
+||isUnpaged()|returns whether the Pageable does not contain pagination information||
+||ofSize(int pageSize)|creates a new Pageable for the first page (page number 0) given pageSize||
+||unpaged()|creates a new Pageable without pagination parameters||
+||withPage(int pageNumber)|creates a new Pageable with pageNumber applied||
 
-2.6. QUERY EXAMPLES
+||Page method|Description||
+||empty()|creates a new, empty page||
+||empty(Pageable pageable)|creates a new, empty page for the given Pageable||
+||getTotalElements()|returns the total number of elements||
+||getTotalPages()|returns the total number of pages||
+||map(Function<? super T,? extends U> converter)|returns a new Page with the content of the current one mapped by the given Function||
+||forEach(...)|invokes a lambda on every elements||
+||iterator|returns an Iterator of elements||
+||getContent|retrieves the List of items in the page||
+||getNumber()|returns the number of the actual page||
+||getNumberOfElements()|returns the number of elements in the Page||
+||getPageable()|returns the Pageable||
+||getSize()|returns the size of the Page (number of elements)||
+||getSort()|returns the sorting parameters as Sort||
+||hasContent()|returns whether the Page has content||
+||hasNext()|checks whether there is a next Page||
+||hasPrevious()|checks whether there is a previous Page||
+||isFirst()|checks whether the actual Page is the first||
+||isLast()|checks whether the actual Page is the last||
+||nextOrLastPageable()|returns the next Pageable or the last if the actual is the last||
+||nextPageable()|returns the next Pageable||
+||previousOrFirstPageable()|returns the previous Pageable or the first if the actual is the first||
+||previousPageable()|returns the previous Pageable||
+
+2.7. QUERY EXAMPLES
 ---------------------------------------------------------------------------------
 Visit the SPRING BOOT REPOSITORY QUERY EXAMPLES page for derived, custom and dynamic query examples.
 
-2.7. QUERY IN ARRAY COLUMN
+2.8. SPECIALS
 ---------------------------------------------------------------------------------
-Some of the databases offer array-based versions of their column types such as integer[] or text[].
-Their counterparts in Java can be (following the example above) int[] or String[], or Collection type (List of Integer, List of String).
-Spring Boot pairs these types automatically.
-In case Data JPA is used but without Spring Boot, queries accessing these arrays are not obvious, converting the column values to a String is necessary before a query method with that column would be invoked.
-In other ways, upon comparing data in query method, the array-type column must be converted into String first, then the comparing will be invoked on the String.
-See the SPRING DATA JPA page for more details.
-
-2.8. NAMED QUERIES
----------------------------------------------------------------------------------
-Custom named queries can be rendered to the domain class:
-    a. annotation-based configuration (see on SPRING BOOT ENTITY page)
-    b. JPA named queries
-
-The JPA named queries are defined in XML configuration metafile while attached to the repository with additional method declaration of the repository interface.
-These queries are read at every call runtime.
-The configuration metafile directory should be placed on the domain class path and named META-INF.
-The file itself should be named orm.xml.
-The named query will be accessible by invoking the DomainClassName.methodName(...) in the code.
-In case the invoked query can not be found in the metafile, JPA will try to understand it by the name of the method by looking for keyword, see above.
-
-Although using named queries are valid strategy for a limited number of queries, this technique ties them to the entity instead of the repository where their place should be.
-Therefore, using them does not fit to best practices.
-
-EXAMPLE FOR A NAMED QUERY DEFINITION:
-<named-query name="User.findByLastname">
-    <query>select u from User u where u.lastname = ?1</query>
-</named-query>
-END OF EXAMPLE
-
-The abstract method which uses the query definition, should be added to the repository interface.
-
-EXAMPLE FOR THE ABSTRACT METHOD REFERENCING TO THE QUERY DEFINITION:
-List<User> findByLastname(String lastname);
-END OF EXAMPLE
-
-EXAMPLE FOR INVOKING THE NAMED QUERY:
-List<User> list = User.findByLastname(lastname);
-END OF EXAMPLE
-
-2.9. QUERY REWRITER
----------------------------------------------------------------------------------
-In the previous variants queries are a priori defined.
-These queries are sent to the EntityManager of Hibernate upon usage.
-It is possible to alternate a pre-defined query before it reaches the manager by utilizing the QueryRewriter:
-    a. via custom QueryRewriter class
-    b. via extending the repository interface with QueryRewriter
-
-When the rewriter is expressed via class, in case such query is invoked, JPA will search for a QueryRewriter bean. That said, the class should be marked with @Component annotation or should be lifted into the configuration class of the entity as a @Bean.
-This version is advised when e.g. more services or more repositories would access the same rewriter.
-
-EXAMPLE FOR REPOSITORY INTERFACE WITH QUERY METHODS REFERENCING TO QUERY REWRITER (SQL AND JPQL):
-public interface MyRepository extends JPARepository<EntityClassName, idType> {
-    @Query(value = "select original_user_alias.* from SD_USER original_user_alias", nativeQuery = true, queryRewriter = MyQueryRewriter.class)
-    List<User> findByNativeQuery(String param);
-
-    @Query(value = "select original_user_alias from User original_user_alias", queryRewriter = MyQueryRewriter.class)
-    List<User> findByNonNativeQuery(String param);
-}
-END OF EXAMPLE
-
-EXAMPLE FOR CUSTOM QUERY REWRITER CLASS:
-@Component
-public class MyQueryRewriter implements QueryRewriter {
-
-     @Override
-     public String rewrite(String query, Sort sort) {
-         return query.replaceAll("original_user_alias", "rewritten_user_alias");
-     }
-}
-END OF EXAMPLE
-
-When the rewriter is part of the repository, will be used only by that repository.
-This version is advised when the container repository uses it only.
-
-EXAMPLE FOR INTEGRATED QUERY REWRITER:
-public interface MyRepository extends JPARepository<EntityClassName, idType>, QueryRewriter {
-    @Query(value = "select original_user_alias.* from SD_USER original_user_alias", nativeQuery = true, queryRewriter = MyRepository.class)
-    List<User> findByNativeQuery(String param);
-
-    @Query(value = "select original_user_alias from User original_user_alias", queryRewriter = MyRepository.class)
-    List<User> findByNonNativeQuery(String param);
-
-     @Override
-     public String rewrite(String query, Sort sort) {
-         return query.replaceAll("original_user_alias", "rewritten_user_alias");
-     }
-}
-END OF EXAMPLE
+For mapping postgreSQL array column, named queries and query rewriter, visit the SPRING BOOT REPOSITORY SPECIALS page.
 
 //TODO Using Advanced LIKE Expressions, https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#jpa.query-methods

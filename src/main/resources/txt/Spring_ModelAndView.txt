@@ -1,0 +1,126 @@
+=================================================================================
+SPRING MODELANDVIEW
+=================================================================================
+1. GENERALLY
+2. CONTROLLER AND SERVICE IN MODEL&VIEW
+3. CONSTRUCTORS
+
+=>WEB APPLICATION
+=>MAP
+=>SPRING THYMELEAF
+=>SPRING BOOT REQUESTS
+=>SPRING BOOT CONTROLLER
+=>SPRING BOOT TESTS
+=>SPRING BOOT CONTROLLER TESTS
+=>SPRING EXCEPTION HANDLING
+=>SPRING BOOT VALIDATION
+
+=================================================================================
+1. GENERALLY
+=================================================================================
+The Communication layer as a whole, or endpoints of the layer can work in two different modes:
+    a. view mode
+    b. object mode
+
+The view mode covers working with models and templates. That said, the sent payload is rendered into a Model object, and the payload is sent to a template.
+The return value of the controller method must be a String which contains the name of the view, Spring attaches the Model to it.
+The Model object can contain several objects.
+An endpoint, and through the endpoints the controller can not comply to the REST standard. This technique was used in earlier Spring versions.
+
+The object mode is REST compatible. The endpoint sends an object along with HTTP response code and headers which altogether form the payload.
+The return value of the controller method is identical to the object part of the payload, in serialized format like JSON.
+
+Spring enables accessing templates while complying to the REST standard by utilizing the ModelAndView class.
+With this, the controller method will work in object mode while Spring will send the payload with HTTP code to a specific view.
+In order to distinguish this mode from object mode, although this technique works in object mode as well, it is commonly called Model&View mode.
+The return value of the controller method will be ModelAndView which contains the view or its name, the sent objects and the response HTTP code.
+
+=================================================================================
+2. CONTROLLER AND SERVICE IN MODEL&VIEW
+=================================================================================
+In order to form an API, thin controller is needed. That said, the controller is separated from the Business layer. Thin controller means thin endpoints along.
+As in view mode, the controller method receives a new Model object in its argument list.
+
+EXAMPLE FOR THIN CONTROLLER ENDPOINT (MODEL&VIEW):
+@GetMapping("/endpoint") //or other request type(s)
+public ModelAndView controllerMethodName([received request parameters, ]Model model) {
+	return serviceObject.serviceMethodName([sent request parameters, ]new ModelAndView("initial_view_name", model.asMap()));
+}
+END OF EXAMPLE
+
+The model which contains object, has Map<String, ?> type where the keys are HTML attribute names, the values are the corresponding objects of any class. In order to access a value, casting will be necessary in the Business layer.
+On Business layer side, the correspondent service method will be invoked which returns the same ModelAndView object but filled with elements of the payload.
+
+EXAMPLE FOR SERVICE METHOD (MODEL&VIEW):
+public ModelAndView serviceMethodName([received request parameters, ]ModelAndView modelAndView) {
+    //process
+    modelAndView.addObject("html_attribute_name1", object_variable_or_object_or_literal1);
+    modelAndView.addObject("html_attribute_name2", object_variable_or_object_or_literal2);
+	modelAndView.setViewName("final_view_name"); //optionally, if needed
+    return modelAndView;
+	}
+}
+END OF EXAMPLE
+
+=================================================================================
+3. CONSTRUCTORS
+=================================================================================
+The constructor parameters of ModelAndView can have the next main variants:
+    a. String viewName
+    b. View view
+    c. String viewName, Map<String, ?> model
+    d. View view, Map<String, ?> model
+    e. String viewName, HttpStatusCode status
+    f. String viewName, Map<String, ?> model, HttpStatusCode status
+    g. (no arguments)
+
+It is possible to create a ModelAndView object without defining the view name (or the View). This can be done only by giving no arguments to the constructor.
+However, a Model is received from the endpoint. Although this Model should be empty, any Spring version can fill it with pre-prepared data in which case the Model must be passed to the ModelAndView at first hand before invoking the service method.
+
+=================================================================================
+4. METHODS
+=================================================================================
+The ModelAndView has the next methods.
+
+||ModelAndView method|Description||
+||addObject("Html_attribute_name", object)|adds an object to the payload with its HTTP attribute name||
+||addObject(object)|adds an object to the payload, HTTP attribute name is automatically set||
+||addAllObjects(Map<String, ?>)|adds the content of the Map to the payload, HTTP attribute names are the keys||
+||setViewName("view_name")|sets the view||
+||setView(View view)|sets the view||
+||setStatus(HttpStatusCode status)|sets the response status||
+||clear()|deletes all data||
+||isEmpty()|checks whether no data in it||
+||wasCleared()|checks whether it was cleared||
+||hasView()|checks whether it has view||
+||getViewName()|returns the name of the view||
+||getView()|returns the View||
+||getModel()|returns the model as Map<String, Object>||
+||getStatus()|returns the HttpStatusCode||
+||getModelMap()|returns a ModelMap||
+
+The returned View object has one method:
+    getContentType(): returns the content-type as String
+
+The returned ModelMap has methods with which the attribute names and objects can be managed.
+This class is inherited from the Map interface, additional methods are below.
+
+||ModelMap method|Description||
+||addAttribute("Html_attribute_name", object)|adds an object to the payload with its HTTP attribute name||
+||addAttribute(object)|adds an object to the payload, HTTP attribute name is automatically set||
+||addAllAttributes(Map<String, ?>)|adds the content of the Map to the payload, HTTP attribute names are the keys||
+||addAllAttributes(Collection<?>)|adds the content of the Collection to the payload, HTTP attribute names is automatically set||
+||containsAttribute("attribute_name")|checks whether the attribute is contained||
+||getAttribute("attribute_name")|returns the object by the attribute name (needs type casting afterwards)||
+||mergeAttributes(Map<String, ?>)|-||
+
+The return value of add...() and merge...() methods is ModelMap therefore it is possible to chain these methods.
+
+EXAMPLE FOR CHAINING MODELMAP METHODS:
+public ModelAndView serviceMethod(ModelAndView modelAndView) {
+modelAndView.getModelMap()
+        .addAttribute("attribute_name1", object1)
+        .addAttribute("attribute_name2", object2)
+        .addAttribute("attribute_name3", object3);
+}
+END OF EXAMPLE

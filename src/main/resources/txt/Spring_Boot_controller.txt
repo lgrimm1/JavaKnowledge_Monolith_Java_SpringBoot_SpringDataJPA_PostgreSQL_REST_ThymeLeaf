@@ -4,7 +4,7 @@ SPRING BOOT CONTROLLER
 1. CONTROLLER CLASS GENERALLY
 2. CONTROLLER ANNOTATIONS
 3. CONTROLLER DATA
-4. CONTROLLER MODEL&VIEW MODE
+4. CONTROLLER VIEW MODE
 5. CONTROLLER OBJECT MODE
 6. RESPONSE ENTITY
 7. DIRECT RESPONSE MANIPULATION
@@ -12,7 +12,8 @@ SPRING BOOT CONTROLLER
 9. IMPLEMENT REST CRUD API
 
 =>SPRING BOOT
-=>SPRING BOOT REQUESTSs
+=>SPRING BOOT REQUESTS
+=>SPRING MODELANDVIEW
 =>SPRING BOOT VALIDATION
 =>SPRING BOOT CONTROLLER TESTS
 =>SPRING THYMELEAF
@@ -102,7 +103,7 @@ With a controller, the next annotations can be used:
 ||@PathVariable|before a method argument|marks that the argument is found in endpoint path||
 ||@RequestParam|before a method argument|marks that the argument will be used for receiving the given parameter from the request query||
 ||@RequestBody|before method argument|marks that the argument is in the request body||
-||@ModelAttribute|before a method argument|marks that the argument is passed by an incoming model of a template (model&view mode)||
+||@ModelAttribute|before a method argument|marks that the argument is passed by an incoming model of a template (view and object/model&view modes)||
 ||@NonNull|before method argument|marks that for that argument only non-null parameter is acceptable (modifies method signature, in case of null argument HTTP4xx code is sent back)||
 ||@ResponseStatus|before a method|defines a custom HTTP code which will be added to the answer from the endpoint when its method ends successfully||
 
@@ -190,41 +191,45 @@ In controller methods, there can be the next kind of incoming and outgoing data:
     c. outgoing content type definition (how the JSON data is serialized when sent to the frontend; object mode)
     d. request body parameters (marked in method annotation, received in argument list)
     e. query parameters (in argument list)
-    f. model attributes (submitted from the form of a template, sent by browser; model&view mode)
-    g. model (sent to a template; model&view mode)
-    h. template name (model&view mode)
-    i. sent data (both modes)
-    j. HTTP response code (HTTP status code, both modes)
+    f. model attributes (submitted from the form of a template, sent by browser; view and object/model&view modes)
+    g. Model (sent to a template; view mode)
+    g. ModelAndView (sent to a template; object/model&view mode)
+    h. template name (view and model&view modes)
+    i. sent data (all modes)
+    j. HTTP response code (HTTP status code, all modes)
 
 The Spring Boot automatically handles the HTTP response code (e.g. 200, 404, 500) sent to the frontend, it is not needed to send these explicitly.
-Of course, can be overwritten manually by using ResponseEntity (see later).
+Of course, can be overwritten manually by using ResponseEntity (see later) or ModelAndView (see the SPRING MODELANDVIEW page).
 
 When an endpoint finishes without fail (exception), the HTTP200 (OK) code is added to the response.
 This code can be overwritten via using the @ResponseStatus(HttpStatus status) method-level annotation.
 In case the annotation is used in @ResponseStatus(HttpStatus status, reason = reasonString) formula, the successfully finished endpoint will return an HTML error page with the given reasonString which forces this method out of REST compatibility.
 
-In model&view mode, the return value of the controller method will be a String containing the web page or template (file) name.
+In view mode, the return value of the controller method will be a String containing the web page or template (file) name.
 In this version, the method signature must contain a Model argument which contains the data sent toward the frontend.
 Also, if the frontend sends data with the request, there must be an other argument marked with @ModelAttribute annotation which receives data.
 
 In object mode, the returned data will be JSON data, generated from serialized data of the returned object of the method, this would be sent to the frontend.
 In this version, there is no Model in the argument list.
-If the response contains only a literal or a wrapper object (not String which would mark model&view mode by itself), using the @ResponseBody annotation is optional.
+If the response contains only a literal or a wrapper object (not String which would mark view mode by default), using the @ResponseBody annotation is optional.
 If the response is a custom object (List, array, Map, any other custom class), the handling method must be marked with @ResponseBody annotation.
+The whole controller can be marked with @ResponseBody annotation on class-level. In this case no additional method-level marking is needed and all endpoints will be in object mode.
 
 For both techniques, in case the content type is not defined, uses standard coding.
 As for incoming requests in object mode, an endpoint can receive JSON data only in the defined (or default) format. For different content types, different endpoints must be created. In case no format is defined, the Spring Boot will use the best appropriate format.
 In older Spring versions, in controller, the method signature elements and the return type must be object types (wrapper types are included). Newer versions can accept literally every serializable type.
 
-=================================================================================
-4. CONTROLLER MODEL&VIEW MODE
-=================================================================================
-In order to use model&view mode on a controller method, the controller class must not be marked with @RestController annotation, nor the correspondent method marked with @ResponseBody annotation.
+The model&view mode is a sub-version of object mode. The returned data will be JSON, however the returned object of the method will be ModelAndView.
+The method signature must contain the Model argument.
+Any kind of data can be added to the return object, plus HTTP error code and the view name.
+Otherwise, the technique follows the techniques of object mode.
 
+=================================================================================
+4. CONTROLLER VIEW MODE
+=================================================================================
+In order to use view mode on a controller method, the controller class must not be marked with @RestController annotation, nor the correspondent method marked with @ResponseBody annotation.
 The return value must be a String which holds the name of the web page or the template.
-
 In the method signature, an optional argument marked with @ModelAttribute annotation shows an object which was sent by the frontend; in case there is no such object, this argument is not needed; in case of more objects, more arguments can be used, all marked with the annotation.
-
 In the method signature, a Model object should be placed as argument, in case data should be sent towards the frontend.
 The Model object contains data prepared to be sent. Any kind of object can be added to the Model.
 
@@ -234,11 +239,11 @@ See SPRING BOOT REQUESTS page for code examples.
 5. CONTROLLER OBJECT MODE
 =================================================================================
 In order to use object mode on a controller method, the controller class must be marked with @RestController annotation, or the correspondent method marked with @ResponseBody annotation.
-
 The return value can be any type or a Map with String keys and values where keys are HTML attribute names and values are their respective values (converted to String).
-
 In the method signature, every incoming object (sent by frontend) must be marked with @RequestBody annotation.
 Alternatively, all incoming objects can be rendered into one Map of String keys and values, also marked with @RequestBody annotation.
+
+The object/model&view mode follows object-mode rules with the exception that the returned object is ModelAndView and can be filled with many objects, view name and HTTP response code.
 
 See SPRING BOOT REQUESTS page for code examples.
 

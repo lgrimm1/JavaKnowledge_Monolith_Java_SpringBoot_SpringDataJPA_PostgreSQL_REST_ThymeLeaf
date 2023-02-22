@@ -2,16 +2,17 @@
 SPRING BOOT
 =================================================================================
 The Spring is a framework family for web applications.
-The Spring Boot is part of the Spring frameworks family in which the Boot provides a universal framework for Spring frameworks.
-That said, it is a bridge and common interface of and to Spring Core, Spring Web, Spring Data and Spring MVC frameworks, extended with Spring test environment.
+The Spring Boot is part of the Spring frameworks family in which the Boot provides a universal bridge over Spring frameworks.
+That said, it is a common interface of and to Spring Core, Spring Web, Spring Data and Spring MVC frameworks, extended with Spring test environment.
 By using it, setting up the backend part becomes a much simplified process.
-The Spring Boot framework hides the complexity of the web part of an application so the developer can concentrate on the tasks themselves.
+The Spring Boot framework hides the complexity of the web part of an application so the developer can concentrate mainly on the business logic.
 This framework adds another layer between the Communication and the frontend, managed by the frontend and the backend together as the backend fills it with data, the frontend reads data and fills it with other data, then the backend reads those data.
 
 Following best practices, a thin Communication layer manifested as pure Controller class(es) (see later) provides a web API to the backend.
 Spring Boot supports web API and REST API.
 
-In case the Spring Boot is used alongside with the Spring ThymeLeaf the templates can be automated further on the template side. That said, the application can not be RESTful since views will be sent to the frontend (templates).
+In case Spring Boot is used alongside with template managers (e.g. Spring ThymeLeaf), creation of whole web application becomes possible (frontend via templates, backend web development).
+Optionally, further boiler-coding time can be spared when instead of manual checking of database elements (entities) in the Business layer, Spring Validation is utilized.
 
 1. SETTING UP
 2. CREATING CLASSES AND DIRECTORIES
@@ -85,8 +86,8 @@ Then inside, add the next (it is possible to define version tag with all depende
 On database side, several database systems can be added.
 In case the Storage layer is a file-level or a List-based in-memory solution, no database dependency should be added.
 In case of not in-memory nor file-level database solution, installing and-or creating access to the specific database is necessary.
-The Spring Data JPA provides the interface towards databases. Add it only when database dependency is added as well.
 
+The Spring Data JPA provides the interface towards databases. Add it only when database dependency is added as well.
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
@@ -209,13 +210,13 @@ common package
 web application class
 
 Under the src/main/resources folder, the next folders should be created:
-    a. static (contains the frontend)
-    b. templates (contains pre-set of pages handled with backend web development)
+    a. static (contains the static part of frontend)
+    b. templates (contains template (pre-set page) part of frontend, handled with backend web development)
 
 Spring Boot uses automatism when the web application starts (invoking Main class):
-    a. Spring Boot finds all controller classes marked with annotation (see later) and invokes their constructors
-    b. in case these classes contain injected class dependencies, for those classes their constructors will be invoked
-    c. then Spring Boot finds service and storage objects by annotations of their classes (see later)
+    a. Spring Boot finds all controller classes marked with proper annotation and invokes their constructors
+    b. Spring Boot follows the class dependency injection chain from the controllers downwards until the last components (service, repository, entity classes and other beans) are injected
+    c. finally Spring Boot injects the controller class dependencies into the main application class and starts the application
 
 =================================================================================
 3. CLASS DEPENDENCIES IN SPRING

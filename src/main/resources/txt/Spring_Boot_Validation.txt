@@ -16,6 +16,7 @@ SPRING BOOT VALIDATION
 =>SPRING BOOT ENTITY
 =>SPRING BOOT CONTROLLER
 =>SPRING BOOT CONTROLLER TESTS
+=>SPRING MODELANDVIEW
 
 =================================================================================
 1. GENERALLY
@@ -33,7 +34,7 @@ In case the same class should have more than one validation rule set, either cre
 Failed validation will raise a certain exception with an exception message declared with the condition for which the validation failed.
 Coming from Spring, the exception will instruct the Communication layer that instead of success, a HTTP error code and that message will be sent towards the frontend.
 In order to have that message included into the HTTP response, two conditions must be met:
-    a. the return object (or primitive) type of the corresponding controller method must be String or ResponseEntity<T> (object and model&view modes)
+    a. the return object (or primitive) type of the corresponding controller method must be String or ResponseEntity<T> or ModelAndView (object, object/model&view and view modes)
     b. the custom exception message output must be allowed in the application.properties config file
 The config file should have this line:
     server.error.include-message=always
@@ -134,6 +135,7 @@ public class EntityClass {
 
     //not-validated fields, constructors, getters, setters etc.
 }
+END OF EXAMPLE
 
 =================================================================================
 4. METHOD-LEVEL VALIDATION
@@ -163,6 +165,7 @@ public class ContainerEntityClass {
 
     //other fields
 }
+END OF EXAMPLE
 
 =================================================================================
 5. CLASS-LEVEL VALIDATION
@@ -178,6 +181,7 @@ import org.springframework.validation.annotation.*;
 
 @Validated
 public class ClassName {...}
+END OF EXAMPLE
 
 =================================================================================
 6. PARTIAL VALIDATION
@@ -204,7 +208,7 @@ In case the validation fails, MethodArgumentNotValidException is raised and HTTP
 In case validation fails (wrong data) the MethodArgumentNotValidException or IllegalStateException exception is raised. These exceptions can be handled optionally for getting different error messages on backend side or leave the handler and the backend will send a general HTTP400 error (HttpStatus.BAD_REQUEST) or HTTP500 (HttpStatus.INTERNAL_SERVER_ERROR) towards the caller. The message part will contain the message set via annotation.
 Via using handler method, it becomes possible to send all raised validation errors to caller in a response body (in a Map object).
 
-This technique is needed when the response object is not a String nor a ResponseEntity.
+This technique is needed when the response object is not a String nor a ResponseEntity nor ModelAndView.
 
 See below.
 
@@ -226,6 +230,7 @@ public class EntityClass {
     //other validated fields
     //not-validated fields, constructors, getters, setters etc.
 }
+END OF EXAMPLE
 
 EXAMPLE FOR CONTROLLER DECLARATION (VALIDATION):
 package PackageName;
@@ -248,6 +253,7 @@ public class Controller {
 		this.service = service;
 	}
 }
+END OF EXAMPLE
 
 EXAMPLE FOR CONTROLLER METHOD (VALIDATION, OBJECT MODE, RESPONSE ENTITY):
 @PutMapping("/new")
@@ -255,8 +261,9 @@ public ResponseEntity<String> controllerMethodName(@RequestBody EntityClassName 
     //calling service method
     return ResponseEntity.ok("Successful.");
 }
+END OF EXAMPLE
 
-EXAMPLE FOR CONTROLLER METHOD (VALIDATION, MODEL&VIEW MODE, BINDING RESULT):
+EXAMPLE FOR CONTROLLER METHOD (VALIDATION, VIEW MODE, BINDING RESULT):
 @PutMapping("/new")
 public String controllerMethodName(@RequestBody @Valid EntityClassName entity, BindingResult bindingResult, Model model) {
     if (bindingResult.hasErrors()) {
@@ -266,6 +273,7 @@ public String controllerMethodName(@RequestBody @Valid EntityClassName entity, B
 	model.addAttribute("entity", entity);
     return successTemplateName;
 }
+END OF EXAMPLE
 
 EXAMPLE FOR EXCEPTION HANDLER CONTROLLER METHOD (METHOD-LEVEL VALIDATION, HTTP400):
 @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -279,6 +287,7 @@ public Map<String, String> handleValidationExceptions(MethodArgumentNotValidExce
     });
     return errors;
 }
+END OF EXAMPLE
 
 EXAMPLE FOR EXCEPTION HANDLER CONTROLLER METHOD (CLASS-LEVEL VALIDATION, HTTP500):
 @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -292,6 +301,7 @@ public Map<String, String> handleValidationExceptions(IllegalStateException ex) 
     });
     return errors;
 }
+END OF EXAMPLE
 
 EXAMPLE FOR MOCKED CONTROLLER TEST METHOD (VALIDATION PASSES):
 @Test
@@ -306,6 +316,7 @@ public void whenValidEntity_thenCorrectResponse() throws Exception {
             .andExpect(MockMvcResultMatchers.content()
                     .contentType(textPlainUtf8));
 }
+END OF EXAMPLE
 
 EXAMPLE FOR MOCKED CONTROLLER TEST METHOD (VALIDATION FAILS):
 @Test
@@ -320,6 +331,7 @@ public void whenInvalidEntity_thenCorrectResponse() throws Exception {
             .andExpect(MockMvcResultMatchers.content()
                     .contentType(MediaType.APPLICATION_JSON_UTF8));
 }
+END OF EXAMPLE
 
 =================================================================================
 9. CUSTOM VALIDATION ANNOTATION
@@ -372,6 +384,7 @@ public class PhoneValidator implements ConstraintValidator<Phone, String> {
         }
 	}
 }
+END OF EXAMPLE
 
 EXAMPLE FOR DECLARING CUSTOM VALIDITY ANNOTATION (@PHONE):
 package packageName;
@@ -394,6 +407,7 @@ public @interface Phone {
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }
+END OF EXAMPLE
 
 EXAMPLE FOR DECLARATION OF ENTITY (CUSTOM FIELD VALIDATION):
 package PackageName;
@@ -411,3 +425,4 @@ public class EntityClass {
     //other validated fields
     //not-validated fields, constructors, getters, setters etc.
 }
+END OF EXAMPLE
