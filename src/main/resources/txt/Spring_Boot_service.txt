@@ -11,7 +11,10 @@ EXAMPLE FOR A SERVICE CLASS (PURE @AUTOWIRED):
 package PackageName;
 
 import org.springframework.beans.factory.annotation.*;
+import org.springframework.lang.*;
 import org.springframework.stereotype.*;
+import org.springframework.ui.*;
+import org.springframework.web.servlet.*;
 
 @Service
 public class ServiceClassName {
@@ -29,7 +32,11 @@ public class ServiceClassName {
 EXAMPLE FOR A SERVICE CLASS (@AUTOWIRED WITH CLASS DEPENDENCY INJECTION):
 package PackageName;
 
+import org.springframework.beans.factory.annotation.*;
+import org.springframework.lang.*;
 import org.springframework.stereotype.*;
+import org.springframework.ui.*;
+import org.springframework.web.servlet.*;
 
 @Service
 public class ServiceClassName {

@@ -122,6 +122,12 @@ That said, examining the ModelAndView object in service class for the stored dat
 
 EXAMPLE FOR SERVICE CLASS TEST CLASS (NOT INDEPENDENT UNIT TEST):
 import org.junit.jupiter.api.*;
+import org.springframework.ui.*;
+import org.springframework.web.servlet.*;
+
+import java.util.*;
+
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 
 class ServiceTest {
 
@@ -145,7 +151,13 @@ EXAMPLE FOR SERVICE CLASS TEST CLASS (MOCKING, INDEPENDENT UNIT TEST, OBJECT MOD
 import org.junit.jupiter.api.*;
 import org.mockito.Mockito;
 import org.mockito.*;
+import org.springframework.ui.*;
+import org.springframework.web.servlet.*;
+
+import java.util.*;
+
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 
 class ServiceTest {
 
@@ -177,7 +189,13 @@ EXAMPLE FOR SERVICE CLASS TEST CLASS (MOCKING, INDEPENDENT UNIT TEST, OBJECT/MOD
 import org.junit.jupiter.api.*;
 import org.mockito.Mockito;
 import org.mockito.*;
+import org.springframework.ui.*;
+import org.springframework.web.servlet.*;
+
+import java.util.*;
+
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 
 class ServiceTest {
 
