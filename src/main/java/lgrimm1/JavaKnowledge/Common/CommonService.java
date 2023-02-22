@@ -5,6 +5,7 @@ import lgrimm1.JavaKnowledge.Process.*;
 import lgrimm1.JavaKnowledge.Title.*;
 import lgrimm1.JavaKnowledge.Txt.*;
 import org.springframework.beans.factory.annotation.*;
+import org.springframework.lang.*;
 import org.springframework.stereotype.*;
 import org.springframework.ui.*;
 import org.springframework.web.servlet.*;
@@ -46,7 +47,7 @@ public class CommonService {
 		this.htmlGenerators = htmlGenerators;
 	}
 
-	public ModelAndView getRoot(ModelAndView modelAndView) {
+	public ModelAndView getRoot(@NonNull ModelAndView modelAndView) {
 		modelAndView.addObject("search_text", "");
 		return modelAndView;
 	}
@@ -57,7 +58,7 @@ public class CommonService {
 	 * The search trims the given text and ignores case.
 	 * In case there is no search text given, returns all titles.
 	 */
-	public ModelAndView searchPages(String searchText, ModelAndView modelAndView) {
+	public ModelAndView searchPages(String searchText, @NonNull ModelAndView modelAndView) {
 		if (searchText == null || searchText.isBlank()) {
 			modelAndView.addObject("titles", processRecords.getAllTitles(titleRepository));
 		}
@@ -73,70 +74,78 @@ public class CommonService {
 		return modelAndView;
 	}
 
-	public void getPage(List<String> titles, Model model) {
+	public ModelAndView getPage(List<String> titles, @NonNull ModelAndView modelAndView) {
 		//TODO open one or more static pages
+		return modelAndView;
 	}
 
-	public void managePages(Model model) {
-		model.addAttribute("titles", processRecords.getAllTitles(titleRepository));
-		model.addAttribute("files", new ArrayList<File>());
-		model.addAttribute("confirm", false);
-		model.addAttribute("message", "");
+	public ModelAndView managePages(@NonNull ModelAndView modelAndView) {
+		modelAndView.addObject("titles", processRecords.getAllTitles(titleRepository));
+		modelAndView.addObject("files", new ArrayList<File>());
+		modelAndView.addObject("confirm", false);
+		modelAndView.addObject("message", "");
+		return modelAndView;
 	}
 
-	public void createSourcePage(Model model) {
-		model.addAttribute("title", "");
-		model.addAttribute("file_name", "");
-		model.addAttribute("content", new ArrayList<String>());
-		model.addAttribute("edit_existing_page", false);
-		model.addAttribute("message", "");
+	public ModelAndView createSourcePage(@NonNull ModelAndView modelAndView) {
+		modelAndView.addObject("title", "");
+		modelAndView.addObject("file_name", "");
+		modelAndView.addObject("content", new ArrayList<String>());
+		modelAndView.addObject("edit_existing_page", false);
+		modelAndView.addObject("message", "");
+		return modelAndView;
 	}
 
-	public void editSourcePage(List<String> titles, Model model) {
+	public ModelAndView editSourcePage(List<String> titles, @NonNull ModelAndView modelAndView) {
 		if (titles == null || titles.size() != 1 || titles.get(0) == null || titles.get(0).isBlank()) {
-			model.addAttribute("titles", processRecords.getAllTitles(titleRepository));
-			model.addAttribute("files", new ArrayList<File>());
-			model.addAttribute("confirm", false);
-			model.addAttribute("message", "Please select exactly one title for editing.");
+			modelAndView.addObject("titles", processRecords.getAllTitles(titleRepository));
+			modelAndView.addObject("files", new ArrayList<File>());
+			modelAndView.addObject("confirm", false);
+			modelAndView.addObject("message", "Please select exactly one title for editing.");
+			modelAndView.setViewName("management");
 		}
 		else {
 			Optional<TitleEntity> optionalTitleEntity = titleRepository.findByTitle(titles.get(0));
 			if (optionalTitleEntity.isEmpty()) {
-				model.addAttribute("titles", processRecords.getAllTitles(titleRepository));
-				model.addAttribute("files", new ArrayList<File>());
-				model.addAttribute("confirm", false);
-				model.addAttribute("message", "Please select exactly one title for editing.");
+				modelAndView.addObject("titles", processRecords.getAllTitles(titleRepository));
+				modelAndView.addObject("files", new ArrayList<File>());
+				modelAndView.addObject("confirm", false);
+				modelAndView.addObject("message", "Please select exactly one title for editing.");
+				modelAndView.setViewName("management");
 			}
 			else {
 				long txtId = optionalTitleEntity.get().getTxtId();
 				Optional<TxtEntity> optionalTxtEntity = txtRepository.findById(txtId);
 				if (optionalTxtEntity.isEmpty()) {
-					model.addAttribute("titles", processRecords.getAllTitles(titleRepository));
-					model.addAttribute("files", new ArrayList<File>());
-					model.addAttribute("confirm", false);
-					model.addAttribute("message", "Please select exactly one title for editing.");
+					modelAndView.addObject("titles", processRecords.getAllTitles(titleRepository));
+					modelAndView.addObject("files", new ArrayList<File>());
+					modelAndView.addObject("confirm", false);
+					modelAndView.addObject("message", "Please select exactly one title for editing.");
+					modelAndView.setViewName("management");
 				}
 				else {
-					model.addAttribute("title", optionalTitleEntity.get().getTitle());
-					model.addAttribute("file_name", optionalTitleEntity.get().getFilename());
-					model.addAttribute("content", optionalTxtEntity.get().getContent());
-					model.addAttribute("edit_existing_page", true);
-					model.addAttribute("message", "");
+					modelAndView.addObject("title", optionalTitleEntity.get().getTitle());
+					modelAndView.addObject("file_name", optionalTitleEntity.get().getFilename());
+					modelAndView.addObject("content", optionalTxtEntity.get().getContent());
+					modelAndView.addObject("edit_existing_page", true);
+					modelAndView.addObject("message", "");
 				}
 			}
 		}
+		return modelAndView;
 	}
 
-	public void deletePages(List<String> titles, Boolean confirm, Model model) {
+	public ModelAndView deletePages(List<String> titles, Boolean confirm, ModelAndView modelAndView) {
+		//TODO continue with tests from here
 		if (titles == null || titles.size() == 0 || !confirm) {
-			model.addAttribute("titles", processRecords.getAllTitles(titleRepository));
-			model.addAttribute("files", new ArrayList<File>());
-			model.addAttribute("confirm", false);
+			modelAndView.addObject("titles", processRecords.getAllTitles(titleRepository));
+			modelAndView.addObject("files", new ArrayList<File>());
+			modelAndView.addObject("confirm", false);
 			if (!confirm) {
-				model.addAttribute("message", "Please confirm deletion.");
+				modelAndView.addObject("message", "Please confirm deletion.");
 			}
 			else {
-				model.addAttribute("message", "Please select titles you wish to delete.");
+				modelAndView.addObject("message", "Please select titles you wish to delete.");
 			}
 		}
 		else {
@@ -144,18 +153,18 @@ public class CommonService {
 					.filter(title -> title != null && !title.isBlank())
 					.toList();
 			if (titles.isEmpty()) {
-				model.addAttribute("titles", processRecords.getAllTitles(titleRepository));
-				model.addAttribute("files", new ArrayList<File>());
-				model.addAttribute("confirm", false);
-				model.addAttribute("message", "Please select existing titles you wish to delete.");
+				modelAndView.addObject("titles", processRecords.getAllTitles(titleRepository));
+				modelAndView.addObject("files", new ArrayList<File>());
+				modelAndView.addObject("confirm", false);
+				modelAndView.addObject("message", "Please select existing titles you wish to delete.");
 			}
 			else {
 				long numberOfGivenTitles = titles.size();
 				titles = processRecords.getAllTitles(titleRepository);
-				model.addAttribute("titles", titles);
-				model.addAttribute("files", new ArrayList<File>());
-				model.addAttribute("confirm", false);
-				model.addAttribute(
+				modelAndView.addObject("titles", titles);
+				modelAndView.addObject("files", new ArrayList<File>());
+				modelAndView.addObject("confirm", false);
+				modelAndView.addObject(
 						"message",
 						processRecords.deleteByTitles(
 								titles,
@@ -165,6 +174,7 @@ public class CommonService {
 								" of " + numberOfGivenTitles + " titles were deleted.");
 			}
 		}
+		return modelAndView;
 	}
 
 	public void publishPages(Model model) {

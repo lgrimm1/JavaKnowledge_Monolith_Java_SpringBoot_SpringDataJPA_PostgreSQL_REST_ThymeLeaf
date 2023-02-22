@@ -30,33 +30,36 @@ public class CommonController {
 	}
 
 	@PostMapping("/view")
-	public String getPage(@ModelAttribute("titles") List<String> titles, Model model) {
-		commonService.getPage(titles, model);
-		return "static";
+	public ModelAndView getPage(@ModelAttribute("titles") List<String> titles, Model model) {
+		return commonService.getPage(titles, new ModelAndView("static", model.asMap()));
 	}
 
 	@PostMapping("management")
-	public String managePages(@ModelAttribute("search_text") String searchText, Model model) {
-		commonService.managePages(model);
-		return "management";
+	public ModelAndView managePages(@ModelAttribute("search_text") String searchText, Model model) {
+		return commonService.managePages(new ModelAndView("management", model.asMap()));
 	}
 
 	@PostMapping("/source/new")
-	public String createSourcePage(@ModelAttribute("titles") List<String> titles, @ModelAttribute("files") List<File> files, @ModelAttribute("confirm") Boolean confirm, @ModelAttribute("message") String message, Model model) {
-		commonService.createSourcePage(model);
-		return "source";
+	public ModelAndView createSourcePage(@ModelAttribute("titles") List<String> titles,
+										 @ModelAttribute("files") List<File> files,
+										 @ModelAttribute("confirm") Boolean confirm,
+										 @ModelAttribute("message") String message,
+										 Model model) {
+		return commonService.createSourcePage(new ModelAndView("source", model.asMap()));
 	}
 
 	@PostMapping("/source/edit")
-	public String editSourcePage(@ModelAttribute("titles") List<String> titles, @ModelAttribute("files") List<File> files, @ModelAttribute("confirm") Boolean confirm, @ModelAttribute("message") String message, Model model) {
-		commonService.editSourcePage(titles, model);
-		return model.containsAttribute("titles") ? "management" : "source";
+	public ModelAndView editSourcePage(@ModelAttribute("titles") List<String> titles,
+								 @ModelAttribute("files") List<File> files,
+								 @ModelAttribute("confirm") Boolean confirm,
+								 @ModelAttribute("message") String message,
+								 Model model) {
+		return commonService.editSourcePage(titles, new ModelAndView("source", model.asMap()));
 	}
 
 	@PostMapping("/delete")
-	public String deleteSourcePages(@ModelAttribute("titles") List<String> titles, @ModelAttribute("files") List<File> files, @ModelAttribute("confirm") Boolean confirm, @ModelAttribute("message") String message, Model model) {
-		commonService.deletePages(titles, confirm, model);
-		return "management";
+	public ModelAndView deleteSourcePages(@ModelAttribute("titles") List<String> titles, @ModelAttribute("files") List<File> files, @ModelAttribute("confirm") Boolean confirm, @ModelAttribute("message") String message, Model model) {
+		return commonService.deletePages(titles, confirm, new ModelAndView("management", model.asMap()));
 	}
 
 	@PostMapping("/publish")
