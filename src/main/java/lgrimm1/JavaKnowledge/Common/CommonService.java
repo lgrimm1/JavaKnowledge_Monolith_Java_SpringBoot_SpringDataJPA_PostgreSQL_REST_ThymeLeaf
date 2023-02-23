@@ -110,7 +110,8 @@ public class CommonService {
 				modelAndView.addObject("titles", processRecords.getAllTitles(titleRepository));
 				modelAndView.addObject("files", new ArrayList<File>());
 				modelAndView.addObject("confirm", false);
-				modelAndView.addObject("message", "Please select exactly one title for editing.");
+				modelAndView.addObject("message",
+						"Please select exactly one title for editing.");
 				modelAndView.setViewName("management");
 			}
 			else {
@@ -120,7 +121,8 @@ public class CommonService {
 					modelAndView.addObject("titles", processRecords.getAllTitles(titleRepository));
 					modelAndView.addObject("files", new ArrayList<File>());
 					modelAndView.addObject("confirm", false);
-					modelAndView.addObject("message", "Please select exactly one title for editing.");
+					modelAndView.addObject("message",
+							"Please select exactly one title for editing.");
 					modelAndView.setViewName("management");
 				}
 				else {
@@ -136,7 +138,6 @@ public class CommonService {
 	}
 
 	public ModelAndView deletePages(List<String> titles, Boolean confirm, ModelAndView modelAndView) {
-		//TODO continue with tests from here
 		if (titles == null || titles.size() == 0 || !confirm) {
 			modelAndView.addObject("titles", processRecords.getAllTitles(titleRepository));
 			modelAndView.addObject("files", new ArrayList<File>());
@@ -156,14 +157,11 @@ public class CommonService {
 				modelAndView.addObject("titles", processRecords.getAllTitles(titleRepository));
 				modelAndView.addObject("files", new ArrayList<File>());
 				modelAndView.addObject("confirm", false);
-				modelAndView.addObject("message", "Please select existing titles you wish to delete.");
+				modelAndView.addObject("message",
+						"Please select existing titles you wish to delete.");
 			}
 			else {
 				long numberOfGivenTitles = titles.size();
-				titles = processRecords.getAllTitles(titleRepository);
-				modelAndView.addObject("titles", titles);
-				modelAndView.addObject("files", new ArrayList<File>());
-				modelAndView.addObject("confirm", false);
 				modelAndView.addObject(
 						"message",
 						processRecords.deleteByTitles(
@@ -172,20 +170,30 @@ public class CommonService {
 								txtRepository,
 								htmlRepository) +
 								" of " + numberOfGivenTitles + " titles were deleted.");
+				modelAndView.addObject("titles", processRecords.getAllTitles(titleRepository));
+				modelAndView.addObject("files", new ArrayList<File>());
+				modelAndView.addObject("confirm", false);
 			}
 		}
 		return modelAndView;
 	}
 
-	public void publishPages(Model model) {
-		model.addAttribute("titles", processRecords.getAllTitles(titleRepository));
-		model.addAttribute("files", new ArrayList<File>());
-		model.addAttribute("confirm", false);
+	public ModelAndView publishPages(ModelAndView modelAndView) {
+		modelAndView.addObject("titles", processRecords.getAllTitles(titleRepository));
+		modelAndView.addObject("files", new ArrayList<File>());
+		modelAndView.addObject("confirm", false);
 		long[] publishResults = processRecords.publishHtml(titleRepository, htmlRepository, fileOperations);
-		model.addAttribute("message",  publishResults[0] + " HTML files were pre-deleted, " + publishResults[1] + " were published.");
+		modelAndView.addObject("message",
+				publishResults[0] + " HTML files were pre-deleted, " + publishResults[1] + " were published.");
+		return modelAndView;
 	}
 
-	public void addFormula(String formulaName, String title, String fileName, List<String> content, Boolean editExistingPage, Model model) {
+	public ModelAndView addFormula(String formulaName,
+								   String title,
+								   String fileName,
+								   List<String> content,
+								   Boolean editExistingPage,
+								   ModelAndView modelAndView) {
 		if (title == null || title.isBlank()) {
 			title = "";
 		}
@@ -200,26 +208,31 @@ public class CommonService {
 		}
 		String formula = formulas.getFormula(formulaName);
 		if (formula.isEmpty()) {
-			model.addAttribute("message", "Wrong formula name was asked.");
+			modelAndView.addObject("message", "Wrong formula name was asked.");
 		}
 		else {
-			content.add(formula);
-			model.addAttribute("message", "Formula was appended.");
+			content.addAll(List.of(formula.split("\n")));
+			modelAndView.addObject("message", "Formula was appended.");
 		}
-		model.addAttribute("title", title);
-		model.addAttribute("file_name", fileName);
-		model.addAttribute("content", content);
-		model.addAttribute("edit_existing_page", editExistingPage);
+		modelAndView.addObject("title", title);
+		modelAndView.addObject("file_name", fileName);
+		modelAndView.addObject("content", content);
+		modelAndView.addObject("edit_existing_page", editExistingPage);
+		return modelAndView;
 	}
 
-	public void savePage(String title, String fileName, List<String> content, Boolean editExistingPage, Model model) {
+	public ModelAndView savePage(String title,
+								 String fileName,
+								 List<String> content,
+								 Boolean editExistingPage,
+								 ModelAndView modelAndView) {
 		if (title == null || title.isBlank()) {
 			title = "";
-			model.addAttribute("message", "Please define a title.");
+			modelAndView.addObject("message", "Please define a title.");
 		}
 		else if (fileName == null || fileName.isBlank()) {
 			fileName = "";
-			model.addAttribute("message", "Please define a file name.");
+			modelAndView.addObject("message", "Please define a file name.");
 		}
 		else {
 			if (content == null) {
@@ -231,7 +244,7 @@ public class CommonService {
 			Optional<TitleEntity> optionalTitleEntity = titleRepository.findByTitle(title);
 			if (editExistingPage) {
 				if (optionalTitleEntity.isEmpty()) {
-					model.addAttribute("message", "There is no existing page with this title.");
+					modelAndView.addObject("message", "There is no existing page with this title.");
 				}
 				else {
 					txtRepository.deleteById(optionalTitleEntity.get().getTxtId());
@@ -240,25 +253,27 @@ public class CommonService {
 					HtmlEntity htmlEntity = htmlRepository.save(new HtmlEntity(new ArrayList<>()));
 					TxtEntity txtEntity = txtRepository.save(new TxtEntity(content));
 					titleRepository.save(new TitleEntity(title, fileName, txtEntity.getId(), htmlEntity.getId()));
-					model.addAttribute("message", "Source page has been overwritten.");
+					modelAndView.addObject("message", "Source page has been overwritten.");
 				}
 			}
 			else {
 				if (optionalTitleEntity.isPresent()) {
-					model.addAttribute("message", "There is an existing page with this title.");
+					modelAndView.addObject("message", "There is an existing page with this title.");
 				}
 				else {
 					HtmlEntity htmlEntity = htmlRepository.save(new HtmlEntity(new ArrayList<>()));
 					TxtEntity txtEntity = txtRepository.save(new TxtEntity(content));
 					titleRepository.save(new TitleEntity(title, fileName, txtEntity.getId(), htmlEntity.getId()));
-					model.addAttribute("message", "Source page has been saved.");
+					editExistingPage = true;
+					modelAndView.addObject("message", "Source page has been saved.");
 				}
 			}
 		}
-		model.addAttribute("title", title);
-		model.addAttribute("file_name", fileName);
-		model.addAttribute("content", content);
-		model.addAttribute("edit_existing_page", editExistingPage);
+		modelAndView.addObject("title", title);
+		modelAndView.addObject("file_name", fileName);
+		modelAndView.addObject("content", content);
+		modelAndView.addObject("edit_existing_page", editExistingPage);
+		return modelAndView;
 	}
 
 	public void importTxt(List<File> files, Boolean confirm, Model model) {
@@ -266,15 +281,24 @@ public class CommonService {
 			model.addAttribute("titles", processRecords.getAllTitles(titleRepository));
 			model.addAttribute("files", new ArrayList<File>());
 			model.addAttribute("confirm", false);
-			model.addAttribute("message", "Please upload minimum one file and confirm overwriting.");
+			model.addAttribute("message",
+					"Please upload minimum one file and confirm overwriting.");
 		}
 		else {
-			List<File> notImportedFiles = processRecords.importTxtFiles(files, titleRepository, txtRepository, htmlRepository, fileOperations, formulas, extractors);
+			List<File> notImportedFiles = processRecords.importTxtFiles(
+					files,
+					titleRepository,
+					txtRepository,
+					htmlRepository,
+					fileOperations,
+					formulas,
+					extractors);
 			List<String> titles = processRecords.getAllTitles(titleRepository);
 			model.addAttribute("titles", titles);
 			model.addAttribute("files", new ArrayList<File>());
 			model.addAttribute("confirm", false);
-			model.addAttribute("message", notImportedFiles.size() + " of " + files.size() + " files were not imported.");
+			model.addAttribute("message",
+					notImportedFiles.size() + " of " + files.size() + " files were not imported.");
 		}
 	}
 
@@ -286,11 +310,19 @@ public class CommonService {
 			model.addAttribute("message", "Please confirm generating pages.");
 		}
 		else {
-			long[] messageData = processRecords.generate(titleRepository, txtRepository, htmlRepository, formulas, processPage, extractors, htmlGenerators);
+			long[] messageData = processRecords.generate(
+					titleRepository,
+					txtRepository,
+					htmlRepository,
+					formulas,
+					processPage,
+					extractors,
+					htmlGenerators);
 			model.addAttribute("titles", processRecords.getAllTitles(titleRepository));
 			model.addAttribute("files", new ArrayList<File>());
 			model.addAttribute("confirm", false);
-			model.addAttribute("message", messageData[0] + " pages in " + messageData[1] + " seconds has been processed.");
+			model.addAttribute("message",
+					messageData[0] + " pages in " + messageData[1] + " seconds has been processed.");
 		}
 	}
 }

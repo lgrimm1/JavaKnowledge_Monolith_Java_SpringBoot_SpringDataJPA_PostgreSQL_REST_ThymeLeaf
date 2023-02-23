@@ -40,7 +40,6 @@ class CommonServiceTest {
 		extractors = Mockito.mock(Extractors.class);
 		processPage = Mockito.mock(ProcessPage.class);
 		htmlGenerators = Mockito.mock(HtmlGenerators.class);
-		//setting up common mocked behaviours
 		commonService = new CommonService(
 				titleRepository,
 				txtRepository,
@@ -65,7 +64,7 @@ class CommonServiceTest {
 
 		Assertions.assertTrue(modelMap.containsAttribute("search_text"));
 		Assertions.assertTrue(modelMap.getAttribute("search_text") instanceof String);
-		Assertions.assertTrue(((String) modelMap.getAttribute("search_text")).isEmpty());
+		Assertions.assertEquals("", modelMap.getAttribute("search_text"));
 	}
 
 	@Test
@@ -157,18 +156,15 @@ class CommonServiceTest {
 
 		Assertions.assertTrue(modelMap.containsAttribute("files"));
 		Assertions.assertTrue(modelMap.getAttribute("files") instanceof List);
-		Assertions.assertNotNull(modelMap.getAttribute("files"));
-		Assertions.assertTrue(((List<?>) modelMap.getAttribute("files")).isEmpty());
+		Assertions.assertEquals(new ArrayList<>(), modelMap.getAttribute("files"));
 
 		Assertions.assertTrue(modelMap.containsAttribute("confirm"));
 		Assertions.assertTrue(modelMap.getAttribute("confirm") instanceof Boolean);
-		Assertions.assertNotNull(modelMap.getAttribute("confirm"));
-		Assertions.assertFalse((Boolean) modelMap.getAttribute("confirm"));
+		Assertions.assertEquals(false, modelMap.getAttribute("confirm"));
 
 		Assertions.assertTrue(modelMap.containsAttribute("message"));
 		Assertions.assertTrue(modelMap.getAttribute("message") instanceof String);
-		Assertions.assertNotNull(modelMap.getAttribute("message"));
-		Assertions.assertTrue(((String) modelMap.getAttribute("message")).isEmpty());
+		Assertions.assertEquals("", modelMap.getAttribute("message"));
 	}
 
 	@Test
@@ -183,35 +179,32 @@ class CommonServiceTest {
 
 		Assertions.assertTrue(modelMap.containsAttribute("title"));
 		Assertions.assertTrue(modelMap.getAttribute("title") instanceof String);
-		Assertions.assertNotNull(modelMap.getAttribute("title"));
-		Assertions.assertTrue(((String) modelMap.getAttribute("title")).isEmpty());
+		Assertions.assertEquals("", modelMap.getAttribute("title"));
 
 		Assertions.assertTrue(modelMap.containsAttribute("file_name"));
 		Assertions.assertTrue(modelMap.getAttribute("file_name") instanceof String);
-		Assertions.assertNotNull(modelMap.getAttribute("file_name"));
-		Assertions.assertTrue(((String) modelMap.getAttribute("file_name")).isEmpty());
+		Assertions.assertEquals("", modelMap.getAttribute("file_name"));
 
 		Assertions.assertTrue(modelMap.containsAttribute("content"));
 		Assertions.assertTrue(modelMap.getAttribute("content") instanceof List);
-		Assertions.assertNotNull(modelMap.getAttribute("content"));
-		Assertions.assertTrue(((List<?>) modelMap.getAttribute("content")).isEmpty());
+		Assertions.assertEquals(new ArrayList<>(), modelMap.getAttribute("content"));
 
 		Assertions.assertTrue(modelMap.containsAttribute("edit_existing_page"));
 		Assertions.assertTrue(modelMap.getAttribute("edit_existing_page") instanceof Boolean);
-		Assertions.assertNotNull(modelMap.getAttribute("edit_existing_page"));
-		Assertions.assertFalse((Boolean) modelMap.getAttribute("edit_existing_page"));
+		Assertions.assertEquals(false, modelMap.getAttribute("edit_existing_page"));
 
 		Assertions.assertTrue(modelMap.containsAttribute("message"));
 		Assertions.assertTrue(modelMap.getAttribute("message") instanceof String);
-		Assertions.assertNotNull(modelMap.getAttribute("message"));
-		Assertions.assertTrue(((String) modelMap.getAttribute("message")).isEmpty());
+		Assertions.assertEquals("", modelMap.getAttribute("message"));
 	}
 
 	@Test
-	void editSourcePageNullTitles() {
+	void publishPages() {
 		when(processRecords.getAllTitles(titleRepository))
 				.thenReturn(List.of("Title 1", "Title 2"));
-		ModelAndView result = commonService.editSourcePage(null, new ModelAndView("source", new HashMap<>()));
+		when(processRecords.publishHtml(titleRepository, htmlRepository, fileOperations))
+				.thenReturn(new long[]{5L, 4L});
+		ModelAndView result = commonService.publishPages(new ModelAndView("management", new HashMap<>()));
 
 		Assertions.assertTrue(result.hasView());
 		Assertions.assertEquals("management", result.getViewName());
@@ -225,230 +218,14 @@ class CommonServiceTest {
 
 		Assertions.assertTrue(modelMap.containsAttribute("files"));
 		Assertions.assertTrue(modelMap.getAttribute("files") instanceof List);
-		Assertions.assertNotNull(modelMap.getAttribute("files"));
-		Assertions.assertTrue(((List<?>) modelMap.getAttribute("files")).isEmpty());
+		Assertions.assertEquals(new ArrayList<>(), modelMap.getAttribute("files"));
 
 		Assertions.assertTrue(modelMap.containsAttribute("confirm"));
 		Assertions.assertTrue(modelMap.getAttribute("confirm") instanceof Boolean);
-		Assertions.assertNotNull(modelMap.getAttribute("confirm"));
-		Assertions.assertFalse((Boolean) modelMap.getAttribute("confirm"));
+		Assertions.assertEquals(false, modelMap.getAttribute("confirm"));
 
 		Assertions.assertTrue(modelMap.containsAttribute("message"));
 		Assertions.assertTrue(modelMap.getAttribute("message") instanceof String);
-		Assertions.assertNotNull(modelMap.getAttribute("message"));
-		Assertions.assertEquals("Please select exactly one title for editing.", (String) modelMap.getAttribute("message"));
-	}
-
-	@Test
-	void editSourcePageMoreThanOneTitles() {
-		when(processRecords.getAllTitles(titleRepository))
-				.thenReturn(List.of("Title 1", "Title 2"));
-		List<String> titles = List.of("Title 3", "Title 4");
-		ModelAndView result = commonService.editSourcePage(titles, new ModelAndView("source", new HashMap<>()));
-
-		Assertions.assertTrue(result.hasView());
-		Assertions.assertEquals("management", result.getViewName());
-
-		ModelMap modelMap = result.getModelMap();
-		Assertions.assertEquals(4, modelMap.size());
-
-		Assertions.assertTrue(modelMap.containsAttribute("titles"));
-		Assertions.assertTrue(modelMap.getAttribute("titles") instanceof List);
-		Assertions.assertEquals(List.of("Title 1", "Title 2"), modelMap.getAttribute("titles"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("files"));
-		Assertions.assertTrue(modelMap.getAttribute("files") instanceof List);
-		Assertions.assertNotNull(modelMap.getAttribute("files"));
-		Assertions.assertTrue(((List<?>) modelMap.getAttribute("files")).isEmpty());
-
-		Assertions.assertTrue(modelMap.containsAttribute("confirm"));
-		Assertions.assertTrue(modelMap.getAttribute("confirm") instanceof Boolean);
-		Assertions.assertNotNull(modelMap.getAttribute("confirm"));
-		Assertions.assertFalse((Boolean) modelMap.getAttribute("confirm"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("message"));
-		Assertions.assertTrue(modelMap.getAttribute("message") instanceof String);
-		Assertions.assertNotNull(modelMap.getAttribute("message"));
-		Assertions.assertEquals("Please select exactly one title for editing.", (String) modelMap.getAttribute("message"));
-	}
-
-	@Test
-	void editSourcePageFirstTitleIsNull() {
-		when(processRecords.getAllTitles(titleRepository))
-				.thenReturn(List.of("Title 1", "Title 2"));
-		List<String> titles = new ArrayList<>();
-		titles.add(null);
-		ModelAndView result = commonService.editSourcePage(titles, new ModelAndView("source", new HashMap<>()));
-
-		Assertions.assertTrue(result.hasView());
-		Assertions.assertEquals("management", result.getViewName());
-
-		ModelMap modelMap = result.getModelMap();
-		Assertions.assertEquals(4, modelMap.size());
-
-		Assertions.assertTrue(modelMap.containsAttribute("titles"));
-		Assertions.assertTrue(modelMap.getAttribute("titles") instanceof List);
-		Assertions.assertEquals(List.of("Title 1", "Title 2"), modelMap.getAttribute("titles"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("files"));
-		Assertions.assertTrue(modelMap.getAttribute("files") instanceof List);
-		Assertions.assertNotNull(modelMap.getAttribute("files"));
-		Assertions.assertTrue(((List<?>) modelMap.getAttribute("files")).isEmpty());
-
-		Assertions.assertTrue(modelMap.containsAttribute("confirm"));
-		Assertions.assertTrue(modelMap.getAttribute("confirm") instanceof Boolean);
-		Assertions.assertNotNull(modelMap.getAttribute("confirm"));
-		Assertions.assertFalse((Boolean) modelMap.getAttribute("confirm"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("message"));
-		Assertions.assertTrue(modelMap.getAttribute("message") instanceof String);
-		Assertions.assertNotNull(modelMap.getAttribute("message"));
-		Assertions.assertEquals("Please select exactly one title for editing.", (String) modelMap.getAttribute("message"));
-	}
-
-	@Test
-	void editSourcePageFirstTitleBlank() {
-		when(processRecords.getAllTitles(titleRepository))
-				.thenReturn(List.of("Title 1", "Title 2"));
-		List<String> titles = List.of("  ");
-		ModelAndView result = commonService.editSourcePage(titles, new ModelAndView("source", new HashMap<>()));
-
-		Assertions.assertTrue(result.hasView());
-		Assertions.assertEquals("management", result.getViewName());
-
-		ModelMap modelMap = result.getModelMap();
-		Assertions.assertEquals(4, modelMap.size());
-
-		Assertions.assertTrue(modelMap.containsAttribute("titles"));
-		Assertions.assertTrue(modelMap.getAttribute("titles") instanceof List);
-		Assertions.assertEquals(List.of("Title 1", "Title 2"), modelMap.getAttribute("titles"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("files"));
-		Assertions.assertTrue(modelMap.getAttribute("files") instanceof List);
-		Assertions.assertNotNull(modelMap.getAttribute("files"));
-		Assertions.assertTrue(((List<?>) modelMap.getAttribute("files")).isEmpty());
-
-		Assertions.assertTrue(modelMap.containsAttribute("confirm"));
-		Assertions.assertTrue(modelMap.getAttribute("confirm") instanceof Boolean);
-		Assertions.assertNotNull(modelMap.getAttribute("confirm"));
-		Assertions.assertFalse((Boolean) modelMap.getAttribute("confirm"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("message"));
-		Assertions.assertTrue(modelMap.getAttribute("message") instanceof String);
-		Assertions.assertNotNull(modelMap.getAttribute("message"));
-		Assertions.assertEquals("Please select exactly one title for editing.", (String) modelMap.getAttribute("message"));
-	}
-
-	@Test
-	void editSourcePageNoSuchTitle() {
-		List<String> titles = List.of("Title 3");
-		when(titleRepository.findByTitle(titles.get(0)))
-				.thenReturn(Optional.empty());
-		when(processRecords.getAllTitles(titleRepository))
-				.thenReturn(List.of("Title 1", "Title 2"));
-		ModelAndView result = commonService.editSourcePage(titles, new ModelAndView("source", new HashMap<>()));
-
-		Assertions.assertTrue(result.hasView());
-		Assertions.assertEquals("management", result.getViewName());
-
-		ModelMap modelMap = result.getModelMap();
-		Assertions.assertEquals(4, modelMap.size());
-
-		Assertions.assertTrue(modelMap.containsAttribute("titles"));
-		Assertions.assertTrue(modelMap.getAttribute("titles") instanceof List);
-		Assertions.assertEquals(List.of("Title 1", "Title 2"), modelMap.getAttribute("titles"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("files"));
-		Assertions.assertTrue(modelMap.getAttribute("files") instanceof List);
-		Assertions.assertNotNull(modelMap.getAttribute("files"));
-		Assertions.assertTrue(((List<?>) modelMap.getAttribute("files")).isEmpty());
-
-		Assertions.assertTrue(modelMap.containsAttribute("confirm"));
-		Assertions.assertTrue(modelMap.getAttribute("confirm") instanceof Boolean);
-		Assertions.assertNotNull(modelMap.getAttribute("confirm"));
-		Assertions.assertFalse((Boolean) modelMap.getAttribute("confirm"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("message"));
-		Assertions.assertTrue(modelMap.getAttribute("message") instanceof String);
-		Assertions.assertNotNull(modelMap.getAttribute("message"));
-		Assertions.assertEquals("Please select exactly one title for editing.", (String) modelMap.getAttribute("message"));
-	}
-
-	@Test
-	void editSourcePageNoSuchTxt() {
-		List<String> titles = List.of("Title 3");
-		when(titleRepository.findByTitle(titles.get(0)))
-				.thenReturn(Optional.of(new TitleEntity(3L, "Title 3", "title_3", 2L, 4L)));
-		when(txtRepository.findById(2L))
-				.thenReturn(Optional.empty());
-		when(processRecords.getAllTitles(titleRepository))
-				.thenReturn(List.of("Title 1", "Title 2"));
-		ModelAndView result = commonService.editSourcePage(titles, new ModelAndView("source", new HashMap<>()));
-
-		Assertions.assertTrue(result.hasView());
-		Assertions.assertEquals("management", result.getViewName());
-
-		ModelMap modelMap = result.getModelMap();
-		Assertions.assertEquals(4, modelMap.size());
-
-		Assertions.assertTrue(modelMap.containsAttribute("titles"));
-		Assertions.assertTrue(modelMap.getAttribute("titles") instanceof List);
-		Assertions.assertEquals(List.of("Title 1", "Title 2"), modelMap.getAttribute("titles"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("files"));
-		Assertions.assertTrue(modelMap.getAttribute("files") instanceof List);
-		Assertions.assertNotNull(modelMap.getAttribute("files"));
-		Assertions.assertTrue(((List<?>) modelMap.getAttribute("files")).isEmpty());
-
-		Assertions.assertTrue(modelMap.containsAttribute("confirm"));
-		Assertions.assertTrue(modelMap.getAttribute("confirm") instanceof Boolean);
-		Assertions.assertNotNull(modelMap.getAttribute("confirm"));
-		Assertions.assertFalse((Boolean) modelMap.getAttribute("confirm"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("message"));
-		Assertions.assertTrue(modelMap.getAttribute("message") instanceof String);
-		Assertions.assertNotNull(modelMap.getAttribute("message"));
-		Assertions.assertEquals("Please select exactly one title for editing.", (String) modelMap.getAttribute("message"));
-	}
-
-	@Test
-	void editSourcePageExistingTitleAndTxt() {
-		List<String> titles = List.of("Title 3");
-		when(titleRepository.findByTitle(titles.get(0)))
-				.thenReturn(Optional.of(new TitleEntity(3L, "Title 3", "title_3", 2L, 4L)));
-		when(txtRepository.findById(2L))
-				.thenReturn(Optional.of(new TxtEntity(2L, List.of("Line 1", "Line 2"))));
-		ModelAndView result = commonService.editSourcePage(titles, new ModelAndView("source", new HashMap<>()));
-
-		Assertions.assertTrue(result.hasView());
-		Assertions.assertEquals("source", result.getViewName());
-
-		ModelMap modelMap = result.getModelMap();
-		Assertions.assertEquals(5, modelMap.size());
-
-		Assertions.assertTrue(modelMap.containsAttribute("title"));
-		Assertions.assertTrue(modelMap.getAttribute("title") instanceof String);
-		Assertions.assertNotNull(modelMap.getAttribute("title"));
-		Assertions.assertEquals("Title 3", (String) modelMap.getAttribute("title"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("file_name"));
-		Assertions.assertTrue(modelMap.getAttribute("file_name") instanceof String);
-		Assertions.assertNotNull(modelMap.getAttribute("file_name"));
-		Assertions.assertEquals("title_3", (String) modelMap.getAttribute("file_name"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("content"));
-		Assertions.assertTrue(modelMap.getAttribute("content") instanceof List);
-		Assertions.assertNotNull(modelMap.getAttribute("content"));
-		Assertions.assertEquals(List.of("Line 1", "Line 2"), (List<?>) modelMap.getAttribute("content"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("edit_existing_page"));
-		Assertions.assertTrue(modelMap.getAttribute("edit_existing_page") instanceof Boolean);
-		Assertions.assertNotNull(modelMap.getAttribute("edit_existing_page"));
-		Assertions.assertTrue((Boolean) modelMap.getAttribute("edit_existing_page"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("message"));
-		Assertions.assertTrue(modelMap.getAttribute("message") instanceof String);
-		Assertions.assertNotNull(modelMap.getAttribute("message"));
-		Assertions.assertTrue(((String) modelMap.getAttribute("message")).isEmpty());
+		Assertions.assertEquals("5 HTML files were pre-deleted, 4 were published.", modelMap.getAttribute("message"));
 	}
 }

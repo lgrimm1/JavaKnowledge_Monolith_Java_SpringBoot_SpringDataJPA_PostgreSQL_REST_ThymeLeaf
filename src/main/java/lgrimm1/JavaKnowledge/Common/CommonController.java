@@ -63,21 +63,18 @@ public class CommonController {
 	}
 
 	@PostMapping("/publish")
-	public String publishPages(@ModelAttribute("titles") List<String> titles, @ModelAttribute("files") List<File> files, @ModelAttribute("confirm") Boolean confirm, @ModelAttribute("message") String message, Model model) {
-		commonService.publishPages(model);
-		return "management";
+	public ModelAndView publishPages(@ModelAttribute("titles") List<String> titles, @ModelAttribute("files") List<File> files, @ModelAttribute("confirm") Boolean confirm, @ModelAttribute("message") String message, Model model) {
+		return commonService.publishPages(new ModelAndView("management", model.asMap()));
 	}
 
 	@PostMapping("/add/{formulaName}")
-	public String addFormula(@RequestParam("formula_name") String formulaName, @ModelAttribute("title") String title, @ModelAttribute("file_name") String fileName, @ModelAttribute("content") List<String> content, @ModelAttribute("edit_existing_page") Boolean editExistingPage, @ModelAttribute("message") String message, Model model) {
-		commonService.addFormula(formulaName, title, fileName, content, editExistingPage, model);
-		return "source";
+	public ModelAndView addFormula(@RequestParam("formula_name") String formulaName, @ModelAttribute("title") String title, @ModelAttribute("file_name") String fileName, @ModelAttribute("content") List<String> content, @ModelAttribute("edit_existing_page") Boolean editExistingPage, @ModelAttribute("message") String message, Model model) {
+		return commonService.addFormula(formulaName, title, fileName, content, editExistingPage, new ModelAndView("source", new HashMap<>()));
 	}
 
 	@PostMapping("/save")
-	public String savePage(@ModelAttribute("title") String title, @ModelAttribute("file_name") String fileName, @ModelAttribute("content") List<String> content, @ModelAttribute("edit_existing_page") Boolean editExistingPage, @ModelAttribute("message") String message, Model model) {
-		commonService.savePage(title, fileName, content, editExistingPage, model);
-		return "source";
+	public ModelAndView savePage(@ModelAttribute("title") String title, @ModelAttribute("file_name") String fileName, @ModelAttribute("content") List<String> content, @ModelAttribute("edit_existing_page") Boolean editExistingPage, @ModelAttribute("message") String message, Model model) {
+		return commonService.savePage(title, fileName, content, editExistingPage, new ModelAndView("source", new HashMap<>()));
 	}
 
 	@PostMapping("/import")
