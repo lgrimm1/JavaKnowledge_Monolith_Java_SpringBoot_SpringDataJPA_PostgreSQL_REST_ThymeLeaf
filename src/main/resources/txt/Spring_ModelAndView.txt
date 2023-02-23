@@ -146,7 +146,23 @@ Assertions.assertEquals("view_name", result.getViewName());
 ModelMap modelMap = result.getModelMap();
 Assertions.assertEquals(numberOfExpectedContainedAttributes, modelMap.size());
 
+//check against expected value (generally)
 Assertions.assertTrue(modelMap.containsAttribute("html_attribute_name"));
 Assertions.assertTrue(modelMap.getAttribute("html_attribute_name") instanceof ClassName);
 Assertions.assertEquals(expectedValue, modelMap.getAttribute("html_attribute_name"));
+
+//check Boolean
+Assertions.assertTrue(modelMap.containsAttribute("html_attribute_name"));
+Assertions.assertTrue(modelMap.getAttribute("html_attribute_name") instanceof Boolean);
+Assertions.assertEquals(true, modelMap.getAttribute("html_attribute_name"));
+
+//check String against emptiness
+Assertions.assertTrue(modelMap.containsAttribute("html_attribute_name"));
+Assertions.assertTrue(modelMap.getAttribute("html_attribute_name") instanceof String);
+Assertions.assertEquals("", modelMap.getAttribute("html_attribute_name"));
+
+//check List against emptiness
+Assertions.assertTrue(modelMap.containsAttribute("html_array_attribute_name"));
+Assertions.assertTrue(modelMap.getAttribute("html_array_attribute_name") instanceof List);
+Assertions.assertEquals(new ArrayList<>(), modelMap.getAttribute("html_array_attribute_name"));
 END OF EXAMPLE

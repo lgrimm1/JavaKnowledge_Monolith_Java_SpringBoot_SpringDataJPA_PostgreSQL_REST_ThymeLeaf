@@ -217,15 +217,23 @@ class ServiceTest {
     //tests of service class
 	@Test
 	void testName() {
-	    //setting up local behaviours for repository
+	    //setting up local behaviours for repository and injected classes
 
-        ModelAndView modelAndView = serviceName.get(12);
-	    Assertions.assertEquals(1, modelAndView.getModel().size());
-	    Assertions.assertTrue(serviceName.get(12).getModel().get("element") instanceof Element);
-	    Assertions.assertEquals(new Element(12, "abc", 3.14d), (Element) serviceName.get(12).getModel().get("element"));
+        ModelAndView modelAndView = serviceName.get(12, new ModelAndView("view_name", new HashMap<>()));
+
+        Assertions.assertTrue(modelAndView.hasView());
+        Assertions.assertEquals("view_name", modelAndView.getViewName());
+
+        ModelMap modelMap = modelAndView.getModelMap();
+        Assertions.assertEquals(1, modelMap.size());
+
+	    Assertions.assertTrue(modelMap.getAttribute("element") instanceof Element);
+	    Assertions.assertEquals(new Element(12, "abc", 3.14d), modelMap.getAttribute("element"));
 	}
 }
 END OF EXAMPLE
+
+For ModelAndView test examples, visit the SPRING MODELANDVIEW page.
 
 =================================================================================
 5. CONTROLLER CLASS TESTS
