@@ -4,6 +4,8 @@ SPRING MODELANDVIEW
 1. GENERALLY
 2. CONTROLLER AND SERVICE IN MODEL&VIEW
 3. CONSTRUCTORS
+4. METHODS
+5. TESTING
 
 =>WEB APPLICATION
 =>MAP
@@ -123,4 +125,28 @@ modelAndView.getModelMap()
         .addAttribute("attribute_name2", object2)
         .addAttribute("attribute_name3", object3);
 }
+END OF EXAMPLE
+
+=================================================================================
+5. TESTING
+=================================================================================
+Please note that in tests when stored attributes are checked with assertions, assertEquals(true|false, ...) is preferred over assertTrue|assertFalse() on Boolean HTML attributes.
+Similarly, assertEquals(new ArraysList<>(), ...) is preferred over checking emptiness of a List with assertTrue|assertFalse(...isEmpty()).
+Full test an attribute requires tree steps:
+    a. checking existence of the attribute
+    b. checking class of the attribute
+    c. checking content of the attribute
+
+EXAMPLE FOR TESTING MODELANDVIEW:
+ModelAndView result = ... //invoking tested method
+
+Assertions.assertTrue(result.hasView());
+Assertions.assertEquals("view_name", result.getViewName());
+
+ModelMap modelMap = result.getModelMap();
+Assertions.assertEquals(numberOfExpectedContainedAttributes, modelMap.size());
+
+Assertions.assertTrue(modelMap.containsAttribute("html_attribute_name"));
+Assertions.assertTrue(modelMap.getAttribute("html_attribute_name") instanceof ClassName);
+Assertions.assertEquals(expectedValue, modelMap.getAttribute("html_attribute_name"));
 END OF EXAMPLE
