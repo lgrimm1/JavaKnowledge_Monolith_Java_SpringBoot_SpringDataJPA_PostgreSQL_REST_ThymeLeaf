@@ -138,7 +138,7 @@ public class ProcessRecords {
 	}
 
 	/**
-	 * Returns int[] where 0th element is number of records, 1st element is needed time in seconds.
+	 * Returns long[] where 0th element is number of records, 1st element is needed time in seconds.
 	 */
 	public long[] generate(TitleRepository titleRepository,
 						   TxtRepository txtRepository,
