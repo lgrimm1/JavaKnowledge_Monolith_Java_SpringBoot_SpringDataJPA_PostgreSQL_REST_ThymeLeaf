@@ -10,6 +10,7 @@ import java.io.*;
 import java.util.*;
 
 @Controller
+//@Controller
 public class CommonController {
 
 	private final CommonService commonService;
@@ -20,8 +21,14 @@ public class CommonController {
 	}
 
 	@GetMapping("/root")
-	public ModelAndView getRoot(Model model) {
-		return commonService.getRoot(new ModelAndView("root", model.asMap()));
+//	public String getRoot(Model model) {
+	public ModelAndView getRoot(ModelAndView modelAndView) {
+		return commonService.getRoot("root", modelAndView);
+/*
+		ModelAndView modelAndView = commonService.getRoot("root");
+		model.addAllAttributes(modelAndView.getModel());
+		return modelAndView.getViewName();
+*/
 	}
 
 	@PostMapping("/search")
@@ -78,14 +85,12 @@ public class CommonController {
 	}
 
 	@PostMapping("/import")
-	public String importTxt(@ModelAttribute("titles") List<String> titles, @ModelAttribute("files") List<File> files, @ModelAttribute("confirm") Boolean confirm, @ModelAttribute("message") String message, Model model) {
-		commonService.importTxt(files, confirm, model);
-		return "management";
+	public ModelAndView importTxt(@ModelAttribute("titles") List<String> titles, @ModelAttribute("files") List<File> files, @ModelAttribute("confirm") Boolean confirm, @ModelAttribute("message") String message, Model model) {
+		return commonService.importTxt(files, confirm, new ModelAndView("management", new HashMap<>()));
 	}
 
 	@PostMapping("/generate")
-	public String generateHtml(@ModelAttribute("titles") List<String> titles, @ModelAttribute("files") List<File> files, @ModelAttribute("confirm") Boolean confirm, @ModelAttribute("message") String message, Model model) {
-		commonService.generateHtml(confirm, model);
-		return "management";
+	public ModelAndView generateHtml(@ModelAttribute("titles") List<String> titles, @ModelAttribute("files") List<File> files, @ModelAttribute("confirm") Boolean confirm, @ModelAttribute("message") String message, Model model) {
+		return commonService.generateHtml(confirm, new ModelAndView("management", model.asMap()));
 	}
 }

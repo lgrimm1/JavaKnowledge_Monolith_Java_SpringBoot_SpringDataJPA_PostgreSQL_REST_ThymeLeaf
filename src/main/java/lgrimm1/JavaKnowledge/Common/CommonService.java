@@ -47,7 +47,9 @@ public class CommonService {
 		this.htmlGenerators = htmlGenerators;
 	}
 
-	public ModelAndView getRoot(@NonNull ModelAndView modelAndView) {
+	public ModelAndView getRoot(String initialView, ModelAndView modelAndView) {
+//		ModelAndView modelAndView = new ModelAndView(initialView);
+		modelAndView.setViewName(initialView);
 		modelAndView.addObject("search_text", "");
 		return modelAndView;
 	}
@@ -256,7 +258,7 @@ public class CommonService {
 					modelAndView.addObject("message", "Source page has been overwritten.");
 				}
 			}
-			else {
+			else { //editExistingPage == false
 				if (optionalTitleEntity.isPresent()) {
 					modelAndView.addObject("message", "There is an existing page with this title.");
 				}
@@ -276,13 +278,13 @@ public class CommonService {
 		return modelAndView;
 	}
 
-	public void importTxt(List<File> files, Boolean confirm, Model model) {
+	public ModelAndView importTxt(List<File> files, Boolean confirm, ModelAndView modelAndView) {
 		if (files == null || files.isEmpty() || confirm == null || !confirm) {
-			model.addAttribute("titles", processRecords.getAllTitles(titleRepository));
-			model.addAttribute("files", new ArrayList<File>());
-			model.addAttribute("confirm", false);
-			model.addAttribute("message",
-					"Please upload minimum one file and confirm overwriting.");
+			modelAndView.addObject("titles", processRecords.getAllTitles(titleRepository));
+			modelAndView.addObject("files", new ArrayList<File>());
+			modelAndView.addObject("confirm", false);
+			modelAndView.addObject("message",
+					"Please upload minimum one file and confirm source overwriting.");
 		}
 		else {
 			List<File> notImportedFiles = processRecords.importTxtFiles(
@@ -294,20 +296,21 @@ public class CommonService {
 					formulas,
 					extractors);
 			List<String> titles = processRecords.getAllTitles(titleRepository);
-			model.addAttribute("titles", titles);
-			model.addAttribute("files", new ArrayList<File>());
-			model.addAttribute("confirm", false);
-			model.addAttribute("message",
+			modelAndView.addObject("titles", titles);
+			modelAndView.addObject("files", new ArrayList<File>());
+			modelAndView.addObject("confirm", false);
+			modelAndView.addObject("message",
 					notImportedFiles.size() + " of " + files.size() + " files were not imported.");
 		}
+		return modelAndView;
 	}
 
-	public void generateHtml(Boolean confirm, Model model) {
+	public ModelAndView generateHtml(Boolean confirm, ModelAndView modelAndView) {
 		if (confirm == null || !confirm) {
-			model.addAttribute("titles", processRecords.getAllTitles(titleRepository));
-			model.addAttribute("files", new ArrayList<File>());
-			model.addAttribute("confirm", false);
-			model.addAttribute("message", "Please confirm generating pages.");
+			modelAndView.addObject("titles", processRecords.getAllTitles(titleRepository));
+			modelAndView.addObject("files", new ArrayList<File>());
+			modelAndView.addObject("confirm", false);
+			modelAndView.addObject("message", "Please confirm generating pages.");
 		}
 		else {
 			long[] messageData = processRecords.generate(
@@ -318,13 +321,15 @@ public class CommonService {
 					processPage,
 					extractors,
 					htmlGenerators);
-			model.addAttribute("titles", processRecords.getAllTitles(titleRepository));
-			model.addAttribute("files", new ArrayList<File>());
-			model.addAttribute("confirm", false);
-			model.addAttribute("message",
+			modelAndView.addObject("titles", processRecords.getAllTitles(titleRepository));
+			modelAndView.addObject("files", new ArrayList<File>());
+			modelAndView.addObject("confirm", false);
+			modelAndView.addObject("message",
 					messageData[0] + " pages in " + messageData[1] + " seconds has been processed.");
 		}
+		return modelAndView;
 	}
 }
 
 //TODO check all Stream operations for being parallel and its necessity.
+//TODO exportTxt()
