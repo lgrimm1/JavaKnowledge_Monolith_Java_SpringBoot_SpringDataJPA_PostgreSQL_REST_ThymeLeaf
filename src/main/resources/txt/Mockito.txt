@@ -18,6 +18,7 @@ This new class will have behaviours how the class will act for actions coming fr
 Mocking is important in testing with which making independent unit tests become possible.
 In case in a testing environment emulated classes are needed (e.g. file environment), mocking is the best.
 Mockito is one of the mocking toolsets.
+The Spring Test dependency includes Mockito dependency.
 
 =================================================================================
 2. SETTING UP

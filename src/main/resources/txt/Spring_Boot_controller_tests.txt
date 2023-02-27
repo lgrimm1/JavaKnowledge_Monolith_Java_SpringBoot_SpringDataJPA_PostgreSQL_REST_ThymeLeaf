@@ -16,7 +16,7 @@ Exception is in view mode when, based upon testing needs, setting up the Model o
 =>JUNIT
 =>SPRING BOOT CONTROLLER
 =>SPRING MODELANDVIEW
-=>Spring_Validation
+=>SPRING BOOT VALIDATION
 =>WEB APPLICATION;4. CURL
 =>SERIALIZATION
 
@@ -49,12 +49,14 @@ In case the answer sent by the cURL is not satisfying, add -i, -v or -vi to the 
 
 EXAMPLE FOR A SINGLE FUNCTION TEST WITH CURL (ONE COMMAND):
 curl -X PUT -H "Accept: application/json" -H "Content-Type:application/json" --data "{\"purchaseId\": 5, \"purchaseDate\": \"2010-06-03\", \"purchaseType\": \"CARD\", \"purchaseValue\": 12, \"purchaseDescription\": \"abc\"}" "localhost:8080/api/v1/newPurchase"
+END OF EXAMPLE
 
 EXAMPLE FOR A SINGLE FUNCTION TEST WITH CURL (BATCH FILE):
 curl -X PUT -H "Accept: application/json" -H "Content-Type:application/json" --data "{\"purchaseId\": 5, \"purchaseDate\": \"2010-06-03\", \"purchaseType\": \"CARD\", \"purchaseValue\": 12, \"purchaseDescription\": \"abc\"}" "localhost:8080/api/v1/newPurchase"
 echo.
 echo ===== Expected: 13 =====
 echo.
+END OF EXAMPLE
 
 EXAMPLE FOR A SCENARIO TEST WITH CURL (BATCH FILE):
 @echo off
@@ -87,6 +89,7 @@ echo ===== Expected: [{"purchaseId":-9223372036854775807,"purchaseDate":"2010-06
 echo.
 
 pause
+END OF EXAMPLE
 
 1.2. INTERNAL CURL TESTS
 ---------------------------------------------------------------------------------
@@ -106,6 +109,7 @@ Process process = processBuilder.start();
 InputStream inputStream = process.getInputStream();
 int exitCode = process.exitValue();
 process.destroy();
+END OF EXAMPLE
 
 EXAMPLE FOR INTERNAL CURL TEST (GETRUNTIME):
 String command = "curl -X POST https://postman-echo.com/post --data foo1=bar1&foo2=bar2";
@@ -113,6 +117,7 @@ Process process = Runtime.getRuntime().exec(command);
 InputStream inputStream = process.getInputStream();
 int exitCode = process.exitValue();
 process.destroy();
+END OF EXAMPLE
 
 EXAMPLE FOR A CLASS CONSUMING INPUTSTREAM:
 package packageName;
@@ -142,6 +147,7 @@ public class ProcessCurlOutput {
         inputStreamToString(inputStream);
     }
 }
+END OF EXAMPLE
 
 EXAMPLE FOR CONTROLLER TEST CLASS FOR CURL COMMANDS:
 package packageName;
@@ -193,12 +199,13 @@ public class ControllerCurlTest {
         Assert.assertTrue(null != content && !content.isEmpty());
     }
 }
+END OF EXAMPLE
 
 =================================================================================
 2. CONTROLLER CLASS TESTS WITH STARTED WEB APPLICATION
 =================================================================================
 The @SpringBootTest in a class marks that the class is for testing a controller class.
-For all tests, the Spring Boot will start the web service (servlet) layer, practically the whole web application.
+For all tests, the Spring Boot will start the web service (servlet) layer, practically the whole web application but in demo mode.
 The @Autowired annotation expresses injection the marked class (e.g. the controller) into the test class before starting up the app. In case of using the TestRestTemplate class with this annotation, the given class will handle the storage and the service layers together automatically.
 This kind of testing is possible for controller methods in any mode.
 
@@ -231,6 +238,7 @@ EXAMPLE FOR CONTROLLER TEST CLASS SIGNATURE (ONE CONTROLLER):
 public class ControllerClassNameTest {
 ...
 }
+END OF EXAMPLE
 
 EXAMPLE FOR CONTROLLER TEST CLASS SIGNATURE (MORE CONTROLLERS, OLDER SPRING VERSIONS):
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
@@ -239,6 +247,7 @@ public class ControllerClassNameTest {
 	private int port;
 ...
 }
+END OF EXAMPLE
 
 EXAMPLE FOR CONTROLLER TEST CLASS SIGNATURE (MORE CONTROLLERS, NEWER SPRING VERSIONS):
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
@@ -247,6 +256,7 @@ public class ControllerClassNameTest {
 	private int port;
 ...
 }
+END OF EXAMPLE
 
 EXAMPLE FOR A CONTROLLER TEST CLASS:
 import org.junit.jupiter.api.*;
@@ -269,9 +279,10 @@ public class ControllerClassNameTest {
 
     @Test
 	public void getCountOnEmptyStorage() throws Exception {
-		Assertions.assertEquals(..., this.restTemplate.getForObject("http://localhost:" + port + "/count", ...));
+            Assertions.assertEquals(..., this.restTemplate.getForObject("http://localhost:" + port + "/count", ...));
 	}
 }
+END OF EXAMPLE
 
 =================================================================================
 3. CONTROLLER CLASS TESTS IN MOCKED ENVIRONMENT
@@ -289,7 +300,7 @@ Due to the two statements above, testing the startup itself is necessary, see th
 With the structure above, in case of normally mocking the service classes as well, independent unit testing becomes possible.
 This kind of testing is possible for controller methods in any mode.
 
-For separating the service class(es) and their methods, they will be mocked by using Mockito.
+For separating the service class(es) and their methods, they will be mocked by using Mockito. Mockito is included in Spring test web dependency.
 For separating the web layer, the MockMVC will be used which is part of the Spring frameworks.
 Due to automatism possible this way, no cURL commands are needed, tests will stay within Maven and the IDE.
 
@@ -312,8 +323,7 @@ import static org.mockito.Mockito.when;
 import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.*;
@@ -321,6 +331,9 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.*;
 import org.springframework.test.web.servlet.*;
+import org.springframework.web.servlet.*;
+
+import java.util.*;
 
 @WebMvcTest(ControllerClassName.class)
 @AutoConfigureDataJpa
@@ -330,7 +343,7 @@ public class ControllerTest {
 	private MockMvc mockMvc;
 
 	@MockBean
-	private PurchaseService purchaseService;
+	private ServiceClass serviceName;
 
     //test cases marked with @Test annotation.
 }
@@ -373,10 +386,12 @@ public void testCaseName() throws Exception {
 
 	//mocking web layer and controller
 	mockMvc
-	        .perform(put("/endpoint")
+	        .perform(
+	                put("/endpoint")
 					.contentType(MediaType.APPLICATION_JSON_VALUE)
-					.accept(MediaType.APPLICATION_JSON_VALUE))
+					.accept(MediaType.APPLICATION_JSON_VALUE)
 					.content(...)
+					)
 			.andDo(print())
 			.andExpect(status().isOk())
 			.andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
@@ -384,28 +399,33 @@ public void testCaseName() throws Exception {
 			.andExpect(content().string(...)); //or:
 			.andExpect(content().string(containsString(...)));
 }
+END OF EXAMPLE
 
-EXAMPLE FOR A TEST CASE METHOD (PUT ON /ENDPOINT, OBJECT/MODELANDVIEW MODE, EXPECTED HTTP200 SUCCESS CODE):
-//TODO modify the test example based on research
+EXAMPLE FOR A TEST CASE METHOD (PUT ON /ENDPOINT, MODEL&VIEW MODE, EXPECTED HTTP200 SUCCESS CODE):
 @Test
 public void testCaseName() throws Exception {
-    //mocking service method
-	when(purchaseService.serviceMethodName(...))
-			.thenReturn(...);
+	//mocking service
+	ModelAndView modelAndView = new ModelAndView("initial_view_name");
+	modelAndView.addObject("html_attribute_name", attributeValue);
+	when(commonService.getRoot("initial_view_name"))
+			.thenReturn(modelAndView);
 
-	//mocking web layer and controller
 	mockMvc
-	        .perform(put("/endpoint")
-					.contentType(MediaType.APPLICATION_JSON_VALUE)
-					.accept(MediaType.APPLICATION_JSON_VALUE))
-					.content(...)
+	        .perform(
+	                put("/endpoint")
+	                .param("incoming_attribute_name", incoming_attribute_value)
+	                )
 			.andDo(print())
 			.andExpect(status().isOk())
-			.andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-			.andExpect(content().json(...)); //or:
-			.andExpect(content().string(...)); //or:
-			.andExpect(content().string(containsString(...)));
+			.andExpect(view().name("view_name"))
+			.andExpect(model().size(size))
+			.andExpect(model().attributeExists("attribute_name"[, ...]))
+			.andExpect(model().attribute("attribute_name", attributeValue))
+			.andExpect(model().attributeDoesNotExist("attribute_name"[, ...]))
+            .andExpect(forwardedUrl("UrlName"))
+            .andExpect(redirectedUrl("UrlName"));
 }
+END OF EXAMPLE
 
 3.2. MOCKMVC REQUEST BUILDERS
 ---------------------------------------------------------------------------------
@@ -625,6 +645,7 @@ public void testCaseName() throws Exception {
 			.andExpect(MockMvcResultMatchers.jsonPath("$.fieldName").value(paramValue)); //or:
 			.andExpect(MockMvcResultMatchers.jsonPath("$.fieldName").exists());
 }
+END OF EXAMPLE
 
 EXAMPLE FOR TESTING EXPECTED EXCEPTIONS:
 @Test
@@ -637,5 +658,6 @@ public void givenNotFound_whenGetSpecificException_thenNotFoundCode() throws Exc
       .andExpect(result -> assertTrue(result.getResolvedException() instanceof ResourceNotFoundException))
       .andExpect(result -> assertEquals("resource not found", result.getResolvedException().getMessage()));
 }
+END OF EXAMPLE
 
 //TODO https://www.baeldung.com/exception-handling-for-rest-with-spring

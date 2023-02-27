@@ -120,7 +120,7 @@ END OF EXCEPTION
 Combination of the previous two.
 This version works via a handler class.
 This version lets having access to the request itself.
-Returns a model (ModelAndView object) which means this solution is REST compatible, object/model&view mode.
+Returns a model in a ModelAndView object, model&view mode.
 
 EXAMPLE FOR CUSTOM HANDLER EXCEPTION RESOLVER:
 @Component

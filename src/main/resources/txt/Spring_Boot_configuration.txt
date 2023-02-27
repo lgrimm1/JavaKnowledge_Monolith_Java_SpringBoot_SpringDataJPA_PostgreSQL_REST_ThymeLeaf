@@ -31,5 +31,6 @@ public class Config {
 		};
 	}
 }
+END OF EXAMPLE
 
 =>SPRING BOOT ENTITY

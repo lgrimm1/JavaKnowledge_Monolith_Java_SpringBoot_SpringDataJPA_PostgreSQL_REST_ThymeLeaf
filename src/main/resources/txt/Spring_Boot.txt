@@ -12,7 +12,7 @@ Following best practices, a thin Communication layer manifested as pure Controll
 Spring Boot supports web API and REST API.
 
 In case Spring Boot is used alongside with template managers (e.g. Spring ThymeLeaf), creation of whole web application becomes possible (frontend via templates, backend web development).
-Optionally, further boiler-coding time can be spared when instead of manual checking of database elements (entities) in the Business layer, Spring Validation is utilized.
+Optionally, further boiler-coding time can be spared when instead of manual checking of database elements (entities) in the Business layer, Spring Boot Validation is utilized.
 
 1. SETTING UP
 2. CREATING CLASSES AND DIRECTORIES
@@ -41,6 +41,7 @@ Optionally, further boiler-coding time can be spared when instead of manual chec
 =>POSTGRESQL
 =>SPRING BOOT VALIDATION
 =>SPRING EXCEPTION HANDLING
+=>MOCKITO
 
 =================================================================================
 1. SETTING UP
@@ -59,6 +60,7 @@ The parent tag marks the version root of dependencies.
 The dependencies are modular: add anything you need and leave anything you do not.
 The Spring Web provides web support for REST API and Spring MVC, and uses Apache Tomcat as default container.
 The Spring Test dependency is part of the Spring Boot.
+The Spring Test dependency includes Mockito dependency.
 
 Under the modelVersion tag, above dependencies:
 	<parent>

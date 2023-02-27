@@ -4,7 +4,7 @@ SPRING BOOT CONTROLLER
 1. CONTROLLER CLASS GENERALLY
 2. CONTROLLER ANNOTATIONS
 3. CONTROLLER DATA
-4. CONTROLLER VIEW MODE
+4. CONTROLLER MODEL&VIEW MODE
 5. CONTROLLER OBJECT MODE
 6. RESPONSE ENTITY
 7. DIRECT RESPONSE MANIPULATION
@@ -32,8 +32,8 @@ The thinnest controller represents the API to the web application:
     a. the @Controller annotation in a class marks that the class is a controller, normal API.
     b. the @RestController annotation in a class marks that the class is a controller, REST API.
 
-The normal API uses Spring MVC framework which is based upon views. That said, the return value (the response body) represents a view which is read by the frontend.
-The RESTful API uses Spring MVC REST framework which is based upon objects. That said, the controller returns the object or value as it is, usually packed into a JSON or XML format.
+The normal API uses Spring MVC framework which is based upon views. That said, the return value (the response body) represents a view (the targeted part of the frontend) and a collection of objects (forms a model which is read by the frontend). When a controller (or a controller method) operates with such data, it operates in model&view mode.
+The RESTful API uses Spring MVC REST framework which is based upon objects. That said, the controller returns the object or value as it is, usually packed into a JSON or XML format. When a controller (or a controller method) operates with such data, it operates in called object mode.
 
 EXAMPLE FOR A CONTROLLER CLASS (PURE @AUTOWIRED):
 package PackageName;
@@ -93,7 +93,7 @@ Controller methods must be public so the Spring Boot can call them.
 =================================================================================
 With a controller, the next annotations can be used:
 ||Annotation|Position|Used for||
-||@Controller|before the class declaration|marks that the class is a controller (API), view and object modes||
+||@Controller|before the class declaration|marks that the class is a controller (API), model&view and object modes||
 ||@RestController|before the class declaration|marks that the class is a controller (REST API), object mode only||
 ||@RequestMapping|before the class declaration, after the @Controller or @RestController annotation|marks the root of all endpoints||
 ||@RequestMapping|before a method|marks that the method will be invoked when a request type with the endpoint is received||
@@ -101,11 +101,11 @@ With a controller, the next annotations can be used:
 ||@PostMapping|before a method|marks that the method will be invoked when POST request with the endpoint is received||
 ||@PutMapping|before a method|marks that the method will be invoked when PUT request with the endpoint is received||
 ||@DeleteMapping|before a method|marks that the method will be invoked when DELETE request with the endpoint is received||
-||@ResponseBody|after request type annotation, before method signature, or before return value in signature|marks that the returned value will be sent to the frontend as object (not as view)||
+||@ResponseBody|after request type annotation, before method signature, or before return value in signature|marks that the returned value will be sent to the frontend as object (object mode)||
 ||@PathVariable|before a method argument|marks that the argument is found in endpoint path||
-||@RequestParam|before a method argument|marks that the argument will be used for receiving the given parameter from the request query||
-||@RequestBody|before method argument|marks that the argument is in the request body||
-||@ModelAttribute|before a method argument|marks that the argument is passed by an incoming model of a template (view and object/model&view modes)||
+||@RequestParam|before a method argument|marks that the argument will be used for receiving the given parameter from the request query (object mode)||
+||@RequestBody|before method argument|marks that the argument is in the request body (object mode)||
+||@ModelAttribute|before a method argument|marks that the argument is passed by an incoming model of a template (model&view mode)||
 ||@NonNull|before method argument|marks that for that argument only non-null parameter is acceptable (modifies method signature, in case of null argument HTTP4xx code is sent back)||
 ||@ResponseStatus|before a method|defines a custom HTTP code which will be added to the answer from the endpoint when its method ends successfully||
 
@@ -120,7 +120,7 @@ Parameters of @Request/Get/Post/Put/DeleteMapping:
 The @RestController annotation automatically adds two annotations to the class (class global):
     a. @Controller
     b. @ResponseBody
-That said, the class will be a REST controller, and all methods will return objects instead of views.
+That said, the class will be a REST controller, and all methods will operate in object mode.
 When using the @ResponseBody annotation globally, will mark all controller methods.
 In case the @ResponseBody annotation is used independently on controller methods, the annotation can be before the method signature or before the return value in the signature.
 
@@ -189,14 +189,14 @@ Some content type definitions:
 =================================================================================
 In controller methods, there can be the next kind of incoming and outgoing data:
     a. request type definition (in method annotation)
-    b. incoming content type definition (how the JSON data is deserialized when received from the frontend; object mode)
-    c. outgoing content type definition (how the JSON data is serialized when sent to the frontend; object mode)
-    d. request body parameters (marked in method annotation, received in argument list)
-    e. query parameters (in argument list)
-    f. model attributes (submitted from the form of a template, sent by browser; view and object/model&view modes)
-    g. Model (sent to a template; view mode)
-    g. ModelAndView (sent to a template; object/model&view mode)
-    h. template name (view and model&view modes)
+    b. incoming content type definition (how the JSON data is deserialized when received from the frontend, object mode)
+    c. outgoing content type definition (how the JSON data is serialized when sent to the frontend, object mode)
+    d. request body parameters (marked in method annotation, received in argument list, object mode)
+    e. query parameters (in argument list, object mode)
+    f. model attributes (submitted from the form of a template, sent by browser; model&view mode)
+    g. Model (sent to a template; model&view mode)
+    g. ModelAndView (sent to a template; model&view mode)
+    h. template name (model&view mode)
     i. sent data (all modes)
     j. HTTP response code (HTTP status code, all modes)
 
@@ -207,7 +207,7 @@ When an endpoint finishes without fail (exception), the HTTP200 (OK) code is add
 This code can be overwritten via using the @ResponseStatus(HttpStatus status) method-level annotation.
 In case the annotation is used in @ResponseStatus(HttpStatus status, reason = reasonString) formula, the successfully finished endpoint will return an HTML error page with the given reasonString which forces this method out of REST compatibility.
 
-In view mode, the return value of the controller method will be a String containing the web page or template (file) name.
+In model&view mode, the return value of the controller method will be a String containing the web page or template (file) name.
 In this version, the method signature must contain a Model argument which contains the data sent toward the frontend.
 Also, if the frontend sends data with the request, there must be an other argument marked with @ModelAttribute annotation which receives data.
 
@@ -221,19 +221,34 @@ For both techniques, in case the content type is not defined, uses standard codi
 As for incoming requests in object mode, an endpoint can receive JSON data only in the defined (or default) format. For different content types, different endpoints must be created. In case no format is defined, the Spring Boot will use the best appropriate format.
 In older Spring versions, in controller, the method signature elements and the return type must be object types (wrapper types are included). Newer versions can accept literally every serializable type.
 
-The model&view mode is a sub-version of object mode. The returned data will be JSON, however the returned object of the method will be ModelAndView.
-The method signature must contain the Model argument.
-Any kind of data can be added to the return object, plus HTTP error code and the view name.
-Otherwise, the technique follows the techniques of object mode.
+=================================================================================
+4. CONTROLLER MODEL&VIEW MODE
+=================================================================================
+In order to use model&view mode on a controller method, the controller class must not be marked with @RestController annotation, nor the correspondent method marked with @ResponseBody annotation.
+The return value must be a String which holds the name of the web page or the template. In case of webpage, the extension is optionally can be written after the page filename.
+For incoming data sent by the frontend, in the method signature method arguments are needed, marked with the @ModelAttribute argument-level annotation.
+In case the frontend does not send data, no such argument is needed.
 
-=================================================================================
-4. CONTROLLER VIEW MODE
-=================================================================================
-In order to use view mode on a controller method, the controller class must not be marked with @RestController annotation, nor the correspondent method marked with @ResponseBody annotation.
-The return value must be a String which holds the name of the web page or the template.
-In the method signature, an optional argument marked with @ModelAttribute annotation shows an object which was sent by the frontend; in case there is no such object, this argument is not needed; in case of more objects, more arguments can be used, all marked with the annotation.
-In the method signature, a Model object should be placed as argument, in case data should be sent towards the frontend.
-The Model object contains data prepared to be sent. Any kind of object can be added to the Model.
+In case data should be sent to the frontend, in the method signature a Model object should be placed as argument.
+Initially, the Model object is empty and the contained data will be put into it by the Business layer. Any kind of object can be added to the Model.
+The Model object is a Map where keys are HTML attributes, values are objects rendered to them.
+
+The ModelAndView object can be used as return type of the service method. As such, will contain the view name along with the model. See the SPRING MODELANDVIEW page for further details.
+
+EXAMPLE FOR CONTROLLER AND SERVICE METHODS (MODEL&VIEW MODE, ONE INCOMING PARAMETER):
+public String controllerMethod(@ModelAttribute IncomingObjectType incomingObject, Model model) {
+	ModelAndView modelAndView = service.serviceMethod("initial_view_name", incomingObject);
+	model.addAllAttributes(modelAndView.getModel());
+	return modelAndView.getViewName();
+}
+...
+public String serviceMethod(String initialView, IncomingObjectType incomingObject) {
+	ModelAndView modelAndView = new ModelAndView(initialView);
+    //process
+	modelAndView.addObject("html_attribute_name", attributeValue);
+	return modelAndView;
+}
+END OF EXAMPLE
 
 See SPRING BOOT REQUESTS page for code examples.
 
@@ -243,9 +258,7 @@ See SPRING BOOT REQUESTS page for code examples.
 In order to use object mode on a controller method, the controller class must be marked with @RestController annotation, or the correspondent method marked with @ResponseBody annotation.
 The return value can be any type or a Map with String keys and values where keys are HTML attribute names and values are their respective values (converted to String).
 In the method signature, every incoming object (sent by frontend) must be marked with @RequestBody annotation.
-Alternatively, all incoming objects can be rendered into one Map of String keys and values, also marked with @RequestBody annotation.
-
-The object/model&view mode follows object-mode rules with the exception that the returned object is ModelAndView and can be filled with many objects, view name and HTTP response code.
+Alternatively, all incoming objects can be rendered into one Map of String keys and Object or String values, also marked with @RequestBody annotation.
 
 See SPRING BOOT REQUESTS page for code examples.
 
@@ -256,7 +269,7 @@ The ResponseEntity represents the whole HTTP response: status, header and body.
 By using it as return value, the response is fully customizable.
 The ResponseEntity can have any class type due to being generic.
 The response body can contain an object (wrappers are included) or a literal.
-Whilst using ResponseEntity can make a specific controller method customizable for response, due to Spring's capabilities, it is advised to use the methods in pure view or object mode for cleaner code.
+Whilst using ResponseEntity can make a specific controller method customizable for response, due to Spring's capabilities, it is advised to use the methods in pure model&view or object mode for cleaner code.
 
 In some cases when not using String-type ResponseEntity, exception can be raised upon sending the method return value.
 For such cases an exception handler method (marked with the @ExceptionHandler annotation) is needed among controller methods. When an endpoint raises exception, this method will run. The return code of this method is defined with the @ResponseStatus annotation.
@@ -365,7 +378,7 @@ Visit the SPRING EXCEPTION HANDLING page for description.
 =================================================================================
 9. IMPLEMENT REST CRUD API
 =================================================================================
-When an API publishes the CRUD (Create-Retrieve-Update-Delete) functions, must follow industrial standard unless the app design declares differently.
+When a REST API publishes the CRUD (Create-Retrieve-Update-Delete) functions, must follow industrial standard unless the app design declares differently.
 
 ||API function|Request type|Endpoint|Request body|Response body|HTTP success code||
 ||create|POST|api/v1/elementName|all fields (ID is excluded)|all fields (ID is included)|200||

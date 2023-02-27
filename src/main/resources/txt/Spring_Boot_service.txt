@@ -28,6 +28,7 @@ public class ServiceClassName {
     //service methods
     //accessing a repository method etc.: repository.methodName()
 }
+END OF EXAMPLE
 
 EXAMPLE FOR A SERVICE CLASS (@AUTOWIRED WITH CLASS DEPENDENCY INJECTION):
 package PackageName;
@@ -53,6 +54,7 @@ public class ServiceClassName {
     //service methods
     //accessing a repository method etc.: repository.methodName()
 }
+END OF EXAMPLE
 
 In case the repository and the entity is handled by JPA, coming from design, it is possible to manage entity management via the repository or via the service.
 

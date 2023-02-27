@@ -23,11 +23,10 @@ About GET requests in controller class:
     h. the passedObjectName (see below) will receive some_value, coming from parameter_name_in_request parameter in request
     i. if required=true (see below), the request reaches the endpoint only when that parameter was passed
     j. if no value is given in the request, passedObjectName will take the defaultValue value (see below), in case no default is defined, null will be passed
-    k. the Model model (see below) will be used for storing response data in view mode or in object/model&view mode
-    l. in view mode the returned value will be the name of the targeted template
-    m. in object/model&view mode the returned value will be a ModelAndView object
-    n. in object mode the returned value will be an object
-    o. with GET request, no request body should be sent and received, if needed use other request types
+    k. the Model model (see below) will be used for storing response data in model&view mode
+    l. in model&view mode the returned value will be the name of the targeted template
+    m. in object mode the returned value will be an object
+    n. with GET request, no request body should be sent and received, if needed use other request types
 
 Relations between GET request parameter and passed parameter:
     a. endpoint: runtime error, no parameter passed from browser but needed on server side
@@ -43,24 +42,6 @@ Parameters of a request parameter:
 In case of name parameter only, using "..." is satisfying.
 In case of required = false or not defined, and the parameter is not defined in the GET query, the method argument will receive null.
 In case the default value is defined and there is no value in the query for that, the method argument will receive the default value.
-
-EXAMPLE FOR METHOD HANDLING A GET REQUEST WITH QUERY (VIEW MODE, MODEL IN RETURNED PAYLOAD, TARGETED TEMPLATE):
-@GetMapping("/endpointName")
-public String methodName(@RequestParam("parameter_name1") passedObjectType1 passedObjectName1[, @RequestParam("parameter_name2") passedObjectType2 passedObjectName2, ...], Model model) {
-    return serviceName.serviceMethod(passedObjectName1[, passedObjectName2, ...], model);
-}
-...
-public String serviceMethod(passedObjectType1 passedObjectName1[, passedObjectType2 passedObjectName2, ...], Model model) {
-    if (testing passedObjectNameX for properness) {
-        //processing passedObjectNameX
-	    model.addAttribute("html_attribute_name", object_variable_or_object_or_literal); //added things in case of success
-	    return "endpointName_template_for_success[]"; //extension is optional and can be .html or different
-    }
-    model.addAttribute("html_attribute_name", object_variable_or_object_or_literal); //added things in case of failure
-	return "endpointName_template_for_error[]"; //extension is optional and can be .html or different, template can be identical to success template
-	}
-}
-END OF EXAMPLE
 
 EXAMPLE FOR METHOD HANDLING A GET REQUEST WITH QUERY (OBJECT MODE, ANY OBJECT IN RETURNED PAYLOAD):
 class ResponseClassName {...} //somewhere in Business layer
@@ -81,25 +62,34 @@ public ResponseClassName serviceMethod(passedObjectType1 passedObjectName1[, pas
 }
 END OF EXAMPLE
 
-EXAMPLE FOR METHOD HANDLING A GET REQUEST WITH QUERY (OBJECT/MODEL&VIEW MODE, MODELANDVIEW AS RETURNED PAYLOAD):
-class ResponseClassName {...} //somewhere in Business layer
-...
+EXAMPLE FOR METHOD HANDLING A GET REQUEST WITH QUERY (MODEL&VIEW MODE, MODEL IN RETURNED PAYLOAD, TARGETED TEMPLATE):
 @GetMapping("/endpointName")
-@ResponseBody
-public ModelAndView methodName(@RequestParam("parameter_name1") passedObjectType1 passedObjectName1[, @RequestParam("parameter_name2") passedObjectType2 passedObjectName2, ...], Model model) {
-    return serviceName.serviceMethod(passedObjectName1[, passedObjectName2, ...], new ModelAndView("view_name", model.asMap()));
+public String methodName(
+        @ModelAttribute("parameter_name1") passedObjectType1 passedObjectName1,
+        @ModelAttribute("parameter_name2") passedObjectType2 passedObjectName2,,
+        ...,
+        Model model) {
+	ModelAndView modelAndView = service.serviceMethod("initial_view_name", passedObjectName1, passedObjectName2, ...);
+	model.addAllAttributes(modelAndView.getModel());
+	return modelAndView.getViewName();
 }
 ...
-public ModelAndView serviceMethod(passedObjectType1 passedObjectName1[, passedObjectType2 passedObjectName2, ...], ModelAndView modelAndView) {
+public ModelAndView serviceMethod(
+        String initialView,
+        passedObjectType1 passedObjectName1,
+        passedObjectType2 passedObjectName2,
+        ...) {
     if (testing passedObjectNameX for properness) {
+    	ModelAndView modelAndView = new ModelAndView("view_name_for_success");
         //processing passedObjectNameX
-        modelAndView.addObject("html_attribute_name", object_variable_or_object_or_literal); //added things in case of success
-		modelAndView.setViewName("view_name"); //optionally, if needed
-	    return modelAndView;
+    	modelAndView.addObject("html_attribute_name", attributeValue);
+    	...
+	    return modelAndView; //extension is optional and can be .html or different
     }
-    modelAndView.addObject("html_attribute_name", object_variable_or_object_or_literal); //added things in case of failure
-	modelAndView.setViewName("view_name"); //optionally, if needed
-    return modelAndView;
+   	ModelAndView modelAndView = new ModelAndView("view_name_for_failure");
+	modelAndView.addObject("html_attribute_name", attributeValue);
+	...
+	return modelAndView;
 	}
 }
 END OF EXAMPLE
@@ -107,43 +97,23 @@ END OF EXAMPLE
 EXAMPLE FOR METHOD HANDLING DIFFERENT ENDPOINTS:
 @GetMapping(value = {"/endpointName1", "/endpointName2"})
 public String methodName(...) {...}
+END OF EXAMPLE
 
 =================================================================================
 2. POST, PUT, DELETE, OPTIONS, PATCH, HEAD REQUESTS
 =================================================================================
 About POST, PUT, DELETE, OPTIONS, PATCH, HEAD requests in controller class:
     a. for having request parameters from a query, use the GET request type
-    b. for every parameter received from a template model, the @ModelAttribute annotation is needed then the type and the name of the passed parameter
+    b. for every parameter received from a template model, the @ModelAttribute annotation is needed then the type and the name of the passed parameter (model&view mode)
     c. the request will arrive at the endpoint
     d. the endpoint is always reached when it was sent to endpointName
     e. the request body will be hidden from URL field of the browser (from the URL field always GET arrives)
     f. passedObjectName (see below) will receive some_value from the sender page in browser
     g. if no value is given in the request, passedObjectName will take the defaultValue value (see below), in case no default is defined, null will be passed
-    h. the Model model (see below) will be used for storing response data in view mode or in object/model&view mode
-    i. in view mode the returned value will be the name of the targeted template
-    j. in object/model&view mode the returned value will be a ModelAndView object
+    h. the Model model (see below) will be used for storing response data in model&view mode
+    i. in model&view mode the returned value will be the name of the targeted template
     k. in object mode the returned value will be an object
     l. the request body can contain more variables but all will be rendered into one transfer object or a Map object where keys are variable names
-
-EXAMPLE FOR METHOD HANDLING A POST, PUT, PATCH, DELETE REQUEST (VIEW MODE):
-@PostMapping("/endpointName") //or:
-@PutMapping("/endpointName") //or:
-@PatchMapping("/endpointName") //or:
-@DeleteMapping("/endpointName")
-public String methodName(@ModelAttribute passedObjectType1 passedObjectName1[, @ModelAttribute passedObjectType2 passedObjectName2, ...], Model model) {
-    return serviceName.serviceMethod(passedObjectName1[, passedObjectName2, ...], model);
-}
-...
-public String serviceMethod(passedObjectType1 passedObjectName1[, passedObjectType2 passedObjectName2, ...], Model model) {
-    if (testing passedObjectNameX for properness) {
-        //processing passedObjectNameX
-	    model.addAttribute("html_attribute_name", object_variable_or_object_or_literal); //added things in case of success
-	    return "endpointName_template_for_success"; //extension is optional and can be different
-    }
-    model.addAttribute("html_attribute_name", object_variable_or_object_or_literal); //added things in case of failure
-	return "endpointName_template_for_error"; //extension is optional and can be different, template can be identical to success template
-	}
-}
 
 EXAMPLE FOR METHOD HANDLING A POST, PUT, PATCH, DELETE REQUEST (OBJECT AS REQUEST BODY, OBJECT MODE):
 class RequestClassName {...} //somewhere in Business layer
@@ -166,6 +136,7 @@ public ResponseClassName serviceMethod(RequestClassName requestObjectName) {
     return new ResponseClassName(...); //construct with variables and literals to be sent to frontend in case of failure
 	}
 }
+END OF EXAMPLE
 
 EXAMPLE FOR METHOD HANDLING A POST, PUT, PATCH, DELETE REQUEST (MAP AS REQUEST BODY, OBJECT MODE):
 class ResponseClassName {...} //somewhere in Business layer
@@ -189,31 +160,47 @@ public ResponseClassName serviceMethod(String variableName1[, String variableNam
     return new ResponseClassName(...); //construct with variables and literals to be sent to frontend in case of failure
 	}
 }
+END OF EXAMPLE
 
-EXAMPLE FOR METHOD HANDLING A POST, PUT, PATCH, DELETE REQUEST (OBJECT/MODELANDVIEW MODE):
+EXAMPLE FOR METHOD HANDLING A POST, PUT, PATCH, DELETE REQUEST (MODEL&VIEW MODE):
 @PostMapping("/endpointName") //or:
 @PutMapping("/endpointName") //or:
 @PatchMapping("/endpointName") //or:
 @DeleteMapping("/endpointName")
-@ResponseBody
-public ModelAndView methodName(@ModelAttribute passedObjectType1 passedObjectName1[, @ModelAttribute passedObjectType2 passedObjectName2, ...], Model model) {
-    return serviceName.serviceMethod(passedObjectName1[, passedObjectName2, ...], new ModelAndView("view_name", model.asMap());
+public String methodName(
+        @ModelAttribute("parameter_name1") passedObjectType1 passedObjectName1,
+        @ModelAttribute("parameter_name2") passedObjectType2 passedObjectName2,,
+        ...,
+        Model model) {
+	ModelAndView modelAndView = service.serviceMethod("initial_view_name", passedObjectName1, passedObjectName2, ...);
+	model.addAllAttributes(modelAndView.getModel());
+	return modelAndView.getViewName();
 }
 ...
-public ModelAndView serviceMethod(passedObjectType1 passedObjectName1[, passedObjectType2 passedObjectName2, ...], ModelAndView modelAndView) {
+public ModelAndView serviceMethod(
+        String initialView,
+        passedObjectType1 passedObjectName1,
+        passedObjectType2 passedObjectName2,
+        ...) {
     if (testing passedObjectNameX for properness) {
+    	ModelAndView modelAndView = new ModelAndView("view_name_for_success");
         //processing passedObjectNameX
-	    modelAndView.addObject("html_attribute_name", object_variable_or_object_or_literal); //added things in case of success
-	    return modelAndView;
+    	modelAndView.addObject("html_attribute_name", attributeValue);
+    	...
+	    return modelAndView; //extension is optional and can be .html or different
     }
-    modelAndView.addObject("html_attribute_name", object_variable_or_object_or_literal); //added things in case of failure
+   	ModelAndView modelAndView = new ModelAndView("view_name_for_failure");
+	modelAndView.addObject("html_attribute_name", attributeValue);
+	...
 	return modelAndView;
 	}
 }
+END OF EXAMPLE
 
 EXAMPLE FOR METHOD HANDLING DIFFERENT REQUESTS:
 @PostMapping(value = {"/endpointName1", "/endpointName2"})
 public String methodName(...) {...}
+END OF EXAMPLE
 
 =================================================================================
 3. PARAMETERS IN REQUEST
@@ -243,6 +230,7 @@ EXAMPLE FOR PARAMETER IN REQUEST (TEMPLATE PARAMETER NAME EQUALS METHOD PARAMETE
 public String getEmployeesById(@PathVariable String id) {
     return "ID: " + id;
 }
+END OF EXAMPLE
 
 EXAMPLE FOR PARAMETER IN REQUEST (TEMPLATE PARAMETER NAME DIFFERS FROM METHOD PARAMETER NAME):
 @GetMapping("/api/employees/{id}")
@@ -251,6 +239,7 @@ public String getEmployeesById(@PathVariable("id") String employeeId) { //or:
 public String getEmployeesById(@PathVariable(value = "id") String employeeId) {
     return "ID: " + id;
 }
+END OF EXAMPLE
 
 EXAMPLE FOR MORE PARAMETERS IN REQUEST (INDEPENDENT VARIABLES):
 @GetMapping("/api/employees/{id}/{month}")
@@ -258,6 +247,7 @@ EXAMPLE FOR MORE PARAMETERS IN REQUEST (INDEPENDENT VARIABLES):
 public String getEmployeesByIdAndMonth(@PathVariable String id, @PathVariable String month) {
     return "ID: " + id + ", name: " + name;
 }
+END OF EXAMPLE
 
 EXAMPLE FOR MORE PARAMETERS IN REQUEST (SUMMARIZED INTO MAP):
 @GetMapping("/api/employees/{id}/{month}")
@@ -270,6 +260,7 @@ public String getEmployeesByIdAndMonth(@PathVariable final Map<String, String> p
     }
     return "Missing Parameters";
 }
+END OF EXAMPLE
 
 EXAMPLE FOR HANDLING THE DOT PROBLEM:
 @GetMapping("/example/{firstValue}/{secondValue:.+}")
@@ -292,6 +283,7 @@ public String getEmployeesByIdWithRequiredFalse(@PathVariable(required = false) 
         return "ID missing";
     }
 }
+END OF EXAMPLE
 
 EXAMPLE FOR HANDLING MORE ENDPOINTS WITH PARAMETERS (OPTIONAL):
 @GetMapping(value = { "/api/employeeswithoptional", "/api/employeeswithoptional/{id}" })
@@ -303,6 +295,7 @@ public String getEmployeesByIdWithOptional(@PathVariable Optional<String> id) {
         return "ID missing"; //or: handling default value
     }
 }
+END OF EXAMPLE
 
 EXAMPLE FOR HANDLING MORE ENDPOINTS WITH PARAMETERS (MAP):
 @GetMapping(value = { "/api/employeeswithmap/{id}", "/api/employeeswithmap" })
@@ -315,3 +308,4 @@ public String getEmployeesByIdWithMap(@PathVariable Map<String, String> pathVars
         return "ID missing";
     }
 }
+END OF EXAMPLE

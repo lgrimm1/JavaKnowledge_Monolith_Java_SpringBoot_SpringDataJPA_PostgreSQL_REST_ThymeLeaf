@@ -34,7 +34,7 @@ In case the same class should have more than one validation rule set, either cre
 Failed validation will raise a certain exception with an exception message declared with the condition for which the validation failed.
 Coming from Spring, the exception will instruct the Communication layer that instead of success, a HTTP error code and that message will be sent towards the frontend.
 In order to have that message included into the HTTP response, two conditions must be met:
-    a. the return object (or primitive) type of the corresponding controller method must be String or ResponseEntity<T> or ModelAndView (object, object/model&view and view modes)
+    a. the return object (or primitive) type of the corresponding controller method must be String or ResponseEntity<T> or ModelAndView (object and model&view modes)
     b. the custom exception message output must be allowed in the application.properties config file
 The config file should have this line:
     server.error.include-message=always

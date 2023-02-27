@@ -21,41 +21,36 @@ SPRING MODELANDVIEW
 1. GENERALLY
 =================================================================================
 The Communication layer as a whole, or endpoints of the layer can work in two different modes:
-    a. view mode
+    a. model&view mode
     b. object mode
 
-The view mode covers working with models and templates. That said, the sent payload is rendered into a Model object, and the payload is sent to a template.
+The model&view mode covers working with models and templates. That said, the sent payload is rendered into a Model object, and the payload is sent to a template.
 The return value of the controller method must be a String which contains the name of the view, Spring attaches the Model to it.
 The Model object can contain several objects.
-An endpoint, and through the endpoints the controller can not comply to the REST standard. This technique was used in earlier Spring versions.
-
-The object mode is REST compatible. The endpoint sends an object along with HTTP response code and headers which altogether form the payload.
-The return value of the controller method is identical to the object part of the payload, in serialized format like JSON.
-
-Spring enables accessing templates while complying to the REST standard by utilizing the ModelAndView class.
-With this, the controller method will work in object mode while Spring will send the payload with HTTP code to a specific view.
-In order to distinguish this mode from object mode, although this technique works in object mode as well, it is commonly called Model&View mode.
-The return value of the controller method will be ModelAndView which contains the view or its name, the sent objects and the response HTTP code.
+An endpoint, and through the endpoints the controller can not comply to the REST standard.
 
 =================================================================================
 2. CONTROLLER AND SERVICE IN MODEL&VIEW
 =================================================================================
 In order to form an API, thin controller is needed. That said, the controller is separated from the Business layer. Thin controller means thin endpoints along.
-As in view mode, the controller method receives a new Model object in its argument list.
+The controller method receives a new (empty) Model object in its argument list.
 
 EXAMPLE FOR THIN CONTROLLER ENDPOINT (MODEL&VIEW):
 @GetMapping("/endpoint") //or other request type(s)
-public ModelAndView controllerMethodName([received request parameters, ]Model model) {
-	return serviceObject.serviceMethodName([sent request parameters, ]new ModelAndView("initial_view_name", model.asMap()));
+public String controllerMethodName([received request parameters marked with @ModelAttribute, ]Model model) {
+	ModelAndView modelAndView = serviceObject.serviceMethodName("initial_view_name"[, sent request parameters]);
+	model.addAllAttributes(modelAndView.getModel());
+	return modelAndView.getViewName();
 }
 END OF EXAMPLE
 
-The model which contains object, has Map<String, ?> type where the keys are HTML attribute names, the values are the corresponding objects of any class. In order to access a value, casting will be necessary in the Business layer.
-On Business layer side, the correspondent service method will be invoked which returns the same ModelAndView object but filled with elements of the payload.
+The Model part of ModelAndView object contains objects, organized into a Map<String, Object> type where the keys are HTML attribute names, the values are the corresponding objects of any class. In order to access a value, casting will be necessary in the Business layer.
+On Business layer side, the correspondent service method will be invoked which returns a ModelAndView object filled with elements of the payload and the name of the view.
 
 EXAMPLE FOR SERVICE METHOD (MODEL&VIEW):
-public ModelAndView serviceMethodName([received request parameters, ]ModelAndView modelAndView) {
+public ModelAndView serviceMethodName(String initialView[, received request parameters]) {
     //process
+    ModelAndView modelAndView = new ModelAndView(initialView); //if needed
     modelAndView.addObject("html_attribute_name1", object_variable_or_object_or_literal1);
     modelAndView.addObject("html_attribute_name2", object_variable_or_object_or_literal2);
 	modelAndView.setViewName("final_view_name"); //optionally, if needed
@@ -77,7 +72,6 @@ The constructor parameters of ModelAndView can have the next main variants:
     g. (no arguments)
 
 It is possible to create a ModelAndView object without defining the view name (or the View). This can be done only by giving no arguments to the constructor.
-However, a Model is received from the endpoint. Although this Model should be empty, any Spring version can fill it with pre-prepared data in which case the Model must be passed to the ModelAndView at first hand before invoking the service method.
 
 =================================================================================
 4. METHODS
@@ -119,31 +113,33 @@ This class is inherited from the Map interface, additional methods are below.
 The return value of add...() and merge...() methods is ModelMap therefore it is possible to chain these methods.
 
 EXAMPLE FOR CHAINING MODELMAP METHODS:
-public ModelAndView serviceMethod(ModelAndView modelAndView) {
-modelAndView.getModelMap()
-        .addAttribute("attribute_name1", object1)
-        .addAttribute("attribute_name2", object2)
-        .addAttribute("attribute_name3", object3);
+public ModelAndView serviceMethod(String initialView) {
+    ModelAndView modelAndView = new ModelAndView(initialView);
+    modelAndView.getModelMap()
+            .addAttribute("attribute_name1", object1)
+            .addAttribute("attribute_name2", object2)
+            .addAttribute("attribute_name3", object3);
 }
 END OF EXAMPLE
 
 =================================================================================
 5. TESTING
 =================================================================================
-Please note that in tests when stored attributes are checked with assertions, assertEquals(true|false, ...) is preferred over assertTrue|assertFalse() on Boolean HTML attributes.
-Similarly, assertEquals(new ArraysList<>(), ...) is preferred over checking emptiness of a List with assertTrue|assertFalse(...isEmpty()).
 Full test an attribute requires tree steps:
     a. checking existence of the attribute
     b. checking class of the attribute
     c. checking content of the attribute
 
-EXAMPLE FOR TESTING MODELANDVIEW:
-ModelAndView result = ... //invoking tested method
+With JUnit, please note that in tests when stored attributes are checked with Assertions, assertEquals(true|false, ...) is preferred over assertTrue|assertFalse() on Boolean HTML attributes.
+Similarly, assertEquals(new ArraysList<>(), ...) is preferred over checking emptiness of a List with assertTrue|assertFalse(...isEmpty()).
 
-Assertions.assertTrue(result.hasView());
-Assertions.assertEquals("view_name", result.getViewName());
+EXAMPLE FOR TESTING MODELANDVIEW (JUNIT ASSERTIONS):
+ModelAndView modelAndView = ... //invoking tested method
 
-ModelMap modelMap = result.getModelMap();
+Assertions.assertTrue(modelAndView.hasView());
+Assertions.assertEquals("view_name", modelAndView.getViewName());
+
+ModelMap modelMap = modelAndView.getModelMap();
 Assertions.assertEquals(numberOfExpectedContainedAttributes, modelMap.size());
 
 //check against expected value (generally)
@@ -165,4 +161,19 @@ Assertions.assertEquals("", modelMap.getAttribute("html_attribute_name"));
 Assertions.assertTrue(modelMap.containsAttribute("html_array_attribute_name"));
 Assertions.assertTrue(modelMap.getAttribute("html_array_attribute_name") instanceof List);
 Assertions.assertEquals(new ArrayList<>(), modelMap.getAttribute("html_array_attribute_name"));
+END OF EXAMPLE
+
+EXAMPLE FOR TESTING MODELANDVIEW (MODELANDVIEWASSERT):
+ModelAndView expectedModelAndView = new ModelAndView("view_name");
+expectedModelAndView.getModelMap().addAttribute("html_attribute_name", attribute_value);
+//mock service method if needed, returns expectedModelAndView
+
+ModelAndView modelAndView = ... //invoke tested method
+ModelAndViewAssert.assertViewName(modelAndView, "view_name");
+
+ModelAndViewAssert.assertModelAttributeValues(modelAndView, expectedModelAndView.getModel()); //or:
+
+ModelAndViewAssert.assertModelAttributeAvailable(modelAndView, "html_attribute_name");
+ModelAndViewAssert.assertAndReturnModelAttributeOfType(modelAndView, "html_attribute_name", Element.class);
+ModelAndViewAssert.assertModelAttributeValue(modelAndView, "html_attribute_name", attribute_value);
 END OF EXAMPLE

@@ -40,6 +40,7 @@ public class Main {
 		SpringApplication.run(Main.class, args);
 	}
 }
+END OF EXAMPLE
 
 The application context means what objects and variables are created at a certain point of the program flow.
 In case of Spring Boot, the context means the class and object structure existing when the flow reaches the SpringApplication.run(). It is possible to catch the context by storing the returned value of this method.
@@ -61,6 +62,7 @@ public class Main {
 		ClassName variable = context.getBean(ClassName.class); //addresses the object created from ClassName class at web app startup
 	}
 }
+END OF EXAMPLE
 
 In case the class dependency injection follows Spring best practices, any getBean() will return the original object created at web app launch.
 In case a class is marked with @Scope(value = "prototype") annotation as well, Spring will not create singleton from that class but keep it as prototype.

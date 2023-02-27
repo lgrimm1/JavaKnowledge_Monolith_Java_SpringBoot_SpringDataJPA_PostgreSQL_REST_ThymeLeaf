@@ -114,19 +114,14 @@ As normally, under the src/test/java/<package> folder, the tests will be created
 Service classes need creating their corresponding storage instances first since these objects are needed for class dependency injection in constructors of the service classes. In case this version is followed, the tests will be dependent since the storage classes will be used during tests.
 Best practice in order to gain independent unit tests, is to use mocked repository (storage) classes injected into the right controllers.
 
-In view mode, in case of best practice, the controller class should be thin, the controller method passes the Model object to the service method to manipulate.
-The Model object is constructed by Spring, and there is no public method to create a new one. That said, examining the Model object in service class is not possible.
-Workaround is, the service method must return a Map of objects and to the Model object this Map should be added in the controller class. The controller class will not be the thinnest but acceptable in view mode.
-
-In object/model&view mode, in case of best practice, the controller class is thin, the controller method passes a new ModelAndView object to the service method to manipulate.
-That said, examining the ModelAndView object in service class for the stored data, view name and HTTP response code (if needed) is appropriate.
+In model&view mode, in case of best practice, the controller class should be thin. The controller method receives an empty Model object from Spring which should be filled with data prepared by the service method.
+There is no public method to create a new Method object. That said, examining the Model object in service class is not possible.
+Workaround is, the service method must return a ModelAndView object with the view name and the model included, and the model objects should be added to the Model in the controller class. The controller class will be thin but not the thinnest which is acceptable in model&view mode.
 
 EXAMPLE FOR SERVICE CLASS TEST CLASS (NOT INDEPENDENT UNIT TEST):
 import org.junit.jupiter.api.*;
 import org.springframework.ui.*;
 import org.springframework.web.servlet.*;
-
-import java.util.*;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 
@@ -148,14 +143,13 @@ class ServiceTest {
 }
 END OF EXAMPLE
 
-EXAMPLE FOR SERVICE CLASS TEST CLASS (MOCKING, INDEPENDENT UNIT TEST, OBJECT MODE):
+EXAMPLE FOR SERVICE CLASS TEST CLASS (MOCKING, INDEPENDENT UNIT TEST):
 import org.junit.jupiter.api.*;
 import org.mockito.Mockito;
 import org.mockito.*;
+import org.springframework.test.web.*;
 import org.springframework.ui.*;
 import org.springframework.web.servlet.*;
-
-import java.util.*;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
@@ -176,60 +170,48 @@ class ServiceTest {
 		serviceName = new ServiceClassName(repositoryName);
 	}
 
-    //tests of service class
-	@Test
-	void testName() {
-	    //setting up local behaviours for repository
-
-	    Assertions.assertEquals(new Element(12, "abc", 3.14d), serviceName.get(12));
-	}
+    //test methods
 }
 END OF EXAMPLE
 
-EXAMPLE FOR SERVICE CLASS TEST CLASS (MOCKING, INDEPENDENT UNIT TEST, OBJECT/MODELANDVIEW MODE):
-import org.junit.jupiter.api.*;
-import org.mockito.Mockito;
-import org.mockito.*;
-import org.springframework.ui.*;
-import org.springframework.web.servlet.*;
+EXAMPLE FOR SERVICE METHOD TEST (MOCKING, INDEPENDENT UNIT TEST, OBJECT MODE):
+@Test
+void testName() {
+    //setting up local behaviours for repository
+	Assertions.assertEquals(new Element(12, "abc", 3.14d), serviceName.get(12));
+}
+END OF EXAMPLE
 
-import java.util.*;
+EXAMPLE FOR SERVICE METHOD TEST (MOCKING, INDEPENDENT UNIT TEST, MODELANDVIEW MODE, JUNIT ASSERTIONS):
+@Test
+void testName() {
+    //setting up local behaviours for repository and injected classes
 
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
+    ModelAndView modelAndView = serviceName.get(12, new ModelAndView("view_name", new HashMap<>()));
 
-class ServiceTest {
+    Assertions.assertTrue(modelAndView.hasView());
+    Assertions.assertEquals("view_name", modelAndView.getViewName());
 
-	RepositoryClassName repositoryName;
-	ServiceClassName serviceName;
+    ModelMap modelMap = modelAndView.getModelMap();
+    Assertions.assertEquals(1, modelMap.size());
 
-	@BeforeEach
-	void setUp() {
-		repositoryName = Mockito.mock(RepositoryClassName.class);
-		//setting up common mocked behaviours
-		//e.g. in case the Element is a class declared elsewhere, and
-		//repositoryName.getElement(int id) would return an Element with the passed ID, and
-		//the service get() method calls repositoryName.getElement(...), then mocking:
-		when(repositoryName.getElement(12)).thenReturn(new Element(12, "abc", 3.14d));
-		serviceName = new ServiceClassName(repositoryName);
-	}
+	Assertions.assertTrue(modelMap.getAttribute("element") instanceof Element);
+    Assertions.assertEquals(new Element(12, "abc", 3.14d), modelMap.getAttribute("element"));
+}
+END OF EXAMPLE
 
-    //tests of service class
-	@Test
-	void testName() {
-	    //setting up local behaviours for repository and injected classes
+EXAMPLE FOR SERVICE METHOD TEST (MOCKING, INDEPENDENT UNIT TEST, MODELANDVIEW MODE, MODELANDVIEWASSERT):
+@Test
+void testName() {
+    //setting up local behaviours for repository and injected classes
 
-        ModelAndView modelAndView = serviceName.get(12, new ModelAndView("view_name", new HashMap<>()));
+    ModelAndView modelAndView = serviceName.get(12, new ModelAndView("view_name", new HashMap<>());
 
-        Assertions.assertTrue(modelAndView.hasView());
-        Assertions.assertEquals("view_name", modelAndView.getViewName());
+    ModelAndViewAssert.assertViewName(modelAndView, "view_name");
 
-        ModelMap modelMap = modelAndView.getModelMap();
-        Assertions.assertEquals(1, modelMap.size());
-
-	    Assertions.assertTrue(modelMap.getAttribute("element") instanceof Element);
-	    Assertions.assertEquals(new Element(12, "abc", 3.14d), modelMap.getAttribute("element"));
-	}
+	ModelAndViewAssert.assertModelAttributeAvailable(modelAndView, "element");
+	ModelAndViewAssert.assertAndReturnModelAttributeOfType(modelAndView, "element", Element.class);
+	ModelAndViewAssert.assertModelAttributeValue(modelAndView, "element", new Element(12, "abc", 3.14d));
 }
 END OF EXAMPLE
 
@@ -241,3 +223,6 @@ For ModelAndView test examples, visit the SPRING MODELANDVIEW page.
 Visit the SPRING BOOT CONTROLLER TESTS page for description.
 
 //TODO https://www.baeldung.com/spring-boot-testing
+//TODO https://docs.spring.io/spring-framework/docs/current/reference/html/testing.html
+//TODO https://github.com/spring-projects/spring-framework/tree/main/spring-test/src/test/java/org/springframework/test/web/servlet/samples
+//TODO https://www.javatips.net/api/org.springframework.test.web.modelandviewassert

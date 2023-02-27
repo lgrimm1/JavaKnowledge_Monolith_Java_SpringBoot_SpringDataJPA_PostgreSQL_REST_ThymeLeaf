@@ -16,14 +16,14 @@ SPRING THYMELEAF
 =================================================================================
 1. GENERALLY
 =================================================================================
+The Spring ThymeLeaf is an extension of Spring Boot which enables using automated templates of frontend for backend communication in model&view mode.
+A template is an JSON/HTML/XML/etc. page into which the answer is injected via defining HTML variables and e.g. Javascript codes.
+
 On frontend side, different file formats can be used, e.g. HTML or PHP.
 The frontend communicates with the backend through the Communication layer of the backend.
 Basically, the frontend sends requests to the backend on which the backend sends answers.
 The answers are data which can be rendered into HTML, PHP etc. pages.
 Above the pages, frontend scripts can form an other layer with which data manipulation, visual elements etc. can be managed, also the data sent back to the server.
-
-The Spring ThymeLeaf is an extension of Spring Boot which enables using automated templates of frontend for backend communication in view and object mode, for the latter, via utilizing the ModelAndView object.
-A template is an JSON/HTML/XML/etc. page into which the answer is injected via defining HTML variables and e.g. Javascript codes.
 
 =================================================================================
 2. SETTING UP

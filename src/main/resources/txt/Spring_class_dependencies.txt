@@ -29,6 +29,7 @@ class Class2 {
         this.variable = variable;
     }
 }
+END OF EXAMPLE
 
 EXAMPLE FOR CLASS DEPENDENCY INJECTION (SPRING, @AUTOWIRED PROTOTYPE):
 import org.springframework.context.annotation.*;
@@ -41,6 +42,7 @@ class Class2 {
     @Autowired
     private Class1 variable;
 }
+END OF EXAMPLE
 
 EXAMPLE FOR CLASS DEPENDENCY INJECTION (SPRING, @AUTOWIRED):
 import org.springframework.stereotype.*;
@@ -51,6 +53,7 @@ class Class2 {
     @Autowired
     private Class1 variable;
 }
+END OF EXAMPLE
 
 EXAMPLE FOR CLASS DEPENDENCY INJECTION (SINGLETON INJECTION):
 import org.springframework.stereotype.*;
@@ -67,6 +70,7 @@ class Class2 {
         this.variable = Class1.getInstance();
     }
 }
+END OF EXAMPLE
 
 EXAMPLE FOR CLASS DEPENDENCY INJECTION (CONSTRUCTOR OUTSIDE CONTAINER CLASS):
 import org.springframework.stereotype.*;
@@ -79,6 +83,7 @@ class Class2 {
         this.variable = variable;
     }
 }
+END OF EXAMPLE
 
 EXAMPLE FOR CLASS DEPENDENCY INJECTION (CONSTRUCTOR WITHIN CONTAINER CONSTRUCTOR):
 import org.springframework.stereotype.*;
@@ -91,6 +96,7 @@ class Class2 {
         this.variable = new Class1();
     }
 }
+END OF EXAMPLE
 
 Spring will use the class name for identifying a dependency (component).
 In case the class name is not appropriate or there are component classes with the same name but in different packages, must differentiate between them by using component naming:
@@ -106,6 +112,7 @@ class Class2 {
     @Qualifier("altName")
     private Class1 variable1;
 }
+END OF EXAMPLE
 
 =>CLASSES;13. CLASS DEPENDENCY INJECTION
 =>SPRING BOOT

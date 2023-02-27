@@ -13,5 +13,5 @@ Disadvantage is that the conditions set on a field become static and there is no
 Validation method(s) in service class for the entity below that class provides flexibility since the validation can be parametrized.
 Disadvantage is the need of coding.
 
-=>Spring_Validation
+=>SPRING BOOT VALIDATION
 =>SPRING BOOT SERVICE VALIDATION METHODS
