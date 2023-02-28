@@ -47,9 +47,8 @@ public class CommonService {
 		this.htmlGenerators = htmlGenerators;
 	}
 
-	public ModelAndView getRoot(String initialView, ModelAndView modelAndView) {
-//		ModelAndView modelAndView = new ModelAndView(initialView);
-		modelAndView.setViewName(initialView);
+	public ModelAndView getRoot(String initialView) {
+		ModelAndView modelAndView = new ModelAndView(initialView);
 		modelAndView.addObject("search_text", "");
 		return modelAndView;
 	}
@@ -60,7 +59,8 @@ public class CommonService {
 	 * The search trims the given text and ignores case.
 	 * In case there is no search text given, returns all titles.
 	 */
-	public ModelAndView searchPages(String searchText, @NonNull ModelAndView modelAndView) {
+	public ModelAndView searchPages(String initialView, String searchText) {
+		ModelAndView modelAndView = new ModelAndView(initialView);
 		if (searchText == null || searchText.isBlank()) {
 			modelAndView.addObject("titles", processRecords.getAllTitles(titleRepository));
 		}
@@ -76,12 +76,13 @@ public class CommonService {
 		return modelAndView;
 	}
 
-	public ModelAndView getPage(List<String> titles, @NonNull ModelAndView modelAndView) {
+	public ModelAndView getPage(String initialView, List<String> titles) {
 		//TODO open one or more static pages
-		return modelAndView;
+		return new ModelAndView();
 	}
 
-	public ModelAndView managePages(@NonNull ModelAndView modelAndView) {
+	public ModelAndView managePages(String initialView) {
+		ModelAndView modelAndView = new ModelAndView(initialView);
 		modelAndView.addObject("titles", processRecords.getAllTitles(titleRepository));
 		modelAndView.addObject("files", new ArrayList<File>());
 		modelAndView.addObject("confirm", false);
@@ -89,7 +90,8 @@ public class CommonService {
 		return modelAndView;
 	}
 
-	public ModelAndView createSourcePage(@NonNull ModelAndView modelAndView) {
+	public ModelAndView createSourcePage(String initialView) {
+		ModelAndView modelAndView = new ModelAndView(initialView);
 		modelAndView.addObject("title", "");
 		modelAndView.addObject("file_name", "");
 		modelAndView.addObject("content", new ArrayList<String>());
@@ -98,7 +100,8 @@ public class CommonService {
 		return modelAndView;
 	}
 
-	public ModelAndView editSourcePage(List<String> titles, @NonNull ModelAndView modelAndView) {
+	public ModelAndView editSourcePage(String initialView, List<String> titles) {
+		ModelAndView modelAndView = new ModelAndView(initialView);
 		if (titles == null || titles.size() != 1 || titles.get(0) == null || titles.get(0).isBlank()) {
 			modelAndView.addObject("titles", processRecords.getAllTitles(titleRepository));
 			modelAndView.addObject("files", new ArrayList<File>());
@@ -139,7 +142,8 @@ public class CommonService {
 		return modelAndView;
 	}
 
-	public ModelAndView deletePages(List<String> titles, Boolean confirm, ModelAndView modelAndView) {
+	public ModelAndView deletePages(String initialView, List<String> titles, Boolean confirm) {
+		ModelAndView modelAndView = new ModelAndView(initialView);
 		if (titles == null || titles.size() == 0 || !confirm) {
 			modelAndView.addObject("titles", processRecords.getAllTitles(titleRepository));
 			modelAndView.addObject("files", new ArrayList<File>());
@@ -180,7 +184,8 @@ public class CommonService {
 		return modelAndView;
 	}
 
-	public ModelAndView publishPages(ModelAndView modelAndView) {
+	public ModelAndView publishPages(String initialView) {
+		ModelAndView modelAndView = new ModelAndView(initialView);
 		modelAndView.addObject("titles", processRecords.getAllTitles(titleRepository));
 		modelAndView.addObject("files", new ArrayList<File>());
 		modelAndView.addObject("confirm", false);
@@ -190,12 +195,13 @@ public class CommonService {
 		return modelAndView;
 	}
 
-	public ModelAndView addFormula(String formulaName,
+	public ModelAndView addFormula(String initialView,
+								   String formulaName,
 								   String title,
 								   String fileName,
 								   List<String> content,
-								   Boolean editExistingPage,
-								   ModelAndView modelAndView) {
+								   Boolean editExistingPage) {
+		ModelAndView modelAndView = new ModelAndView(initialView);
 		if (title == null || title.isBlank()) {
 			title = "";
 		}
@@ -223,11 +229,12 @@ public class CommonService {
 		return modelAndView;
 	}
 
-	public ModelAndView savePage(String title,
+	public ModelAndView savePage(String initialView,
+								 String title,
 								 String fileName,
 								 List<String> content,
-								 Boolean editExistingPage,
-								 ModelAndView modelAndView) {
+								 Boolean editExistingPage) {
+		ModelAndView modelAndView = new ModelAndView(initialView);
 		if (title == null || title.isBlank()) {
 			title = "";
 			modelAndView.addObject("message", "Please define a title.");
@@ -278,7 +285,8 @@ public class CommonService {
 		return modelAndView;
 	}
 
-	public ModelAndView importTxt(List<File> files, Boolean confirm, ModelAndView modelAndView) {
+	public ModelAndView importTxt(String initialView, List<File> files, Boolean confirm) {
+		ModelAndView modelAndView = new ModelAndView(initialView);
 		if (files == null || files.isEmpty() || confirm == null || !confirm) {
 			modelAndView.addObject("titles", processRecords.getAllTitles(titleRepository));
 			modelAndView.addObject("files", new ArrayList<File>());
@@ -305,7 +313,8 @@ public class CommonService {
 		return modelAndView;
 	}
 
-	public ModelAndView generateHtml(Boolean confirm, ModelAndView modelAndView) {
+	public ModelAndView generateHtml(String initialView, Boolean confirm) {
+		ModelAndView modelAndView = new ModelAndView(initialView);
 		if (confirm == null || !confirm) {
 			modelAndView.addObject("titles", processRecords.getAllTitles(titleRepository));
 			modelAndView.addObject("files", new ArrayList<File>());

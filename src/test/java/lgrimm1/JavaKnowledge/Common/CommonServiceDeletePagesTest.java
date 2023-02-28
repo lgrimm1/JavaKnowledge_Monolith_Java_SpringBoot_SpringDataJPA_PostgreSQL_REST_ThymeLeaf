@@ -6,6 +6,7 @@ import lgrimm1.JavaKnowledge.Title.*;
 import lgrimm1.JavaKnowledge.Txt.*;
 import org.junit.jupiter.api.*;
 import org.mockito.*;
+import org.springframework.test.web.*;
 import org.springframework.ui.*;
 import org.springframework.web.servlet.*;
 
@@ -51,156 +52,103 @@ class CommonServiceDeletePagesTest {
 
 	@Test
 	void deletePagesNullTitles() {
+		List<String> titles = List.of("Title 1", "Title 2");
 		when(processRecords.getAllTitles(titleRepository))
-				.thenReturn(List.of("Title 1", "Title 2"));
-		ModelAndView result = commonService.deletePages(null, true, new ModelAndView("management", new HashMap<>()));
+				.thenReturn(titles);
 
-		Assertions.assertTrue(result.hasView());
-		Assertions.assertEquals("management", result.getViewName());
+		Map<String, Object> map = new HashMap<>();
+		map.put("titles", titles);
+		map.put("files", new ArrayList<>());
+		map.put("confirm", false);
+		map.put("message", "Please select titles you wish to delete.");
 
-		ModelMap modelMap = result.getModelMap();
-		Assertions.assertEquals(4, modelMap.size());
+		ModelAndView modelAndView = commonService.deletePages("management", null, true);
 
-		Assertions.assertTrue(modelMap.containsAttribute("titles"));
-		Assertions.assertTrue(modelMap.getAttribute("titles") instanceof List);
-		Assertions.assertEquals(List.of("Title 1", "Title 2"), modelMap.getAttribute("titles"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("files"));
-		Assertions.assertTrue(modelMap.getAttribute("files") instanceof List);
-		Assertions.assertEquals(new ArrayList<>(), modelMap.getAttribute("files"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("confirm"));
-		Assertions.assertTrue(modelMap.getAttribute("confirm") instanceof Boolean);
-		Assertions.assertEquals(false, modelMap.getAttribute("confirm"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("message"));
-		Assertions.assertTrue(modelMap.getAttribute("message") instanceof String);
-		Assertions.assertEquals("Please select titles you wish to delete.", modelMap.getAttribute("message"));
+		ModelAndViewAssert.assertViewName(modelAndView, "management");
+		ModelAndViewAssert.assertModelAttributeValues(modelAndView, map);
 	}
 
 	@Test
 	void deletePagesNoTitles() {
+		List<String> titles = List.of("Title 1", "Title 2");
 		when(processRecords.getAllTitles(titleRepository))
-				.thenReturn(List.of("Title 1", "Title 2"));
-		ModelAndView result = commonService.deletePages(new ArrayList<>(), true, new ModelAndView("management", new HashMap<>()));
+				.thenReturn(titles);
 
-		Assertions.assertTrue(result.hasView());
-		Assertions.assertEquals("management", result.getViewName());
+		Map<String, Object> map = new HashMap<>();
+		map.put("titles", titles);
+		map.put("files", new ArrayList<>());
+		map.put("confirm", false);
+		map.put("message", "Please select titles you wish to delete.");
 
-		ModelMap modelMap = result.getModelMap();
-		Assertions.assertEquals(4, modelMap.size());
+		ModelAndView modelAndView = commonService.deletePages("management", new ArrayList<>(), true);
 
-		Assertions.assertTrue(modelMap.containsAttribute("titles"));
-		Assertions.assertTrue(modelMap.getAttribute("titles") instanceof List);
-		Assertions.assertEquals(List.of("Title 1", "Title 2"), modelMap.getAttribute("titles"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("files"));
-		Assertions.assertTrue(modelMap.getAttribute("files") instanceof List);
-		Assertions.assertEquals(new ArrayList<>(), modelMap.getAttribute("files"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("confirm"));
-		Assertions.assertTrue(modelMap.getAttribute("confirm") instanceof Boolean);
-		Assertions.assertEquals(false, modelMap.getAttribute("confirm"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("message"));
-		Assertions.assertTrue(modelMap.getAttribute("message") instanceof String);
-		Assertions.assertEquals("Please select titles you wish to delete.", modelMap.getAttribute("message"));
+		ModelAndViewAssert.assertViewName(modelAndView, "management");
+		ModelAndViewAssert.assertModelAttributeValues(modelAndView, map);
 	}
 
 	@Test
 	void deletePagesNotConfirmed() {
+		List<String> titles = List.of("Title 1", "Title 2");
 		when(processRecords.getAllTitles(titleRepository))
-				.thenReturn(List.of("Title 1", "Title 2"));
-		ModelAndView result = commonService.deletePages(List.of("Title 3", "Title 4"), false, new ModelAndView("management", new HashMap<>()));
+				.thenReturn(titles);
 
-		Assertions.assertTrue(result.hasView());
-		Assertions.assertEquals("management", result.getViewName());
+		Map<String, Object> map = new HashMap<>();
+		map.put("titles", titles);
+		map.put("files", new ArrayList<>());
+		map.put("confirm", false);
+		map.put("message", "Please confirm deletion.");
 
-		ModelMap modelMap = result.getModelMap();
-		Assertions.assertEquals(4, modelMap.size());
+		List<String> requestTitles = List.of("Title 3", "Title 4");
+		ModelAndView modelAndView = commonService.deletePages("management", requestTitles, false);
 
-		Assertions.assertTrue(modelMap.containsAttribute("titles"));
-		Assertions.assertTrue(modelMap.getAttribute("titles") instanceof List);
-		Assertions.assertEquals(List.of("Title 1", "Title 2"), modelMap.getAttribute("titles"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("files"));
-		Assertions.assertTrue(modelMap.getAttribute("files") instanceof List);
-		Assertions.assertEquals(new ArrayList<>(), modelMap.getAttribute("files"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("confirm"));
-		Assertions.assertTrue(modelMap.getAttribute("confirm") instanceof Boolean);
-		Assertions.assertEquals(false, modelMap.getAttribute("confirm"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("message"));
-		Assertions.assertTrue(modelMap.getAttribute("message") instanceof String);
-		Assertions.assertEquals("Please confirm deletion.", modelMap.getAttribute("message"));
+		ModelAndViewAssert.assertViewName(modelAndView, "management");
+		ModelAndViewAssert.assertModelAttributeValues(modelAndView, map);
 	}
 
 	@Test
 	void deletePagesWithNoValidTitles() {
+		List<String> titles = List.of("Title 1", "Title 2");
 		when(processRecords.getAllTitles(titleRepository))
-				.thenReturn(List.of("Title 1", "Title 2"));
-		List<String> titles = new ArrayList<>();
-		titles.add(null);
-		titles.add("  ");
-		ModelAndView result = commonService.deletePages(titles, true, new ModelAndView("management", new HashMap<>()));
+				.thenReturn(titles);
 
-		Assertions.assertTrue(result.hasView());
-		Assertions.assertEquals("management", result.getViewName());
+		Map<String, Object> map = new HashMap<>();
+		map.put("titles", titles);
+		map.put("files", new ArrayList<>());
+		map.put("confirm", false);
+		map.put("message", "Please select existing titles you wish to delete.");
 
-		ModelMap modelMap = result.getModelMap();
-		Assertions.assertEquals(4, modelMap.size());
+		List<String> requestTitles = new ArrayList<>();
+		requestTitles.add(null);
+		requestTitles.add("  ");
+		ModelAndView modelAndView = commonService.deletePages("management", requestTitles, true);
 
-		Assertions.assertTrue(modelMap.containsAttribute("titles"));
-		Assertions.assertTrue(modelMap.getAttribute("titles") instanceof List);
-		Assertions.assertEquals(List.of("Title 1", "Title 2"), modelMap.getAttribute("titles"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("files"));
-		Assertions.assertTrue(modelMap.getAttribute("files") instanceof List);
-		Assertions.assertEquals(new ArrayList<>(), modelMap.getAttribute("files"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("confirm"));
-		Assertions.assertTrue(modelMap.getAttribute("confirm") instanceof Boolean);
-		Assertions.assertEquals(false, modelMap.getAttribute("confirm"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("message"));
-		Assertions.assertTrue(modelMap.getAttribute("message") instanceof String);
-		Assertions.assertEquals("Please select existing titles you wish to delete.", modelMap.getAttribute("message"));
+		ModelAndViewAssert.assertViewName(modelAndView, "management");
+		ModelAndViewAssert.assertModelAttributeValues(modelAndView, map);
 	}
 
 	@Test
 	void deletePagesWithValidTitles() {
+		List<String> restOfTitles = List.of("Title 1", "Title 2");
 		when(processRecords.getAllTitles(titleRepository))
-				.thenReturn(List.of("Title 1", "Title 2"));
-		when(processRecords.deleteByTitles(List.of("Title 3", "Title 4"), titleRepository, txtRepository, htmlRepository))
+				.thenReturn(restOfTitles);
+
+		List<String> cleanedRequestTitles = List.of("Title 3", "Title 4");
+		when(processRecords.deleteByTitles(cleanedRequestTitles, titleRepository, txtRepository, htmlRepository))
 				.thenReturn(1L);
-		List<String> titles = new ArrayList<>();
-		titles.add(null);
-		titles.add("  ");
-		titles.add("Title 3");
-		titles.add("Title 4");
-		ModelAndView result = commonService.deletePages(titles, true, new ModelAndView("management", new HashMap<>()));
 
-		Assertions.assertTrue(result.hasView());
-		Assertions.assertEquals("management", result.getViewName());
+		Map<String, Object> map = new HashMap<>();
+		map.put("titles", restOfTitles);
+		map.put("files", new ArrayList<>());
+		map.put("confirm", false);
+		map.put("message", "1 of 2 titles were deleted.");
 
-		ModelMap modelMap = result.getModelMap();
-		Assertions.assertEquals(4, modelMap.size());
+		List<String> requestTitles = new ArrayList<>();
+		requestTitles.add(null);
+		requestTitles.add("  ");
+		requestTitles.addAll(cleanedRequestTitles);
+		ModelAndView modelAndView = commonService.deletePages("management", requestTitles, true);
 
-		Assertions.assertTrue(modelMap.containsAttribute("titles"));
-		Assertions.assertTrue(modelMap.getAttribute("titles") instanceof List);
-		Assertions.assertEquals(List.of("Title 1", "Title 2"), modelMap.getAttribute("titles"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("files"));
-		Assertions.assertTrue(modelMap.getAttribute("files") instanceof List);
-		Assertions.assertEquals(new ArrayList<>(), modelMap.getAttribute("files"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("confirm"));
-		Assertions.assertTrue(modelMap.getAttribute("confirm") instanceof Boolean);
-		Assertions.assertEquals(false, modelMap.getAttribute("confirm"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("message"));
-		Assertions.assertTrue(modelMap.getAttribute("message") instanceof String);
-		Assertions.assertEquals("1 of 2 titles were deleted.", modelMap.getAttribute("message"));
+		ModelAndViewAssert.assertViewName(modelAndView, "management");
+		ModelAndViewAssert.assertModelAttributeValues(modelAndView, map);
 	}
 }

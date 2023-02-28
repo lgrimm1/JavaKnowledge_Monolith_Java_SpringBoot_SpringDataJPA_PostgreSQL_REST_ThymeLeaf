@@ -6,6 +6,7 @@ import lgrimm1.JavaKnowledge.Title.*;
 import lgrimm1.JavaKnowledge.Txt.*;
 import org.junit.jupiter.api.*;
 import org.mockito.*;
+import org.springframework.test.web.*;
 import org.springframework.ui.*;
 import org.springframework.web.servlet.*;
 
@@ -60,33 +61,18 @@ class CommonServiceAddFormulaTest {
 
 		when(formulas.getFormula(null))
 				.thenReturn("");
-		ModelAndView result = commonService.addFormula(null, title, fileName, content, editExistingPage, new ModelAndView("source", new HashMap<>()));
 
-		Assertions.assertTrue(result.hasView());
-		Assertions.assertEquals("source", result.getViewName());
+		Map<String, Object> map = new HashMap<>();
+		map.put("title", title);
+		map.put("file_name", fileName);
+		map.put("content", content);
+		map.put("edit_existing_page", true);
+		map.put("message", "Wrong formula name was asked.");
 
-		ModelMap modelMap = result.getModelMap();
-		Assertions.assertEquals(5, modelMap.size());
+		ModelAndView modelAndView = commonService.addFormula("source", null, title, fileName, content, editExistingPage);
 
-		Assertions.assertTrue(modelMap.containsAttribute("title"));
-		Assertions.assertTrue(modelMap.getAttribute("title") instanceof String);
-		Assertions.assertEquals(title, modelMap.getAttribute("title"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("file_name"));
-		Assertions.assertTrue(modelMap.getAttribute("file_name") instanceof String);
-		Assertions.assertEquals(fileName, modelMap.getAttribute("file_name"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("content"));
-		Assertions.assertTrue(modelMap.getAttribute("content") instanceof List);
-		Assertions.assertEquals(content, modelMap.getAttribute("content"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("edit_existing_page"));
-		Assertions.assertTrue(modelMap.getAttribute("edit_existing_page") instanceof Boolean);
-		Assertions.assertEquals(editExistingPage, modelMap.getAttribute("edit_existing_page"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("message"));
-		Assertions.assertTrue(modelMap.getAttribute("message") instanceof String);
-		Assertions.assertEquals("Wrong formula name was asked.", modelMap.getAttribute("message"));
+		ModelAndViewAssert.assertViewName(modelAndView, "source");
+		ModelAndViewAssert.assertModelAttributeValues(modelAndView, map);
 	}
 
 	@Test
@@ -101,33 +87,18 @@ class CommonServiceAddFormulaTest {
 
 		when(formulas.getFormula(formulaName))
 				.thenReturn("");
-		ModelAndView result = commonService.addFormula(formulaName, title, fileName, content, editExistingPage, new ModelAndView("source", new HashMap<>()));
 
-		Assertions.assertTrue(result.hasView());
-		Assertions.assertEquals("source", result.getViewName());
+		Map<String, Object> map = new HashMap<>();
+		map.put("title", title);
+		map.put("file_name", fileName);
+		map.put("content", content);
+		map.put("edit_existing_page", true);
+		map.put("message", "Wrong formula name was asked.");
 
-		ModelMap modelMap = result.getModelMap();
-		Assertions.assertEquals(5, modelMap.size());
+		ModelAndView modelAndView = commonService.addFormula("source", formulaName, title, fileName, content, editExistingPage);
 
-		Assertions.assertTrue(modelMap.containsAttribute("title"));
-		Assertions.assertTrue(modelMap.getAttribute("title") instanceof String);
-		Assertions.assertEquals(title, modelMap.getAttribute("title"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("file_name"));
-		Assertions.assertTrue(modelMap.getAttribute("file_name") instanceof String);
-		Assertions.assertEquals(fileName, modelMap.getAttribute("file_name"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("content"));
-		Assertions.assertTrue(modelMap.getAttribute("content") instanceof List);
-		Assertions.assertEquals(content, modelMap.getAttribute("content"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("edit_existing_page"));
-		Assertions.assertTrue(modelMap.getAttribute("edit_existing_page") instanceof Boolean);
-		Assertions.assertEquals(editExistingPage, modelMap.getAttribute("edit_existing_page"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("message"));
-		Assertions.assertTrue(modelMap.getAttribute("message") instanceof String);
-		Assertions.assertEquals("Wrong formula name was asked.", modelMap.getAttribute("message"));
+		ModelAndViewAssert.assertViewName(modelAndView, "source");
+		ModelAndViewAssert.assertModelAttributeValues(modelAndView, map);
 	}
 
 	@Test
@@ -142,33 +113,18 @@ class CommonServiceAddFormulaTest {
 
 		when(formulas.getFormula(formulaName))
 				.thenReturn("");
-		ModelAndView result = commonService.addFormula(formulaName, title, fileName, content, editExistingPage, new ModelAndView("source", new HashMap<>()));
 
-		Assertions.assertTrue(result.hasView());
-		Assertions.assertEquals("source", result.getViewName());
+		Map<String, Object> map = new HashMap<>();
+		map.put("title", title);
+		map.put("file_name", fileName);
+		map.put("content", content);
+		map.put("edit_existing_page", true);
+		map.put("message", "Wrong formula name was asked.");
 
-		ModelMap modelMap = result.getModelMap();
-		Assertions.assertEquals(5, modelMap.size());
+		ModelAndView modelAndView = commonService.addFormula("source", formulaName, title, fileName, content, editExistingPage);
 
-		Assertions.assertTrue(modelMap.containsAttribute("title"));
-		Assertions.assertTrue(modelMap.getAttribute("title") instanceof String);
-		Assertions.assertEquals(title, modelMap.getAttribute("title"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("file_name"));
-		Assertions.assertTrue(modelMap.getAttribute("file_name") instanceof String);
-		Assertions.assertEquals(fileName, modelMap.getAttribute("file_name"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("content"));
-		Assertions.assertTrue(modelMap.getAttribute("content") instanceof List);
-		Assertions.assertEquals(content, modelMap.getAttribute("content"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("edit_existing_page"));
-		Assertions.assertTrue(modelMap.getAttribute("edit_existing_page") instanceof Boolean);
-		Assertions.assertEquals(editExistingPage, modelMap.getAttribute("edit_existing_page"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("message"));
-		Assertions.assertTrue(modelMap.getAttribute("message") instanceof String);
-		Assertions.assertEquals("Wrong formula name was asked.", modelMap.getAttribute("message"));
+		ModelAndViewAssert.assertViewName(modelAndView, "source");
+		ModelAndViewAssert.assertModelAttributeValues(modelAndView, map);
 	}
 
 	@Test
@@ -179,38 +135,87 @@ class CommonServiceAddFormulaTest {
 		content.add("Line 1");
 		content.add("Line 2");
 		Boolean editExistingPage = true;
+
+		String formula = "Formula line 1\nFormula line 2";
+		when(formulas.getFormula(formulaName))
+				.thenReturn(formula);
+
 		List<String> newContent = new ArrayList<>(content);
 		newContent.add("Formula line 1");
 		newContent.add("Formula line 2");
+
+		Map<String, Object> map = new HashMap<>();
+		map.put("title", title);
+		map.put("file_name", "");
+		map.put("content", newContent);
+		map.put("edit_existing_page", true);
+		map.put("message", "Formula was appended.");
+
+		ModelAndView modelAndView = commonService.addFormula("source", formulaName, title, null, content, editExistingPage);
+
+		ModelAndViewAssert.assertViewName(modelAndView, "source");
+		ModelAndViewAssert.assertModelAttributeValues(modelAndView, map);
+	}
+
+	@Test
+	void addFormulaNullTitle() {
+		String formulaName = "formula name";
+		String fileName = "file_name";
+		List<String> content = new ArrayList<>();
+		content.add("Line 1");
+		content.add("Line 2");
+		Boolean editExistingPage = true;
+
+		String formula = "Formula line 1\nFormula line 2";
 		when(formulas.getFormula(formulaName))
-				.thenReturn("Formula line 1\nFormula line 2");
-		ModelAndView result = commonService.addFormula(formulaName, title, null, content, editExistingPage, new ModelAndView("source", new HashMap<>()));
+				.thenReturn(formula);
 
-		Assertions.assertTrue(result.hasView());
-		Assertions.assertEquals("source", result.getViewName());
+		List<String> newContent = new ArrayList<>(content);
+		newContent.add("Formula line 1");
+		newContent.add("Formula line 2");
 
-		ModelMap modelMap = result.getModelMap();
-		Assertions.assertEquals(5, modelMap.size());
+		Map<String, Object> map = new HashMap<>();
+		map.put("title", "");
+		map.put("file_name", fileName);
+		map.put("content", newContent);
+		map.put("edit_existing_page", true);
+		map.put("message", "Formula was appended.");
 
-		Assertions.assertTrue(modelMap.containsAttribute("title"));
-		Assertions.assertTrue(modelMap.getAttribute("title") instanceof String);
-		Assertions.assertEquals(title, modelMap.getAttribute("title"));
+		ModelAndView modelAndView = commonService.addFormula("source", formulaName, null, fileName, content, editExistingPage);
 
-		Assertions.assertTrue(modelMap.containsAttribute("file_name"));
-		Assertions.assertTrue(modelMap.getAttribute("file_name") instanceof String);
-		Assertions.assertEquals("", modelMap.getAttribute("file_name"));
+		ModelAndViewAssert.assertViewName(modelAndView, "source");
+		ModelAndViewAssert.assertModelAttributeValues(modelAndView, map);
+	}
 
-		Assertions.assertTrue(modelMap.containsAttribute("content"));
-		Assertions.assertTrue(modelMap.getAttribute("content") instanceof List);
-		Assertions.assertEquals(newContent, modelMap.getAttribute("content"));
+	@Test
+	void addFormulaBlankTitle() {
+		String formulaName = "formula name";
+		String title = "  ";
+		String fileName = "file_name";
+		List<String> content = new ArrayList<>();
+		content.add("Line 1");
+		content.add("Line 2");
+		Boolean editExistingPage = true;
 
-		Assertions.assertTrue(modelMap.containsAttribute("edit_existing_page"));
-		Assertions.assertTrue(modelMap.getAttribute("edit_existing_page") instanceof Boolean);
-		Assertions.assertEquals(editExistingPage, modelMap.getAttribute("edit_existing_page"));
+		String formula = "Formula line 1\nFormula line 2";
+		when(formulas.getFormula(formulaName))
+				.thenReturn(formula);
 
-		Assertions.assertTrue(modelMap.containsAttribute("message"));
-		Assertions.assertTrue(modelMap.getAttribute("message") instanceof String);
-		Assertions.assertEquals("Formula was appended.", modelMap.getAttribute("message"));
+		List<String> newContent = new ArrayList<>(content);
+		newContent.add("Formula line 1");
+		newContent.add("Formula line 2");
+
+		Map<String, Object> map = new HashMap<>();
+		map.put("title", "");
+		map.put("file_name", fileName);
+		map.put("content", newContent);
+		map.put("edit_existing_page", true);
+		map.put("message", "Formula was appended.");
+
+		ModelAndView modelAndView = commonService.addFormula("source", formulaName, title, fileName, content, editExistingPage);
+
+		ModelAndViewAssert.assertViewName(modelAndView, "source");
+		ModelAndViewAssert.assertModelAttributeValues(modelAndView, map);
 	}
 
 	@Test
@@ -222,38 +227,26 @@ class CommonServiceAddFormulaTest {
 		content.add("Line 1");
 		content.add("Line 2");
 		Boolean editExistingPage = true;
+
+		String formula = "Formula line 1\nFormula line 2";
+		when(formulas.getFormula(formulaName))
+				.thenReturn(formula);
+
 		List<String> newContent = new ArrayList<>(content);
 		newContent.add("Formula line 1");
 		newContent.add("Formula line 2");
-		when(formulas.getFormula(formulaName))
-				.thenReturn("Formula line 1\nFormula line 2");
-		ModelAndView result = commonService.addFormula(formulaName, title, fileName, content, editExistingPage, new ModelAndView("source", new HashMap<>()));
 
-		Assertions.assertTrue(result.hasView());
-		Assertions.assertEquals("source", result.getViewName());
+		Map<String, Object> map = new HashMap<>();
+		map.put("title", title);
+		map.put("file_name", "");
+		map.put("content", newContent);
+		map.put("edit_existing_page", true);
+		map.put("message", "Formula was appended.");
 
-		ModelMap modelMap = result.getModelMap();
-		Assertions.assertEquals(5, modelMap.size());
+		ModelAndView modelAndView = commonService.addFormula("source", formulaName, title, fileName, content, editExistingPage);
 
-		Assertions.assertTrue(modelMap.containsAttribute("title"));
-		Assertions.assertTrue(modelMap.getAttribute("title") instanceof String);
-		Assertions.assertEquals(title, modelMap.getAttribute("title"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("file_name"));
-		Assertions.assertTrue(modelMap.getAttribute("file_name") instanceof String);
-		Assertions.assertEquals("", modelMap.getAttribute("file_name"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("content"));
-		Assertions.assertTrue(modelMap.getAttribute("content") instanceof List);
-		Assertions.assertEquals(newContent, modelMap.getAttribute("content"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("edit_existing_page"));
-		Assertions.assertTrue(modelMap.getAttribute("edit_existing_page") instanceof Boolean);
-		Assertions.assertEquals(editExistingPage, modelMap.getAttribute("edit_existing_page"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("message"));
-		Assertions.assertTrue(modelMap.getAttribute("message") instanceof String);
-		Assertions.assertEquals("Formula was appended.", modelMap.getAttribute("message"));
+		ModelAndViewAssert.assertViewName(modelAndView, "source");
+		ModelAndViewAssert.assertModelAttributeValues(modelAndView, map);
 	}
 
 	@Test
@@ -262,38 +255,26 @@ class CommonServiceAddFormulaTest {
 		String title = "Title";
 		String fileName = "file_name";
 		Boolean editExistingPage = true;
+
+		String formula = "Formula line 1\nFormula line 2";
+		when(formulas.getFormula(formulaName))
+				.thenReturn(formula);
+
 		List<String> newContent = new ArrayList<>();
 		newContent.add("Formula line 1");
 		newContent.add("Formula line 2");
-		when(formulas.getFormula(formulaName))
-				.thenReturn("Formula line 1\nFormula line 2");
-		ModelAndView result = commonService.addFormula(formulaName, title, fileName, null, editExistingPage, new ModelAndView("source", new HashMap<>()));
 
-		Assertions.assertTrue(result.hasView());
-		Assertions.assertEquals("source", result.getViewName());
+		Map<String, Object> map = new HashMap<>();
+		map.put("title", title);
+		map.put("file_name", fileName);
+		map.put("content", newContent);
+		map.put("edit_existing_page", true);
+		map.put("message", "Formula was appended.");
 
-		ModelMap modelMap = result.getModelMap();
-		Assertions.assertEquals(5, modelMap.size());
+		ModelAndView modelAndView = commonService.addFormula("source", formulaName, title, fileName, null, editExistingPage);
 
-		Assertions.assertTrue(modelMap.containsAttribute("title"));
-		Assertions.assertTrue(modelMap.getAttribute("title") instanceof String);
-		Assertions.assertEquals(title, modelMap.getAttribute("title"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("file_name"));
-		Assertions.assertTrue(modelMap.getAttribute("file_name") instanceof String);
-		Assertions.assertEquals(fileName, modelMap.getAttribute("file_name"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("content"));
-		Assertions.assertTrue(modelMap.getAttribute("content") instanceof List);
-		Assertions.assertEquals(newContent, modelMap.getAttribute("content"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("edit_existing_page"));
-		Assertions.assertTrue(modelMap.getAttribute("edit_existing_page") instanceof Boolean);
-		Assertions.assertEquals(editExistingPage, modelMap.getAttribute("edit_existing_page"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("message"));
-		Assertions.assertTrue(modelMap.getAttribute("message") instanceof String);
-		Assertions.assertEquals("Formula was appended.", modelMap.getAttribute("message"));
+		ModelAndViewAssert.assertViewName(modelAndView, "source");
+		ModelAndViewAssert.assertModelAttributeValues(modelAndView, map);
 	}
 
 	@Test
@@ -304,37 +285,56 @@ class CommonServiceAddFormulaTest {
 		List<String> content = new ArrayList<>();
 		content.add("Line 1");
 		content.add("Line 2");
+
+		String formula = "Formula line 1\nFormula line 2";
+		when(formulas.getFormula(formulaName))
+				.thenReturn(formula);
+
 		List<String> newContent = new ArrayList<>(content);
 		newContent.add("Formula line 1");
 		newContent.add("Formula line 2");
+
+		Map<String, Object> map = new HashMap<>();
+		map.put("title", title);
+		map.put("file_name", fileName);
+		map.put("content", newContent);
+		map.put("edit_existing_page", false);
+		map.put("message", "Formula was appended.");
+
+		ModelAndView modelAndView = commonService.addFormula("source", formulaName, title, fileName, content, null);
+
+		ModelAndViewAssert.assertViewName(modelAndView, "source");
+		ModelAndViewAssert.assertModelAttributeValues(modelAndView, map);
+	}
+
+	@Test
+	void addFormulaAllValidValues() {
+		String formulaName = "formula name";
+		String title = "Title";
+		String fileName = "file_name";
+		List<String> content = new ArrayList<>();
+		content.add("Line 1");
+		content.add("Line 2");
+		Boolean editExistingPage = true;
+
+		String formula = "Formula line 1\nFormula line 2";
 		when(formulas.getFormula(formulaName))
-				.thenReturn("Formula line 1\nFormula line 2");
-		ModelAndView result = commonService.addFormula(formulaName, title, fileName, content, null, new ModelAndView("source", new HashMap<>()));
+				.thenReturn(formula);
 
-		Assertions.assertTrue(result.hasView());
-		Assertions.assertEquals("source", result.getViewName());
+		List<String> newContent = new ArrayList<>(content);
+		newContent.add("Formula line 1");
+		newContent.add("Formula line 2");
 
-		ModelMap modelMap = result.getModelMap();
-		Assertions.assertEquals(5, modelMap.size());
+		Map<String, Object> map = new HashMap<>();
+		map.put("title", title);
+		map.put("file_name", fileName);
+		map.put("content", newContent);
+		map.put("edit_existing_page", true);
+		map.put("message", "Formula was appended.");
 
-		Assertions.assertTrue(modelMap.containsAttribute("title"));
-		Assertions.assertTrue(modelMap.getAttribute("title") instanceof String);
-		Assertions.assertEquals(title, modelMap.getAttribute("title"));
+		ModelAndView modelAndView = commonService.addFormula("source", formulaName, title, fileName, content, editExistingPage);
 
-		Assertions.assertTrue(modelMap.containsAttribute("file_name"));
-		Assertions.assertTrue(modelMap.getAttribute("file_name") instanceof String);
-		Assertions.assertEquals(fileName, modelMap.getAttribute("file_name"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("content"));
-		Assertions.assertTrue(modelMap.getAttribute("content") instanceof List);
-		Assertions.assertEquals(newContent, modelMap.getAttribute("content"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("edit_existing_page"));
-		Assertions.assertTrue(modelMap.getAttribute("edit_existing_page") instanceof Boolean);
-		Assertions.assertEquals(false, modelMap.getAttribute("edit_existing_page"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("message"));
-		Assertions.assertTrue(modelMap.getAttribute("message") instanceof String);
-		Assertions.assertEquals("Formula was appended.", modelMap.getAttribute("message"));
+		ModelAndViewAssert.assertViewName(modelAndView, "source");
+		ModelAndViewAssert.assertModelAttributeValues(modelAndView, map);
 	}
 }

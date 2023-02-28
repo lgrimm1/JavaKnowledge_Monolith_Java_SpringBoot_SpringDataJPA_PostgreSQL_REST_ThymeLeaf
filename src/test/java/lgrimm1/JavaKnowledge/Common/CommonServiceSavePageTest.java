@@ -6,6 +6,7 @@ import lgrimm1.JavaKnowledge.Title.*;
 import lgrimm1.JavaKnowledge.Txt.*;
 import org.junit.jupiter.api.*;
 import org.mockito.*;
+import org.springframework.test.web.*;
 import org.springframework.ui.*;
 import org.springframework.web.servlet.*;
 
@@ -52,239 +53,133 @@ class CommonServiceSavePageTest {
 	@Test
 	void savePageNullTitle() {
 		String fileName = "file_name";
-		List<String> content = List.of(
-				"Line 1",
-				"Line 2"
-		);
+		List<String> content = List.of("Line 1", "Line 2");
 		boolean editExistingPage = true;
-		ModelAndView result = commonService.savePage(null, "file_name", content, editExistingPage, new ModelAndView("source", new HashMap<>()));
 
-		Assertions.assertTrue(result.hasView());
-		Assertions.assertEquals("source", result.getViewName());
+		Map<String, Object> map = new HashMap<>();
+		map.put("title", "");
+		map.put("file_name", fileName);
+		map.put("content", content);
+		map.put("edit_existing_page", editExistingPage);
+		map.put("message", "Please define a title.");
 
-		ModelMap modelMap = result.getModelMap();
-		Assertions.assertEquals(5, modelMap.size());
+		ModelAndView modelAndView = commonService.savePage("source", null, fileName, content, editExistingPage);
 
-		Assertions.assertTrue(modelMap.containsAttribute("title"));
-		Assertions.assertTrue(modelMap.getAttribute("title") instanceof String);
-		Assertions.assertEquals("", modelMap.getAttribute("title"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("file_name"));
-		Assertions.assertTrue(modelMap.getAttribute("file_name") instanceof String);
-		Assertions.assertEquals(fileName, modelMap.getAttribute("file_name"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("content"));
-		Assertions.assertTrue(modelMap.getAttribute("content") instanceof List);
-		Assertions.assertEquals(content, modelMap.getAttribute("content"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("edit_existing_page"));
-		Assertions.assertTrue(modelMap.getAttribute("edit_existing_page") instanceof Boolean);
-		Assertions.assertEquals(editExistingPage, modelMap.getAttribute("edit_existing_page"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("message"));
-		Assertions.assertTrue(modelMap.getAttribute("message") instanceof String);
-		Assertions.assertEquals("Please define a title.", modelMap.getAttribute("message"));
-
+		ModelAndViewAssert.assertViewName(modelAndView, "source");
+		ModelAndViewAssert.assertModelAttributeValues(modelAndView, map);
 	}
 
 	@Test
 	void savePageBlankTitle() {
 		String title = "  ";
 		String fileName = "file_name";
-		List<String> content = List.of(
-				"Line 1",
-				"Line 2"
-		);
+		List<String> content = List.of("Line 1", "Line 2");
 		boolean editExistingPage = true;
-		ModelAndView result = commonService.savePage(title, "file_name", content, editExistingPage, new ModelAndView("source", new HashMap<>()));
 
-		Assertions.assertTrue(result.hasView());
-		Assertions.assertEquals("source", result.getViewName());
+		Map<String, Object> map = new HashMap<>();
+		map.put("title", "");
+		map.put("file_name", fileName);
+		map.put("content", content);
+		map.put("edit_existing_page", editExistingPage);
+		map.put("message", "Please define a title.");
 
-		ModelMap modelMap = result.getModelMap();
-		Assertions.assertEquals(5, modelMap.size());
+		ModelAndView modelAndView = commonService.savePage("source", title, fileName, content, editExistingPage);
 
-		Assertions.assertTrue(modelMap.containsAttribute("title"));
-		Assertions.assertTrue(modelMap.getAttribute("title") instanceof String);
-		Assertions.assertEquals("", modelMap.getAttribute("title"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("file_name"));
-		Assertions.assertTrue(modelMap.getAttribute("file_name") instanceof String);
-		Assertions.assertEquals(fileName, modelMap.getAttribute("file_name"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("content"));
-		Assertions.assertTrue(modelMap.getAttribute("content") instanceof List);
-		Assertions.assertEquals(content, modelMap.getAttribute("content"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("edit_existing_page"));
-		Assertions.assertTrue(modelMap.getAttribute("edit_existing_page") instanceof Boolean);
-		Assertions.assertEquals(editExistingPage, modelMap.getAttribute("edit_existing_page"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("message"));
-		Assertions.assertTrue(modelMap.getAttribute("message") instanceof String);
-		Assertions.assertEquals("Please define a title.", modelMap.getAttribute("message"));
+		ModelAndViewAssert.assertViewName(modelAndView, "source");
+		ModelAndViewAssert.assertModelAttributeValues(modelAndView, map);
 	}
 
 	@Test
 	void savePageNullFileName() {
 		String title = "Title";
-		List<String> content = List.of(
-				"Line 1",
-				"Line 2"
-		);
+		List<String> content = List.of("Line 1", "Line 2");
 		boolean editExistingPage = true;
-		ModelAndView result = commonService.savePage(title, null, content, editExistingPage, new ModelAndView("source", new HashMap<>()));
 
-		Assertions.assertTrue(result.hasView());
-		Assertions.assertEquals("source", result.getViewName());
+		Map<String, Object> map = new HashMap<>();
+		map.put("title", title);
+		map.put("file_name", "");
+		map.put("content", content);
+		map.put("edit_existing_page", editExistingPage);
+		map.put("message", "Please define a file name.");
 
-		ModelMap modelMap = result.getModelMap();
-		Assertions.assertEquals(5, modelMap.size());
+		ModelAndView modelAndView = commonService.savePage("source", title, null, content, editExistingPage);
 
-		Assertions.assertTrue(modelMap.containsAttribute("title"));
-		Assertions.assertTrue(modelMap.getAttribute("title") instanceof String);
-		Assertions.assertEquals(title, modelMap.getAttribute("title"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("file_name"));
-		Assertions.assertTrue(modelMap.getAttribute("file_name") instanceof String);
-		Assertions.assertEquals("", modelMap.getAttribute("file_name"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("content"));
-		Assertions.assertTrue(modelMap.getAttribute("content") instanceof List);
-		Assertions.assertEquals(content, modelMap.getAttribute("content"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("edit_existing_page"));
-		Assertions.assertTrue(modelMap.getAttribute("edit_existing_page") instanceof Boolean);
-		Assertions.assertEquals(editExistingPage, modelMap.getAttribute("edit_existing_page"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("message"));
-		Assertions.assertTrue(modelMap.getAttribute("message") instanceof String);
-		Assertions.assertEquals("Please define a file name.", modelMap.getAttribute("message"));
+		ModelAndViewAssert.assertViewName(modelAndView, "source");
+		ModelAndViewAssert.assertModelAttributeValues(modelAndView, map);
 	}
 
 	@Test
 	void savePageBlankFileName() {
 		String title = "Title";
 		String fileName = "  ";
-		List<String> content = List.of(
-				"Line 1",
-				"Line 2"
-		);
+		List<String> content = List.of("Line 1", "Line 2");
 		boolean editExistingPage = true;
-		ModelAndView result = commonService.savePage(title, fileName, content, editExistingPage, new ModelAndView("source", new HashMap<>()));
 
-		Assertions.assertTrue(result.hasView());
-		Assertions.assertEquals("source", result.getViewName());
+		Map<String, Object> map = new HashMap<>();
+		map.put("title", title);
+		map.put("file_name", "");
+		map.put("content", content);
+		map.put("edit_existing_page", editExistingPage);
+		map.put("message", "Please define a file name.");
 
-		ModelMap modelMap = result.getModelMap();
-		Assertions.assertEquals(5, modelMap.size());
+		ModelAndView modelAndView = commonService.savePage("source", title, fileName, content, editExistingPage);
 
-		Assertions.assertTrue(modelMap.containsAttribute("title"));
-		Assertions.assertTrue(modelMap.getAttribute("title") instanceof String);
-		Assertions.assertEquals(title, modelMap.getAttribute("title"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("file_name"));
-		Assertions.assertTrue(modelMap.getAttribute("file_name") instanceof String);
-		Assertions.assertEquals("", modelMap.getAttribute("file_name"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("content"));
-		Assertions.assertTrue(modelMap.getAttribute("content") instanceof List);
-		Assertions.assertEquals(content, modelMap.getAttribute("content"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("edit_existing_page"));
-		Assertions.assertTrue(modelMap.getAttribute("edit_existing_page") instanceof Boolean);
-		Assertions.assertEquals(editExistingPage, modelMap.getAttribute("edit_existing_page"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("message"));
-		Assertions.assertTrue(modelMap.getAttribute("message") instanceof String);
-		Assertions.assertEquals("Please define a file name.", modelMap.getAttribute("message"));
+		ModelAndViewAssert.assertViewName(modelAndView, "source");
+		ModelAndViewAssert.assertModelAttributeValues(modelAndView, map);
 	}
 
 	@Test
 	void savePageNullContentEditButNonExistent() {
 		String title = "Title";
-		String fileName = "title";
+		String fileName = "file_name";
 		boolean editExistingPage = true;
+
 		when(titleRepository.findByTitle(title))
 				.thenReturn(Optional.empty());
-		ModelAndView result = commonService.savePage(title, fileName, null, editExistingPage, new ModelAndView("source", new HashMap<>()));
 
-		Assertions.assertTrue(result.hasView());
-		Assertions.assertEquals("source", result.getViewName());
+		Map<String, Object> map = new HashMap<>();
+		map.put("title", title);
+		map.put("file_name", fileName);
+		map.put("content", new ArrayList<>());
+		map.put("edit_existing_page", editExistingPage);
+		map.put("message", "There is no existing page with this title.");
 
-		ModelMap modelMap = result.getModelMap();
-		Assertions.assertEquals(5, modelMap.size());
+		ModelAndView modelAndView = commonService.savePage("source", title, fileName, null, editExistingPage);
 
-		Assertions.assertTrue(modelMap.containsAttribute("title"));
-		Assertions.assertTrue(modelMap.getAttribute("title") instanceof String);
-		Assertions.assertEquals(title, modelMap.getAttribute("title"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("file_name"));
-		Assertions.assertTrue(modelMap.getAttribute("file_name") instanceof String);
-		Assertions.assertEquals(fileName, modelMap.getAttribute("file_name"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("content"));
-		Assertions.assertTrue(modelMap.getAttribute("content") instanceof List);
-		Assertions.assertEquals(new ArrayList<>(), modelMap.getAttribute("content"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("edit_existing_page"));
-		Assertions.assertTrue(modelMap.getAttribute("edit_existing_page") instanceof Boolean);
-		Assertions.assertEquals(editExistingPage, modelMap.getAttribute("edit_existing_page"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("message"));
-		Assertions.assertTrue(modelMap.getAttribute("message") instanceof String);
-		Assertions.assertEquals("There is no existing page with this title.", modelMap.getAttribute("message"));
+		ModelAndViewAssert.assertViewName(modelAndView, "source");
+		ModelAndViewAssert.assertModelAttributeValues(modelAndView, map);
 	}
 
 	@Test
 	void savePageEditButNonExistent() {
 		String title = "Title";
-		String fileName = "title";
-		List<String> content = List.of(
-				"Line 1",
-				"Line 2"
-		);
+		String fileName = "file_name";
+		List<String> content = List.of("Line 1", "Line 2");
 		boolean editExistingPage = true;
+
 		when(titleRepository.findByTitle(title))
 				.thenReturn(Optional.empty());
-		ModelAndView result = commonService.savePage(title, fileName, content, editExistingPage, new ModelAndView("source", new HashMap<>()));
 
-		Assertions.assertTrue(result.hasView());
-		Assertions.assertEquals("source", result.getViewName());
+		Map<String, Object> map = new HashMap<>();
+		map.put("title", title);
+		map.put("file_name", fileName);
+		map.put("content", content);
+		map.put("edit_existing_page", editExistingPage);
+		map.put("message", "There is no existing page with this title.");
 
-		ModelMap modelMap = result.getModelMap();
-		Assertions.assertEquals(5, modelMap.size());
+		ModelAndView modelAndView = commonService.savePage("source", title, fileName, content, editExistingPage);
 
-		Assertions.assertTrue(modelMap.containsAttribute("title"));
-		Assertions.assertTrue(modelMap.getAttribute("title") instanceof String);
-		Assertions.assertEquals(title, modelMap.getAttribute("title"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("file_name"));
-		Assertions.assertTrue(modelMap.getAttribute("file_name") instanceof String);
-		Assertions.assertEquals(fileName, modelMap.getAttribute("file_name"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("content"));
-		Assertions.assertTrue(modelMap.getAttribute("content") instanceof List);
-		Assertions.assertEquals(content, modelMap.getAttribute("content"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("edit_existing_page"));
-		Assertions.assertTrue(modelMap.getAttribute("edit_existing_page") instanceof Boolean);
-		Assertions.assertEquals(editExistingPage, modelMap.getAttribute("edit_existing_page"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("message"));
-		Assertions.assertTrue(modelMap.getAttribute("message") instanceof String);
-		Assertions.assertEquals("There is no existing page with this title.", modelMap.getAttribute("message"));
+		ModelAndViewAssert.assertViewName(modelAndView, "source");
+		ModelAndViewAssert.assertModelAttributeValues(modelAndView, map);
 	}
 
 	@Test
 	void savePageEditExistent() {
 		String title = "Title";
-		String fileName = "title";
-		List<String> content = List.of(
-				"Line 1",
-				"Line 2"
-		);
+		String fileName = "file_name";
+		List<String> content = List.of("Line 1", "Line 2");
 		boolean editExistingPage = true;
+
 		when(titleRepository.findByTitle(title))
 				.thenReturn(Optional.of(new TitleEntity(2L, "Original title", "original_file_name", 3L, 4L)));
 		when(txtRepository.save(new TxtEntity(content)))
@@ -293,84 +188,50 @@ class CommonServiceSavePageTest {
 				.thenReturn(new HtmlEntity(14L, new ArrayList<>()));
 		when(titleRepository.save(new TitleEntity(title, fileName, 13L, 14L)))
 				.thenReturn(new TitleEntity(12L, title, fileName, 13L, 14L));
-		ModelAndView result = commonService.savePage(title, fileName, content, editExistingPage, new ModelAndView("source", new HashMap<>()));
 
-		Assertions.assertTrue(result.hasView());
-		Assertions.assertEquals("source", result.getViewName());
+		Map<String, Object> map = new HashMap<>();
+		map.put("title", title);
+		map.put("file_name", fileName);
+		map.put("content", content);
+		map.put("edit_existing_page", editExistingPage);
+		map.put("message", "Source page has been overwritten.");
 
-		ModelMap modelMap = result.getModelMap();
-		Assertions.assertEquals(5, modelMap.size());
+		ModelAndView modelAndView = commonService.savePage("source", title, fileName, content, editExistingPage);
 
-		Assertions.assertTrue(modelMap.containsAttribute("title"));
-		Assertions.assertTrue(modelMap.getAttribute("title") instanceof String);
-		Assertions.assertEquals(title, modelMap.getAttribute("title"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("file_name"));
-		Assertions.assertTrue(modelMap.getAttribute("file_name") instanceof String);
-		Assertions.assertEquals(fileName, modelMap.getAttribute("file_name"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("content"));
-		Assertions.assertTrue(modelMap.getAttribute("content") instanceof List);
-		Assertions.assertEquals(content, modelMap.getAttribute("content"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("edit_existing_page"));
-		Assertions.assertTrue(modelMap.getAttribute("edit_existing_page") instanceof Boolean);
-		Assertions.assertEquals(editExistingPage, modelMap.getAttribute("edit_existing_page"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("message"));
-		Assertions.assertTrue(modelMap.getAttribute("message") instanceof String);
-		Assertions.assertEquals("Source page has been overwritten.", modelMap.getAttribute("message"));
+		ModelAndViewAssert.assertViewName(modelAndView, "source");
+		ModelAndViewAssert.assertModelAttributeValues(modelAndView, map);
 	}
 
 	@Test
 	void savePageNewButExistent() {
 		String title = "Title";
-		String fileName = "title";
-		List<String> content = List.of(
-				"Line 1",
-				"Line 2"
-		);
+		String fileName = "file_name";
+		List<String> content = List.of("Line 1", "Line 2");
 		boolean editExistingPage = false;
+
 		when(titleRepository.findByTitle(title))
 				.thenReturn(Optional.of(new TitleEntity(2L, "Original title", "original_file_name", 3L, 4L)));
-		ModelAndView result = commonService.savePage(title, fileName, content, editExistingPage, new ModelAndView("source", new HashMap<>()));
 
-		Assertions.assertTrue(result.hasView());
-		Assertions.assertEquals("source", result.getViewName());
+		Map<String, Object> map = new HashMap<>();
+		map.put("title", title);
+		map.put("file_name", fileName);
+		map.put("content", content);
+		map.put("edit_existing_page", editExistingPage);
+		map.put("message", "There is an existing page with this title.");
 
-		ModelMap modelMap = result.getModelMap();
-		Assertions.assertEquals(5, modelMap.size());
+		ModelAndView modelAndView = commonService.savePage("source", title, fileName, content, editExistingPage);
 
-		Assertions.assertTrue(modelMap.containsAttribute("title"));
-		Assertions.assertTrue(modelMap.getAttribute("title") instanceof String);
-		Assertions.assertEquals(title, modelMap.getAttribute("title"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("file_name"));
-		Assertions.assertTrue(modelMap.getAttribute("file_name") instanceof String);
-		Assertions.assertEquals(fileName, modelMap.getAttribute("file_name"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("content"));
-		Assertions.assertTrue(modelMap.getAttribute("content") instanceof List);
-		Assertions.assertEquals(content, modelMap.getAttribute("content"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("edit_existing_page"));
-		Assertions.assertTrue(modelMap.getAttribute("edit_existing_page") instanceof Boolean);
-		Assertions.assertEquals(editExistingPage, modelMap.getAttribute("edit_existing_page"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("message"));
-		Assertions.assertTrue(modelMap.getAttribute("message") instanceof String);
-		Assertions.assertEquals("There is an existing page with this title.", modelMap.getAttribute("message"));
+		ModelAndViewAssert.assertViewName(modelAndView, "source");
+		ModelAndViewAssert.assertModelAttributeValues(modelAndView, map);
 	}
 
 	@Test
 	void savePageNewNonExistent() {
 		String title = "Title";
-		String fileName = "title";
-		List<String> content = List.of(
-				"Line 1",
-				"Line 2"
-		);
+		String fileName = "file_name";
+		List<String> content = List.of("Line 1", "Line 2");
 		boolean editExistingPage = false;
+
 		when(titleRepository.findByTitle(title))
 				.thenReturn(Optional.empty());
 		when(txtRepository.save(new TxtEntity(content)))
@@ -379,71 +240,39 @@ class CommonServiceSavePageTest {
 				.thenReturn(new HtmlEntity(14L, new ArrayList<>()));
 		when(titleRepository.save(new TitleEntity(title, fileName, 13L, 14L)))
 				.thenReturn(new TitleEntity(12L, title, fileName, 13L, 14L));
-		ModelAndView result = commonService.savePage(title, fileName, content, editExistingPage, new ModelAndView("source", new HashMap<>()));
 
-		Assertions.assertTrue(result.hasView());
-		Assertions.assertEquals("source", result.getViewName());
+		Map<String, Object> map = new HashMap<>();
+		map.put("title", title);
+		map.put("file_name", fileName);
+		map.put("content", content);
+		map.put("edit_existing_page", true);
+		map.put("message", "Source page has been saved.");
 
-		ModelMap modelMap = result.getModelMap();
-		Assertions.assertEquals(5, modelMap.size());
+		ModelAndView modelAndView = commonService.savePage("source", title, fileName, content, editExistingPage);
 
-		Assertions.assertTrue(modelMap.containsAttribute("title"));
-		Assertions.assertTrue(modelMap.getAttribute("title") instanceof String);
-		Assertions.assertEquals(title, modelMap.getAttribute("title"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("file_name"));
-		Assertions.assertTrue(modelMap.getAttribute("file_name") instanceof String);
-		Assertions.assertEquals(fileName, modelMap.getAttribute("file_name"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("content"));
-		Assertions.assertTrue(modelMap.getAttribute("content") instanceof List);
-		Assertions.assertEquals(content, modelMap.getAttribute("content"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("edit_existing_page"));
-		Assertions.assertTrue(modelMap.getAttribute("edit_existing_page") instanceof Boolean);
-		Assertions.assertEquals(!editExistingPage, modelMap.getAttribute("edit_existing_page"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("message"));
-		Assertions.assertTrue(modelMap.getAttribute("message") instanceof String);
-		Assertions.assertEquals("Source page has been saved.", modelMap.getAttribute("message"));
+		ModelAndViewAssert.assertViewName(modelAndView, "source");
+		ModelAndViewAssert.assertModelAttributeValues(modelAndView, map);
 	}
 
 	@Test
 	void savePageNullEditFlagAndExistent() {
 		String title = "Title";
-		String fileName = "title";
-		List<String> content = List.of(
-				"Line 1",
-				"Line 2"
-		);
+		String fileName = "file_name";
+		List<String> content = List.of("Line 1", "Line 2");
+
 		when(titleRepository.findByTitle(title))
 				.thenReturn(Optional.of(new TitleEntity(2L, "Original title", "original_file_name", 3L, 4L)));
-		ModelAndView result = commonService.savePage(title, fileName, content, null, new ModelAndView("source", new HashMap<>()));
 
-		Assertions.assertTrue(result.hasView());
-		Assertions.assertEquals("source", result.getViewName());
+		Map<String, Object> map = new HashMap<>();
+		map.put("title", title);
+		map.put("file_name", fileName);
+		map.put("content", content);
+		map.put("edit_existing_page", false);
+		map.put("message", "There is an existing page with this title.");
 
-		ModelMap modelMap = result.getModelMap();
-		Assertions.assertEquals(5, modelMap.size());
+		ModelAndView modelAndView = commonService.savePage("source", title, fileName, content, null);
 
-		Assertions.assertTrue(modelMap.containsAttribute("title"));
-		Assertions.assertTrue(modelMap.getAttribute("title") instanceof String);
-		Assertions.assertEquals(title, modelMap.getAttribute("title"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("file_name"));
-		Assertions.assertTrue(modelMap.getAttribute("file_name") instanceof String);
-		Assertions.assertEquals(fileName, modelMap.getAttribute("file_name"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("content"));
-		Assertions.assertTrue(modelMap.getAttribute("content") instanceof List);
-		Assertions.assertEquals(content, modelMap.getAttribute("content"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("edit_existing_page"));
-		Assertions.assertTrue(modelMap.getAttribute("edit_existing_page") instanceof Boolean);
-		Assertions.assertEquals(false, modelMap.getAttribute("edit_existing_page"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("message"));
-		Assertions.assertTrue(modelMap.getAttribute("message") instanceof String);
-		Assertions.assertEquals("There is an existing page with this title.", modelMap.getAttribute("message"));
+		ModelAndViewAssert.assertViewName(modelAndView, "source");
+		ModelAndViewAssert.assertModelAttributeValues(modelAndView, map);
 	}
 }

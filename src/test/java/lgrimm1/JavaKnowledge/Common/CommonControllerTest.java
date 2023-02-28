@@ -31,11 +31,7 @@ class CommonControllerTest {
 	void getRoot() throws Exception {
 		ModelAndView modelAndView = new ModelAndView("root");
 		modelAndView.addObject("search_text", "");
-/*
 		when(commonService.getRoot("root"))
-				.thenReturn(modelAndView);
-*/
-		when(commonService.getRoot("root", new ModelAndView()))
 				.thenReturn(modelAndView);
 
 		mockMvc
@@ -43,16 +39,33 @@ class CommonControllerTest {
 						get("/root")
 				)
 				.andExpect(status().isOk())
+				.andDo(print())
 				.andExpect(view().name("root"))
 				.andExpect(model().size(1))
 				.andExpect(model().attribute("search_text", ""));
 	}
 
-/*
 	@Test
-	void searchPages() {
+	void searchPages() throws Exception {
+		List<String> titles = List.of("Title 1", "Title 2");
+		ModelAndView modelAndView = new ModelAndView("list");
+		modelAndView.addObject("titles", titles);
+		when(commonService.searchPages("list", "text"))
+				.thenReturn(modelAndView);
+
+		mockMvc
+				.perform(
+						post("/search")
+								.param("search_text", "text")
+				)
+				.andExpect(status().isOk())
+				.andDo(print())
+				.andExpect(view().name("list"))
+				.andExpect(model().size(1))
+				.andExpect(model().attribute("titles", titles));
 	}
 
+/*
 	@Test
 	void getPage() {
 	}

@@ -56,295 +56,203 @@ class CommonServiceTest {
 
 	@Test
 	void getRoot() {
-/*
-		Map<String, Object> expectedModelMap = new HashMap<>();
-		expectedModelMap.put("search_text", "");
+		Map<String, Object> map = new HashMap<>();
+		map.put("search_text", "");
 
-		ModelAndView actualModelAndView = commonService.getRoot("root");
-		ModelAndViewAssert.assertViewName(actualModelAndView, "root");
-		ModelAndViewAssert.assertModelAttributeValues(actualModelAndView, expectedModelMap);
-*/
+		ModelAndView modelAndView = commonService.getRoot("root");
+		ModelAndViewAssert.assertViewName(modelAndView, "root");
+		ModelAndViewAssert.assertModelAttributeValues(modelAndView, map);
 	}
 
 	@Test
-	void searchPagesNoSearchText() {
+	void searchPagesNullSearchText() {
+		List<String> titles = List.of("Title 1", "Title 2");
 		when(processRecords.getAllTitles(titleRepository))
-				.thenReturn(List.of("Title 1", "Title 2"));
-		ModelAndView result = commonService.searchPages(null, new ModelAndView("list", new HashMap<>()));
+				.thenReturn(titles);
 
-		Assertions.assertTrue(result.hasView());
-		Assertions.assertEquals("list", result.getViewName());
+		Map<String, Object> map = new HashMap<>();
+		map.put("titles", titles);
 
-		ModelMap modelMap = result.getModelMap();
-		Assertions.assertEquals(1, modelMap.size());
+		ModelAndView modelAndView = commonService.searchPages("list", null);
 
-		Assertions.assertTrue(modelMap.containsAttribute("titles"));
-		Assertions.assertTrue(modelMap.getAttribute("titles") instanceof List);
-		Assertions.assertEquals(List.of("Title 1", "Title 2"), modelMap.getAttribute("titles"));
+		ModelAndViewAssert.assertViewName(modelAndView, "list");
+		ModelAndViewAssert.assertModelAttributeValues(modelAndView, map);
 	}
 
 	@Test
 	void searchPagesEmptySearchText() {
-		String searchText = "";
+		List<String> titles = List.of("Title 1", "Title 2");
 		when(processRecords.getAllTitles(titleRepository))
-				.thenReturn(List.of("Title 1", "Title 2"));
-		ModelAndView result = commonService.searchPages(searchText, new ModelAndView("list", new HashMap<>()));
+				.thenReturn(titles);
 
-		Assertions.assertTrue(result.hasView());
-		Assertions.assertEquals("list", result.getViewName());
+		Map<String, Object> map = new HashMap<>();
+		map.put("titles", titles);
 
-		ModelMap modelMap = result.getModelMap();
-		Assertions.assertEquals(1, modelMap.size());
+		ModelAndView modelAndView = commonService.searchPages("list", "");
 
-		Assertions.assertTrue(modelMap.containsAttribute("titles"));
-		Assertions.assertTrue(modelMap.getAttribute("titles") instanceof List);
-		Assertions.assertEquals(List.of("Title 1", "Title 2"), modelMap.getAttribute("titles"));
+		ModelAndViewAssert.assertViewName(modelAndView, "list");
+		ModelAndViewAssert.assertModelAttributeValues(modelAndView, map);
 	}
 
 	@Test
 	void searchPagesBlankSearchText() {
-		String searchText = "  ";
+		List<String> titles = List.of("Title 1", "Title 2");
 		when(processRecords.getAllTitles(titleRepository))
-				.thenReturn(List.of("Title 1", "Title 2"));
-		ModelAndView result = commonService.searchPages(searchText, new ModelAndView("list", new HashMap<>()));
+				.thenReturn(titles);
 
-		Assertions.assertTrue(result.hasView());
-		Assertions.assertEquals("list", result.getViewName());
+		Map<String, Object> map = new HashMap<>();
+		map.put("titles", titles);
 
-		ModelMap modelMap = result.getModelMap();
-		Assertions.assertEquals(1, modelMap.size());
+		ModelAndView modelAndView = commonService.searchPages("list", "  ");
 
-		Assertions.assertTrue(modelMap.containsAttribute("titles"));
-		Assertions.assertTrue(modelMap.getAttribute("titles") instanceof List);
-		Assertions.assertEquals(List.of("Title 1", "Title 2"), modelMap.getAttribute("titles"));
+		ModelAndViewAssert.assertViewName(modelAndView, "list");
+		ModelAndViewAssert.assertModelAttributeValues(modelAndView, map);
 	}
 
 	@Test
 	void searchPagesExistingSearchText() {
 		String searchText = "Word2 Word1";
+		Set<String> searchResult = Set.of("Title 2", "Title 1");
 		when(processRecords.searchBySearchText(searchText, titleRepository, txtRepository))
-				.thenReturn(Set.of("Title 2", "Title 1"));
-		ModelAndView result = commonService.searchPages(searchText, new ModelAndView("list", new HashMap<>()));
+				.thenReturn(searchResult);
 
-		Assertions.assertTrue(result.hasView());
-		Assertions.assertEquals("list", result.getViewName());
+		List<String> expectedList = List.of("Title 1", "Title 2");
+		Map<String, Object> map = new HashMap<>();
+		map.put("titles", expectedList);
 
-		ModelMap modelMap = result.getModelMap();
-		Assertions.assertEquals(1, modelMap.size());
+		ModelAndView modelAndView = commonService.searchPages("list", searchText);
 
-		Assertions.assertTrue(modelMap.containsAttribute("titles"));
-		Assertions.assertTrue(modelMap.getAttribute("titles") instanceof List);
-		Assertions.assertEquals(List.of("Title 1", "Title 2"), modelMap.getAttribute("titles"));
+		ModelAndViewAssert.assertViewName(modelAndView, "list");
+		ModelAndViewAssert.assertModelAttributeValues(modelAndView, map);
 	}
 
 	@Test
 	void managePages() {
+		List<String> titles = List.of("Title 1", "Title 2");
 		when(processRecords.getAllTitles(titleRepository))
-				.thenReturn(List.of("Title 1", "Title 2"));
-		ModelAndView result = commonService.managePages(new ModelAndView("management", new HashMap<>()));
+				.thenReturn(titles);
 
-		Assertions.assertTrue(result.hasView());
-		Assertions.assertEquals("management", result.getViewName());
+		Map<String, Object> map = new HashMap<>();
+		map.put("titles", titles);
+		map.put("files", new ArrayList<>());
+		map.put("confirm", false);
+		map.put("message", "");
 
-		ModelMap modelMap = result.getModelMap();
-		Assertions.assertEquals(4, modelMap.size());
+		ModelAndView modelAndView = commonService.managePages("management");
 
-		Assertions.assertTrue(modelMap.containsAttribute("titles"));
-		Assertions.assertTrue(modelMap.getAttribute("titles") instanceof List);
-		Assertions.assertEquals(List.of("Title 1", "Title 2"), modelMap.getAttribute("titles"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("files"));
-		Assertions.assertTrue(modelMap.getAttribute("files") instanceof List);
-		Assertions.assertEquals(new ArrayList<>(), modelMap.getAttribute("files"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("confirm"));
-		Assertions.assertTrue(modelMap.getAttribute("confirm") instanceof Boolean);
-		Assertions.assertEquals(false, modelMap.getAttribute("confirm"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("message"));
-		Assertions.assertTrue(modelMap.getAttribute("message") instanceof String);
-		Assertions.assertEquals("", modelMap.getAttribute("message"));
+		ModelAndViewAssert.assertViewName(modelAndView, "management");
+		ModelAndViewAssert.assertModelAttributeValues(modelAndView, map);
 	}
 
 	@Test
 	void createSourcePage() {
-		ModelAndView result = commonService.createSourcePage(new ModelAndView("source", new HashMap<>()));
+		Map<String, Object> map = new HashMap<>();
+		map.put("title", "");
+		map.put("file_name", "");
+		map.put("content", new ArrayList<>());
+		map.put("edit_existing_page", false);
+		map.put("message", "");
 
-		Assertions.assertTrue(result.hasView());
-		Assertions.assertEquals("source", result.getViewName());
+		ModelAndView modelAndView = commonService.createSourcePage("source");
 
-		ModelMap modelMap = result.getModelMap();
-		Assertions.assertEquals(5, modelMap.size());
-
-		Assertions.assertTrue(modelMap.containsAttribute("title"));
-		Assertions.assertTrue(modelMap.getAttribute("title") instanceof String);
-		Assertions.assertEquals("", modelMap.getAttribute("title"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("file_name"));
-		Assertions.assertTrue(modelMap.getAttribute("file_name") instanceof String);
-		Assertions.assertEquals("", modelMap.getAttribute("file_name"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("content"));
-		Assertions.assertTrue(modelMap.getAttribute("content") instanceof List);
-		Assertions.assertEquals(new ArrayList<>(), modelMap.getAttribute("content"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("edit_existing_page"));
-		Assertions.assertTrue(modelMap.getAttribute("edit_existing_page") instanceof Boolean);
-		Assertions.assertEquals(false, modelMap.getAttribute("edit_existing_page"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("message"));
-		Assertions.assertTrue(modelMap.getAttribute("message") instanceof String);
-		Assertions.assertEquals("", modelMap.getAttribute("message"));
+		ModelAndViewAssert.assertViewName(modelAndView, "source");
+		ModelAndViewAssert.assertModelAttributeValues(modelAndView, map);
 	}
 
 	@Test
 	void publishPages() {
+		List<String> titles = List.of("Title 1", "Title 2");
 		when(processRecords.getAllTitles(titleRepository))
-				.thenReturn(List.of("Title 1", "Title 2"));
+				.thenReturn(titles);
+
 		when(processRecords.publishHtml(titleRepository, htmlRepository, fileOperations))
 				.thenReturn(new long[]{5L, 4L});
-		ModelAndView result = commonService.publishPages(new ModelAndView("management", new HashMap<>()));
 
-		Assertions.assertTrue(result.hasView());
-		Assertions.assertEquals("management", result.getViewName());
+		Map<String, Object> map = new HashMap<>();
+		map.put("titles", titles);
+		map.put("files", new ArrayList<>());
+		map.put("confirm", false);
+		map.put("message", "5 HTML files were pre-deleted, 4 were published.");
 
-		ModelMap modelMap = result.getModelMap();
-		Assertions.assertEquals(4, modelMap.size());
+		ModelAndView modelAndView = commonService.publishPages("management");
 
-		Assertions.assertTrue(modelMap.containsAttribute("titles"));
-		Assertions.assertTrue(modelMap.getAttribute("titles") instanceof List);
-		Assertions.assertEquals(List.of("Title 1", "Title 2"), modelMap.getAttribute("titles"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("files"));
-		Assertions.assertTrue(modelMap.getAttribute("files") instanceof List);
-		Assertions.assertEquals(new ArrayList<>(), modelMap.getAttribute("files"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("confirm"));
-		Assertions.assertTrue(modelMap.getAttribute("confirm") instanceof Boolean);
-		Assertions.assertEquals(false, modelMap.getAttribute("confirm"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("message"));
-		Assertions.assertTrue(modelMap.getAttribute("message") instanceof String);
-		Assertions.assertEquals("5 HTML files were pre-deleted, 4 were published.", modelMap.getAttribute("message"));
+		ModelAndViewAssert.assertViewName(modelAndView, "management");
+		ModelAndViewAssert.assertModelAttributeValues(modelAndView, map);
 	}
 
 	@Test
 	void importTxtNullFiles() {
+		List<String> titles = List.of("Title 1", "Title 2");
 		when(processRecords.getAllTitles(titleRepository))
-				.thenReturn(List.of("Title 1", "Title 2"));
-		ModelAndView result = commonService.importTxt(null, true, new ModelAndView("management", new HashMap<>()));
+				.thenReturn(titles);
 
-		Assertions.assertTrue(result.hasView());
-		Assertions.assertEquals("management", result.getViewName());
+		Map<String, Object> map = new HashMap<>();
+		map.put("titles", titles);
+		map.put("files", new ArrayList<>());
+		map.put("confirm", false);
+		map.put("message", "Please upload minimum one file and confirm source overwriting.");
 
-		ModelMap modelMap = result.getModelMap();
-		Assertions.assertEquals(4, modelMap.size());
+		ModelAndView modelAndView = commonService.importTxt("management", null, true);
 
-		Assertions.assertTrue(modelMap.containsAttribute("titles"));
-		Assertions.assertTrue(modelMap.getAttribute("titles") instanceof List);
-		Assertions.assertEquals(List.of("Title 1", "Title 2"), modelMap.getAttribute("titles"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("files"));
-		Assertions.assertTrue(modelMap.getAttribute("files") instanceof List);
-		Assertions.assertEquals(new ArrayList<>(), modelMap.getAttribute("files"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("confirm"));
-		Assertions.assertTrue(modelMap.getAttribute("confirm") instanceof Boolean);
-		Assertions.assertEquals(false, modelMap.getAttribute("confirm"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("message"));
-		Assertions.assertTrue(modelMap.getAttribute("message") instanceof String);
-		Assertions.assertEquals("Please upload minimum one file and confirm source overwriting.", modelMap.getAttribute("message"));
+		ModelAndViewAssert.assertViewName(modelAndView, "management");
+		ModelAndViewAssert.assertModelAttributeValues(modelAndView, map);
 	}
 
 	@Test
 	void importTxtEmptyFiles() {
 		List<File> files = new ArrayList<>();
+		List<String> titles = List.of("Title 1", "Title 2");
 		when(processRecords.getAllTitles(titleRepository))
-				.thenReturn(List.of("Title 1", "Title 2"));
-		ModelAndView result = commonService.importTxt(files, true, new ModelAndView("management", new HashMap<>()));
+				.thenReturn(titles);
 
-		Assertions.assertTrue(result.hasView());
-		Assertions.assertEquals("management", result.getViewName());
+		Map<String, Object> map = new HashMap<>();
+		map.put("titles", titles);
+		map.put("files", new ArrayList<>());
+		map.put("confirm", false);
+		map.put("message", "Please upload minimum one file and confirm source overwriting.");
 
-		ModelMap modelMap = result.getModelMap();
-		Assertions.assertEquals(4, modelMap.size());
+		ModelAndView modelAndView = commonService.importTxt("management", files, true);
 
-		Assertions.assertTrue(modelMap.containsAttribute("titles"));
-		Assertions.assertTrue(modelMap.getAttribute("titles") instanceof List);
-		Assertions.assertEquals(List.of("Title 1", "Title 2"), modelMap.getAttribute("titles"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("files"));
-		Assertions.assertTrue(modelMap.getAttribute("files") instanceof List);
-		Assertions.assertEquals(new ArrayList<>(), modelMap.getAttribute("files"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("confirm"));
-		Assertions.assertTrue(modelMap.getAttribute("confirm") instanceof Boolean);
-		Assertions.assertEquals(false, modelMap.getAttribute("confirm"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("message"));
-		Assertions.assertTrue(modelMap.getAttribute("message") instanceof String);
-		Assertions.assertEquals("Please upload minimum one file and confirm source overwriting.", modelMap.getAttribute("message"));
+		ModelAndViewAssert.assertViewName(modelAndView, "management");
+		ModelAndViewAssert.assertModelAttributeValues(modelAndView, map);
 	}
 
 	@Test
 	void importTxtNullConfirm() {
 		List<File> files = new ArrayList<>();
+		List<String> titles = List.of("Title 1", "Title 2");
 		when(processRecords.getAllTitles(titleRepository))
-				.thenReturn(List.of("Title 1", "Title 2"));
-		ModelAndView result = commonService.importTxt(files, null, new ModelAndView("management", new HashMap<>()));
+				.thenReturn(titles);
 
-		Assertions.assertTrue(result.hasView());
-		Assertions.assertEquals("management", result.getViewName());
+		Map<String, Object> map = new HashMap<>();
+		map.put("titles", titles);
+		map.put("files", new ArrayList<>());
+		map.put("confirm", false);
+		map.put("message", "Please upload minimum one file and confirm source overwriting.");
 
-		ModelMap modelMap = result.getModelMap();
-		Assertions.assertEquals(4, modelMap.size());
+		ModelAndView modelAndView = commonService.importTxt("management", files, null);
 
-		Assertions.assertTrue(modelMap.containsAttribute("titles"));
-		Assertions.assertTrue(modelMap.getAttribute("titles") instanceof List);
-		Assertions.assertEquals(List.of("Title 1", "Title 2"), modelMap.getAttribute("titles"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("files"));
-		Assertions.assertTrue(modelMap.getAttribute("files") instanceof List);
-		Assertions.assertEquals(new ArrayList<>(), modelMap.getAttribute("files"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("confirm"));
-		Assertions.assertTrue(modelMap.getAttribute("confirm") instanceof Boolean);
-		Assertions.assertEquals(false, modelMap.getAttribute("confirm"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("message"));
-		Assertions.assertTrue(modelMap.getAttribute("message") instanceof String);
-		Assertions.assertEquals("Please upload minimum one file and confirm source overwriting.", modelMap.getAttribute("message"));
+		ModelAndViewAssert.assertViewName(modelAndView, "management");
+		ModelAndViewAssert.assertModelAttributeValues(modelAndView, map);
 	}
 
 	@Test
 	void importTxtNotConfirmed() {
 		List<File> files = new ArrayList<>();
+		List<String> titles = List.of("Title 1", "Title 2");
 		when(processRecords.getAllTitles(titleRepository))
-				.thenReturn(List.of("Title 1", "Title 2"));
-		ModelAndView result = commonService.importTxt(files, false, new ModelAndView("management", new HashMap<>()));
+				.thenReturn(titles);
 
-		Assertions.assertTrue(result.hasView());
-		Assertions.assertEquals("management", result.getViewName());
+		Map<String, Object> map = new HashMap<>();
+		map.put("titles", titles);
+		map.put("files", new ArrayList<>());
+		map.put("confirm", false);
+		map.put("message", "Please upload minimum one file and confirm source overwriting.");
 
-		ModelMap modelMap = result.getModelMap();
-		Assertions.assertEquals(4, modelMap.size());
+		ModelAndView modelAndView = commonService.importTxt("management", files, false);
 
-		Assertions.assertTrue(modelMap.containsAttribute("titles"));
-		Assertions.assertTrue(modelMap.getAttribute("titles") instanceof List);
-		Assertions.assertEquals(List.of("Title 1", "Title 2"), modelMap.getAttribute("titles"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("files"));
-		Assertions.assertTrue(modelMap.getAttribute("files") instanceof List);
-		Assertions.assertEquals(new ArrayList<>(), modelMap.getAttribute("files"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("confirm"));
-		Assertions.assertTrue(modelMap.getAttribute("confirm") instanceof Boolean);
-		Assertions.assertEquals(false, modelMap.getAttribute("confirm"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("message"));
-		Assertions.assertTrue(modelMap.getAttribute("message") instanceof String);
-		Assertions.assertEquals("Please upload minimum one file and confirm source overwriting.", modelMap.getAttribute("message"));
+		ModelAndViewAssert.assertViewName(modelAndView, "management");
+		ModelAndViewAssert.assertModelAttributeValues(modelAndView, map);
 	}
 
 	@Test
@@ -358,119 +266,77 @@ class CommonServiceTest {
 		);
 		when(processRecords.importTxtFiles(files, titleRepository, txtRepository, htmlRepository, fileOperations, formulas, extractors))
 				.thenReturn(List.of(new File("file_1"), new File("file_2"), new File("file_3")));
+
+		List<String> titles = List.of("Title 1", "Title 2");
 		when(processRecords.getAllTitles(titleRepository))
-				.thenReturn(List.of("Title 1", "Title 2"));
-		ModelAndView result = commonService.importTxt(files, true, new ModelAndView("management", new HashMap<>()));
+				.thenReturn(titles);
 
-		Assertions.assertTrue(result.hasView());
-		Assertions.assertEquals("management", result.getViewName());
+		Map<String, Object> map = new HashMap<>();
+		map.put("titles", titles);
+		map.put("files", new ArrayList<>());
+		map.put("confirm", false);
+		map.put("message", "3 of 5 files were not imported.");
 
-		ModelMap modelMap = result.getModelMap();
-		Assertions.assertEquals(4, modelMap.size());
+		ModelAndView modelAndView = commonService.importTxt("management", files, true);
 
-		Assertions.assertTrue(modelMap.containsAttribute("titles"));
-		Assertions.assertTrue(modelMap.getAttribute("titles") instanceof List);
-		Assertions.assertEquals(List.of("Title 1", "Title 2"), modelMap.getAttribute("titles"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("files"));
-		Assertions.assertTrue(modelMap.getAttribute("files") instanceof List);
-		Assertions.assertEquals(new ArrayList<>(), modelMap.getAttribute("files"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("confirm"));
-		Assertions.assertTrue(modelMap.getAttribute("confirm") instanceof Boolean);
-		Assertions.assertEquals(false, modelMap.getAttribute("confirm"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("message"));
-		Assertions.assertTrue(modelMap.getAttribute("message") instanceof String);
-		Assertions.assertEquals("3 of 5 files were not imported.", modelMap.getAttribute("message"));
+		ModelAndViewAssert.assertViewName(modelAndView, "management");
+		ModelAndViewAssert.assertModelAttributeValues(modelAndView, map);
 	}
 
 	@Test
 	void generateHtmlNullConfirm() {
+		List<String> titles = List.of("Title 1", "Title 2");
 		when(processRecords.getAllTitles(titleRepository))
-				.thenReturn(List.of("Title 1", "Title 2"));
-		ModelAndView result = commonService.generateHtml(null, new ModelAndView("management", new HashMap<>()));
+				.thenReturn(titles);
 
-		Assertions.assertTrue(result.hasView());
-		Assertions.assertEquals("management", result.getViewName());
+		Map<String, Object> map = new HashMap<>();
+		map.put("titles", titles);
+		map.put("files", new ArrayList<>());
+		map.put("confirm", false);
+		map.put("message", "Please confirm generating pages.");
 
-		ModelMap modelMap = result.getModelMap();
-		Assertions.assertEquals(4, modelMap.size());
+		ModelAndView modelAndView = commonService.generateHtml("management", null);
 
-		Assertions.assertTrue(modelMap.containsAttribute("titles"));
-		Assertions.assertTrue(modelMap.getAttribute("titles") instanceof List);
-		Assertions.assertEquals(List.of("Title 1", "Title 2"), modelMap.getAttribute("titles"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("files"));
-		Assertions.assertTrue(modelMap.getAttribute("files") instanceof List);
-		Assertions.assertEquals(new ArrayList<>(), modelMap.getAttribute("files"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("confirm"));
-		Assertions.assertTrue(modelMap.getAttribute("confirm") instanceof Boolean);
-		Assertions.assertEquals(false, modelMap.getAttribute("confirm"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("message"));
-		Assertions.assertTrue(modelMap.getAttribute("message") instanceof String);
-		Assertions.assertEquals("Please confirm generating pages.", modelMap.getAttribute("message"));
+		ModelAndViewAssert.assertViewName(modelAndView, "management");
+		ModelAndViewAssert.assertModelAttributeValues(modelAndView, map);
 	}
 
 	@Test
 	void generateHtmlNotConfirmed() {
+		List<String> titles = List.of("Title 1", "Title 2");
 		when(processRecords.getAllTitles(titleRepository))
-				.thenReturn(List.of("Title 1", "Title 2"));
-		ModelAndView result = commonService.generateHtml(false, new ModelAndView("management", new HashMap<>()));
+				.thenReturn(titles);
 
-		Assertions.assertTrue(result.hasView());
-		Assertions.assertEquals("management", result.getViewName());
+		Map<String, Object> map = new HashMap<>();
+		map.put("titles", titles);
+		map.put("files", new ArrayList<>());
+		map.put("confirm", false);
+		map.put("message", "Please confirm generating pages.");
 
-		ModelMap modelMap = result.getModelMap();
-		Assertions.assertEquals(4, modelMap.size());
+		ModelAndView modelAndView = commonService.generateHtml("management", false);
 
-		Assertions.assertTrue(modelMap.containsAttribute("titles"));
-		Assertions.assertTrue(modelMap.getAttribute("titles") instanceof List);
-		Assertions.assertEquals(List.of("Title 1", "Title 2"), modelMap.getAttribute("titles"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("files"));
-		Assertions.assertTrue(modelMap.getAttribute("files") instanceof List);
-		Assertions.assertEquals(new ArrayList<>(), modelMap.getAttribute("files"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("confirm"));
-		Assertions.assertTrue(modelMap.getAttribute("confirm") instanceof Boolean);
-		Assertions.assertEquals(false, modelMap.getAttribute("confirm"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("message"));
-		Assertions.assertTrue(modelMap.getAttribute("message") instanceof String);
-		Assertions.assertEquals("Please confirm generating pages.", modelMap.getAttribute("message"));
+		ModelAndViewAssert.assertViewName(modelAndView, "management");
+		ModelAndViewAssert.assertModelAttributeValues(modelAndView, map);
 	}
 
 	@Test
 	void generateHtmlConfirmed() {
+		List<String> titles = List.of("Title 1", "Title 2");
+		when(processRecords.getAllTitles(titleRepository))
+				.thenReturn(titles);
+
 		when(processRecords.generate(titleRepository, txtRepository, htmlRepository, formulas, processPage, extractors, htmlGenerators))
 				.thenReturn(new long[]{12, 24});
-		when(processRecords.getAllTitles(titleRepository))
-				.thenReturn(List.of("Title 1", "Title 2"));
-		ModelAndView result = commonService.generateHtml(true, new ModelAndView("management", new HashMap<>()));
 
-		Assertions.assertTrue(result.hasView());
-		Assertions.assertEquals("management", result.getViewName());
+		Map<String, Object> map = new HashMap<>();
+		map.put("titles", titles);
+		map.put("files", new ArrayList<>());
+		map.put("confirm", false);
+		map.put("message", "12 pages in 24 seconds has been processed.");
 
-		ModelMap modelMap = result.getModelMap();
-		Assertions.assertEquals(4, modelMap.size());
+		ModelAndView modelAndView = commonService.generateHtml("management", true);
 
-		Assertions.assertTrue(modelMap.containsAttribute("titles"));
-		Assertions.assertTrue(modelMap.getAttribute("titles") instanceof List);
-		Assertions.assertEquals(List.of("Title 1", "Title 2"), modelMap.getAttribute("titles"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("files"));
-		Assertions.assertTrue(modelMap.getAttribute("files") instanceof List);
-		Assertions.assertEquals(new ArrayList<>(), modelMap.getAttribute("files"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("confirm"));
-		Assertions.assertTrue(modelMap.getAttribute("confirm") instanceof Boolean);
-		Assertions.assertEquals(false, modelMap.getAttribute("confirm"));
-
-		Assertions.assertTrue(modelMap.containsAttribute("message"));
-		Assertions.assertTrue(modelMap.getAttribute("message") instanceof String);
-		Assertions.assertEquals("12 pages in 24 seconds has been processed.", modelMap.getAttribute("message"));
+		ModelAndViewAssert.assertViewName(modelAndView, "management");
+		ModelAndViewAssert.assertModelAttributeValues(modelAndView, map);
 	}
 }

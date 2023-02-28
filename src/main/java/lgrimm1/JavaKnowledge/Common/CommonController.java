@@ -9,8 +9,7 @@ import org.springframework.web.servlet.*;
 import java.io.*;
 import java.util.*;
 
-@Controller
-//@Controller
+@RestController
 public class CommonController {
 
 	private final CommonService commonService;
@@ -21,76 +20,68 @@ public class CommonController {
 	}
 
 	@GetMapping("/root")
-//	public String getRoot(Model model) {
-	public ModelAndView getRoot(ModelAndView modelAndView) {
-		return commonService.getRoot("root", modelAndView);
-/*
-		ModelAndView modelAndView = commonService.getRoot("root");
-		model.addAllAttributes(modelAndView.getModel());
-		return modelAndView.getViewName();
-*/
+	public ModelAndView getRoot() {
+		return commonService.getRoot("root");
 	}
 
 	@PostMapping("/search")
-	public ModelAndView searchPages(@ModelAttribute("search_text") String searchText, Model model) {
-		return commonService.searchPages(searchText, new ModelAndView("list", model.asMap()));
+	public ModelAndView searchPages(@ModelAttribute("search_text") String searchText) {
+		return commonService.searchPages("list", searchText);
 	}
 
 	@PostMapping("/view")
-	public ModelAndView getPage(@ModelAttribute("titles") List<String> titles, Model model) {
-		return commonService.getPage(titles, new ModelAndView("static", model.asMap()));
+	public ModelAndView getPage(@ModelAttribute("titles") List<String> titles) {
+		return commonService.getPage("static", titles);
 	}
 
 	@PostMapping("management")
-	public ModelAndView managePages(@ModelAttribute("search_text") String searchText, Model model) {
-		return commonService.managePages(new ModelAndView("management", model.asMap()));
+	public ModelAndView managePages(@ModelAttribute("search_text") String searchText) {
+		return commonService.managePages("management");
 	}
 
 	@PostMapping("/source/new")
 	public ModelAndView createSourcePage(@ModelAttribute("titles") List<String> titles,
 										 @ModelAttribute("files") List<File> files,
 										 @ModelAttribute("confirm") Boolean confirm,
-										 @ModelAttribute("message") String message,
-										 Model model) {
-		return commonService.createSourcePage(new ModelAndView("source", model.asMap()));
+										 @ModelAttribute("message") String message) {
+		return commonService.createSourcePage("source");
 	}
 
 	@PostMapping("/source/edit")
 	public ModelAndView editSourcePage(@ModelAttribute("titles") List<String> titles,
 								 @ModelAttribute("files") List<File> files,
 								 @ModelAttribute("confirm") Boolean confirm,
-								 @ModelAttribute("message") String message,
-								 Model model) {
-		return commonService.editSourcePage(titles, new ModelAndView("source", model.asMap()));
+								 @ModelAttribute("message") String message) {
+		return commonService.editSourcePage("source", titles);
 	}
 
 	@PostMapping("/delete")
-	public ModelAndView deleteSourcePages(@ModelAttribute("titles") List<String> titles, @ModelAttribute("files") List<File> files, @ModelAttribute("confirm") Boolean confirm, @ModelAttribute("message") String message, Model model) {
-		return commonService.deletePages(titles, confirm, new ModelAndView("management", model.asMap()));
+	public ModelAndView deleteSourcePages(@ModelAttribute("titles") List<String> titles, @ModelAttribute("files") List<File> files, @ModelAttribute("confirm") Boolean confirm, @ModelAttribute("message") String message) {
+		return commonService.deletePages("management", titles, confirm);
 	}
 
 	@PostMapping("/publish")
-	public ModelAndView publishPages(@ModelAttribute("titles") List<String> titles, @ModelAttribute("files") List<File> files, @ModelAttribute("confirm") Boolean confirm, @ModelAttribute("message") String message, Model model) {
-		return commonService.publishPages(new ModelAndView("management", model.asMap()));
+	public ModelAndView publishPages(@ModelAttribute("titles") List<String> titles, @ModelAttribute("files") List<File> files, @ModelAttribute("confirm") Boolean confirm, @ModelAttribute("message") String message) {
+		return commonService.publishPages("management");
 	}
 
 	@PostMapping("/add/{formulaName}")
-	public ModelAndView addFormula(@RequestParam("formula_name") String formulaName, @ModelAttribute("title") String title, @ModelAttribute("file_name") String fileName, @ModelAttribute("content") List<String> content, @ModelAttribute("edit_existing_page") Boolean editExistingPage, @ModelAttribute("message") String message, Model model) {
-		return commonService.addFormula(formulaName, title, fileName, content, editExistingPage, new ModelAndView("source", new HashMap<>()));
+	public ModelAndView addFormula(@RequestParam("formula_name") String formulaName, @ModelAttribute("title") String title, @ModelAttribute("file_name") String fileName, @ModelAttribute("content") List<String> content, @ModelAttribute("edit_existing_page") Boolean editExistingPage, @ModelAttribute("message") String message) {
+		return commonService.addFormula("source", formulaName, title, fileName, content, editExistingPage);
 	}
 
 	@PostMapping("/save")
-	public ModelAndView savePage(@ModelAttribute("title") String title, @ModelAttribute("file_name") String fileName, @ModelAttribute("content") List<String> content, @ModelAttribute("edit_existing_page") Boolean editExistingPage, @ModelAttribute("message") String message, Model model) {
-		return commonService.savePage(title, fileName, content, editExistingPage, new ModelAndView("source", new HashMap<>()));
+	public ModelAndView savePage(@ModelAttribute("title") String title, @ModelAttribute("file_name") String fileName, @ModelAttribute("content") List<String> content, @ModelAttribute("edit_existing_page") Boolean editExistingPage, @ModelAttribute("message") String message) {
+		return commonService.savePage("source", title, fileName, content, editExistingPage);
 	}
 
 	@PostMapping("/import")
-	public ModelAndView importTxt(@ModelAttribute("titles") List<String> titles, @ModelAttribute("files") List<File> files, @ModelAttribute("confirm") Boolean confirm, @ModelAttribute("message") String message, Model model) {
-		return commonService.importTxt(files, confirm, new ModelAndView("management", new HashMap<>()));
+	public ModelAndView importTxt(@ModelAttribute("titles") List<String> titles, @ModelAttribute("files") List<File> files, @ModelAttribute("confirm") Boolean confirm, @ModelAttribute("message") String message) {
+		return commonService.importTxt("management", files, confirm);
 	}
 
 	@PostMapping("/generate")
-	public ModelAndView generateHtml(@ModelAttribute("titles") List<String> titles, @ModelAttribute("files") List<File> files, @ModelAttribute("confirm") Boolean confirm, @ModelAttribute("message") String message, Model model) {
-		return commonService.generateHtml(confirm, new ModelAndView("management", model.asMap()));
+	public ModelAndView generateHtml(@ModelAttribute("titles") List<String> titles, @ModelAttribute("files") List<File> files, @ModelAttribute("confirm") Boolean confirm, @ModelAttribute("message") String message) {
+		return commonService.generateHtml("management", confirm);
 	}
 }
