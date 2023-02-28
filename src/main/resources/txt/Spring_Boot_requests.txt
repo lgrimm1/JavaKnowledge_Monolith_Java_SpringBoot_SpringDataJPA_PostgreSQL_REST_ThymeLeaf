@@ -26,7 +26,8 @@ About GET requests in controller class:
     k. the Model model (see below) will be used for storing response data in model&view mode
     l. in model&view mode the returned value will be the name of the targeted template
     m. in object mode the returned value will be an object
-    n. with GET request, no request body should be sent and received, if needed use other request types
+    n. in object/model&view mode the returned value will be a ModelAndView object
+    o. with GET request, no request body should be sent and received, if needed use other request types
 
 Relations between GET request parameter and passed parameter:
     a. endpoint: runtime error, no parameter passed from browser but needed on server side
@@ -48,7 +49,7 @@ class ResponseClassName {...} //somewhere in Business layer
 ...
 @GetMapping("/endpointName")
 @ResponseBody
-public ResponseClassName methodName(@RequestParam("parameter_name1") passedObjectType1 passedObjectName1[, @RequestParam("parameter_name2") passedObjectType2 passedObjectName2, ...]) {
+public ResponseClassName controllerMethod(@RequestParam("parameter_name1") passedObjectType1 passedObjectName1[, @RequestParam("parameter_name2") passedObjectType2 passedObjectName2, ...]) {
     return serviceName.serviceMethod(passedObjectName1[, passedObjectName2, ...]);
 }
 ...
@@ -66,7 +67,7 @@ EXAMPLE FOR METHOD HANDLING A GET REQUEST WITH QUERY (MODEL&VIEW MODE, MODEL IN 
 @GetMapping("/endpointName")
 public String methodName(
         @ModelAttribute("parameter_name1") passedObjectType1 passedObjectName1,
-        @ModelAttribute("parameter_name2") passedObjectType2 passedObjectName2,,
+        @ModelAttribute("parameter_name2") passedObjectType2 passedObjectName2,
         ...,
         Model model) {
 	ModelAndView modelAndView = service.serviceMethod("initial_view_name", passedObjectName1, passedObjectName2, ...);
@@ -104,7 +105,7 @@ END OF EXAMPLE
 =================================================================================
 About POST, PUT, DELETE, OPTIONS, PATCH, HEAD requests in controller class:
     a. for having request parameters from a query, use the GET request type
-    b. for every parameter received from a template model, the @ModelAttribute annotation is needed then the type and the name of the passed parameter (model&view mode)
+    b. for every parameter received from a template model, the @ModelAttribute annotation is needed then the type and the name of the passed parameter (model&view, object/model&view modes)
     c. the request will arrive at the endpoint
     d. the endpoint is always reached when it was sent to endpointName
     e. the request body will be hidden from URL field of the browser (from the URL field always GET arrives)
@@ -112,7 +113,8 @@ About POST, PUT, DELETE, OPTIONS, PATCH, HEAD requests in controller class:
     g. if no value is given in the request, passedObjectName will take the defaultValue value (see below), in case no default is defined, null will be passed
     h. the Model model (see below) will be used for storing response data in model&view mode
     i. in model&view mode the returned value will be the name of the targeted template
-    k. in object mode the returned value will be an object
+    j. in object mode the returned value will be an object
+    k. in object/model&view mode the returned value will be a ModelAndView object
     l. the request body can contain more variables but all will be rendered into one transfer object or a Map object where keys are variable names
 
 EXAMPLE FOR METHOD HANDLING A POST, PUT, PATCH, DELETE REQUEST (OBJECT AS REQUEST BODY, OBJECT MODE):
