@@ -25,7 +25,8 @@ public class CommonController {
 	}
 
 	@PostMapping("/search")
-	public ModelAndView searchPages(@ModelAttribute("search_text") String searchText) {
+	public ModelAndView searchPages(@ModelAttribute("search_text") String searchText, Model model) {
+		model.asMap().clear();
 		return commonService.searchPages("list", searchText);
 	}
 
