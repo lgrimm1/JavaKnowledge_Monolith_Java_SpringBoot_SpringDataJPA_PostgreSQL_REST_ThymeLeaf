@@ -215,6 +215,7 @@ In case the annotation is used in @ResponseStatus(HttpStatus status, reason = re
 In model&view mode, the return value of the controller method will be a String containing the web page or template (file) name.
 In this version, the method signature must contain a Model argument which will be filled with the data sent toward the frontend.
 Also, if the frontend sends data with the request, there must be any number of argument marked with @ModelAttribute annotation, per every incoming object.
+Please note, the model is handled by Spring in the background, contains the incoming model objects sent by the frontend, and unless not deleted manually, the new added objects will be merged with the original objects. If that is not acceptable (e.g. the new model will be sent to a new view), clear the model before accepting new objects by accessing the Model object from the method signature.
 
 In object mode, the returned data will be JSON data, generated from serialized data of the returned object of the method, this would be sent to the frontend.
 In this version, there is no Model in the argument list.
@@ -226,8 +227,9 @@ For both techniques, in case the content type is not defined, uses standard codi
 As for incoming requests in object mode, an endpoint can receive JSON data only in the defined (or default) format. For different content types, different endpoints must be created. In case no format is defined, the Spring Boot will use the best appropriate format.
 In older Spring versions, in controller, the method signature elements and the return type must be object types (wrapper types are included). Newer versions can accept literally every serializable type.
 
-In object/model&view mode, there is no need for Model object in the method signature, the return value will be a ModelAndView object.
-For incoming data, arguments are needed, marked with @ModelAttribute annotation, just like in model&view more.
+In object/model&view mode, there can be a Model object in the method signature however it is not obligatory, the return value will be a ModelAndView object.
+For incoming data, arguments are needed, marked with @ModelAttribute annotation, just like in model&view mode.
+Please note, similarly to model&view mode, the model is handled by Spring in the background, contains the incoming model objects sent by the frontend, and unless not deleted manually, the new added objects will be merged with the original objects. If that is not acceptable (e.g. the new model will be sent to a new view), clear the model before accepting new objects by accessing the Model object from the method signature.
 
 =================================================================================
 4. CONTROLLER MODEL&VIEW MODE
@@ -244,6 +246,7 @@ The Model object is created by Spring Boot. No legal constructor is available wh
 
 EXAMPLE FOR CONTROLLER AND SERVICE METHODS (MODEL&VIEW MODE, ONE INCOMING PARAMETER):
 public String controllerMethod(@ModelAttribute IncomingObjectType incomingObject, Model model) {
+    model.asMap().clear();
 	ModelAndView modelAndView = service.serviceMethod("initial_view_name", incomingObject);
 	model.addAllAttributes(modelAndView.getModel());
 	return modelAndView.getViewName();
@@ -278,7 +281,8 @@ The ModelAndView object has legal constructors, a new instance, filled with prop
 Using this class as return value invokes the object/model&view mode for the controller method and complies to the REST standard (@RestController, @ResponseBody is applicable).
 
 EXAMPLE FOR CONTROLLER AND SERVICE METHODS (OBJECT/MODEL&VIEW MODE, ONE INCOMING PARAMETER):
-public ModelAndView controllerMethod(@ModelAttribute IncomingObjectType incomingObject) {
+public ModelAndView controllerMethod(@ModelAttribute IncomingObjectType incomingObject, Model model) {
+    model.asMap().clear();
 	return service.serviceMethod("initial_view_name", incomingObject);
 }
 ...

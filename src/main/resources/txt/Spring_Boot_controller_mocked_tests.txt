@@ -93,6 +93,8 @@ With perform() method the test case is set. Order of the perform steps is import
 Optionally, the MockMVC can be forced to print information about the results of performed action with the print() method. By default, the same information will appear when using Spring Data JPA because Hibernate is verbal.
 Every andExpect() method means an assertion for its argument.
 
+Important, in model&view and object/model&view modes, when the model is not cleared before new objects are added, the size of the outgoing model can be higher with the number of incoming model objects (see the andExpect(model().size(size)) method below).
+
 Some expected statuses (look for more under StatusResultMatcher methods below):
     a. isOk()
     b. isAccepted()

@@ -70,6 +70,7 @@ public String methodName(
         @ModelAttribute("parameter_name2") passedObjectType2 passedObjectName2,
         ...,
         Model model) {
+    model.asMap().clear();
 	ModelAndView modelAndView = service.serviceMethod("initial_view_name", passedObjectName1, passedObjectName2, ...);
 	model.addAllAttributes(modelAndView.getModel());
 	return modelAndView.getViewName();
@@ -174,6 +175,7 @@ public String methodName(
         @ModelAttribute("parameter_name2") passedObjectType2 passedObjectName2,,
         ...,
         Model model) {
+    model.asMap().clear();
 	ModelAndView modelAndView = service.serviceMethod("initial_view_name", passedObjectName1, passedObjectName2, ...);
 	model.addAllAttributes(modelAndView.getModel());
 	return modelAndView.getViewName();

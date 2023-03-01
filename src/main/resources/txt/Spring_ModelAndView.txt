@@ -24,7 +24,7 @@ SPRING MODELANDVIEW
 The Communication layer as a whole, or endpoints of the layer can work in two basic modes:
     a. model&view mode
     b. object mode
-Included by the object more, the endpoint or the layer can work in object/model&view mode.
+Included by the object mode, the endpoint or the layer can work in object/model&view mode.
 
 The model&view and the object/model&view modes cover working with models and templates. That said, the sent payload is rendered into a view and a model.
 Spring transforms the view to a template reference.
@@ -32,7 +32,11 @@ The model can contain several objects and this as a package is sent to the templ
 
 When dealing with views and models, the ModelAndView class becomes handy. It merges the View and the Model objects into one object which is returnable so testable as well.
 That said, this class can be used in data traffic between parts of the Business layer, between the Business and the Communication layers (between service and controller instances), also as a return value of an endpoint.
-Please note, unless an endpoint does not return an object (e.g. a ModelAndView object) but only a view name, the endpoint can not comply to the REST standard (no @RestController nor @ResponseBody annotations).
+Please note, unless an endpoint does not return an object (e.g. a ModelAndView object) but only a view name, the endpoint can not comply to the REST standard (no @RestController nor @ResponseBody annotations can be used).
+
+It has high importance that the model and the view is handled by Spring in the background.
+The view defined by its template name in the return value of the controller method, will be rendered into a View object.
+The model contains objects sent by the frontend when entering into the endpoint. In case this data is not needed (mostly when different view will be reached from the endpoint), as first act in the method, the model must be cleared.
 
 =================================================================================
 2. CONTROLLER AND SERVICE WITH MODEL&VIEW
@@ -49,6 +53,7 @@ The controller method receives a new (empty) Model object in its argument list, 
 EXAMPLE FOR THIN CONTROLLER ENDPOINT (MODEL&VIEW MODE):
 @GetMapping("/endpoint") //or other request type(s)
 public String controllerMethod(@ModelAttribute Type1 variable1, ..., Model model) {
+    model.asMap().clear();
 	ModelAndView modelAndView = serviceObject.serviceMethod("initial_view_name", variable1, ...);
 	model.addAllAttributes(modelAndView.getModel());
 	return modelAndView.getViewName();
@@ -76,6 +81,7 @@ The controller method does not receive an object created by Spring but a new Mod
 EXAMPLE FOR THIN CONTROLLER ENDPOINT (OBJECT/MODEL&VIEW MODE):
 @GetMapping("/endpoint") //or other request type(s)
 public ModelAndView controllerMethod(@ModelAttribute Type1 variable1, ..., Model model) {
+    model.asMap().clear();
 	return serviceObject.serviceMethod("initial_view_name", variable1, ...);
 }
 END OF EXAMPLE
