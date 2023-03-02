@@ -8,8 +8,9 @@ POST    /search                 request model: {"searchText": <String>}
                                 response model: {"titles": [<String>, ...]}
                                 response view: "list"
 
-POST    /view                   request model: {"titles": [<String>, ...]}
-                                response view: static page(s)
+POST    /page                   request model: {"title": <String>}
+                                response model: {"title": <String>, "references": [<String>, ...], "static": <String>}
+                                response view: "page"
 
 POST    /management             request model: {"searchText": <String>}
                                 response model: {"titles": [<String>, ...], "files": [<File>, ...], "confirm": <boolean>, "message": <String>}

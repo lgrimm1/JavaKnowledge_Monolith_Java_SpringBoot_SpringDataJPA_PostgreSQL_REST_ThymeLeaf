@@ -19,10 +19,23 @@ Received data       Item                                        Endpoint        
 {"titles": [<String>, ...]}
                     banner                                      GET /root           -
                     list of filtered titles
-                    "View Page(s)" button                       POST /view          {"titles": [<String>, ...]}
+                    "View Page(s)" button                       POST /page          {"title": <String>}
                     "Back" button                               GET /root           -
-Model: {"titles": [<String>, ...]}
-HTML attributes: titles
+Model: {"titles": [<String>, ...], {"title": <String>}}
+HTML attributes: titles, title
+
+
+"page"
+Received data       Item                                        Endpoint            Sent data
+----------          ----------                                  ----------          ----------
+{"title": <String>, "references": [<String>, ...], "static": <String>}
+                    banner                                      GET /root           -
+                    content of a page in a frame
+                    list of reference titles
+                    "Jump" button                               POST /page          {"title": <String>}
+                    "Back" button                               GET /root           -
+{"title": <String>, "references": [<String>, ...], "static": <String>}
+HTML attributes: title, references, static
 
 
 "management"

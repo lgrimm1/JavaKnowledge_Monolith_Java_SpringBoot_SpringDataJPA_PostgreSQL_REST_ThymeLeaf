@@ -3,8 +3,9 @@ Notes
 Views:
     a. root: start page
     b. list: search result page
-    c. management: source side
-    d. source: for editing
+    c. page: show a page
+    d. management: source side
+    e. source: for editing
 
 "Root" view:
     if "search" field is null or blank, search button results full list
@@ -12,6 +13,10 @@ Views:
 "List" view:
     a. first row is automatically selected
     b. more titles can be selected
+
+"Page" view:
+    a. all references are collected into a side box on the right side
+    b. the static content is shown in a frame
 
 "Management" view:
     a. first row is automatically selected
