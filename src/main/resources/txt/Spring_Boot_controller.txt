@@ -100,27 +100,22 @@ With a controller, the next annotations can be used.
 ||Annotation|Position|Used for||
 ||@Controller|before the class declaration|marks that the class is a controller (API)||
 ||@RestController|before the class declaration|marks that the class is a controller (REST API), object mode only||
+||@ControllerAdvice|before the class declaration|marks that the controller contains general information about the operation of the controller||
 ||@RequestMapping|before the class declaration, after the @Controller or @RestController annotation|marks the root of all endpoints||
 ||@RequestMapping|before a method|marks that the method will be invoked when a request type with the endpoint is received||
 ||@GetMapping|before a method|marks that the method will be invoked when GET request with the endpoint is received||
 ||@PostMapping|before a method|marks that the method will be invoked when POST request with the endpoint is received||
 ||@PutMapping|before a method|marks that the method will be invoked when PUT request with the endpoint is received||
 ||@DeleteMapping|before a method|marks that the method will be invoked when DELETE request with the endpoint is received||
+||@PatchMapping|before a method|marks that the method will be invoked when PATCH request with the endpoint is received||
 ||@ResponseBody|after request type annotation, before method signature, or before return value in signature|marks that the returned value will be sent to the frontend as object (object mode only)||
 ||@PathVariable|before a method argument|marks that the argument is found in endpoint path||
 ||@RequestParam|before a method argument|marks that the argument will be used for receiving the given parameter from the request query; object mode but not object/model&view mode||
-||@RequestBody|before method argument|marks that the argument is in the request body, object mode only||
+||@RequestBody|before method argument|marks that the argument is in the request body, object mode but not object/model&view mode||
+||@ModelAttribute|before a method|marks that the method defines object(s) to be added to all models beforehand (model&view and object/model&view modes)||
 ||@ModelAttribute|before a method argument|marks that the argument is passed by an incoming model of a template (model&view and object/model&view modes)||
 ||@NonNull|before method argument|marks that for that argument only non-null parameter is acceptable (modifies method signature, in case of null argument HTTP4xx code is sent back)||
 ||@ResponseStatus|before a method|defines a custom HTTP code which will be added to the answer from the endpoint when its method ends successfully||
-
-Parameters of @Request/Get/Post/Put/DeleteMapping:
-    a. "/endpoint" (can be used when only this parameter is given)
-    b. value = "/endpoint" (defines the endpoint)
-    c. path = "/endpoint" (same as previous)
-    d. consumes = contentType (in what context type the data will be received; optional)
-    e. produces = contentType (in what context type the data will be sent; optional)
-    f. method = POST (only for @RequestMapping, defines request type, value can be any request type)
 
 The @RestController annotation automatically adds two annotations to the class on class-level:
     a. @Controller
@@ -129,10 +124,28 @@ That said, the class will be a REST controller, and all methods will operate in 
 When using the @ResponseBody annotation on class-level, will mark all controller methods.
 In case the @ResponseBody annotation is used independently on controller methods, the annotation can be before the method signature or before the return value in the signature.
 
+By using the @ControllerAdvise annotation the Spring is instructed to look for instructions how the controller should operate before activating any controller methods.
+Such instruction can be e.g. adding general objects to all models, see @ModelAttribute annotation on method level below.
+
+Parameters of @Request/Get/Post/Put/Delete/PatchMapping:
+    a. "/endpoint" (can be used when only this parameter is given)
+    b. value = "/endpoint" (defines the endpoint)
+    c. path = "/endpoint" (same as previous)
+    d. consumes = contentType (in what context type the data will be received; optional)
+    e. produces = contentType (in what context type the data will be sent; optional)
+    f. method = POST (only for @RequestMapping, defines request type, value can be any request type)
+
 Parameters of @RequestParam:
     a. name = "parameter_name_in_request"
     b. required = true (optional; using false value is possible but leaving this argument means the same)
     c. defaultValue = "default_value" (optional; if this argument does not exist and there is no passed value for the marked parameter, null will be passed)
+
+The @ModelAttribute annotation can be used with two different tasks:
+    a. marking a general object to be added to all models in the controller before the correspondent endpoint method is started
+    b. marking an incoming parameter which is sent by model of a template
+Using this functionality is optional.
+When used on method-level, the method will not be used as an endpoint. When a class (can be the controller as well) contains such information, the @ControllerAdvice annotation must be used on class-level.
+Spring allows for a method to have several arguments marked with @ModelAttribute, however it is very hard to specify proper mocked tests for such case. Declare a custom class for dealing with the payload, and use this class as the only one argument marked with @ModelAttribute.
 
 Parameter versions of @ResponseStatus:
     a. HttpStatus status
@@ -240,19 +253,64 @@ For incoming data sent by the frontend, in the method signature method arguments
 In case the frontend does not send data, no such argument is needed.
 
 In case data should be sent to the frontend, in the method signature a Model object should be placed as argument.
-Initially, the Model object is empty and the contained data will be put into it by the Business layer. Any kind of object can be added to the model represented by this object.
-The Model is extending the Map interface where keys are HTML attributes, values are objects rendered to them.
+Initially, the Model object contains the incoming objects and the new data will be put into it by the Business layer. Any kind of object can be added to the model represented by this object.
+The Model is extending the Map interface where keys are HTML attributes, values are Objects rendered to them. Of course, the value type can be narrowed down for e.g. String.
 The Model object is created by Spring Boot. No legal constructor is available which means objects can be added to these objects but creating new one nor assigning new one to its variable must be prevented.
 
+Data binding means that Spring parses the incoming model data to model attribute arguments marked with @ModelAttribute annotation.
+As first step before invoking the method of the endpoint, Spring examines whether the marked argument will receive an object from the frontend. In case of no matching incoming object, Spring tries to initialise a new object by calling proper constructor and passes that object to the argument.
+Please note, in case of Collection or more @ModelAttribute arguments, it is difficult to write working mocking unit test for the controller method. Proper solution is to declare a payload class containing fields for all possible data and receive only that payload as a @ModelAttribute.
+
+Optionally, the method signature can contain a BindingResult argument. This argument will tell if data binding was successful.
+
+EXAMPLE FOR DEFINING GENERAL MODEL ATTRIBUTE IN A CONTROLLER:
+package ...;
+
+//imports
+
+@RestController
+@ControllerAdvice
+class Controller {
+
+    @ModelAttribute
+    public void addAttributes(Model model) {
+        model.addAttribute("attribute_name", value);
+    }
+
+    //endpoints
+}
+END OF EXAMPLE
+
+EXAMPLE FOR DECLARING PAYLOAD CLASS:
+package ...;
+
+//imports
+
+public class Payload {
+    //private fields
+
+    public Payload() {}
+    public Payload(all fields) {...}
+    public Payload(field variation 1) {...}
+    ...
+    public Payload(field variation n) {...}
+
+    //getters, setters, equals(), hashCode()
+}
+END OF EXAMPLE
+
 EXAMPLE FOR CONTROLLER AND SERVICE METHODS (MODEL&VIEW MODE, ONE INCOMING PARAMETER):
-public String controllerMethod(@ModelAttribute IncomingObjectType incomingObject, Model model) {
+public String controllerMethod(@ModelAttribute Payload payload, BindingResult bindingResult, Model model) {
     model.asMap().clear();
-	ModelAndView modelAndView = service.serviceMethod("initial_view_name", incomingObject);
+    if (bindingResult.hasErrors()) {
+        return "error";
+    }
+	ModelAndView modelAndView = service.serviceMethod("initial_view_name", invoking_getter(s)_of_payload);
 	model.addAllAttributes(modelAndView.getModel());
 	return modelAndView.getViewName();
 }
 ...
-public String serviceMethod(String initialView, IncomingObjectType incomingObject) {
+public String serviceMethod(String initialView, variables_received_from_getters_of_payload) {
 	ModelAndView modelAndView = new ModelAndView(initialView);
     //process
 	modelAndView.addObject("html_attribute_name", attributeValue);
@@ -280,13 +338,52 @@ There is no need for including a Model object to the argument list since will no
 The ModelAndView object has legal constructors, a new instance, filled with proper data, must be the return value.
 Using this class as return value invokes the object/model&view mode for the controller method and complies to the REST standard (@RestController, @ResponseBody is applicable).
 
+EXAMPLE FOR DEFINING GENERAL MODEL ATTRIBUTE IN A CONTROLLER:
+package ...;
+
+//imports
+
+@RestController
+@ControllerAdvice
+class Controller {
+
+    @ModelAttribute
+    public void addAttributes(Model model) {
+        model.addAttribute("attribute_name", value);
+    }
+
+    //endpoints
+}
+END OF EXAMPLE
+
+EXAMPLE FOR DECLARING PAYLOAD CLASS:
+package ...;
+
+//imports
+
+public class Payload {
+    //private fields
+
+    public Payload() {}
+    public Payload(all fields) {...}
+    public Payload(field variation 1) {...}
+    ...
+    public Payload(field variation n) {...}
+
+    //getters, setters, equals(), hashCode()
+}
+END OF EXAMPLE
+
 EXAMPLE FOR CONTROLLER AND SERVICE METHODS (OBJECT/MODEL&VIEW MODE, ONE INCOMING PARAMETER):
-public ModelAndView controllerMethod(@ModelAttribute IncomingObjectType incomingObject, Model model) {
+public ModelAndView controllerMethod(@ModelAttribute Payload payload, BindingResult bindingResult, Model model) {
     model.asMap().clear();
-	return service.serviceMethod("initial_view_name", incomingObject);
+    if (bindingResult.hasErrors()) {
+        //return a new ModelAndView object with error view and objects
+    }
+	return service.serviceMethod("initial_view_name", invoking_getter(s)_of_payload);
 }
 ...
-public ModelAndView serviceMethod(String initialView, IncomingObjectType incomingObject) {
+public ModelAndView serviceMethod(String initialView, variables_received_from_getters_of_payload) {
 	ModelAndView modelAndView = new ModelAndView(initialView);
     //process
     modelAndView.setViewName("new_view_name"); //if needed

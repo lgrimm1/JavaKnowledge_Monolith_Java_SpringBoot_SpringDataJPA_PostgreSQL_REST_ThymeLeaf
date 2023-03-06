@@ -42,6 +42,7 @@ The model contains objects sent by the frontend when entering into the endpoint.
 2. CONTROLLER AND SERVICE WITH MODEL&VIEW
 =================================================================================
 In order to form an API, thin controller is needed. That said, the controller is separated from the Business layer. Thin controller means thin endpoints along.
+In order to receive data from a view, use a custom payload class which will contain all possible data from the view.
 
 2.1. NO-REST ENDPOINT
 2.2. REST ENDPOINT
@@ -52,9 +53,12 @@ The controller method receives a new (empty) Model object in its argument list, 
 
 EXAMPLE FOR THIN CONTROLLER ENDPOINT (MODEL&VIEW MODE):
 @GetMapping("/endpoint") //or other request type(s)
-public String controllerMethod(@ModelAttribute Type1 variable1, ..., Model model) {
+public String controllerMethod(@ModelAttribute Payload payload, BindingResult bindingResult, Model model) {
     model.asMap().clear();
-	ModelAndView modelAndView = serviceObject.serviceMethod("initial_view_name", variable1, ...);
+    if (bindingResult.hasErrors()) {
+        //return an error view and objects
+    }
+	ModelAndView modelAndView = serviceObject.serviceMethod("initial_view_name", invoking_getters_of_payload);
 	model.addAllAttributes(modelAndView.getModel());
 	return modelAndView.getViewName();
 }
@@ -64,7 +68,7 @@ The Model part of ModelAndView object contains objects, organized into a Map<Str
 On Business layer side, the correspondent service method will be invoked which returns a ModelAndView object filled with elements of the payload and the name of the view.
 
 EXAMPLE FOR SERVICE METHOD (MODEL&VIEW MODE):
-public ModelAndView serviceMethod(String initialView, Type1 variable1, ...) {
+public ModelAndView serviceMethod(String initialView, received_variables_from_payload) {
     //process
     ModelAndView modelAndView = new ModelAndView(initialView); //if needed
 	modelAndView.setViewName("final_view_name"); //if needed
@@ -80,9 +84,12 @@ The controller method does not receive an object created by Spring but a new Mod
 
 EXAMPLE FOR THIN CONTROLLER ENDPOINT (OBJECT/MODEL&VIEW MODE):
 @GetMapping("/endpoint") //or other request type(s)
-public ModelAndView controllerMethod(@ModelAttribute Type1 variable1, ..., Model model) {
+public ModelAndView controllerMethod(@ModelAttribute Payload payload, BindingResult bindingResult, Model model) {
     model.asMap().clear();
-	return serviceObject.serviceMethod("initial_view_name", variable1, ...);
+    if (bindingResult.hasErrors()) {
+        //return a new ModelAndView object with error view and objects
+    }
+	return serviceObject.serviceMethod("initial_view_name", invoking_getters_of_payload);
 }
 END OF EXAMPLE
 
@@ -90,7 +97,7 @@ The Model part of ModelAndView object contains objects, organized into a Map<Str
 On Business layer side, the correspondent service method will be invoked which returns a ModelAndView object filled with elements of the payload and the name of the view.
 
 EXAMPLE FOR SERVICE METHOD (OBJECT/MODEL&VIEW MODE):
-public ModelAndView serviceMethod(String initialView, Type1 variable1, ...) {
+public ModelAndView serviceMethod(String initialView, received_variables_from_payload) {
     //process
     ModelAndView modelAndView = new ModelAndView(initialView); //if needed
 	modelAndView.setViewName("final_view_name"); //if needed

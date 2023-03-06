@@ -1,51 +1,25 @@
 Endpoints
 ------------------------
-GET     /root                   request model:
-                                response model: {"searchText": <String>}
-                                response view: "root"
+GET     /root                   response view: "root"
 
-POST    /search                 request model: {"searchText": <String>}
-                                response model: {"titles": [<String>, ...]}
-                                response view: "list"
+POST    /search                 response view: "list"
 
-POST    /page                   request model: {"title": <String>}
-                                response model: {"title": <String>, "references": [<String>, ...], "static": <String>}
-                                response view: "page"
+POST    /page                   response view: "page"
 
-POST    /management             request model: {"searchText": <String>}
-                                response model: {"titles": [<String>, ...], "files": [<File>, ...], "confirm": <boolean>, "message": <String>}
-                                response view: "management"
+POST    /management             response view: "management"
 
-POST    /source/new             request model: {"titles": [<String>, ...], "confirm": <boolean>, "message": <String>}
-                                response model: {"title": <String>, "fileName": <String>, "content": [<String>, ...], "editExistingPage": <boolean>, "message": <String>}
-                                response view: "source"
+POST    /source/new             response view: "source"
 
-POST    /source/edit            request model: {"titles": [<String>, ...], "confirm": <boolean>, "message": <String>}
-                                response model 1: {"title": <String>, "fileName": <String>, "content": [<String>, ...], "editExistingPage": <boolean>, "message": <String>}
-                                response view 1: "source"
-                                response model 2: {"titles": [<String>, ...], "confirm": <boolean>, "message": <String>}
-                                response view 2: "management"
+POST    /source/edit            response view "source" | "management"
 
-POST    /delete                 request model: {"titles": [<String>, ...], "files": [<File>, ...], "confirm": <boolean>, "message": <String>}
-                                response model: {"titles": [<String>, ...], "files": [<File>, ...], "confirm": <boolean>, "message": <String>}
-                                response view: "management"
+POST    /delete                 response view: "management"
 
-POST    /publish                request model: {"titles": [<String>, ...], "files": [<File>, ...], "confirm": <boolean>, "message": <String>}
-                                response model: {"titles": [<String>, ...], "files": [<File>, ...], "confirm": <boolean>, "message": <String>}
-                                response view: "management"
+POST    /publish                response view: "management"
 
-POST    /add/{formulaName}      request model: {"title": <String>, "fileName": <String>, "content": [<String>, ...], "editExistingPage": <boolean>, "message": <String>}
-                                response model: {"title": <String>, "fileName": <String>, "content": [<String>, ...], "editExistingPage": <boolean>, "message": <String>}
-                                response view: "source"
+POST    /add/{formulaName}      response view: "source"
 
-POST    /save                   request model: {"title": <String>, "fileName": <String>, "content": [<String>, ...], "editExistingPage": <boolean>, "message": <String>}
-                                response model: {"title": <String>, "fileName": <String>, "content": [<String>, ...], "editExistingPage": <boolean>, "message": <String>}
-                                response view: "source"
+POST    /save                   response view: "source"
 
-POST    /import                 request model: {"titles": [<String>, ...], "files": [<File>, ...], "confirm": <boolean>, "message": <String>}
-                                response model: {"titles": [<String>, ...], "files": [<File>, ...], "confirm": <boolean>, "message": <String>}
-                                response view: "management"
+POST    /import                 response view: "management"
 
-POST    /generate               request model: {"titles": [<String>, ...], "files": [<File>, ...], "confirm": <boolean>, "message": <String>}
-                                response model: {"titles": [<String>, ...], "files": [<File>, ...], "confirm": <boolean>, "message": <String>}
-                                response view: "management"
+POST    /generate               response view: "management"

@@ -1,0 +1,15 @@
+Model
+------------------------
+{
+    "confirm": <boolean>,
+    "content": [<String>, ...],
+    "editExistingPage": <boolean>,
+    "fileName": <String>,
+    "files": <String>,
+    "message": <String>,
+    "references": [<String>, ...],
+    "searchText": <String>,
+    "staticPageLink": <String>,
+    "title": <String>,
+    "titles": [<String>, ...]
+}

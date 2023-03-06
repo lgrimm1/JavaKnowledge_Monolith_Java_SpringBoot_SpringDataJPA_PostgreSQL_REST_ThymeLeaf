@@ -129,27 +129,56 @@ public void testCaseName() throws Exception {
 }
 END OF EXAMPLE
 
+For model&view and object/model&view modes, because these modes are based upon models, the best approach is to declare a class which:
+    a. is capable of storing all objects the model or models might receive or send
+    b. has default and full constructors for Spring
+    c. specific constructors for manual definition of specific portion of data fitting to actual need in controller method
+    d. all getters and setters
+    e. equals() and hashCode() methods
+This class will represent the payload sent and received to and from the frontend.
+In the tests payload objects will be defined for receiving and sending, the latter will be added to the model (or to the ModelAndView object).
+The test will check whether for the received payload the sent payload is created.
+
+EXAMPLE FOR DECLARING PAYLOAD CLASS:
+package ...;
+
+//imports
+
+public class Payload {
+    //private fields
+
+    public Payload() {}
+    public Payload(all fields) {...}
+    public Payload(field variation 1) {...}
+    ...
+    public Payload(field variation n) {...}
+
+    //getters, setters, equals(), hashCode()
+}
+END OF EXAMPLE
+
 EXAMPLE FOR A TEST CASE METHOD (PUT ON /ENDPOINT, MODEL&VIEW AND OBJECT/MODEL&VIEW MODES, EXPECTED HTTP200 SUCCESS CODE):
 @Test
 public void testCaseName() throws Exception {
-	//mocking service
-	ModelAndView modelAndView = new ModelAndView("initial_view_name");
-	modelAndView.addObject("html_attribute_name", attributeValue);
-	when(commonService.getRoot("initial_view_name", ...))
+    //definition of variables containing received data
+	Payload receivedPayload = new Payload(...); //use proper special constructor with received data
+    //definition of variables containing sent data
+	Payload sentPayload = new Payload(...); //use proper special constructor with sent data
+	ModelAndView modelAndView = new ModelAndView("initial_view_name", "payload", sentPayload);
+	//mocking service, passed data are received variables:
+	when(service.serviceMethod(...))
 			.thenReturn(modelAndView);
 
 	mockMvc
-	        .perform(
-	                put("/endpoint")
-	                .param("incoming_attribute_name", incoming_attribute_value)
-	                )
-			.andDo(print())
+			.perform(
+					post("/endpoint")
+							.flashAttr("payload", receivedPayload)
+			)
 			.andExpect(status().isOk())
+			.andDo(print())
 			.andExpect(view().name("view_name"))
-			.andExpect(model().size(size))
-			.andExpect(model().attributeExists("attribute_name"[, ...]))
-			.andExpect(model().attribute("attribute_name", attributeValue))
-			.andExpect(model().attributeDoesNotExist("attribute_name"[, ...]))
+			.andExpect(model().size(1))
+			.andExpect(model().attribute("payload", sentPayload))
             .andExpect(forwardedUrl("UrlName"))
             .andExpect(redirectedUrl("UrlName"));
 }
@@ -174,7 +203,7 @@ Every request type has a method in MockMvcRequestBuilders:
 
 Variants of get()/.../head() method parameters:
     a. String URI (which means endpoint; object mode)
-    b. String urlTemplate[, Object... uriVariables] (view mode)
+    b. String urlTemplate[, Object... uriVariables] (model&view mode)
 
 Variants of request() method parameters:
     a. HttpMethod method, String URI (URI means the whole endpoint path)
@@ -201,7 +230,7 @@ MockHttpServletRequestBuilder methods:
     m. pathInfo(String pathInfo): specify the portion of the requestURI that represents the pathInfo
     n. postProcessRequest(MockHttpServletRequest request): adds a post-processing server request, returns a MockHttpServletRequest instance
     o. queryParam(String name, String... values), queryParams(MultiValueMap<String,String> params)
-    p. requestAttr(String name, Object value)
+    p. requestAttr(String name, Object value): adds model attribute to the request (model&view mode)
     q. secure(boolean secure): indicates secure channel e.g. HTTPS
     r. servletPath(String servletPath): specify the portion of the requestURI that represents the path to which the Servlet is mapped
     s. session(MockHttpSession session): set the HTTP session to use, possibly re-used across requests
