@@ -11,7 +11,9 @@ import org.springframework.ui.*;
 import org.springframework.web.servlet.*;
 
 import java.io.*;
+import java.nio.file.*;
 import java.util.*;
+import java.util.stream.*;
 
 @Service
 public class CommonService {
@@ -62,9 +64,11 @@ public class CommonService {
 	public ModelAndView searchPages(String initialView, String searchText) {
 		ModelAndView modelAndView = new ModelAndView(initialView);
 		if (searchText == null || searchText.isBlank()) {
+			modelAndView.addObject("search_text", "<all titles>");
 			modelAndView.addObject("titles", processRecords.getAllTitles(titleRepository));
 		}
 		else {
+			modelAndView.addObject("search_text", searchText);
 			Set<String> titles = processRecords.searchBySearchText(searchText, titleRepository, txtRepository);
 			modelAndView.addObject(
 					"titles",
@@ -76,15 +80,15 @@ public class CommonService {
 		return modelAndView;
 	}
 
-	public ModelAndView getPage(String initialView, List<String> titles) {
-		//TODO open one or more static pages
+	public ModelAndView getPage(String initialView, String title) {
+		//TODO open one static page
 		return new ModelAndView();
 	}
 
 	public ModelAndView managePages(String initialView) {
 		ModelAndView modelAndView = new ModelAndView(initialView);
 		modelAndView.addObject("titles", processRecords.getAllTitles(titleRepository));
-		modelAndView.addObject("files", new ArrayList<File>());
+		modelAndView.addObject("files", new ArrayList<>());
 		modelAndView.addObject("confirm", false);
 		modelAndView.addObject("message", "");
 		return modelAndView;
@@ -94,7 +98,7 @@ public class CommonService {
 		ModelAndView modelAndView = new ModelAndView(initialView);
 		modelAndView.addObject("title", "");
 		modelAndView.addObject("file_name", "");
-		modelAndView.addObject("content", new ArrayList<String>());
+		modelAndView.addObject("content", new String[]{});
 		modelAndView.addObject("edit_existing_page", false);
 		modelAndView.addObject("message", "");
 		return modelAndView;
@@ -104,7 +108,7 @@ public class CommonService {
 		ModelAndView modelAndView = new ModelAndView(initialView);
 		if (titles == null || titles.size() != 1 || titles.get(0) == null || titles.get(0).isBlank()) {
 			modelAndView.addObject("titles", processRecords.getAllTitles(titleRepository));
-			modelAndView.addObject("files", new ArrayList<File>());
+			modelAndView.addObject("files", new ArrayList<>());
 			modelAndView.addObject("confirm", false);
 			modelAndView.addObject("message", "Please select exactly one title for editing.");
 			modelAndView.setViewName("management");
@@ -113,7 +117,7 @@ public class CommonService {
 			Optional<TitleEntity> optionalTitleEntity = titleRepository.findByTitle(titles.get(0));
 			if (optionalTitleEntity.isEmpty()) {
 				modelAndView.addObject("titles", processRecords.getAllTitles(titleRepository));
-				modelAndView.addObject("files", new ArrayList<File>());
+				modelAndView.addObject("files", new ArrayList<>());
 				modelAndView.addObject("confirm", false);
 				modelAndView.addObject("message",
 						"Please select exactly one title for editing.");
@@ -124,7 +128,7 @@ public class CommonService {
 				Optional<TxtEntity> optionalTxtEntity = txtRepository.findById(txtId);
 				if (optionalTxtEntity.isEmpty()) {
 					modelAndView.addObject("titles", processRecords.getAllTitles(titleRepository));
-					modelAndView.addObject("files", new ArrayList<File>());
+					modelAndView.addObject("files", new ArrayList<>());
 					modelAndView.addObject("confirm", false);
 					modelAndView.addObject("message",
 							"Please select exactly one title for editing.");
@@ -146,7 +150,7 @@ public class CommonService {
 		ModelAndView modelAndView = new ModelAndView(initialView);
 		if (titles == null || titles.size() == 0 || !confirm) {
 			modelAndView.addObject("titles", processRecords.getAllTitles(titleRepository));
-			modelAndView.addObject("files", new ArrayList<File>());
+			modelAndView.addObject("files", new ArrayList<>());
 			modelAndView.addObject("confirm", false);
 			if (!confirm) {
 				modelAndView.addObject("message", "Please confirm deletion.");
@@ -161,7 +165,7 @@ public class CommonService {
 					.toList();
 			if (titles.isEmpty()) {
 				modelAndView.addObject("titles", processRecords.getAllTitles(titleRepository));
-				modelAndView.addObject("files", new ArrayList<File>());
+				modelAndView.addObject("files", new ArrayList<>());
 				modelAndView.addObject("confirm", false);
 				modelAndView.addObject("message",
 						"Please select existing titles you wish to delete.");
@@ -177,7 +181,7 @@ public class CommonService {
 								htmlRepository) +
 								" of " + numberOfGivenTitles + " titles were deleted.");
 				modelAndView.addObject("titles", processRecords.getAllTitles(titleRepository));
-				modelAndView.addObject("files", new ArrayList<File>());
+				modelAndView.addObject("files", new ArrayList<>());
 				modelAndView.addObject("confirm", false);
 			}
 		}
@@ -187,7 +191,7 @@ public class CommonService {
 	public ModelAndView publishPages(String initialView) {
 		ModelAndView modelAndView = new ModelAndView(initialView);
 		modelAndView.addObject("titles", processRecords.getAllTitles(titleRepository));
-		modelAndView.addObject("files", new ArrayList<File>());
+		modelAndView.addObject("files", new ArrayList<>());
 		modelAndView.addObject("confirm", false);
 		long[] publishResults = processRecords.publishHtml(titleRepository, htmlRepository, fileOperations);
 		modelAndView.addObject("message",
@@ -285,16 +289,19 @@ public class CommonService {
 		return modelAndView;
 	}
 
-	public ModelAndView importTxt(String initialView, List<File> files, Boolean confirm) {
+	public ModelAndView importTxt(String initialView, String fileNames, Boolean confirm) {
 		ModelAndView modelAndView = new ModelAndView(initialView);
-		if (files == null || files.isEmpty() || confirm == null || !confirm) {
+		if (fileNames == null || fileNames.isBlank() || confirm == null || !confirm) {
 			modelAndView.addObject("titles", processRecords.getAllTitles(titleRepository));
-			modelAndView.addObject("files", new ArrayList<File>());
+			modelAndView.addObject("files", new ArrayList<>());
 			modelAndView.addObject("confirm", false);
 			modelAndView.addObject("message",
 					"Please upload minimum one file and confirm source overwriting.");
 		}
 		else {
+			List<File> files = Stream.of(fileNames.split(fileOperations.getOSPathSeparator()))
+					.map(File::new)
+					.toList();
 			List<File> notImportedFiles = processRecords.importTxtFiles(
 					files,
 					titleRepository,
@@ -305,7 +312,7 @@ public class CommonService {
 					extractors);
 			List<String> titles = processRecords.getAllTitles(titleRepository);
 			modelAndView.addObject("titles", titles);
-			modelAndView.addObject("files", new ArrayList<File>());
+			modelAndView.addObject("files", new ArrayList<>());
 			modelAndView.addObject("confirm", false);
 			modelAndView.addObject("message",
 					notImportedFiles.size() + " of " + files.size() + " files were not imported.");
@@ -317,7 +324,7 @@ public class CommonService {
 		ModelAndView modelAndView = new ModelAndView(initialView);
 		if (confirm == null || !confirm) {
 			modelAndView.addObject("titles", processRecords.getAllTitles(titleRepository));
-			modelAndView.addObject("files", new ArrayList<File>());
+			modelAndView.addObject("files", new ArrayList<>());
 			modelAndView.addObject("confirm", false);
 			modelAndView.addObject("message", "Please confirm generating pages.");
 		}
@@ -331,7 +338,7 @@ public class CommonService {
 					extractors,
 					htmlGenerators);
 			modelAndView.addObject("titles", processRecords.getAllTitles(titleRepository));
-			modelAndView.addObject("files", new ArrayList<File>());
+			modelAndView.addObject("files", new ArrayList<>());
 			modelAndView.addObject("confirm", false);
 			modelAndView.addObject("message",
 					messageData[0] + " pages in " + messageData[1] + " seconds has been processed.");

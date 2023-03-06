@@ -14,6 +14,7 @@ import org.springframework.web.servlet.*;
 
 import java.io.*;
 import java.util.*;
+import java.util.stream.*;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
@@ -199,8 +200,7 @@ class CommonServiceTest {
 	}
 
 	@Test
-	void importTxtEmptyFiles() {
-		List<File> files = new ArrayList<>();
+	void importTxtBlankFiles() {
 		List<String> titles = List.of("Title 1", "Title 2");
 		when(processRecords.getAllTitles(titleRepository))
 				.thenReturn(titles);
@@ -211,7 +211,7 @@ class CommonServiceTest {
 		map.put("confirm", false);
 		map.put("message", "Please upload minimum one file and confirm source overwriting.");
 
-		ModelAndView modelAndView = commonService.importTxt("management", files, true);
+		ModelAndView modelAndView = commonService.importTxt("management", "  ", true);
 
 		ModelAndViewAssert.assertViewName(modelAndView, "management");
 		ModelAndViewAssert.assertModelAttributeValues(modelAndView, map);
@@ -219,7 +219,7 @@ class CommonServiceTest {
 
 	@Test
 	void importTxtNullConfirm() {
-		List<File> files = new ArrayList<>();
+		String fileNames = "file_1;file_2";
 		List<String> titles = List.of("Title 1", "Title 2");
 		when(processRecords.getAllTitles(titleRepository))
 				.thenReturn(titles);
@@ -230,7 +230,7 @@ class CommonServiceTest {
 		map.put("confirm", false);
 		map.put("message", "Please upload minimum one file and confirm source overwriting.");
 
-		ModelAndView modelAndView = commonService.importTxt("management", files, null);
+		ModelAndView modelAndView = commonService.importTxt("management", fileNames, null);
 
 		ModelAndViewAssert.assertViewName(modelAndView, "management");
 		ModelAndViewAssert.assertModelAttributeValues(modelAndView, map);
@@ -238,7 +238,7 @@ class CommonServiceTest {
 
 	@Test
 	void importTxtNotConfirmed() {
-		List<File> files = new ArrayList<>();
+		String fileNames = "file_1;file_2";
 		List<String> titles = List.of("Title 1", "Title 2");
 		when(processRecords.getAllTitles(titleRepository))
 				.thenReturn(titles);
@@ -249,7 +249,7 @@ class CommonServiceTest {
 		map.put("confirm", false);
 		map.put("message", "Please upload minimum one file and confirm source overwriting.");
 
-		ModelAndView modelAndView = commonService.importTxt("management", files, false);
+		ModelAndView modelAndView = commonService.importTxt("management", fileNames, false);
 
 		ModelAndViewAssert.assertViewName(modelAndView, "management");
 		ModelAndViewAssert.assertModelAttributeValues(modelAndView, map);
@@ -257,27 +257,38 @@ class CommonServiceTest {
 
 	@Test
 	void importTxtConfirmed() {
-		List<File> files = List.of(
-				new File("file_1"),
-				new File("file_2"),
-				new File("file_3"),
-				new File("file_4"),
-				new File("file_5")
-		);
-		when(processRecords.importTxtFiles(files, titleRepository, txtRepository, htmlRepository, fileOperations, formulas, extractors))
-				.thenReturn(List.of(new File("file_1"), new File("file_2"), new File("file_3")));
+		String notImportedFiles = "file_1;file_2;file_3";
+		String allFiles = notImportedFiles + ";file_4;file_5";
 
-		List<String> titles = List.of("Title 1", "Title 2");
+		List<File> notImported = Stream.of(notImportedFiles.split(";"))
+				.sorted()
+				.map(File::new)
+				.toList();
+		List<File> all = Stream.of(allFiles.split(";"))
+				.sorted()
+				.map(File::new)
+				.toList();
+		when(processRecords.importTxtFiles(
+				all,
+				titleRepository,
+				txtRepository,
+				htmlRepository,
+				fileOperations,
+				formulas,
+				extractors))
+				.thenReturn(notImported);
+
+		List<String> titles = List.of("Title 4", "Title 5");
 		when(processRecords.getAllTitles(titleRepository))
 				.thenReturn(titles);
 
 		Map<String, Object> map = new HashMap<>();
 		map.put("titles", titles);
-		map.put("files", new ArrayList<>());
+		map.put("files", "");
 		map.put("confirm", false);
 		map.put("message", "3 of 5 files were not imported.");
 
-		ModelAndView modelAndView = commonService.importTxt("management", files, true);
+		ModelAndView modelAndView = commonService.importTxt("management", allFiles, true);
 
 		ModelAndViewAssert.assertViewName(modelAndView, "management");
 		ModelAndViewAssert.assertModelAttributeValues(modelAndView, map);

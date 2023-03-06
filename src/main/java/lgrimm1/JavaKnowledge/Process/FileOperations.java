@@ -13,6 +13,7 @@ import java.util.*;
  * @see #createNonExistentDirectory(File)
  * @see #getExtension(File)
  * @see #getOSFileSeparator()
+ * @see #getOSPathSeparator()
  * @see #deleteAllFilesInFolder(File, String)
  * @see #generateFilename(String)
  * @see #getResourcesPath()
@@ -75,6 +76,10 @@ public class FileOperations {
 
 	public String getOSFileSeparator() {
 		return File.separator;
+	}
+
+	public String getOSPathSeparator() {
+		return File.pathSeparator;
 	}
 
 	/**

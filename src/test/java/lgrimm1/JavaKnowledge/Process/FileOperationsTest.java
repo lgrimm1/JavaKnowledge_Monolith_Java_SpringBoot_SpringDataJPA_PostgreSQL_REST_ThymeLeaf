@@ -129,6 +129,11 @@ class FileOperationsTest {
 	}
 
 	@Test
+	void getOSPathSeparator() {
+		Assertions.assertEquals(1, fileOperations.getOSPathSeparator().length());
+	}
+
+	@Test
 	void deleteAllFilesInFolder() {
 		File fileNoExtension = Mockito.mock(File.class);
 		when(fileNoExtension.isFile())

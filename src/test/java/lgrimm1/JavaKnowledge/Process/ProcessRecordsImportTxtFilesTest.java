@@ -35,7 +35,10 @@ class ProcessRecordsImportTxtFilesTest {
 
 	@Test
 	void importTxtFiles() {
+		String notExistingFileName = "notExistingFileName";
 		File notExistingFile = Mockito.mock(File.class);
+		when(notExistingFile.getName())
+				.thenReturn(notExistingFileName);
 		when(notExistingFile.exists())
 				.thenReturn(false);
 		when(notExistingFile.isFile())
@@ -43,7 +46,10 @@ class ProcessRecordsImportTxtFilesTest {
 		when(notExistingFile.canRead())
 				.thenReturn(false);
 
+		String notFileFileName = "notFileFileName";
 		File notFileFile = Mockito.mock(File.class);
+		when(notFileFile.getName())
+				.thenReturn(notFileFileName);
 		when(notFileFile.exists())
 				.thenReturn(true);
 		when(notFileFile.isFile())
@@ -51,7 +57,10 @@ class ProcessRecordsImportTxtFilesTest {
 		when(notFileFile.canRead())
 				.thenReturn(false);
 
+		String unreadableFileName = "unreadableFileName";
 		File unreadableFile = Mockito.mock(File.class);
+		when(unreadableFile.getName())
+				.thenReturn(unreadableFileName);
 		when(unreadableFile.exists())
 				.thenReturn(true);
 		when(unreadableFile.isFile())
@@ -59,7 +68,10 @@ class ProcessRecordsImportTxtFilesTest {
 		when(unreadableFile.canRead())
 				.thenReturn(false);
 
+		String txtFile1Name = "txtFile1Name";
 		File txtFile1 = Mockito.mock(File.class);
+		when(txtFile1.getName())
+				.thenReturn(txtFile1Name);
 		when(txtFile1.exists())
 				.thenReturn(true);
 		when(txtFile1.isFile())
@@ -67,7 +79,10 @@ class ProcessRecordsImportTxtFilesTest {
 		when(txtFile1.canRead())
 				.thenReturn(true);
 
+		String txtFile2Name = "txtFile2Name";
 		File txtFile2 = Mockito.mock(File.class);
+		when(txtFile1.getName())
+				.thenReturn(txtFile2Name);
 		when(txtFile2.exists())
 				.thenReturn(true);
 		when(txtFile2.isFile())
@@ -75,7 +90,10 @@ class ProcessRecordsImportTxtFilesTest {
 		when(txtFile2.canRead())
 				.thenReturn(true);
 
+		String txtFile3Name = "txtFile3Name";
 		File txtFile3 = Mockito.mock(File.class);
+		when(txtFile1.getName())
+				.thenReturn(txtFile3Name);
 		when(txtFile3.exists())
 				.thenReturn(true);
 		when(txtFile3.isFile())
@@ -83,7 +101,10 @@ class ProcessRecordsImportTxtFilesTest {
 		when(txtFile3.canRead())
 				.thenReturn(true);
 
+		String emptyTxtFileName = "emptyTxtFileName";
 		File emptyTxtFile = Mockito.mock(File.class);
+		when(emptyTxtFile.getName())
+				.thenReturn(emptyTxtFileName);
 		when(emptyTxtFile.exists())
 				.thenReturn(true);
 		when(emptyTxtFile.isFile())
@@ -154,21 +175,26 @@ class ProcessRecordsImportTxtFilesTest {
 		when(htmlRepository.save(new HtmlEntity(new ArrayList<>())))
 				.thenReturn(new HtmlEntity(1L, new ArrayList<>()));
 
-		Assertions.assertEquals(List.of(
-				notExistingFile,
-				notFileFile,
-				unreadableFile,
-				emptyTxtFile,
-				txtFile3
-		), processRecords.importTxtFiles(List.of(
-				notExistingFile,
-				notFileFile,
-				unreadableFile,
-				txtFile1,
-				txtFile2,
-				emptyTxtFile,
-				txtFile3
-		), titleRepository, txtRepository, htmlRepository, fileOperations, formulas, extractors));
+		List<File> notImportedFiles = new ArrayList<>();
+		notImportedFiles.add(notExistingFile);
+		notImportedFiles.add(notFileFile);
+		notImportedFiles.add(unreadableFile);
+		notImportedFiles.add(emptyTxtFile);
+		notImportedFiles.add(txtFile3);
+
+		List<File> allFiles = new ArrayList<>();
+		allFiles.add(txtFile1);
+		allFiles.add(txtFile2);
+		allFiles.addAll(notImportedFiles);
+
+		Assertions.assertEquals(notImportedFiles, processRecords.importTxtFiles(
+				allFiles,
+				titleRepository,
+				txtRepository,
+				htmlRepository,
+				fileOperations,
+				formulas,
+				extractors));
 	}
 
 }

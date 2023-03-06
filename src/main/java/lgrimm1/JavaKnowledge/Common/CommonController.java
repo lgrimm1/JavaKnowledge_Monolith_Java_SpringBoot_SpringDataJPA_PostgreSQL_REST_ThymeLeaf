@@ -1,12 +1,10 @@
 package lgrimm1.JavaKnowledge.Common;
 
 import org.springframework.beans.factory.annotation.*;
-import org.springframework.stereotype.*;
 import org.springframework.ui.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.*;
 
-import java.io.*;
 import java.util.*;
 
 @RestController
@@ -20,69 +18,85 @@ public class CommonController {
 	}
 
 	@GetMapping("/root")
-	public ModelAndView getRoot() {
+	public ModelAndView getRoot(Model model) {
+		model.asMap().clear();
 		return commonService.getRoot("root");
 	}
 
 	@PostMapping("/search")
-	public ModelAndView searchPages(@ModelAttribute("search_text") String searchText, Model model) {
+	public ModelAndView searchPages(@ModelAttribute("payload") Payload payload, Model model) {
 		model.asMap().clear();
-		return commonService.searchPages("list", searchText);
+		return commonService.searchPages("list", payload.getSearchText());
 	}
 
-	@PostMapping("/view")
-	public ModelAndView getPage(@ModelAttribute("titles") List<String> titles) {
-		return commonService.getPage("static", titles);
+	@PostMapping("/page")
+	public ModelAndView getPage(@ModelAttribute("payload") Payload payload, Model model) {
+		model.asMap().clear();
+		return commonService.getPage("page", payload.getTitle());
 	}
 
-	@PostMapping("management")
-	public ModelAndView managePages(@ModelAttribute("search_text") String searchText) {
+	@PostMapping("/management")
+	public ModelAndView managePages(Model model) {
+		model.asMap().clear();
 		return commonService.managePages("management");
 	}
 
 	@PostMapping("/source/new")
-	public ModelAndView createSourcePage(@ModelAttribute("titles") List<String> titles,
-										 @ModelAttribute("files") List<File> files,
-										 @ModelAttribute("confirm") Boolean confirm,
-										 @ModelAttribute("message") String message) {
+	public ModelAndView createSourcePage(Model model) {
+		model.asMap().clear();
 		return commonService.createSourcePage("source");
 	}
 
 	@PostMapping("/source/edit")
-	public ModelAndView editSourcePage(@ModelAttribute("titles") List<String> titles,
-								 @ModelAttribute("files") List<File> files,
-								 @ModelAttribute("confirm") Boolean confirm,
-								 @ModelAttribute("message") String message) {
-		return commonService.editSourcePage("source", titles);
+	public ModelAndView editSourcePage(@ModelAttribute("payload") Payload payload, Model model) {
+		model.asMap().clear();
+		return commonService.editSourcePage("source", payload.getTitles());
 	}
 
 	@PostMapping("/delete")
-	public ModelAndView deleteSourcePages(@ModelAttribute("titles") List<String> titles, @ModelAttribute("files") List<File> files, @ModelAttribute("confirm") Boolean confirm, @ModelAttribute("message") String message) {
-		return commonService.deletePages("management", titles, confirm);
+	public ModelAndView deleteSourcePages(@ModelAttribute("payload") Payload payload, Model model) {
+		model.asMap().clear();
+		return commonService.deletePages("management", payload.getTitles(), payload.getConfirm());
 	}
 
 	@PostMapping("/publish")
-	public ModelAndView publishPages(@ModelAttribute("titles") List<String> titles, @ModelAttribute("files") List<File> files, @ModelAttribute("confirm") Boolean confirm, @ModelAttribute("message") String message) {
+	public ModelAndView publishPages(Model model) {
+		model.asMap().clear();
 		return commonService.publishPages("management");
 	}
 
 	@PostMapping("/add/{formulaName}")
-	public ModelAndView addFormula(@RequestParam("formula_name") String formulaName, @ModelAttribute("title") String title, @ModelAttribute("file_name") String fileName, @ModelAttribute("content") List<String> content, @ModelAttribute("edit_existing_page") Boolean editExistingPage, @ModelAttribute("message") String message) {
-		return commonService.addFormula("source", formulaName, title, fileName, content, editExistingPage);
+	public ModelAndView addFormula(@PathVariable("formulaName") String formulaName,
+								   @RequestParam("payload") Payload payload,
+								   Model model) {
+		model.asMap().clear();
+		return commonService.addFormula("source",
+				formulaName,
+				payload.getTitle(),
+				payload.getFileName(),
+				payload.getContent(),
+				payload.getEditExistingPage());
 	}
 
 	@PostMapping("/save")
-	public ModelAndView savePage(@ModelAttribute("title") String title, @ModelAttribute("file_name") String fileName, @ModelAttribute("content") List<String> content, @ModelAttribute("edit_existing_page") Boolean editExistingPage, @ModelAttribute("message") String message) {
-		return commonService.savePage("source", title, fileName, content, editExistingPage);
+	public ModelAndView savePage(@ModelAttribute("payload") Payload payload, Model model) {
+		model.asMap().clear();
+		return commonService.savePage("source",
+				payload.getTitle(),
+				payload.getFileName(),
+				payload.getContent(),
+				payload.getEditExistingPage());
 	}
 
 	@PostMapping("/import")
-	public ModelAndView importTxt(@ModelAttribute("titles") List<String> titles, @ModelAttribute("files") List<File> files, @ModelAttribute("confirm") Boolean confirm, @ModelAttribute("message") String message) {
-		return commonService.importTxt("management", files, confirm);
+	public ModelAndView importTxt(@ModelAttribute("payload") Payload payload, Model model) {
+		model.asMap().clear();
+		return commonService.importTxt("management", payload.getFiles(), payload.getConfirm());
 	}
 
 	@PostMapping("/generate")
-	public ModelAndView generateHtml(@ModelAttribute("titles") List<String> titles, @ModelAttribute("files") List<File> files, @ModelAttribute("confirm") Boolean confirm, @ModelAttribute("message") String message) {
-		return commonService.generateHtml("management", confirm);
+	public ModelAndView generateHtml(@ModelAttribute("payload") Payload payload, Model model) {
+		model.asMap().clear();
+		return commonService.generateHtml("management", payload.getConfirm());
 	}
 }
