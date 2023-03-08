@@ -58,7 +58,7 @@ class CommonServiceDeletePagesTest {
 
 		Map<String, Object> map = new HashMap<>();
 		map.put("titles", titles);
-		map.put("files", new ArrayList<>());
+		map.put("files", "");
 		map.put("confirm", false);
 		map.put("message", "Please select titles you wish to delete.");
 
@@ -76,7 +76,7 @@ class CommonServiceDeletePagesTest {
 
 		Map<String, Object> map = new HashMap<>();
 		map.put("titles", titles);
-		map.put("files", new ArrayList<>());
+		map.put("files", "");
 		map.put("confirm", false);
 		map.put("message", "Please select titles you wish to delete.");
 
@@ -94,7 +94,7 @@ class CommonServiceDeletePagesTest {
 
 		Map<String, Object> map = new HashMap<>();
 		map.put("titles", titles);
-		map.put("files", new ArrayList<>());
+		map.put("files", "");
 		map.put("confirm", false);
 		map.put("message", "Please confirm deletion.");
 
@@ -113,7 +113,7 @@ class CommonServiceDeletePagesTest {
 
 		Map<String, Object> map = new HashMap<>();
 		map.put("titles", titles);
-		map.put("files", new ArrayList<>());
+		map.put("files", "");
 		map.put("confirm", false);
 		map.put("message", "Please select existing titles you wish to delete.");
 
@@ -138,7 +138,7 @@ class CommonServiceDeletePagesTest {
 
 		Map<String, Object> map = new HashMap<>();
 		map.put("titles", restOfTitles);
-		map.put("files", new ArrayList<>());
+		map.put("files", "");
 		map.put("confirm", false);
 		map.put("message", "1 of 2 titles were deleted.");
 

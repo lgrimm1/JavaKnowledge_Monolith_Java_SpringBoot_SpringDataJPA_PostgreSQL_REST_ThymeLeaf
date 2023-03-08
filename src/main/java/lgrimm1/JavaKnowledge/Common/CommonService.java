@@ -88,7 +88,7 @@ public class CommonService {
 	public ModelAndView managePages(String initialView) {
 		ModelAndView modelAndView = new ModelAndView(initialView);
 		modelAndView.addObject("titles", processRecords.getAllTitles(titleRepository));
-		modelAndView.addObject("files", new ArrayList<>());
+		modelAndView.addObject("files", "");
 		modelAndView.addObject("confirm", false);
 		modelAndView.addObject("message", "");
 		return modelAndView;
@@ -108,7 +108,7 @@ public class CommonService {
 		ModelAndView modelAndView = new ModelAndView(initialView);
 		if (titles == null || titles.size() != 1 || titles.get(0) == null || titles.get(0).isBlank()) {
 			modelAndView.addObject("titles", processRecords.getAllTitles(titleRepository));
-			modelAndView.addObject("files", new ArrayList<>());
+			modelAndView.addObject("files", "");
 			modelAndView.addObject("confirm", false);
 			modelAndView.addObject("message", "Please select exactly one title for editing.");
 			modelAndView.setViewName("management");
@@ -117,7 +117,7 @@ public class CommonService {
 			Optional<TitleEntity> optionalTitleEntity = titleRepository.findByTitle(titles.get(0));
 			if (optionalTitleEntity.isEmpty()) {
 				modelAndView.addObject("titles", processRecords.getAllTitles(titleRepository));
-				modelAndView.addObject("files", new ArrayList<>());
+				modelAndView.addObject("files", "");
 				modelAndView.addObject("confirm", false);
 				modelAndView.addObject("message",
 						"Please select exactly one title for editing.");
@@ -128,7 +128,7 @@ public class CommonService {
 				Optional<TxtEntity> optionalTxtEntity = txtRepository.findById(txtId);
 				if (optionalTxtEntity.isEmpty()) {
 					modelAndView.addObject("titles", processRecords.getAllTitles(titleRepository));
-					modelAndView.addObject("files", new ArrayList<>());
+					modelAndView.addObject("files", "");
 					modelAndView.addObject("confirm", false);
 					modelAndView.addObject("message",
 							"Please select exactly one title for editing.");
@@ -150,7 +150,7 @@ public class CommonService {
 		ModelAndView modelAndView = new ModelAndView(initialView);
 		if (titles == null || titles.size() == 0 || !confirm) {
 			modelAndView.addObject("titles", processRecords.getAllTitles(titleRepository));
-			modelAndView.addObject("files", new ArrayList<>());
+			modelAndView.addObject("files", "");
 			modelAndView.addObject("confirm", false);
 			if (!confirm) {
 				modelAndView.addObject("message", "Please confirm deletion.");
@@ -165,7 +165,7 @@ public class CommonService {
 					.toList();
 			if (titles.isEmpty()) {
 				modelAndView.addObject("titles", processRecords.getAllTitles(titleRepository));
-				modelAndView.addObject("files", new ArrayList<>());
+				modelAndView.addObject("files", "");
 				modelAndView.addObject("confirm", false);
 				modelAndView.addObject("message",
 						"Please select existing titles you wish to delete.");
@@ -181,7 +181,7 @@ public class CommonService {
 								htmlRepository) +
 								" of " + numberOfGivenTitles + " titles were deleted.");
 				modelAndView.addObject("titles", processRecords.getAllTitles(titleRepository));
-				modelAndView.addObject("files", new ArrayList<>());
+				modelAndView.addObject("files", "");
 				modelAndView.addObject("confirm", false);
 			}
 		}
@@ -191,7 +191,7 @@ public class CommonService {
 	public ModelAndView publishPages(String initialView) {
 		ModelAndView modelAndView = new ModelAndView(initialView);
 		modelAndView.addObject("titles", processRecords.getAllTitles(titleRepository));
-		modelAndView.addObject("files", new ArrayList<>());
+		modelAndView.addObject("files", "");
 		modelAndView.addObject("confirm", false);
 		long[] publishResults = processRecords.publishHtml(titleRepository, htmlRepository, fileOperations);
 		modelAndView.addObject("message",
@@ -324,7 +324,7 @@ public class CommonService {
 		ModelAndView modelAndView = new ModelAndView(initialView);
 		if (confirm == null || !confirm) {
 			modelAndView.addObject("titles", processRecords.getAllTitles(titleRepository));
-			modelAndView.addObject("files", new ArrayList<>());
+			modelAndView.addObject("files", "");
 			modelAndView.addObject("confirm", false);
 			modelAndView.addObject("message", "Please confirm generating pages.");
 		}
@@ -338,7 +338,7 @@ public class CommonService {
 					extractors,
 					htmlGenerators);
 			modelAndView.addObject("titles", processRecords.getAllTitles(titleRepository));
-			modelAndView.addObject("files", new ArrayList<>());
+			modelAndView.addObject("files", "");
 			modelAndView.addObject("confirm", false);
 			modelAndView.addObject("message",
 					messageData[0] + " pages in " + messageData[1] + " seconds has been processed.");

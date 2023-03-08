@@ -77,5 +77,3 @@ Not needed test case, kept as template:
 		Assertions.assertIterableEquals(List.of(file1, file2, file3, file4), fileOperations.getListOfFiles(sourceFolder, ""));
 	}
 */
-
-MUST NOT EMPTY HTML ENTITY WHEN SAVING PAGE!!!

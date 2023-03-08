@@ -139,7 +139,7 @@ class CommonServiceTest {
 
 		Map<String, Object> map = new HashMap<>();
 		map.put("titles", titles);
-		map.put("files", new ArrayList<>());
+		map.put("files", "");
 		map.put("confirm", false);
 		map.put("message", "");
 
@@ -175,7 +175,7 @@ class CommonServiceTest {
 
 		Map<String, Object> map = new HashMap<>();
 		map.put("titles", titles);
-		map.put("files", new ArrayList<>());
+		map.put("files", "");
 		map.put("confirm", false);
 		map.put("message", "5 HTML files were pre-deleted, 4 were published.");
 
@@ -309,7 +309,7 @@ class CommonServiceTest {
 
 		Map<String, Object> map = new HashMap<>();
 		map.put("titles", titles);
-		map.put("files", new ArrayList<>());
+		map.put("files", "");
 		map.put("confirm", false);
 		map.put("message", "Please confirm generating pages.");
 
@@ -327,7 +327,7 @@ class CommonServiceTest {
 
 		Map<String, Object> map = new HashMap<>();
 		map.put("titles", titles);
-		map.put("files", new ArrayList<>());
+		map.put("files", "");
 		map.put("confirm", false);
 		map.put("message", "Please confirm generating pages.");
 
@@ -348,7 +348,7 @@ class CommonServiceTest {
 
 		Map<String, Object> map = new HashMap<>();
 		map.put("titles", titles);
-		map.put("files", new ArrayList<>());
+		map.put("files", "");
 		map.put("confirm", false);
 		map.put("message", "12 pages in 24 seconds has been processed.");
 

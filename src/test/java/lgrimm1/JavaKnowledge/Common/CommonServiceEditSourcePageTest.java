@@ -57,7 +57,7 @@ class CommonServiceEditSourcePageTest {
 
 		Map<String, Object> map = new HashMap<>();
 		map.put("titles", titles);
-		map.put("files", new ArrayList<>());
+		map.put("files", "");
 		map.put("confirm", false);
 		map.put("message", "Please select exactly one title for editing.");
 
@@ -75,7 +75,7 @@ class CommonServiceEditSourcePageTest {
 
 		Map<String, Object> map = new HashMap<>();
 		map.put("titles", titles);
-		map.put("files", new ArrayList<>());
+		map.put("files", "");
 		map.put("confirm", false);
 		map.put("message", "Please select exactly one title for editing.");
 
@@ -93,7 +93,7 @@ class CommonServiceEditSourcePageTest {
 
 		Map<String, Object> map = new HashMap<>();
 		map.put("titles", titles);
-		map.put("files", new ArrayList<>());
+		map.put("files", "");
 		map.put("confirm", false);
 		map.put("message", "Please select exactly one title for editing.");
 
@@ -113,7 +113,7 @@ class CommonServiceEditSourcePageTest {
 
 		Map<String, Object> map = new HashMap<>();
 		map.put("titles", titles);
-		map.put("files", new ArrayList<>());
+		map.put("files", "");
 		map.put("confirm", false);
 		map.put("message", "Please select exactly one title for editing.");
 
@@ -137,7 +137,7 @@ class CommonServiceEditSourcePageTest {
 
 		Map<String, Object> map = new HashMap<>();
 		map.put("titles", titles);
-		map.put("files", new ArrayList<>());
+		map.put("files", "");
 		map.put("confirm", false);
 		map.put("message", "Please select exactly one title for editing.");
 
@@ -162,7 +162,7 @@ class CommonServiceEditSourcePageTest {
 
 		Map<String, Object> map = new HashMap<>();
 		map.put("titles", titles);
-		map.put("files", new ArrayList<>());
+		map.put("files", "");
 		map.put("confirm", false);
 		map.put("message", "Please select exactly one title for editing.");
 
