@@ -81,8 +81,25 @@ public class CommonService {
 	}
 
 	public ModelAndView getPage(String initialView, String title) {
-		//TODO open one static page
-		return new ModelAndView();
+		if (title == null || title.isBlank()) {
+			ModelAndView modelAndView = new ModelAndView("list");
+			modelAndView.addObject("search_text", "<all titles>");
+			modelAndView.addObject("titles", processRecords.getAllTitles(titleRepository));
+			return modelAndView;
+		}
+		Optional<TitleEntity> optionalTitleEntity = titleRepository.findByTitle(title);
+		if (optionalTitleEntity.isEmpty()) {
+			ModelAndView modelAndView = new ModelAndView("list");
+			modelAndView.addObject("search_text", "<all titles>");
+			modelAndView.addObject("titles", processRecords.getAllTitles(titleRepository));
+			return modelAndView;
+		}
+		ModelAndView modelAndView = new ModelAndView(initialView);
+		modelAndView.addObject("title", optionalTitleEntity.get().getTitle());
+		Optional<HtmlEntity> optionalHtmlEntity = htmlRepository.findById(optionalTitleEntity.get().getHtmlId());
+		modelAndView.addObject("references", optionalHtmlEntity.get().getTitleReferences());
+		modelAndView.addObject("static_page_link", optionalTitleEntity.get().getFilename() + ".html");
+		return modelAndView;
 	}
 
 	public ModelAndView managePages(String initialView) {

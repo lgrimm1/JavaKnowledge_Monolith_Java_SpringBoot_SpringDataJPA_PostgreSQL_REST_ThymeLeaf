@@ -357,4 +357,82 @@ class CommonServiceTest {
 		ModelAndViewAssert.assertViewName(modelAndView, "management");
 		ModelAndViewAssert.assertModelAttributeValues(modelAndView, map);
 	}
+
+	@Test
+	void getPageNullTitle() {
+		List<String> titles = List.of("Title 1", "Title 2");
+		when(processRecords.getAllTitles(titleRepository))
+				.thenReturn(titles);
+
+		Map<String, Object> map = new HashMap<>();
+		map.put("search_text", "<all titles>");
+		map.put("titles", titles);
+
+		ModelAndView modelAndView = commonService.getPage("page", null);
+
+		ModelAndViewAssert.assertViewName(modelAndView, "list");
+		ModelAndViewAssert.assertModelAttributeValues(modelAndView, map);
+	}
+
+	@Test
+	void getPageBlankTitle() {
+		List<String> titles = List.of("Title 1", "Title 2");
+		when(processRecords.getAllTitles(titleRepository))
+				.thenReturn(titles);
+
+		Map<String, Object> map = new HashMap<>();
+		map.put("search_text", "<all titles>");
+		map.put("titles", titles);
+
+		ModelAndView modelAndView = commonService.getPage("page", "  ");
+
+		ModelAndViewAssert.assertViewName(modelAndView, "list");
+		ModelAndViewAssert.assertModelAttributeValues(modelAndView, map);
+	}
+
+	@Test
+	void getPageNotExistingTitle() {
+		List<String> titles = List.of("Title 1", "Title 2");
+		when(processRecords.getAllTitles(titleRepository))
+				.thenReturn(titles);
+
+		String title = "Title";
+		when(titleRepository.findByTitle(title))
+				.thenReturn(Optional.empty());
+
+		Map<String, Object> map = new HashMap<>();
+		map.put("search_text", "<all titles>");
+		map.put("titles", titles);
+
+		ModelAndView modelAndView = commonService.getPage("page", "  ");
+
+		ModelAndViewAssert.assertViewName(modelAndView, "list");
+		ModelAndViewAssert.assertModelAttributeValues(modelAndView, map);
+	}
+
+	@Test
+	void getPageExistingTitle() {
+		List<String> titles = List.of("Title 1", "Title 2");
+		when(processRecords.getAllTitles(titleRepository))
+				.thenReturn(titles);
+
+		String title = "Title";
+		String filename = "title";
+		when(titleRepository.findByTitle(title))
+				.thenReturn(Optional.of(new TitleEntity(2L, title, filename, 2L, 2L)));
+
+		List<String> content = List.of("Line 1", "Line 2");
+		List<String> titleReferences = List.of("Reference 1", "Reference 2");
+		when(htmlRepository.findById(2L))
+				.thenReturn(Optional.of(new HtmlEntity(2L, content, titleReferences)));
+		Map<String, Object> map = new HashMap<>();
+		map.put("title", title);
+		map.put("references", titleReferences);
+		map.put("static_page_link", filename + ".html");
+
+		ModelAndView modelAndView = commonService.getPage("page", title);
+
+		ModelAndViewAssert.assertViewName(modelAndView, "page");
+		ModelAndViewAssert.assertModelAttributeValues(modelAndView, map);
+	}
 }
