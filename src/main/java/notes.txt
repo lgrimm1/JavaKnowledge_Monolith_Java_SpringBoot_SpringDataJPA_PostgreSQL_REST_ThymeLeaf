@@ -12,11 +12,13 @@ Views:
 
 "List" view:
     a. first row is automatically selected
-    b. more titles can be selected
+    b. one title can be selected
 
 "Page" view:
     a. all references are collected into a side box on the right side
-    b. the static content is shown in a frame
+    b. all headers are collected to the top rows of content
+    c. all references are collected to the last rows of content
+    d. the content is shown in a frame
 
 "Management" view:
     a. first row is automatically selected
@@ -75,3 +77,5 @@ Not needed test case, kept as template:
 		Assertions.assertIterableEquals(List.of(file1, file2, file3, file4), fileOperations.getListOfFiles(sourceFolder, ""));
 	}
 */
+
+MUST NOT EMPTY HTML ENTITY WHEN SAVING PAGE!!!
