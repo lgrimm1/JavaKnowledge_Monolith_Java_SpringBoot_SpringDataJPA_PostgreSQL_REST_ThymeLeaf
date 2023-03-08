@@ -16,11 +16,16 @@ import java.util.*;
 @Component
 public class HtmlGenerators {
 
-	public List<String> generateMainContent(List<String> text,
-											Formulas formulas,
-											Extractors extractors,
-											TitleRepository titleRepository) {
+	/**
+	 * Generates main html page content, also list of titles as page references.
+	 * Both Lists of String are wrapped into a record.
+	 */
+	public MainHtmlContentPayload generateMainContent(List<String> text,
+													  Formulas formulas,
+													  Extractors extractors,
+													  TitleRepository titleRepository) {
 		List<String> html = new ArrayList<>();
+		List<String> titles = new ArrayList<>();
 		int textIndex = 0;
 		while (textIndex < text.size()) {
 			//header1
@@ -85,6 +90,7 @@ public class HtmlGenerators {
 			//reference
 			else if ((text.get(textIndex).startsWith("=>"))) {
 				html.add(extractors.extractReference(text.get(textIndex), formulas, titleRepository));
+				titles.add(text.get(textIndex).substring(2));
 				textIndex++;
 			}
 
@@ -97,7 +103,7 @@ public class HtmlGenerators {
 				textIndex++;
 			}
 		}
-		return html;
+		return new MainHtmlContentPayload(html, titles);
 	}
 
 	public List<String> generateFirstTags(String title, Formulas formulas) {

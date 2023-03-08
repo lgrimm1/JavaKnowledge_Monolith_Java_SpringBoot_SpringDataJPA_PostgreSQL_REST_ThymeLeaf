@@ -79,10 +79,10 @@ class ProcessRecordsGenerateTest {
 				formulas,
 				extractors,
 				htmlGenerators))
-				.thenReturn(List.of(
+				.thenReturn(new MainHtmlContentPayload(List.of(
 						"New Line 11",
 						"New Line 12"
-				));
+				), new ArrayList<>()));
 		when(processPage.processTxt(
 				List.of(
 						"Line 21",
@@ -93,10 +93,10 @@ class ProcessRecordsGenerateTest {
 				formulas,
 				extractors,
 				htmlGenerators))
-				.thenReturn(List.of(
+				.thenReturn(new MainHtmlContentPayload(List.of(
 						"New Line 21",
 						"New Line 22"
-				));
+				), new ArrayList<>()));
 		when(processPage.processTxt(
 				List.of(
 						"Line 31",
@@ -107,10 +107,10 @@ class ProcessRecordsGenerateTest {
 				formulas,
 				extractors,
 				htmlGenerators))
-				.thenReturn(List.of(
+				.thenReturn(new MainHtmlContentPayload(List.of(
 						"New Line 31",
 						"New Line 32"
-				));
+				), new ArrayList<>()));
 		when(processPage.processTxt(
 				List.of(
 						"Line 41",
@@ -121,10 +121,10 @@ class ProcessRecordsGenerateTest {
 				formulas,
 				extractors,
 				htmlGenerators))
-				.thenReturn(List.of(
+				.thenReturn(new MainHtmlContentPayload(List.of(
 						"New Line 41",
 						"New Line 42"
-				));
+				), new ArrayList<>()));
 		when(processPage.processTxt(
 				List.of(
 						"Line 51",
@@ -135,50 +135,50 @@ class ProcessRecordsGenerateTest {
 				formulas,
 				extractors,
 				htmlGenerators))
-				.thenReturn(List.of(
+				.thenReturn(new MainHtmlContentPayload(List.of(
 						"New Line 51",
 						"New Line 52"
-				));
+				), new ArrayList<>()));
 		when(htmlRepository.save(new HtmlEntity(List.of(
 				"New Line 11",
 				"New Line 12"
-		))))
+		), new ArrayList<>())))
 				.thenReturn(new HtmlEntity(11L, List.of(
 						"New Line 11",
 						"New Line 12"
-				)));
+				), new ArrayList<>()));
 		when(htmlRepository.save(new HtmlEntity(List.of(
 				"New Line 21",
 				"New Line 22"
-		))))
+		), new ArrayList<>())))
 				.thenReturn(new HtmlEntity(12L, List.of(
 						"New Line 21",
 						"New Line 22"
-				)));
+				), new ArrayList<>()));
 		when(htmlRepository.save(new HtmlEntity(List.of(
 				"New Line 31",
 				"New Line 32"
-		))))
+		), new ArrayList<>())))
 				.thenReturn(new HtmlEntity(13L, List.of(
 						"New Line 31",
 						"New Line 32"
-				)));
+				), new ArrayList<>()));
 		when(htmlRepository.save(new HtmlEntity(List.of(
 				"New Line 41",
 				"New Line 42"
-		))))
+		), new ArrayList<>())))
 				.thenReturn(new HtmlEntity(14L, List.of(
 						"New Line 41",
 						"New Line 42"
-				)));
+				), new ArrayList<>()));
 		when(htmlRepository.save(new HtmlEntity(List.of(
 				"New Line 51",
 				"New Line 52"
-		))))
+		), new ArrayList<>())))
 				.thenReturn(new HtmlEntity(15L, List.of(
 						"New Line 51",
 						"New Line 52"
-				)));
+				), new ArrayList<>()));
 
 		long[] result = processRecords.generate(
 				titleRepository,

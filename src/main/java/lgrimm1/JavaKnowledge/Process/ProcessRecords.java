@@ -124,7 +124,7 @@ public class ProcessRecords {
 							titleRepository.deleteById(optionalTitleEntity.get().getId());
 						}
 						TxtEntity txtEntity = txtRepository.save(new TxtEntity(txt.subList(3, txt.size())));
-						HtmlEntity htmlEntity = htmlRepository.save(new HtmlEntity(new ArrayList<>()));
+						HtmlEntity htmlEntity = htmlRepository.save(new HtmlEntity(new ArrayList<>(), new ArrayList<>()));
 						titleRepository.save(new TitleEntity(
 								title,
 								fileOperations.generateFilename(title),
@@ -155,7 +155,7 @@ public class ProcessRecords {
 				String title = titleEntity.getTitle();
 				String filename = titleEntity.getFilename();
 				long txtId = optionalTxtEntity.get().getId();
-				List<String> html = processPage.processTxt(
+				MainHtmlContentPayload payload = processPage.processTxt(
 						optionalTxtEntity.get().getContent(),
 						title,
 						titleRepository,
@@ -163,7 +163,7 @@ public class ProcessRecords {
 						extractors,
 						htmlGenerators);
 				htmlRepository.deleteById(titleEntity.getHtmlId());
-				long htmlId = htmlRepository.save(new HtmlEntity(html)).getId();
+				long htmlId = htmlRepository.save(new HtmlEntity(payload.content(), payload.titles())).getId();
 				titleRepository.deleteById(titleEntity.getId());
 				titleRepository.save(new TitleEntity(title, filename, txtId, htmlId));
 			}

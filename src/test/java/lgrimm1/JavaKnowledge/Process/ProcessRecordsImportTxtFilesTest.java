@@ -172,8 +172,8 @@ class ProcessRecordsImportTxtFilesTest {
 		))))
 				.thenReturn(new TxtEntity(2L, List.of("Line 24")));
 
-		when(htmlRepository.save(new HtmlEntity(new ArrayList<>())))
-				.thenReturn(new HtmlEntity(1L, new ArrayList<>()));
+		when(htmlRepository.save(new HtmlEntity(new ArrayList<>(), new ArrayList<>())))
+				.thenReturn(new HtmlEntity(1L, new ArrayList<>(), new ArrayList<>()));
 
 		List<File> notImportedFiles = new ArrayList<>();
 		notImportedFiles.add(notExistingFile);

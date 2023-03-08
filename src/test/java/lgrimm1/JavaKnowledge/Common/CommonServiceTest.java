@@ -72,6 +72,7 @@ class CommonServiceTest {
 				.thenReturn(titles);
 
 		Map<String, Object> map = new HashMap<>();
+		map.put("search_text", "<all titles>");
 		map.put("titles", titles);
 
 		ModelAndView modelAndView = commonService.searchPages("list", null);
@@ -87,6 +88,7 @@ class CommonServiceTest {
 				.thenReturn(titles);
 
 		Map<String, Object> map = new HashMap<>();
+		map.put("search_text", "<all titles>");
 		map.put("titles", titles);
 
 		ModelAndView modelAndView = commonService.searchPages("list", "");
@@ -102,6 +104,7 @@ class CommonServiceTest {
 				.thenReturn(titles);
 
 		Map<String, Object> map = new HashMap<>();
+		map.put("search_text", "<all titles>");
 		map.put("titles", titles);
 
 		ModelAndView modelAndView = commonService.searchPages("list", "  ");
@@ -119,6 +122,7 @@ class CommonServiceTest {
 
 		List<String> expectedList = List.of("Title 1", "Title 2");
 		Map<String, Object> map = new HashMap<>();
+		map.put("search_text", "Word2 Word1");
 		map.put("titles", expectedList);
 
 		ModelAndView modelAndView = commonService.searchPages("list", searchText);
@@ -189,7 +193,7 @@ class CommonServiceTest {
 
 		Map<String, Object> map = new HashMap<>();
 		map.put("titles", titles);
-		map.put("files", new ArrayList<>());
+		map.put("files", "");
 		map.put("confirm", false);
 		map.put("message", "Please upload minimum one file and confirm source overwriting.");
 
@@ -207,7 +211,7 @@ class CommonServiceTest {
 
 		Map<String, Object> map = new HashMap<>();
 		map.put("titles", titles);
-		map.put("files", new ArrayList<>());
+		map.put("files", "");
 		map.put("confirm", false);
 		map.put("message", "Please upload minimum one file and confirm source overwriting.");
 
@@ -226,7 +230,7 @@ class CommonServiceTest {
 
 		Map<String, Object> map = new HashMap<>();
 		map.put("titles", titles);
-		map.put("files", new ArrayList<>());
+		map.put("files", "");
 		map.put("confirm", false);
 		map.put("message", "Please upload minimum one file and confirm source overwriting.");
 
@@ -245,7 +249,7 @@ class CommonServiceTest {
 
 		Map<String, Object> map = new HashMap<>();
 		map.put("titles", titles);
-		map.put("files", new ArrayList<>());
+		map.put("files", "");
 		map.put("confirm", false);
 		map.put("message", "Please upload minimum one file and confirm source overwriting.");
 
@@ -257,6 +261,9 @@ class CommonServiceTest {
 
 	@Test
 	void importTxtConfirmed() {
+
+		when(fileOperations.getOSPathSeparator())
+				.thenReturn(";");
 		String notImportedFiles = "file_1;file_2;file_3";
 		String allFiles = notImportedFiles + ";file_4;file_5";
 

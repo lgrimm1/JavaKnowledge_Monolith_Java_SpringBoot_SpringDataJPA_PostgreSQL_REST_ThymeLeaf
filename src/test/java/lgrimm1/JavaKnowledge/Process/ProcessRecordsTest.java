@@ -203,9 +203,9 @@ class ProcessRecordsTest {
 				));
 
 		when(htmlRepository.findById(1L))
-				.thenReturn(Optional.of(new HtmlEntity(1L, List.of("Content 11"))));
+				.thenReturn(Optional.of(new HtmlEntity(1L, List.of("Content 11"), new ArrayList<>())));
 		when(htmlRepository.findById(2L))
-				.thenReturn(Optional.of(new HtmlEntity(2L, List.of("Content 21"))));
+				.thenReturn(Optional.of(new HtmlEntity(2L, List.of("Content 21"), new ArrayList<>())));
 		when(htmlRepository.findById(3L))
 				.thenReturn(Optional.empty());
 

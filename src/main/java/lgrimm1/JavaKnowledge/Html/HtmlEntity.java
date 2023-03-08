@@ -15,17 +15,21 @@ public class HtmlEntity {
 	long id;
 	@Column(name = "content", nullable = false)
 	List<String> content;
+	@Column(name = "title_references", nullable = false)
+	List<String> titleReferences;
 
 	public HtmlEntity() {
 	}
 
-	public HtmlEntity(List<String> content) {
+	public HtmlEntity(List<String> content, List<String> titleReferences) {
 		this.content = content;
+		this.titleReferences = titleReferences;
 	}
 
-	public HtmlEntity(long id, List<String> content) {
+	public HtmlEntity(long id, List<String> content, List<String> titleReferences) {
 		this.id = id;
 		this.content = content;
+		this.titleReferences = titleReferences;
 	}
 
 	public long getId() {
@@ -44,17 +48,25 @@ public class HtmlEntity {
 		this.content = content;
 	}
 
+	public List<String> getTitleReferences() {
+		return titleReferences;
+	}
+
+	public void setTitleReferences(List<String> titleReferences) {
+		this.titleReferences = titleReferences;
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
 		HtmlEntity that = (HtmlEntity) o;
-		return id == that.id && content.equals(that.content);
+		return id == that.id && content.equals(that.content) && titleReferences.equals(that.titleReferences);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, content);
+		return Objects.hash(id, content, titleReferences);
 	}
 
 	@Override
@@ -62,6 +74,7 @@ public class HtmlEntity {
 		return "HtmlEntity{" +
 				"id=" + id +
 				", content=" + content +
+				", titleReferences=" + titleReferences +
 				'}';
 	}
 }

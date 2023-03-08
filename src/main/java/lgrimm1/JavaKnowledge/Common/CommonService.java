@@ -98,7 +98,7 @@ public class CommonService {
 		ModelAndView modelAndView = new ModelAndView(initialView);
 		modelAndView.addObject("title", "");
 		modelAndView.addObject("file_name", "");
-		modelAndView.addObject("content", new String[]{});
+		modelAndView.addObject("content", new ArrayList<>());
 		modelAndView.addObject("edit_existing_page", false);
 		modelAndView.addObject("message", "");
 		return modelAndView;
@@ -263,7 +263,7 @@ public class CommonService {
 					txtRepository.deleteById(optionalTitleEntity.get().getTxtId());
 					htmlRepository.deleteById(optionalTitleEntity.get().getHtmlId());
 					titleRepository.deleteById(optionalTitleEntity.get().getId());
-					HtmlEntity htmlEntity = htmlRepository.save(new HtmlEntity(new ArrayList<>()));
+					HtmlEntity htmlEntity = htmlRepository.save(new HtmlEntity(new ArrayList<>(), new ArrayList<>()));
 					TxtEntity txtEntity = txtRepository.save(new TxtEntity(content));
 					titleRepository.save(new TitleEntity(title, fileName, txtEntity.getId(), htmlEntity.getId()));
 					modelAndView.addObject("message", "Source page has been overwritten.");
@@ -274,7 +274,7 @@ public class CommonService {
 					modelAndView.addObject("message", "There is an existing page with this title.");
 				}
 				else {
-					HtmlEntity htmlEntity = htmlRepository.save(new HtmlEntity(new ArrayList<>()));
+					HtmlEntity htmlEntity = htmlRepository.save(new HtmlEntity(new ArrayList<>(), new ArrayList<>()));
 					TxtEntity txtEntity = txtRepository.save(new TxtEntity(content));
 					titleRepository.save(new TitleEntity(title, fileName, txtEntity.getId(), htmlEntity.getId()));
 					editExistingPage = true;
@@ -293,7 +293,7 @@ public class CommonService {
 		ModelAndView modelAndView = new ModelAndView(initialView);
 		if (fileNames == null || fileNames.isBlank() || confirm == null || !confirm) {
 			modelAndView.addObject("titles", processRecords.getAllTitles(titleRepository));
-			modelAndView.addObject("files", new ArrayList<>());
+			modelAndView.addObject("files", "");
 			modelAndView.addObject("confirm", false);
 			modelAndView.addObject("message",
 					"Please upload minimum one file and confirm source overwriting.");
@@ -312,7 +312,7 @@ public class CommonService {
 					extractors);
 			List<String> titles = processRecords.getAllTitles(titleRepository);
 			modelAndView.addObject("titles", titles);
-			modelAndView.addObject("files", new ArrayList<>());
+			modelAndView.addObject("files", "");
 			modelAndView.addObject("confirm", false);
 			modelAndView.addObject("message",
 					notImportedFiles.size() + " of " + files.size() + " files were not imported.");

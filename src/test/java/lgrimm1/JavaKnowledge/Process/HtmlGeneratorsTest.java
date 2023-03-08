@@ -50,12 +50,13 @@ class HtmlGeneratorsTest {
 				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "<h2>" + header1 + "</h2>"
 		);
 
-		List<String> actualHtml = htmlGenerators.generateMainContent(
+		MainHtmlContentPayload actualPayload = htmlGenerators.generateMainContent(
 				txtContent,
 				formulas,
 				extractors,
 				titleRepository);
-		Assertions.assertEquals(expectedHtml, actualHtml);
+		Assertions.assertEquals(expectedHtml, actualPayload.content());
+		Assertions.assertTrue(actualPayload.titles().isEmpty());
 	}
 
 	@Test
@@ -73,12 +74,13 @@ class HtmlGeneratorsTest {
 				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "<h3>" + header2 + "</h3>"
 		);
 
-		List<String> actualHtml = htmlGenerators.generateMainContent(
+		MainHtmlContentPayload actualPayload = htmlGenerators.generateMainContent(
 				txtContent,
 				formulas,
 				extractors,
 				titleRepository);
-		Assertions.assertEquals(expectedHtml, actualHtml);
+		Assertions.assertEquals(expectedHtml, actualPayload.content());
+		Assertions.assertTrue(actualPayload.titles().isEmpty());
 	}
 
 	@Test
@@ -104,12 +106,13 @@ class HtmlGeneratorsTest {
 				"HTML table line 2"
 		);
 
-		List<String> actualHtml = htmlGenerators.generateMainContent(
+		MainHtmlContentPayload actualPayload = htmlGenerators.generateMainContent(
 				txtContent,
 				formulas,
 				extractors,
 				titleRepository);
-		Assertions.assertEquals(expectedHtml, actualHtml);
+		Assertions.assertEquals(expectedHtml, actualPayload.content());
+		Assertions.assertTrue(actualPayload.titles().isEmpty());
 	}
 
 	@Test
@@ -129,12 +132,13 @@ class HtmlGeneratorsTest {
 				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "</textarea>"
 		);
 
-		List<String> actualHtml = htmlGenerators.generateMainContent(
+		MainHtmlContentPayload actualPayload = htmlGenerators.generateMainContent(
 				txtContent,
 				formulas,
 				extractors,
 				titleRepository);
-		Assertions.assertEquals(expectedHtml, actualHtml);
+		Assertions.assertEquals(expectedHtml, actualPayload.content());
+		Assertions.assertTrue(actualPayload.titles().isEmpty());
 	}
 
 	@Test
@@ -153,13 +157,18 @@ class HtmlGeneratorsTest {
 				"Existing reference",
 				"Existing reference"
 		);
+		List<String> expectedTitles = List.of(
+				"Title Word 1",
+				"Title Word 2;1.2. Header header"
+		);
 
-		List<String> actualHtml = htmlGenerators.generateMainContent(
+		MainHtmlContentPayload actualPayload = htmlGenerators.generateMainContent(
 				txtContent,
 				formulas,
 				extractors,
 				titleRepository);
-		Assertions.assertEquals(expectedHtml, actualHtml);
+		Assertions.assertEquals(expectedHtml, actualPayload.content());
+		Assertions.assertEquals(expectedTitles, actualPayload.titles());
 	}
 
 	@Test
@@ -174,12 +183,13 @@ class HtmlGeneratorsTest {
 				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "Line 2</br>"
 		);
 
-		List<String> actualHtml = htmlGenerators.generateMainContent(
+		MainHtmlContentPayload actualPayload = htmlGenerators.generateMainContent(
 				txtContent,
 				formulas,
 				extractors,
 				titleRepository);
-		Assertions.assertEquals(expectedHtml, actualHtml);
+		Assertions.assertEquals(expectedHtml, actualPayload.content());
+		Assertions.assertTrue(actualPayload.titles().isEmpty());
 	}
 
 	@Test

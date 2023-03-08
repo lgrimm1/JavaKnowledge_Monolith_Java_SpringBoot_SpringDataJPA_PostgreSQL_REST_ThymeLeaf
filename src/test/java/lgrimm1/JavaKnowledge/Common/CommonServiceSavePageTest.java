@@ -184,8 +184,8 @@ class CommonServiceSavePageTest {
 				.thenReturn(Optional.of(new TitleEntity(2L, "Original title", "original_file_name", 3L, 4L)));
 		when(txtRepository.save(new TxtEntity(content)))
 				.thenReturn(new TxtEntity(13L, content));
-		when(htmlRepository.save(new HtmlEntity(new ArrayList<>())))
-				.thenReturn(new HtmlEntity(14L, new ArrayList<>()));
+		when(htmlRepository.save(new HtmlEntity(new ArrayList<>(), new ArrayList<>())))
+				.thenReturn(new HtmlEntity(14L, new ArrayList<>(), new ArrayList<>()));
 		when(titleRepository.save(new TitleEntity(title, fileName, 13L, 14L)))
 				.thenReturn(new TitleEntity(12L, title, fileName, 13L, 14L));
 
@@ -236,8 +236,8 @@ class CommonServiceSavePageTest {
 				.thenReturn(Optional.empty());
 		when(txtRepository.save(new TxtEntity(content)))
 				.thenReturn(new TxtEntity(13L, content));
-		when(htmlRepository.save(new HtmlEntity(new ArrayList<>())))
-				.thenReturn(new HtmlEntity(14L, new ArrayList<>()));
+		when(htmlRepository.save(new HtmlEntity(new ArrayList<>(), new ArrayList<>())))
+				.thenReturn(new HtmlEntity(14L, new ArrayList<>(), new ArrayList<>()));
 		when(titleRepository.save(new TitleEntity(title, fileName, 13L, 14L)))
 				.thenReturn(new TitleEntity(12L, title, fileName, 13L, 14L));
 

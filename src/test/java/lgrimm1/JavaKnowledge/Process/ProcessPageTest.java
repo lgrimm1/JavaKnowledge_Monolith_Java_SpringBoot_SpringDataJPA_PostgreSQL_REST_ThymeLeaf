@@ -38,9 +38,11 @@ class ProcessPageTest {
 				"Line 1 (TXT, HTML chars)",
 				"Line 2 (TXT, HTML chars)"
 		)), formulas, extractors, titleRepository))
-				.thenReturn(new ArrayList<>(List.of(
-						"Main Content (HTML)"
-				)));
+				.thenReturn(new MainHtmlContentPayload(
+						new ArrayList<>(List.of(
+								"Main Content (HTML)"
+						)), new ArrayList<>()
+				));
 
 		when(htmlGenerators.generateLastTags(formulas))
 				.thenReturn(new ArrayList<>(List.of(
@@ -60,15 +62,18 @@ class ProcessPageTest {
 				"Final HTML"
 		));
 
+		MainHtmlContentPayload payload = processPage.processTxt(
+				txtContent,
+				"Title Words",
+				titleRepository,
+				formulas,
+				extractors,
+				htmlGenerators
+		);
+
 		Assertions.assertEquals(
 				expectedHtml,
-				processPage.processTxt(
-						txtContent,
-						"Title Words",
-						titleRepository,
-						formulas,
-						extractors,
-						htmlGenerators
-				));
+				payload.content());
+		Assertions.assertTrue(payload.titles().isEmpty());
 	}
 }
