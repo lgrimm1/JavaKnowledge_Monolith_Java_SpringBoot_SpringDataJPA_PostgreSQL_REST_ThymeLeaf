@@ -28,9 +28,7 @@ class HtmlGeneratorsTest {
 		when(formulas.getConstant(Formulas.ConstantName.TAB_IN_HTML))
 				.thenReturn("TABINHTML");
 		when(formulas.getConstant(Formulas.ConstantName.VERSIONS))
-				.thenReturn("Version text");
-		when(formulas.getConstant(Formulas.ConstantName.ROOT_HTML_NAME))
-				.thenReturn("root_html");
+				.thenReturn("VERSIONS");
 		titleRepository = Mockito.mock(TitleRepository.class);
 	}
 
@@ -38,16 +36,15 @@ class HtmlGeneratorsTest {
 	void generateMainContentHeader1() {
 		String header1 = "1. Header 1 text";
 		List<String> txtContent = List.of(
-				formulas.getConstant(Formulas.ConstantName.SUPERLINE),
+				"SUPERLINE",
 				header1,
-				formulas.getConstant(Formulas.ConstantName.SUPERLINE)
+				"SUPERLINE"
 		);
 
 		List<String> expectedHtml = List.of(
-				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "<a href=\"#top\">Back to top of page</a><br>",
-				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "<a href=\""+ formulas.getConstant(Formulas.ConstantName.ROOT_HTML_NAME) +"\">Back to root page</a><br>",
-				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "<a name=\"" + header1 + "\"></a>",
-				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "<h2>" + header1 + "</h2>"
+				"TABINSPACES" + "<a href=\"#top\">Back to top of page</a><br>",
+				"TABINSPACES" + "<a name=\"" + header1 + "\"></a>",
+				"TABINSPACES" + "<h2>" + header1 + "</h2>"
 		);
 
 		MainHtmlContentPayload actualPayload = htmlGenerators.generateMainContent(
@@ -64,14 +61,13 @@ class HtmlGeneratorsTest {
 		String header2 = "1.2. Header 2 text";
 		List<String> txtContent = List.of(
 				header2,
-				formulas.getConstant(Formulas.ConstantName.SUBLINE)
+				"SUBLINE"
 		);
 
 		List<String> expectedHtml = List.of(
-				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "<a href=\"#top\">Back to top of page</a><br>",
-				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "<a href=\""+ formulas.getConstant(Formulas.ConstantName.ROOT_HTML_NAME) +"\">Back to root page</a><br>",
-				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "<a name=\"" + header2 + "\"></a>",
-				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "<h3>" + header2 + "</h3>"
+				"TABINSPACES" + "<a href=\"#top\">Back to top of page</a><br>",
+				"TABINSPACES" + "<a name=\"" + header2 + "\"></a>",
+				"TABINSPACES" + "<h3>" + header2 + "</h3>"
 		);
 
 		MainHtmlContentPayload actualPayload = htmlGenerators.generateMainContent(
@@ -116,21 +112,50 @@ class HtmlGeneratorsTest {
 	}
 
 	@Test
-	void generateMainContentExample() {
+	void generateMainContentExampleWithoutClosingText() {
 		List<String> txtContent = List.of(
 				"EXAMPLE FOR SOMETHING:",
 				"first row",
-				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "second row",
+				"  second row",
+				"some other rows"
+		);
+
+		List<String> expectedHtml = List.of(
+				"EXAMPLE HEADER",
+				"first row",
+				"  second row",
+				"some other rows"
+		);
+
+		when(extractors.extractExample(txtContent, formulas))
+				.thenReturn(expectedHtml);
+
+		MainHtmlContentPayload actualPayload = htmlGenerators.generateMainContent(
+				txtContent,
+				formulas,
+				extractors,
+				titleRepository);
+		Assertions.assertEquals(expectedHtml, actualPayload.content());
+		Assertions.assertTrue(actualPayload.titles().isEmpty());
+	}
+
+	@Test
+	void generateMainContentExampleWithClosingText() {
+		List<String> txtContent = List.of(
+				"EXAMPLE FOR SOMETHING:",
+				"first row",
+				"  second row",
 				"END OF EXAMPLE"
 		);
 
 		List<String> expectedHtml = List.of(
-				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "<h4>EXAMPLE FOR SOMETHING:</h4>",
-				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "<textarea>",
-				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "first row<br>",
-				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "second row<br>",
-				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "</textarea>"
+				"EXAMPLE HEADER",
+				"first row",
+				"  second row"
 		);
+
+		when(extractors.extractExample(txtContent.subList(0, 3), formulas))
+				.thenReturn(expectedHtml);
 
 		MainHtmlContentPayload actualPayload = htmlGenerators.generateMainContent(
 				txtContent,
@@ -175,12 +200,12 @@ class HtmlGeneratorsTest {
 	void generateMainContentNormalText() {
 		List<String> txtContent = List.of(
 				"Line 1",
-				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "Line 2"
+				"TABINSPACES" + "Line 2"
 		);
 
 		List<String> expectedHtml = List.of(
-				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "Line 1</br>",
-				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "Line 2</br>"
+				"TABINSPACES" + "Line 1</br>",
+				"TABINSPACES" + "TABINSPACES" + "Line 2</br>"
 		);
 
 		MainHtmlContentPayload actualPayload = htmlGenerators.generateMainContent(
@@ -199,26 +224,14 @@ class HtmlGeneratorsTest {
 				"<!DOCTYPE html>",
 				"<html lang=\"en\">",
 				"<head>",
-				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "<meta charset=\"UTF-8\">",
-				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "<title>" + title + "</title>",
-				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "<style>",
-				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "table, th, td {",
-				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
-						formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
-						"border: 1px solid black;",
-				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
-						formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
-						"border-collapse: collapse;",
-				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "}",
-				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "h1, h2, h3 {color:red;}",
-				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "h4 {color:blue;}",
-				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "</style>",
+				"TABINSPACES" + "<title>" + title + "</title>",
+				"TABINSPACES" + "<meta charset=\"UTF-8\">",
+				"TABINSPACES" + "<link rel=\"stylesheet\" href=\"styles.css\">",
 				"</head>",
 				"<body>",
-				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "<a name=\"top\"></a>",
-				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
-						formulas.getConstant(Formulas.ConstantName.VERSIONS) + "<br>",
-				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "<h1>" + title + "</h1>"
+				"TABINSPACES" + "<a name=\"top\"></a>",
+				"TABINSPACES" + "VERSIONS" + "<br>",
+				"TABINSPACES" + "<h1>" + title + "</h1>"
 		);
 		Assertions.assertEquals(neededFirstTags, htmlGenerators.generateFirstTags(title, formulas));
 	}
@@ -226,12 +239,18 @@ class HtmlGeneratorsTest {
 	@Test
 	void generateLastTags() {
 		List<String> neededLastTags = List.of(
-				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "<br>",
-				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
-						"<a href=\"#top\">Back to top of page</a><br>",
-				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
-						"<a href=\""+ formulas.getConstant(Formulas.ConstantName.ROOT_HTML_NAME) +
-						"\">Back to root page</a><br>",
+				"TABINSPACES" + "<br>",
+				"TABINSPACES" + "<a href=\"#top\">Back to top of page</a><br>",
+				"TABINSPACES" + "<script>",
+				"TABINSPACES" + "TABINSPACES" + "function example_to_clipboard(id) {",
+				"TABINSPACES" + "TABINSPACES" + "TABINSPACES" + "document.getElementById(id).select();",
+				"TABINSPACES" + "TABINSPACES" + "TABINSPACES" + "document.execCommand('copy');",
+				"TABINSPACES" + "TABINSPACES" + "}",
+				"TABINSPACES" + "TABINSPACES" + "function element_to_full_size(element) {",
+				"TABINSPACES" + "TABINSPACES" + "TABINSPACES" + "element.style.height = \"\";",
+				"TABINSPACES" + "TABINSPACES" + "TABINSPACES" + "element.style.height = element.scrollHeight + \"px\";",
+				"TABINSPACES" + "TABINSPACES" + "}",
+				"TABINSPACES" + "</script>",
 				"</body>",
 				"</html>"
 		);

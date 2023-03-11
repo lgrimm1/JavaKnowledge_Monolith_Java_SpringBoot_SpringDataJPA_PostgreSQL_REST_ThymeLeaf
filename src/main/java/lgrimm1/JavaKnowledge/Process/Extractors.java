@@ -10,6 +10,7 @@ import java.util.*;
  * @see #extractReference(String, Formulas, TitleRepository)
  * @see #extractTable(List, Formulas)
  * @see #extractCells(String)
+ * @see #extractExample(List, Formulas)
  * @see #extractTitle(List, Formulas)
  */
 @Component
@@ -51,25 +52,24 @@ public class Extractors {
 	/**
 	 * Extracts table components.
 	 */
-	public List<String> extractTable(List<String> tableText,
-									Formulas formulas) {
+	public List<String> extractTable(List<String> tableText, Formulas formulas) {
 		List<String> tableInHtml = new ArrayList<>();
-		tableInHtml.add(formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "<table>");
+		tableInHtml.add(formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "<table class=\"table\">");
 		for (int i = 0; i < tableText.size(); i++) {
 			tableInHtml.add(formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
-					formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "<tr>");
-			ArrayList<String> cells = extractCells(tableText.get(i).replace("||", ""));
+					formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "<tr class=\"table_element\">");
+			List<String> cells = extractCells(tableText.get(i).replace("||", ""));
 			for (String s : cells) {
 				if (i == 0) {
 					tableInHtml.add(formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
 							formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
 							formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
-							"<th>" + s + "</th>");
+							"<th class=\"table_element\">" + s + "</th>");
 				}
 				else {
 					tableInHtml.add(formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
 							formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
-							formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "<td>" + s + "</td>");
+							formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "<td class=\"table_element\">" + s + "</td>");
 				}
 			}
 			tableInHtml.add(formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
@@ -82,7 +82,7 @@ public class Extractors {
 	/**
 	 * Extracts cells from a String, based upon the | separator character.
 	 */
-	private ArrayList<String> extractCells(String s) {
+	private List<String> extractCells(String s) {
 		ArrayList<String> cells = new ArrayList<>();
 		int pos = s.indexOf("|");
 		while (pos > -1) {
@@ -94,6 +94,69 @@ public class Extractors {
 			cells.add(s);
 		}
 		return cells;
+	}
+
+	/**
+	 * By definition, the content is an example if starts with EXAMPLE FOR text, optionally ends with END OF EXAMPLE text.
+	 * In case no ending text until the end of the content, every line after the starting one will be rendered into the example.
+	 */
+	public List<String> extractExample(List<String> exampleText, Formulas formulas) {
+		List<String> exampleInHtml = new ArrayList<>();
+		exampleInHtml.add(formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
+				"<h4>" + exampleText.get(0) + "</h4>");
+		exampleInHtml.add(formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
+				"<table class=\"formatter_table\">");
+		exampleInHtml.add(formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
+				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
+				"<tr>");
+		exampleInHtml.add(formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
+				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
+				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
+				"<td style=\"width: 85%\">");
+		exampleInHtml.add(formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
+				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
+				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
+				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
+				"<textarea id=\"example01\" class=\"textarea\" onclick=\"element_to_full_size(this)\" readonly>");
+
+		for (int index = 1, size = exampleText.size(); index < size; index++) {
+			exampleInHtml.add(formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
+					formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
+					formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
+					formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
+					formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES)
+					+ exampleText.get(index) + "<br>");
+		}
+
+		exampleInHtml.add(formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
+				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
+				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
+				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
+				"</textarea>");
+		exampleInHtml.add(formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
+				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
+				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
+				"</td>");
+		exampleInHtml.add(formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
+				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
+				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
+				"<td style=\"width: 15%\">");
+		exampleInHtml.add(formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
+				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
+				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
+				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
+				"<input type=\"button\" value=\"COPY\" class=\"button\" onclick=\"example_to_clipboard('example01')\" />");
+		exampleInHtml.add(formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
+				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
+				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
+				"</td>");
+		exampleInHtml.add(formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
+				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
+				"</tr>");
+		exampleInHtml.add(formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
+				"</table>");
+
+		return exampleInHtml;
 	}
 
 	/**

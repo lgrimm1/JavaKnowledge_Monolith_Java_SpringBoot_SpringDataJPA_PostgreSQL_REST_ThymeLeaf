@@ -41,6 +41,5 @@ class FormulasTest {
 				formulas.getConstant(Formulas.ConstantName.LEVEL_1_SEPARATOR)
 		);
 		Assertions.assertEquals(formulas.VERSIONS, formulas.getConstant(Formulas.ConstantName.VERSIONS));
-		Assertions.assertEquals(formulas.ROOT_HTML_NAME, formulas.getConstant(Formulas.ConstantName.ROOT_HTML_NAME));
 	}
 }

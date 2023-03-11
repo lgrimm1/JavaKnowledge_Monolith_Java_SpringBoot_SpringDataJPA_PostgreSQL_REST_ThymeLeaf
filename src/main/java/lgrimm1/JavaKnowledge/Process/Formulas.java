@@ -1,6 +1,5 @@
 package lgrimm1.JavaKnowledge.Process;
 
-import org.springframework.context.annotation.*;
 import org.springframework.stereotype.*;
 
 /**
@@ -19,9 +18,8 @@ public class Formulas {
 	public final String TAB_IN_HTML = generateRepeatedPattern("&nbsp;", 4);
 	public final String LEVEL_1_SEPARATOR = ";";
 	public final String VERSIONS = "Up to Java 17, Spring 3, JUnit 5";
-	public final String ROOT_HTML_NAME = "!JavaKnowledge";
 	public enum ConstantName {
-		SUPERLINE, SUBLINE, TAB_IN_SPACES, TAB_IN_HTML, LEVEL_1_SEPARATOR, VERSIONS, ROOT_HTML_NAME
+		SUPERLINE, SUBLINE, TAB_IN_SPACES, TAB_IN_HTML, LEVEL_1_SEPARATOR, VERSIONS
 	}
 
 	public final String FORMULA_TITLE =
@@ -76,7 +74,6 @@ public class Formulas {
 			case TAB_IN_HTML -> TAB_IN_HTML;
 			case LEVEL_1_SEPARATOR -> LEVEL_1_SEPARATOR;
 			case VERSIONS -> VERSIONS;
-			case ROOT_HTML_NAME -> ROOT_HTML_NAME;
 		};
 
 	}
