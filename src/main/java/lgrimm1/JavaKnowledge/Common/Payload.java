@@ -15,32 +15,57 @@ public class Payload {
 	private String staticPageLink;
 	private String title;
 	private List<String> titles;
+/*
+	private final Map<String, Object> model = new HashMap<>();
+*/
 
 	public Payload() {
 	}
 
 	public Payload(String searchText) {
+/*
+		model.put("search_text", searchText);
+*/
 		this.searchText = searchText;
 	}
 
 	public Payload(String searchText, List<String> titles) {
+/*
+		model.put("search_text", searchText);
+		model.put("titles", titles);
+*/
 		this.searchText = searchText;
 		this.titles = titles;
 	}
 
 	public Payload(List<String> titles, String message) {
+/*
+		model.put("titles", titles);
+		model.put("message", message);
+*/
 		this.titles = titles;
 		this.message = message;
 	}
 
 
 	public Payload(List<String> references, String staticPageLink, String title) {
+/*
+		model.put("references", references);
+		model.put("static_page_link", staticPageLink);
+		model.put("title", title);
+*/
 		this.references = references;
 		this.staticPageLink = staticPageLink;
 		this.title = title;
 	}
 
 	public Payload(Boolean confirm, String files, String message, List<String> titles) {
+/*
+		model.put("confirm", confirm);
+		model.put("files", files);
+		model.put("message", message);
+		model.put("titles", titles);
+*/
 		this.confirm = confirm;
 		this.files = files;
 		this.message = message;
@@ -48,6 +73,13 @@ public class Payload {
 	}
 
 	public Payload(List<String> content, Boolean editExistingPage, String fileName, String message, String title) {
+/*
+		model.put("content", content);
+		model.put("edit_existing_page", editExistingPage);
+		model.put("file_name", fileName);
+		model.put("message", message);
+		model.put("title", title);
+*/
 		this.content = content;
 		this.editExistingPage = editExistingPage;
 		this.fileName = fileName;
@@ -66,6 +98,19 @@ public class Payload {
 				   String staticPageLink,
 				   String title,
 				   List<String> titles) {
+/*
+		model.put("confirm", confirm);
+		model.put("content", content);
+		model.put("edit_existing_page", editExistingPage);
+		model.put("file_name", fileName);
+		model.put("files", files);
+		model.put("message", message);
+		model.put("references", references);
+		model.put("search_text", searchText);
+		model.put("static_page_link", staticPageLink);
+		model.put("title", title);
+		model.put("titles", titles);
+*/
 		this.confirm = confirm;
 		this.content = content;
 		this.editExistingPage = editExistingPage;

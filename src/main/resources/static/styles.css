@@ -1,0 +1,78 @@
+body {
+    background-color: DarkSlateGray;
+    font-family: Roboto;
+    color: LightGray;
+    text-align: left;
+}
+.formatter_table {
+    width: 100%;
+    text-align: center;
+}
+h1 {
+    font-size: 200%;
+    text-align: center;
+}
+h2 {
+    font-size: 170%;
+}
+h3 {
+    font-size: 140%;
+}
+h4 {
+    font-size: 100%;
+    color: DarkGray;
+}
+a {
+    font-size: 100%;
+    color: LightGray;
+}
+.textarea {
+    width: 90%;
+    border-radius: 6px;
+    background-color: LightGray;
+    font-family: Roboto;
+    font-size: 90%;
+    color: DarkSlateGray;
+}
+.table {
+    border: 1px solid DarkGray;
+    border-collapse: collapse;
+    width: 100%;
+    text-align: center;
+}
+.table_element {
+    border: 1px solid DarkGray;
+    border-collapse: collapse;
+    text-align: center;
+}
+.edit {
+    height: 25px;
+    width: 90%;
+    border-radius: 6px;
+    background-color: LightGray;
+    font-family: Roboto;
+    font-size: 90%;
+    color: DarkSlateGray;
+}
+.select {
+    width: 100%;
+    border-radius: 6px;
+    background-color: LightGray;
+    font-family: Roboto;
+    font-size: 90%;
+    color: DarkSlateGray;
+}
+option:hover {
+    color: LightGray;
+    background-color: DarkGray;
+}
+.button {
+    height: 32px;
+    width: 90%;
+    border: 1;
+    border-radius: 6px;
+    background-color: LightGray;
+    font-family: Roboto;
+    font-size: 90%;
+    color: DarkSlateGray;
+}

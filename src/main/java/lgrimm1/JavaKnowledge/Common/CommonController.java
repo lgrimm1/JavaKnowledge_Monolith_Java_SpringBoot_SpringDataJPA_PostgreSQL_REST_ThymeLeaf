@@ -29,11 +29,13 @@ public class CommonController {
 		return commonService.searchPages("list", payload.getSearchText());
 	}
 
+/*
 	@PostMapping("/page")
 	public ModelAndView getPage(@ModelAttribute("payload") Payload payload, Model model) {
 		model.asMap().clear();
 		return commonService.getPage("page", payload.getTitle());
 	}
+*/
 
 	@PostMapping("/management")
 	public ModelAndView managePages(Model model) {
@@ -67,7 +69,7 @@ public class CommonController {
 
 	@PostMapping("/add/{formulaName}")
 	public ModelAndView addFormula(@PathVariable("formulaName") String formulaName,
-								   @RequestParam("payload") Payload payload,
+								   @ModelAttribute("payload") Payload payload,
 								   Model model) {
 		model.asMap().clear();
 		return commonService.addFormula("source",

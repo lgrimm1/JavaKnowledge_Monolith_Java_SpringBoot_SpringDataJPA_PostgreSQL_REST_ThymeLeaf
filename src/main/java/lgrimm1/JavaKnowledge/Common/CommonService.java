@@ -50,9 +50,7 @@ public class CommonService {
 	}
 
 	public ModelAndView getRoot(String initialView) {
-		ModelAndView modelAndView = new ModelAndView(initialView);
-		modelAndView.addObject("search_text", "");
-		return modelAndView;
+		return new ModelAndView(initialView, "search_text", "");
 	}
 
 	/**
