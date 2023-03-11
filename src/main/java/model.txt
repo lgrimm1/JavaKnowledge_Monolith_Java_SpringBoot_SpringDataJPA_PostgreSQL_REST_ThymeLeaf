@@ -1,6 +1,4 @@
-Model
-------------------------
-{
+"payload": {
     "confirm": <boolean>,
     "content": [<String>, ...],
     "editExistingPage": <boolean>,

@@ -1,10 +1,56 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Java Knowledge - Main Page</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<p>ROOT!</p>
+This place here is for the banner.<br>
+<h1>WELCOME TO JAVA KNOWLEDGE!</h1>
+This site serves as a knowledge base for <b>Java core</b>, <b>Spring frameworks</b> (<i>Spring Boot</i>, <i>Spring Data JPA</i>, <i>Spring Validation</i>, <i>Spring Thymeleaf</i> etc.) and related (<i>postgreSQL</i>, <i>HTML</i> etc.).<br>
+<br>
+<!--
+<form action="#" th:action="@{/search}" th:object="${model}" method="post" novalidate>
+-->
+<form action="#" th:action="@{/search}" method="post" novalidate>
+    <table class="formatter_table">
+        <tr>
+            <td style="width: 75%">
+                <!--
+                                    <input type="text" th:field="*{search_text}" autofocus />
+                -->
+                <input type="text" th:object="${search_text}" class="edit" style="text-align: center" placeholder="Search for title or content..." autofocus />
+            </td>
+            <td style="width: 25%">
+                <input type="submit" value="SEARCH" class="button" formaction="/search" formmethod="post" />
+            </td>
+        </tr>
+    </table>
+    <br>
+    <table class="formatter_table">
+        <tr>
+            <td></td>
+            <td>
+                <input type="submit" value="MANAGEMENT" class="button" formaction="/management" formmethod="post" />
+            </td>
+            <td></td>
+        </tr>
+    </table>
+    <br>
+</form>
+<script>
+    function example_to_clipboard(id) {
+        document.getElementById(id).select();
+        document.execCommand('copy');
+    }
+    function example_to_full_size(element) {
+        element.style.height = "";
+        element.style.height = element.scrollHeight + "px";
+<!--
+        'this.style.height = ""; this.style.height = this.scrollHeight + "px"'
+-->
+    }
+</script>
 </body>
 </html>
