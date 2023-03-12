@@ -90,6 +90,8 @@ INTELLIJ IDEA
 1.6. SELECTION
 ---------------------------------------------------------------------------------
 ||Shortcut|Description||
+||ALT SHF INS|vertical (box) selection mode, exit for same combination||
+||ALT mouse selection|vertical (box) selection, exit for click or ESC||
 ||CTR W|extend selection: word - string - string with quotes around - parameters - whole call inside brackets - whole statement||
 ||CTR SHF W|shrink selection (backward CTR W)||
 ||ALT J|select next occurrence of selected word||
@@ -100,7 +102,6 @@ INTELLIJ IDEA
 1.7. EDITING
 ---------------------------------------------------------------------------------
 ||Shortcut|Description||
-||ALT SHF INS|vertical selection mode, exit for same combination||
 ||CTR D|duplicate selected text in a line horizontally, duplicate line or selection of lines||
 ||CTR Y|delete line||
 ||ALT SHF UP|move line up on line, move method up on signature||
