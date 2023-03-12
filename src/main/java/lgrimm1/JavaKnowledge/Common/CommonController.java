@@ -26,16 +26,14 @@ public class CommonController {
 	@PostMapping("/search")
 	public ModelAndView searchPages(@ModelAttribute("payload") Payload payload, Model model) {
 		model.asMap().clear();
-		return commonService.searchPages("list", payload.getSearchText());
+		return commonService.searchPages("list", payload);
 	}
 
-/*
 	@PostMapping("/page")
 	public ModelAndView getPage(@ModelAttribute("payload") Payload payload, Model model) {
 		model.asMap().clear();
-		return commonService.getPage("page", payload.getTitle());
+		return commonService.getPage("page", payload.getTitles());
 	}
-*/
 
 	@PostMapping("/management")
 	public ModelAndView managePages(Model model) {

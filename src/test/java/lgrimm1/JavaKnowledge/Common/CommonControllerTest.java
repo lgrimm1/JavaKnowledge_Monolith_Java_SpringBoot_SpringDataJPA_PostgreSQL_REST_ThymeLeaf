@@ -27,7 +27,8 @@ class CommonControllerTest {
 
 	@Test
 	void getRoot() throws Exception {
-		ModelAndView modelAndView = new ModelAndView("root", "test_text", "text");
+		Payload payload = new Payload("text");
+		ModelAndView modelAndView = new ModelAndView("root", "payload", payload);
 		when(commonService.getRoot("root"))
 				.thenReturn(modelAndView);
 
@@ -39,32 +40,30 @@ class CommonControllerTest {
 				.andDo(print())
 				.andExpect(view().name("root"))
 				.andExpect(model().size(1))
-				.andExpect(model().attribute("test_text", "text"));
+				.andExpect(model().attribute("payload", payload));
 	}
 
 	@Test
 	void searchPages() throws Exception {
 		String searchText = "text to search";
 		List<String> titles = List.of("Title 1", "Title 2");
-		Payload receivedPayload = new Payload(searchText);
+		Payload payload = new Payload(searchText);
 
-		ModelAndView modelAndView = new ModelAndView("list");
-		modelAndView.addObject("search_text", searchText);
-		modelAndView.addObject("titles", titles);
-		when(commonService.searchPages("list", searchText))
+		Payload payload2 = new Payload(titles, searchText);
+		ModelAndView modelAndView = new ModelAndView("list", "payload", payload2);
+		when(commonService.searchPages("list", payload))
 				.thenReturn(modelAndView);
 
 		mockMvc
 				.perform(
 						post("/search")
-								.flashAttr("payload", receivedPayload)
+								.flashAttr("payload", payload)
 				)
 				.andExpect(status().isOk())
 				.andDo(print())
 				.andExpect(view().name("list"))
-				.andExpect(model().size(2))
-				.andExpect(model().attribute("search_text", searchText))
-				.andExpect(model().attribute("titles", titles));
+				.andExpect(model().size(1))
+				.andExpect(model().attribute("payload", payload2));
 	}
 
 /*

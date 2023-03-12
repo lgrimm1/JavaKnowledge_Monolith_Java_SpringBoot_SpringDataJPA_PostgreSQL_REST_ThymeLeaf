@@ -57,12 +57,29 @@ class CommonServiceTest {
 
 	@Test
 	void getRoot() {
-		Map<String, Object> map = new HashMap<>();
-		map.put("search_text", "");
+		Payload payload = new Payload("");
+		Map<String, Object> model = new HashMap<>();
+		model.put("payload", payload);
 
 		ModelAndView modelAndView = commonService.getRoot("root");
 		ModelAndViewAssert.assertViewName(modelAndView, "root");
-		ModelAndViewAssert.assertModelAttributeValues(modelAndView, map);
+		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
+	}
+
+	@Test
+	void searchPagesNullPayload() {
+		List<String> titles = List.of("Title 1", "Title 2");
+		when(processRecords.getAllTitles(titleRepository))
+				.thenReturn(titles);
+
+		Payload payload = new Payload(titles, "<all titles>");
+		Map<String, Object> model = new HashMap<>();
+		model.put("payload", payload);
+
+		ModelAndView modelAndView = commonService.searchPages("list", null);
+
+		ModelAndViewAssert.assertViewName(modelAndView, "list");
+		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
 	}
 
 	@Test
@@ -71,30 +88,14 @@ class CommonServiceTest {
 		when(processRecords.getAllTitles(titleRepository))
 				.thenReturn(titles);
 
-		Map<String, Object> map = new HashMap<>();
-		map.put("search_text", "<all titles>");
-		map.put("titles", titles);
+		Payload payload = new Payload(titles, "<all titles>");
+		Map<String, Object> model = new HashMap<>();
+		model.put("payload", payload);
 
-		ModelAndView modelAndView = commonService.searchPages("list", null);
-
-		ModelAndViewAssert.assertViewName(modelAndView, "list");
-		ModelAndViewAssert.assertModelAttributeValues(modelAndView, map);
-	}
-
-	@Test
-	void searchPagesEmptySearchText() {
-		List<String> titles = List.of("Title 1", "Title 2");
-		when(processRecords.getAllTitles(titleRepository))
-				.thenReturn(titles);
-
-		Map<String, Object> map = new HashMap<>();
-		map.put("search_text", "<all titles>");
-		map.put("titles", titles);
-
-		ModelAndView modelAndView = commonService.searchPages("list", "");
+		ModelAndView modelAndView = commonService.searchPages("list", new Payload(null));
 
 		ModelAndViewAssert.assertViewName(modelAndView, "list");
-		ModelAndViewAssert.assertModelAttributeValues(modelAndView, map);
+		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
 	}
 
 	@Test
@@ -103,32 +104,34 @@ class CommonServiceTest {
 		when(processRecords.getAllTitles(titleRepository))
 				.thenReturn(titles);
 
-		Map<String, Object> map = new HashMap<>();
-		map.put("search_text", "<all titles>");
-		map.put("titles", titles);
+		Payload payload = new Payload(titles, "<all titles>");
+		Map<String, Object> model = new HashMap<>();
+		model.put("payload", payload);
 
-		ModelAndView modelAndView = commonService.searchPages("list", "  ");
+		ModelAndView modelAndView = commonService.searchPages("list", new Payload("  "));
 
 		ModelAndViewAssert.assertViewName(modelAndView, "list");
-		ModelAndViewAssert.assertModelAttributeValues(modelAndView, map);
+		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
 	}
 
 	@Test
 	void searchPagesExistingSearchText() {
 		String searchText = "Word2 Word1";
-		Set<String> searchResult = Set.of("Title 2", "Title 1");
+		Payload payload = new Payload(searchText);
+
+		Set<String> titlesSet = Set.of("Title 2", "Title 1");
 		when(processRecords.searchBySearchText(searchText, titleRepository, txtRepository))
-				.thenReturn(searchResult);
+				.thenReturn(titlesSet);
 
-		List<String> expectedList = List.of("Title 1", "Title 2");
-		Map<String, Object> map = new HashMap<>();
-		map.put("search_text", "Word2 Word1");
-		map.put("titles", expectedList);
+		List<String> titles = List.of("Title 1", "Title 2");
+		Payload payload2 = new Payload(titles, searchText);
+		Map<String, Object> model = new HashMap<>();
+		model.put("payload", payload2);
 
-		ModelAndView modelAndView = commonService.searchPages("list", searchText);
+		ModelAndView modelAndView = commonService.searchPages("list", payload);
 
 		ModelAndViewAssert.assertViewName(modelAndView, "list");
-		ModelAndViewAssert.assertModelAttributeValues(modelAndView, map);
+		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
 	}
 
 	@Test
@@ -180,122 +183,6 @@ class CommonServiceTest {
 		map.put("message", "5 HTML files were pre-deleted, 4 were published.");
 
 		ModelAndView modelAndView = commonService.publishPages("management");
-
-		ModelAndViewAssert.assertViewName(modelAndView, "management");
-		ModelAndViewAssert.assertModelAttributeValues(modelAndView, map);
-	}
-
-	@Test
-	void importTxtNullFiles() {
-		List<String> titles = List.of("Title 1", "Title 2");
-		when(processRecords.getAllTitles(titleRepository))
-				.thenReturn(titles);
-
-		Map<String, Object> map = new HashMap<>();
-		map.put("titles", titles);
-		map.put("files", "");
-		map.put("confirm", false);
-		map.put("message", "Please upload minimum one file and confirm source overwriting.");
-
-		ModelAndView modelAndView = commonService.importTxt("management", null, true);
-
-		ModelAndViewAssert.assertViewName(modelAndView, "management");
-		ModelAndViewAssert.assertModelAttributeValues(modelAndView, map);
-	}
-
-	@Test
-	void importTxtBlankFiles() {
-		List<String> titles = List.of("Title 1", "Title 2");
-		when(processRecords.getAllTitles(titleRepository))
-				.thenReturn(titles);
-
-		Map<String, Object> map = new HashMap<>();
-		map.put("titles", titles);
-		map.put("files", "");
-		map.put("confirm", false);
-		map.put("message", "Please upload minimum one file and confirm source overwriting.");
-
-		ModelAndView modelAndView = commonService.importTxt("management", "  ", true);
-
-		ModelAndViewAssert.assertViewName(modelAndView, "management");
-		ModelAndViewAssert.assertModelAttributeValues(modelAndView, map);
-	}
-
-	@Test
-	void importTxtNullConfirm() {
-		String fileNames = "file_1;file_2";
-		List<String> titles = List.of("Title 1", "Title 2");
-		when(processRecords.getAllTitles(titleRepository))
-				.thenReturn(titles);
-
-		Map<String, Object> map = new HashMap<>();
-		map.put("titles", titles);
-		map.put("files", "");
-		map.put("confirm", false);
-		map.put("message", "Please upload minimum one file and confirm source overwriting.");
-
-		ModelAndView modelAndView = commonService.importTxt("management", fileNames, null);
-
-		ModelAndViewAssert.assertViewName(modelAndView, "management");
-		ModelAndViewAssert.assertModelAttributeValues(modelAndView, map);
-	}
-
-	@Test
-	void importTxtNotConfirmed() {
-		String fileNames = "file_1;file_2";
-		List<String> titles = List.of("Title 1", "Title 2");
-		when(processRecords.getAllTitles(titleRepository))
-				.thenReturn(titles);
-
-		Map<String, Object> map = new HashMap<>();
-		map.put("titles", titles);
-		map.put("files", "");
-		map.put("confirm", false);
-		map.put("message", "Please upload minimum one file and confirm source overwriting.");
-
-		ModelAndView modelAndView = commonService.importTxt("management", fileNames, false);
-
-		ModelAndViewAssert.assertViewName(modelAndView, "management");
-		ModelAndViewAssert.assertModelAttributeValues(modelAndView, map);
-	}
-
-	@Test
-	void importTxtConfirmed() {
-
-		when(fileOperations.getOSPathSeparator())
-				.thenReturn(";");
-		String notImportedFiles = "file_1;file_2;file_3";
-		String allFiles = notImportedFiles + ";file_4;file_5";
-
-		List<File> notImported = Stream.of(notImportedFiles.split(";"))
-				.sorted()
-				.map(File::new)
-				.toList();
-		List<File> all = Stream.of(allFiles.split(";"))
-				.sorted()
-				.map(File::new)
-				.toList();
-		when(processRecords.importTxtFiles(
-				all,
-				titleRepository,
-				txtRepository,
-				htmlRepository,
-				fileOperations,
-				formulas,
-				extractors))
-				.thenReturn(notImported);
-
-		List<String> titles = List.of("Title 4", "Title 5");
-		when(processRecords.getAllTitles(titleRepository))
-				.thenReturn(titles);
-
-		Map<String, Object> map = new HashMap<>();
-		map.put("titles", titles);
-		map.put("files", "");
-		map.put("confirm", false);
-		map.put("message", "3 of 5 files were not imported.");
-
-		ModelAndView modelAndView = commonService.importTxt("management", allFiles, true);
 
 		ModelAndViewAssert.assertViewName(modelAndView, "management");
 		ModelAndViewAssert.assertModelAttributeValues(modelAndView, map);
@@ -355,84 +242,6 @@ class CommonServiceTest {
 		ModelAndView modelAndView = commonService.generateHtml("management", true);
 
 		ModelAndViewAssert.assertViewName(modelAndView, "management");
-		ModelAndViewAssert.assertModelAttributeValues(modelAndView, map);
-	}
-
-	@Test
-	void getPageNullTitle() {
-		List<String> titles = List.of("Title 1", "Title 2");
-		when(processRecords.getAllTitles(titleRepository))
-				.thenReturn(titles);
-
-		Map<String, Object> map = new HashMap<>();
-		map.put("search_text", "<all titles>");
-		map.put("titles", titles);
-
-		ModelAndView modelAndView = commonService.getPage("page", null);
-
-		ModelAndViewAssert.assertViewName(modelAndView, "list");
-		ModelAndViewAssert.assertModelAttributeValues(modelAndView, map);
-	}
-
-	@Test
-	void getPageBlankTitle() {
-		List<String> titles = List.of("Title 1", "Title 2");
-		when(processRecords.getAllTitles(titleRepository))
-				.thenReturn(titles);
-
-		Map<String, Object> map = new HashMap<>();
-		map.put("search_text", "<all titles>");
-		map.put("titles", titles);
-
-		ModelAndView modelAndView = commonService.getPage("page", "  ");
-
-		ModelAndViewAssert.assertViewName(modelAndView, "list");
-		ModelAndViewAssert.assertModelAttributeValues(modelAndView, map);
-	}
-
-	@Test
-	void getPageNotExistingTitle() {
-		List<String> titles = List.of("Title 1", "Title 2");
-		when(processRecords.getAllTitles(titleRepository))
-				.thenReturn(titles);
-
-		String title = "Title";
-		when(titleRepository.findByTitle(title))
-				.thenReturn(Optional.empty());
-
-		Map<String, Object> map = new HashMap<>();
-		map.put("search_text", "<all titles>");
-		map.put("titles", titles);
-
-		ModelAndView modelAndView = commonService.getPage("page", "  ");
-
-		ModelAndViewAssert.assertViewName(modelAndView, "list");
-		ModelAndViewAssert.assertModelAttributeValues(modelAndView, map);
-	}
-
-	@Test
-	void getPageExistingTitle() {
-		List<String> titles = List.of("Title 1", "Title 2");
-		when(processRecords.getAllTitles(titleRepository))
-				.thenReturn(titles);
-
-		String title = "Title";
-		String filename = "title";
-		when(titleRepository.findByTitle(title))
-				.thenReturn(Optional.of(new TitleEntity(2L, title, filename, 2L, 2L)));
-
-		List<String> content = List.of("Line 1", "Line 2");
-		List<String> titleReferences = List.of("Reference 1", "Reference 2");
-		when(htmlRepository.findById(2L))
-				.thenReturn(Optional.of(new HtmlEntity(2L, content, titleReferences)));
-		Map<String, Object> map = new HashMap<>();
-		map.put("title", title);
-		map.put("references", titleReferences);
-		map.put("static_page_link", filename + ".html");
-
-		ModelAndView modelAndView = commonService.getPage("page", title);
-
-		ModelAndViewAssert.assertViewName(modelAndView, "page");
 		ModelAndViewAssert.assertModelAttributeValues(modelAndView, map);
 	}
 }

@@ -10,17 +10,14 @@
     <h1>WELCOME TO JAVA KNOWLEDGE!</h1>
     This site serves as a knowledge base for <b>Java core</b>, <b>Spring frameworks</b> (<i>Spring Boot</i>, <i>Spring Data JPA</i>, <i>Spring Validation</i>, <i>Spring Thymeleaf</i> etc.) and related (<i>postgreSQL</i>, <i>HTML</i> etc.).<br>
     <br>
-    <!--
-    <form action="#" th:action="@{/search}" th:object="${model}" method="post" novalidate>
-    -->
-    <form action="#" th:action="@{/search}" method="post" novalidate>
+    <form action="#" th:object="${payload}" th:action="@{/search}" method="post" novalidate>
         <table class="formatter_table">
             <tr>
                 <td style="width: 75%">
                     <!--
                                         <input type="text" th:field="*{search_text}" autofocus />
                     -->
-                    <input type="text" th:object="${search_text}" class="edit" style="text-align: center" placeholder="Search for title or content..." autofocus />
+                    <input type="text" th:field="*{searchText}" class="edit" style="text-align: center" placeholder="Search for title or content..." autofocus />
                 </td>
                 <td style="width: 25%">
                     <input type="submit" value="SEARCH" class="button" formaction="/search" formmethod="post" />

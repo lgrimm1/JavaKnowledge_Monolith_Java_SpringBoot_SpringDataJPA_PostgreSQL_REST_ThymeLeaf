@@ -50,7 +50,7 @@ public class CommonService {
 	}
 
 	public ModelAndView getRoot(String initialView) {
-		return new ModelAndView(initialView, "search_text", "");
+		return new ModelAndView(initialView, "payload", new Payload(""));
 	}
 
 	/**
@@ -59,33 +59,32 @@ public class CommonService {
 	 * The search trims the given text and ignores case.
 	 * In case there is no search text given, returns all titles.
 	 */
-	public ModelAndView searchPages(String initialView, String searchText) {
-		ModelAndView modelAndView = new ModelAndView(initialView);
-		if (searchText == null || searchText.isBlank()) {
-			modelAndView.addObject("search_text", "<all titles>");
-			modelAndView.addObject("titles", processRecords.getAllTitles(titleRepository));
+	public ModelAndView searchPages(String initialView, Payload payload) {
+		if (payload == null || payload.getSearchText() == null || payload.getSearchText().isBlank()) {
+			Payload payload2 = new Payload(processRecords.getAllTitles(titleRepository), "<all titles>");
+			return new ModelAndView(initialView, "payload", payload2);
 		}
 		else {
-			modelAndView.addObject("search_text", searchText);
-			Set<String> titles = processRecords.searchBySearchText(searchText, titleRepository, txtRepository);
-			modelAndView.addObject(
-					"titles",
-					titles.stream()
-							.sorted()
-							.toList()
-			);
+			List<String> titles = processRecords.searchBySearchText(
+							payload.getSearchText(),
+							titleRepository,
+							txtRepository)
+					.stream()
+					.sorted()
+					.toList();
+			Payload payload2 = new Payload(titles, payload.getSearchText());
+			return new ModelAndView(initialView, "payload", payload2);
 		}
-		return modelAndView;
 	}
 
-	public ModelAndView getPage(String initialView, String title) {
-		if (title == null || title.isBlank()) {
+	public ModelAndView getPage(String initialView, List<String> titles) {
+		if (titles == null || titles.size() != 1 || titles.get(0) == null || titles.get(0).isBlank()) {
 			ModelAndView modelAndView = new ModelAndView("list");
 			modelAndView.addObject("search_text", "<all titles>");
 			modelAndView.addObject("titles", processRecords.getAllTitles(titleRepository));
 			return modelAndView;
 		}
-		Optional<TitleEntity> optionalTitleEntity = titleRepository.findByTitle(title);
+		Optional<TitleEntity> optionalTitleEntity = titleRepository.findByTitle(titles.get(0));
 		if (optionalTitleEntity.isEmpty()) {
 			ModelAndView modelAndView = new ModelAndView("list");
 			modelAndView.addObject("search_text", "<all titles>");
