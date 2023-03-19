@@ -13,7 +13,11 @@ A JPA repository test class uses class-level annotations.
 ||@AutoConfigureTestEntityManager|configuration of TestEntityManager outside DataJpaTest class||
 
 When using @DataJpaTest annotation, Spring will load context for JPA and below (entity level) but not above.
+
 By default, after every test Spring rolls back the database (transaction management for tests). This behaviour can be controlled with @Transactional annotation.
+Please note, although the rollback is a default function of JPA test, Hibernate communicates with the database. That said, new records will be deleted etc., but the record IDs will increment with every added records continuously. In case comparing entities is necessary, avoid comparing IDs.
+Alternatively, define an equalsWithoutId() helper method within the test class which compares two entities by fields except ID.
+
 Except for H2, the database needs configuration, use @AutoConfigureTestDatabase for this purpose.
 
 The TestEntityManager is the test version of the EntityManager, optionally can be used for testing if the test strategy needs it. When using, first it must be injected with @Autowired.
@@ -24,6 +28,17 @@ In case if using JUnit4, the class-level @RunWith(SpringRunner.class) annotation
 The database at the beginning is practically empty, the configuration class optionally presented for repositories or above will not be injected by JPA.
 In case the tests are not invoked in chain starting with filling with data, along with disabling transactional management, need to fill the database per test method or with a @BeforeEach method before.
 
+EXAMPLE FOR EQUALSWITHOUTID() HELPER METHOD:
+//field1: String, field2: long
+private boolean equalsWithoutId(Entity entity1, Entity entity2) {
+	if (entity1 == null || entity2 == null) {
+		return false;
+	}
+	return entity1.getField1().equals(entity2.getField1()) &&
+			entity1.getField2() == entity2.getField2();
+}
+END OF EXAMPLE
+
 EXAMPLE FOR JPA TEST CLASS:
 package Package;
 
@@ -31,6 +46,7 @@ import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.boot.test.autoconfigure.jdbc.*;
 import org.springframework.boot.test.autoconfigure.orm.jpa.*;
+import org.springframework.transaction.annotation.*;
 
 import java.util.*;
 
@@ -38,6 +54,7 @@ import java.util.*;
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class TitleRepositoryTest {
 
+    //optional
 	@Autowired
 	private TestEntityManager testEntityManager;
 
