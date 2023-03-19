@@ -15,6 +15,7 @@ SPRING BOOT VALIDATION
 =>SPRING BOOT ENTITY VALIDATION
 =>SPRING BOOT ENTITY
 =>SPRING BOOT CONTROLLER
+=>SPRING BOOT TESTS;2. ENTITY TEST
 =>SPRING BOOT CONTROLLER TESTS
 =>SPRING MODELANDVIEW
 
@@ -39,6 +40,8 @@ In order to have that message included into the HTTP response, two conditions mu
 The config file should have this line:
     server.error.include-message=always
 If the conditions above are not met, with the exception a JPA default message will be sent, see below.
+
+Testing entity behaviour when Validation is used on it, is necessary. Visit the SPRING BOOT TESTS / 2. ENTITY TEST session for details.
 
 =================================================================================
 2. SETTING UP

@@ -18,6 +18,8 @@ SPRING BOOT TESTS
 =>SPRING MODELANDVIEW
 =>SPRING BOOT CONTROLLER TESTS
 =>SPRING MODELANDVIEW;5. TESTING
+=>SPRING BOOT VALIDATION
+=>SPRING DATA JPA TESTS
 
 =================================================================================
 1. MAIN CLASS TEST
@@ -25,6 +27,8 @@ SPRING BOOT TESTS
 As normally, under the src/test/java/<package> folder, the tests will be created.
 This test is for testing whether the web application starts up and loads the Communication layer (controller).
 In the test class, the @Autowired annotation makes into the marked field the controller(s) to be injected.
+
+In case if using JUnit4, the class-level @RunWith(SpringRunner.class) annotation is needed additionally.
 
 EXAMPLE FOR MAIN TEST:
 import org.junit.jupiter.api.*;
@@ -52,12 +56,13 @@ The tests should be created under the src/test/java/<package> folder.
 For no-JPA entities, unit testing is appropriate.
 
 For clean JPA entities, because the entity usually does not carry others than fields, constructors, getters, setters and the equals(), hashCode(), toString() overridden methods, instead of unit tests, behaviour tests are needed.
-The behaviours are defined via using Spring Validation annotations. That said, the behaviour is apparent when the Spring framework reads and uses the annotations via the repository.
+When not using Spring Boot Validation, a behaviour test means mainly testing constructors against excepted field values. In case the constructors serve as grouped setters of fields, defining these test is optional.
+Naturally, in case the entity contains custom methods above the mentioned ones above, proper testing is mandatory.
+
+When behaviours are defined via using Spring Validation annotations, the behaviour is apparent when the Spring framework reads and uses the annotations via the repository and the controller.
 In order to test only the behaviours without starting up the application (and Spring environment with it), the Validator class of Hibernate is needed.
-
 Behaviours are declared on fields. That means, after creating an object with some data, should be checked what will the validation result be.
-
-In case the JPA entity has custom methods (e.g. for handling transient fields), for those methods unit tests are needed.
+Still, in case the JPA entity has custom methods (e.g. for handling transient fields), for those methods testing is mandatory.
 
 EXAMPLE FOR ENTITY BEHAVIOUR TEST CLASS (CLEAN JPA):
 package packageName;
@@ -105,7 +110,7 @@ As normally, under the src/test/java/<package> folder, the tests will be created
 Repository classes can be tested out with normal unit tests.
 Proper tests should cover the functionality (e.g. searching, adding, deleting, modifying data) of the repository as it represents the Storage layer of the web application.
 
-In case of using Spring Data JPA, instead of class the repository will be an interface, no tests for functionality are needed since the functionalities will be given by the Spring itself.
+For Spring Data JPA repository tests, visit the SPRING DATA JPA TESTS page.
 
 =================================================================================
 4. SERVICE CLASS TESTS

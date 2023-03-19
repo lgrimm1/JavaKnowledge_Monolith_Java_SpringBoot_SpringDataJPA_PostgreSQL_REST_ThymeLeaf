@@ -42,6 +42,8 @@ The MockMVC controller test environment does not start the whole Spring framewor
 Solution is to instruct JPA to re-calibrate the search graph with the MockMVC test class as start by using the @AutoConfigureDataJpa annotation for the particular MockMVC controller test class.
 When no JPA is involved with the test class, this annotation is not needed.
 
+In case if using JUnit4, the class-level @RunWith(SpringRunner.class) annotation is needed additionally.
+
 EXAMPLE FOR CONTROLLER TEST CLASS (MOCKMVC, MOCKITO, JPA):
 package packageName;
 

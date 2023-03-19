@@ -210,6 +210,8 @@ For all tests, the Spring Boot will start the web service (servlet) layer, pract
 The @Autowired annotation expresses injection the marked class (e.g. the controller) into the test class before starting up the app. In case of using the TestRestTemplate class with this annotation, the given class will handle the storage and the service layers together automatically.
 This kind of testing is possible for controller methods in any mode.
 
+In case if using JUnit4, the class-level @RunWith(SpringRunner.class) annotation is needed additionally.
+
 The application layers will be cached by default so Spring will not start-stop the application per test method.
 In case the test modifies the context (e.g. the state of a singleton bean or the state of an embedded database) and that modification could have an effect on other test results, usage of @DirtiesContext annotation is needed. When the flow reaches this annotation, the context will be emptied and reloaded.
 Effect of the @DirtiesContext annotation depends on its placement:

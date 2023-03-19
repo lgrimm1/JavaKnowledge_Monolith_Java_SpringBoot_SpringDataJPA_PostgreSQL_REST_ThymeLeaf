@@ -12,6 +12,7 @@ That said, that class will be responsible for storage management.
 =>SPRING BOOT REPOSITORY QUERY EXAMPLES
 =>SPRING BOOT REPOSITORY SPECIALS
 =>SPRING BOOT TESTS;3. REPOSITORY TESTS
+=>SPRING DATA JPA TESTS
 
 =================================================================================
 1. REPOSITORY CLASS, NO-JPA
