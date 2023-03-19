@@ -326,3 +326,5 @@ In case a field is not filled by the user, the form will send a null rendered to
 5. FORM EXAMPLES
 =================================================================================
 Visit the SPRING THYMELEAF FORM EXAMPLES page for examples.
+
+//TODO https://www.baeldung.com/spring-boot-crud-thymeleaf
