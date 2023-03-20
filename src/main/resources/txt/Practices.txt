@@ -415,4 +415,5 @@ END OF EXAMPLE
 =================================================================================
 https://www.baeldung.com
 https://www.bezkoder.com
-https://www.w3schools.com/
+https://www.w3schools.com
+https://blog.knoldus.com
