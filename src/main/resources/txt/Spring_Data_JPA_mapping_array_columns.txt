@@ -1,0 +1,132 @@
+=================================================================================
+SPRING DATA JPA MAPPING ARRAY COLUMNS
+=================================================================================
+Some of the databases (e.g. postgreSQL) offer array-based versions of their column types such as integer[] or text[].
+Their counterparts in Java entity can be (following the example above) int[] or String[], or Collection type (List of Integer, List of String).
+In postgreSQL, for almost every column type there is array type (e.g. bigint[], date[], uuid[], text[], integer[], timestamp_without_time_zone[]).
+Please note, multiple values of enums can be represented as custom array type as well.
+
+Spring Boot pairs these types automatically.
+Spring Data JPA however, without Spring Boot, needs declarations on entity level in order to establish mapping between array columns and their Java counterparts. The reason is, Hibernate does not support it.
+
+By utilizing the @Type annotation, JPA will be advised to map array column type.
+By using the columnDefinition argument of the @Column annotation, JPA will be advised to use specific array column type.
+For enum, by using the parameters argument of the @Type annotation, the given enum is rendered to the field.
+
+The entity class is slight different under Hibernate 6 and 5.
+
+EXAMPLE FOR TABLE STRUCTURE WITH ARRAY COLUMNS:
+id: bigint
+date_values: date[]
+sensor_ids: uuid[]
+sensor_long_values: bigint[]
+sensor_names: text[]
+sensor_states: sensor_state[]
+sensor_values: integer[]
+timestamp_values: timestamp_without_time_zone[]
+END OF EXAMPLE
+
+EXAMPLE FOR DEFINITION OF ENUM:
+public enum SensorState {
+    ONLINE, OFFLINE, UNKNOWN;
+}
+END OF EXAMPLE
+
+EXAMPLE FOR DOMAIN CLASS WITH ARRAY MAPPINGS (HIBERNATE 6):
+@Entity(name = "Event")
+@Table(name = "event")
+public class Event {
+
+    @Id
+    private Long id;
+
+    @Type(ListArrayType.class)
+    @Column(name = "sensor_ids", columnDefinition = "uuid[]")
+    private List<UUID> sensorIds;
+
+    @Type(ListArrayType.class)
+    @Column(name = "sensor_names", columnDefinition = "text[]")
+    private List<String> sensorNames;
+
+    @Type(ListArrayType.class)
+    @Column(name = "sensor_values", columnDefinition = "integer[]")
+    private List<Integer> sensorValues;
+
+    @Type(ListArrayType.class)
+    @Column(name = "sensor_long_values", columnDefinition = "bigint[]")
+    private List<Long> sensorLongValues;
+
+    @Type(
+        value = ListArrayType.class,
+        parameters = {
+            @Parameter(
+                name = ListArrayType.SQL_ARRAY_TYPE,
+                value = "sensor_state"
+            )
+        }
+    )
+    @Column(name = "sensor_states", columnDefinition = "sensor_state[]")
+    private List<SensorState> sensorStates;
+
+    @Type(ListArrayType.class)
+    @Column(name = "date_values", columnDefinition = "date[]")
+    private List<Date> dateValues;
+
+    @Type(ListArrayType.class)
+    @Column(name = "timestamp_values", columnDefinition = "timestamp[]")
+    private List<Date> timestampValues;
+
+    //constructors, getters, setters, equals(), hashCode(), toString()
+}
+END OF EXAMPLE
+
+EXAMPLE FOR DOMAIN CLASS WITH ARRAY MAPPINGS (HIBERNATE 5):
+@Entity(name = "Event")
+@Table(name = "event")
+@TypeDef(name = "list-array", typeClass = ListArrayType.class)
+public class Event {
+
+    @Id
+    private Long id;
+
+    @Type(type = "list-array")
+    @Column(name = "sensor_ids", columnDefinition = "uuid[]")
+    private List<UUID> sensorIds;
+
+    @Type(type = "list-array")
+    @Column(name = "sensor_names", columnDefinition = "text[]")
+    private List<String> sensorNames;
+
+    @Type(type = "list-array")
+    @Column(name = "sensor_values", columnDefinition = "integer[]")
+    private List<Integer> sensorValues;
+
+    @Type(type = "list-array")
+    @Column(name = "sensor_long_values", columnDefinition = "bigint[]")
+    private List<Long> sensorLongValues;
+
+    @Type(
+        type = "io.hypersistence.utils.hibernate.type.array.ListArrayType",
+        parameters = {
+            @Parameter(
+                name = ListArrayType.SQL_ARRAY_TYPE,
+                value = "sensor_state"
+            )
+        }
+    )
+    @Column(name = "sensor_states", columnDefinition = "sensor_state[]")
+    private List<SensorState> sensorStates;
+
+    @Type(type = "list-array")
+    @Column(name = "date_values", columnDefinition = "date[]")
+    private List<Date> dateValues;
+
+    @Type(type = "list-array")
+    @Column(name = "timestamp_values", columnDefinition = "timestamp[]")
+    private List<Date> timestampValues;
+
+    //constructors, getters, setters, equals(), hashCode(), toString()
+}
+END OF EXAMPLE
+
+=>SPRING BOOT ENTITY
