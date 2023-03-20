@@ -69,68 +69,70 @@ boolean field3
 */
 
 //find all
-@Query("SELECT e FROM Entity e")
-@Query(value = "SELECT * FROM Entity", nativeQuery = true)
+@Query("SELECT e FROM entity_table e")
+@Query(value = "SELECT * FROM entity_table", nativeQuery = true)
 List<Entity> findAll();
 
 //find first by text
 //for finding the first, there is no similar in JPQL
+@Query(value = "SELECT TOP 1 * FROM entity_table", nativeQuery = true)
 Optional<Entity> findFirstByField1(String text);
 List<Entity> findFirstByField1(String text);
 
 //find first 10 by number
 //for finding the first/top 10, there is no similar in JPQL
+@Query(value = "SELECT TOP 10 * FROM entity_table", nativeQuery = true)
 List<Entity> findFirst10ByField2(int number);
 List<Entity> findTop10ByField2(int number);
 
 //find all by partial text, ignore case
-@Query("SELECT e FROM Entity e WHERE UPPER(e.field1) LIKE UPPER(%?1%)")
-@Query(value = "SELECT * FROM Entity e WHERE UPPER(e.field1) LIKE UPPER(%?1%)", nativeQuery = true)
+@Query("SELECT e FROM entity_table e WHERE UPPER(e.field1) LIKE UPPER(%?1%)")
+@Query(value = "SELECT * FROM entity_table e WHERE UPPER(e.field1) LIKE UPPER(%?1%)", nativeQuery = true)
 List<Entity> findByField1IgnoreCase(String partialText);
 
 //find all by true condition
-@Query("SELECT e FROM Entity e WHERE e.field3 = true")
-@Query(value = "SELECT * FROM Entity e WHERE e.field3 = true", nativeQuery = true)
+@Query("SELECT e FROM entity_table e WHERE e.field3 = true")
+@Query(value = "SELECT * FROM entity_table e WHERE e.field3 = true", nativeQuery = true)
 List<Entity> findByField3();
 
 //find all by condition
-@Query("SELECT e FROM Entity e WHERE e.field3 = ?1")
-@Query(value = "SELECT * FROM Entity e WHERE e.field3 = ?1", nativeQuery = true)
+@Query("SELECT e FROM entity_table e WHERE e.field3 = ?1")
+@Query(value = "SELECT * FROM entity_table e WHERE e.field3 = ?1", nativeQuery = true)
 List<Entity> findByField3(boolean condition);
 
 //find all by two fields
-@Query("SELECT e FROM Entity e WHERE e.field1 = ?1 AND e.field2 = ?2")
-@Query(value = "SELECT * FROM Entity e WHERE e.field1 = ?1 AND e.field2 = ?2", nativeQuery = true)
+@Query("SELECT e FROM entity_table e WHERE e.field1 = ?1 AND e.field2 = ?2")
+@Query(value = "SELECT * FROM entity_table e WHERE e.field1 = ?1 AND e.field2 = ?2", nativeQuery = true)
 List<Entity> findByField1AndField2(String text, int number);
 
 //find all, reverse ordering by field2
-@Query("SELECT e FROM Entity e ORDER BY e.field2 DESC")
-@Query(value = "SELECT * FROM Entity e ORDER BY e.field2 DESC", nativeQuery = true)
+@Query("SELECT e FROM entity_table e ORDER BY e.field2 DESC")
+@Query(value = "SELECT * FROM entity_table e ORDER BY e.field2 DESC", nativeQuery = true)
 List<Entity> findAllOrderByField2Desc(String text);
 
 //find all, ignore case, ordering by field1 then field2
-@Query("SELECT e FROM Entity e WHERE UPPER(e.field1) = UPPER(?1) ORDER BY e.field1 ASC ORDER BY e.field2 DESC")
-@Query(value = "SELECT * FROM Entity e WHERE UPPER(e.field1) = UPPER(?1) ORDER BY e.field1 ASC ORDER BY e.field2 DESC", nativeQuery = true)
+@Query("SELECT e FROM entity_table e WHERE UPPER(e.field1) = UPPER(?1) ORDER BY e.field1 ASC ORDER BY e.field2 DESC")
+@Query(value = "SELECT * FROM entity_table e WHERE UPPER(e.field1) = UPPER(?1) ORDER BY e.field1 ASC ORDER BY e.field2 DESC", nativeQuery = true)
 List<Entity> findByField1IgnoreCaseOrderByField1AscField2Desc(String text);
 
 //find by maximum number
-@Query("SELECT e FROM Entity e WHERE e.field2 <= ?1")
-@Query(value = "SELECT * FROM Entity e WHERE e.field2 <= ?1", nativeQuery = true)
+@Query("SELECT e FROM entity_table e WHERE e.field2 <= ?1")
+@Query(value = "SELECT * FROM entity_table e WHERE e.field2 <= ?1", nativeQuery = true)
 List<Entity> findByField2LessThanEqual(int number);
 
 //find by minimum date
-@Query("SELECT e FROM Entity e WHERE e.field4 >= ?1")
-@Query(value = "SELECT * FROM Entity e WHERE e.field4 >= ?1", nativeQuery = true)
+@Query("SELECT e FROM entity_table e WHERE e.field4 >= ?1")
+@Query(value = "SELECT * FROM entity_table e WHERE e.field4 >= ?1", nativeQuery = true)
 List<Tutorial> findByField4GreaterThanEqual(LocalDate date);
 
 //find by number interval
-@Query("SELECT e FROM Entity e WHERE e.field2 BETWEEN ?1 AND ?2")
-@Query(value = "SELECT * FROM Entity e WHERE e.field2 BETWEEN ?1 AND ?2", nativeQuery = true)
+@Query("SELECT e FROM entity_table e WHERE e.field2 BETWEEN ?1 AND ?2")
+@Query(value = "SELECT * FROM entity_table e WHERE e.field2 BETWEEN ?1 AND ?2", nativeQuery = true)
 List<Tutorial> findByField2Between(int start, int end);
 
 //find by date interval
-@Query("SELECT e FROM Entity e WHERE e.field4 BETWEEN ?1 AND ?2")
-@Query(value = "SELECT * FROM Entity e WHERE e.field4 BETWEEN ?1 AND ?2", nativeQuery = true)
+@Query("SELECT e FROM entity_table e WHERE e.field4 BETWEEN ?1 AND ?2")
+@Query(value = "SELECT * FROM entity_table e WHERE e.field4 BETWEEN ?1 AND ?2", nativeQuery = true)
 List<Tutorial> findByField4Between(LocalDate start, LocalDate end);
 END OF EXAMPLE
 
@@ -147,25 +149,28 @@ String field2
 */
 
 //find all by partial text, ignore case
-@Query("SELECT e FROM Entity e WHERE UPPER(e.field2) LIKE UPPER(%?1%)")
-@Query(value = "SELECT * FROM Entity e WHERE UPPER(e.field2) LIKE UPPER(%?1%)", nativeQuery = true)
+@Query("SELECT e FROM entity_table e WHERE UPPER(e.field2) LIKE UPPER(%?1%)")
+@Query(value = "SELECT * FROM entity_table e WHERE UPPER(e.field2) LIKE UPPER(%?1%)", nativeQuery = true)
 List<Entity> customMethodName(String partialText);
 
-//find all by text in string-array column
+//find all by value in integer-array or string-array column
 //this query is not supported by JPQL
-@Query(value = "SELECT * FROM Entity e WHERE ANY(e.field1) = ?1", nativeQuery = true)
+@Query(value = "SELECT * FROM entity_table e WHERE ?1 = ANY(e.field1)", nativeQuery = true)
+List<Entity> customMethodName(int n); //or:
 List<Entity> customMethodName(String text);
 
-//find all by partial text in string-array column, ignore case
+//find all by value in case the value is within given collection
 //this query is not supported by JPQL
-@Query(value = "SELECT * FROM Entity e WHERE UPPER(ANY(e.field1)) LIKE UPPER(%?1%)", nativeQuery = true)
-List<Entity> customMethodName(String partialText);
+@Query(value = "SELECT * FROM entity_table e WHERE ANY(e.field1) IN ?1", nativeQuery = true)
+List<Entity> customMethodName(List<Integer> list); //or:
+List<Entity> customMethodName(List<String> list); //or:
+List<Entity> customMethodName(Set<Integer> set);
 
 //update an entity via query
 @Transactional
 @Modifying
-@Query("UPDATE Entity e SET e.field2 = "new text" WHERE e.id = ?1")
-@Query(value = "UPDATE Entity SET field2 = "new text" WHERE id = ?1", nativeQuery = true)
+@Query("UPDATE entity_table e SET e.field2 = "new text" WHERE e.id = ?1")
+@Query(value = "UPDATE entity_table SET field2 = "new text" WHERE id = ?1", nativeQuery = true)
 int customMethodName(Long id);
 END OF EXAMPLE
 
@@ -182,7 +187,7 @@ int field2
 */
 
 //find all, dynamic sort by field2
-@Query("SELECT e FROM Entity e")
+@Query("SELECT e FROM entity_table e")
 //this query is not supported for native SQL
 List<Entity> customMethodName(Sort sort);
 ...
@@ -190,7 +195,7 @@ Sort sort = Sort.by("field2");
 List<Entity> entities = repo.customMethodName(sort);
 
 //find all, dynamic sort by field1 then field2 reversed
-@Query("SELECT e FROM Entity e")
+@Query("SELECT e FROM entity_table e")
 //this query is not supported for native SQL
 List<Entity> customMethodName(Sort sort);
 ...
@@ -199,7 +204,7 @@ Sort sort = Sort.by("field1")
 List<Entity> entities = repo.customMethodName(sort);
 
 //find all by number, dynamic sort by field1 then field2 reversed, via Order objects
-@Query("SELECT e FROM Entity e WHERE e.field2 = ?1")
+@Query("SELECT e FROM entity_table e WHERE e.field2 = ?1")
 //this query is not supported for native SQL
 List<Entity> customMethodName(int number, Sort sort);
 ...
@@ -211,8 +216,8 @@ int actualNumber = ...;
 List<Entity> entities = repo.customMethodName(actualNumber, Sort.by(orderList));
 
 //find all, paged
-@Query("SELECT e FROM Entity e")
-@Query(value = "SELECT * FROM Entity", nativeQuery = true)
+@Query("SELECT e FROM entity_table e")
+@Query(value = "SELECT * FROM entity_table", nativeQuery = true)
 Page<Entity> customMethodName(Pageable pageable);
 ...
 int pageNumber = ...;
@@ -221,8 +226,8 @@ Pageable pageable = PageRequest.of(pageNumber, pageSize);
 List<Entity> entities = repo.customMethodName(pageable).getContent();
 
 //find all, paged, dynamic reverse sort by field2 via pagination
-@Query("SELECT e FROM Entity e")
-@Query(value = "SELECT * FROM Entity", nativeQuery = true)
+@Query("SELECT e FROM entity_table e")
+@Query(value = "SELECT * FROM entity_table", nativeQuery = true)
 Page<Entity> customMethodName(Pageable pageable);
 ...
 int pageNumber = ...;
@@ -231,8 +236,8 @@ Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by("field2").desce
 List<Entity> entities = repo.customMethodName(pageable).getContent();
 
 //find all by partial text from the left, dynamic sort by field2 then by field1 reversed via pagination
-@Query("SELECT e FROM Entity e WHERE LOWER(e.field2) LIKE LOWER(?1%)")
-@Query(value = "SELECT * FROM Entity e WHERE LOWER(e.field2) LIKE LOWER(?1%)", nativeQuery = true)
+@Query("SELECT e FROM entity_table e WHERE LOWER(e.field2) LIKE LOWER(?1%)")
+@Query(value = "SELECT * FROM entity_table e WHERE LOWER(e.field2) LIKE LOWER(?1%)", nativeQuery = true)
 Page<Entity> customMethodName(String partialText, Pageable pageable);
 ...
 int pageNumber = 0;

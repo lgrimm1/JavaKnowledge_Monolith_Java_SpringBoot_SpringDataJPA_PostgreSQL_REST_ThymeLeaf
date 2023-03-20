@@ -140,23 +140,25 @@ A derived query method usually has argument list, its variable names must be use
 The main keywords are for identifying the main purpose of the query.
 The find keyword can be replaced with read, get, query, search or stream keywords. In case of stream, a Stream result type would be advised.
 
-||Main keyword|Description||
-||find[...]By...|general query for finding data||
-||read[...]By...|general query for finding data||
-||get[...]By...|general query for finding data||
-||query[...]By...|general query for finding data||
-||search[...]By...|general query for finding data||
-||stream[...]By...|general query for finding data||
-||exists[...]By...|returns typically a boolean value||
-||count[...]By...|returns a numeric value||
-||delete[...]By..., remove[...]By...|deletion query, returns void or number of deleted rows||
-||...First[number]...By..., ...Top[number]...By...|used somewhere between find and By keywords; restricts the found elements for their first appearance (possible found maximum number of rows are defined with the number value, if left, means first only)||
-||...distinct...By...|results unique values for the marked column etc.||
+A derived query method does not need explicit SQL expression to work since the theory behind is to have a verbal method name made of keywords. However, for better visual interpretation only, the @Query annotation can be used optionally in the way described with custom query methods, see later.
+
+||Main keyword|Description|SQL sample||
+||find[...]By...|general query for finding data|SELECT ... FROM ... WHERE ...||
+||read[...]By...|general query for finding data|SELECT ... FROM ... WHERE ...||
+||get[...]By...|general query for finding data|SELECT ... FROM ... WHERE ...||
+||query[...]By...|general query for finding data|SELECT ... FROM ... WHERE ...||
+||search[...]By...|general query for finding data|SELECT ... FROM ... WHERE ...||
+||stream[...]By...|general query for finding data|SELECT ... FROM ... WHERE ...||
+||exists[...]By...|returns typically a boolean value|SELECT EXISTS ... FROM ... WHERE ...||
+||count[...]By...|returns a numeric value|SELECT COUNT ... FROM ... WHERE ...||
+||delete[...]By..., remove[...]By...|deletion query, returns void or number of deleted rows|DELETE FROM ... WHERE ...||
+||...First[number]...By..., ...Top[number]...By...|used somewhere between find and By keywords; restricts the found elements for their first appearance (possible found maximum number of rows are defined with the number value, if left, means first only)|SELECT TOP ... ... FROM ... WHERE ...||
+||...distinct...By...|results unique values for the marked column etc.|SELECT DISTINCT ... FROM ... WHERE ...||
 
 The additional keywords are used together with main keywords (usually with find).
 Except for AllIgnoreCase and AllIgnoringCase, every additional keywords can be used for a column only which means for multiple fields different keywords can be used.
 
-||Additional keyword|Example|Description||
+||Additional keyword|Example|SQL sample||
 ||Distinct|findDistinctByLastnameAndFirstname|SELECT DISTINCT ... WHERE ... (returns only unique results)||
 ||And|findByLastnameAndFirstname|... WHERE x.lastname = ?1 AND x.firstname = ?2||
 ||Or|findByLastnameOrFirstname|... WHERE x.firstname = ?1 OR x.lastname = ?2||
@@ -185,8 +187,8 @@ Except for AllIgnoreCase and AllIgnoringCase, every additional keywords can be u
 ||NotIn|findByAgeNotIn(Collection<Age> ages)|... WHERE x.age NOT IN ?1 (accepts any Collection type or varargs)||
 ||True|findByActiveTrue|... WHERE x.active = TRUE||
 ||False|findByActiveFalse|... WHERE x.active = FALSE||
-||IgnoreCase, IgnoringCase|findByFirstnameIgnoreCase, findByFirstnameIgnoringCase|... WHERE UPPER(x.firstname) = UPPER(?1)||
-||AllIgnoreCase, AllIgnoringCase|findByFirstnameAndLastnameAllIgnoreCase, findByFirstnameAndLastnameAllIgnoringCase|... WHERE UPPER(x.firstname) = UPPER(?1)||
+||IgnoreCase, IgnoringCase|findByFirstnameIgnoreCase, findByFirstnameIgnoringCase|... WHERE UPPER(x.firstname) = UPPER(?1) (same with LOWER() method)||
+||AllIgnoreCase, AllIgnoringCase|findByFirstnameAndLastnameAllIgnoreCase, findByFirstnameAndLastnameAllIgnoringCase|... WHERE UPPER(x.firstname) = UPPER(?1) (same with LOWER() method)||
 ||Regex, MatchesRegex, Matches|findByFirstnameRegex, findByFirstnameMatchesRegex, findByFirstnameMatches|-||
 
 Using the Distinct keyword needs careful consideration:
@@ -233,7 +235,7 @@ Return types can be:
 2.4. CUSTOM QUERY METHODS
 ---------------------------------------------------------------------------------
 The @Query method-level annotation is used for a query method:
-    a. for increasing readability of name of a derived query method (usage is optional)
+    a. for increasing readability of name of a derived query method (usage is optional, see earlier)
     b. for defining JPQL or native SQL expression of the query (custom query methods; usage is a must)
 
 It is important that all functionality provided by the interface, will be translated into SQL commands by Hibernate and sent to the database as queries.
@@ -249,13 +251,13 @@ The query method arguments are accessed in the query with:
 In case of named parameters, when the referenced :argumentNameX needs emphasis, the @Param annotation is needed in method signature.
 
 EXAMPLE FOR POSITIONAL PARAMETERS:
-@Query("SELECT e FROM Entity e WHERE e.title = ?1 AND e.year = ?2")
+@Query("SELECT e FROM entity_table e WHERE e.title = ?1 AND e.year = ?2")
 List<Entity> entities = findEntities(String s, int n);
 END OF EXAMPLE
 
 EXAMPLE FOR NAMED PARAMETERS:
-@Query("SELECT e FROM Entity e WHERE e.title = :title AND e.year = :year") //JPQL
-@Query(value = "SELECT * FROM Entity e WHERE e.title = :title AND e.year = :year", nativeQuery = true) //native SQL
+@Query("SELECT e FROM entity_table e WHERE e.title = :title AND e.year = :year") //JPQL
+@Query(value = "SELECT * FROM entity_table e WHERE e.title = :title AND e.year = :year", nativeQuery = true) //native SQL
 List<Entity> entities = findEntities(String title, int year); //no emphasis
 List<Entity> entities = findEntities(@Param("title") String s, @Param("year") int n); //emphasis
 END OF EXAMPLE
@@ -265,7 +267,8 @@ The arguments of @Query annotations can be:
     b. value = "JPQL expression"
     c. value = "native SQL expression", nativeQuery = true
 
-Custom query methods must not use keywords of derived query methods since Spring uses names of derived methods over @Query expressions in priority.
+Custom query methods must not use keywords as they are used with derived query methods since Spring uses names of derived methods over @Query expressions in priority.
+The table from the data should be queried is marked with FROM keyword in SQL. The table name is not equal with the entity class name, instead use the name given with the @Table annotation in the entity class.
 The native SQL contains the CONCAT() function which concatenates its arguments into one text (e.g. "CONCAT('%', ?1,'%')").
 In order to match value case-insensitively, the column value and the method parameter should be modified with UPPER() or LOWER() function (e.g. "UPPER(e.title) LIKE UPPER(?1%)").
 
