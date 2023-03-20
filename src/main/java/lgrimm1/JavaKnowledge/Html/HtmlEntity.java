@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import java.util.*;
 
 @Entity
-@Table(name = "html")
+@Table(name = "html_table")
 public class HtmlEntity {
 
 	@Id

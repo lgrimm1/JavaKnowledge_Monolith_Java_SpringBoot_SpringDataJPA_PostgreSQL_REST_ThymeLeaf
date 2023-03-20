@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import java.util.*;
 
 @Entity
-@Table(name = "txt")
+@Table(name = "txt_table")
 public class TxtEntity {
 
 	@Id
@@ -13,7 +13,7 @@ public class TxtEntity {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_txt")
 	@Column(name = "id")
 	long id;
-	@Column(name = "content", nullable = false)
+	@Column(name = "content", nullable = false, columnDefinition = "text[]")
 	List<String> content;
 
 	public TxtEntity() {
