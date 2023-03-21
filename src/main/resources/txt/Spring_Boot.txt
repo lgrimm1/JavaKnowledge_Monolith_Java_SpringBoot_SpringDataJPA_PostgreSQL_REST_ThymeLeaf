@@ -281,8 +281,8 @@ That said, in browser the base path will be localhost:8080.
 
 At start, Spring Boot will create an instance from the controller, through class injection (best practice) an instance will be created from the service class and then from the repository class.
 
-//TODO Spring Boot tutorial, 1:17:00, https://www.youtube.com/watch?v=9SGDpanrc8U
-//TODO Spring Data JPA tutorial, https://www.youtube.com/watch?v=8SGI_XS5OPw
-//TODO https://spring.io/guides/tutorials/rest/
-//TODO https://www.digitalocean.com/community/tutorials/spring-configuration-annotation
-//TODO https://www.digitalocean.com/community/tutorials/spring-configuration-annotation
+MORE HERE: Spring Boot tutorial, 1:17:00, https://www.youtube.com/watch?v=9SGDpanrc8U
+MORE HERE: Spring Data JPA tutorial, https://www.youtube.com/watch?v=8SGI_XS5OPw
+MORE HERE: https://spring.io/guides/tutorials/rest/
+MORE HERE: https://www.digitalocean.com/community/tutorials/spring-configuration-annotation
+MORE HERE: https://www.digitalocean.com/community/tutorials/spring-configuration-annotation

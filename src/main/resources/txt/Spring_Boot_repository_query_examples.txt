@@ -247,5 +247,5 @@ Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
 List<Entity> entities = repo.customMethodName("partial text", pageable).getContent();
 END OF EXAMPLE
 
-//TODO Define Repository for JPA Native Query methods, https://www.bezkoder.com/jpa-repository-query/
+MORE HERE: Define Repository for JPA Native Query methods, https://www.bezkoder.com/jpa-repository-query/
 

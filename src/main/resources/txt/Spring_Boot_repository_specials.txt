@@ -98,8 +98,8 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long>, JpaSp
 }
 END OF EXAMPLE
 
-//TODO https://www.baeldung.com/hibernate-custom-types
-//TODO https://www.baeldung.com/java-hibernate-map-postgresql-array
+MORE HERE: https://www.baeldung.com/hibernate-custom-types
+MORE HERE: https://www.baeldung.com/java-hibernate-map-postgresql-array
 
 =================================================================================
 2. NAMED QUERIES

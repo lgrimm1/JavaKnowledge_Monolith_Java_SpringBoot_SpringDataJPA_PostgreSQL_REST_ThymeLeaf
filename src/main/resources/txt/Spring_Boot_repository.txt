@@ -233,7 +233,7 @@ Return types can be:
     w. Maybe<T> (a RxJava Maybe emitting zero or one element using reactive repositories; expects the query method to return one result at most; if no result is found, Mono.empty() is returned; more than one result triggers an IncorrectResultSizeDataAccessException)
     x. Flowable<T> (a RxJava Flowable emitting zero, one, or many elements using reactive repositories; queries returning Flowable can emit also an infinite number of elements)
 
-//TODO https://www.baeldung.com/spring-data-jpa-query
+MORE HERE: https://www.baeldung.com/spring-data-jpa-query
 
 2.4. CUSTOM QUERY METHODS
 ---------------------------------------------------------------------------------
@@ -388,4 +388,4 @@ Visit the SPRING BOOT REPOSITORY QUERY EXAMPLES page for derived, custom and dyn
 ---------------------------------------------------------------------------------
 For EntityManager, SQL LIKE on PostgreSQL text array column, named queries and query rewriter, visit the SPRING BOOT REPOSITORY SPECIALS page.
 
-//TODO Using Advanced LIKE Expressions, https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#jpa.query-methods
+MORE HERE: Using Advanced LIKE Expressions, https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#jpa.query-methods
