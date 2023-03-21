@@ -134,7 +134,7 @@ The relation between class fields and table fields are marked with field-level a
 ||@Id|marks that the field will represent a primary key column in the table of the database||
 ||@SequenceGenerator|marks the ID generator parameters||
 ||@GeneratedValue|marks ID generator type||
-||@Column|defines the corresponding column name of the table in the database||
+||@Column|defines the corresponding column properties||
 ||@Transient|will not match with column, will be calculated with constructor or with other code segments e.g. in service class||
 ||@Temporal|for older Spring JPA, marks that the date or time field will contain temporal data||
 ||@Enumerated|marks that the field contains enum||
@@ -165,6 +165,7 @@ The @Column annotation can have the next parameters:
     j. columnDefinition = "" (default is "")
 In database tables, every cell value can be null unless marked differently. That said, every type when transferred or set directly to and in database, can be null in the database so marking the column for nullability is preferred even in case of primitive type in entity.
 In case the @Column annotation is not used on a field, that field will be matched with table column by the field name, and will apply default values of all parameters of the virtually non-existent annotation.
+Please note, Spring will map VARCHAR(256) to any String field in case columnDefinition is not given. Visit the POSTGRESQL page for details on character types.
 
 The @Temporal annotation has a TemporalType parameter e.g. TemporalType.DATE.
 The newer JPA supports the next field types (no need for annotation):

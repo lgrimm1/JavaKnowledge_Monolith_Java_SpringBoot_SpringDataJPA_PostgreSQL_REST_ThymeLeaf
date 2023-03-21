@@ -8,6 +8,7 @@ Database names, column names, index names etc. should be lowercase.
 2. CONSOLE
 3. INDEX (KEY) TYPES
 4. BACKEND CONNECTION PARAMETERS
+5. CHARACTER TYPES
 
 =>SPRING BOOT
 =>SPRING BOOT ENTITY
@@ -94,3 +95,36 @@ Also, the Java int and Integer types are matching with the next postgres type:
 =================================================================================
 These parameters are declared in the application.properties file under the project directory.
 Visit SPRING DATA JPA DATABASE CONNECTION page for more details.
+
+=================================================================================
+5. CHARACTER TYPES
+=================================================================================
+PostgreSQL provides three primary character types:
+    a. CHARACTER(n) or CHAR(n): fixed-length, blank padded
+    b. CHARACTER VARYINGING(n) or VARCHAR(n): variable-length with length limit
+    c. TEXT: variable unlimited length
+(n is a natural number.)
+
+All three types can be used for storing a single character as well as storing a text.
+Because their purposes overlap, proper usage should express the data the specific column will be rendered to.
+
+CHAR and VARCHAR, n is given:
+    a. the type can store text up to n characters (length in characters)
+    b. when trying to put longer text into, will issue an error
+    c. when trying to put longer text into, and the over-length part contains only spaces, will truncate the spaces to size and store the text
+    d. when a text explicitly casts to CHAR(n) or VARCHAR(n), will truncate to size and store the text
+
+CHAR, n is not given:
+    equals with CHAR(1), single character mode
+
+VARCHAR, n is not given:
+    a. will behave as a TEXT type with unlimited capacity
+    b. will have no difference in performance compared to TEXT
+
+Map the entity (domain) fields based upon the next.
+
+||Java type|PostgreSQL type|Remarks||
+||char, Character|CHAR or CHAR(1)|single character||
+||String|TEXT or VARCHAR|unlimited text, general usage||
+||String|VARCHAR(n)|given maximum length with validation||
+||String|VARCHAR(n)|potential over-length from spaces, truncates to n||
