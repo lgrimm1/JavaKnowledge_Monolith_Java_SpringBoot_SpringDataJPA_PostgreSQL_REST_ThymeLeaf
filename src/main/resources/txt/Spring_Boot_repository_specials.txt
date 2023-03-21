@@ -97,7 +97,6 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long>, JpaSp
 }
 END OF EXAMPLE
 
-//TODO https://blog.knoldus.com/querying-array-of-string-using-jpa-specification/
 //TODO https://www.baeldung.com/hibernate-custom-types
 //TODO https://www.baeldung.com/java-hibernate-map-postgresql-array
 
