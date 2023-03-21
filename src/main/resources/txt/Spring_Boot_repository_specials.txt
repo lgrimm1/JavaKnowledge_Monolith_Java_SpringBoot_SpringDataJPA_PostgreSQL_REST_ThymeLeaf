@@ -3,24 +3,33 @@ SPRING BOOT REPOSITORY SPECIALS
 =================================================================================
 =>SPRING BOOT REPOSITORY
 
-1. MAPPING POSTGRESQL ARRAY
+1. LIKE QUERY IN POSTGRESQL STRING ARRAY COLUMN (ARRAY_TO_STRING)
 2. NAMED QUERIES
 3. QUERY REWRITER
 
 =================================================================================
-1. MAPPING POSTGRESQL ARRAY
+1. LIKE QUERY IN POSTGRESQL STRING ARRAY COLUMN (ARRAY_TO_STRING)
 =================================================================================
-Some of the databases offer array-based versions of their column types such as integer[] or text[].
-Their counterparts in Java can be (following the example above) int[] or String[], or Collection type (List of Integer, List of String).
-Spring Boot pairs these types automatically.
-In case Data JPA is used but without Spring Boot, queries accessing these arrays are not obvious, converting the column values to a String is necessary before a query method with that column would be invoked.
-In other ways, upon comparing data in query method, the array-type column must be converted into String first, then the comparing will be invoked on the String.
+Via using custom query methods with @Query annotation, most of the SQL (JPQL) queries can be defined.
+In case the query targets a string array column in the database (mostly available in postgreSQL), using the ANY and IN keywords in the expression can solve relation checks between values and array-element values.
+However, in case partial and-or case-insensitive checks are needed in an array elements, defining such query is not possible since there is no tool in SQL (JPQL) for that. Instead, defining a conversion from array to text is needed on repository level, and that text can be checked e.g. partially.
+
+Please note, the solution described here is applicable until Hibernate 5. After that the right solution needs research.
+In case using Hibernate 6+ (Spring Boot 3+), consider having text column type instead of text[] with infinite size.
+Also, array column types are not common among databases which points to aiming for more general data formats.
 
 A query in SQL would be like this:
     select * from employee where ARRAY_TO_STRING(keywords, ‘,’) LIKE ‘%lunch%’;
+or:
+    select * from employee where UPPER(ARRAY_TO_STRING(keywords, ‘,’)) LIKE UPPER(‘%lunch%’);
 
-Defining the ARRAY_TO_STRING SQL method above needs the steps below:
-    a. define a custom dialect to register the sql function in JPA
+Defining the custom ARRAY_TO_STRING and LIKE functionalities above needs the steps below:
+    a. define a custom dialect to register the SQL function in JPA
+    b. define a SearchCriteria
+    c. define a custom specification for the entity class
+    d. define repository of the entity class via using custom specification
+
+Below is the set of examples shows implementation of LIKE functionality for String array column.
 
 EXAMPLE FOR DEFINITION OF CUSTOM DIALECT:
 public class CustomDialect extends PostgreSQL94Dialect {
@@ -31,6 +40,64 @@ public class CustomDialect extends PostgreSQL94Dialect {
 }
 END OF EXAMPLE
 
+EXAMPLE FOR DEFINITION OF SEARCH CRITERIA:
+/*
+key: field name
+operation: e.g. equality or less than
+value: field value
+*/
+public class SearchCriteria {
+    private String key;
+    private String operation;
+    private List<String> value;
+}
+END OF EXAMPLE
+
+EXAMPLE FOR DEFINITION OF CUSTOM SPECIFICATION:
+/*
+Employee: entity (domain) class
+root: name of database table
+CriteriaQuery: the query, good for applying DISTINCT, sub-queries, ORDER BY, etc.
+CriteriaBuilder: contains the conditions, good for creating your WHERE clauses.
+*/
+public class EmployeeSpecification implements Specification<Employee> {
+    private List<SearchCriteria> searchCriteria = new ArrayList<>();
+
+    public void add(SearchCriteria criteria) {
+        this.searchCriteria.add(criteria);
+    }
+
+    @Override
+    public Predicate toPredicate(Root<Employee> root, CriteriaQuery<?> query, CriteriaBuilder builder) {
+        List<Predicate> predicates = new ArrayList<>();
+        for (SearchCriteria myCriteria : searchCriteria) {
+            for (Object vals : myCriteria.getValue()) {
+                //for array of string datatype "keywords" column in employee table
+                if (myCriteria.getOperation().equalsIgnoreCase("ARRAY_STRING_EQUALITY")) {
+                    Expression<String> delimiter = builder.<String>literal(",");
+                    predicates.add(builder.like(
+                            builder.function(
+                                    "array_to_string",
+                                    String.class,
+                                    root.get(myCriteria.getKey()),
+                                    delimiter
+                            ),
+                            "%" + vals.toString().toLowerCase() + "%"
+                    ));
+                }
+            }
+        }
+        return builder.and(predicates.toArray(new Predicate[0]));
+    }
+}
+END OF EXAMPLE
+
+EXAMPLE FOR DEFINITION OF REPOSITORY:
+public interface EmployeeRepository extends JpaRepository<Employee, Long>, JpaSpecificationExecutor<Employee> {
+}
+END OF EXAMPLE
+
+//TODO https://blog.knoldus.com/querying-array-of-string-using-jpa-specification/
 //TODO https://www.baeldung.com/hibernate-custom-types
 //TODO https://www.baeldung.com/java-hibernate-map-postgresql-array
 
