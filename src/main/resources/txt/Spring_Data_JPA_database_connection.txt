@@ -31,14 +31,14 @@ This file contains configuration and environment-specific settings of the applic
 
 The database communicates through a port defined at installation. The default ports are:
     a. mySQL: 3306
-    b. postgreSQL: 5432
+    b. PostgreSQL: 5432
     c. Oracle: 1521
     d. SQL Server: 1434
 
 The database login data (username and password) can be default which comes from the database installation or can be unique which was pre-prepared in the database.
 Default usernames:
     a. mySQL: root
-    b. postgreSQL: postgres
+    b. PostgreSQL: postgres
 
 The spring.jpa.hibernate.ddl-auto parameter can have the next values:
     a. create (will create the database structure if it does not exist)

@@ -11,7 +11,7 @@ SPRING BOOT REPOSITORY SPECIALS
 1. LIKE QUERY IN POSTGRESQL STRING ARRAY COLUMN (ARRAY_TO_STRING)
 =================================================================================
 Via using custom query methods with @Query annotation, most of the SQL (JPQL) queries can be defined.
-In case the query targets a string array column in the database (mostly available in postgreSQL), using the ANY and IN keywords in the expression can solve relation checks between values and array-element values.
+In case the query targets a string array column in the database (mostly available in PostgreSQL), using the ANY and IN keywords in the expression can solve relation checks between values and array-element values.
 However, in case partial and-or case-insensitive checks are needed in an array elements, defining such query is not possible since there is no tool in SQL (JPQL) for that. Instead, defining a conversion from array to text is needed on repository level, and that text can be checked e.g. partially.
 
 Please note, the solution described here is applicable until Hibernate 5. After that the right solution needs research.

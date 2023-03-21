@@ -1,9 +1,9 @@
 =================================================================================
 SPRING DATA JPA MAPPING ARRAY COLUMNS
 =================================================================================
-Some of the databases (e.g. postgreSQL) offer array-based versions of their column types such as integer[] or text[].
+Some of the databases (e.g. PostgreSQL) offer array-based versions of their column types such as integer[] or text[].
 Their counterparts in Java entity can be (following the example above) int[] or String[], or Collection type (List of Integer, List of String).
-In postgreSQL, for almost every column type there is array type (e.g. bigint[], date[], uuid[], text[], integer[], timestamp_without_time_zone[]).
+In PostgreSQL, for almost every column type there is array type (e.g. bigint[], date[], uuid[], text[], integer[], timestamp_without_time_zone[]).
 Please note, multiple values of enums can be represented as custom array type as well.
 
 Spring Boot pairs these types automatically.

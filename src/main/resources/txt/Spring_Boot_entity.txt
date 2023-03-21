@@ -76,7 +76,7 @@ For console, the next SQL commands are needed:
     CREATE DATABASE db-name;
     GRANT ALL PRIVILEGES ON DATABASE "db-name" TO username;
 The db-name is name of the database, username is the user which we want to use to manage the database, both are set in the application.properties file.
-The default username e.g. under postgreSQL is postgres.
+The default username e.g. under PostgreSQL is postgres.
 Visit the SPRING DATA JPA DATABASE CONNECTION page for the know-how of application.properties file content.
 
 The entity will represent a row in a table, also carries the backend and database behaviour connected to the correspondent table via annotations.
@@ -124,7 +124,7 @@ Every JPA entity must have a primary key which follows the standard table struct
 The ID can be generated via following four strategics, defined with the @GeneratedValue annotation:
     a. AUTO (any strategy will be used by JPA)
     b. TABLE
-    c. SEQUENCE (preferred for postgreSQL, needs a sequence generator)
+    c. SEQUENCE (preferred for PostgreSQL, needs a sequence generator)
     d. IDENTITY
 When using the SEQUENCE strategy, the ID generator also needs a sequence generator with which the IDs are generated.
 

@@ -98,7 +98,7 @@ The Spring Data JPA provides the interface towards databases. Add it only when d
 Data JPA can work together with the next database systems:
     a. H2 (fast in-memory SQL)
     b. mySQL
-    c. postgreSQL (postgres)
+    c. PostgreSQL (postgres)
     d. Oracle
     e. SQL Server
 

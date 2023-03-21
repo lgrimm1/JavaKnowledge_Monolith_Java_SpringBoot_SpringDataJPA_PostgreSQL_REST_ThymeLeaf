@@ -69,7 +69,7 @@ In case of JPA solution, instead of class the repository will be an interface wh
 In this case there is no need to define any fields or methods, by default it will provide the basic functionality of the repository for Spring Boot.
 In order to define an interface as repository, the @Repository annotation is needed.
 The interface must be public in order to let Spring accessing it.
-The best solution is to engage with an in-memory or in-server database. Such database can be H2 (in-memory) or postgreSQL (or postgres) or mySQL or Oracle etc. In this version the Spring Boot must connect to the storage by using application.properties file under the src/main/resources directory.
+The best solution is to engage with an in-memory or in-server database. Such database can be H2 (in-memory) or PostgreSQL (or postgres) or mySQL or Oracle etc. In this version the Spring Boot must connect to the storage by using application.properties file under the src/main/resources directory.
 
 The JpaRepository is a generics for handling basic repository functions like CRUD (Create, Retrieve, Update, Delete). Two types it needs in declaration:
     a. EntityClassName: the class of the entity it manages
@@ -383,6 +383,6 @@ Visit the SPRING BOOT REPOSITORY QUERY EXAMPLES page for derived, custom and dyn
 
 2.8. SPECIALS
 ---------------------------------------------------------------------------------
-For mapping postgreSQL array column, named queries and query rewriter, visit the SPRING BOOT REPOSITORY SPECIALS page.
+For mapping PostgreSQL array column, named queries and query rewriter, visit the SPRING BOOT REPOSITORY SPECIALS page.
 
 //TODO Using Advanced LIKE Expressions, https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#jpa.query-methods
