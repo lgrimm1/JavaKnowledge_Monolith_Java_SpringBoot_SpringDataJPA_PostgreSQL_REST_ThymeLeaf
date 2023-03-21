@@ -43,6 +43,7 @@ public class Formulas {
 			"<codes>\n" +
 			"END OF EXAMPLE\n";
 	public final String FORMULA_REFERENCE = "=>file_name.html[;HEADER]";
+	public final String FORMULA_MORE = "MORE HERE:";
 
 	public String generateRepeatedPattern(String pattern, int numberOfRepeating) {
 		return new String(new char[numberOfRepeating]).replace("\0", pattern);
@@ -62,6 +63,7 @@ public class Formulas {
 			case "TABLE" -> FORMULA_TABLE;
 			case "EXAMPLE" -> FORMULA_EXAMPLE;
 			case "REFERENCE" -> FORMULA_REFERENCE;
+			case "MORE" -> FORMULA_MORE;
 			default -> "";
 		};
 	}

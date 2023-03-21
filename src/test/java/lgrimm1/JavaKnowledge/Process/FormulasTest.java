@@ -27,6 +27,8 @@ class FormulasTest {
 		Assertions.assertEquals(formulas.FORMULA_EXAMPLE, formulas.getFormula("example"));
 		Assertions.assertEquals(formulas.FORMULA_REFERENCE, formulas.getFormula("REFERENCE"));
 		Assertions.assertEquals(formulas.FORMULA_REFERENCE, formulas.getFormula("reference"));
+		Assertions.assertEquals(formulas.FORMULA_MORE, formulas.getFormula("MORE"));
+		Assertions.assertEquals(formulas.FORMULA_MORE, formulas.getFormula("more"));
 		Assertions.assertTrue(formulas.getFormula("xyz").isEmpty());
 	}
 

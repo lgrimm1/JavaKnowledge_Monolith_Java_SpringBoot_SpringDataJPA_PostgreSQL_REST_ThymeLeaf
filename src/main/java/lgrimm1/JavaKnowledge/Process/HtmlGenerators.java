@@ -82,8 +82,10 @@ public class HtmlGenerators {
 				textIndex++;
 			}
 
-			//development remarks
-			//TODO skip the single TODO lines
+			//external reference, skipped
+			else if (text.get(textIndex).startsWith("MORE HERE:")) {
+				textIndex++;
+			}
 
 			//normal text
 			else {

@@ -197,6 +197,23 @@ class HtmlGeneratorsTest {
 	}
 
 	@Test
+	void generateMainContentExternalReference() {
+		List<String> txtContent = List.of(
+				"MORE HERE: abc"
+		);
+
+		List<String> expectedHtml = new ArrayList<>();
+
+		MainHtmlContentPayload actualPayload = htmlGenerators.generateMainContent(
+				txtContent,
+				formulas,
+				extractors,
+				titleRepository);
+		Assertions.assertEquals(expectedHtml, actualPayload.content());
+		Assertions.assertTrue(actualPayload.titles().isEmpty());
+	}
+
+	@Test
 	void generateMainContentNormalText() {
 		List<String> txtContent = List.of(
 				"Line 1",
