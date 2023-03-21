@@ -25,9 +25,9 @@ public class Config {
 	@Bean
 	CommandLineRunner txtCommandLineRunner(TxtRepository repository) {
 		return args -> {
-			TxtEntity entity1 = new TxtEntity(new ArrayList<>(List.of("Line 11", "Line 12", "", "=>TITLE 2")));
-			TxtEntity entity2 = new TxtEntity(new ArrayList<>(List.of("Line 21", "Line 22", "", "=>TITLE 3")));
-			TxtEntity entity3 = new TxtEntity(new ArrayList<>(List.of("Line 31", "Line 32", "", "=>TITLE 1")));
+			TxtEntity entity1 = new TxtEntity("Line 11\nLine 12\n\n=>TITLE 2\n");
+			TxtEntity entity2 = new TxtEntity("Line 21\nLine 22\n\n=>TITLE 3\n");
+			TxtEntity entity3 = new TxtEntity("Line 31\nLine 32\n\n=>TITLE 1\n");
 			repository.saveAll(List.of(entity1, entity2, entity3));
 		};
 	}

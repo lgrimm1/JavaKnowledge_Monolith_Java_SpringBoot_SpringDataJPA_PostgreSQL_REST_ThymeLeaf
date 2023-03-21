@@ -163,14 +163,10 @@ class ProcessRecordsImportTxtFilesTest {
 		when(titleRepository.findByTitle("Line 22"))
 				.thenReturn(Optional.of(new TitleEntity(2L, "Line 22", "line_22", 2L, 2L)));
 
-		when(txtRepository.save(new TxtEntity(List.of(
-				"Line 14"
-		))))
-				.thenReturn(new TxtEntity(2L, List.of("Line 14")));
-		when(txtRepository.save(new TxtEntity(List.of(
-				"Line 24"
-		))))
-				.thenReturn(new TxtEntity(2L, List.of("Line 24")));
+		when(txtRepository.save(new TxtEntity("Line 14\n")))
+				.thenReturn(new TxtEntity(2L, "Line 14\n"));
+		when(txtRepository.save(new TxtEntity("Line 24\n")))
+				.thenReturn(new TxtEntity(2L, "Line 24\n"));
 
 		when(htmlRepository.save(new HtmlEntity(new ArrayList<>(), new ArrayList<>())))
 				.thenReturn(new HtmlEntity(1L, new ArrayList<>(), new ArrayList<>()));
@@ -196,5 +192,4 @@ class ProcessRecordsImportTxtFilesTest {
 				formulas,
 				extractors));
 	}
-
 }

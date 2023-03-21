@@ -8,6 +8,7 @@ import org.springframework.stereotype.*;
 import java.io.*;
 import java.time.*;
 import java.util.*;
+import java.util.stream.*;
 
 /**
  * Handles database operations.
@@ -17,6 +18,8 @@ import java.util.*;
  * @see #importTxtFiles(List, TitleRepository, TxtRepository, HtmlRepository, FileOperations, Formulas, Extractors)
  * @see #generate(TitleRepository, TxtRepository, HtmlRepository, Formulas, ProcessPage, Extractors, HtmlGenerators)
  * @see #publishHtml(TitleRepository, HtmlRepository, FileOperations)
+ * @see #stringToList(String)
+ * @see #listToString(List)
  */
 @Component
 public class ProcessRecords {
@@ -41,7 +44,7 @@ public class ProcessRecords {
 			);
 		}
 		titles.addAll(
-				txtRepository.findEntityByItsPartiallyContainedText(searchText).stream()
+				txtRepository.findByContentContainingAllIgnoreCase(searchText).stream()
 						.map(TxtEntity::getId)
 						.map(titleRepository::findByTxtId)
 						.filter(Optional::isPresent)
@@ -123,7 +126,7 @@ public class ProcessRecords {
 							htmlRepository.deleteById(optionalTitleEntity.get().getHtmlId());
 							titleRepository.deleteById(optionalTitleEntity.get().getId());
 						}
-						TxtEntity txtEntity = txtRepository.save(new TxtEntity(txt.subList(3, txt.size())));
+						TxtEntity txtEntity = txtRepository.save(new TxtEntity(this.listToString(txt.subList(3, txt.size()))));
 						HtmlEntity htmlEntity = htmlRepository.save(new HtmlEntity(new ArrayList<>(), new ArrayList<>()));
 						titleRepository.save(new TitleEntity(
 								title,
@@ -156,7 +159,7 @@ public class ProcessRecords {
 				String filename = titleEntity.getFilename();
 				long txtId = optionalTxtEntity.get().getId();
 				MainHtmlContentPayload payload = processPage.processTxt(
-						optionalTxtEntity.get().getContent(),
+						this.stringToList(optionalTxtEntity.get().getContent()),
 						title,
 						titleRepository,
 						formulas,
@@ -200,5 +203,28 @@ public class ProcessRecords {
 						)
 						.count()
 		};
+	}
+
+	public List<String> stringToList(String string) {
+		if (string == null || string.isBlank()) {
+			return new ArrayList<>();
+		}
+		return Arrays.stream(string.split("\n")).collect(Collectors.toList());
+	}
+
+	public String listToString(List<String> list) {
+		if (list == null || list.isEmpty()) {
+			return "";
+		}
+		StringBuilder sb = new StringBuilder();
+		for (String line : list) {
+			if (line == null || line.isBlank()) {
+				sb.append("\n");
+			}
+			else {
+				sb.append(line).append("\n");
+			}
+		}
+		return sb.toString();
 	}
 }

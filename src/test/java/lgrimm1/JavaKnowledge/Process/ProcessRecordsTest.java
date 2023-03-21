@@ -73,13 +73,13 @@ class ProcessRecordsTest {
 						)
 				));
 
-		when(txtRepository.findEntityByItsPartiallyContainedText("Word1"))
+		when(txtRepository.findByContentContainingAllIgnoreCase("Word1"))
 				.thenReturn(List.of(
-						new TxtEntity(20L, List.of("SOME text WITH WorD1 in IT.")),
-						new TxtEntity(6L, List.of("other TEXT with word1 in it")),
-						new TxtEntity(30L, List.of("some other TEXT with word1 in it"))
+						new TxtEntity(20L, "SOME text WITH WorD1 in IT."),
+						new TxtEntity(6L, "other TEXT with word1 in it"),
+						new TxtEntity(30L, "some other TEXT with word1 in it")
 				));
-		when(txtRepository.findEntityByItsPartiallyContainedText("WORD2"))
+		when(txtRepository.findByContentContainingAllIgnoreCase("WORD2"))
 				.thenReturn(new ArrayList<>());
 
 		when(titleRepository.findByTxtId(20L))
@@ -218,5 +218,89 @@ class ProcessRecordsTest {
 				new long[]{10L, 1L},
 				processRecords.publishHtml(titleRepository, htmlRepository, fileOperations
 				));
+	}
+
+	@Test
+	void stringToList_NullString() {
+		Assertions.assertTrue(processRecords.stringToList(null).isEmpty());
+	}
+
+	@Test
+	void stringToList_BlankString() {
+		Assertions.assertTrue(processRecords.stringToList("  ").isEmpty());
+	}
+
+	@Test
+	void stringToList_OneLineWithoutPageBreak() {
+		String string = "abc";
+		List<String> expectedList = List.of("abc");
+
+		List<String> actualList = processRecords.stringToList(string);
+		Assertions.assertEquals(expectedList, actualList);
+	}
+
+	@Test
+	void stringToList_OneLineWithPageBreak() {
+		String string = "abc\n";
+		List<String> expectedList = List.of("abc");
+
+		List<String> actualList = processRecords.stringToList(string);
+		Assertions.assertEquals(expectedList, actualList);
+	}
+
+	@Test
+	void stringToList_MoreLinesWithoutPageBreakAtLast() {
+		String string = "abc\nxyz";
+		List<String> expectedList = List.of("abc", "xyz");
+
+		List<String> actualList = processRecords.stringToList(string);
+		Assertions.assertEquals(expectedList, actualList);
+	}
+
+	@Test
+	void stringToList_MoreLinesWithPageBreakAtLast() {
+		String string = "abc\nxyz\n";
+		List<String> expectedList = List.of("abc", "xyz");
+
+		List<String> actualList = processRecords.stringToList(string);
+		Assertions.assertEquals(expectedList, actualList);
+	}
+
+	@Test
+	void listToString_NullList() {
+		Assertions.assertTrue(processRecords.listToString(null).isEmpty());
+	}
+
+	@Test
+	void listToString_EmptyList() {
+		Assertions.assertTrue(processRecords.listToString(new ArrayList<>()).isEmpty());
+	}
+
+	@Test
+	void listToString_OneElement() {
+		Assertions.assertEquals("abc\n", processRecords.listToString(List.of("abc")));
+	}
+
+	@Test
+	void listToString_MoreElements() {
+		Assertions.assertEquals("abc\nxyz\n", processRecords.listToString(List.of("abc", "xyz")));
+	}
+
+	@Test
+	void listToString_MoreElements_OneNullElement() {
+		List<String> list = new ArrayList<>();
+		list.add("abc");
+		list.add(null);
+		list.add("xyz");
+		Assertions.assertEquals("abc\n\nxyz\n", processRecords.listToString(list));
+	}
+
+	@Test
+	void listToString_MoreElements_OneBlankElement() {
+		List<String> list = new ArrayList<>();
+		list.add("abc");
+		list.add("  ");
+		list.add("xyz");
+		Assertions.assertEquals("abc\n\nxyz\n", processRecords.listToString(list));
 	}
 }

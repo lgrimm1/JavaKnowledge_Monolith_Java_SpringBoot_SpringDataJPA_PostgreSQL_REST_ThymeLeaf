@@ -180,14 +180,17 @@ class CommonServiceEditSourcePageTest {
 		when(titleRepository.findByTitle(requestTitles.get(0)))
 				.thenReturn(Optional.of(new TitleEntity(3L, requestTitle, requestFilename, 2L, 4L)));
 
-		List<String> content = List.of("Line 1", "Line 2");
+		String content = "Line 1\nLine 2\n";
+		List<String> listContent = List.of("Line 1", "Line 2");
 		when(txtRepository.findById(2L))
 				.thenReturn(Optional.of(new TxtEntity(2L, content)));
+		when(processRecords.stringToList(content))
+				.thenReturn(listContent);
 
 		Map<String, Object> map = new HashMap<>();
 		map.put("title", requestTitle);
 		map.put("file_name", requestFilename);
-		map.put("content", content);
+		map.put("content", listContent);
 		map.put("edit_existing_page", true);
 		map.put("message", "");
 

@@ -45,30 +45,15 @@ class ProcessRecordsGenerateTest {
 						new TitleEntity(5L, "Title 5", "title_5", 5L, 5L)
 				));
 		when(txtRepository.findById(1L))
-				.thenReturn(Optional.of(new TxtEntity(1L, List.of(
-						"Line 11",
-						"Line 12"
-				))));
+				.thenReturn(Optional.of(new TxtEntity(1L, "Line 11\nLine 12\n")));
 		when(txtRepository.findById(2L))
-				.thenReturn(Optional.of(new TxtEntity(2L, List.of(
-						"Line 21",
-						"Line 22"
-				))));
+				.thenReturn(Optional.of(new TxtEntity(2L, "Line 21\nLine 22\n")));
 		when(txtRepository.findById(3L))
-				.thenReturn(Optional.of(new TxtEntity(3L, List.of(
-						"Line 31",
-						"Line 32"
-				))));
+				.thenReturn(Optional.of(new TxtEntity(3L, "Line 31\nLine 32\n")));
 		when(txtRepository.findById(4L))
-				.thenReturn(Optional.of(new TxtEntity(4L, List.of(
-						"Line 41",
-						"Line 42"
-				))));
+				.thenReturn(Optional.of(new TxtEntity(4L, "Line 41\nLine 42\n")));
 		when(txtRepository.findById(5L))
-				.thenReturn(Optional.of(new TxtEntity(5L, List.of(
-						"Line 51",
-						"Line 52"
-				))));
+				.thenReturn(Optional.of(new TxtEntity(5L, "Line 51\nLine 52\n")));
 		when(processPage.processTxt(
 				List.of(
 						"Line 11",

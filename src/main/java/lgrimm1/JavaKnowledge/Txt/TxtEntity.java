@@ -13,17 +13,17 @@ public class TxtEntity {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_txt")
 	@Column(name = "id")
 	long id;
-	@Column(name = "content", nullable = false, columnDefinition = "text[]")
-	List<String> content;
+	@Column(name = "content", nullable = false, columnDefinition = "text")
+	String content;
 
 	public TxtEntity() {
 	}
 
-	public TxtEntity(List<String> content) {
+	public TxtEntity(String content) {
 		this.content = content;
 	}
 
-	public TxtEntity(long id, List<String> content) {
+	public TxtEntity(long id, String content) {
 		this.id = id;
 		this.content = content;
 	}
@@ -36,11 +36,11 @@ public class TxtEntity {
 		this.id = id;
 	}
 
-	public List<String> getContent() {
+	public String getContent() {
 		return content;
 	}
 
-	public void setContent(List<String> content) {
+	public void setContent(String content) {
 		this.content = content;
 	}
 

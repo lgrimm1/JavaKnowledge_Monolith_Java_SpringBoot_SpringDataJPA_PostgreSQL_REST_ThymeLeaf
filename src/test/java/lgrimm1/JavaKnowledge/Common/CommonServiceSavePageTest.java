@@ -178,12 +178,15 @@ class CommonServiceSavePageTest {
 		String title = "Title";
 		String fileName = "file_name";
 		List<String> content = List.of("Line 1", "Line 2");
+		String stringContent = "Line 1\nLine 2\n";
 		boolean editExistingPage = true;
 
 		when(titleRepository.findByTitle(title))
 				.thenReturn(Optional.of(new TitleEntity(2L, "Original title", "original_file_name", 3L, 4L)));
-		when(txtRepository.save(new TxtEntity(content)))
-				.thenReturn(new TxtEntity(13L, content));
+		when(processRecords.listToString(content))
+				.thenReturn(stringContent);
+		when(txtRepository.save(new TxtEntity(stringContent)))
+				.thenReturn(new TxtEntity(13L, stringContent));
 		when(htmlRepository.save(new HtmlEntity(new ArrayList<>(), new ArrayList<>())))
 				.thenReturn(new HtmlEntity(14L, new ArrayList<>(), new ArrayList<>()));
 		when(titleRepository.save(new TitleEntity(title, fileName, 13L, 14L)))
@@ -230,12 +233,15 @@ class CommonServiceSavePageTest {
 		String title = "Title";
 		String fileName = "file_name";
 		List<String> content = List.of("Line 1", "Line 2");
+		String stringContent = "Line 1\nLine 2\n";
 		boolean editExistingPage = false;
 
 		when(titleRepository.findByTitle(title))
 				.thenReturn(Optional.empty());
-		when(txtRepository.save(new TxtEntity(content)))
-				.thenReturn(new TxtEntity(13L, content));
+		when(processRecords.listToString(content))
+				.thenReturn(stringContent);
+		when(txtRepository.save(new TxtEntity(stringContent)))
+				.thenReturn(new TxtEntity(13L, stringContent));
 		when(htmlRepository.save(new HtmlEntity(new ArrayList<>(), new ArrayList<>())))
 				.thenReturn(new HtmlEntity(14L, new ArrayList<>(), new ArrayList<>()));
 		when(titleRepository.save(new TitleEntity(title, fileName, 13L, 14L)))

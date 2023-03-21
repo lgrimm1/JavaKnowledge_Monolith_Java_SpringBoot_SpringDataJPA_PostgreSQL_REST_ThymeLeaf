@@ -64,17 +64,15 @@ public class CommonService {
 			Payload payload2 = new Payload(processRecords.getAllTitles(titleRepository), "<all titles>");
 			return new ModelAndView(initialView, "payload", payload2);
 		}
-		else {
-			List<String> titles = processRecords.searchBySearchText(
-							payload.getSearchText(),
-							titleRepository,
-							txtRepository)
-					.stream()
-					.sorted()
-					.toList();
-			Payload payload2 = new Payload(titles, payload.getSearchText());
-			return new ModelAndView(initialView, "payload", payload2);
-		}
+		List<String> titles = processRecords.searchBySearchText(
+						payload.getSearchText(),
+						titleRepository,
+						txtRepository)
+				.stream()
+				.sorted()
+				.toList();
+		Payload payload2 = new Payload(titles, payload.getSearchText());
+		return new ModelAndView(initialView, "payload", payload2);
 	}
 
 	public ModelAndView getPage(String initialView, List<String> titles) {
@@ -151,7 +149,7 @@ public class CommonService {
 				else {
 					modelAndView.addObject("title", optionalTitleEntity.get().getTitle());
 					modelAndView.addObject("file_name", optionalTitleEntity.get().getFilename());
-					modelAndView.addObject("content", optionalTxtEntity.get().getContent());
+					modelAndView.addObject("content", processRecords.stringToList(optionalTxtEntity.get().getContent()));
 					modelAndView.addObject("edit_existing_page", true);
 					modelAndView.addObject("message", "");
 				}
@@ -278,7 +276,7 @@ public class CommonService {
 					htmlRepository.deleteById(optionalTitleEntity.get().getHtmlId());
 					titleRepository.deleteById(optionalTitleEntity.get().getId());
 					HtmlEntity htmlEntity = htmlRepository.save(new HtmlEntity(new ArrayList<>(), new ArrayList<>()));
-					TxtEntity txtEntity = txtRepository.save(new TxtEntity(content));
+					TxtEntity txtEntity = txtRepository.save(new TxtEntity(processRecords.listToString(content)));
 					titleRepository.save(new TitleEntity(title, fileName, txtEntity.getId(), htmlEntity.getId()));
 					modelAndView.addObject("message", "Source page has been overwritten.");
 				}
@@ -289,7 +287,7 @@ public class CommonService {
 				}
 				else {
 					HtmlEntity htmlEntity = htmlRepository.save(new HtmlEntity(new ArrayList<>(), new ArrayList<>()));
-					TxtEntity txtEntity = txtRepository.save(new TxtEntity(content));
+					TxtEntity txtEntity = txtRepository.save(new TxtEntity(processRecords.listToString(content)));
 					titleRepository.save(new TitleEntity(title, fileName, txtEntity.getId(), htmlEntity.getId()));
 					editExistingPage = true;
 					modelAndView.addObject("message", "Source page has been saved.");
