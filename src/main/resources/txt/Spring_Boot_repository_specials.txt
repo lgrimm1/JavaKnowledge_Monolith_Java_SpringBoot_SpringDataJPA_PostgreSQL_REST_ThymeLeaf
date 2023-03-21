@@ -6,6 +6,7 @@ SPRING BOOT REPOSITORY SPECIALS
 1. LIKE QUERY IN POSTGRESQL STRING ARRAY COLUMN (ARRAY_TO_STRING)
 2. NAMED QUERIES
 3. QUERY REWRITER
+4. ENTITY MANAGER
 
 =================================================================================
 1. LIKE QUERY IN POSTGRESQL STRING ARRAY COLUMN (ARRAY_TO_STRING)
@@ -183,3 +184,37 @@ public interface MyRepository extends JPARepository<EntityClassName, idType>, Qu
      }
 }
 END OF EXAMPLE
+
+=================================================================================
+4. ENTITY MANAGER
+=================================================================================
+The purpose of the EntityManager is to interact with the persistence context.
+Spring Data JPA abstracts the developer from the EntityManager through Repository interfaces.
+However, in certain cases, utilizing the EntityManager can be necessary.
+
+The EntityManager is a Spring bean. Before using it, must be injected into a service component via @Autowired.
+The EntityManager can be element of a JPA repository as well, could extend the functionality spectrum of the repository interface. In such case the EntityManager will be used by the repository methods and-or (if declared public) any class of the Business layer.
+
+EXAMPLE FOR INJECTING ENTITY MANAGER INTO REPOSITORY:
+@Repository
+public interface RepositoryClassName extends JpaRepository<EntityClassName, TypeOfID> {
+
+    @Autowired
+    public TestEntityManager entityManager;
+}
+END OF EXAMPLE
+
+EXAMPLE FOR INJECTING ENTITY MANAGER INTO SERVICE:
+@Service
+public class ServiceClassName {
+
+    @Autowired
+    private RepositoryClassName repository;
+
+    @Autowired
+    private TestEntityManager entityManager;
+}
+END OF EXAMPLE
+
+The EntityManager bean handles all entity (domain) classes available in the Spring hierarchy. By calling read or write functionality, will identify the entity class through its arguments.
+Its most commonly used method is the persist(). It writes a record to the database. In case of fail raises Exception.

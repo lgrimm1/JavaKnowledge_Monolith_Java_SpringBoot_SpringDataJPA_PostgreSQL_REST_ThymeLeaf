@@ -383,6 +383,6 @@ Visit the SPRING BOOT REPOSITORY QUERY EXAMPLES page for derived, custom and dyn
 
 2.8. SPECIALS
 ---------------------------------------------------------------------------------
-For mapping PostgreSQL array column, named queries and query rewriter, visit the SPRING BOOT REPOSITORY SPECIALS page.
+For EntityManager, SQL LIKE on PostgreSQL text array column, named queries and query rewriter, visit the SPRING BOOT REPOSITORY SPECIALS page.
 
 //TODO Using Advanced LIKE Expressions, https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#jpa.query-methods

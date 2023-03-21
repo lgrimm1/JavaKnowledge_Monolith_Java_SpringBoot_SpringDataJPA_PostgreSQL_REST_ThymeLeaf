@@ -1,11 +1,12 @@
 =================================================================================
 SPRING BOOT TESTS
 =================================================================================
-1. MAIN CLASS TEST
-2. ENTITY TEST
-3. REPOSITORY TESTS
-4. SERVICE CLASS TESTS
-5. CONTROLLER CLASS TESTS
+1. TEST SLICES
+2. MAIN CLASS TEST
+3. ENTITY TEST
+4. REPOSITORY TESTS
+5. SERVICE CLASS TESTS
+6. CONTROLLER CLASS TESTS
 
 =>SPRING BOOT
 =>TESTS
@@ -22,7 +23,35 @@ SPRING BOOT TESTS
 =>SPRING DATA JPA TESTS
 
 =================================================================================
-1. MAIN CLASS TEST
+1. TEST SLICES
+=================================================================================
+Spring, when normally started up with the application, utilizes many Spring components.
+Depending on what should be tested, by using proper annotation, certain component package can be started instead of all. Spring will configure the needed components automatically by importing and setting up certain AutoConfigurations.
+These component packages are called test slices.
+
+Possible test slices are:
+    a. @DataCassandraTest
+    b. @DataCouchbaseTest
+    c. @DataElasticsearchTest
+    d. @DataJdbcTest
+    e. @DataJpaTest
+    f. @DataLdapTest
+    g. @DataMongoTest
+    h. @DataNeo4jTest
+    i. @DataR2dbcTest
+    j. @DataRedisTest
+    k. @GraphQlTest
+    l. @JdbcTest
+    m. @JooqTest
+    n. @JsonTest
+    o. @RestClientTest
+    p. @WebFluxTest
+    q. @WebMvcTest
+    r. @WebServiceClientTest
+    s. @WebServiceServerTest
+
+=================================================================================
+2. MAIN CLASS TEST
 =================================================================================
 As normally, under the src/test/java/<package> folder, the tests will be created.
 This test is for testing whether the web application starts up and loads the Communication layer (controller).
@@ -49,7 +78,7 @@ public class MainTest {
 END OF EXAMPLE
 
 =================================================================================
-2. ENTITY TEST
+3. ENTITY TEST
 =================================================================================
 The tests should be created under the src/test/java/<package> folder.
 
@@ -104,7 +133,7 @@ class SeriesEntityTest {
 END OF EXAMPLE
 
 =================================================================================
-3. REPOSITORY TESTS
+4. REPOSITORY TESTS
 =================================================================================
 As normally, under the src/test/java/<package> folder, the tests will be created.
 Repository classes can be tested out with normal unit tests.
@@ -113,7 +142,7 @@ Proper tests should cover the functionality (e.g. searching, adding, deleting, m
 For Spring Data JPA repository tests, visit the SPRING DATA JPA TESTS page.
 
 =================================================================================
-4. SERVICE CLASS TESTS
+5. SERVICE CLASS TESTS
 =================================================================================
 As normally, under the src/test/java/<package> folder, the tests will be created.
 Service classes need creating their corresponding storage instances first since these objects are needed for class dependency injection in constructors of the service classes. In case this version is followed, the tests will be dependent since the storage classes will be used during tests.
@@ -223,7 +252,7 @@ END OF EXAMPLE
 For ModelAndView test examples, visit the SPRING MODELANDVIEW page.
 
 =================================================================================
-5. CONTROLLER CLASS TESTS
+6. CONTROLLER CLASS TESTS
 =================================================================================
 Visit the SPRING BOOT CONTROLLER TESTS page for description.
 
