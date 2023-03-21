@@ -13,7 +13,7 @@ public class TxtEntity {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_txt")
 	@Column(name = "id")
 	long id;
-	@Column(name = "content", nullable = false, columnDefinition = "text")
+	@Column(name = "content", nullable = false, columnDefinition = "TEXT")
 	String content;
 
 	public TxtEntity() {
