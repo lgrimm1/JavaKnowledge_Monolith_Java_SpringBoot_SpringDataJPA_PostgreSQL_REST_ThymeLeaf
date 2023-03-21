@@ -1,5 +1,6 @@
 package lgrimm1.JavaKnowledge.Title;
 
+import lgrimm1.JavaKnowledge.Txt.*;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.boot.test.autoconfigure.jdbc.*;
@@ -34,6 +35,50 @@ class TitleRepositoryTest {
 	}
 
 	@Test
+	void helper_equalsWithoutId() {
+		TitleEntity entity1 = null;
+		TitleEntity entity2 = null;
+		Assertions.assertFalse(this.equalsWithoutId(entity1, entity2));
+
+		entity1 = new TitleEntity("Title 1", "title_1", 1L, 11L);
+		Assertions.assertFalse(this.equalsWithoutId(entity1, entity2));
+
+		entity1 = null;
+		entity2 = new TitleEntity("Title 2", "title_2", 2L, 22L);
+		Assertions.assertFalse(this.equalsWithoutId(entity1, entity2));
+
+		entity1 = new TitleEntity("Title 1", "title_1", 1L, 11L);
+		entity2 = new TitleEntity("Title 2", "title_2", 2L, 22L);
+		Assertions.assertFalse(this.equalsWithoutId(entity1, entity2));
+
+		entity1 = new TitleEntity("Title 1", "title_1", 1L, 11L);
+		entity2 = new TitleEntity("Title 1", "title_2", 2L, 22L);
+		Assertions.assertFalse(this.equalsWithoutId(entity1, entity2));
+
+		entity1 = new TitleEntity("Title 1", "title_1", 1L, 11L);
+		entity2 = new TitleEntity("Title 2", "title_1", 2L, 22L);
+		Assertions.assertFalse(this.equalsWithoutId(entity1, entity2));
+
+		entity1 = new TitleEntity("Title 1", "title_1", 1L, 11L);
+		entity2 = new TitleEntity("Title 2", "title_2", 1L, 22L);
+		Assertions.assertFalse(this.equalsWithoutId(entity1, entity2));
+
+		entity1 = new TitleEntity("Title 1", "title_1", 1L, 11L);
+		entity2 = new TitleEntity("Title 2", "title_2", 2L, 11L);
+		Assertions.assertFalse(this.equalsWithoutId(entity1, entity2));
+
+		entity1 = new TitleEntity("Title 1", "title_1", 1L, 11L);
+		entity2 = new TitleEntity("Title 1", "title_1", 1L, 11L);
+		Assertions.assertTrue(this.equalsWithoutId(entity1, entity2));
+	}
+
+	@Test
+	void findByTitle_NoSuccess() {
+		Optional<TitleEntity> optionalTitleEntity = titleRepository.findByTitle("Title 4");
+		Assertions.assertTrue(optionalTitleEntity.isEmpty());
+	}
+
+	@Test
 	void findByTitle_Success() {
 		TitleEntity expectedTitleEntity = new TitleEntity("Title 2", "title_2", 2L, 2L);
 
@@ -43,9 +88,9 @@ class TitleRepositoryTest {
 	}
 
 	@Test
-	void findByTitle_NoSuccess() {
-		Optional<TitleEntity> optionalTitleEntity = titleRepository.findByTitle("Title 4");
-		Assertions.assertTrue(optionalTitleEntity.isEmpty());
+	void findByTitleContainingAllIgnoreCase_NoSuccess() {
+		List<TitleEntity> list = titleRepository.findByTitleContainingAllIgnoreCase("abc");
+		Assertions.assertTrue(list.isEmpty());
 	}
 
 	@Test
@@ -71,9 +116,9 @@ class TitleRepositoryTest {
 	}
 
 	@Test
-	void findByTitleContainingAllIgnoreCase_NoSuccess() {
-		List<TitleEntity> list = titleRepository.findByTitleContainingAllIgnoreCase("abc");
-		Assertions.assertTrue(list.isEmpty());
+	void findByFilename_NoSuccess() {
+		Optional<TitleEntity> optionalTitleEntity = titleRepository.findByFilename("abc");
+		Assertions.assertTrue(optionalTitleEntity.isEmpty());
 	}
 
 	@Test
@@ -83,12 +128,6 @@ class TitleRepositoryTest {
 		Optional<TitleEntity> optionalTitleEntity = titleRepository.findByFilename("title_2");
 		Assertions.assertTrue(optionalTitleEntity.isPresent());
 		Assertions.assertTrue(equalsWithoutId(expectedTitleEntity, optionalTitleEntity.get()));
-	}
-
-	@Test
-	void findByFilename_NoSuccess() {
-		Optional<TitleEntity> optionalTitleEntity = titleRepository.findByFilename("abc");
-		Assertions.assertTrue(optionalTitleEntity.isEmpty());
 	}
 
 	@Test
