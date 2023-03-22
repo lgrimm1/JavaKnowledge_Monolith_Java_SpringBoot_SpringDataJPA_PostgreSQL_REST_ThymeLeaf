@@ -13,7 +13,7 @@ public class HtmlEntity {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_html")
 	@Column(name = "id")
 	long id;
-	@Column(name = "content", nullable = false)
+	@Column(name = "content", nullable = false, columnDefinition = "TEXT[]")
 	List<String> content;
 	@Column(name = "title_references", nullable = false)
 	List<String> titleReferences;
