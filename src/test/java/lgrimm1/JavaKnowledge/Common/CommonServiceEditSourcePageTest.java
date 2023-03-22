@@ -50,7 +50,7 @@ class CommonServiceEditSourcePageTest {
 	}
 
 	@Test
-	void editSourcePageNullTitles() {
+	void editSourcePage_NullTitles() {
 		List<String> titles = List.of("Title 1", "Title 2");
 		when(processRecords.getAllTitles(titleRepository))
 				.thenReturn(titles);
@@ -68,7 +68,7 @@ class CommonServiceEditSourcePageTest {
 	}
 
 	@Test
-	void editSourcePageMoreThanOneTitles() {
+	void editSourcePage_MoreThanOneTitles() {
 		List<String> titles = List.of("Title 1", "Title 2");
 		when(processRecords.getAllTitles(titleRepository))
 				.thenReturn(titles);
@@ -86,7 +86,7 @@ class CommonServiceEditSourcePageTest {
 	}
 
 	@Test
-	void editSourcePageFirstTitleIsNull() {
+	void editSourcePage_FirstTitleIsNull() {
 		List<String> titles = List.of("Title 1", "Title 2");
 		when(processRecords.getAllTitles(titleRepository))
 				.thenReturn(titles);
@@ -106,7 +106,7 @@ class CommonServiceEditSourcePageTest {
 	}
 
 	@Test
-	void editSourcePageFirstTitleBlank() {
+	void editSourcePage_FirstTitleBlank() {
 		List<String> titles = List.of("Title 1", "Title 2");
 		when(processRecords.getAllTitles(titleRepository))
 				.thenReturn(titles);
@@ -126,7 +126,7 @@ class CommonServiceEditSourcePageTest {
 	}
 
 	@Test
-	void editSourcePageNoSuchTitle() {
+	void editSourcePage_NoSuchTitle() {
 		List<String> requestTitles = List.of("Title 3");
 		when(titleRepository.findByTitle(requestTitles.get(0)))
 				.thenReturn(Optional.empty());
@@ -148,7 +148,7 @@ class CommonServiceEditSourcePageTest {
 	}
 
 	@Test
-	void editSourcePageNoSuchTxt() {
+	void editSourcePage_NoSuchTxt() {
 		List<String> requestTitles = List.of("Title 3");
 		when(titleRepository.findByTitle(requestTitles.get(0)))
 				.thenReturn(Optional.of(new TitleEntity(3L, "Title 3", "title_3", 2L, 4L)));
@@ -173,7 +173,7 @@ class CommonServiceEditSourcePageTest {
 	}
 
 	@Test
-	void editSourcePageExistingTitleAndTxt() {
+	void editSourcePage_ExistingTitleAndTxt() {
 		String requestTitle = "Title 3";
 		String requestFilename = "title_3";
 		List<String> requestTitles = List.of(requestTitle);

@@ -67,7 +67,7 @@ class CommonServiceTest {
 	}
 
 	@Test
-	void searchPagesNullPayload() {
+	void searchPages_NullPayload() {
 		List<String> titles = List.of("Title 1", "Title 2");
 		when(processRecords.getAllTitles(titleRepository))
 				.thenReturn(titles);
@@ -83,7 +83,7 @@ class CommonServiceTest {
 	}
 
 	@Test
-	void searchPagesNullSearchText() {
+	void searchPages_NullSearchText() {
 		List<String> titles = List.of("Title 1", "Title 2");
 		when(processRecords.getAllTitles(titleRepository))
 				.thenReturn(titles);
@@ -99,7 +99,7 @@ class CommonServiceTest {
 	}
 
 	@Test
-	void searchPagesBlankSearchText() {
+	void searchPages_BlankSearchText() {
 		List<String> titles = List.of("Title 1", "Title 2");
 		when(processRecords.getAllTitles(titleRepository))
 				.thenReturn(titles);
@@ -115,7 +115,7 @@ class CommonServiceTest {
 	}
 
 	@Test
-	void searchPagesExistingSearchText() {
+	void searchPages_ExistingSearchText() {
 		String searchText = "Word2 Word1";
 		Payload payload = new Payload(searchText);
 
@@ -189,7 +189,7 @@ class CommonServiceTest {
 	}
 
 	@Test
-	void generateHtmlNullConfirm() {
+	void generateHtml_NullConfirm() {
 		List<String> titles = List.of("Title 1", "Title 2");
 		when(processRecords.getAllTitles(titleRepository))
 				.thenReturn(titles);
@@ -207,7 +207,7 @@ class CommonServiceTest {
 	}
 
 	@Test
-	void generateHtmlNotConfirmed() {
+	void generateHtml_NotConfirmed() {
 		List<String> titles = List.of("Title 1", "Title 2");
 		when(processRecords.getAllTitles(titleRepository))
 				.thenReturn(titles);
@@ -225,7 +225,7 @@ class CommonServiceTest {
 	}
 
 	@Test
-	void generateHtmlConfirmed() {
+	void generateHtml_Confirmed() {
 		List<String> titles = List.of("Title 1", "Title 2");
 		when(processRecords.getAllTitles(titleRepository))
 				.thenReturn(titles);

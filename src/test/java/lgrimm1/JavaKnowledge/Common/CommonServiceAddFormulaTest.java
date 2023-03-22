@@ -51,7 +51,7 @@ class CommonServiceAddFormulaTest {
 	}
 
 	@Test
-	void addFormulaNullFormulaName() {
+	void addFormula_NullFormulaName() {
 		String title = "Title";
 		String fileName = "file_name";
 		List<String> content = new ArrayList<>();
@@ -76,7 +76,7 @@ class CommonServiceAddFormulaTest {
 	}
 
 	@Test
-	void addFormulaBlankFormulaName() {
+	void addFormula_BlankFormulaName() {
 		String formulaName = "  ";
 		String title = "Title";
 		String fileName = "file_name";
@@ -102,7 +102,7 @@ class CommonServiceAddFormulaTest {
 	}
 
 	@Test
-	void addFormulaInvalidFormulaName() {
+	void addFormula_InvalidFormulaName() {
 		String formulaName = "formula name";
 		String title = "Title";
 		String fileName = "file_name";
@@ -128,7 +128,7 @@ class CommonServiceAddFormulaTest {
 	}
 
 	@Test
-	void addFormulaNullFileName() {
+	void addFormula_NullFileName() {
 		String formulaName = "formula name";
 		String title = "Title";
 		List<String> content = new ArrayList<>();
@@ -158,7 +158,7 @@ class CommonServiceAddFormulaTest {
 	}
 
 	@Test
-	void addFormulaNullTitle() {
+	void addFormula_NullTitle() {
 		String formulaName = "formula name";
 		String fileName = "file_name";
 		List<String> content = new ArrayList<>();
@@ -188,7 +188,7 @@ class CommonServiceAddFormulaTest {
 	}
 
 	@Test
-	void addFormulaBlankTitle() {
+	void addFormula_BlankTitle() {
 		String formulaName = "formula name";
 		String title = "  ";
 		String fileName = "file_name";
@@ -219,7 +219,7 @@ class CommonServiceAddFormulaTest {
 	}
 
 	@Test
-	void addFormulaBlankFileName() {
+	void addFormula_BlankFileName() {
 		String formulaName = "formula name";
 		String title = "Title";
 		String fileName = "  ";
@@ -250,7 +250,7 @@ class CommonServiceAddFormulaTest {
 	}
 
 	@Test
-	void addFormulaNullContent() {
+	void addFormula_NullContent() {
 		String formulaName = "formula name";
 		String title = "Title";
 		String fileName = "file_name";
@@ -278,7 +278,7 @@ class CommonServiceAddFormulaTest {
 	}
 
 	@Test
-	void addFormulaNullEditExistingPage() {
+	void addFormula_NullEditExistingPage() {
 		String formulaName = "formula name";
 		String title = "Title";
 		String fileName = "file_name";
@@ -308,7 +308,7 @@ class CommonServiceAddFormulaTest {
 	}
 
 	@Test
-	void addFormulaAllValidValues() {
+	void addFormula_AllValidValues() {
 		String formulaName = "formula name";
 		String title = "Title";
 		String fileName = "file_name";

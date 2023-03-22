@@ -172,7 +172,7 @@ class ProcessRecordsTest {
 	}
 
 	@Test
-	void publishHtmlNotValidTargetFolder() {
+	void publishHtml_NotValidTargetFolder() {
 		when(fileOperations.getStaticPath())
 				.thenReturn("static_path");
 		when(fileOperations.createNonExistentDirectory(new File("static_path")))
@@ -184,7 +184,7 @@ class ProcessRecordsTest {
 	}
 
 	@Test
-	void publishHtmlValidTargetFolder() {
+	void publishHtml_ValidTargetFolder() {
 		when(fileOperations.getStaticPath())
 				.thenReturn("static_path");
 		when(fileOperations.createNonExistentDirectory(new File("static_path")))

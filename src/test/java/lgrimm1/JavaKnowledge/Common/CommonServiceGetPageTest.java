@@ -52,7 +52,7 @@ class CommonServiceGetPageTest {
 	}
 
 	@Test
-	void getPageNullTitles() {
+	void getPage_NullTitles() {
 		List<String> titles = List.of("Title 1", "Title 2");
 		when(processRecords.getAllTitles(titleRepository))
 				.thenReturn(titles);
@@ -68,7 +68,7 @@ class CommonServiceGetPageTest {
 	}
 
 	@Test
-	void getPageEmptyTitles() {
+	void getPage_EmptyTitles() {
 		List<String> titles = List.of("Title 1", "Title 2");
 		when(processRecords.getAllTitles(titleRepository))
 				.thenReturn(titles);
@@ -84,7 +84,7 @@ class CommonServiceGetPageTest {
 	}
 
 	@Test
-	void getPageTooMuchTitles() {
+	void getPage_TooMuchTitles() {
 		List<String> titles = List.of("Title 1", "Title 2");
 		when(processRecords.getAllTitles(titleRepository))
 				.thenReturn(titles);
@@ -100,7 +100,7 @@ class CommonServiceGetPageTest {
 	}
 
 	@Test
-	void getPageBlankTitle() {
+	void getPage_BlankTitle() {
 		List<String> titles = List.of("Title 1", "Title 2");
 		when(processRecords.getAllTitles(titleRepository))
 				.thenReturn(titles);
@@ -116,7 +116,7 @@ class CommonServiceGetPageTest {
 	}
 
 	@Test
-	void getPageNotExistingTitle() {
+	void getPage_NotExistingTitle() {
 		List<String> titles = List.of("Title 1", "Title 2");
 		when(processRecords.getAllTitles(titleRepository))
 				.thenReturn(titles);
@@ -136,7 +136,7 @@ class CommonServiceGetPageTest {
 	}
 
 	@Test
-	void getPageExistingTitle() {
+	void getPage_ExistingTitle() {
 		List<String> titles = List.of("Title 1", "Title 2");
 		when(processRecords.getAllTitles(titleRepository))
 				.thenReturn(titles);

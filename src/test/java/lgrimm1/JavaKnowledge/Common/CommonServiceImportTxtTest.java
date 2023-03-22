@@ -52,7 +52,7 @@ class CommonServiceImportTxtTest {
 	}
 
 	@Test
-	void importTxtNullFiles() {
+	void importTxt_NullFiles() {
 		List<String> titles = List.of("Title 1", "Title 2");
 		when(processRecords.getAllTitles(titleRepository))
 				.thenReturn(titles);
@@ -70,7 +70,7 @@ class CommonServiceImportTxtTest {
 	}
 
 	@Test
-	void importTxtBlankFiles() {
+	void importTxt_BlankFiles() {
 		List<String> titles = List.of("Title 1", "Title 2");
 		when(processRecords.getAllTitles(titleRepository))
 				.thenReturn(titles);
@@ -88,7 +88,7 @@ class CommonServiceImportTxtTest {
 	}
 
 	@Test
-	void importTxtNullConfirm() {
+	void importTxt_NullConfirm() {
 		String fileNames = "file_1;file_2";
 		List<String> titles = List.of("Title 1", "Title 2");
 		when(processRecords.getAllTitles(titleRepository))
@@ -107,7 +107,7 @@ class CommonServiceImportTxtTest {
 	}
 
 	@Test
-	void importTxtNotConfirmed() {
+	void importTxt_NotConfirmed() {
 		String fileNames = "file_1;file_2";
 		List<String> titles = List.of("Title 1", "Title 2");
 		when(processRecords.getAllTitles(titleRepository))
@@ -126,7 +126,7 @@ class CommonServiceImportTxtTest {
 	}
 
 	@Test
-	void importTxtConfirmed() {
+	void importTxt_Confirmed() {
 
 		when(fileOperations.getOSPathSeparator())
 				.thenReturn(";");

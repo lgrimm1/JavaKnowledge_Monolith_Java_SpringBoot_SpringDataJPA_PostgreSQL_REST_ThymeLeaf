@@ -25,7 +25,7 @@ class ExtractorsTest {
 	}
 
 	@Test
-	void extractReferenceNoHeader() {
+	void extractReference_NoHeader() {
 		String line = "=>Title Text";
 
 		when(titleRepository.findByTitle("Title Text"))
@@ -50,7 +50,7 @@ class ExtractorsTest {
 	}
 
 	@Test
-	void extractReferenceWithHeader() {
+	void extractReference_WithHeader() {
 		String line = "=>Title Text;1.2. Header Word";
 
 		when(titleRepository.findByTitle("Title Text"))
@@ -103,13 +103,13 @@ class ExtractorsTest {
 	}
 
 	@Test
-	void extractTitleWithEmptyText() {
+	void extractTitle_EmptyText() {
 		List<String> originalText = new ArrayList<>();
 		Assertions.assertTrue(extractors.extractTitle(originalText, formulas).isEmpty());
 	}
 
 	@Test
-	void extractTitleWithNoLegalTitle() {
+	void extractTitle_NoValidTitle() {
 		List<String> originalText = List.of(
 				"abcdef",
 				"",
@@ -119,7 +119,7 @@ class ExtractorsTest {
 	}
 
 	@Test
-	void extractTitleWithLegalTitle() {
+	void extractTitle_ValidTitle() {
 		List<String> originalText = List.of(
 				"SUPERLINE",
 				"Title Text",

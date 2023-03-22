@@ -51,7 +51,7 @@ class CommonServiceSavePageTest {
 	}
 
 	@Test
-	void savePageNullTitle() {
+	void savePage_NullTitle() {
 		String fileName = "file_name";
 		List<String> content = List.of("Line 1", "Line 2");
 		boolean editExistingPage = true;
@@ -70,7 +70,7 @@ class CommonServiceSavePageTest {
 	}
 
 	@Test
-	void savePageBlankTitle() {
+	void savePage_BlankTitle() {
 		String title = "  ";
 		String fileName = "file_name";
 		List<String> content = List.of("Line 1", "Line 2");
@@ -90,7 +90,7 @@ class CommonServiceSavePageTest {
 	}
 
 	@Test
-	void savePageNullFileName() {
+	void savePage_NullFileName() {
 		String title = "Title";
 		List<String> content = List.of("Line 1", "Line 2");
 		boolean editExistingPage = true;
@@ -109,7 +109,7 @@ class CommonServiceSavePageTest {
 	}
 
 	@Test
-	void savePageBlankFileName() {
+	void savePage_BlankFileName() {
 		String title = "Title";
 		String fileName = "  ";
 		List<String> content = List.of("Line 1", "Line 2");
@@ -129,7 +129,7 @@ class CommonServiceSavePageTest {
 	}
 
 	@Test
-	void savePageNullContentEditButNonExistent() {
+	void savePage_NullContentEditButNonExistent() {
 		String title = "Title";
 		String fileName = "file_name";
 		boolean editExistingPage = true;
@@ -151,7 +151,7 @@ class CommonServiceSavePageTest {
 	}
 
 	@Test
-	void savePageEditButNonExistent() {
+	void savePage_EditButNonExistent() {
 		String title = "Title";
 		String fileName = "file_name";
 		List<String> content = List.of("Line 1", "Line 2");
@@ -174,7 +174,7 @@ class CommonServiceSavePageTest {
 	}
 
 	@Test
-	void savePageEditExistent() {
+	void savePage_EditExistent() {
 		String title = "Title";
 		String fileName = "file_name";
 		List<String> content = List.of("Line 1", "Line 2");
@@ -206,7 +206,7 @@ class CommonServiceSavePageTest {
 	}
 
 	@Test
-	void savePageNewButExistent() {
+	void savePage_NewButExistent() {
 		String title = "Title";
 		String fileName = "file_name";
 		List<String> content = List.of("Line 1", "Line 2");
@@ -229,7 +229,7 @@ class CommonServiceSavePageTest {
 	}
 
 	@Test
-	void savePageNewNonExistent() {
+	void savePage_NewNonExistent() {
 		String title = "Title";
 		String fileName = "file_name";
 		List<String> content = List.of("Line 1", "Line 2");
@@ -261,7 +261,7 @@ class CommonServiceSavePageTest {
 	}
 
 	@Test
-	void savePageNullEditFlagAndExistent() {
+	void savePage_NullEditFlagAndExistent() {
 		String title = "Title";
 		String fileName = "file_name";
 		List<String> content = List.of("Line 1", "Line 2");

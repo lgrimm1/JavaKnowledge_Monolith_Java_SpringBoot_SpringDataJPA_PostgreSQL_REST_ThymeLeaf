@@ -33,7 +33,7 @@ class HtmlGeneratorsTest {
 	}
 
 	@Test
-	void generateMainContentHeader1() {
+	void generateMainContent_Header1() {
 		String header1 = "1. Header 1 text";
 		List<String> txtContent = List.of(
 				"SUPERLINE",
@@ -57,7 +57,7 @@ class HtmlGeneratorsTest {
 	}
 
 	@Test
-	void generateMainContentHeader2() {
+	void generateMainContent_Header2() {
 		String header2 = "1.2. Header 2 text";
 		List<String> txtContent = List.of(
 				header2,
@@ -80,7 +80,7 @@ class HtmlGeneratorsTest {
 	}
 
 	@Test
-	void generateMainContentTable() {
+	void generateMainContent_Table() {
 		List<String> txtContent = List.of(
 				"||Header 1|Header 2|Header 3||",
 				"||Cell 11|Cell 12|Cell 13||",
@@ -112,7 +112,7 @@ class HtmlGeneratorsTest {
 	}
 
 	@Test
-	void generateMainContentExampleWithoutClosingText() {
+	void generateMainContent_ExampleWithoutClosingText() {
 		List<String> txtContent = List.of(
 				"EXAMPLE FOR SOMETHING:",
 				"first row",
@@ -140,7 +140,7 @@ class HtmlGeneratorsTest {
 	}
 
 	@Test
-	void generateMainContentExampleWithClosingText() {
+	void generateMainContent_ExampleWithClosingText() {
 		List<String> txtContent = List.of(
 				"EXAMPLE FOR SOMETHING:",
 				"first row",
@@ -167,7 +167,7 @@ class HtmlGeneratorsTest {
 	}
 
 	@Test
-	void generateMainContentReference() {
+	void generateMainContent_InternalReference() {
 		List<String> txtContent = List.of(
 				"=>Title Word 1",
 				"=>Title Word 2;1.2. Header header"
@@ -197,7 +197,7 @@ class HtmlGeneratorsTest {
 	}
 
 	@Test
-	void generateMainContentExternalReference() {
+	void generateMainContent_ExternalReference() {
 		List<String> txtContent = List.of(
 				"MORE HERE: abc"
 		);
@@ -214,7 +214,7 @@ class HtmlGeneratorsTest {
 	}
 
 	@Test
-	void generateMainContentNormalText() {
+	void generateMainContent_NormalText() {
 		List<String> txtContent = List.of(
 				"Line 1",
 				"TABINSPACES" + "Line 2"

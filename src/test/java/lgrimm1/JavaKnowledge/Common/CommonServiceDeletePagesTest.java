@@ -51,7 +51,7 @@ class CommonServiceDeletePagesTest {
 	}
 
 	@Test
-	void deletePagesNullTitles() {
+	void deletePages_NullTitles() {
 		List<String> titles = List.of("Title 1", "Title 2");
 		when(processRecords.getAllTitles(titleRepository))
 				.thenReturn(titles);
@@ -69,7 +69,7 @@ class CommonServiceDeletePagesTest {
 	}
 
 	@Test
-	void deletePagesNoTitles() {
+	void deletePages_NoTitles() {
 		List<String> titles = List.of("Title 1", "Title 2");
 		when(processRecords.getAllTitles(titleRepository))
 				.thenReturn(titles);
@@ -87,7 +87,7 @@ class CommonServiceDeletePagesTest {
 	}
 
 	@Test
-	void deletePagesNotConfirmed() {
+	void deletePages_NotConfirmed() {
 		List<String> titles = List.of("Title 1", "Title 2");
 		when(processRecords.getAllTitles(titleRepository))
 				.thenReturn(titles);
@@ -106,7 +106,7 @@ class CommonServiceDeletePagesTest {
 	}
 
 	@Test
-	void deletePagesWithNoValidTitles() {
+	void deletePages_WithNoValidTitles() {
 		List<String> titles = List.of("Title 1", "Title 2");
 		when(processRecords.getAllTitles(titleRepository))
 				.thenReturn(titles);
@@ -127,7 +127,7 @@ class CommonServiceDeletePagesTest {
 	}
 
 	@Test
-	void deletePagesWithValidTitles() {
+	void deletePages_WithValidTitles() {
 		List<String> restOfTitles = List.of("Title 1", "Title 2");
 		when(processRecords.getAllTitles(titleRepository))
 				.thenReturn(restOfTitles);

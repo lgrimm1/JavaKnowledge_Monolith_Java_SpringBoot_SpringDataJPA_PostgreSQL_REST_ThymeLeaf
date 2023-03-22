@@ -15,19 +15,19 @@ class FileOperationsTest {
 	FileOperations fileOperations = new FileOperations();
 
 	@Test
-	void writeFileWithWrongData() {
+	void writeFile_WrongData() {
 		Assertions.assertFalse(fileOperations.writeFile(null, List.of("Line 1")));
 		Assertions.assertFalse(fileOperations.writeFile(new File("abc.xyz"), null));
 		Assertions.assertFalse(fileOperations.writeFile(new File("abc.xyz"), new ArrayList<>()));
 	}
 
 	@Test
-	void readFileWithWrongData() {
+	void readFile_WrongData() {
 		Assertions.assertTrue(fileOperations.readFile(null).isEmpty());
 	}
 
 	@Test
-	void writeNotAccessibleFile() {
+	void writeFile_NotAccessibleFile() {
 		File file = Mockito.mock(File.class);
 		when(file.exists())
 				.thenReturn(false);
@@ -44,7 +44,7 @@ class FileOperationsTest {
 	}
 
 	@Test
-	void readNonExistentFile() {
+	void readFile_NonExistentFile() {
 		File file = Mockito.mock(File.class);
 		when(file.exists())
 				.thenReturn(false);
@@ -61,7 +61,7 @@ class FileOperationsTest {
 	}
 
 	@Test
-	void writeFileReadFile(@TempDir Path tempPath) {
+	void writeFile_Then_ReadFile(@TempDir Path tempPath) {
 		Path file = tempPath.resolve("test_file");
 		List<String> data = List.of(
 				"Line 1",
