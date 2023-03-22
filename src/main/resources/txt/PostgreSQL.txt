@@ -7,8 +7,8 @@ Database names, column names, index names etc. should be lowercase.
 1. SETTING UP
 2. CONSOLE
 3. INDEX (KEY) TYPES
-4. BACKEND CONNECTION PARAMETERS
-5. CHARACTER TYPES
+4. CHARACTER TYPES
+5. BACKEND CONNECTION PARAMETERS
 
 =>SPRING BOOT
 =>SPRING BOOT ENTITY
@@ -91,13 +91,7 @@ Also, the Java int and Integer types are matching with the next postgres type:
     integer
 
 =================================================================================
-4. BACKEND CONNECTION PARAMETERS
-=================================================================================
-These parameters are declared in the application.properties file under the project directory.
-Visit SPRING DATA JPA DATABASE CONNECTION page for more details.
-
-=================================================================================
-5. CHARACTER TYPES
+4. CHARACTER TYPES
 =================================================================================
 PostgreSQL provides three primary character types:
     a. CHARACTER(n) or CHAR(n): fixed-length, blank padded
@@ -121,10 +115,31 @@ VARCHAR, n is not given:
     a. will behave as a TEXT type with unlimited capacity
     b. will have no difference in performance compared to TEXT
 
-Map the entity (domain) fields based upon the next.
+If not defined explicitly with the @Column annotation, Spring will use the next default types.
+
+||Java type|Default PostgreSQL type||
+||char, Character|CHAR(1)||
+||String|VARCHAR(255)||
+||List<Character>|CHAR(1)[]||
+||List<String>|VARCHAR(255)[]||
+
+If needed explicitly, map the entity (domain) fields based upon the next.
 
 ||Java type|PostgreSQL type|Remarks||
-||char, Character|CHAR or CHAR(1)|single character||
+||char, Character|CHAR or CHAR(1)|default by Spring||
 ||String|TEXT or VARCHAR|unlimited text, general usage||
 ||String|VARCHAR(n)|given maximum length with validation||
 ||String|VARCHAR(n)|potential over-length from spaces, truncates to n||
+||List<Character>|CHAR[] or CHAR(1)[]|not needed explicitly, default by Spring||
+||List<String>|TEXT[] or VARCHAR[]|unlimited text elements, general usage||
+||List<String>|VARCHAR(n)[]|given maximum element length with validation||
+||List<String>|VARCHAR(n)[]|potential over-length from spaces in elements, truncates to n||
+
+Types definitions are valid in uppercase and lowercase forms as well (e.g. text and TEXT).
+The array marking ([]) is equal with the separate array keyword (e.g. varchar(3)[] and varchar(3) array).
+
+=================================================================================
+5. BACKEND CONNECTION PARAMETERS
+=================================================================================
+These parameters are declared in the application.properties file under the project directory.
+Visit SPRING DATA JPA DATABASE CONNECTION page for more details.
