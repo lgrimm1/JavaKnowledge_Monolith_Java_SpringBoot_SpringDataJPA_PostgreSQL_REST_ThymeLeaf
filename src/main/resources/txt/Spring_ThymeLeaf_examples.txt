@@ -1,9 +1,9 @@
 =================================================================================
 SPRING THYMELEAF EXAMPLES
 =================================================================================
-
 1. CODE SNIPPETS OF GENERAL TAGS
 2. CODE SNIPPETS OF INPUT TAGS
+3. CODE SNIPPETS FOR SCRIPTS
 
 =>SPRING THYMELEAF
 =>WEB APPLICATION
@@ -320,3 +320,17 @@ EXAMPLE FOR TEXTAREA:
     <span th:text="*{collectionFieldName2}" />
 </textarea>
 END OF EXAMPLE
+
+=================================================================================
+3. CODE SNIPPETS FOR SCRIPTS
+=================================================================================
+<script>
+    function content_to_clipboard(id) {
+        document.getElementById(id).select();
+        document.execCommand('copy');
+    }
+    function input_to_full_size(element) {
+        element.style.height = "";
+        element.style.height = element.scrollHeight + "px";
+    }
+</script>
