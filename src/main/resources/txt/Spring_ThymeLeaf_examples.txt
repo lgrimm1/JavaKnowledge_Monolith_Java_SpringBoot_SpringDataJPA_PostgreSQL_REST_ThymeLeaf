@@ -1,0 +1,322 @@
+=================================================================================
+SPRING THYMELEAF EXAMPLES
+=================================================================================
+
+1. CODE SNIPPETS OF GENERAL TAGS
+2. CODE SNIPPETS OF INPUT TAGS
+
+=>SPRING THYMELEAF
+=>WEB APPLICATION
+=>SPRING BOOT
+=>SPRING BOOT CONTROLLER
+=>SERIALIZATION
+=>SPRING MODELANDVIEW
+
+=================================================================================
+1. CODE SNIPPETS OF GENERAL TAGS
+=================================================================================
+The ThymeLeaf HTML tags are in the next order below:
+    a. banner
+    b. blockquote
+    c. favicon
+    d. fieldset
+    e. form
+    f. formatting (bold, italics, strong, code, quotation etc.)
+    g. image
+    h. label
+    i. paragraph
+    j. reference
+    k. span
+    l. table (formatting-purpose)
+    m. table (data-purpose)
+
+For all tags, optional parameters:
+    style="style data" class="style_name" on...="script_method(this)"
+For surrounding tags (body, fieldset, form), optional parameter:
+    autocomplete="on"
+
+EXAMPLE FOR BANNER:
+<a href="url"><img src="url" alt="alternative text"></a>
+END OF EXAMPLE
+
+EXAMPLE FOR BLOCKQUOTE:
+<!-- simple content: -->
+<blockquote cite="source_url" th:text="*<fieldName>" />
+<!-- content-series from collection: -->
+<blockquote cite="source_url">
+    <span th:each="line : *{collectionFieldName}" th:text="${line}" />
+</blockquote>
+END OF EXAMPLE
+
+EXAMPLE FOR FAVICON:
+<head>
+    <!-- code -->
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+</head>
+END OF EXAMPLE
+
+EXAMPLE FOR FIELDSET:
+<!-- no group caption: -->
+<fieldset>
+    <!-- labels, inputs etc. -->
+</fieldset>
+<!-- fix group caption: -->
+<fieldset>
+    <legend>Group title</legend>
+    <!-- labels, inputs etc. -->
+</fieldset>
+<!-- dynamic group caption: -->
+<fieldset>
+    <legend th:text="*{fieldName}" />
+    <!-- labels, inputs etc. -->
+</fieldset>
+END OF EXAMPLE
+
+EXAMPLE FOR FORM:
+<form id="form_name" action="#" th:object="${payload}" th:action="@{/page}" method="post" novalidate>
+    <!-- code -->
+</form>
+END OF EXAMPLE
+
+EXAMPLE FOR FORMATTING (BOLD, ITALICS, STRONG, CODE, QUOTATION ETC.):
+<!-- <b>, <i>, <strong>, <code>, <q> etc. -->
+<tag_name th:text="*{fieldName}" />
+END OF EXAMPLE
+
+EXAMPLE FOR IMAGE:
+<!-- one image: -->
+<img th:src="*{fieldName1}" th:alt="*{fieldName2}">
+<!-- more images from collection: -->
+<img th:each="image : *{collectionFieldName}" th:src="${image.src}" th:alt="${image.alt}">
+END OF EXAMPLE
+
+EXAMPLE FOR LABEL:
+<!-- one label: -->
+<label th:text="*{fieldName}" class="label_style" />
+<!-- more labels from collection: -->
+<label th:each="any_name : *{collectionFieldName}" th:text="${any_name}" class="label_style" />
+END OF EXAMPLE
+
+EXAMPLE FOR PARAGRAPH:
+<!-- one paragraph: -->
+<p th:text="*{fieldName}" class="paragraph_style" />
+<!-- more paragraphs from collection -->
+<p th:each="any_name : *{collectionFieldName}" th:text="${any_name}" class="paragraph_style" />
+END OF EXAMPLE
+
+EXAMPLE FOR REFERENCE:
+<!-- one reference: -->
+<a href="*{fieldName.url}" th:text="*{fieldName.text}" tabindex="number" /><br>
+<!-- more references from collection: -->
+<span th:each="reference : *{collectionFieldName}">
+    <a href="${reference.url}" th:text="${reference.text}" tabindex="number" /><br>
+</span>
+END OF EXAMPLE
+
+EXAMPLE FOR SPAN:
+<!-- one span: -->
+<wrapping_tag><span th:text="*{fieldName}" /></wrapping_tag>
+<!-- more spans from collection: -->
+<wrapping_tag>
+    <span th:each="span : *{collectionFieldName}" th:text="${span}" />
+</wrapping_tag>
+END OF EXAMPLE
+
+EXAMPLE FOR TABLE (FORMATTING-PURPOSE):
+<table class="formatter_table_style">
+    <tr>
+        <td style="width: 75%">
+            <!-- code -->
+        </td>
+        <td style="width: 25%">
+            <!-- code -->
+        </td>
+    </tr>
+</table>
+<br>
+END OF EXAMPLE
+
+EXAMPLE FOR TABLE (DATA-PURPOSE):
+<!-- fix rows: -->
+<table class="table_style">
+    <tr>
+        <th>Header text 1</th><th>Header text 2</th><th>Header text 3</th>
+    </tr>
+    <tr>
+        <td th:text="*{fieldName1}" th:class="td_style" />
+        <td th:text="*{fieldName2}" th:class="td_style" />
+        <td th:text="*{fieldName3}" th:class="td_style" />
+    </tr>
+</table>
+<br>
+<!-- dynamic rows: -->
+<table class="table_style">
+    <tr>
+        <th th:text="*{fieldName}" />
+    </tr>
+    <tr>
+        <td th:each="row : *{collectionFieldName}" th:text="${row}" th:class="td_style" />
+    </tr>
+</table>
+<br>
+END OF EXAMPLE
+
+=================================================================================
+2. CODE SNIPPETS OF INPUT TAGS
+=================================================================================
+Below ThymeLeaf HTML tags are in the next order:
+    a. button-like inputs (submit, reset, button)
+    b. checkbox
+    c. file
+    d. image
+    e. numeric inputs (number, range)
+    f. picker-like and time inputs (color, date, datetime-local, time)
+    g. radio
+    h. text-like inputs (email, password, search, tel, text, url)
+    i. select (scroll-down, list)
+    j. textarea
+
+For all inputs, optional parameters:
+    style="style data" class="style_name" tabindex="number" autofocus form="form_name" on...="script_method(this)" required readonly disabled
+For checkbox input, optional parameter:
+    checked
+For all picker-like and time inputs, optional parameters:
+    min="min_value" max="max_value" autocomplete="on"
+For all numeric inputs, optional parameters:
+    min="min_value" max="max_value" step="step_value" size="max_size_in_characters" autocomplete="on"
+For radio input, optional parameter:
+    name="group_name" checked
+For all text-like inputs, optional parameters:
+    maxlength="max_character_length" size="max_size_in_characters" pattern="pattern_text" list="datalist_name" placeholder="hint" autocomplete="on"
+For select input, optional parameters:
+    size="height_in_number_of_items" multiple
+For textarea input, optional parameters:
+    name="input_name" rows="number_of_rows" cols="number_of_characters"
+
+For all inputs, consider using <br> tag after the label and-or after the input.
+
+EXAMPLE FOR BUTTON-LIKE INPUTS (SUBMIT, RESET, BUTTON):
+<input type="submit" value="caption text" formaction="/endpoint" formmethod="post" />
+<input type="reset" value="caption text" />
+<input type="button" value="caption text" onclick="script_method(this)" />
+END OF EXAMPLE
+
+EXAMPLE FOR CHECKBOX:
+<!-- label is before: -->
+<label for="input_name" style="style data" class="label_style">label text</label>
+<input id="input_name" type="checkbox" th:field="*{fieldName}" />
+<!-- label is after: -->
+<input id="input_name" type="checkbox" th:field="*{fieldName}" />
+<label for="input_name" style="style data" class="label_style">label text</label>
+END OF EXAMPLE
+
+EXAMPLE FOR FILE:
+<label for="input_name" style="style data" class="label_style">label text</label>
+<input id="input_name" type="file" th:field="*{fieldName}" multiple />
+END OF EXAMPLE
+
+EXAMPLE FOR IMAGE:
+<input id="input_name" type="image" src="*{fieldName}" alt="Submit" />
+END OF EXAMPLE
+
+EXAMPLE FOR NUMERIC INPUTS (NUMBER, RANGE):
+<!-- label for any numeric input: -->
+<label for="input_name" style="style data" class="label_style">label text</label>
+<!-- input variants: -->
+<input id="input_name" type="number" th:field="*{fieldName}" />
+<input id="input_name" type="range" th:field="*{fieldName}" />
+END OF EXAMPLE
+
+EXAMPLE FOR PICKER-LIKE AND TIME INPUTS (COLOR, DATE, DATETIME-LOCAL, TIME):
+<!-- label for any picker-like or time input: -->
+<label for="input_name" style="style data" class="label_style">label text</label>
+<!-- input variants: -->
+<input id="input_name" type="color" th:field="*{fieldName}" />
+<input id="input_name" type="date" th:field="*{fieldName}" />
+<input id="input_name" type="datetime-local" th:field="*{fieldName}" />
+<input id="input_name" type="time" th:field="*{fieldName}" />
+END OF EXAMPLE
+
+EXAMPLE FOR RADIO INPUTS:
+<!-- fix options, text values: -->
+<input type="radio" id="input_name_1" th:field="*{fieldName1}" value="'value1'" />
+<label for="input_name_1" th:text="value1" />
+<input type="radio" id="input_name_2" th:field="*{fieldName2}" value="'value2'" />
+<label for="input_name_2" th:text="value2" />
+<!-- dynamic options, text values: -->
+<span th:each="value : *{collectionFieldName}">
+    <input type="radio" th:field="*{fieldName}" value="${value}" />
+    <label th:text="${value}" /><br>
+</span>
+<!-- fix options, enum: -->
+<input type="radio" id="input_name_1" th:field="*{fieldName1}" value="VALUE1" />
+<label for="input_name_1" th:text="value1" />
+<input type="radio" id="input_name_2" th:field="*{fieldName2}" value="VALUE2" />
+<label for="input_name_2" th:text="value2" />
+END OF EXAMPLE
+
+EXAMPLE FOR TEXT-LIKE INPUTS (EMAIL, PASSWORD, SEARCH, TEL, TEXT, URL):
+<!-- label for any text-like input: -->
+<label for="input_name" style="style data" class="label_style">label text</label>
+<!-- input variants: -->
+<input id="input_name" type="email" th:field="*{fieldName}" multiple />
+<input id="input_name" type="password" th:field="*{fieldName}" />
+<input id="input_name" type="search" th:field="*{fieldName}" />
+<input id="input_name" type="tel" th:field="*{fieldName}" />
+<input id="input_name" type="text" th:field="*{fieldName}" />
+<input id="input_name" type="url" th:field="*{fieldName}" />
+<!-- optional fix data definition to choose from: -->
+<datalist id="datalist_name">
+    <option value="value1">
+    <option value="value2">
+    <option value="value3">
+</datalist>
+<!-- optional dynamic data definition to choose from: -->
+<datalist id="datalist_name">
+    <option th:each="data : *{collectionFieldName}" th:value="${data}">
+</datalist>
+<!-- input variants with datalist: -->
+<input id="input_name" type="email" list="datalist_name" th:field="*{fieldName}" multiple />
+<input id="input_name" type="password" list="datalist_name" th:field="*{fieldName}" />
+<input id="input_name" type="search" list="datalist_name" th:field="*{fieldName}" />
+<input id="input_name" type="tel" list="datalist_name" th:field="*{fieldName}" />
+<input id="input_name" type="text" list="datalist_name" th:field="*{fieldName}" />
+<input id="input_name" type="url" list="datalist_name" th:field="*{fieldName}" />
+END OF EXAMPLE
+
+EXAMPLE FOR SELECT (SCROLL-DOWN, LIST):
+<!-- scroll-down, fix items: -->
+<select id="input_name" th:field="*{fieldName}">
+    <option value="value1">value text 1</option>
+    <option value="value2">value text 2</option>
+    <option value="value3">value text 3</option>
+</select>
+<!-- list, fix items: -->
+<select id="input_name" th:field="*{fieldName}" size="3">
+    <option value="value1">value text 1</option>
+    <option value="value2">value text 2</option>
+    <option value="value3">value text 3</option>
+</select>
+<!-- scroll-down, dynamic items: -->
+<select id="input_name" th:field="*{fieldName}">
+    <option th:each="item : *{collectionFieldName}" th:value="${item}" th:text="${item}" />
+</select>
+<!-- list, dynamic items: -->
+<select id="input_name" th:field="*{fieldName}" size="10">
+    <option th:each="item : *{collectionFieldName}" th:value="${item}" th:text="${item}" />
+</select>
+END OF EXAMPLE
+
+EXAMPLE FOR TEXTAREA:
+<!-- starting text is null or from field: -->
+<textarea id="input_name" th:field="*{collectionFieldName}">
+</textarea>
+<!-- fix starting text: -->
+<textarea id="input_name" th:field="*{collectionFieldName}">
+    starting text
+</textarea>
+<!-- dynamic starting text: -->
+<textarea id="input_name" th:field="*{collectionFieldName1}">
+    <span th:text="*{collectionFieldName2}" />
+</textarea>
+END OF EXAMPLE
