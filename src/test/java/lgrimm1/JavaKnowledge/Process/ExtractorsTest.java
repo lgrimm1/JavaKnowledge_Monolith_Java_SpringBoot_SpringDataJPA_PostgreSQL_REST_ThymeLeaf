@@ -141,7 +141,7 @@ class ExtractorsTest {
 		expectedHtml.add("TABINSPACES" + "TABINSPACES" + "<tr>");
 		expectedHtml.add("TABINSPACES" + "TABINSPACES" + "TABINSPACES" + "<td style=\"width: 85%\">");
 		expectedHtml.add("TABINSPACES" + "TABINSPACES" + "TABINSPACES" + "TABINSPACES" +
-				"<textarea id=\"example01\" class=\"textarea\" onclick=\"element_to_full_size(this)\" readonly>");
+				"<textarea class=\"textarea\" onclick=\"element_to_full_size(this)\" readonly>");
 		expectedHtml.add("TABINSPACES" + "TABINSPACES" + "TABINSPACES" + "TABINSPACES" + "TABINSPACES" + 
 				"Line 1" + "<br>");
 		expectedHtml.add("TABINSPACES" + "TABINSPACES" + "TABINSPACES" + "TABINSPACES" + "TABINSPACES" + 
@@ -150,7 +150,7 @@ class ExtractorsTest {
 		expectedHtml.add("TABINSPACES" + "TABINSPACES" + "TABINSPACES" + "</td>");
 		expectedHtml.add("TABINSPACES" + "TABINSPACES" + "TABINSPACES" + "<td style=\"width: 15%\">");
 		expectedHtml.add("TABINSPACES" + "TABINSPACES" + "TABINSPACES" + "TABINSPACES" +
-				"<input type=\"button\" value=\"COPY\" class=\"button\" onclick=\"example_to_clipboard('example01')\" />");
+				"<input type=\"button\" value=\"COPY\" class=\"button\" onclick=\"content_to_clipboard(this)\" />");
 		expectedHtml.add("TABINSPACES" + "TABINSPACES" + "TABINSPACES" + "</td>");
 		expectedHtml.add("TABINSPACES" + "TABINSPACES" + "</tr>");
 		expectedHtml.add("TABINSPACES" + "</table>");

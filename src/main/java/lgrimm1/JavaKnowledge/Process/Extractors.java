@@ -117,7 +117,7 @@ public class Extractors {
 				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
 				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
 				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
-				"<textarea id=\"example01\" class=\"textarea\" onclick=\"element_to_full_size(this)\" readonly>");
+				"<textarea class=\"textarea\" onclick=\"element_to_full_size(this)\" readonly>");
 
 		for (int index = 1, size = exampleText.size(); index < size; index++) {
 			exampleInHtml.add(formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
@@ -145,7 +145,7 @@ public class Extractors {
 				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
 				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
 				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
-				"<input type=\"button\" value=\"COPY\" class=\"button\" onclick=\"example_to_clipboard('example01')\" />");
+				"<input type=\"button\" value=\"COPY\" class=\"button\" onclick=\"content_to_clipboard(this)\" />");
 		exampleInHtml.add(formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
 				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
 				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
