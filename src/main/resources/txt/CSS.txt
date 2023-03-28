@@ -1,0 +1,298 @@
+=================================================================================
+CSS
+=================================================================================
+1. BASICS
+2. SELECTORS
+3. PROPERTIES
+
+=>SPRING THYMELEAF
+
+=================================================================================
+1. BASICS
+=================================================================================
+CSS stands for Cascading Style Sheets, stylesheets for short.
+The basic HTML page appearance is handled by the actual browser (browser default). A CSS definition modifies these default definitions.
+A CSS is a definition contains stylistics (appearance) of an HTML web page, including the design, layout and variations in display for different devices and screen sizes.
+Ancestor of CSS technique was using specific property parameters in HTML e.g. width=, height=, border=. This technique is inline (local on tags) and need much effort to maintain the style throughout elements, page and website.
+
+A CSS definition contains one or more style property definitions. A property can be width, color of an element, also weight of a border and so on. The final appearance of an element is controlled by values of many properties together.
+A property can be defined by CSS definitions in the hierarchy:
+    a. external (website-level) style definitions (via external CSS file, marked in the header)
+    b. internal (page-level) style definitions (via <style> block in the header)
+    c. inline (tag-level) style definitions (via the style= parameter)
+    d. inline properties (tag-level) definitions (via property parameters)
+
+The external and internal definitions are on the same level. That said, as the code flow goes definition by definition, the last modification of a property will be alive for that property at the checked element.
+The <style> block in the header can be divided and between the parts the external CSS import can take place. Also, several external CSS-s can be imported at different points of the header. Following the flow, the last modification will be alive for the same property.
+An inline definition is on higher level since it has explicit effect on tag-level. That said, for the same property, overwrites external and internal values.
+A property not modified by any CSS, will keep its browser default value.
+
+Never use inline definitions (style=) together with property parameters (width=, height= etc.), can confuse the code, hard to find them, and can easily lead to appearance errors.
+
+General syntax of a CSS definition:
+    selector {property:value; property:value; ...}
+There can be space before and-or after the : sign.
+
+It is best practice to define external CSS stylesheet per website in order to make it sure the website has global style. When following this, optional style definitions for local (special) elements are needed only. It also becomes possible to define multiple global appearances for a website.
+The external CSS is a .css file which is then referenced from the head block of an HTML page.
+For referencing, the <link> tag is used within the <head> block. The optional type= property identifies the CSS file format, when left, default is text/css.
+Commenting is possible in external or internal CSS by utilizing /* opening and */ closing markers. Can be line or multiline, also at the end of a line.
+
+EXAMPLE FOR AN EXTERNAL CSS (CSS_name.css):
+selector(s)1 {
+    property: value;
+    ...
+}
+
+selector(s)2 {
+    property: value;
+    ...
+}
+...
+END OF EXAMPLE
+
+EXAMPLE FOR REFERENCING EXTERNAL CSS:
+<!DOCTYPE HTML>
+<head>
+    <title>Title</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" type="text/css" href="CSS_name.css">
+</head>
+<body>
+<!-- code -->
+</body>
+</html>
+END OF EXAMPLE
+
+EXAMPLE FOR INTERNAL CSS:
+<!DOCTYPE HTML>
+<head>
+    <title>Title</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <style>
+        selector(s)1 {
+            property: value;
+            ...
+        }
+
+        selector(s)2 {
+            property: value;
+            ...
+        }
+        ...
+    </style>
+</head>
+<body>
+<!-- code -->
+</body>
+</html>
+END OF EXAMPLE
+
+EXAMPLE FOR INLINE CSS:
+<!DOCTYPE HTML>
+<head>
+    <title>Title</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+<!-- code -->
+<tag_name style="property: value; ..." ...>
+    ...
+</tag_name>
+<tag_name style="property: value; ..." ... />
+<!-- code -->
+</body>
+</html>
+END OF EXAMPLE
+
+=================================================================================
+2. SELECTORS
+=================================================================================
+General syntax of a CSS definition:
+    selector {property:value; property:value; ...}
+There can be space before and-or after the : sign.
+
+The selector defines the HTML element. Types are:
+    a. simple (select elements by tag-name, id, class, tag-name and class; all elements, grouped selectors)
+    b. combinator (select elements based on a specific relationship between them)
+    c. pseudo-class (select elements based on a certain state)
+    d. pseudo-elements (select and style a part of an element)
+    e. attribute (select elements based on an attribute or attribute value)
+
+A value can be:
+    a. numeric value (e.g. "3")
+    b. numeric value with unit (e.g. "3px", "50%")
+    c. text value ("'some_text'")
+Please note, there must be no space between a numeric value and its unit.
+
+The class-type definition creates a unique set of property values. That said, when referenced inline with the class= parameter, overwrites every matching external and internal property.
+In case there is an inline style definition (via style= parameter) for a property defined by externally, internally and-or via the class parameter as well, the local style= values will overwrite the class values.
+
+EXAMPLE FOR SIMPLE SELECTORS (CSS-side):
+/* tag-name */
+tag_name {
+    property: value;
+    ...
+}
+
+/* id */
+#id_name {
+    property: value;
+    ...
+}
+
+/* class */
+.class_name {
+    property: value;
+    ...
+}
+
+/* tag-name and class */
+tag_name.class_name {
+    property: value;
+    ...
+}
+
+/* all elements */
+* {
+    property: value;
+    ...
+}
+
+/* grouped selectors by tag-name */
+tag_name1, tag_name2, ... {
+    property: value;
+    ...
+}
+END OF EXAMPLE
+
+EXAMPLE FOR SIMPLE SELECTORS (HTML-side):
+<!-- tag-name -->
+<tag_name ...>...></tag_name>
+<tag_name ... />
+
+<!-- id -->
+<tag_name id="id-name" ...>...></tag_name>
+<tag_name id="id-name" ... />
+
+<!-- class -->
+<tag_name class="class-name" ...>...></tag_name>
+<tag_name class="class-name" ... />
+
+<!-- tag-name and class -->
+<tag_name class="class-name" ...>...></tag_name>
+<tag_name class="class-name" ... />
+
+<!-- more classes -->
+<tag_name class="class-name1 class-name2" ...>...></tag_name>
+<tag_name class="class-name1 class-name2" ... />
+END OF EXAMPLE
+
+EXAMPLE FOR OVERWRITING CSS:
+/* external CSS 1: */
+tag-name {
+    property: value11;
+}
+.class_name {
+    property: value21;
+}
+
+/* external CSS 2: */
+tag-name {
+    property: value12;
+}
+.class_name {
+    property: value22;
+}
+
+<!-- HTML head: -->
+<link rel="stylesheet" type="text/css" href="..."> <!-- earlier external import -->
+<style> /* earlier internal CSS: */
+    tag-name {
+        property: value13;
+    }
+    .class_name {
+        property: value23;
+    }
+</style>
+<link rel="stylesheet" type="text/css" href="..."> <!-- latter external import -->
+<style> /* latter internal CSS: */
+    tag-name {
+        property: value14;
+    }
+    .class_name {
+        property: value24;
+    }
+</style>
+
+<!-- HTML body: -->
+<tag_name /> <!-- property == value14 -->
+<tag_name class="class_name" /> <!-- property == value24 -->
+<tag_name style="property: value31" /> <!-- property == value31 -->
+<tag_name class="class_name" style="property: value32" /> <!-- property == value32 -->
+END OF EXAMPLE
+
+=================================================================================
+3. PROPERTIES
+=================================================================================
+For default value, means that the value will be set when the specific property is not set.
+For color values, can be verbal (e.g. green, Green), RGB (e.g. rgb(32, 99, 34)), hexadecimal (e.g. #23a5fd), HSL (e.g. hsl(9, 100%, 64%)), RGBA (e.g. rgba(32, 99, 34, 0.6)) or HSLA (hsl(9, 100%, 64%, 0.4)); alpha is decimal number and full transparency equals with 0; HTML/CSS and modern browsers support 140 color names.
+For length numbers, possible units are: px, pt, cm, em, % (latter means percentage of related dimension of container element).
+For shorthand property, means that many, related properties are set via setting only one property. The order of the values is unimportant; there is SPACE between values; in case a value is left out, the property value set previously will stay alive.
+For differentiated sides in a property (e.g. background-position, border-style), the side names are, in order: top, right, bottom, left; can be extended with center.
+For value combination for sides (e.g. border-style), the possible combinations are: one value (all sides), two values (top-bottom left-right), three values (top right-left bottom), 4 values (top right bottom left).
+For marked side in the property name (e.g. border-left-width), there must be properties for the other sides as well. For short, these properties are summarized as ...x... where x is the name of the side (e.g. border-x-width).
+
+||Property|Value example|Default|Description||
+||background-color|Tomato|Black|element background color; for <body>: page background||
+||background-image|url(image.gif)|no image|sets background image for the element, repeats the image horizontally and vertically for full coverage; for <body>: page background image||
+||background-repeat|repeat-x|horizontally and vertically|sets repeating rule for the background image; values: no-repeat, repeat-x (only horizontally), repeat-y (only vertically)||
+||background-position|right top|left top|position the background image; values: left top, left center, left bottom, right top, right center, right bottom, top, center, bottom||
+||background-attachment|fixed|scroll|sets whether the background follows scrolling of the page or element; values: fixed, scroll||
+||background|-|-|shorthand property for -color, -image, -repeat, -position and -attachment||
+||opacity|0.3|1.0|works as alpha color channel for the whole element where zero is fully transparent; passes this property to child elements||
+||color|Brown|Black|text color||
+||border_style|dotted none dashed double|none|sets border line style in value combination for sides; values: dotted, dashed, solid, double, groove, ridge, inset, outset, none, hidden; without setting this other than none, other border properties will not have effect||
+||border-x-style|dashed|none|sets border style on x side||
+||border-width|5px thin|medium|sets border thickness in value combination for sides, values: thin, medium, thick, length number; 3px equals with medium||
+||border-x-width|5px|medium|sets border thickness on x side||
+||border-color|red #32ffa1|color_of_element|sets border color in value combination for sides||
+||border-x-color|red|color_of_element|sets border color on x side||
+||border|-|-|shorthand property of the border for -width, -style and -color||
+||border-x|-|-|shorthand property of the border on the x-side for -width, -style and -color||
+||border-radius|5px 0px|0px|sets rounding of border corners in value combination for sides||
+||border-collapse|collapse|separate|sets whether neighbouring cells can keep their individual borders; values: separate (between neighbouring cells borders will be doubled), collapse (normal table outlook)||
+||margin-x|12px|0px|sets space outside the border (visible or not) of the element on x side; values: auto (horizontally centers the element within its container), inherit (inherits property from its container), length number; negative value is accepted||
+||margin|12px 3px|0px|shorthand property of the margin in value combination for sides||
+||padding-x|12px|1px|sets space inside the border (visible or not) of the element on x side; values: inherit (inherits property from its container), length number||
+||padding|12px 5px|0px|shorthand property of padding in value combination for sides||
+||width|50%|dynamically set|sets the width of the element inside padding; values: length number; the <div> block shows a horizontal scroll bar when the browser window smaller than the set width, in such case use max-width instead||
+||height|50%|auto|sets the height of the element inside padding; values: auto, initial (default HTML value), inherit (from container element), length number||
+||max-width|50%|none|sets the maximum value the width property can get; values: none (no maximum), length number; if smaller then the width value, that will be ignored||
+
+Every HTML element follows the box model. From inside to outside, the content is wrapped around with the padding, which is wrapped around with the border, which is wrapped around with the margins. This system forms rectangles (boxes) around the most inner part (content). The total size of element is interpreted as added values of margin, border width, padding and content size horizontally and vertically. These data define how much space an element occupies.
+Margin collapse: total vertical distance of two elements is theoretically the bottom margin of the first element and the top margin of the second element added, however in some cases only the higher margin value will be used by the browser.
+
+EXAMPLE FOR BOX MODEL:
+p {
+    width: 50px;
+    height: 30px;
+    padding: 20px;
+    border: 10px solid;
+    margin: 5px;
+}
+/*total width = width + left padding + right padding + left border + right border + left margin + right margin*/
+/*total height = height + top padding + bottom padding + top border + bottom border + top margin + bottom margin*/
+/*total occupied size is 120px in width, 100px in height*/
+END OF EXAMPLE
+
+EXAMPLE FOR MARGIN COLLAPSE:
+p.p1 {margin: 5px 10px 50px;}
+p.p2 {margin: 20px 10px 12px;}
+...
+<p class="p1">...</p>
+<!-- theoretical bottom margin of p1 is set to 50px -->
+<!-- total margin will be the higher margin (50px) instead of 58px -->
+<!-- theoretical top margin of p2 is set to 20px -->
+<p class="p2">...</p>
+END OF EXAMPLE
