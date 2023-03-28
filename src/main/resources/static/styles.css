@@ -44,6 +44,7 @@ a {
     border: 1px solid DarkGray;
     border-collapse: collapse;
     text-align: center;
+    padding: 3px;
 }
 .edit {
     height: 25px;
