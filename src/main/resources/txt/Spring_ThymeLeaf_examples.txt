@@ -31,7 +31,7 @@ The ThymeLeaf HTML tags are in the next order below:
     m. table (data-purpose)
 
 For all tags, optional parameters:
-    style="style data" class="style_name" on...="script_method(this)"
+    width="width_value" height="height_value" style="style data" class="style_name" on...="script_method(this)"
 For surrounding tags (body, fieldset, form), optional parameter:
     autocomplete="on"
 
@@ -177,7 +177,7 @@ Below ThymeLeaf HTML tags are in the next order:
     j. textarea
 
 For all inputs, optional parameters:
-    style="style data" class="style_name" tabindex="number" autofocus form="form_name" on...="script_method(this)" required readonly disabled
+    width="width_value" height="height_value" style="style data" class="style_name" tabindex="number" autofocus form="form_name" on...="script_method(this)" required readonly disabled
 For checkbox input, optional parameter:
     checked
 For all picker-like and time inputs, optional parameters:
@@ -324,13 +324,22 @@ END OF EXAMPLE
 =================================================================================
 3. CODE SNIPPETS FOR SCRIPTS
 =================================================================================
+EXAMPLE FOR JAVASCRIPT:
 <script>
+    <!-- caller side: content_to_clipboard('id_parameter_value') -->
     function content_to_clipboard(id) {
         document.getElementById(id).select();
         document.execCommand('copy');
     }
+    <!-- caller side: content_to_clipboard(this) -->
+    function content_to_clipboard(element) {
+        element.select();
+        document.execCommand('copy');
+    }
+    <!-- caller side: input_to_full_size(this) -->
     function input_to_full_size(element) {
         element.style.height = "";
         element.style.height = element.scrollHeight + "px";
     }
 </script>
+END OF EXAMPLE

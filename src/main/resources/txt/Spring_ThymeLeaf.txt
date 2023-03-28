@@ -13,6 +13,7 @@ SPRING THYMELEAF
 =>SERIALIZATION
 =>SPRING MODELANDVIEW
 =>SPRING THYMELEAF EXAMPLES
+=>CSS
 
 =================================================================================
 1. GENERALLY
@@ -51,7 +52,7 @@ Alternatively, use Spring Initializr to generate a new empty project with added 
 The server answer (if there is any) sends message to the frontend via filling out a template and sending that template to caller client (e.g. browser).
 For a template, HTML, JSON etc. files can be created.
 The templates are placed under the src/main/resources/templates folder.
-In case of external CSS style, the .css file must be placed into the src/main/resources/static folder.
+In case of external CSS style, the .css file must be placed into the src/main/resources/static folder. For more, visit the CSS page.
 A template can be created in design-time and in run-time as well, latter before reaching it via GET, POST etc. queries.
 
 EXAMPLE FOR A GENERAL THYMELEAF HTML TEMPLATE WITH REFERENCED EXTERNAL CSS:
@@ -60,7 +61,7 @@ EXAMPLE FOR A GENERAL THYMELEAF HTML TEMPLATE WITH REFERENCED EXTERNAL CSS:
 <head>
     <title>Title</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 <body>
 <!-- code -->
@@ -82,8 +83,8 @@ Also from the standards, some parameters do not have value, in this case there i
 For controls (inputs), the on...= parameters (e.g. onclick=, onload=) are used for event-driven actions (e.g. onclick="script_method(this)").
 For referring script methods, use parameter_name="method_name(argument)" formula.
 For size-like parameters (e.g. width=, height=), px and % units are accepted (e.g. width="80%" height="50px"). Please note, there is no space between the amount and the unit.
-The class= parameter defines named CSS style name (e.g. class="h4_style").
-The style= parameter can hold local CSS codes (e.g. style="width=80%; height=50px").
+The class= parameter defines named CSS style name (e.g. class="h4_style"), visit the CSS page for details.
+The style= parameter can hold local CSS codes (e.g. style="width=80%; height=50px"); visit the CSS page for details.
 The id= parameter defines a text by which the control can be identified (e.g. id="control_identifier").
 The for= parameter marks that by its name, the control is for which other control (e.g. for="control_identifier"). Mainly used with <label> tags which will be visible only when the marked control is visible.
 
@@ -156,7 +157,7 @@ EXAMPLE FOR A THYMELEAF TEMPLATE (HTML SIDE, ATTRIBUTES):
 <head>
     <title>Title</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 <body>
 <!-- single attributes: -->
