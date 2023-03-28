@@ -45,7 +45,7 @@ content
             </textarea>
         </td>
         <td style="width: 15%">
-            <input type="button" value="COPY" class="button" onclick="example_to_clipboard('example01')" />
+            <input type="button" value="COPY" class="button" onclick="content_to_clipboard('example01')" />
         </td>
     </tr>
 </table>
@@ -70,7 +70,7 @@ HTML, list:
 
 HTML, Javascript:
 <script>
-    function example_to_clipboard(id) {
+    function content_to_clipboard(id) {
         document.getElementById(id).select();
         document.execCommand('copy');
     }
