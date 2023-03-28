@@ -31,10 +31,11 @@ Minimum received model: {"titles": [<String>, ...], "references": [<String>, ...
 Item                                        Endpoint            Minimum sent model
 ----------                                  ----------          ----------
 banner                                      GET /root           -
+title
 list of references
-content of a page in a frame
-"Jump to Page" button                       POST /page          {"titles": <String>}
+"View Page" button                          POST /page          {"titles": <String>}
 "Back" button                               GET /root           -
+content of a page in a frame
 Full model: {"titles": [<String>, ...], "references": [<String>, ...], "staticPageLink": <String>}
 HTML attributes: titles, references, static_page_link
 
