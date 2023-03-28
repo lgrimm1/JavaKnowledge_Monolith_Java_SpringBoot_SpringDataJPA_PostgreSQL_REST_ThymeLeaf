@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Java Knowledge - Main Page</title>
+    <title>Java Knowledge</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <link rel="stylesheet" href="styles.css">
 </head>
@@ -9,9 +9,9 @@
 This place here is for the banner.<br>
 <h1>LIST OF TITLES</h1>
 Select a title or go back for new search.<br>
+<h4>SEARCH CRITERIA: <label th:text="${payload.message}" /></h4>
 <br>
 <form action="#" th:object="${payload}" th:action="@{/page}" method="post" novalidate>
-    <h4>SEARCH CRITERIA: <label th:text="*{message}" /></h4>
     <table class="formatter_table">
         <tr>
             <td style="width: 75%">

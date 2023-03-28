@@ -1,10 +1,32 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Java Knowledge</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-PAGE!
+This place here is for the banner.<br>
+Select a title or go back for new search.<br>
+<br>
+<form action="#" th:object="${payload}" th:action="@{/page}" method="post" novalidate>
+    <h1 th:text="*{title}" />
+    <table class="formatter_table">
+        <tr>
+            <td style="width: 75%">
+                <select class="select" size="10" autofocus>
+                    <option th:each="reference: *{references}" th:text="${reference}" th:value="${reference}" />
+                </select>
+                <br>
+            </td>
+            <td style="width: 25%">
+                <input type="submit" value="VIEW PAGE" class="button" formaction="/page" formmethod="post" /><br>
+                <input type="submit" value="BACK" class="button" formaction="/root" formmethod="get" />
+            </td>
+        </tr>
+    </table>
+    <br>
+    <iframe th:src="*{staticPageLink}" width="100%" frameBorder="0" allowFullScreen />
+</form>
 </body>
 </html>
