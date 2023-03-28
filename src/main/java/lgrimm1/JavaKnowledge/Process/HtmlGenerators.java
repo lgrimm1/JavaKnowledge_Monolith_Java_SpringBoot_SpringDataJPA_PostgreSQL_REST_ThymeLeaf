@@ -123,11 +123,11 @@ public class HtmlGenerators {
 						"<script>",
 				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
 						formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
-						"function example_to_clipboard(id) {",
+						"function content_to_clipboard(element) {",
 				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
 						formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
 						formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
-						"document.getElementById(id).select();",
+						"element.select();",
 				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
 						formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
 						formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) +
