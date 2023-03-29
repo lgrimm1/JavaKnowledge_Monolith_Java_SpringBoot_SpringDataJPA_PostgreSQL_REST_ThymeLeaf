@@ -26,14 +26,15 @@ a {
     font-size: 100%;
     color: LightGray;
 }
-.textarea {
-    width: 90%;
+textarea {
+    width: 99%;
     border-radius: 6px;
     background-color: LightGray;
     font-family: Roboto;
     font-size: 90%;
     color: DarkSlateGray;
 }
+/*
 .table {
     border: 1px solid DarkGray;
     border-collapse: collapse;
@@ -46,7 +47,27 @@ a {
     text-align: center;
     padding: 3px;
 }
-.edit {
+*/
+.table {
+    border: 1px solid DarkGray;
+    border-collapse: separate;
+    width: 100%;
+    text-align: center;
+    border-radius: 6px;
+}
+.table_td, .table_th {
+    border-left: 1px solid DarkGray;
+    border-top: 1px solid DarkGray;
+    text-align: center;
+    padding: 3px;
+}
+.table_th {
+    border-top: none;
+}
+.table_th:first-child, .table_td:first-child {
+     border-left: none;
+}
+input.search {
     height: 25px;
     width: 90%;
     border-radius: 6px;
@@ -55,7 +76,7 @@ a {
     font-size: 90%;
     color: DarkSlateGray;
 }
-.select {
+select {
     width: 100%;
     border-radius: 6px;
     background-color: LightGray;
@@ -67,7 +88,7 @@ option:hover {
     color: LightGray;
     background-color: DarkGray;
 }
-.button {
+input.button {
     height: 32px;
     width: 90%;
     border: 1;

@@ -15,7 +15,7 @@ Select a title or go back for new search.<br>
     <table class="formatter_table">
         <tr>
             <td style="width: 75%">
-                <select class="select" size="10" autofocus>
+                <select size="10" autofocus>
                     <option th:each="title: *{titles}" th:text="${title}" th:value="${title}" />
                 </select>
                 <br>

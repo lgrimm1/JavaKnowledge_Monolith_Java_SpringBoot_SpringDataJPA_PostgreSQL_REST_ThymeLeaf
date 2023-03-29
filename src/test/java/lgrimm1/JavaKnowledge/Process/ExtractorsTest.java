@@ -92,20 +92,20 @@ class ExtractorsTest {
 		);
 		List<String> expectedHtml = List.of(
 				"TABINSPACES" + "<table class=\"table\">",
-				"TABINSPACES" + "TABINSPACES" + "<tr class=\"table_element\">",
-				"TABINSPACES" + "TABINSPACES" + "TABINSPACES" + "<th class=\"table_element\">Header 1</th>",
-				"TABINSPACES" + "TABINSPACES" + "TABINSPACES" + "<th class=\"table_element\">Header 2</th>",
-				"TABINSPACES" + "TABINSPACES" + "TABINSPACES" + "<th class=\"table_element\">Header 3</th>",
+				"TABINSPACES" + "TABINSPACES" + "<tr>",
+				"TABINSPACES" + "TABINSPACES" + "TABINSPACES" + "<th class=\"table_th\">Header 1</th>",
+				"TABINSPACES" + "TABINSPACES" + "TABINSPACES" + "<th class=\"table_th\">Header 2</th>",
+				"TABINSPACES" + "TABINSPACES" + "TABINSPACES" + "<th class=\"table_th\">Header 3</th>",
 				"TABINSPACES" + "TABINSPACES" + "</tr>",
-				"TABINSPACES" + "TABINSPACES" + "<tr class=\"table_element\">",
-				"TABINSPACES" + "TABINSPACES" + "TABINSPACES" + "<td class=\"table_element\">Cell 11</td>",
-				"TABINSPACES" + "TABINSPACES" + "TABINSPACES" + "<td class=\"table_element\">Cell 12</td>",
-				"TABINSPACES" + "TABINSPACES" + "TABINSPACES" + "<td class=\"table_element\">Cell 13</td>",
+				"TABINSPACES" + "TABINSPACES" + "<tr>",
+				"TABINSPACES" + "TABINSPACES" + "TABINSPACES" + "<td class=\"table_td\">Cell 11</td>",
+				"TABINSPACES" + "TABINSPACES" + "TABINSPACES" + "<td class=\"table_td\">Cell 12</td>",
+				"TABINSPACES" + "TABINSPACES" + "TABINSPACES" + "<td class=\"table_td\">Cell 13</td>",
 				"TABINSPACES" + "TABINSPACES" + "</tr>",
-				"TABINSPACES" + "TABINSPACES" + "<tr class=\"table_element\">",
-				"TABINSPACES" + "TABINSPACES" + "TABINSPACES" + "<td class=\"table_element\">Cell 21</td>",
-				"TABINSPACES" + "TABINSPACES" + "TABINSPACES" + "<td class=\"table_element\">Cell 22</td>",
-				"TABINSPACES" + "TABINSPACES" + "TABINSPACES" + "<td class=\"table_element\">Cell 23</td>",
+				"TABINSPACES" + "TABINSPACES" + "<tr>",
+				"TABINSPACES" + "TABINSPACES" + "TABINSPACES" + "<td class=\"table_td\">Cell 21</td>",
+				"TABINSPACES" + "TABINSPACES" + "TABINSPACES" + "<td class=\"table_td\">Cell 22</td>",
+				"TABINSPACES" + "TABINSPACES" + "TABINSPACES" + "<td class=\"table_td\">Cell 23</td>",
 				"TABINSPACES" + "TABINSPACES" + "</tr>",
 				"TABINSPACES" + "</table>"
 		);
@@ -151,7 +151,7 @@ class ExtractorsTest {
 		expectedHtml.add("TABINSPACES" + "TABINSPACES" + "<tr>");
 		expectedHtml.add("TABINSPACES" + "TABINSPACES" + "TABINSPACES" + "<td style=\"width: 85%\">");
 		expectedHtml.add("TABINSPACES" + "TABINSPACES" + "TABINSPACES" + "TABINSPACES" +
-				"<textarea class=\"textarea\" onclick=\"element_to_full_size(this)\" readonly>");
+				"<textarea onclick=\"element_to_full_size(this)\" readonly>");
 		expectedHtml.add("Line 1");
 		expectedHtml.add("    Line 2");
 		expectedHtml.add("TABINSPACES" + "TABINSPACES" + "TABINSPACES" + "TABINSPACES" + "</textarea>");

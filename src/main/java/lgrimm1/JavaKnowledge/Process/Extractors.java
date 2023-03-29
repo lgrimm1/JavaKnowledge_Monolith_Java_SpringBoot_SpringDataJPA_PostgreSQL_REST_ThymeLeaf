@@ -54,16 +54,16 @@ public class Extractors {
 		List<String> tableInHtml = new ArrayList<>();
 		tableInHtml.add(formulas.getTabInSpaces() + "<table class=\"table\">");
 		for (int i = 0; i < tableText.size(); i++) {
-			tableInHtml.add(formulas.generateTabInSpaces(2) + "<tr class=\"table_element\">");
+			tableInHtml.add(formulas.generateTabInSpaces(2) + "<tr>");
 			List<String> cells = extractCells(tableText.get(i).replace("||", ""));
 			for (String s : cells) {
 				if (i == 0) {
 					tableInHtml.add(formulas.generateTabInSpaces(3) +
-							"<th class=\"table_element\">" + s + "</th>");
+							"<th class=\"table_th\">" + s + "</th>");
 				}
 				else {
 					tableInHtml.add(formulas.generateTabInSpaces(3) +
-							"<td class=\"table_element\">" + s + "</td>");
+							"<td class=\"table_td\">" + s + "</td>");
 				}
 			}
 			tableInHtml.add(formulas.generateTabInSpaces(2) + "</tr>");
@@ -100,7 +100,7 @@ public class Extractors {
 		exampleInHtml.add(formulas.generateTabInSpaces(2) + "<tr>");
 		exampleInHtml.add(formulas.generateTabInSpaces(3) + "<td style=\"width: 85%\">");
 		exampleInHtml.add(formulas.generateTabInSpaces(4) +
-				"<textarea class=\"textarea\" onclick=\"element_to_full_size(this)\" readonly>");
+				"<textarea onclick=\"element_to_full_size(this)\" readonly>");
 
 		for (int index = 1, size = exampleText.size(); index < size; index++) {
 			exampleInHtml.add(exampleText.get(index));
