@@ -7,14 +7,12 @@
 </head>
 <body>
 This place here is for the banner.<br>
-Select a title or go back for new search.<br>
 <br>
 <form action="#" th:object="${payload}" th:action="@{/page}" method="post" novalidate>
-    <h1 th:text="*{title}" />
     <table class="formatter_table">
         <tr>
             <td style="width: 75%">
-                <select class="select" size="10" autofocus>
+                <select class="select" size="3">
                     <option th:each="reference: *{references}" th:text="${reference}" th:value="${reference}" />
                 </select>
                 <br>
@@ -26,7 +24,9 @@ Select a title or go back for new search.<br>
         </tr>
     </table>
     <br>
-    <iframe th:src="*{staticPageLink}" width="100%" frameBorder="0" allowFullScreen />
+    <div style="width:100%; height:2000px; overflow:hidden;">
+        <iframe th:src="*{staticPageLink}" style="height:100%; width:99%; border:none;" allow="fullscreen" autofocus />
+    </div>
 </form>
 </body>
 </html>
