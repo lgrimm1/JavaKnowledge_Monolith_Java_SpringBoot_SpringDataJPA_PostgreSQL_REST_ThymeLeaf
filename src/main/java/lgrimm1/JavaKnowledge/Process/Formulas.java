@@ -4,49 +4,76 @@ import org.springframework.stereotype.*;
 
 /**
  * Carries constants and formulas.
- * Fields are opened for public due to testing purposes, protected with final access modifiers.
- * @see #generateRepeatedPattern(String, int)
+ * @see #getSuperLine()
+ * @see #getSubLine()
+ * @see #getTabInSpaces()
+ * @see #getTabInHtml()
+ * @see #getSpaceInHtml()
+ * @see #getVersions()
  * @see #getFormula(String)
- * @see #getConstant(ConstantName)
+ * @see #generateTabInSpaces(int)
+ * @see #generateRepeatedPattern(String, int)
  */
 @Component
 public class Formulas {
 
-	public final String SUPERLINE = generateRepeatedPattern("=", 81);
-	public final String SUBLINE = generateRepeatedPattern("-", 81);
-	public final String TAB_IN_SPACES = generateRepeatedPattern(" ", 4);
-	public final String TAB_IN_HTML = generateRepeatedPattern("&nbsp;", 4);
-	public final String LEVEL_1_SEPARATOR = ";";
-	public final String VERSIONS = "Up to Java 17, Spring Boot 3 (Hibernate 6), JUnit 5, PostgreSQL 11";
-	public enum ConstantName {
-		SUPERLINE, SUBLINE, TAB_IN_SPACES, TAB_IN_HTML, LEVEL_1_SEPARATOR, VERSIONS
+	private final String superLine = generateRepeatedPattern("=", 81);
+	private final String subLine = generateRepeatedPattern("-", 81);
+	private final String tabInSpaces = generateRepeatedPattern(" ", 4);
+	private final String tabInHtml = generateRepeatedPattern("&nbsp;", 4);
+	private final String spaceInHtml = "&nbsp;";
+	private final String versions = "Up to Java 17, Spring Boot 3 (Hibernate 6), JUnit 5, PostgreSQL 11";
+/*
+	private enum ConstantName {
+		SUPERLINE, SUBLINE, TAB_IN_SPACES, TAB_IN_HTML, SPACE_IN_HTML, LEVEL_1_SEPARATOR, VERSIONS
 	}
+*/
 
-	public final String FORMULA_TITLE =
-			SUPERLINE + "\n" +
+	private final String FORMULA_TITLE =
+			superLine + "\n" +
 			"TITLE\n" +
-			SUPERLINE +"\n";
-	public final String FORMULA_HEADER_1 =
-			SUPERLINE + "\n" +
+					superLine +"\n";
+	private final String FORMULA_HEADER_1 =
+			superLine + "\n" +
 			"X. HEADER 1\n" +
-			SUPERLINE +"\n";
-	public final String FORMULA_HEADER_2 =
+					superLine +"\n";
+	private final String FORMULA_HEADER_2 =
 			"X.Y. HEADER 2\n" +
-			SUBLINE +"\n";
-	public final String FORMULA_TABLE =
+					subLine +"\n";
+	private final String FORMULA_TABLE =
 			"||Column header 1|Column header 2||\n" +
 			"||Cell 11|Cell 12||\n" +
 			"||Cell 21|Cell 22||\n" +
 			"||...|...||\n";
-	public final String FORMULA_EXAMPLE =
+	private final String FORMULA_EXAMPLE =
 			"EXAMPLE FOR ...\n" +
 			"<codes>\n" +
 			"END OF EXAMPLE\n";
-	public final String FORMULA_REFERENCE = "=>file_name.html[;HEADER]";
-	public final String FORMULA_MORE = "MORE HERE:";
+	private final String FORMULA_REFERENCE = "=>file_name.html[;HEADER]";
+	private final String FORMULA_MORE = "MORE HERE: ";
 
-	public String generateRepeatedPattern(String pattern, int numberOfRepeating) {
-		return new String(new char[numberOfRepeating]).replace("\0", pattern);
+	public String getSuperLine() {
+		return superLine;
+	}
+
+	public String getSubLine() {
+		return subLine;
+	}
+
+	public String getTabInSpaces() {
+		return tabInSpaces;
+	}
+
+	public String getTabInHtml() {
+		return tabInHtml;
+	}
+
+	public String getSpaceInHtml() {
+		return spaceInHtml;
+	}
+
+	public String getVersions() {
+		return versions;
 	}
 
 	/**
@@ -68,16 +95,33 @@ public class Formulas {
 		};
 	}
 
+/*
 	public String getConstant(ConstantName constantName) {
 		return switch (constantName) {
 			case SUPERLINE -> SUPERLINE;
 			case SUBLINE -> SUBLINE;
 			case TAB_IN_SPACES -> TAB_IN_SPACES;
 			case TAB_IN_HTML -> TAB_IN_HTML;
+			case SPACE_IN_HTML -> SPACE_IN_HTML;
 			case LEVEL_1_SEPARATOR -> LEVEL_1_SEPARATOR;
 			case VERSIONS -> VERSIONS;
 		};
 
+	}
+*/
+
+	public String generateTabInSpaces(int repetition) {
+		if (repetition < 1) {
+			return "";
+		}
+		if (repetition == 1) {
+			return tabInSpaces;
+		}
+		return tabInSpaces.repeat(repetition);
+	}
+
+	private String generateRepeatedPattern(String pattern, int numberOfRepeating) {
+		return new String(new char[numberOfRepeating]).replace("\0", pattern);
 	}
 
 }

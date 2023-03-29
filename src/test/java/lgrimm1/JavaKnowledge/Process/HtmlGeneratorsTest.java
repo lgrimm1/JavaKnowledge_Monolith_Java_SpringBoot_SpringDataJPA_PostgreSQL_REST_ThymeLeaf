@@ -19,16 +19,22 @@ class HtmlGeneratorsTest {
 	void setUp() {
 		extractors = Mockito.mock(Extractors.class);
 		formulas = Mockito.mock(Formulas.class);
-		when(formulas.getConstant(Formulas.ConstantName.SUPERLINE))
+		when(formulas.getSuperLine())
 				.thenReturn("SUPERLINE");
-		when(formulas.getConstant(Formulas.ConstantName.SUBLINE))
+		when(formulas.getSubLine())
 				.thenReturn("SUBLINE");
-		when(formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES))
+		when(formulas.getTabInSpaces())
 				.thenReturn("TABINSPACES");
-		when(formulas.getConstant(Formulas.ConstantName.TAB_IN_HTML))
+		when(formulas.getTabInHtml())
 				.thenReturn("TABINHTML");
-		when(formulas.getConstant(Formulas.ConstantName.VERSIONS))
+		when(formulas.getVersions())
 				.thenReturn("VERSIONS");
+		when(formulas.generateTabInSpaces(2))
+				.thenReturn("TABINSPACESTABINSPACES");
+		when(formulas.generateTabInSpaces(3))
+				.thenReturn("TABINSPACESTABINSPACESTABINSPACES");
+		when(formulas.generateTabInSpaces(4))
+				.thenReturn("TABINSPACESTABINSPACESTABINSPACESTABINSPACES");
 		titleRepository = Mockito.mock(TitleRepository.class);
 	}
 
@@ -217,12 +223,18 @@ class HtmlGeneratorsTest {
 	void generateMainContent_NormalText() {
 		List<String> txtContent = List.of(
 				"Line 1",
-				"TABINSPACES" + "Line 2"
+				"TABINSPACES" + "Line 2",
+				"TABINSPACES" + "  Line 3",
+				"  Line 4",
+				"\t<tag>" + "TABINSPACES"
 		);
 
 		List<String> expectedHtml = List.of(
-				"TABINSPACES" + "Line 1</br>",
-				"TABINSPACES" + "TABINSPACES" + "Line 2</br>"
+				"TABINSPACES" + "Line 1<br>",
+				"TABINSPACES" + "TABINHTML" + "Line 2<br>",
+				"TABINSPACES" + "TABINHTML" + "  Line 3<br>",
+				"TABINSPACES" + "  Line 4<br>",
+				"TABINSPACES" + "TABINHTML" + "&lt;tag>" + "TABINHTML<br>"
 		);
 
 		MainHtmlContentPayload actualPayload = htmlGenerators.generateMainContent(
@@ -277,39 +289,39 @@ class HtmlGeneratorsTest {
 	@Test
 	void changeToHtmlCharsInLine() {
 		Assertions.assertEquals(
-				"&lt;tag>" + formulas.getConstant(Formulas.ConstantName.TAB_IN_HTML) + "text" +
-						formulas.getConstant(Formulas.ConstantName.TAB_IN_HTML) + "text>tag2&lt;",
-				htmlGenerators.changeToHtmlCharsInLine("<tag>" +
-						formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "text\ttext>tag2<", formulas));
+				"&lt;tag>" + formulas.getTabInHtml() + "text" +
+						formulas.getTabInHtml() + "text>tag2&lt;",
+				htmlGenerators.changeToHtmlCharsInLine("<tag>" + formulas.getTabInSpaces() +
+						"text\ttext>tag2<", formulas));
 	}
 
 	@Test
 	void collectAndReferencingHeaders() {
 		List<String> html = List.of(
-				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "Text 1<br>",
-				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "Text 2<br>",
-				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "Header 1<br>",
-				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "Header 2<br>",
-				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "<br>",
-				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "<h2>Header 1</h2>",
-				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "Text 3<br>",
-				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "<br>",
-				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "<h3>Header 2</h3>",
-				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "Text 4<br>"
+				formulas.getTabInSpaces() + "Text 1<br>",
+				formulas.getTabInSpaces() + "Text 2<br>",
+				formulas.getTabInSpaces() + "Header 1<br>",
+				formulas.getTabInSpaces() + "Header 2<br>",
+				formulas.getTabInSpaces() + "<br>",
+				formulas.getTabInSpaces() + "<h2>Header 1</h2>",
+				formulas.getTabInSpaces() + "Text 3<br>",
+				formulas.getTabInSpaces() + "<br>",
+				formulas.getTabInSpaces() + "<h3>Header 2</h3>",
+				formulas.getTabInSpaces() + "Text 4<br>"
 		);
 		List<String> needed = List.of(
-				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "Text 1<br>",
-				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "Text 2<br>",
-				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "<a href=\"#Header 1\">" +
-						formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "Header 1</a><br>",
-				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "<a href=\"#Header 2\">" +
-						formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "Header 2</a><br>",
-				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "<br>",
-				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "<h2>Header 1</h2>",
-				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "Text 3<br>",
-				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "<br>",
-				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "<h3>Header 2</h3>",
-				formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES) + "Text 4<br>"
+				formulas.getTabInSpaces() + "Text 1<br>",
+				formulas.getTabInSpaces() + "Text 2<br>",
+				formulas.getTabInSpaces() + "<a href=\"#Header 1\">" +
+						formulas.getTabInSpaces() + "Header 1</a><br>",
+				formulas.getTabInSpaces() + "<a href=\"#Header 2\">" +
+						formulas.getTabInSpaces() + "Header 2</a><br>",
+				formulas.getTabInSpaces() + "<br>",
+				formulas.getTabInSpaces() + "<h2>Header 1</h2>",
+				formulas.getTabInSpaces() + "Text 3<br>",
+				formulas.getTabInSpaces() + "<br>",
+				formulas.getTabInSpaces() + "<h3>Header 2</h3>",
+				formulas.getTabInSpaces() + "Text 4<br>"
 		);
 		Assertions.assertEquals(needed, htmlGenerators.collectAndReferenceHeaders(html, formulas));
 	}

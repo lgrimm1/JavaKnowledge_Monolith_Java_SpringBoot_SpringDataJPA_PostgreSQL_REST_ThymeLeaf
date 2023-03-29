@@ -23,9 +23,11 @@ public class ProcessPage {
 											 Formulas formulas,
 											 Extractors extractors,
 											 HtmlGenerators htmlGenerators) {
+/*
 		text = text.stream()
 				.map(line -> htmlGenerators.changeToHtmlCharsInLine(line, formulas))
 				.toList();
+*/
 		List<String> html = htmlGenerators.generateFirstTags(title, formulas);
 		MainHtmlContentPayload payload = htmlGenerators.generateMainContent(text, formulas, extractors, titleRepository);
 		html.addAll(payload.content());

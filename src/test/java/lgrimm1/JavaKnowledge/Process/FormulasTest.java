@@ -7,41 +7,94 @@ class FormulasTest {
 	Formulas formulas = new Formulas();
 
 	@Test
-	void generateRepeatedPattern() {
-		Assertions.assertEquals("abcXYZabcXYZabcXYZ",
-				formulas.generateRepeatedPattern("abcXYZ", 3));
+	void getSuperLine() {
+		Assertions.assertEquals("=".repeat(81), formulas.getSuperLine());
 	}
 
 	@Test
-	void getFormula() {
+	void getSubLine() {
+		Assertions.assertEquals("-".repeat(81), formulas.getSubLine());
+	}
+
+	@Test
+	void getTabInSpaces() {
+		Assertions.assertEquals(" ".repeat(4), formulas.getTabInSpaces());
+	}
+
+	@Test
+	void getTabInHtml() {
+		Assertions.assertEquals("&nbsp;".repeat(4), formulas.getTabInHtml());
+	}
+
+	@Test
+	void getSpaceInHtml() {
+		Assertions.assertEquals("&nbsp;", formulas.getSpaceInHtml());
+	}
+
+	@Test
+	void getVersions() {
+		Assertions.assertEquals("Up to Java 17, Spring Boot 3 (Hibernate 6), JUnit 5, PostgreSQL 11",
+				formulas.getVersions());
+	}
+	@Test
+	void getFormula_NullName() {
 		Assertions.assertTrue(formulas.getFormula(null).isEmpty());
-		Assertions.assertEquals(formulas.FORMULA_TITLE, formulas.getFormula("TITLE"));
-		Assertions.assertEquals(formulas.FORMULA_TITLE, formulas.getFormula("title"));
-		Assertions.assertEquals(formulas.FORMULA_HEADER_1, formulas.getFormula("HEADER1"));
-		Assertions.assertEquals(formulas.FORMULA_HEADER_1, formulas.getFormula("header1"));
-		Assertions.assertEquals(formulas.FORMULA_HEADER_2, formulas.getFormula("HEADER2"));
-		Assertions.assertEquals(formulas.FORMULA_HEADER_2, formulas.getFormula("header2"));
-		Assertions.assertEquals(formulas.FORMULA_TABLE, formulas.getFormula("TABLE"));
-		Assertions.assertEquals(formulas.FORMULA_TABLE, formulas.getFormula("table"));
-		Assertions.assertEquals(formulas.FORMULA_EXAMPLE, formulas.getFormula("EXAMPLE"));
-		Assertions.assertEquals(formulas.FORMULA_EXAMPLE, formulas.getFormula("example"));
-		Assertions.assertEquals(formulas.FORMULA_REFERENCE, formulas.getFormula("REFERENCE"));
-		Assertions.assertEquals(formulas.FORMULA_REFERENCE, formulas.getFormula("reference"));
-		Assertions.assertEquals(formulas.FORMULA_MORE, formulas.getFormula("MORE"));
-		Assertions.assertEquals(formulas.FORMULA_MORE, formulas.getFormula("more"));
+	}
+
+	@Test
+	void getFormula_NotValidName() {
 		Assertions.assertTrue(formulas.getFormula("xyz").isEmpty());
 	}
 
 	@Test
-	void getConstant() {
-		Assertions.assertEquals(formulas.SUPERLINE, formulas.getConstant(Formulas.ConstantName.SUPERLINE));
-		Assertions.assertEquals(formulas.SUBLINE, formulas.getConstant(Formulas.ConstantName.SUBLINE));
-		Assertions.assertEquals(formulas.TAB_IN_SPACES, formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES));
-		Assertions.assertEquals(formulas.TAB_IN_HTML, formulas.getConstant(Formulas.ConstantName.TAB_IN_HTML));
-		Assertions.assertEquals(
-				formulas.LEVEL_1_SEPARATOR,
-				formulas.getConstant(Formulas.ConstantName.LEVEL_1_SEPARATOR)
-		);
-		Assertions.assertEquals(formulas.VERSIONS, formulas.getConstant(Formulas.ConstantName.VERSIONS));
+	void getFormula_Title() {
+		String expected = "=".repeat(81) + "\nTITLE\n" + "=".repeat(81) + "\n";
+		Assertions.assertEquals(expected, formulas.getFormula("tItLe"));
+	}
+
+	@Test
+	void getFormula_Header1() {
+		String expected = "=".repeat(81) + "\nX. HEADER 1\n" + "=".repeat(81) + "\n";
+		Assertions.assertEquals(expected, formulas.getFormula("hEaDeR1"));
+	}
+
+	@Test
+	void getFormula_Header2() {
+		String expected = "X.Y. HEADER 2\n" + "-".repeat(81) + "\n";
+		Assertions.assertEquals(expected, formulas.getFormula("hEaDeR2"));
+	}
+
+	@Test
+	void getFormula_Table() {
+		String expected = "||Column header 1|Column header 2||\n" +
+				"||Cell 11|Cell 12||\n" +
+				"||Cell 21|Cell 22||\n" +
+				"||...|...||\n";
+		Assertions.assertEquals(expected, formulas.getFormula("tAbLe"));
+	}
+
+	@Test
+	void getFormula_Example() {
+		String expected = "EXAMPLE FOR ...\n" +
+				"<codes>\n" +
+				"END OF EXAMPLE\n";
+		Assertions.assertEquals(expected, formulas.getFormula("eXaMpLe"));
+	}
+
+	@Test
+	void getFormula_Reference() {
+		String expected = "=>file_name.html[;HEADER]";
+		Assertions.assertEquals(expected, formulas.getFormula("rEfErEnCe"));
+	}
+
+	@Test
+	void getFormula_More() {
+		String expected = "MORE HERE: ";
+		Assertions.assertEquals(expected, formulas.getFormula("mOrE"));
+	}
+
+	@Test
+	void generateTabInSpaces() {
+		Assertions.assertEquals(formulas.getTabInSpaces().repeat(3), formulas.generateTabInSpaces(3));
 	}
 }

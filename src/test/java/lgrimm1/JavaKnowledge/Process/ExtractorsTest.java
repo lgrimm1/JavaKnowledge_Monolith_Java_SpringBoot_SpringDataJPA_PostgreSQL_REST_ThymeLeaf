@@ -17,10 +17,20 @@ class ExtractorsTest {
 	@BeforeEach
 	void setUp() {
 		formulas = Mockito.mock(Formulas.class);
-		when(formulas.getConstant(Formulas.ConstantName.TAB_IN_SPACES))
+		when(formulas.getTabInSpaces())
 				.thenReturn("TABINSPACES");
-		when(formulas.getConstant(Formulas.ConstantName.SUPERLINE))
+		when(formulas.getSuperLine())
 				.thenReturn("SUPERLINE");
+		when(formulas.generateTabInSpaces(0))
+				.thenReturn("");
+		when(formulas.generateTabInSpaces(1))
+				.thenReturn("TABINSPACES");
+		when(formulas.generateTabInSpaces(2))
+				.thenReturn("TABINSPACESTABINSPACES");
+		when(formulas.generateTabInSpaces(3))
+				.thenReturn("TABINSPACESTABINSPACESTABINSPACES");
+		when(formulas.generateTabInSpaces(4))
+				.thenReturn("TABINSPACESTABINSPACESTABINSPACESTABINSPACES");
 		titleRepository = Mockito.mock(TitleRepository.class);
 	}
 
@@ -142,10 +152,8 @@ class ExtractorsTest {
 		expectedHtml.add("TABINSPACES" + "TABINSPACES" + "TABINSPACES" + "<td style=\"width: 85%\">");
 		expectedHtml.add("TABINSPACES" + "TABINSPACES" + "TABINSPACES" + "TABINSPACES" +
 				"<textarea class=\"textarea\" onclick=\"element_to_full_size(this)\" readonly>");
-		expectedHtml.add("TABINSPACES" + "TABINSPACES" + "TABINSPACES" + "TABINSPACES" + "TABINSPACES" + 
-				"Line 1" + "<br>");
-		expectedHtml.add("TABINSPACES" + "TABINSPACES" + "TABINSPACES" + "TABINSPACES" + "TABINSPACES" + 
-				"    Line 2" + "<br>");
+		expectedHtml.add("Line 1");
+		expectedHtml.add("    Line 2");
 		expectedHtml.add("TABINSPACES" + "TABINSPACES" + "TABINSPACES" + "TABINSPACES" + "</textarea>");
 		expectedHtml.add("TABINSPACES" + "TABINSPACES" + "TABINSPACES" + "</td>");
 		expectedHtml.add("TABINSPACES" + "TABINSPACES" + "TABINSPACES" + "<td style=\"width: 15%\">");
