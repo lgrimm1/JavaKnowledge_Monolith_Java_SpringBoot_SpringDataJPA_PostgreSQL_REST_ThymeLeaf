@@ -12,8 +12,8 @@ This place here is for the banner.<br>
     <table class="formatter_table">
         <tr>
             <td style="width: 75%">
-                <select size="3">
-                    <option th:each="reference: *{references}" th:text="${reference}" th:value="${reference}" />
+                <select th:field="*{titles}" size="3">
+                    <option th:each="title: *{titles}" th:text="${title}" th:value="${title}" />
                 </select>
                 <br>
             </td>

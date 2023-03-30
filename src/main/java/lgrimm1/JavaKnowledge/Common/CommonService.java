@@ -114,7 +114,7 @@ public class CommonService {
 
 	public ModelAndView getPage(String initialView, List<String> titles) {
 		if (titles == null || titles.size() != 1 || titles.get(0) == null || titles.get(0).isBlank()) {
-			Payload payload = new Payload(
+			Payload payload2 = new Payload(
 					null,
 					null,
 					null,
@@ -127,11 +127,11 @@ public class CommonService {
 					null,
 					processRecords.getAllTitles(titleRepository)
 			);
-			return new ModelAndView("list", "payload", payload);
+			return new ModelAndView("list", "payload", payload2);
 		}
 		Optional<TitleEntity> optionalTitleEntity = titleRepository.findByTitle(titles.get(0));
 		if (optionalTitleEntity.isEmpty()) {
-			Payload payload = new Payload(
+			Payload payload2 = new Payload(
 					null,
 					null,
 					null,
@@ -144,23 +144,39 @@ public class CommonService {
 					null,
 					processRecords.getAllTitles(titleRepository)
 			);
-			return new ModelAndView("list", "payload", payload);
+			return new ModelAndView("list", "payload", payload2);
 		}
 		Optional<HtmlEntity> optionalHtmlEntity = htmlRepository.findById(optionalTitleEntity.get().getHtmlId());
-		Payload payload = new Payload(
+		if (optionalHtmlEntity.isEmpty()) {
+			Payload payload2 = new Payload(
+					null,
+					null,
+					null,
+					null,
+					null,
+					null,
+					null,
+					"<all titles>",
+					null,
+					null,
+					processRecords.getAllTitles(titleRepository)
+			);
+			return new ModelAndView("list", "payload", payload2);
+		}
+		Payload payload2 = new Payload(
 				null,
 				null,
 				null,
 				null,
 				null,
 				null,
-				optionalHtmlEntity.get().getTitleReferences(),
+				null,
 				null,
 				optionalTitleEntity.get().getFilename() + ".html",
-				optionalTitleEntity.get().getTitle(),
-				null
+				null,
+				optionalHtmlEntity.get().getTitleReferences()
 		);
-		return new ModelAndView(initialView, "payload", payload);
+		return new ModelAndView(initialView, "payload", payload2);
 	}
 
 	public ModelAndView managePages(String initialView) {

@@ -28,17 +28,15 @@ Total returned fields: {"titles": [<String>, ...], "searchText": <String>}
 
 "page"
 Received model: payload
-Minimum fields: {"titles": [<String>, ...], "references": [<String>, ...], "staticPageLink": <String>}
+Minimum fields: {"titles": [<String>, ...], "staticPageLink": <String>}
 Item                                        Endpoint            Minimum sent model
 ----------                                  ----------          ----------
 banner                                      GET /               -
-title
 list of references
 "View Page" button                          POST /page          {"titles": <String>}
 "Back" button                               GET /               -
 content of a page in a frame
-Total returned fields: {"titles": [<String>, ...], "references": [<String>, ...], "staticPageLink": <String>}
-HTML attributes: titles, references, static_page_link
+Total returned fields: {"titles": [<String>, ...], "staticPageLink": <String>}
 
 
 "management"

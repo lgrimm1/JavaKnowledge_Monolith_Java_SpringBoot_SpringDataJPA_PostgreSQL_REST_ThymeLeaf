@@ -5,7 +5,6 @@
     "fileName": <String>,
     "files": <String>,
     "message": <String>,
-    "references": [<String>, ...],
     "searchText": <String>,
     "staticPageLink": <String>,
     "title": <String>,

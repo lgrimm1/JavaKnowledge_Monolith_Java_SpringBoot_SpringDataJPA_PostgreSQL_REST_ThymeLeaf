@@ -15,9 +15,9 @@ public class Config {
 	@Bean
 	CommandLineRunner titleCommandLineRunner(TitleRepository repository) {
 		return args -> {
-			TitleEntity entity1 = new TitleEntity("Title 1", "title_1", 1L, 1L);
-			TitleEntity entity2 = new TitleEntity("Title 2", "title_2", 2L, 2L);
-			TitleEntity entity3 = new TitleEntity("Title 3", "title_3", 3L, 3L);
+			TitleEntity entity1 = new TitleEntity("TITLE 1", "title_1", 1L, 1L);
+			TitleEntity entity2 = new TitleEntity("TITLE 2", "title_2", 2L, 2L);
+			TitleEntity entity3 = new TitleEntity("TITLE 3", "title_3", 3L, 3L);
 			repository.saveAll(List.of(entity1, entity2, entity3));
 		};
 	}
