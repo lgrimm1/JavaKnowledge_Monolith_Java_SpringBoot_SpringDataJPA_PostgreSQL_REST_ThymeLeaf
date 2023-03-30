@@ -305,6 +305,10 @@ EXAMPLE FOR SELECT (SCROLL-DOWN, LIST):
 <select id="input_name" th:field="*{fieldName}" size="10">
     <option th:each="item : *{collectionFieldName}" th:value="${item}" th:text="${item}" />
 </select>
+<!-- list, dynamic items, conditional selection: -->
+<select id="input_name" th:field="*{fieldName}" size="10">
+    <option th:each="item : *{collectionFieldName}" th:value="${item.value}" th:text="${item.caption}" th:selected="${item.selected}" />
+</select>
 END OF EXAMPLE
 
 EXAMPLE FOR TEXTAREA:
@@ -341,5 +345,18 @@ EXAMPLE FOR JAVASCRIPT:
         element.style.height = "";
         element.style.height = element.scrollHeight + "px";
     }
+    <!-- select 1st item in <select> on load: - -->
+    window.onload = function() {
+        var s = document.getElementById("titles_list");
+        s.selectedIndex = 0;
+    }
+    <!-- select last item in <select> on load: - -->
+    window.onload = function() {
+        var s = document.getElementById("titles_list");
+        s.selectedIndex = s.options.length - 1;
+    }
 </script>
 END OF EXAMPLE
+
+MORE HERE: https://www.baeldung.com/thymeleaf-select-option
+MORE HERE: https://o7planning.org/11659/thymeleaf-form-select-option
