@@ -21,7 +21,7 @@ Views:
     b. one title can be selected
 
 "Page" view:
-    a. all references are collected into a side box on the right side
+    a. all references are collected into a side box or a list ay the top
     b. all headers are collected to the top rows of content
     c. all references are collected to the last rows of content
     d. the content is shown in a frame

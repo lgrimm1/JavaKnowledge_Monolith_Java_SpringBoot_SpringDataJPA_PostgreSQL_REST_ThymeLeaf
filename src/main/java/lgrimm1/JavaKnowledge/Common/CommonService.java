@@ -50,7 +50,20 @@ public class CommonService {
 	}
 
 	public ModelAndView getRoot(String initialView) {
-		return new ModelAndView(initialView, "payload", new Payload(""));
+		Payload payload = new Payload(
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				"",
+				null,
+				null,
+				null
+		);
+		return new ModelAndView(initialView, "payload", payload);
 	}
 
 	/**
@@ -61,7 +74,19 @@ public class CommonService {
 	 */
 	public ModelAndView searchPages(String initialView, Payload payload) {
 		if (payload == null || payload.getSearchText() == null || payload.getSearchText().isBlank()) {
-			Payload payload2 = new Payload(processRecords.getAllTitles(titleRepository), "<all titles>");
+			Payload payload2 = new Payload(
+					null,
+					null,
+					null,
+					null,
+					null,
+					null,
+					null,
+					"<all titles>",
+					null,
+					null,
+					processRecords.getAllTitles(titleRepository)
+			);
 			return new ModelAndView(initialView, "payload", payload2);
 		}
 		List<String> titles = processRecords.searchBySearchText(
@@ -71,30 +96,71 @@ public class CommonService {
 				.stream()
 				.sorted()
 				.toList();
-		Payload payload2 = new Payload(titles, payload.getSearchText());
+		Payload payload2 = new Payload(
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				payload.getSearchText(),
+				null,
+				null,
+				titles
+		);
 		return new ModelAndView(initialView, "payload", payload2);
 	}
 
 	public ModelAndView getPage(String initialView, List<String> titles) {
 		if (titles == null || titles.size() != 1 || titles.get(0) == null || titles.get(0).isBlank()) {
-			ModelAndView modelAndView = new ModelAndView("list");
-			modelAndView.addObject("search_text", "<all titles>");
-			modelAndView.addObject("titles", processRecords.getAllTitles(titleRepository));
-			return modelAndView;
+			Payload payload = new Payload(
+					null,
+					null,
+					null,
+					null,
+					null,
+					null,
+					null,
+					"<all titles>",
+					null,
+					null,
+					processRecords.getAllTitles(titleRepository)
+			);
+			return new ModelAndView("list", "payload", payload);
 		}
 		Optional<TitleEntity> optionalTitleEntity = titleRepository.findByTitle(titles.get(0));
 		if (optionalTitleEntity.isEmpty()) {
-			ModelAndView modelAndView = new ModelAndView("list");
-			modelAndView.addObject("search_text", "<all titles>");
-			modelAndView.addObject("titles", processRecords.getAllTitles(titleRepository));
-			return modelAndView;
+			Payload payload = new Payload(
+					null,
+					null,
+					null,
+					null,
+					null,
+					null,
+					null,
+					"<all titles>",
+					null,
+					null,
+					processRecords.getAllTitles(titleRepository)
+			);
+			return new ModelAndView("list", "payload", payload);
 		}
-		ModelAndView modelAndView = new ModelAndView(initialView);
-		modelAndView.addObject("title", optionalTitleEntity.get().getTitle());
 		Optional<HtmlEntity> optionalHtmlEntity = htmlRepository.findById(optionalTitleEntity.get().getHtmlId());
-		modelAndView.addObject("references", optionalHtmlEntity.get().getTitleReferences());
-		modelAndView.addObject("static_page_link", optionalTitleEntity.get().getFilename() + ".html");
-		return modelAndView;
+		Payload payload = new Payload(
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				optionalHtmlEntity.get().getTitleReferences(),
+				null,
+				optionalTitleEntity.get().getFilename() + ".html",
+				optionalTitleEntity.get().getTitle(),
+				null
+		);
+		return new ModelAndView(initialView, "payload", payload);
 	}
 
 	public ModelAndView managePages(String initialView) {

@@ -1,42 +1,43 @@
 Views
 ------------------------
 "root"
-Minimum received model: -
+Received model: "payload"
+Minimum fields: {}
 Item                                        Endpoint            Minimum sent model
 ----------                                  ----------          ----------
-banner                                      GET /root           -
+banner                                      GET /               -
 search text field
 "Search" button                             POST /search        {"searchText": <String>}
 static links to pages                       -                   -
 "Management" button                         POST /management    -
-Full model: {"searchText": <String>}
-HTML attributes: search_text
+Total returned fields: {"searchText": <String>}
 
 
 "list"
-Minimum received model: {"titles": [<String>, ...], "search_text": <String>}
+Received model: payload
+Minimum fields: {"titles": [<String>, ...], "searchText": <String>}
 Item                                        Endpoint            Minimum sent model
 ----------                                  ----------          ----------
-banner                                      GET /root           -
+banner                                      GET /               -
 text of search text
 list of filtered titles
 "View Page" button                          POST /page          {"titles": <String>}
-"Back" button                               GET /root           -
-Full model: {"titles": [<String>, ...], "search_text": <String>}
-HTML attributes: titles, search_text
+"Back" button                               GET /               -
+Total returned fields: {"titles": [<String>, ...], "searchText": <String>}
 
 
 "page"
-Minimum received model: {"titles": [<String>, ...], "references": [<String>, ...], "staticPageLink": <String>}
+Received model: payload
+Minimum fields: {"titles": [<String>, ...], "references": [<String>, ...], "staticPageLink": <String>}
 Item                                        Endpoint            Minimum sent model
 ----------                                  ----------          ----------
-banner                                      GET /root           -
+banner                                      GET /               -
 title
 list of references
 "View Page" button                          POST /page          {"titles": <String>}
-"Back" button                               GET /root           -
+"Back" button                               GET /               -
 content of a page in a frame
-Full model: {"titles": [<String>, ...], "references": [<String>, ...], "staticPageLink": <String>}
+Total returned fields: {"titles": [<String>, ...], "references": [<String>, ...], "staticPageLink": <String>}
 HTML attributes: titles, references, static_page_link
 
 
@@ -44,7 +45,7 @@ HTML attributes: titles, references, static_page_link
 Minimum received model: {"titles": [<String>, ...], "message": <String>}
 Item                                        Endpoint            Minimum sent model
 ----------                                  ----------          ----------
-banner                                      GET /root           -
+banner                                      GET /               -
 message text field
 list of all titles
 "New Source Page" button                    POST /source/new    -
@@ -54,7 +55,7 @@ list of all titles
 "Generate Pages from Sources" button        POST /generate      -
 "Publish Static Pages" button               POST /publish       -
 "Import TXT Source Files"                   POST /import        {"files": <String>, "confirm": <boolean>}
-"Back" button                               GET /root           -
+"Back" button                               GET /               -
 Full model: {"titles": [<String>, ...], "files": <String>, "confirm": <boolean>, "message": <String>}
 HTML attributes: titles, files, confirm, message
 
@@ -63,7 +64,7 @@ HTML attributes: titles, files, confirm, message
 Minimum received model: {"title": <String>, "fileName": <String>, "content": [<String>, ...], "editExistingPage": <boolean>, "message": <String>}
 Item                                        Endpoint            Minimum sent model
 ----------                                  ----------          ----------
-banner                                      GET /root           -
+banner                                      GET /               -
 title text field
 filename text field
 message text field

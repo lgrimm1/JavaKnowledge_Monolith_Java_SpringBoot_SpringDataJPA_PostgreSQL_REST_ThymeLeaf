@@ -7,22 +7,22 @@
 </head>
 <body>
 This place here is for the banner.<br>
-<h1>LIST OF TITLES</h1>
-Select a title or go back for new search.<br>
-<h4>SEARCH CRITERIA: <label th:text="${payload.message}" /></h4>
-<br>
 <form action="#" th:object="${payload}" th:action="@{/page}" method="post" novalidate>
+    <h1>LIST OF TITLES</h1>
+    Select a title or go back for a new search.<br>
+    <h4>SEARCH CRITERIA: <label th:text="*{searchText}" /></h4>
+    <br>
     <table class="formatter_table">
         <tr>
             <td style="width: 75%">
-                <select size="10" autofocus>
+                <select th:field="*{titles}" size="10" autofocus>
                     <option th:each="title: *{titles}" th:text="${title}" th:value="${title}" />
                 </select>
                 <br>
             </td>
             <td style="width: 25%">
                 <input type="submit" value="VIEW PAGE" class="button" formaction="/page" formmethod="post" /><br>
-                <input type="submit" value="BACK" class="button" formaction="/root" formmethod="get" />
+                <input type="submit" value="BACK" class="button" formaction="/" formmethod="get" />
             </td>
         </tr>
     </table>

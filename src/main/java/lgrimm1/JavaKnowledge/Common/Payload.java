@@ -4,21 +4,22 @@ import java.util.*;
 
 public class Payload {
 
-	private Boolean confirm;
-	private List<String> content;
-	private Boolean editExistingPage;
-	private String fileName;
-	private String files;
-	private String message;
-	private List<String> references;
-	private String searchText;
-	private String staticPageLink;
-	private String title;
-	private List<String> titles;
+	public Boolean confirm;
+	public List<String> content;
+	public Boolean editExistingPage;
+	public String fileName;
+	public String files;
+	public String message;
+	public List<String> references;
+	public String searchText;
+	public String staticPageLink;
+	public String title;
+	public List<String> titles;
 
 	public Payload() {
 	}
 
+/*
 	public Payload(String searchText) {
 		this.searchText = searchText;
 	}
@@ -54,6 +55,7 @@ public class Payload {
 		this.message = message;
 		this.title = title;
 	}
+*/
 
 	public Payload(Boolean confirm,
 				   List<String> content,
@@ -198,5 +200,22 @@ public class Payload {
 				staticPageLink,
 				title,
 				titles);
+	}
+
+	@Override
+	public String toString() {
+		return "Payload{" +
+				"confirm=" + confirm +
+				", content=" + content +
+				", editExistingPage=" + editExistingPage +
+				", fileName='" + fileName + '\'' +
+				", files='" + files + '\'' +
+				", message='" + message + '\'' +
+				", references=" + references +
+				", searchText='" + searchText + '\'' +
+				", staticPageLink='" + staticPageLink + '\'' +
+				", title='" + title + '\'' +
+				", titles=" + titles +
+				'}';
 	}
 }

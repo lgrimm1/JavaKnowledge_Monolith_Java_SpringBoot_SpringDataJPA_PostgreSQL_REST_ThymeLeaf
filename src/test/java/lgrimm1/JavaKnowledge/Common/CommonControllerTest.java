@@ -34,7 +34,7 @@ class CommonControllerTest {
 
 		mockMvc
 				.perform(
-						get("/root")
+						get("/")
 				)
 				.andExpect(status().isOk())
 				.andDo(print())
