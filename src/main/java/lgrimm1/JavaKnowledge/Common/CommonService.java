@@ -57,7 +57,6 @@ public class CommonService {
 				null,
 				null,
 				null,
-				null,
 				"",
 				null,
 				null,
@@ -75,7 +74,6 @@ public class CommonService {
 	public ModelAndView searchPages(String initialView, Payload payload) {
 		if (payload == null || payload.getSearchText() == null || payload.getSearchText().isBlank()) {
 			Payload payload2 = new Payload(
-					null,
 					null,
 					null,
 					null,
@@ -103,7 +101,6 @@ public class CommonService {
 				null,
 				null,
 				null,
-				null,
 				payload.getSearchText(),
 				null,
 				null,
@@ -115,7 +112,6 @@ public class CommonService {
 	public ModelAndView getPage(String initialView, List<String> titles) {
 		if (titles == null || titles.size() != 1 || titles.get(0) == null || titles.get(0).isBlank()) {
 			Payload payload2 = new Payload(
-					null,
 					null,
 					null,
 					null,
@@ -138,7 +134,6 @@ public class CommonService {
 					null,
 					null,
 					null,
-					null,
 					"<all titles>",
 					null,
 					null,
@@ -155,7 +150,6 @@ public class CommonService {
 					null,
 					null,
 					null,
-					null,
 					"<all titles>",
 					null,
 					null,
@@ -164,7 +158,6 @@ public class CommonService {
 			return new ModelAndView("list", "payload", payload2);
 		}
 		Payload payload2 = new Payload(
-				null,
 				null,
 				null,
 				null,

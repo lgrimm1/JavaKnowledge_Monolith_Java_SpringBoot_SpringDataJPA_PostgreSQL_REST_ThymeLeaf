@@ -15,7 +15,7 @@ This place here is for the banner.<br>
     <table class="formatter_table">
         <tr>
             <td style="width: 75%">
-                <select th:field="*{titles}" size="10" autofocus>
+                <select id="titles_list" th:field="*{titles}" size="10" autofocus>
                     <option th:each="title: *{titles}" th:text="${title}" th:value="${title}" />
                 </select>
                 <br>
@@ -28,5 +28,14 @@ This place here is for the banner.<br>
     </table>
     <br>
 </form>
+<script>
+    window.onload = function() {
+    var s = document.getElementById("titles_list");
+<!--
+    s.selectedIndex = s.options.length - 1;
+-->
+    s.selectedIndex = 0;
+    }
+</script>
 </body>
 </html>

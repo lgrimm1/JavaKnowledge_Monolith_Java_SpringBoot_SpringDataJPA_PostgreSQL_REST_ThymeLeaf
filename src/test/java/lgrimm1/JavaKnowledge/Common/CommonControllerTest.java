@@ -27,7 +27,18 @@ class CommonControllerTest {
 
 	@Test
 	void getRoot() throws Exception {
-		Payload payload = new Payload("text");
+		Payload payload = new Payload(
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				"text",
+				null,
+				null,
+				null
+		);
 		ModelAndView modelAndView = new ModelAndView("root", "payload", payload);
 		when(commonService.getRoot("root"))
 				.thenReturn(modelAndView);
@@ -47,9 +58,31 @@ class CommonControllerTest {
 	void searchPages() throws Exception {
 		String searchText = "text to search";
 		List<String> titles = List.of("Title 1", "Title 2");
-		Payload payload = new Payload(searchText);
+		Payload payload = new Payload(
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				searchText,
+				null,
+				null,
+				null
+		);
 
-		Payload payload2 = new Payload(titles, searchText);
+		Payload payload2 = new Payload(
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				searchText,
+				null,
+				null,
+				titles
+		);
 		ModelAndView modelAndView = new ModelAndView("list", "payload", payload2);
 		when(commonService.searchPages("list", payload))
 				.thenReturn(modelAndView);
@@ -138,7 +171,18 @@ class CommonControllerTest {
 		String files = "";
 		Boolean confirm = false;
 		String message = "message text";
-		Payload receivedPayload = new Payload(confirm, files, message, titles);
+		Payload receivedPayload = new Payload(
+				confirm,
+				null,
+				null,
+				null,
+				files,
+				message,
+				null,
+				null,
+				null,
+				titles
+		);
 
 		String title = "Title 1";
 		String filename = "title_1";
@@ -176,7 +220,18 @@ class CommonControllerTest {
 		String files = "";
 		Boolean confirm = true;
 		String message = "message text";
-		Payload receivedPayload = new Payload(confirm, files, message, titles);
+		Payload receivedPayload = new Payload(
+				confirm,
+				null,
+				null,
+				null,
+				files,
+				message,
+				null,
+				null,
+				null,
+				titles
+		);
 
 		List<String> titles2 = List.of("Title 4", "Title 3");
 		String files2 = "";
@@ -240,7 +295,18 @@ class CommonControllerTest {
 		List<String> content = List.of("Line 1", "Line 2");
 		Boolean editExistingPage = true;
 		String message = "message text";
-		Payload receivedPayload = new Payload(content, editExistingPage, filename, message, title);
+		Payload receivedPayload = new Payload(
+				null,
+				content,
+				editExistingPage,
+				filename,
+				null,
+				message,
+				null,
+				null,
+				title,
+				null
+		);
 
 		String title2 = "Title 1";
 		String filename2 = "title_1";
@@ -279,7 +345,18 @@ class CommonControllerTest {
 		Boolean editExistingPage = false;
 		List<String> content = List.of("Line 1", "Line 2");
 		String message = "message text";
-		Payload receivedPayload = new Payload(content, editExistingPage, filename, message, title);
+		Payload receivedPayload = new Payload(
+				null,
+				content,
+				editExistingPage,
+				filename,
+				null,
+				message,
+				null,
+				null,
+				title,
+				null
+		);
 
 		String title2 = "Title 1";
 		String filename2 = "title_1";
@@ -317,7 +394,18 @@ class CommonControllerTest {
 		String files = "file_3;file_4";
 		Boolean confirm = true;
 		String message = "message text";
-		Payload receivedPayload = new Payload(confirm, files, message, titles);
+		Payload receivedPayload = new Payload(
+				confirm,
+				null,
+				null,
+				null,
+				files,
+				message,
+				null,
+				null,
+				null,
+				titles
+		);
 
 		List<String> titles2 = List.of("Title 1", "Title 2", "Title 3", "Title 4");
 		String files2 = "";
@@ -352,7 +440,18 @@ class CommonControllerTest {
 		String files = "";
 		Boolean confirm = true;
 		String message = "message text";
-		Payload receivedPayload = new Payload(confirm, files, message, titles);
+		Payload receivedPayload = new Payload(
+				confirm,
+				null,
+				null,
+				null,
+				files,
+				message,
+				null,
+				null,
+				null,
+				titles
+		);
 
 		List<String> titles2 = List.of("Title 1", "Title 2");
 		String files2 = "";

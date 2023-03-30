@@ -57,7 +57,18 @@ class CommonServiceTest {
 
 	@Test
 	void getRoot() {
-		Payload payload = new Payload("");
+		Payload payload = new Payload(
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				"",
+				null,
+				null,
+				null
+		);
 		Map<String, Object> model = new HashMap<>();
 		model.put("payload", payload);
 
@@ -72,7 +83,18 @@ class CommonServiceTest {
 		when(processRecords.getAllTitles(titleRepository))
 				.thenReturn(titles);
 
-		Payload payload = new Payload(titles, "<all titles>");
+		Payload payload = new Payload(
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				"<all titles>",
+				null,
+				null,
+				titles
+		);
 		Map<String, Object> model = new HashMap<>();
 		model.put("payload", payload);
 
@@ -88,11 +110,34 @@ class CommonServiceTest {
 		when(processRecords.getAllTitles(titleRepository))
 				.thenReturn(titles);
 
-		Payload payload = new Payload(titles, "<all titles>");
+		Payload payload = new Payload(
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				"<all titles>",
+				null,
+				null,
+				titles
+		);
 		Map<String, Object> model = new HashMap<>();
 		model.put("payload", payload);
 
-		ModelAndView modelAndView = commonService.searchPages("list", new Payload(null));
+		Payload payload2 = new Payload(
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null
+		);
+		ModelAndView modelAndView = commonService.searchPages("list", payload2);
 
 		ModelAndViewAssert.assertViewName(modelAndView, "list");
 		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
@@ -104,11 +149,34 @@ class CommonServiceTest {
 		when(processRecords.getAllTitles(titleRepository))
 				.thenReturn(titles);
 
-		Payload payload = new Payload(titles, "<all titles>");
+		Payload payload = new Payload(
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				"<all titles>",
+				null,
+				null,
+				titles
+		);
 		Map<String, Object> model = new HashMap<>();
 		model.put("payload", payload);
 
-		ModelAndView modelAndView = commonService.searchPages("list", new Payload("  "));
+		Payload payload2 = new Payload(
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				"  ",
+				null,
+				null,
+				null
+		);
+		ModelAndView modelAndView = commonService.searchPages("list", payload2);
 
 		ModelAndViewAssert.assertViewName(modelAndView, "list");
 		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
@@ -117,14 +185,36 @@ class CommonServiceTest {
 	@Test
 	void searchPages_ExistingSearchText() {
 		String searchText = "Word2 Word1";
-		Payload payload = new Payload(searchText);
+		Payload payload = new Payload(
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				searchText,
+				null,
+				null,
+				null
+		);
 
 		Set<String> titlesSet = Set.of("Title 2", "Title 1");
 		when(processRecords.searchBySearchText(searchText, titleRepository, txtRepository))
 				.thenReturn(titlesSet);
 
 		List<String> titles = List.of("Title 1", "Title 2");
-		Payload payload2 = new Payload(titles, searchText);
+		Payload payload2 = new Payload(
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				searchText,
+				null,
+				null,
+				titles
+		);
 		Map<String, Object> model = new HashMap<>();
 		model.put("payload", payload2);
 

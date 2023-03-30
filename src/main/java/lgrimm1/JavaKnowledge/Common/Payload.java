@@ -10,7 +10,6 @@ public class Payload {
 	public String fileName;
 	public String files;
 	public String message;
-	public List<String> references;
 	public String searchText;
 	public String staticPageLink;
 	public String title;
@@ -63,7 +62,6 @@ public class Payload {
 				   String fileName,
 				   String files,
 				   String message,
-				   List<String> references,
 				   String searchText,
 				   String staticPageLink,
 				   String title,
@@ -74,7 +72,6 @@ public class Payload {
 		this.fileName = fileName;
 		this.files = files;
 		this.message = message;
-		this.references = references;
 		this.searchText = searchText;
 		this.staticPageLink = staticPageLink;
 		this.title = title;
@@ -129,14 +126,6 @@ public class Payload {
 		this.message = message;
 	}
 
-	public List<String> getReferences() {
-		return references;
-	}
-
-	public void setReferences(List<String> references) {
-		this.references = references;
-	}
-
 	public String getSearchText() {
 		return searchText;
 	}
@@ -180,7 +169,6 @@ public class Payload {
 				Objects.equals(fileName, payload.fileName) &&
 				Objects.equals(files, payload.files) &&
 				Objects.equals(message, payload.message) &&
-				Objects.equals(references, payload.references) &&
 				Objects.equals(searchText, payload.searchText) &&
 				Objects.equals(staticPageLink, payload.staticPageLink) &&
 				Objects.equals(title, payload.title) &&
@@ -195,7 +183,6 @@ public class Payload {
 				fileName,
 				files,
 				message,
-				references,
 				searchText,
 				staticPageLink,
 				title,
@@ -211,7 +198,6 @@ public class Payload {
 				", fileName='" + fileName + '\'' +
 				", files='" + files + '\'' +
 				", message='" + message + '\'' +
-				", references=" + references +
 				", searchText='" + searchText + '\'' +
 				", staticPageLink='" + staticPageLink + '\'' +
 				", title='" + title + '\'' +
