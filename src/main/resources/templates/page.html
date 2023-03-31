@@ -7,6 +7,8 @@
 </head>
 <body>
 This place here is for the banner.<br>
+<h1>A PAGE OF KNOWLEDGE</h1>
+Navigate in the page, select a title from the list to jump.<br>
 <br>
 <form action="#" th:object="${payload}" th:action="@{/page}" method="post" novalidate>
     <table class="formatter_table">
@@ -18,8 +20,8 @@ This place here is for the banner.<br>
                 <br>
             </td>
             <td style="width: 25%">
-                <input type="submit" value="VIEW PAGE" class="button" formaction="/page" formmethod="post" /><br>
-                <input type="submit" value="BACK" class="button" formaction="/" formmethod="get" />
+                <input type="submit" value="VIEW PAGE" formaction="/page" formmethod="post" /><br>
+                <input type="submit" value="BACK" formaction="/" formmethod="get" />
             </td>
         </tr>
     </table>
@@ -30,11 +32,8 @@ This place here is for the banner.<br>
 </form>
 <script>
     window.onload = function() {
-    var s = document.getElementById("reference_list");
-<!--
-    s.selectedIndex = s.options.length - 1;
--->
-    s.selectedIndex = 0;
+        var s = document.getElementById("reference_list");
+        s.selectedIndex = 0;
     }
 </script>
 </body>

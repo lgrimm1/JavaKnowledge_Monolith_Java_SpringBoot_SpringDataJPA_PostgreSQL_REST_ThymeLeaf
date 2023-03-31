@@ -4,28 +4,40 @@ body {
     color: LightGray;
     text-align: left;
 }
+
 .formatter_table {
     width: 100%;
     text-align: center;
 }
+
 h1 {
     font-size: 200%;
     text-align: center;
 }
+
 h2 {
     font-size: 170%;
 }
+
 h3 {
     font-size: 140%;
 }
+
 h4 {
     font-size: 100%;
     color: DarkGray;
 }
+
 a {
     font-size: 100%;
     color: LightGray;
 }
+
+.message {
+    color: DarkRed;
+    text-align: center;
+}
+
 textarea {
     width: 99%;
     border-radius: 6px;
@@ -34,6 +46,7 @@ textarea {
     font-size: 90%;
     color: DarkSlateGray;
 }
+
 /*
 .table {
     border: 1px solid DarkGray;
@@ -48,6 +61,7 @@ textarea {
     padding: 3px;
 }
 */
+
 .table {
     border: 1px solid DarkGray;
     border-collapse: separate;
@@ -55,27 +69,55 @@ textarea {
     text-align: center;
     border-radius: 6px;
 }
+
 .table_td, .table_th {
     border-left: 1px solid DarkGray;
     border-top: 1px solid DarkGray;
     text-align: center;
     padding: 3px;
 }
+
 .table_th {
     border-top: none;
 }
+
 .table_th:first-child, .table_td:first-child {
      border-left: none;
 }
-input.search {
+
+input[type="search"] {
     height: 25px;
     width: 90%;
     border-radius: 6px;
     background-color: LightGray;
     font-family: Roboto;
     font-size: 90%;
+    text-align: center;
     color: DarkSlateGray;
 }
+
+input[type="file"] {
+    display: none;
+}
+
+.custom_file_upload {
+    display: inline-block;
+    height: 32px;
+    width: 90%;
+    border: 1px solid;
+    border-radius: 6px;
+    background-color: LightGray;
+    font-family: Roboto;
+    font-size: 90%;
+/*
+    vertical-align: middle;
+    padding: 10px 0px;
+*/
+    line-height: 32px;
+    color: DarkSlateGray;
+    cursor: pointer;
+}
+
 select {
     width: 100%;
     border-radius: 6px;
@@ -84,14 +126,16 @@ select {
     font-size: 90%;
     color: DarkSlateGray;
 }
+
 option:hover {
     color: LightGray;
     background-color: DarkGray;
 }
-input.button {
+
+input[type="submit"] {
     height: 32px;
     width: 90%;
-    border: 1;
+    border: 1px solid;
     border-radius: 6px;
     background-color: LightGray;
     font-family: Roboto;
