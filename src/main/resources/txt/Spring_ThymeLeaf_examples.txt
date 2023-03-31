@@ -18,17 +18,18 @@ SPRING THYMELEAF EXAMPLES
 The ThymeLeaf HTML tags are in the next order below:
     a. banner
     b. blockquote
-    c. favicon
-    d. fieldset
-    e. form
-    f. formatting (bold, italics, strong, code, quotation etc.)
-    g. image
-    h. label
-    i. paragraph
-    j. reference
-    k. span
-    l. table (formatting-purpose)
-    m. table (data-purpose)
+    c. div
+    e. favicon
+    f. fieldset
+    g. form
+    h. formatting (bold, italics, strong, code, quotation etc.)
+    i. image
+    j. label
+    k. paragraph
+    l. reference
+    m. span
+    n. table (formatting-purpose)
+    o. table (data-purpose)
 
 For all tags, optional parameters:
     width="width_value" height="height_value" style="style data" class="style_name" on...="script_method(this)"
@@ -46,6 +47,21 @@ EXAMPLE FOR BLOCKQUOTE:
 <blockquote cite="source_url">
     <span th:each="line : *{collectionFieldName}" th:text="${line}" />
 </blockquote>
+END OF EXAMPLE
+
+EXAMPLE FOR DIV:
+<!-- one div, text: -->
+<div th:text="*{fieldName}" />
+<!-- one div, HTML code: -->
+<div th:utext="*{fieldName}" />
+<!-- more divs from collection, text: -->
+<wrapping_tag>
+    <div th:each="div : *{collectionFieldName}" th:text="${div}" />
+</wrapping_tag>
+<!-- more divs from collection, HTML code: -->
+<wrapping_tag>
+    <div th:each="div : *{collectionFieldName}" th:utext="${div}" />
+</wrapping_tag>
 END OF EXAMPLE
 
 EXAMPLE FOR FAVICON:

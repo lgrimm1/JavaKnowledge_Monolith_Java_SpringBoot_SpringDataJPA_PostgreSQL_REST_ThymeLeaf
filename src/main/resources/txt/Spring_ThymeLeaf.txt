@@ -90,11 +90,12 @@ The for= parameter marks that by its name, the control is for which other contro
 
 The template tag parameters can be:
     a. th:text= (a text)
-    b. th:each= (iteration through a collection)
-    c. th:if= (if the condition is true, does a thing)
-    d. th:unless= (if the condition is false, does a thing)
-    e. th:switch= (multiple condition for enumerable-type attribute)
-    f. th:case= (given variant for switched attribute)
+    b. th:utext= (a text interpreted as HTML code)
+    c. th:each= (iteration through a collection)
+    d. th:if= (if the condition is true, does a thing)
+    e. th:unless= (if the condition is false, does a thing)
+    f. th:switch= (multiple condition for enumerable-type attribute)
+    g. th:case= (given variant for switched attribute)
 
 Any variable can be sent in a template, ThymeLeaf recognizes all wrapper classes and theoretically all Collection types. It also can handle classes with subclasses. In order to send a primitive type to a template, convert it to wrapper class. Enums can be used only with tags which are designed to handle limited values e.g. radio input (see later), otherwise use String instead.
 A variable carrying data in the template is called HTML attribute. Its name can be different from Java variable name, the connection is made by the Model or ModelAndView classes in Spring Boot, see later.
@@ -118,12 +119,13 @@ General access:
     th:text="${attribute_name}"
     th:text="${attribute_name.fieldName}"
     th:text="*{fieldName}"
-Please note, th:text= is for printing out data while th:object= and th:field= are for printing out and-or returning data (see forms later).
+Please note, th:text= and th:utext= are for printing out data while th:object= and th:field= are for printing out and-or returning data (see forms later).
 
 EXAMPLE FOR A THYMELEAF TEMPLATE (JAVA SIDE, VARIABLES):
 //single variables
 String firstName;
 Integer retirementAge;
+String htmlCode;
 
 //subclasses-in-a-class type
 enum GenderType {
@@ -132,6 +134,7 @@ enum GenderType {
 class Person implements Serializable {
     String lastName;
     Integer age;
+    String htmlCode;
     Character gender;
     GenderType genderType;
     //constructors, getters-setters
@@ -146,6 +149,7 @@ List<Person> personList = ...;
 //add data by variables, literals or objects, to a Model or ModelAndView
 model.addAttribute("first_name", firstName);
 model.addAttribute("retirement_age", retirementAge);
+model.addAttribute("html_code", htmlCode);
 model.addAttribute("person", person);
 model.addAttribute("person_list", personList);
 END OF EXAMPLE
@@ -163,9 +167,11 @@ EXAMPLE FOR A THYMELEAF TEMPLATE (HTML SIDE, ATTRIBUTES):
 <!-- single attributes: -->
 <p th:text="'Hello, ' + ${name} + '!'" />
 <span th:text="'Retirement age: ' + ${retirement_age}" />
+<div th:utext="${html_code}" />
 <!-- subclasses-in-a-class attribute: -->
 <p th:text="'Name: ' + ${person.lastName}" />
 <p th:text="'Age: ' + ${person.age}" />
+<div th:utext="${person.htmlCode}" />
 <table>
     <tr>
         <th>NAME</th><th>AGE</th><th>RETIRED</th>
@@ -174,6 +180,7 @@ EXAMPLE FOR A THYMELEAF TEMPLATE (HTML SIDE, ATTRIBUTES):
     <tr th:each="person: ${person_list}">
         <td th:text="${person.name}"/>
         <td th:text="${person.age}"/>
+        <div th:utext="${person.htmlCode}" />
         <!-- conditional attribute: -->
         <td>
             <span th:if="${person.age} >= ${retirement_age}" th:text="'YES'"/>
@@ -379,5 +386,7 @@ In case an input is not filled by the user, the form will send a null rendered t
 =================================================================================
 Visit the SPRING THYMELEAF EXAMPLES page for examples.
 
+MORE HERE: https://www.javatpoint.com/spring-boot-thymeleaf-view
+MORE HERE: https://stackoverflow.com/questions/28325708/thymeleaf-how-to-pass-html-to-the-div
 MORE HERE: https://www.baeldung.com/spring-boot-crud-thymeleaf
 MORE HERE: https://www.baeldung.com/spring-thymeleaf-error-messages
