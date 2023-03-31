@@ -40,7 +40,8 @@ Total returned fields: {"titles": [<String>, ...], "staticPageLink": <String>}
 
 
 "management"
-Minimum received model: {"titles": [<String>, ...], "message": <String>}
+Received model: payload
+Minimum fields: {"titles": [<String>, ...], "message": <String>}
 Item                                        Endpoint            Minimum sent model
 ----------                                  ----------          ----------
 banner                                      GET /               -
@@ -54,12 +55,12 @@ list of all titles
 "Publish Static Pages" button               POST /publish       -
 "Import TXT Source Files"                   POST /import        {"files": <String>, "confirm": <boolean>}
 "Back" button                               GET /               -
-Full model: {"titles": [<String>, ...], "files": <String>, "confirm": <boolean>, "message": <String>}
-HTML attributes: titles, files, confirm, message
+Total returned fields: {"titles": [<String>, ...], "files": <String>, "confirm": <boolean>, "message": <String>}
 
 
 "source"
-Minimum received model: {"title": <String>, "fileName": <String>, "content": [<String>, ...], "editExistingPage": <boolean>, "message": <String>}
+Received model: payload
+Minimum fields: {"title": <String>, "fileName": <String>, "content": [<String>, ...], "editExistingPage": <boolean>, "message": <String>}
 Item                                        Endpoint            Minimum sent model
 ----------                                  ----------          ----------
 banner                                      GET /               -
@@ -75,5 +76,4 @@ content multi-row text field
 "Append External Reference" button          POST /add/reference {"title": <String>, "fileName": <String>, "content": [<String>, ...], "editExistingPage": <boolean>}
 "Save" button                               POST /save          {"title": <String>, "fileName": <String>, "content": [<String>, ...], "editExistingPage": <boolean>}
 "Back" button                               POST /management    -
-Full model: {"title": <String>, "fileName": <String>, "content": [<String>, ...], "editExistingPage": <boolean>, "message": <String>}
-HTML attributes: title, file_name, content, edit_existing_page, message
+Total returned fields: {"title": <String>, "fileName": <String>, "content": [<String>, ...], "editExistingPage": <boolean>, "message": <String>}
