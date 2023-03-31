@@ -57,9 +57,20 @@ class CommonServiceGetPageTest {
 		when(processRecords.getAllTitles(titleRepository))
 				.thenReturn(titles);
 
+		Payload expectedPayload = new Payload(
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				"<all titles>",
+				null,
+				null,
+				titles
+		);
 		Map<String, Object> map = new HashMap<>();
-		map.put("search_text", "<all titles>");
-		map.put("titles", titles);
+		map.put("payload", expectedPayload);
 
 		ModelAndView modelAndView = commonService.getPage("page", null);
 
@@ -73,9 +84,20 @@ class CommonServiceGetPageTest {
 		when(processRecords.getAllTitles(titleRepository))
 				.thenReturn(titles);
 
+		Payload expectedPayload = new Payload(
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				"<all titles>",
+				null,
+				null,
+				titles
+		);
 		Map<String, Object> map = new HashMap<>();
-		map.put("search_text", "<all titles>");
-		map.put("titles", titles);
+		map.put("payload", expectedPayload);
 
 		ModelAndView modelAndView = commonService.getPage("page", new ArrayList<>());
 
@@ -89,9 +111,20 @@ class CommonServiceGetPageTest {
 		when(processRecords.getAllTitles(titleRepository))
 				.thenReturn(titles);
 
+		Payload expectedPayload = new Payload(
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				"<all titles>",
+				null,
+				null,
+				titles
+		);
 		Map<String, Object> map = new HashMap<>();
-		map.put("search_text", "<all titles>");
-		map.put("titles", titles);
+		map.put("payload", expectedPayload);
 
 		ModelAndView modelAndView = commonService.getPage("page", List.of("Title 1", "Title 2"));
 
@@ -105,9 +138,20 @@ class CommonServiceGetPageTest {
 		when(processRecords.getAllTitles(titleRepository))
 				.thenReturn(titles);
 
+		Payload expectedPayload = new Payload(
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				"<all titles>",
+				null,
+				null,
+				titles
+		);
 		Map<String, Object> map = new HashMap<>();
-		map.put("search_text", "<all titles>");
-		map.put("titles", titles);
+		map.put("payload", expectedPayload);
 
 		ModelAndView modelAndView = commonService.getPage("page", List.of(" "));
 
@@ -125,9 +169,20 @@ class CommonServiceGetPageTest {
 		when(titleRepository.findByTitle(title))
 				.thenReturn(Optional.empty());
 
+		Payload expectedPayload = new Payload(
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				"<all titles>",
+				null,
+				null,
+				titles
+		);
 		Map<String, Object> map = new HashMap<>();
-		map.put("search_text", "<all titles>");
-		map.put("titles", titles);
+		map.put("payload", expectedPayload);
 
 		ModelAndView modelAndView = commonService.getPage("page", List.of(title));
 
@@ -150,10 +205,21 @@ class CommonServiceGetPageTest {
 		List<String> titleReferences = List.of("Reference 1", "Reference 2");
 		when(htmlRepository.findById(2L))
 				.thenReturn(Optional.of(new HtmlEntity(2L, content, titleReferences)));
+
+		Payload expectedPayload = new Payload(
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				filename + ".html",
+				null,
+				titleReferences
+		);
 		Map<String, Object> map = new HashMap<>();
-		map.put("title", title);
-		map.put("references", titleReferences);
-		map.put("static_page_link", filename + ".html");
+		map.put("payload", expectedPayload);
 
 		ModelAndView modelAndView = commonService.getPage("page", List.of(title));
 

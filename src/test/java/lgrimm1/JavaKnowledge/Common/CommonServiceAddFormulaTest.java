@@ -62,17 +62,25 @@ class CommonServiceAddFormulaTest {
 		when(formulas.getFormula(null))
 				.thenReturn("");
 
-		Map<String, Object> map = new HashMap<>();
-		map.put("title", title);
-		map.put("file_name", fileName);
-		map.put("content", content);
-		map.put("edit_existing_page", true);
-		map.put("message", "Wrong formula name was asked.");
+		Payload expectedPayload = new Payload(
+				null,
+				content,
+				true,
+				fileName,
+				null,
+				"Wrong formula name was asked.",
+				null,
+				null,
+				title,
+				null
+		);
+		Map<String, Object> model = new HashMap<>();
+		model.put("payload", expectedPayload);
 
 		ModelAndView modelAndView = commonService.addFormula("source", null, title, fileName, content, editExistingPage);
 
 		ModelAndViewAssert.assertViewName(modelAndView, "source");
-		ModelAndViewAssert.assertModelAttributeValues(modelAndView, map);
+		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
 	}
 
 	@Test
@@ -88,17 +96,25 @@ class CommonServiceAddFormulaTest {
 		when(formulas.getFormula(formulaName))
 				.thenReturn("");
 
-		Map<String, Object> map = new HashMap<>();
-		map.put("title", title);
-		map.put("file_name", fileName);
-		map.put("content", content);
-		map.put("edit_existing_page", true);
-		map.put("message", "Wrong formula name was asked.");
+		Payload expectedPayload = new Payload(
+				null,
+				content,
+				true,
+				fileName,
+				null,
+				"Wrong formula name was asked.",
+				null,
+				null,
+				title,
+				null
+		);
+		Map<String, Object> model = new HashMap<>();
+		model.put("payload", expectedPayload);
 
 		ModelAndView modelAndView = commonService.addFormula("source", formulaName, title, fileName, content, editExistingPage);
 
 		ModelAndViewAssert.assertViewName(modelAndView, "source");
-		ModelAndViewAssert.assertModelAttributeValues(modelAndView, map);
+		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
 	}
 
 	@Test
@@ -114,17 +130,25 @@ class CommonServiceAddFormulaTest {
 		when(formulas.getFormula(formulaName))
 				.thenReturn("");
 
-		Map<String, Object> map = new HashMap<>();
-		map.put("title", title);
-		map.put("file_name", fileName);
-		map.put("content", content);
-		map.put("edit_existing_page", true);
-		map.put("message", "Wrong formula name was asked.");
+		Payload expectedPayload = new Payload(
+				null,
+				content,
+				true,
+				fileName,
+				null,
+				"Wrong formula name was asked.",
+				null,
+				null,
+				title,
+				null
+		);
+		Map<String, Object> model = new HashMap<>();
+		model.put("payload", expectedPayload);
 
 		ModelAndView modelAndView = commonService.addFormula("source", formulaName, title, fileName, content, editExistingPage);
 
 		ModelAndViewAssert.assertViewName(modelAndView, "source");
-		ModelAndViewAssert.assertModelAttributeValues(modelAndView, map);
+		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
 	}
 
 	@Test
@@ -144,17 +168,25 @@ class CommonServiceAddFormulaTest {
 		newContent.add("Formula line 1");
 		newContent.add("Formula line 2");
 
-		Map<String, Object> map = new HashMap<>();
-		map.put("title", title);
-		map.put("file_name", "");
-		map.put("content", newContent);
-		map.put("edit_existing_page", true);
-		map.put("message", "Formula was appended.");
+		Payload expectedPayload = new Payload(
+				null,
+				newContent,
+				true,
+				"",
+				null,
+				"Formula was appended.",
+				null,
+				null,
+				title,
+				null
+		);
+		Map<String, Object> model = new HashMap<>();
+		model.put("payload", expectedPayload);
 
 		ModelAndView modelAndView = commonService.addFormula("source", formulaName, title, null, content, editExistingPage);
 
 		ModelAndViewAssert.assertViewName(modelAndView, "source");
-		ModelAndViewAssert.assertModelAttributeValues(modelAndView, map);
+		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
 	}
 
 	@Test
@@ -174,17 +206,25 @@ class CommonServiceAddFormulaTest {
 		newContent.add("Formula line 1");
 		newContent.add("Formula line 2");
 
-		Map<String, Object> map = new HashMap<>();
-		map.put("title", "");
-		map.put("file_name", fileName);
-		map.put("content", newContent);
-		map.put("edit_existing_page", true);
-		map.put("message", "Formula was appended.");
+		Payload expectedPayload = new Payload(
+				null,
+				newContent,
+				true,
+				fileName,
+				null,
+				"Formula was appended.",
+				null,
+				null,
+				"",
+				null
+		);
+		Map<String, Object> model = new HashMap<>();
+		model.put("payload", expectedPayload);
 
 		ModelAndView modelAndView = commonService.addFormula("source", formulaName, null, fileName, content, editExistingPage);
 
 		ModelAndViewAssert.assertViewName(modelAndView, "source");
-		ModelAndViewAssert.assertModelAttributeValues(modelAndView, map);
+		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
 	}
 
 	@Test
@@ -205,17 +245,25 @@ class CommonServiceAddFormulaTest {
 		newContent.add("Formula line 1");
 		newContent.add("Formula line 2");
 
-		Map<String, Object> map = new HashMap<>();
-		map.put("title", "");
-		map.put("file_name", fileName);
-		map.put("content", newContent);
-		map.put("edit_existing_page", true);
-		map.put("message", "Formula was appended.");
+		Payload expectedPayload = new Payload(
+				null,
+				newContent,
+				true,
+				fileName,
+				null,
+				"Formula was appended.",
+				null,
+				null,
+				"",
+				null
+		);
+		Map<String, Object> model = new HashMap<>();
+		model.put("payload", expectedPayload);
 
 		ModelAndView modelAndView = commonService.addFormula("source", formulaName, title, fileName, content, editExistingPage);
 
 		ModelAndViewAssert.assertViewName(modelAndView, "source");
-		ModelAndViewAssert.assertModelAttributeValues(modelAndView, map);
+		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
 	}
 
 	@Test
@@ -236,17 +284,25 @@ class CommonServiceAddFormulaTest {
 		newContent.add("Formula line 1");
 		newContent.add("Formula line 2");
 
-		Map<String, Object> map = new HashMap<>();
-		map.put("title", title);
-		map.put("file_name", "");
-		map.put("content", newContent);
-		map.put("edit_existing_page", true);
-		map.put("message", "Formula was appended.");
+		Payload expectedPayload = new Payload(
+				null,
+				newContent,
+				true,
+				"",
+				null,
+				"Formula was appended.",
+				null,
+				null,
+				title,
+				null
+		);
+		Map<String, Object> model = new HashMap<>();
+		model.put("payload", expectedPayload);
 
 		ModelAndView modelAndView = commonService.addFormula("source", formulaName, title, fileName, content, editExistingPage);
 
 		ModelAndViewAssert.assertViewName(modelAndView, "source");
-		ModelAndViewAssert.assertModelAttributeValues(modelAndView, map);
+		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
 	}
 
 	@Test
@@ -264,17 +320,25 @@ class CommonServiceAddFormulaTest {
 		newContent.add("Formula line 1");
 		newContent.add("Formula line 2");
 
-		Map<String, Object> map = new HashMap<>();
-		map.put("title", title);
-		map.put("file_name", fileName);
-		map.put("content", newContent);
-		map.put("edit_existing_page", true);
-		map.put("message", "Formula was appended.");
+		Payload expectedPayload = new Payload(
+				null,
+				newContent,
+				true,
+				fileName,
+				null,
+				"Formula was appended.",
+				null,
+				null,
+				title,
+				null
+		);
+		Map<String, Object> model = new HashMap<>();
+		model.put("payload", expectedPayload);
 
 		ModelAndView modelAndView = commonService.addFormula("source", formulaName, title, fileName, null, editExistingPage);
 
 		ModelAndViewAssert.assertViewName(modelAndView, "source");
-		ModelAndViewAssert.assertModelAttributeValues(modelAndView, map);
+		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
 	}
 
 	@Test
@@ -294,17 +358,25 @@ class CommonServiceAddFormulaTest {
 		newContent.add("Formula line 1");
 		newContent.add("Formula line 2");
 
-		Map<String, Object> map = new HashMap<>();
-		map.put("title", title);
-		map.put("file_name", fileName);
-		map.put("content", newContent);
-		map.put("edit_existing_page", false);
-		map.put("message", "Formula was appended.");
+		Payload expectedPayload = new Payload(
+				null,
+				newContent,
+				false,
+				fileName,
+				null,
+				"Formula was appended.",
+				null,
+				null,
+				title,
+				null
+		);
+		Map<String, Object> model = new HashMap<>();
+		model.put("payload", expectedPayload);
 
 		ModelAndView modelAndView = commonService.addFormula("source", formulaName, title, fileName, content, null);
 
 		ModelAndViewAssert.assertViewName(modelAndView, "source");
-		ModelAndViewAssert.assertModelAttributeValues(modelAndView, map);
+		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
 	}
 
 	@Test
@@ -325,16 +397,24 @@ class CommonServiceAddFormulaTest {
 		newContent.add("Formula line 1");
 		newContent.add("Formula line 2");
 
-		Map<String, Object> map = new HashMap<>();
-		map.put("title", title);
-		map.put("file_name", fileName);
-		map.put("content", newContent);
-		map.put("edit_existing_page", true);
-		map.put("message", "Formula was appended.");
+		Payload expectedPayload = new Payload(
+				null,
+				newContent,
+				true,
+				fileName,
+				null,
+				"Formula was appended.",
+				null,
+				null,
+				title,
+				null
+		);
+		Map<String, Object> model = new HashMap<>();
+		model.put("payload", expectedPayload);
 
 		ModelAndView modelAndView = commonService.addFormula("source", formulaName, title, fileName, content, editExistingPage);
 
 		ModelAndViewAssert.assertViewName(modelAndView, "source");
-		ModelAndViewAssert.assertModelAttributeValues(modelAndView, map);
+		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
 	}
 }

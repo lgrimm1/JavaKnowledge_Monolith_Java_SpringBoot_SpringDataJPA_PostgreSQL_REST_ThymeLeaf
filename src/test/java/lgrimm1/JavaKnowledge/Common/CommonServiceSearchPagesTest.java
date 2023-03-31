@@ -4,19 +4,17 @@ import lgrimm1.JavaKnowledge.Html.*;
 import lgrimm1.JavaKnowledge.Process.*;
 import lgrimm1.JavaKnowledge.Title.*;
 import lgrimm1.JavaKnowledge.Txt.*;
+
 import org.junit.jupiter.api.*;
-import org.mockito.*;
+import org.mockito.Mockito;
 import org.springframework.test.web.*;
 import org.springframework.web.servlet.*;
 
-import java.io.*;
 import java.util.*;
-import java.util.stream.*;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
 
-class CommonServiceImportTxtTest {
-
+public class CommonServiceSearchPagesTest {
 	TitleRepository titleRepository;
 	TxtRepository txtRepository;
 	HtmlRepository htmlRepository;
@@ -52,19 +50,19 @@ class CommonServiceImportTxtTest {
 	}
 
 	@Test
-	void importTxt_NullFiles() {
+	void searchPages_NullPayload() {
 		List<String> titles = List.of("Title 1", "Title 2");
 		when(processRecords.getAllTitles(titleRepository))
 				.thenReturn(titles);
 
 		Payload expectedPayload = new Payload(
-				false,
 				null,
 				null,
 				null,
-				"",
-				"Please upload minimum one file and confirm source overwriting.",
 				null,
+				null,
+				null,
+				"<all titles>",
 				null,
 				null,
 				titles
@@ -72,26 +70,26 @@ class CommonServiceImportTxtTest {
 		Map<String, Object> model = new HashMap<>();
 		model.put("payload", expectedPayload);
 
-		ModelAndView modelAndView = commonService.importTxt("management", null, true);
+		ModelAndView modelAndView = commonService.searchPages("list", null);
 
-		ModelAndViewAssert.assertViewName(modelAndView, "management");
+		ModelAndViewAssert.assertViewName(modelAndView, "list");
 		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
 	}
 
 	@Test
-	void importTxt_BlankFiles() {
+	void searchPages_NullSearchText() {
 		List<String> titles = List.of("Title 1", "Title 2");
 		when(processRecords.getAllTitles(titleRepository))
 				.thenReturn(titles);
 
 		Payload expectedPayload = new Payload(
-				false,
 				null,
 				null,
 				null,
-				"",
-				"Please upload minimum one file and confirm source overwriting.",
 				null,
+				null,
+				null,
+				"<all titles>",
 				null,
 				null,
 				titles
@@ -99,27 +97,38 @@ class CommonServiceImportTxtTest {
 		Map<String, Object> model = new HashMap<>();
 		model.put("payload", expectedPayload);
 
-		ModelAndView modelAndView = commonService.importTxt("management", "  ", true);
+		Payload incomingPayload = new Payload(
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null
+		);
+		ModelAndView modelAndView = commonService.searchPages("list", incomingPayload);
 
-		ModelAndViewAssert.assertViewName(modelAndView, "management");
+		ModelAndViewAssert.assertViewName(modelAndView, "list");
 		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
 	}
 
 	@Test
-	void importTxt_NullConfirm() {
-		String fileNames = "file_1;file_2";
+	void searchPages_BlankSearchText() {
 		List<String> titles = List.of("Title 1", "Title 2");
 		when(processRecords.getAllTitles(titleRepository))
 				.thenReturn(titles);
 
 		Payload expectedPayload = new Payload(
-				false,
 				null,
 				null,
 				null,
-				"",
-				"Please upload minimum one file and confirm source overwriting.",
 				null,
+				null,
+				null,
+				"<all titles>",
 				null,
 				null,
 				titles
@@ -127,27 +136,53 @@ class CommonServiceImportTxtTest {
 		Map<String, Object> model = new HashMap<>();
 		model.put("payload", expectedPayload);
 
-		ModelAndView modelAndView = commonService.importTxt("management", fileNames, null);
+		Payload incomingPayload = new Payload(
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				"  ",
+				null,
+				null,
+				null
+		);
+		ModelAndView modelAndView = commonService.searchPages("list", incomingPayload);
 
-		ModelAndViewAssert.assertViewName(modelAndView, "management");
+		ModelAndViewAssert.assertViewName(modelAndView, "list");
 		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
 	}
 
 	@Test
-	void importTxt_NotConfirmed() {
-		String fileNames = "file_1;file_2";
+	void searchPages_ExistingSearchText() {
+		String searchText = "Word2 Word1";
+		Payload incomingPayload = new Payload(
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				searchText,
+				null,
+				null,
+				null
+		);
+
+		Set<String> titlesSet = Set.of("Title 2", "Title 1");
+		when(processRecords.searchBySearchText(searchText, titleRepository, txtRepository))
+				.thenReturn(titlesSet);
+
 		List<String> titles = List.of("Title 1", "Title 2");
-		when(processRecords.getAllTitles(titleRepository))
-				.thenReturn(titles);
-
 		Payload expectedPayload = new Payload(
-				false,
 				null,
 				null,
 				null,
-				"",
-				"Please upload minimum one file and confirm source overwriting.",
 				null,
+				null,
+				null,
+				searchText,
 				null,
 				null,
 				titles
@@ -155,60 +190,9 @@ class CommonServiceImportTxtTest {
 		Map<String, Object> model = new HashMap<>();
 		model.put("payload", expectedPayload);
 
-		ModelAndView modelAndView = commonService.importTxt("management", fileNames, false);
+		ModelAndView modelAndView = commonService.searchPages("list", incomingPayload);
 
-		ModelAndViewAssert.assertViewName(modelAndView, "management");
-		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
-	}
-
-	@Test
-	void importTxt_Confirmed() {
-
-		when(fileOperations.getOSPathSeparator())
-				.thenReturn(";");
-		String notImportedFiles = "file_1;file_2;file_3";
-		String allFiles = notImportedFiles + ";file_4;file_5";
-
-		List<File> notImported = Stream.of(notImportedFiles.split(";"))
-				.sorted()
-				.map(File::new)
-				.toList();
-		List<File> all = Stream.of(allFiles.split(";"))
-				.sorted()
-				.map(File::new)
-				.toList();
-		when(processRecords.importTxtFiles(
-				all,
-				titleRepository,
-				txtRepository,
-				htmlRepository,
-				fileOperations,
-				formulas,
-				extractors))
-				.thenReturn(notImported);
-
-		List<String> titles = List.of("Title 4", "Title 5");
-		when(processRecords.getAllTitles(titleRepository))
-				.thenReturn(titles);
-
-		Payload expectedPayload = new Payload(
-				false,
-				null,
-				null,
-				null,
-				"",
-				"3 of 5 files were not imported.",
-				null,
-				null,
-				null,
-				titles
-		);
-		Map<String, Object> model = new HashMap<>();
-		model.put("payload", expectedPayload);
-
-		ModelAndView modelAndView = commonService.importTxt("management", allFiles, true);
-
-		ModelAndViewAssert.assertViewName(modelAndView, "management");
+		ModelAndViewAssert.assertViewName(modelAndView, "list");
 		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
 	}
 }

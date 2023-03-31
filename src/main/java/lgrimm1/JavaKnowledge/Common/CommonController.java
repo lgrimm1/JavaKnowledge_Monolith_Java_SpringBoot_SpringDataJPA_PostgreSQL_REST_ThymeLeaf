@@ -31,7 +31,6 @@ public class CommonController {
 
 	@PostMapping("/page")
 	public ModelAndView getPage(@ModelAttribute("payload") Payload payload, Model model) {
-		System.out.println("\n\n============================================\n" + payload);
 		model.asMap().clear();
 		return commonService.getPage("page", payload.getTitles());
 	}

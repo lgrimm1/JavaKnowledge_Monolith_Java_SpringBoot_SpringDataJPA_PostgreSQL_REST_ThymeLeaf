@@ -56,16 +56,25 @@ class CommonServiceDeletePagesTest {
 		when(processRecords.getAllTitles(titleRepository))
 				.thenReturn(titles);
 
-		Map<String, Object> map = new HashMap<>();
-		map.put("titles", titles);
-		map.put("files", "");
-		map.put("confirm", false);
-		map.put("message", "Please select titles you wish to delete.");
+		Payload expectedPayload = new Payload(
+				false,
+				null,
+				null,
+				null,
+				"",
+				"Please select titles you wish to delete.",
+				null,
+				null,
+				null,
+				titles
+		);
+		Map<String, Object> model = new HashMap<>();
+		model.put("payload", expectedPayload);
 
 		ModelAndView modelAndView = commonService.deletePages("management", null, true);
 
 		ModelAndViewAssert.assertViewName(modelAndView, "management");
-		ModelAndViewAssert.assertModelAttributeValues(modelAndView, map);
+		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
 	}
 
 	@Test
@@ -74,16 +83,25 @@ class CommonServiceDeletePagesTest {
 		when(processRecords.getAllTitles(titleRepository))
 				.thenReturn(titles);
 
-		Map<String, Object> map = new HashMap<>();
-		map.put("titles", titles);
-		map.put("files", "");
-		map.put("confirm", false);
-		map.put("message", "Please select titles you wish to delete.");
+		Payload expectedPayload = new Payload(
+				false,
+				null,
+				null,
+				null,
+				"",
+				"Please select titles you wish to delete.",
+				null,
+				null,
+				null,
+				titles
+		);
+		Map<String, Object> model = new HashMap<>();
+		model.put("payload", expectedPayload);
 
 		ModelAndView modelAndView = commonService.deletePages("management", new ArrayList<>(), true);
 
 		ModelAndViewAssert.assertViewName(modelAndView, "management");
-		ModelAndViewAssert.assertModelAttributeValues(modelAndView, map);
+		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
 	}
 
 	@Test
@@ -92,17 +110,26 @@ class CommonServiceDeletePagesTest {
 		when(processRecords.getAllTitles(titleRepository))
 				.thenReturn(titles);
 
-		Map<String, Object> map = new HashMap<>();
-		map.put("titles", titles);
-		map.put("files", "");
-		map.put("confirm", false);
-		map.put("message", "Please confirm deletion.");
+		Payload expectedPayload = new Payload(
+				false,
+				null,
+				null,
+				null,
+				"",
+				"Please confirm deletion.",
+				null,
+				null,
+				null,
+				titles
+		);
+		Map<String, Object> model = new HashMap<>();
+		model.put("payload", expectedPayload);
 
 		List<String> requestTitles = List.of("Title 3", "Title 4");
 		ModelAndView modelAndView = commonService.deletePages("management", requestTitles, false);
 
 		ModelAndViewAssert.assertViewName(modelAndView, "management");
-		ModelAndViewAssert.assertModelAttributeValues(modelAndView, map);
+		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
 	}
 
 	@Test
@@ -111,11 +138,20 @@ class CommonServiceDeletePagesTest {
 		when(processRecords.getAllTitles(titleRepository))
 				.thenReturn(titles);
 
-		Map<String, Object> map = new HashMap<>();
-		map.put("titles", titles);
-		map.put("files", "");
-		map.put("confirm", false);
-		map.put("message", "Please select existing titles you wish to delete.");
+		Payload expectedPayload = new Payload(
+				false,
+				null,
+				null,
+				null,
+				"",
+				"Please select existing titles you wish to delete.",
+				null,
+				null,
+				null,
+				titles
+		);
+		Map<String, Object> model = new HashMap<>();
+		model.put("payload", expectedPayload);
 
 		List<String> requestTitles = new ArrayList<>();
 		requestTitles.add(null);
@@ -123,7 +159,7 @@ class CommonServiceDeletePagesTest {
 		ModelAndView modelAndView = commonService.deletePages("management", requestTitles, true);
 
 		ModelAndViewAssert.assertViewName(modelAndView, "management");
-		ModelAndViewAssert.assertModelAttributeValues(modelAndView, map);
+		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
 	}
 
 	@Test
@@ -136,11 +172,20 @@ class CommonServiceDeletePagesTest {
 		when(processRecords.deleteByTitles(cleanedRequestTitles, titleRepository, txtRepository, htmlRepository))
 				.thenReturn(1L);
 
-		Map<String, Object> map = new HashMap<>();
-		map.put("titles", restOfTitles);
-		map.put("files", "");
-		map.put("confirm", false);
-		map.put("message", "1 of 2 titles were deleted.");
+		Payload expectedPayload = new Payload(
+				false,
+				null,
+				null,
+				null,
+				"",
+				"1 of 2 titles were deleted.",
+				null,
+				null,
+				null,
+				restOfTitles
+		);
+		Map<String, Object> model = new HashMap<>();
+		model.put("payload", expectedPayload);
 
 		List<String> requestTitles = new ArrayList<>();
 		requestTitles.add(null);
@@ -149,6 +194,6 @@ class CommonServiceDeletePagesTest {
 		ModelAndView modelAndView = commonService.deletePages("management", requestTitles, true);
 
 		ModelAndViewAssert.assertViewName(modelAndView, "management");
-		ModelAndViewAssert.assertModelAttributeValues(modelAndView, map);
+		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
 	}
 }

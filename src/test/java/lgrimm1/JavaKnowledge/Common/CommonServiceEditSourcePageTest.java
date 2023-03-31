@@ -55,16 +55,25 @@ class CommonServiceEditSourcePageTest {
 		when(processRecords.getAllTitles(titleRepository))
 				.thenReturn(titles);
 
-		Map<String, Object> map = new HashMap<>();
-		map.put("titles", titles);
-		map.put("files", "");
-		map.put("confirm", false);
-		map.put("message", "Please select exactly one title for editing.");
+		Payload expectedPayload = new Payload(
+				false,
+				null,
+				null,
+				null,
+				"",
+				"Please select exactly one title for editing.",
+				null,
+				null,
+				null,
+				titles
+		);
+		Map<String, Object> model = new HashMap<>();
+		model.put("payload", expectedPayload);
 
 		ModelAndView modelAndView = commonService.editSourcePage("source", null);
 
 		ModelAndViewAssert.assertViewName(modelAndView, "management");
-		ModelAndViewAssert.assertModelAttributeValues(modelAndView, map);
+		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
 	}
 
 	@Test
@@ -73,16 +82,25 @@ class CommonServiceEditSourcePageTest {
 		when(processRecords.getAllTitles(titleRepository))
 				.thenReturn(titles);
 
-		Map<String, Object> map = new HashMap<>();
-		map.put("titles", titles);
-		map.put("files", "");
-		map.put("confirm", false);
-		map.put("message", "Please select exactly one title for editing.");
+		Payload expectedPayload = new Payload(
+				false,
+				null,
+				null,
+				null,
+				"",
+				"Please select exactly one title for editing.",
+				null,
+				null,
+				null,
+				titles
+		);
+		Map<String, Object> model = new HashMap<>();
+		model.put("payload", expectedPayload);
 
 		ModelAndView modelAndView = commonService.editSourcePage("source", List.of("Title 1", "Title 2"));
 
 		ModelAndViewAssert.assertViewName(modelAndView, "management");
-		ModelAndViewAssert.assertModelAttributeValues(modelAndView, map);
+		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
 	}
 
 	@Test
@@ -91,18 +109,27 @@ class CommonServiceEditSourcePageTest {
 		when(processRecords.getAllTitles(titleRepository))
 				.thenReturn(titles);
 
-		Map<String, Object> map = new HashMap<>();
-		map.put("titles", titles);
-		map.put("files", "");
-		map.put("confirm", false);
-		map.put("message", "Please select exactly one title for editing.");
+		Payload expectedPayload = new Payload(
+				false,
+				null,
+				null,
+				null,
+				"",
+				"Please select exactly one title for editing.",
+				null,
+				null,
+				null,
+				titles
+		);
+		Map<String, Object> model = new HashMap<>();
+		model.put("payload", expectedPayload);
 
 		List<String> requestTitles = new ArrayList<>();
 		requestTitles.add(null);
 		ModelAndView modelAndView = commonService.editSourcePage("source", requestTitles);
 
 		ModelAndViewAssert.assertViewName(modelAndView, "management");
-		ModelAndViewAssert.assertModelAttributeValues(modelAndView, map);
+		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
 	}
 
 	@Test
@@ -111,18 +138,27 @@ class CommonServiceEditSourcePageTest {
 		when(processRecords.getAllTitles(titleRepository))
 				.thenReturn(titles);
 
-		Map<String, Object> map = new HashMap<>();
-		map.put("titles", titles);
-		map.put("files", "");
-		map.put("confirm", false);
-		map.put("message", "Please select exactly one title for editing.");
+		Payload expectedPayload = new Payload(
+				false,
+				null,
+				null,
+				null,
+				"",
+				"Please select exactly one title for editing.",
+				null,
+				null,
+				null,
+				titles
+		);
+		Map<String, Object> model = new HashMap<>();
+		model.put("payload", expectedPayload);
 
 		List<String> requestTitles = new ArrayList<>();
 		requestTitles.add("  ");
 		ModelAndView modelAndView = commonService.editSourcePage("source", requestTitles);
 
 		ModelAndViewAssert.assertViewName(modelAndView, "management");
-		ModelAndViewAssert.assertModelAttributeValues(modelAndView, map);
+		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
 	}
 
 	@Test
@@ -135,16 +171,25 @@ class CommonServiceEditSourcePageTest {
 		when(processRecords.getAllTitles(titleRepository))
 				.thenReturn(titles);
 
-		Map<String, Object> map = new HashMap<>();
-		map.put("titles", titles);
-		map.put("files", "");
-		map.put("confirm", false);
-		map.put("message", "Please select exactly one title for editing.");
+		Payload expectedPayload = new Payload(
+				false,
+				null,
+				null,
+				null,
+				"",
+				"Please select exactly one title for editing.",
+				null,
+				null,
+				null,
+				titles
+		);
+		Map<String, Object> model = new HashMap<>();
+		model.put("payload", expectedPayload);
 
 		ModelAndView modelAndView = commonService.editSourcePage("source", requestTitles);
 
 		ModelAndViewAssert.assertViewName(modelAndView, "management");
-		ModelAndViewAssert.assertModelAttributeValues(modelAndView, map);
+		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
 	}
 
 	@Test
@@ -160,16 +205,25 @@ class CommonServiceEditSourcePageTest {
 		when(processRecords.getAllTitles(titleRepository))
 				.thenReturn(titles);
 
-		Map<String, Object> map = new HashMap<>();
-		map.put("titles", titles);
-		map.put("files", "");
-		map.put("confirm", false);
-		map.put("message", "Please select exactly one title for editing.");
+		Payload expectedPayload = new Payload(
+				false,
+				null,
+				null,
+				null,
+				"",
+				"Please select exactly one title for editing.",
+				null,
+				null,
+				null,
+				titles
+		);
+		Map<String, Object> model = new HashMap<>();
+		model.put("payload", expectedPayload);
 
 		ModelAndView modelAndView = commonService.editSourcePage("source", requestTitles);
 
 		ModelAndViewAssert.assertViewName(modelAndView, "management");
-		ModelAndViewAssert.assertModelAttributeValues(modelAndView, map);
+		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
 	}
 
 	@Test
@@ -187,16 +241,24 @@ class CommonServiceEditSourcePageTest {
 		when(processRecords.stringToList(content))
 				.thenReturn(listContent);
 
-		Map<String, Object> map = new HashMap<>();
-		map.put("title", requestTitle);
-		map.put("file_name", requestFilename);
-		map.put("content", listContent);
-		map.put("edit_existing_page", true);
-		map.put("message", "");
+		Payload expectedPayload = new Payload(
+				null,
+				listContent,
+				true,
+				requestFilename,
+				null,
+				"",
+				null,
+				null,
+				requestTitle,
+				null
+		);
+		Map<String, Object> model = new HashMap<>();
+		model.put("payload", expectedPayload);
 
 		ModelAndView modelAndView = commonService.editSourcePage("source", requestTitles);
 
 		ModelAndViewAssert.assertViewName(modelAndView, "source");
-		ModelAndViewAssert.assertModelAttributeValues(modelAndView, map);
+		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
 	}
 }

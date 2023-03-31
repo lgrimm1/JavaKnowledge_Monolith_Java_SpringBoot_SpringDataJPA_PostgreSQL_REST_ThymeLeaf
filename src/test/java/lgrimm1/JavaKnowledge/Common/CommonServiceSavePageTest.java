@@ -56,17 +56,25 @@ class CommonServiceSavePageTest {
 		List<String> content = List.of("Line 1", "Line 2");
 		boolean editExistingPage = true;
 
-		Map<String, Object> map = new HashMap<>();
-		map.put("title", "");
-		map.put("file_name", fileName);
-		map.put("content", content);
-		map.put("edit_existing_page", editExistingPage);
-		map.put("message", "Please define a title.");
+		Payload expectedPayload = new Payload(
+				null,
+				content,
+				editExistingPage,
+				fileName,
+				null,
+				"Please define a title.",
+				null,
+				null,
+				"",
+				null
+		);
+		Map<String, Object> model = new HashMap<>();
+		model.put("payload", expectedPayload);
 
 		ModelAndView modelAndView = commonService.savePage("source", null, fileName, content, editExistingPage);
 
 		ModelAndViewAssert.assertViewName(modelAndView, "source");
-		ModelAndViewAssert.assertModelAttributeValues(modelAndView, map);
+		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
 	}
 
 	@Test
@@ -76,17 +84,25 @@ class CommonServiceSavePageTest {
 		List<String> content = List.of("Line 1", "Line 2");
 		boolean editExistingPage = true;
 
-		Map<String, Object> map = new HashMap<>();
-		map.put("title", "");
-		map.put("file_name", fileName);
-		map.put("content", content);
-		map.put("edit_existing_page", editExistingPage);
-		map.put("message", "Please define a title.");
+		Payload expectedPayload = new Payload(
+				null,
+				content,
+				editExistingPage,
+				fileName,
+				null,
+				"Please define a title.",
+				null,
+				null,
+				"",
+				null
+		);
+		Map<String, Object> model = new HashMap<>();
+		model.put("payload", expectedPayload);
 
 		ModelAndView modelAndView = commonService.savePage("source", title, fileName, content, editExistingPage);
 
 		ModelAndViewAssert.assertViewName(modelAndView, "source");
-		ModelAndViewAssert.assertModelAttributeValues(modelAndView, map);
+		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
 	}
 
 	@Test
@@ -95,17 +111,25 @@ class CommonServiceSavePageTest {
 		List<String> content = List.of("Line 1", "Line 2");
 		boolean editExistingPage = true;
 
-		Map<String, Object> map = new HashMap<>();
-		map.put("title", title);
-		map.put("file_name", "");
-		map.put("content", content);
-		map.put("edit_existing_page", editExistingPage);
-		map.put("message", "Please define a file name.");
+		Payload expectedPayload = new Payload(
+				null,
+				content,
+				editExistingPage,
+				"",
+				null,
+				"Please define a file name.",
+				null,
+				null,
+				title,
+				null
+		);
+		Map<String, Object> model = new HashMap<>();
+		model.put("payload", expectedPayload);
 
 		ModelAndView modelAndView = commonService.savePage("source", title, null, content, editExistingPage);
 
 		ModelAndViewAssert.assertViewName(modelAndView, "source");
-		ModelAndViewAssert.assertModelAttributeValues(modelAndView, map);
+		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
 	}
 
 	@Test
@@ -115,17 +139,25 @@ class CommonServiceSavePageTest {
 		List<String> content = List.of("Line 1", "Line 2");
 		boolean editExistingPage = true;
 
-		Map<String, Object> map = new HashMap<>();
-		map.put("title", title);
-		map.put("file_name", "");
-		map.put("content", content);
-		map.put("edit_existing_page", editExistingPage);
-		map.put("message", "Please define a file name.");
+		Payload expectedPayload = new Payload(
+				null,
+				content,
+				editExistingPage,
+				"",
+				null,
+				"Please define a file name.",
+				null,
+				null,
+				title,
+				null
+		);
+		Map<String, Object> model = new HashMap<>();
+		model.put("payload", expectedPayload);
 
 		ModelAndView modelAndView = commonService.savePage("source", title, fileName, content, editExistingPage);
 
 		ModelAndViewAssert.assertViewName(modelAndView, "source");
-		ModelAndViewAssert.assertModelAttributeValues(modelAndView, map);
+		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
 	}
 
 	@Test
@@ -137,17 +169,25 @@ class CommonServiceSavePageTest {
 		when(titleRepository.findByTitle(title))
 				.thenReturn(Optional.empty());
 
-		Map<String, Object> map = new HashMap<>();
-		map.put("title", title);
-		map.put("file_name", fileName);
-		map.put("content", new ArrayList<>());
-		map.put("edit_existing_page", editExistingPage);
-		map.put("message", "There is no existing page with this title.");
+		Payload expectedPayload = new Payload(
+				null,
+				new ArrayList<>(),
+				editExistingPage,
+				fileName,
+				null,
+				"There is no existing page with this title.",
+				null,
+				null,
+				title,
+				null
+		);
+		Map<String, Object> model = new HashMap<>();
+		model.put("payload", expectedPayload);
 
 		ModelAndView modelAndView = commonService.savePage("source", title, fileName, null, editExistingPage);
 
 		ModelAndViewAssert.assertViewName(modelAndView, "source");
-		ModelAndViewAssert.assertModelAttributeValues(modelAndView, map);
+		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
 	}
 
 	@Test
@@ -160,17 +200,25 @@ class CommonServiceSavePageTest {
 		when(titleRepository.findByTitle(title))
 				.thenReturn(Optional.empty());
 
-		Map<String, Object> map = new HashMap<>();
-		map.put("title", title);
-		map.put("file_name", fileName);
-		map.put("content", content);
-		map.put("edit_existing_page", editExistingPage);
-		map.put("message", "There is no existing page with this title.");
+		Payload expectedPayload = new Payload(
+				null,
+				content,
+				editExistingPage,
+				fileName,
+				null,
+				"There is no existing page with this title.",
+				null,
+				null,
+				title,
+				null
+		);
+		Map<String, Object> model = new HashMap<>();
+		model.put("payload", expectedPayload);
 
 		ModelAndView modelAndView = commonService.savePage("source", title, fileName, content, editExistingPage);
 
 		ModelAndViewAssert.assertViewName(modelAndView, "source");
-		ModelAndViewAssert.assertModelAttributeValues(modelAndView, map);
+		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
 	}
 
 	@Test
@@ -192,17 +240,25 @@ class CommonServiceSavePageTest {
 		when(titleRepository.save(new TitleEntity(title, fileName, 13L, 14L)))
 				.thenReturn(new TitleEntity(12L, title, fileName, 13L, 14L));
 
-		Map<String, Object> map = new HashMap<>();
-		map.put("title", title);
-		map.put("file_name", fileName);
-		map.put("content", content);
-		map.put("edit_existing_page", editExistingPage);
-		map.put("message", "Source page has been overwritten.");
+		Payload expectedPayload = new Payload(
+				null,
+				content,
+				editExistingPage,
+				fileName,
+				null,
+				"Source page has been overwritten.",
+				null,
+				null,
+				title,
+				null
+		);
+		Map<String, Object> model = new HashMap<>();
+		model.put("payload", expectedPayload);
 
 		ModelAndView modelAndView = commonService.savePage("source", title, fileName, content, editExistingPage);
 
 		ModelAndViewAssert.assertViewName(modelAndView, "source");
-		ModelAndViewAssert.assertModelAttributeValues(modelAndView, map);
+		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
 	}
 
 	@Test
@@ -215,17 +271,25 @@ class CommonServiceSavePageTest {
 		when(titleRepository.findByTitle(title))
 				.thenReturn(Optional.of(new TitleEntity(2L, "Original title", "original_file_name", 3L, 4L)));
 
-		Map<String, Object> map = new HashMap<>();
-		map.put("title", title);
-		map.put("file_name", fileName);
-		map.put("content", content);
-		map.put("edit_existing_page", editExistingPage);
-		map.put("message", "There is an existing page with this title.");
+		Payload expectedPayload = new Payload(
+				null,
+				content,
+				editExistingPage,
+				fileName,
+				null,
+				"There is an existing page with this title.",
+				null,
+				null,
+				title,
+				null
+		);
+		Map<String, Object> model = new HashMap<>();
+		model.put("payload", expectedPayload);
 
 		ModelAndView modelAndView = commonService.savePage("source", title, fileName, content, editExistingPage);
 
 		ModelAndViewAssert.assertViewName(modelAndView, "source");
-		ModelAndViewAssert.assertModelAttributeValues(modelAndView, map);
+		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
 	}
 
 	@Test
@@ -247,17 +311,25 @@ class CommonServiceSavePageTest {
 		when(titleRepository.save(new TitleEntity(title, fileName, 13L, 14L)))
 				.thenReturn(new TitleEntity(12L, title, fileName, 13L, 14L));
 
-		Map<String, Object> map = new HashMap<>();
-		map.put("title", title);
-		map.put("file_name", fileName);
-		map.put("content", content);
-		map.put("edit_existing_page", true);
-		map.put("message", "Source page has been saved.");
+		Payload expectedPayload = new Payload(
+				null,
+				content,
+				true,
+				fileName,
+				null,
+				"Source page has been saved.",
+				null,
+				null,
+				title,
+				null
+		);
+		Map<String, Object> model = new HashMap<>();
+		model.put("payload", expectedPayload);
 
 		ModelAndView modelAndView = commonService.savePage("source", title, fileName, content, editExistingPage);
 
 		ModelAndViewAssert.assertViewName(modelAndView, "source");
-		ModelAndViewAssert.assertModelAttributeValues(modelAndView, map);
+		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
 	}
 
 	@Test
@@ -269,16 +341,24 @@ class CommonServiceSavePageTest {
 		when(titleRepository.findByTitle(title))
 				.thenReturn(Optional.of(new TitleEntity(2L, "Original title", "original_file_name", 3L, 4L)));
 
-		Map<String, Object> map = new HashMap<>();
-		map.put("title", title);
-		map.put("file_name", fileName);
-		map.put("content", content);
-		map.put("edit_existing_page", false);
-		map.put("message", "There is an existing page with this title.");
+		Payload expectedPayload = new Payload(
+				null,
+				content,
+				false,
+				fileName,
+				null,
+				"There is an existing page with this title.",
+				null,
+				null,
+				title,
+				null
+		);
+		Map<String, Object> model = new HashMap<>();
+		model.put("payload", expectedPayload);
 
 		ModelAndView modelAndView = commonService.savePage("source", title, fileName, content, null);
 
 		ModelAndViewAssert.assertViewName(modelAndView, "source");
-		ModelAndViewAssert.assertModelAttributeValues(modelAndView, map);
+		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
 	}
 }
