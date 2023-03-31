@@ -11,6 +11,7 @@ SPRING THYMELEAF EXAMPLES
 =>SPRING BOOT CONTROLLER
 =>SERIALIZATION
 =>SPRING MODELANDVIEW
+=>CSS
 
 =================================================================================
 1. CODE SNIPPETS OF GENERAL TAGS
@@ -209,6 +210,7 @@ For select input, optional parameters:
 For textarea input, optional parameters:
     name="input_name" rows="number_of_rows" cols="number_of_characters"
 
+For file-type input, the appearing button and the file-list behind it is not modifiable. That said, CSS parameters have no effect. In order to make it customizable, must wrap it into other (customizable) tag and make it virtually invisible. See example below.
 For select input, when items are dynamically determined from a Collection field, the default selected item will be the last added one. Consider adding a script which selects the needed item on load, see script examples below.
 For all inputs, consider using <br> tag after the label and-or after the input.
 
@@ -228,8 +230,12 @@ EXAMPLE FOR CHECKBOX:
 END OF EXAMPLE
 
 EXAMPLE FOR FILE:
-<label for="input_name" style="style data" class="label_style">label text</label>
-<input id="input_name" type="file" th:field="*{fieldName}" multiple />
+<!-- CSS class definitions for labels of file-type input -->
+<!-- CSS definitions for file-type input -->
+<label for="input_name" style="style data" class="label_style">
+    <input id="input_name" type="file" th:field="*{fieldName}" multiple />
+    button text
+</label>
 END OF EXAMPLE
 
 EXAMPLE FOR IMAGE:

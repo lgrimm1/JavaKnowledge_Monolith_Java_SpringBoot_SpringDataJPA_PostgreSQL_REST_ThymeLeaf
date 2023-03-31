@@ -4,8 +4,10 @@ CSS
 1. BASICS
 2. SELECTORS
 3. PROPERTIES
+4. SPECIALS
 
 =>SPRING THYMELEAF
+=>SPRING THYMELEAF EXAMPLES
 
 =================================================================================
 1. BASICS
@@ -128,7 +130,7 @@ Please note, there must be no space between a numeric value and its unit.
 The class-type definition creates a unique set of property values. That said, when referenced inline with the class= parameter, overwrites every matching external and internal property.
 In case there is an inline style definition (via style= parameter) for a property defined by externally, internally and-or via the class parameter as well, the local style= values will overwrite the class values.
 
-EXAMPLE FOR SIMPLE SELECTORS (CSS-side):
+EXAMPLE FOR SIMPLE SELECTORS (CSS-SIDE):
 /* tag-name */
 tag_name {
     property: value;
@@ -166,7 +168,7 @@ tag_name1, tag_name2, ... {
 }
 END OF EXAMPLE
 
-EXAMPLE FOR SIMPLE SELECTORS (HTML-side):
+EXAMPLE FOR SIMPLE SELECTORS (HTML-SIDE):
 <!-- tag-name -->
 <tag_name ...>...></tag_name>
 <tag_name ... />
@@ -186,6 +188,24 @@ EXAMPLE FOR SIMPLE SELECTORS (HTML-side):
 <!-- more classes -->
 <tag_name class="class-name1 class-name2" ...>...></tag_name>
 <tag_name class="class-name1 class-name2" ... />
+END OF EXAMPLE
+
+EXAMPLE FOR ARGUMENT SELECTORS (CSS-SIDE):
+tag_name[parameter_name="parameter_value"] {
+    property: value;
+    ...
+}
+
+input[type="file"] {
+    ...
+}
+END OF EXAMPLE
+
+EXAMPLE FOR ARGUMENT SELECTORS (HTML-SIDE):
+<tag_name parameter_name="parameter_value" ...>...></tag_name>
+<tag_name parameter_name="parameter_value" ... />
+
+<input type="file" ... />
 END OF EXAMPLE
 
 EXAMPLE FOR OVERWRITING CSS:
@@ -295,4 +315,30 @@ p.p2 {margin: 20px 10px 12px;}
 <!-- total margin will be the higher margin (50px) instead of 58px -->
 <!-- theoretical top margin of p2 is set to 20px -->
 <p class="p2">...</p>
+END OF EXAMPLE
+
+=================================================================================
+4. SPECIALS
+=================================================================================
+The file-type input style is handled by the specific browser and presently it is not possible to change its style.
+Workaround is to wrap the input into a label and give button-like style to it while hiding the original input.
+
+EXAMPLE FOR FILE-TYPE INPUT (WITH THYMELEAF):
+input[type="file"] {
+    display: none;
+}
+.custom_file_upload {
+    display: inline-block;
+    /*
+    style elements of button-like inputs
+    */
+    line-height: 32px;
+    cursor: pointer;
+}
+...
+<label for="files" class="custom_file_upload">
+    <input id="files" type="file" th:field="*{fieldName}" multiple />
+    button caption text
+</label>
+<br>
 END OF EXAMPLE
