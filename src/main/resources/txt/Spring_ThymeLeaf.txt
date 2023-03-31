@@ -318,7 +318,7 @@ Select:
     d. <option> sub-tags define from which items can be the input value chosen
     e. an <option> tag contains the value= parameter which will be posted
     f. the selected parameter selects an item
-    g. by default the first option fills the input
+    g. by default, for manually defined items, the first option, for dynamically defined items, the last added option fills the input
     h. between the opening and closing markers of an <option> tag the displayed text is written
 
 Submit:

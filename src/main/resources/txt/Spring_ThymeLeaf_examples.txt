@@ -193,6 +193,7 @@ For select input, optional parameters:
 For textarea input, optional parameters:
     name="input_name" rows="number_of_rows" cols="number_of_characters"
 
+For select input, when items are dynamically determined from a Collection field, the default selected item will be the last added one. Consider adding a script which selects the needed item on load, see script examples below.
 For all inputs, consider using <br> tag after the label and-or after the input.
 
 EXAMPLE FOR BUTTON-LIKE INPUTS (SUBMIT, RESET, BUTTON):
