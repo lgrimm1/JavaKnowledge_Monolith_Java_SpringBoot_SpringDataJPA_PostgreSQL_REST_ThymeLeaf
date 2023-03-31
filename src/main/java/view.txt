@@ -49,11 +49,12 @@ message text field
 list of all titles
 "New Source Page" button                    POST /source/new    -
 "Edit Source Page" button                   POST /source/edit   {"titles": [<String>, ...]}
-"Confirm deletion" checkbox
+"Browse files" button
+"Confirm" checkbox
 "Delete Source Page(s)" button              POST /delete        {"titles": [<String>, ...], "confirm": <boolean>}
 "Generate Pages from Sources" button        POST /generate      -
 "Publish Static Pages" button               POST /publish       -
-"Import TXT Source Files"                   POST /import        {"files": <String>, "confirm": <boolean>}
+"Import Source Files"                       POST /import        {"files": <String>, "confirm": <boolean>}
 "Back" button                               GET /               -
 Total returned fields: {"titles": [<String>, ...], "files": <String>, "confirm": <boolean>, "message": <String>}
 
