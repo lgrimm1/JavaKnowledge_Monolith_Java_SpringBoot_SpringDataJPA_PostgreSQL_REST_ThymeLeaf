@@ -23,7 +23,7 @@ The ThymeLeaf HTML tags are in the next order below:
     e. favicon
     f. fieldset
     g. form
-    h. formatting (bold, italics, strong, code, quotation etc.)
+    h. formatting (bold, italics, strong, small, sup, sub ,code, quotation etc.)
     i. image
     j. label
     k. paragraph
@@ -95,7 +95,7 @@ EXAMPLE FOR FORM:
 </form>
 END OF EXAMPLE
 
-EXAMPLE FOR FORMATTING (BOLD, ITALICS, STRONG, CODE, QUOTATION ETC.):
+EXAMPLE FOR FORMATTING (BOLD, ITALICS, STRONG, SMALL, SUP, SUB, CODE, QUOTATION ETC.):
 <!-- <b>, <i>, <strong>, <code>, <q> etc. -->
 <tag_name th:text="*{fieldName}" />
 END OF EXAMPLE
@@ -210,7 +210,11 @@ For select input, optional parameters:
 For textarea input, optional parameters:
     name="input_name" rows="number_of_rows" cols="number_of_characters"
 
-For file-type input, the appearing button and the file-list behind it is not modifiable. That said, CSS parameters have no effect. In order to make it customizable, must wrap it into other (customizable) tag and make it virtually invisible. See example below.
+For file-type input, it has the ability to receive focus (tabbing), activate for key press while on focus, opening selection dialog, storing file selection, receive files via drag&drop, showing names of selected files, also lets screen readers to detect it.
+The appearing button and the file-list behind it is not modifiable, CSS parameters have no effect.
+Workaround is to wrap the input into a label and give button-like style to it while hiding (visually or totally) the original input, visit the CSS page for style examples.
+See examples below.
+
 For select input, when items are dynamically determined from a Collection field, the default selected item will be the last added one. Consider adding a script which selects the needed item on load, see script examples below.
 For all inputs, consider using <br> tag after the label and-or after the input.
 
@@ -230,12 +234,51 @@ EXAMPLE FOR CHECKBOX:
 END OF EXAMPLE
 
 EXAMPLE FOR FILE:
-<!-- CSS class definitions for labels of file-type input -->
-<!-- CSS definitions for file-type input -->
-<label for="input_name" style="style data" class="label_style">
-    <input id="input_name" type="file" th:field="*{fieldName}" multiple />
+<!-- CSS class definitions for labels of file-type inputs: .label_of_custom_file_input {...} -->
+<!-- CSS definitions for file-type inputs: input[type="file"] {...} -->
+
+<!-- Javascript: -->
+<label for="file-upload" class="custom_file_upload"">
+    <span id="file-selected"></span>
+    <input id="file-upload" type="file" th:field="*{fieldName}" onchange="show_name(this) multiple />
     button text
 </label>
+<script>
+    <!-- show selected file names: -->
+    function show_name(input) {
+        document.getElementById("file-selected").innerHTML = input.files.item(0).name;
+    };
+    <!-- show selected file names: -->
+    function show_name(input) {
+        document.getElementById("file-selected").innerHTML = input.files.item(0).name;
+    };
+    <!-- show there are selected files: -->
+    function show_name(input) {
+        document.getElementById("file-selected").innerHTML = 'File(s) were selected.';
+    };
+</script>
+
+<!-- JQuery: -->
+<label for="file-upload" class="custom_file_upload" onchange="show_name(this)">
+    <span id="file-selected"></span>
+    <input id="file-upload" type="file" th:field="*{fieldName}" multiple />
+    button text
+</label>
+<script>
+    <!-- show selected file names: -->
+    $('#file-upload').bind('change', function() {
+        var fileName = '';
+        fileName = $(this).val();
+        $('#file-selected').html(fileName); <!-- or, in case it shows fake file path: -->
+        $('#file-selected').html(fileName.replace(/^.*\\/, ""));
+    })
+    <!-- show there are selected files: -->
+    $('#file-upload').bind('change', function() {
+        var fileName = '';
+        fileName = 'File(s) were selected.';
+        $('#file-selected').html(fileName);
+    })
+</script>
 END OF EXAMPLE
 
 EXAMPLE FOR IMAGE:

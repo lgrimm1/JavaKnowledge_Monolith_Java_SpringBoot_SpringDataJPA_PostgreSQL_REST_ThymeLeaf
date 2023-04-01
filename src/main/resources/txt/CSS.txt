@@ -301,9 +301,11 @@ p {
     border: 10px solid;
     margin: 5px;
 }
-/*total width = width + left padding + right padding + left border + right border + left margin + right margin*/
-/*total height = height + top padding + bottom padding + top border + bottom border + top margin + bottom margin*/
-/*total occupied size is 120px in width, 100px in height*/
+/*
+total width = width + left padding + right padding + left border + right border + left margin + right margin
+total height = height + top padding + bottom padding + top border + bottom border + top margin + bottom margin
+total occupied size is 120px in width, 100px in height
+*/
 END OF EXAMPLE
 
 EXAMPLE FOR MARGIN COLLAPSE:
@@ -320,25 +322,251 @@ END OF EXAMPLE
 =================================================================================
 4. SPECIALS
 =================================================================================
-The file-type input style is handled by the specific browser and presently it is not possible to change its style.
-Workaround is to wrap the input into a label and give button-like style to it while hiding the original input.
+The file-type input style is handled by the specific browser, and presently it is not possible to change that style.
+The file input has the ability to receive focus (tabbing), activate for key press while on focus, opening selection dialog, storing file selection, receive files via drag&drop, showing names of selected files, also lets screen readers to detect it.
+Workaround is to wrap the input into a label and give button-like style to it while hiding (visually or totally) the original input, visit the SPRING THYMELEAF EXAMPLES page for HTML code examples.
+Total hiding blocks all functionalities except opening the dialog and storing file selection.
+Please note, every solution has pros and cons, choose one based upon the actual task.
 
-EXAMPLE FOR FILE-TYPE INPUT (WITH THYMELEAF):
+EXAMPLE FOR FILE-TYPE INPUT (THYMELEAF):
+/* hide input totally */
+.label_of_custom_file_input {
+    display: inline-block;
+    /*
+    style properties of button-like inputs
+    */
+    line-height: 32px; /* set custom size visually */
+    cursor: pointer;
+}
 input[type="file"] {
     display: none;
 }
-.custom_file_upload {
+
+/* hide input totally but maintain layout */
+.label_of_custom_file_input {
     display: inline-block;
     /*
-    style elements of button-like inputs
+    style properties of button-like inputs
     */
-    line-height: 32px;
+    line-height: 32px; /* set custom size visually */
     cursor: pointer;
 }
-...
-<label for="files" class="custom_file_upload">
-    <input id="files" type="file" th:field="*{fieldName}" multiple />
-    button caption text
-</label>
-<br>
+input[type="file"] {
+    visibility: hidden;
+}
+
+/* hide input, open for screen reader access, 1st variant */
+.label_of_custom_file_input {
+    display: inline-block;
+    /*
+    style properties of button-like inputs
+    */
+    line-height: 32px; /* set custom size visually */
+    cursor: pointer;
+}
+input[type="file"] {
+    position: absolute;
+    left: -99999rem;
+}
+
+/* hide input, open for screen reader access, 2nd variant */
+.label_of_custom_file_input {
+    display: inline-block;
+    /*
+    style properties of button-like inputs
+    */
+    line-height: 32px; /* set custom size visually */
+    cursor: pointer;
+}
+input[type="file"] {
+    border: 0;
+    clip: rect(0, 0, 0, 0);
+    clip-path: inset(50%);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
+}
+
+/* hide input, open for screen reader access, focusable, 1st variant */
+.label_of_custom_file_input {
+    display: inline-block;
+    /*
+    style properties of button-like inputs
+    */
+    line-height: 32px; /* set custom size visually */
+    cursor: pointer;
+}
+.label_of_custom_file_input:hover { /* only if having hover effect is needed */
+    background-color: ...;
+}
+.label_of_custom_file_input:focus-within {
+    outline: 5px solid;
+}
+input[type="file"] {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap; /* 1 */
+    clip-path: inset(50%);
+    border: 0;
+}
+
+/* hide input, open for screen reader access, focusable, 2nd variant */
+.label_of_custom_file_input {
+    display: inline-block;
+    /*
+    style properties of button-like inputs
+    */
+    line-height: 32px; /* set custom size visually */
+    cursor: pointer;
+}
+.label_of_custom_file_input:hover { /* only if having hover effect is needed */
+    background-color: ...;
+}
+.label_of_custom_file_input:focus-within {
+    outline: 5px solid;
+}
+input[type="file"]:active, input[type="file"]:focus {
+    clip: auto;
+    height: auto;
+    margin: 0;
+    overflow: visible;
+    position: static;
+    white-space: inherit;
+    width: auto;
+}
+END OF EXAMPLE
+
+Tables have cornered design by default. In order to give radius to corners, need to give style to border elements independently.
+
+EXAMPLE FOR TABLE, RADIUS IN CORNERS:
+/* in HTML use class="table" for <table>, class="table_th" for <th> and class="table_td" for <td> */
+.table {
+    border: 1px solid DarkGray;
+    border-collapse: separate;
+    width: 100%;
+    text-align: center;
+    border-radius: 6px;
+}
+
+.table_td, .table_th {
+    border-left: 1px solid DarkGray;
+    border-top: 1px solid DarkGray;
+    text-align: center;
+    padding: 3px;
+}
+
+.table_th {
+    border-top: none;
+}
+
+.table_th:first-child, .table_td:first-child {
+     border-left: none;
+}
+END OF EXAMPLE
+
+The examples below present a random collection of useful tweaks which can be optionally used when the actual task needs it.
+
+EXAMPLE FOR SMALL TWEAKS:
+/*
+InkColor is the main color the texts, mean graphics carry.
+MiddleColor is one of the colors the page uses secondarily.
+BackColor is the color of the background.
+For inputs, colors are usually in inverse (InkColor for background, BackColor for text).
+Change these colors to fit to page design.
+*/
+
+/* customize page */
+body { /* or: html { */
+    background-color: DarkSlateGray;
+    font-family: Roboto;
+    color: LightGray;
+    text-align: left;
+    line-height: 1.4; /* or 1.15 */
+    -webkit-text-size-adjust: 100%; /* prevent adjustments of font size after orientation changes in iOS */
+    margin: 0; /* when page should fill the browser from wall to wall */
+}
+
+/* customize <fieldset> */
+fieldset {
+    border: 1px solid;
+    border-radius: 6px;
+    color: MiddleColor;
+    margin: 0;
+    padding: 6px;
+}
+
+legend {
+    text-align: left; /* or: center, right */
+}
+
+/* only vertical resizing of <textarea> */
+textarea {
+    resize: vertical;
+}
+
+/* prevent link style changing when visited (use when <a> is basically not styled) */
+a, a:visited {
+    /* common properties like: */
+    text-decoration: underline;
+}
+
+/* customize horizontal line */
+hr {
+    display: block;
+    height: 1px;
+    border: 0;
+    border-top: 1px solid InkColor;
+    margin: 1em 0;
+    padding: 0;
+    border-color: MiddleColor;
+}
+
+/* customize hover effect on <select> */
+option:hover {
+    color: InkColor;
+    background-color: MiddleColor;
+}
+
+/* customize text selection color */
+::-moz-selection {
+  background: MiddleColor;
+  color: BackColor;
+  text-shadow: none;
+}
+
+::selection {
+  background: MiddleColor;
+  color: BackColor;
+  text-shadow: none;
+}
+
+/* remove the gap between audio, canvas, iframes, images, videos and the bottom of their containers */
+audio, canvas, iframe, img, svg, video {
+    vertical-align: middle;
+}
+
+/* prevent sup and sub from affecting line height */
+sub,
+sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+}
+
+sub {
+  bottom: -0.25em;
+}
+
+sup {
+  top: -0.5em;
+}
 END OF EXAMPLE
