@@ -3,18 +3,23 @@
 <head>
     <title>Java Knowledge</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-This place here is for the banner.<br>
-<h1>MANAGEMENT</h1>
-Select title(s) and choose an action, or go back for a search.<br>
+<table class="formatter_table">
+    <tr>
+        <td style="width: 20%">
+            <a href="/"><img src="/images/logo.jpg" alt="Java Knowledge"></a>
+        </td>
+        <td style="width: 80%">
+            <h1 class="page_title">JAVA KNOWLEDGE MANAGEMENT</h1>
+        </td>
+    </tr>
+</table>
+<br>
 <form action="#" th:object="${payload}" th:action="@{/management}" method="post" novalidate>
-<!--
-    <h4 th:unless="*{message}.isEmpty()" th:text="*{message}" class="message" />
--->
     <h4><label th:field="*{message}" class="message" /></h4>
-    <br>
     <table class="formatter_table">
         <tr>
             <td style="width: 65%">

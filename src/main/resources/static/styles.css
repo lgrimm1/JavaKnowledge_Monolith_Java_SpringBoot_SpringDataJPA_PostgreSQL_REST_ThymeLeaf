@@ -92,6 +92,11 @@ option:hover {
     text-align: center;
 }
 
+.page_title {
+    font-size: 200%;
+    text-align: left;
+}
+
 .message {
     color: DarkRed;
     text-align: center;

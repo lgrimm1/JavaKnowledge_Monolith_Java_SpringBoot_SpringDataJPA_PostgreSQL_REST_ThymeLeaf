@@ -3,40 +3,50 @@
 <head>
     <title>Java Knowledge</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    This place here is for the banner.<br>
-    <h1>WELCOME TO JAVA KNOWLEDGE!</h1>
-    This site serves as a knowledge base for <b>Java core</b>, <b>Spring frameworks</b> (<i>Spring Boot</i>, <i>Spring Data JPA</i>, <i>Spring Validation</i>, <i>Spring Thymeleaf</i> etc.) and related (<i>postgreSQL</i>, <i>HTML</i>, <i>CSS</i> etc.).<br>
-    <br>
-    <form action="#" th:object="${payload}" th:action="@{/search}" method="post" novalidate>
-        <fieldset>
-            <table class="formatter_table">
-                <tr>
-                    <td style="width: 75%">
-                        <!--
-                                            <input type="text" th:field="*{search_text}" autofocus />
-                        -->
-                        <input type="search" th:field="*{searchText}" placeholder="Search for title or content..." autofocus />
-                    </td>
-                    <td style="width: 25%">
-                        <input type="submit" value="SEARCH" formaction="/search" formmethod="post" />
-                    </td>
-                </tr>
-            </table>
-        </fieldset>
-        <br>
+<table class="formatter_table">
+    <tr>
+        <td style="width: 20%">
+            <a href="/"><img src="/images/logo.jpg" alt="Java Knowledge"></a>
+        </td>
+        <td style="width: 80%; text-align: left">
+            <h1 class="page_title">WELCOME TO JAVA KNOWLEDGE!</h1>
+        </td>
+    </tr>
+</table>
+<br>
+<form action="#" th:object="${payload}" th:action="@{/search}" method="post" novalidate>
+    <fieldset>
         <table class="formatter_table">
             <tr>
-                <td></td>
-                <td>
-                    <input type="submit" value="MANAGEMENT" class="button" formaction="/management" formmethod="post" />
+                <td style="width: 75%">
+                    <!--
+                                        <input type="text" th:field="*{search_text}" autofocus />
+                    -->
+                    <input type="search" th:field="*{searchText}" placeholder="Search for title or content..." autofocus />
                 </td>
-                <td></td>
+                <td style="width: 25%">
+                    <input type="submit" value="SEARCH" formaction="/search" formmethod="post" />
+                </td>
             </tr>
         </table>
-        <br>
-    </form>
+    </fieldset>
+    <br>
+    <table class="formatter_table">
+        <tr>
+            <td></td>
+            <td>
+                <input type="submit" value="MANAGEMENT" class="button" formaction="/management" formmethod="post" />
+            </td>
+            <td></td>
+        </tr>
+    </table>
+    <br>
+</form>
+This site serves as a knowledge base for <b>Java core</b>, <b>Spring frameworks</b> (<i>Spring Boot</i>, <i>Spring Data JPA</i>, <i>Spring Validation</i>, <i>Spring Thymeleaf</i> etc.) and related (<i>postgreSQL</i>, <i>HTML</i>, <i>CSS</i> etc.).<br>
+<br>
 </body>
 </html>
