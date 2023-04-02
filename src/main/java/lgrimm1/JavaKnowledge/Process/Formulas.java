@@ -41,7 +41,7 @@ public class Formulas {
 			"X.Y. HEADER 2\n" +
 					subLine +"\n";
 	private final String FORMULA_TABLE =
-			"||Column header 1|Column header 2||\n" +
+			"||COLUMN HEADER 1|COLUMN HEADER 2||\n" +
 			"||Cell 11|Cell 12||\n" +
 			"||Cell 21|Cell 22||\n" +
 			"||...|...||\n";

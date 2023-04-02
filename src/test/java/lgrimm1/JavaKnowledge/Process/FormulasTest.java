@@ -66,7 +66,7 @@ class FormulasTest {
 
 	@Test
 	void getFormula_Table() {
-		String expected = "||Column header 1|Column header 2||\n" +
+		String expected = "||COLUMN HEADER 1|COLUMN HEADER 2||\n" +
 				"||Cell 11|Cell 12||\n" +
 				"||Cell 21|Cell 22||\n" +
 				"||...|...||\n";
