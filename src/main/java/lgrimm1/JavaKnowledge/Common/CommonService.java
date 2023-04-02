@@ -218,7 +218,6 @@ public class CommonService {
 					null,
 					processRecords.getAllTitles(titleRepository)
 			);
-			System.out.println("======================================\n1st entrance" + payload);
 			return new ModelAndView("management", "payload", payload);
 		}
 		Optional<TitleEntity> optionalTitleEntity = titleRepository.findByTitle(titles.get(0));
@@ -235,7 +234,6 @@ public class CommonService {
 					null,
 					processRecords.getAllTitles(titleRepository)
 			);
-			System.out.println("======================================\n2nd entrance" + payload);
 			return new ModelAndView("management", "payload", payload);
 		}
 		long txtId = optionalTitleEntity.get().getTxtId();
@@ -253,7 +251,6 @@ public class CommonService {
 					null,
 					processRecords.getAllTitles(titleRepository)
 			);
-			System.out.println("======================================\n3rd entrance" + payload);
 			return new ModelAndView("management", "payload", payload);
 		}
 		Payload payload = new Payload(
