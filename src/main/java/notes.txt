@@ -5,6 +5,7 @@ Colors:
     b. DarkSlateGray #2F4F4F (general background, button text)
     c. DarkGray #A9A9A9 (fieldset border, table border, Header4)
     d. LightGray #D3D3D3 (text, Header1-3, button background)
+    e. Yellow (message)
 
 Views:
     a. root: start page
@@ -34,6 +35,8 @@ Views:
 
 "Source" view:
     the "Save" flow on endpoint depends on new or edit mode
+
+All messages are uppercase.
 
 Not needed test case, kept as template:
 /*

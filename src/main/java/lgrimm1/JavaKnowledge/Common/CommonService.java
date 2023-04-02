@@ -212,7 +212,7 @@ public class CommonService {
 					null,
 					null,
 					"",
-					"Please select exactly one title for editing.",
+					"PLEASE SELECT EXACTLY ONE TITLE FOR EDITING.",
 					null,
 					null,
 					null,
@@ -228,7 +228,7 @@ public class CommonService {
 					null,
 					null,
 					"",
-					"Please select exactly one title for editing.",
+					"PLEASE SELECT EXACTLY ONE TITLE FOR EDITING.",
 					null,
 					null,
 					null,
@@ -245,7 +245,7 @@ public class CommonService {
 					null,
 					null,
 					"",
-					"Please select exactly one title for editing.",
+					"PLEASE SELECT EXACTLY ONE TITLE FOR EDITING.",
 					null,
 					null,
 					null,
@@ -270,7 +270,7 @@ public class CommonService {
 
 	public ModelAndView deletePages(String initialView, List<String> titles, Boolean confirm) {
 		if (titles == null || titles.size() == 0 || !confirm) {
-			String message = !confirm ? "Please confirm deletion." : "Please select titles you wish to delete.";
+			String message = !confirm ? "PLEASE CONFIRM DELETION." : "PLEASE SELECT TITLES YOU WISH TO DELETE.";
 			Payload payload = new Payload(
 					false,
 					null,
@@ -295,7 +295,7 @@ public class CommonService {
 					null,
 					null,
 					"",
-					"Please select existing titles you wish to delete.",
+					"PLEASE SELECT EXISTING TITLES YOU WISH TO DELETE.",
 					null,
 					null,
 					null,
@@ -309,7 +309,7 @@ public class CommonService {
 				titleRepository,
 				txtRepository,
 				htmlRepository) +
-				" of " + numberOfGivenTitles + " titles were deleted.";
+				" OF " + numberOfGivenTitles + " TITLES WERE DELETED.";
 		Payload payload = new Payload(
 				false,
 				null,
@@ -333,7 +333,7 @@ public class CommonService {
 				null,
 				null,
 				"",
-				publishResults[0] + " HTML files were pre-deleted, " + publishResults[1] + " were published.",
+				publishResults[0] + " HTML FILES WERE PRE-DELETED, " + publishResults[1] + " WERE PUBLISHED.",
 				null,
 				null,
 				null,
@@ -363,11 +363,11 @@ public class CommonService {
 		String formula = formulas.getFormula(formulaName);
 		String message;
 		if (formula.isEmpty()) {
-			message = "Wrong formula name was asked.";
+			message = "WRONG FORMULA NAME WAS ASKED.";
 		}
 		else {
 			content.addAll(List.of(formula.split("\n")));
-			message = "Formula was appended.";
+			message = "FORMULA WAS APPENDED.";
 		}
 		Payload payload = new Payload(
 				null,
@@ -392,11 +392,11 @@ public class CommonService {
 		String message;
 		if (title == null || title.isBlank()) {
 			title = "";
-			message = "Please define a title.";
+			message = "PLEASE DEFINE A TITLE.";
 		}
 		else if (fileName == null || fileName.isBlank()) {
 			fileName = "";
-			message = "Please define a file name.";
+			message = "PLEASE DEFINE A FILE NAME.";
 		}
 		else {
 			if (content == null) {
@@ -408,7 +408,7 @@ public class CommonService {
 			Optional<TitleEntity> optionalTitleEntity = titleRepository.findByTitle(title);
 			if (editExistingPage) {
 				if (optionalTitleEntity.isEmpty()) {
-					message = "There is no existing page with this title.";
+					message = "THERE IS NO EXISTING PAGE WITH THIS TITLE.";
 				}
 				else {
 					txtRepository.deleteById(optionalTitleEntity.get().getTxtId());
@@ -417,19 +417,19 @@ public class CommonService {
 					HtmlEntity htmlEntity = htmlRepository.save(new HtmlEntity(new ArrayList<>(), new ArrayList<>()));
 					TxtEntity txtEntity = txtRepository.save(new TxtEntity(processRecords.listToString(content)));
 					titleRepository.save(new TitleEntity(title, fileName, txtEntity.getId(), htmlEntity.getId()));
-					message = "Source page has been overwritten.";
+					message = "SOURCE PAGE HAS BEEN OVERWRITTEN.";
 				}
 			}
 			else { //editExistingPage == false
 				if (optionalTitleEntity.isPresent()) {
-					message = "There is an existing page with this title.";
+					message = "THERE IS AN EXISTING PAGE WITH THIS TITLE.";
 				}
 				else {
 					HtmlEntity htmlEntity = htmlRepository.save(new HtmlEntity(new ArrayList<>(), new ArrayList<>()));
 					TxtEntity txtEntity = txtRepository.save(new TxtEntity(processRecords.listToString(content)));
 					titleRepository.save(new TitleEntity(title, fileName, txtEntity.getId(), htmlEntity.getId()));
 					editExistingPage = true;
-					message = "Source page has been saved.";
+					message = "SOURCE PAGE HAS BEEN SAVED.";
 				}
 			}
 		}
@@ -456,7 +456,7 @@ public class CommonService {
 					null,
 					null,
 					"",
-					"Please upload minimum one file and confirm source overwriting.",
+					"PLEASE UPLOAD MINIMUM ONE FILE AND CONFIRM SOURCE OVERWRITING.",
 					null,
 					null,
 					null,
@@ -482,7 +482,7 @@ public class CommonService {
 				null,
 				null,
 				"",
-				notImportedFiles.size() + " of " + files.size() + " files were not imported.",
+				notImportedFiles.size() + " OF " + files.size() + " FILES WERE NOT IMPORTED.",
 				null,
 				null,
 				null,
@@ -499,7 +499,7 @@ public class CommonService {
 					null,
 					null,
 					"",
-					"Please confirm generating pages.",
+					"PLEASE CONFIRM GENERATING PAGES.",
 					null,
 					null,
 					null,
@@ -521,7 +521,7 @@ public class CommonService {
 				null,
 				null,
 				"",
-				messageData[0] + " pages in " + messageData[1] + " seconds has been processed.",
+				messageData[0] + " PAGES IN " + messageData[1] + " SECONDS HAS BEEN PROCESSED.",
 				null,
 				null,
 				null,
