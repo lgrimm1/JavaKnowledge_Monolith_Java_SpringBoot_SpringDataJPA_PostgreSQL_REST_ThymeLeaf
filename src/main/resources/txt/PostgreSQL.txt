@@ -10,10 +10,6 @@ Database names, column names, index names etc. should be lowercase.
 4. CHARACTER TYPES
 5. BACKEND CONNECTION PARAMETERS
 
-=>SPRING BOOT
-=>SPRING BOOT ENTITY
-=>SPRING BOOT REPOSITORY
-
 =================================================================================
 1. SETTING UP
 =================================================================================
@@ -143,3 +139,7 @@ The array marking ([]) is equal with the separate array keyword (e.g. varchar(3)
 =================================================================================
 These parameters are declared in the application.properties file under the project directory.
 Visit SPRING DATA JPA DATABASE CONNECTION page for more details.
+
+=>SPRING BOOT
+=>SPRING BOOT ENTITY
+=>SPRING BOOT REPOSITORY

@@ -77,7 +77,7 @@ random.nextBytes(byteArray); //fill the array with random numbers
 
 Other methods are below.
 
-||Method|Description||
+||METHOD|DESCRIPTION||
 ||setSeed(byte[] seedArray)|sets seed numbers||
 ||setSeed(long seed)|sets seed from the 8th bits of the given long number||
 ||getSeed(int numberOfBytes)|returns the used seed numbers as a byte[numberOfBytes]

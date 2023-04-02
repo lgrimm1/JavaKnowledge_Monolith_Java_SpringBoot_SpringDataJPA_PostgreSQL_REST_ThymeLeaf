@@ -15,7 +15,7 @@ SortedMap<keyType, valueType> sm = new TreeMap<>();
 All methods of Map are available.
 Specific methods are below.
 
-||Method|Description||
+||METHOD|DESCRIPTION||
 ||Comparator()|returns a Comparator which is used to order the keys||
 ||firstKey()|returns the 1st key||
 ||lastKey()|returns the last key||

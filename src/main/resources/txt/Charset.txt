@@ -14,7 +14,7 @@ A historical name can be canonical or one of the aliases. Can be returned by get
 The IANA changes over time. It is important that no aliases should be removed from the charset, and in case a canonical name changes, the old one must become alias.
 Always recognized namings (Java standards) are below.
 
-||Charset|Description||
+||CHARSET|DESCRIPTION||
 ||US-ASCII||Seven-bit ASCII, a.k.a. ISO646-US, a.k.a. the Basic Latin block of the Unicode character set||
 ||ISO-8859-1|ISO Latin Alphabet No. 1, a.k.a. ISO-LATIN-1||
 ||UTF-8|Eight-bit UCS Transformation Format||
@@ -24,7 +24,7 @@ Always recognized namings (Java standards) are below.
 
 The StandardCharset class provides constants for identifying a standard charset, see below. In order to use them, import the java.nio.charset.StandardCharset class.
 
-||Constant|Charset||
+||CONSTANT|CHARSET||
 ||US_ASCII|US-ASCII||
 ||ISO_8859_1|ISO-8859-1||
 ||UTF_8|UTF-8||
@@ -37,7 +37,7 @@ import java.nio.charset.Charset;
 ...
 Charset cs = new Charset(String canonicalName, String[] aliases);
 
-||Method|Description||
+||METHOD|DESCRIPTION||
 ||name()|returns the canonical name||
 ||aliases|returns aliases in a Set<String>||
 ||defaultCharset()|returns the default charset of the present JVM||

@@ -1,7 +1,6 @@
 =================================================================================
 DATE, TIME, TIMEZONE, DURATION
 =================================================================================
-
 1. ZONEDATETIME AND ITS COMPONENTS
 2. ZONEID COMPONENT
 3. LOCALDATE, LOCALTIME, LOCALDATETIME, FORMATTING
@@ -9,8 +8,6 @@ DATE, TIME, TIMEZONE, DURATION
 5. MANAGEMENT OF PARAMETERS
 6. CALCULATIONS
 7. GETTING PARAMETERS
-
-=>LOCALE
 
 =================================================================================
 1. ZONEDATETIME AND ITS COMPONENTS
@@ -270,3 +267,5 @@ n = zdt.getDayOfYear();
 LocalDate ld = zdt.toLocalDate();
 WeekFields weekFields = WeekFields.of(Locale.getDefault());
 n = ld.get(weekFields.weekOfWeekBasedYear());
+
+=>LOCALE

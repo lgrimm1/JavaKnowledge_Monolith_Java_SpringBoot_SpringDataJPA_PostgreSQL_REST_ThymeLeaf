@@ -5,7 +5,7 @@ Extends the InputStream abstract class.
 Reads byte data from files.
 All methods of InputStream are implemented and available. Specific methods are below.
 
-||Method|Description||
+||METHOD|DESCRIPTION||
 ||read(byte[] byteArray, int startPosition, int length)|reads length number of bytes into byteArray from startPosition in the array||
 ||finalize()|ensures the calling of close()||
 ||getChannel()|returns the object of FileChannel associated with the input stream||

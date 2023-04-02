@@ -11,11 +11,6 @@ There are several logging frameworks with full support for logging, e.g. Log4j (
 4. FILTERS, FORMATTERS
 5. LOGMANAGER
 
-=>CLASSES
-=>STANDARD INPUT AND OUTPUT
-=>FILE OPERATIONS
-=>ASSERTION
-
 =================================================================================
 1. LOGGERS
 =================================================================================
@@ -24,7 +19,7 @@ In case a class is in a hierarchical system like in a package, the name should f
 Log records are categorized into levels.
 Running a logger on a level means all log records on the defined or higher levels are passed through while under the defined level are dropped.
 
-||Level|Details||
+||LEVEL|DETAILS||
 ||SEVERE|serious failure||
 ||WARNING|potential problem||
 ||INFO|general runtime information||
@@ -78,7 +73,7 @@ In case of customization, the passed LogRecords are caught and modified via over
 =================================================================================
 The raised log records will be forwarded to one or more log handlers (appenders) which handle the output channels.
 
-||Handler|Target||
+||HANDLER|TARGET||
 ||StreamHandler|writes to an OutputStream||
 ||ConsoleHandler|writes to the console||
 ||FileHandler|writes to a file||
@@ -246,3 +241,8 @@ class Main {
 	}
 }
 END OF EXAMPLE
+
+=>CLASSES
+=>STANDARD INPUT AND OUTPUT
+=>FILE OPERATIONS
+=>ASSERTION

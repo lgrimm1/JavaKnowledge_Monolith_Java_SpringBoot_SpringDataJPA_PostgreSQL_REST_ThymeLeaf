@@ -21,7 +21,7 @@ Map<keyType, valueType> mapName = new HashMap<>();
 
 All methods of the Collection interface is available. Specific methods follow.
 
-||Method|Description||
+||METHOD|DESCRIPTION||
 ||put(key, value)|inserts the key-value pair into the map, overwrites the pair at already existing key||
 ||putAll(otherMap)|inserts all pairs from otherMap, overwrites already existing ones||
 ||putIfAbsent(key, value)|inserts pair in case the key does not exist yet (put() methods without overwriting)||

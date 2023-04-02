@@ -55,7 +55,7 @@ Collection
             L (e) NavigableSet
                 L (i) TreeSet
 
-||Method|Description||
+||METHOD|DESCRIPTION||
 ||add()|inserts an element||
 ||size()|returns the number of elements||
 ||remove()|removes an element||
@@ -184,7 +184,7 @@ Collections.shuffle(numbers);
 ---------------------------------------------------------------------------------
 Routine data manipulation means several methods which are meant to manipulate collection data.
 
-||Method|Description||
+||METHOD|DESCRIPTION||
 ||reverse()|reverses the order of elements||
 ||fill()|replace every element with the given value||
 ||copy()|creates a copy of the collection||

@@ -13,10 +13,6 @@ When with the solution the response body is accessible and the exception handler
 When the response body is not accessible, the body will be practically null, the solution will not be REST compatible, and Spring will send a default HTTP error page back with an HTTP error code and additional error message, see later session.
 For the latter, workaround can be releasing the REST standard for exception handling which is not advised.
 
-=>SPRING BOOT
-=>SPRING BOOT CONTROLLER
-=>SPRING MODELANDVIEW
-
 1. EXCEPTION HANDLER
 2. HANDLER EXCEPTION RESOLVER
 3. CONTROLLER ADVISE
@@ -63,7 +59,7 @@ The Handler Exception Resolver carries the core mechanism of the Exception Handl
 The DefaultHandlerExceptionResolver is handling the standard HTTP error codes by itself.
 Not compatible with REST (sends back the error page).
 
-||HTTP code|Handled exceptions||
+||HTTP CODE|HANDLED EXCEPTION||
 ||400 (Bad Request)|BindException, HttpMessageNotReadableException, MethodArgumentNotValidException, MissingServletRequestParameterException, MissingServletRequestPartException, TypeMismatchException||
 ||404 (Not Found)|NoSuchRequestHandlingMethodException||
 ||405 (Method Not Allowed)|HttpRequestMethodNotSupportedException||
@@ -279,3 +275,7 @@ public class MyErrorController extends BasicErrorController {
     }
 }
 END OF EXCEPTION
+
+=>SPRING BOOT
+=>SPRING BOOT CONTROLLER
+=>SPRING MODELANDVIEW

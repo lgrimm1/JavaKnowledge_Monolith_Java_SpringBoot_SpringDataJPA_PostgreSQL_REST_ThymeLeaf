@@ -5,19 +5,6 @@ VARIABLES
 2. VARIABLE TYPES
 3. OBJECT POOLS
 
-=>LITERALS
-=>PRIMITIVE DATA TYPES
-=>WRAPPER CLASSES
-=>STRING
-=>ACCESS MODIFIERS
-=>ANNOTATIONS
-=>GARBAGE COLLECTOR
-=>TYPE CASTING AND CONVERSION
-=>STATEMENTS
-=>CLASSES
-=>CLASSES;11. MULTI-TYPE VARIABLES
-=>OBJECTS
-
 =================================================================================
 1. DECLARATION OF VARIABLES
 =================================================================================
@@ -72,3 +59,16 @@ Whenever a new variable is declared, Java will render an object to it:
 Immutable objects are stored in memory pools. When a new variable is created and a literal is given (or default is used), Java will find an existing object with that value first, and uses the proper hashcode. With this technique, less memory is needed.
 For mutable object, every declaration needs creation of new object since modifying the value stored in that object, would modify all variable values linked to that object which would cause fraud.
 By using constructor of a class to create new object, Java will skip searching for existing objects in the pool but create a new one.
+
+=>LITERALS
+=>PRIMITIVE DATA TYPES
+=>WRAPPER CLASSES
+=>STRING
+=>ACCESS MODIFIERS
+=>ANNOTATIONS
+=>GARBAGE COLLECTOR
+=>TYPE CASTING AND CONVERSION
+=>STATEMENTS
+=>CLASSES
+=>CLASSES;11. MULTI-TYPE VARIABLES
+=>OBJECTS

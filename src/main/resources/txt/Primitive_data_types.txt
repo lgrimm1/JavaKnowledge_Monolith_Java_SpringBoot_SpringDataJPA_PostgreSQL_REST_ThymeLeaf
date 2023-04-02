@@ -1,14 +1,6 @@
 =================================================================================
 PRIMITIVE DATA TYPES
 =================================================================================
-
-=>LITERALS
-=>VARIABLES
-=>EQUALITY
-=>WRAPPER CLASSES
-=>STRING
-=>TYPE CASTING AND CONVERSION
-
 The Java is a statically typized language, so all variables must be declared before use.
 Referenced types are e.g. String s = "Java"; where s is an object of String class.
 Primitive types are e.g. int n = 2; where n will contain a value only.
@@ -43,3 +35,10 @@ Primitive types:
 The default values are set by the constructor of the corresponding wrapper class.
 The String is a wrapper class, declaring a String results "" as a default value set by its constructor.
 Hexadecimal numbers are not primitive types but series of characters (for a byte, 2 characters) therefore can be stored in String wrapper object.
+
+=>LITERALS
+=>VARIABLES
+=>EQUALITY
+=>WRAPPER CLASSES
+=>STRING
+=>TYPE CASTING AND CONVERSION

@@ -8,20 +8,6 @@ SPRING BOOT TESTS
 5. SERVICE CLASS TESTS
 6. CONTROLLER CLASS TESTS
 
-=>SPRING BOOT
-=>TESTS
-=>JUNIT
-=>MOCKITO
-=>SPRING BOOT MAIN CLASS
-=>SPRING BOOT ENTITY
-=>SPRING BOOT REPOSITORY
-=>SPRING BOOT SERVICE
-=>SPRING MODELANDVIEW
-=>SPRING BOOT CONTROLLER TESTS
-=>SPRING MODELANDVIEW;5. TESTING
-=>SPRING BOOT VALIDATION
-=>SPRING DATA JPA TESTS
-
 =================================================================================
 1. TEST SLICES
 =================================================================================
@@ -260,3 +246,17 @@ MORE HERE: https://www.baeldung.com/spring-boot-testing
 MORE HERE: https://docs.spring.io/spring-framework/docs/current/reference/html/testing.html
 MORE HERE: https://github.com/spring-projects/spring-framework/tree/main/spring-test/src/test/java/org/springframework/test/web/servlet/samples
 MORE HERE: https://www.javatips.net/api/org.springframework.test.web.modelandviewassert
+
+=>SPRING BOOT
+=>TESTS
+=>JUNIT
+=>MOCKITO
+=>SPRING BOOT MAIN CLASS
+=>SPRING BOOT ENTITY
+=>SPRING BOOT REPOSITORY
+=>SPRING BOOT SERVICE
+=>SPRING MODELANDVIEW
+=>SPRING BOOT CONTROLLER TESTS
+=>SPRING MODELANDVIEW;5. TESTING
+=>SPRING BOOT VALIDATION
+=>SPRING DATA JPA TESTS

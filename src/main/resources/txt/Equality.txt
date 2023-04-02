@@ -6,10 +6,6 @@ The == operator checks equality.
 2. EQUALITY BETWEEN VALUES OF PRIMITIVE VARIABLES
 3. EQUALITY BETWEEN REFERENCES OF OBJECTS
 
-=>LITERALS
-=>VARIABLES
-=>OBJECTS
-
 =================================================================================
 1. EQUALITY BETWEEN LITERALS
 =================================================================================
@@ -30,3 +26,7 @@ a == b -> true
 String s1 = "abc", s2 = "abc";
 s1 == s2 -> false (different references)
 For checking objects for their values use .equal() methods.
+
+=>LITERALS
+=>VARIABLES
+=>OBJECTS

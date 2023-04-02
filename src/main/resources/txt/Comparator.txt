@@ -11,13 +11,6 @@ There can be data overflow in ordering number-type class elements. In case the f
 3. CUSTOM USE (COMPARATOR)
 4. CHAINED COMPARATORS
 
-=>PRIMITIVE DATA TYPES
-=>OBJECTS
-=>OPERATORS
-=>EQUALITY
-=>ARRAYLIST
-=>PRIORITYQUEUE
-
 =================================================================================
 1. SIMPLE USE ON WRAPPER ELEMENT TYPES
 =================================================================================
@@ -207,3 +200,10 @@ list.sort(customComparator);
 END OF EXAMPLE
 
 In case a field type is a complex class itself, create a comparator for that field, then use that Comparator in a chain normally.
+
+=>PRIMITIVE DATA TYPES
+=>OBJECTS
+=>OPERATORS
+=>EQUALITY
+=>ARRAYLIST
+=>PRIORITYQUEUE

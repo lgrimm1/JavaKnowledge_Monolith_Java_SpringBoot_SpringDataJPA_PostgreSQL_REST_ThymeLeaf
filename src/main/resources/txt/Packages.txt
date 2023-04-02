@@ -4,11 +4,6 @@ PACKAGES
 1. ORGANIZING PACKAGES
 2. UNNAMED PACKAGES
 
-=>IMPORT
-=>CLASSES
-=>METHODS
-=>INHERITANCE
-
 =================================================================================
 1. ORGANIZING PACKAGES
 =================================================================================
@@ -50,3 +45,8 @@ Error message appears in case of need of overwriting.
 =================================================================================
 All classes and interfaces in the working directory of the application form an unnamed package.
 Such package members are not marked with the package statement in their first lines.
+
+=>IMPORT
+=>CLASSES
+=>METHODS
+=>INHERITANCE

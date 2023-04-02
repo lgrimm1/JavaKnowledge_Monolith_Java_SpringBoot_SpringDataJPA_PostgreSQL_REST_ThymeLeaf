@@ -17,7 +17,7 @@ NavigableSet<elementType> ss2 = new TreeSet<>(new CustomComparator()); //custom 
 All methods of SortedSet are available. Other methods are below.
 Because the element adding order is stored, e.g. the toArray(), toString(), iterator() methods will follow that order.
 
-||Method|Description||
+||METHOD|DESCRIPTION||
 ||headSet(element[, includeElement])|returns all the elements before the given element, includeElement shows if the element will be included, default is false||
 ||tailSet(element[, includeElement])|returns all the elements after the given element, includeElement shows if the element will be included, default is true||
 ||subSet(element1, [includeElement1], element2, [includeElement2])|returns all the elements between the given elements, includeElementX shows if that element will be included, defaults are true, false||
@@ -35,4 +35,3 @@ Because the element adding order is stored, e.g. the toArray(), toString(), iter
 =>SORTEDSET
 =>TREESET
 =>ITERATOR
-

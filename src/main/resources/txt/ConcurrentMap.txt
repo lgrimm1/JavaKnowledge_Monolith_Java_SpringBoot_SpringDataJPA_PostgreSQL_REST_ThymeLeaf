@@ -14,7 +14,7 @@ ConcurrentMap<keyType, valueType> cm = new ConcurrentHashMap<>();
 
 Includes all methods of Map interface. Specific methods are below.
 
-||Method|Description||
+||METHOD|DESCRIPTION||
 ||putIfAbsent()|Inserts the specified key-value pair only if the key is absent||
 ||compute()|computes an entry for the specified key and its previously mapped value.||
 ||computeIfAbsent()|computes a value using the specified function for the specified key if the key is absent||

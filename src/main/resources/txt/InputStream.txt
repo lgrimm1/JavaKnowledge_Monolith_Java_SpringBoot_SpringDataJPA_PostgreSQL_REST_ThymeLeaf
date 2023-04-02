@@ -10,7 +10,7 @@ The stream must be closed after processing in order to release the source.
 After closing the stream, any method will raise exception.
 The InputStream implements the AutoClosable interface, the try-with-resources statement can be used to ensure proper closing.
 
-||Method|Description||
+||METHOD|DESCRIPTION||
 ||read()|reads a single byte||
 ||read(byte[] byteArray)|reads bytes into the given byte array||
 ||available()|returns the readable number of bytes in the stream, decreases as data is read||

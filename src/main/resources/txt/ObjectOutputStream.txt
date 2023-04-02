@@ -10,7 +10,7 @@ Reading from the stream must follow the order of writing to stream (FIFO).
 
 Due to having slightly different structure, all methods are described here.
 
-||Method|Description||
+||METHOD|DESCRIPTION||
 ||write()|sends a byte data to the linked file stream||
 ||writeBoolean()|sends data in boolean form to the file stream||
 ||writeChar()|sends data in character form to the file stream||

@@ -7,13 +7,6 @@ Converting a type to an other type.
 3. TYPE CONVERSION
 4. HEXADECIMAL, BINARY AND OCTAL NUMBER CONVERSIONS
 
-=>PRIMITIVE DATA TYPES
-=>WRAPPER CLASSES
-=>STRING
-=>VARIABLES
-=>OBJECTS
-=>STATEMENTS
-
 =================================================================================
 1. WIDENING (IMPLICIT) CASTING
 =================================================================================
@@ -125,3 +118,10 @@ int n = Integer.parseInt(s, 8);
 END OF EXAMPLE
 
 The parseInt() method throws exception in case the input String contains invalid characters for the prefix (e.g. F character in octal number String).
+
+=>PRIMITIVE DATA TYPES
+=>WRAPPER CLASSES
+=>STRING
+=>VARIABLES
+=>OBJECTS
+=>STATEMENTS

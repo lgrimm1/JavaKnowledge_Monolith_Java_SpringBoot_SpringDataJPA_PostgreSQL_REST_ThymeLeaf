@@ -7,7 +7,7 @@ Maintains an internal buffer of 8192 bytes by default.
 A chunk of bytes is read from the disk and stored in the internal buffer. The internal buffer bytes will be read by other streams. With this, the number of communication to the disk is reduced causing faster operations.
 All methods are available from InputStream. Special method is below.
 
-||Method|Description||
+||METHOD|DESCRIPTION||
 ||read(byte[] byteArray, int position, int length)|reads length amount of bytes into the given byte array from position||
 
 EXAMPLE FOR USAGE:

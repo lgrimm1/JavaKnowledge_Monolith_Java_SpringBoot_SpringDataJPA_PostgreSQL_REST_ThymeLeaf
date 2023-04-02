@@ -25,7 +25,7 @@ All methods of Set are available but values can be only from the same enum type.
 Elements can be added from other Collection types like ArrayList, LinkedList in case their element type are the same enum type.
 Specific method are below.
 
-||Method|Description||
+||METHOD|DESCRIPTION||
 ||copyOf()|created a copy of the set||
 
 Differences between EnumSet and EnumMap:

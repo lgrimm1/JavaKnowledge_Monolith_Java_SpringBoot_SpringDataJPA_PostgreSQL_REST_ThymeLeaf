@@ -50,6 +50,7 @@ void threadCreatorMethod(Runnable process) {
 }
 threadCreatorMethod(outerMethod());
 threadCreatorMethod(lambda);
+END OF EXAMPLE
 
 EXAMPLE 1 FOR DECLARING A THREAD AS ANONYMOUS CLASS:
 import java.util.Thread;
@@ -73,6 +74,7 @@ import java.util.Thread;
 		};
 ...
 newThread.start(); //starts the thread
+END OF EXAMPLE
 
 EXAMPLE 2 FOR DECLARING A THREAD AS ANONYMOUS CLASS:
 import java.util.Thread;
@@ -90,6 +92,7 @@ Thread thread = new Thread(() -> {
 });
 ...
 newThread.start(); //starts the thread
+END OF EXAMPLE
 
 Because many threads can be executed parallel, which means process-parts from threads are following each-other, the momentarily running thread can be accessed by:
 Thread actualThread = Thread.currentThread();
@@ -113,6 +116,7 @@ int i = 3;
 ai.set(45); //value giving
 ai.set(i); //value giving via variable
 i = ai.get(); //value returning
+END OF EXAMPLE
 
 There are such versions for boolean, long etc.
 The atomic classes have many conversion methods and other useful tools.
@@ -147,6 +151,7 @@ Executor executor = Executors.newSingleThreadExecutor();
 Executor executor = Executors.newSingleThreadExecutor();
 executor.execute(lambda1); //dropping a process into
 executor.execute(lambda2); //dropping a process into
+END OF EXAMPLE
 
 EXAMPLE FOR FIXED THREAD POOL VIA EXECUTOR SERVICE:
 ExecutorService executorService = Executors.newFixedThreadPool(10); //size of the core
@@ -155,6 +160,7 @@ Future<Integer> future2 = executorService.submit(lambda2); //dropping a process 
 ...
 String result1 = future1.get();
 Integer result2 = future2.get();
+END OF EXAMPLE
 
 EXAMPLE FOR FIXED THREAD POOL VIA THREAD POOL EXECUTOR:
 //core with maximum 2 threads, other processes will wait in pool queue
@@ -164,6 +170,7 @@ executor.submit(lambda2);
 executor.submit(lambda3); //will wait in pool until core has free slot
 int size = executor.getPoolSize(); //2
 int size = executor.getQueue().size(); //1
+END OF EXAMPLE
 
 EXAMPLE FOR CACHED THREAD POOL VIA THREAD POOL EXECUTOR:
 //no fixed core size, maximum Integer.MAX_VALUE, above that processes move to the pool first, keepAliveTime is 60 seconds
@@ -174,6 +181,7 @@ executor.submit(lambda2);
 executor.submit(lambda3);
 int size = executor.getPoolSize(); //3
 int size = executor.getQueue().size(); //0
+END OF EXAMPLE
 
 EXAMPLE FOR SINGLE THREAD EXECUTOR VIA EXECUTOR SERVICE:
 //core size is 1, sequential thread starting
@@ -181,6 +189,7 @@ EXAMPLE FOR SINGLE THREAD EXECUTOR VIA EXECUTOR SERVICE:
 //ideal for one single loop
 ExecutorService executor = Executors.newSingleThreadExecutor();
 executor.submit(lambda);
+END OF EXAMPLE
 
 EXAMPLE FOR SCHEDULED THREAD POOL VIA SCHEDULED EXECUTOR SERVICE:
 //starts a thread after a defined delay; schedule()
@@ -196,6 +205,7 @@ ScheduledFuture<?> future = executor.scheduleAtFixedRate(() -> {
     }, 500, 100, TimeUnit.MILLISECONDS); //starts after 500 ms, restarts after 100 ms delay, loop 3 times
 lock.await(1000, TimeUnit.MILLISECONDS); //waits 1000 ms
 future.cancel(true); //stops the loop
+END OF EXAMPLE
 
 3.2. FORKJOINPOOL
 ---------------------------------------------------------------------------------
@@ -238,5 +248,6 @@ TreeNode tree = new TreeNode(5, new TreeNode(3), new TreeNode(2, new TreeNode(2)
 //create and execute the pool
 ForkJoinPool forkJoinPool = ForkJoinPool.commonPool();
 int sum = forkJoinPool.invoke(new CountingTask(tree));
+END OF EXAMPLE
 
 In case of other tasks, e.g. deleting specific files on a node, the TreeNode/value would be a list of files to delete, the Node constructor would call filtering out these files, and in CountingTask/compute() the .collect() would be rewritten, or the whole Stream operation but do not forget creating the new fork.

@@ -11,7 +11,7 @@ Constructors:
     a. (FileWriter fileWriter)
     b. (FileWriter fileWriter, int bufferSize)
 
-||Method|Description||
+||METHOD|DESCRIPTION||
 ||write()|writes a character to the buffer||
 ||write(char[] array)|writes the characters of the array to the internal buffer||
 ||write(String string)|writes the characters of the String to the internal buffer||

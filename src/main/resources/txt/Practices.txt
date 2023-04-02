@@ -85,7 +85,7 @@ HEAD: the local summarized code.
 Snapshot: a commited local version.
 Branch: all actions are rendered into branches, dividing from the original; a developer works on a branch.
 
-||Command|Action||
+||COMMAND|ACTION||
 ||git log|shows history of the live branch for commits etc.; for commits shows hash codes as well||
 ||git checkout branch_name|makes the given branch alive||
 ||git checkout -b branch_name|creates a new one and makes that branch the live branch||
@@ -169,7 +169,7 @@ END OF EXAMPLE
 
 The development lifecycle is rendered into Maven commands. These commands can be accessed through the IDE but can be different in other IDEs. All IDE should have terminal in which accessing Maven is universalized.
 
-||Command|Description||
+||COMMAND|DESCRIPTION||
 ||mvn validate|checks the archetype for existence and consistency||
 ||mvn compile|compiles the project, creates .class files in target directory||
 ||mvn test|tests the project by executing all test methods||

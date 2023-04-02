@@ -9,7 +9,7 @@ Wrapper classes have constant fields, static and non-static methods as well.
 All wrapper classes are immutable. That said, the object contains data in memory, a variable points to that memory portion as a reference. When the variable receives a new value, means a new object is created and the pointer of variable is moved to that, the old object can be freed.
 Due to immutability, in order to create a deep copy, no constructor is needed, the new variable can have the old variable assigned to it.
 
-||Primitive type|Wrapper class||
+||PRIMITIVE TYPE|WRAPPER CLASS||
 ||boolean|Boolean||
 ||byte|Byte||
 ||short|Short||

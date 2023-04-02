@@ -14,7 +14,7 @@ NavigableMap<keyType, valueType> nm = new TreeMap<>();
 All methods of SortedMap are available. However, headMap(), tailMap(), and subMap() are defined differently.
 Specific methods are below.
 
-||Method|Description||
+||METHOD|DESCRIPTION||
 ||headMap(key, [includingKey])|returns all entries with keys less than passed key, includingKey as true makes the key to be included, default is false||
 ||tailMap(key, [includingKey])|returns all entries with keys greater than passed key, includingKey as true makes the key to be included, default is true||
 ||subMap(key1, [includingKey1], key2, [includingKey2])|returns all entries with keys within [key1, key2] interval, includingKeyX as true makes the given key to be included, defaults are true and false||

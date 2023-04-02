@@ -7,7 +7,7 @@ Writes byte data to files.
 In the constructor optionally can be defined if the destination file will be appended with the written data or not. This setting will determine behavior of the 1st writing attempt. The rest of attempts will append the destination.
 All methods of OutputStream are implemented and available. Specific methods are below.
 
-||Method|Description||
+||METHOD|DESCRIPTION||
 ||write(byte[] byteArray, int startPosition, int length)|writes length number of bytes of byteArray from startPosition in the array||
 ||finalize()|ensures the calling of close()||
 ||getChannel()|returns the object of FileChannel associated with the input stream||

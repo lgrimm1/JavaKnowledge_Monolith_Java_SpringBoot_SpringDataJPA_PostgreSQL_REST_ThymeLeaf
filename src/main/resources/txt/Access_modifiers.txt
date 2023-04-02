@@ -18,7 +18,7 @@ The access modifiers modify the default code element visibility, accessibility a
 They are used as optional first keywords in class, interface, field and method declarations.
 Usage: [public|protected|[default]|private] [static] [final] class/interface/field/method declaration
 
-||Keyword|From actual class|From sub-class|From package|From outside||
+||KEYWORD|FROM ACTUAL CLASS|FROM SUB-CLASS|FROM PACKAGE|FROM OUTSIDE||
 ||public|visible|visible|visible|visible||
 ||protected|visible|visible|visible|not visible||
 ||default|visible|not visible|visible|not visible||

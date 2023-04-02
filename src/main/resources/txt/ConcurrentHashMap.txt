@@ -25,7 +25,7 @@ END OF EXAMPLE
 
 All methods of Map are available. Specific methods are below.
 
-||Method|Description||
+||METHOD|DESCRIPTION||
 ||forEach(parallelismThreshold, [transformer], function)|iterates through entries, parallelismThreshold: how many element-operations can be parallel, transformer: a function transforming the data before the data is passed to the specified function||
 ||forEachEntry(...)|iterates through entries||
 ||forEachKey(...)|iterates through keys||

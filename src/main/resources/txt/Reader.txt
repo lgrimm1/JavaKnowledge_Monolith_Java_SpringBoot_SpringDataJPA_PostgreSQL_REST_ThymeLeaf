@@ -11,7 +11,7 @@ After closing the stream, any method will raise exception.
 The Reader implements the AutoClosable interface, the try-with-resources statement can be used to ensure proper closing.
 Find some practical information about file handling under the File operations section.
 
-||Method|Description||
+||METHOD|DESCRIPTION||
 ||ready()|checks if the reader is ready to be read||
 ||read(char[] array)|reads the characters from the stream and stores in the given array||
 ||read(char[] array, int startPosition, int length)|reads length number of characters from the stream and stores in the given array from startPosition||

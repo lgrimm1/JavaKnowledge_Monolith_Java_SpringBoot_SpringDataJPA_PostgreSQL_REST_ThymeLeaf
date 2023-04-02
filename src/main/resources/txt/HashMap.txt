@@ -7,22 +7,13 @@ Its extending class is LinkedHashMap.
 1. GENERALLY
 2. CONVERT TO ARRAYLIST AND BACK
 
-=>MAP
-=>TREEMAP
-=>LINKEDHASHMAP
-=>WEAKHASHMAP
-=>GARBAGE COLLECTOR
-=>CONCURRENTHASHMAP
-=>ARRAYLIST
-=>STREAM
-
 =================================================================================
 1. GENERALLY
 =================================================================================
 All methods of Map is available.
 Specific method are below.
 
-||Method|Description||
+||METHOD|DESCRIPTION||
 ||clear()|removes all pairs||
 ||compute()|computes a new value for the given key||
 ||computeIfAbsent()|computes a new value for the given key if the mapping for that key is absent||
@@ -114,3 +105,12 @@ if (lengthKeyList == valueList.size()) {
 else {
     //unable to pair all keys and values
 }
+
+=>MAP
+=>TREEMAP
+=>LINKEDHASHMAP
+=>WEAKHASHMAP
+=>GARBAGE COLLECTOR
+=>CONCURRENTHASHMAP
+=>ARRAYLIST
+=>STREAM

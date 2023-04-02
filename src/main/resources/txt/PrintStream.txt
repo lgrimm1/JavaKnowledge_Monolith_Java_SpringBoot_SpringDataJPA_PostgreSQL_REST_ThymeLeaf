@@ -17,7 +17,7 @@ Constructor parameters of PrintStream:
     a. (FileOutputStream fos, boolean autoFlush[, Charset cs]): linking with the file stream, turning on or off the auto flushing function, optional output character set
     b. (String fileName, boolean autoFlush[, Charset cs]): linking with the file without an explicit file stream, turning on or off the auto flushing function, optional output character set
 
-||Method|Description||
+||METHOD|DESCRIPTION||
 ||print()|prints the specified data||
 ||println()|prints the data with a new line character at the end||
 ||printf()|prints the data formatted||

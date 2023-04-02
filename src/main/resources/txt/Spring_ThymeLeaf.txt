@@ -7,14 +7,6 @@ SPRING THYMELEAF
 4. FORMS
 5. EXAMPLES
 
-=>WEB APPLICATION
-=>SPRING BOOT
-=>SPRING BOOT CONTROLLER
-=>SERIALIZATION
-=>SPRING MODELANDVIEW
-=>SPRING THYMELEAF EXAMPLES
-=>CSS
-
 =================================================================================
 1. GENERALLY
 =================================================================================
@@ -232,7 +224,7 @@ If the <input> tag is button-like:
 
 In the template the next types can be used for input, data is defined within the opening tag.
 
-||Input|Input|Input|Input||
+||INPUT|INPUT|INPUT|INPUT||
 ||button|checkbox|color|date||
 ||datetime-local|email|file|hidden||
 ||image|month|number|password||
@@ -242,7 +234,7 @@ In the template the next types can be used for input, data is defined within the
 
 In the template the next types can be used for input, data is defined between the opening and closing tags.
 
-||Input|Input||
+||INPUT|INPUT||
 ||select|textarea||
 
 Button:
@@ -388,3 +380,11 @@ MORE HERE: https://www.javatpoint.com/spring-boot-thymeleaf-view
 MORE HERE: https://stackoverflow.com/questions/28325708/thymeleaf-how-to-pass-html-to-the-div
 MORE HERE: https://www.baeldung.com/spring-boot-crud-thymeleaf
 MORE HERE: https://www.baeldung.com/spring-thymeleaf-error-messages
+
+=>WEB APPLICATION
+=>SPRING BOOT
+=>SPRING BOOT CONTROLLER
+=>SERIALIZATION
+=>SPRING MODELANDVIEW
+=>SPRING THYMELEAF EXAMPLES
+=>CSS

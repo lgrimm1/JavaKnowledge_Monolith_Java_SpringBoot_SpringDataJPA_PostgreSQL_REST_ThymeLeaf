@@ -8,12 +8,6 @@ HashSet is not synchronized, after modifying by a thread, need external synchron
 1. GENERALLY
 2. CONVERT TO ARRAY AND BACK
 
-=>SET
-=>LINKEDHASHSET
-=>COLLECTION
-=>TREESET
-=>STREAM
-
 =================================================================================
 1. GENERALLY
 =================================================================================
@@ -30,7 +24,7 @@ END OF EXAMPLE
 
 All methods of Set are available. Other methods are below.
 
-||Method|Description||
+||METHOD|DESCRIPTION||
 ||clone()|creates a copy||
 ||isEmpty()|true if no elements||
 
@@ -55,3 +49,9 @@ set.toArray(array);
 Set<String> set2 = new HashSet<>(Arrays.asList(array));
 //or:
 Set<String> set2 = new HashSet<>(Arrays.stream(array).collect(Collectors.toSet()));
+
+=>SET
+=>LINKEDHASHSET
+=>COLLECTION
+=>TREESET
+=>STREAM

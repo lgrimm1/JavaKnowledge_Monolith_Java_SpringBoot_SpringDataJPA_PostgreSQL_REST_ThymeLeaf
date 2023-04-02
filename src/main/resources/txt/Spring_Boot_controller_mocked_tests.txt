@@ -6,17 +6,6 @@ SPRING BOOT CONTROLLER MOCKED TESTS
 3. MOCKMVC RESULT MATCHERS
 4. MOCKMVC REQUEST BUILDERS AND RESULT MATCHERS EXAMPLES
 
-=>SPRING BOOT
-=>SPRING BOOT TESTS
-=>SPRING BOOT CONTROLLER TESTS
-=>SPRING BOOT CONFIGURATION
-=>MOCKITO
-=>JUNIT
-=>SPRING BOOT CONTROLLER
-=>SPRING MODELANDVIEW
-=>SPRING BOOT VALIDATION
-=>SERIALIZATION
-
 =================================================================================
 1. MOCKMVC BASICS
 =================================================================================
@@ -422,3 +411,14 @@ public void givenNotFound_whenGetSpecificException_thenNotFoundCode() throws Exc
       .andExpect(result -> assertEquals("resource not found", result.getResolvedException().getMessage()));
 }
 END OF EXAMPLE
+
+=>SPRING BOOT
+=>SPRING BOOT TESTS
+=>SPRING BOOT CONTROLLER TESTS
+=>SPRING BOOT CONFIGURATION
+=>MOCKITO
+=>JUNIT
+=>SPRING BOOT CONTROLLER
+=>SPRING MODELANDVIEW
+=>SPRING BOOT VALIDATION
+=>SERIALIZATION

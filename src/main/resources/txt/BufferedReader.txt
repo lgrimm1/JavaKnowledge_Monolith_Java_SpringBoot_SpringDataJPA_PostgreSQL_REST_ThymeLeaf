@@ -11,7 +11,7 @@ Constructors:
     a. (FileReader fileReader)
     b. (FileReader fileReader, int bufferSize)
 
-||Method|Description||
+||METHOD|DESCRIPTION||
 ||ready()|checks if the reader is ready to be read||
 ||read()|reads a character from the internal buffer||
 ||read(char[] array)|reads the characters from the internal buffer and stores in the given array||

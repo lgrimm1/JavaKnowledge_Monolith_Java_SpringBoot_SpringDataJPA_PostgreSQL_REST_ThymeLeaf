@@ -5,28 +5,28 @@ Under the same (src/main/resources) folder, the next file should be created:
     application.properties
 This file contains configuration and environment-specific settings of the application, mainly for Hibernate (part of Spring Data JPA core).
 
-||Database access parameters|Description||
+||DATABASE ACCESS PARAMETERS|DESCRIPTION||
 ||spring.datasource.driverClassName|what driver Hibernate should use for the database, needed when JPA uses Hibernate for this configuration||
 ||spring.datasource.url|the database URL||
 ||spring.datasource.username|login data of the database||
 ||spring.datasource.password|login data of the database||
 
-||Database management parameters|Description||
+||DATABASE MANAGEMENT PARAMETERS|DESCRIPTION||
 ||spring.jpa.properties.hibernate.jdbc.lob.non_contextual_creation|optional||
 ||spring.jpa.properties.hibernate.dialect|in what dialect the SQL command should be written||
 ||spring.jpa.hibernate.ddl-auto|how Hibernate should initialize the database||
 ||spring.jpa.show-sql|sets visibility of executed SQL commands on console||
 ||spring.jpa.properties.hibernate.format_sql|sets formatting on printed SQL commands on console, optional||
 
-||H2 parameters|Description||
+||H2 PARAMETERS|DESCRIPTION||
 ||spring.h2.console.enabled|Spring starts H2 Database administration tool at http://localhost:8080 with /h2-console endpoint (path) by default||
 ||spring.h2.console.path|modifies the default endpoint (path) of the H2 Database administration tool||
 
-||Logging parameters|Description||
+||LOGGING PARAMETERS|DESCRIPTION||
 ||logging.level.org.hibernate.SQL|for DEBUG value prints SQL debug information on console, optional||
 ||logging.level.org.hibernate.type.descriptor.sql|for TRACE value prints SQL debug information on console for prepared statements, optional||
 
-||Other parameters|Description||
+||OTHER PARAMETERS|DESCRIPTION||
 ||server.error.include-message|sets whether the server error messages should be sent to the frontend, optional, needed for Spring Validation||
 
 The database communicates through a port defined at installation. The default ports are:

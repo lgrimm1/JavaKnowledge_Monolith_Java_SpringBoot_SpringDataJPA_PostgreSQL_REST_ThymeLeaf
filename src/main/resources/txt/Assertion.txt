@@ -4,12 +4,6 @@ ASSERTION
 1. ASSERTIONS
 2. USAGE TYPES
 
-=>TESTS
-=>CLASSES
-=>PACKAGES
-=>LOGGING
-=>JUNIT
-
 =================================================================================
 1. ASSERTIONS
 =================================================================================
@@ -125,3 +119,9 @@ else {
     ...
 }
 END OF EXAMPLE
+
+=>TESTS
+=>CLASSES
+=>PACKAGES
+=>LOGGING
+=>JUNIT

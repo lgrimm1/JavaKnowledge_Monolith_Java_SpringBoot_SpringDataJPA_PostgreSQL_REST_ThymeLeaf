@@ -6,7 +6,7 @@ Usually, next to the default (inherited) methods, overridden, derived and custom
 
 A JPA repository test class uses class-level annotations.
 
-||Annotation|Description||
+||ANNOTATION|DESCRIPTION||
 ||@DataJpaTest|instructs Spring to create a test slice for JPA||
 ||@Transactional(propagation = Propagation.NOT_SUPPORTED)|disables transaction management||
 ||@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)|configuration of the database||

@@ -1,12 +1,6 @@
 =================================================================================
 LITERALS
 =================================================================================
-
-=>VARIABLES
-=>PRIMITIVE DATA TYPES
-=>EQUALITY
-=>RANDOM NUMBERS
-
 Literals are constants but no variables.
 For further use we render them to variables or pass them to methods.
 Logical: true or false
@@ -33,3 +27,8 @@ Automated literal conversion:
     int ascii;
     ascii = 'a'; //value will be 97
     "Number is " + ascii //right, ascii will be converted to String for concatenation
+
+=>VARIABLES
+=>PRIMITIVE DATA TYPES
+=>EQUALITY
+=>RANDOM NUMBERS

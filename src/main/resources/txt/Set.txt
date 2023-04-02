@@ -21,7 +21,7 @@ Set<elementType> set = new HashSet<>();
 
 All methods of Collection interface are available.
 
-||Method|Description||
+||METHOD|DESCRIPTION||
 ||add()|adds element to the set||
 ||addAll()|adds all elements of the given collection to the set||
 ||iterator()|returns an Iterator of the set||
@@ -53,7 +53,7 @@ Set<Long> mutableSet = new HashSet<>(Set.of(
 ));
 END OF EXAMPLE
 
-||Mathematical operation|Method||
+||MATHEMATICAL OPERATION|METHOD||
 ||union|addAll()||
 ||intersection|retainAll()||
 ||difference|removeAll()||

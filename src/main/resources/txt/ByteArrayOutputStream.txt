@@ -6,7 +6,7 @@ Writes an array of output data in bytes to the output stream.
 It includes an internal array to store data.
 All methods of OutputStream are implemented and available. Specific methods are below.
 
-||Method|Description||
+||METHOD|DESCRIPTION||
 ||write(int b)|writes the given byte, handles ASCII and Unicode which means it can be 1 or 2 bytes in reality||
 ||write(byte[] byteArray, int startPosition, int length)|writes length number of bytes of byteArray from startPosition in the array||
 ||writeTo(ByteArrayOutputStream baos2)|writes the entire data of the current stream to the given stream||

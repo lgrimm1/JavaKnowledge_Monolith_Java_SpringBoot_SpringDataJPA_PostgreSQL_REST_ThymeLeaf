@@ -19,7 +19,7 @@ LinkedHashSet<elementType> set = new LinkedHashSet<>();
 All methods of Set are available. Other methods are below.
 Because the element adding order is stored, e.g. the toArray(), toString(), iterator() methods will follow that order.
 
-||Method|Description||
+||METHOD|DESCRIPTION||
 ||clone()|creates a copy||
 ||isEmpty()|true if no elements||
 

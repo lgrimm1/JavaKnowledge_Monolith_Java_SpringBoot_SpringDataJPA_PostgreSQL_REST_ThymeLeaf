@@ -15,7 +15,7 @@ END OF EXAMPLE
 All methods of SortedSet and NavigableSet are available, priority on NavigableSet. Other methods are below.
 Because the element adding order is stored, e.g. the toArray(), toString(), iterator() methods will follow that order.
 
-||Method|Description||
+||METHOD|DESCRIPTION||
 ||clone()|returns a copy||
 ||isEmpty()|checks whether the set is empty||
 

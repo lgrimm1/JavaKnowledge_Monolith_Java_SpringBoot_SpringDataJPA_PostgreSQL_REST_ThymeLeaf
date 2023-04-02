@@ -5,11 +5,6 @@ MOCKITO
 2. SETTING UP
 3. MOCKING
 
-=>CLASSES
-=>TESTS
-=>JUNIT
-=>SPRING BOOT TESTS
-
 =================================================================================
 1. GENERALLY
 =================================================================================
@@ -100,3 +95,8 @@ list = Arrays.asList(testfolder.listFiles());
 Mockito.verify(testfolder, Mockito.times(2)).listFiles(); //true
 
 MORE HERE: https://www.vogella.com/tutorials/Mockito/article.html
+
+=>CLASSES
+=>TESTS
+=>JUNIT
+=>SPRING BOOT TESTS

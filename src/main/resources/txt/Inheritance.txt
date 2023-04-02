@@ -14,16 +14,6 @@ INHERITANCE
 11. GENERIC ALGORITHMS
 12. GENERICS CLASSES
 
-=>ACCESS MODIFIERS
-=>CLASSES
-=>METHODS
-=>METHODS;9. VARIABLE NUMBER OF ARGUMENTS (VARARGS)
-=>ANNOTATIONS
-=>COLLECTION
-=>LAMBDA EXPRESSIONS
-=>CLASSES;10. GENERICS CLASSES
-=>REFLECTION
-
 =================================================================================
 1. INHERITANCE
 =================================================================================
@@ -168,7 +158,7 @@ In case all the variants of possible parameters are not known or the number of p
 The subclass will inherit the access modifiers as well.
 In case of override, new modifier can be declared, with the restriction that the new modifier should allow wider access.
 
-||Modifier in superclass|Modifier in subclass||
+||MODIFIER IN SUPERCLASS|MODIFIER IN SUBCLASS||
 ||private|private, default, protected, public||
 ||[default]|[default], protected, public||
 ||protected|protected, public||
@@ -368,7 +358,7 @@ circle = (double radius) -> Math.pow(radius, 2) * Math.PI;
 The java.util.function package contains 43 functional interfaces.
 From among them, the most important 6 are below.
 
-||Functional interface|Example as method reference||
+||FUNCTIONAL INTERFACE|EXAMPLE AS METHOD REFERENCE||
 ||UnaryOperator<T>|String::toLowerCase||
 ||BinaryOperator<T>|BigInteger::add||
 ||Predicate<T>|Collection::isEmpty||
@@ -444,3 +434,13 @@ Advantages of using generics:
     a. code re-usability
     b. compile-time type checking
     c. used with Collections (e.g. ArrayList<String> creates a String-based instance of ArrayList<T>)
+
+=>ACCESS MODIFIERS
+=>CLASSES
+=>METHODS
+=>METHODS;9. VARIABLE NUMBER OF ARGUMENTS (VARARGS)
+=>ANNOTATIONS
+=>COLLECTION
+=>LAMBDA EXPRESSIONS
+=>CLASSES;10. GENERICS CLASSES
+=>REFLECTION

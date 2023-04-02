@@ -17,7 +17,7 @@ Constructor parameters:
 The defined character coding will be forced during accessing the source stream.
 Available methods are below.
 
-||Method|Description||
+||METHOD|DESCRIPTION||
 ||read()|reads a single character||
 ||read(char[] characterArray)|reads characters into the given character array||
 ||read(char[] characterArray, int start, int length)|reads length number of characters into the given character array from its start index||

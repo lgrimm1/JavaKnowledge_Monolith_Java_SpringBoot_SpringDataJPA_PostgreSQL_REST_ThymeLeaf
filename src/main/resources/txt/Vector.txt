@@ -14,7 +14,7 @@ java.util.Vector;
 ...
 Vector<elementType> vector = new Vector<>(); //declaration and memory allocation
 
-||Method|Description||
+||METHOD|DESCRIPTION||
 ||add()|adds or inserts element||
 ||addAll()|adds all elements of an other Vector||
 ||get()|returns reference of element||

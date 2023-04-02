@@ -20,7 +20,7 @@ END OF EXAMPLE
 All methods of Set are available. Other methods are below.
 Because the element adding order is stored, e.g. the toArray(), toString(), iterator() methods will follow that order.
 
-||Method|Description||
+||METHOD|DESCRIPTION||
 ||comparator()|returns the Comparator of ordering the elements||
 ||first()|returns the 1st element of the set||
 ||last()|returns the last element of the set||

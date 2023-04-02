@@ -21,7 +21,7 @@ Most of its functions are delegated to platform operations by the JVM which make
 =================================================================================
 The methods have connections towards InputStream, OutputStream, BufferedReader, BufferedWriter and Iterable (reaches all Collection classes which implement it e.g. List).
 
-||Method|Description||
+||METHOD|DESCRIPTION||
 ||copy()|copies InputStream to a byte file, or a byte file to OutputStream, or a file to another||
 ||createDirectory()|creates a new directory||
 ||createDirectories()|creates a new directory along with all parent directories||
@@ -94,7 +94,7 @@ END OF EXAMPLE
 =================================================================================
 The OpenOption is an interface. The StandardOpenOption implements it and serves constants which define how to open a file. Use this class with e.g. reading or writing file content.
 
-||Option|Description||
+||OPTION|DESCRIPTION||
 ||APPEND|if the file is opened for WRITE access then bytes will be written to the end of the file rather than the beginning||
 ||CREATE|creates a new file if it does not exist||
 ||CREATE_NEW|creates a new file, failing if the file already exists||

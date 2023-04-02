@@ -11,7 +11,7 @@ Reading from the stream must follow the order of writing to stream (FIFO).
 
 Due to having slightly different structure, all methods are described here.
 
-||Method|Description||
+||METHOD|DESCRIPTION||
 ||read()|receives a byte data from the linked file stream||
 ||readBoolean()|receives data in boolean form from the file stream||
 ||readChar()|receives data in character form from the file stream||
@@ -22,7 +22,6 @@ Due to having slightly different structure, all methods are described here.
 ||reset()|returns the control to the point in the stream where the mark was set||
 ||skipBytes()|skips and discards the specified bytes from the stream||
 ||close()|closes the stream||
-
 
 EXAMPLE FOR READING DATA:
 import java.io.ObjectInputStream;

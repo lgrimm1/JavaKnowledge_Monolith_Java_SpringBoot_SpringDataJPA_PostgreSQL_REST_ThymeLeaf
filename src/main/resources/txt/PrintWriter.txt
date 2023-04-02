@@ -21,7 +21,7 @@ Constructor parameters:
     b. (writer or output stream, boolean autoFlush)
     c. (writer or output stream, boolean autoFlush, Charset charset)
 
-||Method|Description||
+||METHOD|DESCRIPTION||
 ||print()|sends the data to the writer||
 ||println()|sends the data to the writer, puts a line end character to the end||
 ||printf()|sends the data to the writer in formatted ways, arguments are the formatting rule and the data||

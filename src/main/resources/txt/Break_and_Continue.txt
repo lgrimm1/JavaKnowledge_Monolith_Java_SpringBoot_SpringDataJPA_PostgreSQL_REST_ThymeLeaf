@@ -6,9 +6,6 @@ BREAK AND CONTINUE STATEMENTS
 3. CONTINUE STATEMENT
 4. LABELED CONTINUE STATEMENT
 
-=>STATEMENTS
-=>ITERATION
-
 =================================================================================
 1. BREAK STATEMENT
 =================================================================================
@@ -105,3 +102,6 @@ for (...) {
 	//skips until here
 }
 END OF EXAMPLE
+
+=>STATEMENTS
+=>ITERATION

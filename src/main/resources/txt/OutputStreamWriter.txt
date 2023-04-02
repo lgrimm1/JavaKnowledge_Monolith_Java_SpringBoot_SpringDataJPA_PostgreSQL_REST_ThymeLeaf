@@ -20,7 +20,7 @@ Constructor parameters:
 The defined character coding will be forced during accessing the destination stream.
 Available methods are below.
 
-||Method|Description||
+||METHOD|DESCRIPTION||
 ||write()|writes a single character||
 ||write(char[] characterArray)|writes characters from the given character array||
 ||write(String string)|writes the given String||

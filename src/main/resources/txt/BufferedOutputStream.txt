@@ -7,7 +7,7 @@ Maintains an internal buffer of 8192 bytes by default.
 Data are not written directly to the storage but into in the internal buffer. Once the buffer is filled or the stream is closed, the whole buffer will be written to the storage. With this, the number of communication to the disk is reduced causing faster operations.
 All methods are available from OutputStream. Special methods are below.
 
-||Method|Description||
+||METHOD|DESCRIPTION||
 ||write(byte[] byteArray)|sends a byte to the file stream||
 ||write(byte[] byteArray)|sends all bytes to the file stream from the given byte array||
 ||write(byte[] byteArray, int position, int length)|sends length amount of bytes to the file stream from the given byte array at its position||

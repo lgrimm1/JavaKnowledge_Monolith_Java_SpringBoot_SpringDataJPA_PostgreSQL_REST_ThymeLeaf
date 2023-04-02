@@ -7,17 +7,6 @@ SPRING MODELANDVIEW
 4. METHODS
 5. TESTING
 
-=>WEB APPLICATION
-=>MAP
-=>SPRING THYMELEAF
-=>SPRING BOOT REQUESTS
-=>SPRING BOOT CONTROLLER
-=>SPRING BOOT TESTS
-=>SPRING BOOT CONTROLLER TESTS
-=>JUNIT
-=>SPRING EXCEPTION HANDLING
-=>SPRING BOOT VALIDATION
-
 =================================================================================
 1. GENERALLY
 =================================================================================
@@ -126,7 +115,7 @@ It is possible to create a ModelAndView object without defining the view name (o
 =================================================================================
 The ModelAndView has the next methods.
 
-||ModelAndView method|Description||
+||MODELANDVIEW METHOD|DESCRIPTION||
 ||addObject("Html_attribute_name", object)|adds an object to the payload with its HTTP attribute name||
 ||addObject(object)|adds an object to the payload, HTTP attribute name is automatically set||
 ||addAllObjects(Map<String, ?>)|adds the content of the Map to the payload, HTTP attribute names are the keys||
@@ -149,7 +138,7 @@ The returned View object has one method:
 The returned ModelMap has methods with which the attribute names and objects can be managed.
 This class is inherited from the Map interface, additional methods are below.
 
-||ModelMap method|Description||
+||MODELMAP METHOD|DESCRIPTION||
 ||addAttribute("Html_attribute_name", object)|adds an object to the payload with its HTTP attribute name||
 ||addAttribute(object)|adds an object to the payload, HTTP attribute name is automatically set||
 ||addAllAttributes(Map<String, ?>)|adds the content of the Map to the payload, HTTP attribute names are the keys||
@@ -227,3 +216,14 @@ ModelAndViewAssert.assertModelAttributeAvailable(modelAndView, "html_attribute_n
 ModelAndViewAssert.assertAndReturnModelAttributeOfType(modelAndView, "html_attribute_name", Element.class);
 ModelAndViewAssert.assertModelAttributeValue(modelAndView, "html_attribute_name", attribute_value);
 END OF EXAMPLE
+
+=>WEB APPLICATION
+=>MAP
+=>SPRING THYMELEAF
+=>SPRING BOOT REQUESTS
+=>SPRING BOOT CONTROLLER
+=>SPRING BOOT TESTS
+=>SPRING BOOT CONTROLLER TESTS
+=>JUNIT
+=>SPRING EXCEPTION HANDLING
+=>SPRING BOOT VALIDATION

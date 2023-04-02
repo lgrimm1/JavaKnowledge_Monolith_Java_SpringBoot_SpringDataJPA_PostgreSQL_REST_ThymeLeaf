@@ -10,16 +10,6 @@ It is advised to express the toString() method of the entity as well.
 1. NO-JPA ENTITY CLASS
 2. JPA ENTITY CLASS
 
-=>SPRING BOOT
-=>SPRING DATA JPA DATABASE CONNECTION
-=>SPRING BOOT VALIDATION
-=>SERIALIZATION
-=>POSTGRESQL
-=>SPRING BOOT TESTS;2. ENTITY TEST
-=>SPRING BOOT CONTROLLER;9. IMPLEMENT REST CRUD API
-=>SPRING BOOT CONFIGURATION
-=>SPRING DATA JPA MAPPING ARRAY COLUMNS
-
 =================================================================================
 1. NO-JPA ENTITY CLASS
 =================================================================================
@@ -98,7 +88,7 @@ All application ends with that Hibernate empties the database for rows, tables a
 The class must be public and must not be final in order to let Spring accessing and using it.
 The entity class is marked with Spring (Hibernate) class-level annotations.
 
-||Annotation|Description||
+||ANNOTATION|DESCRIPTION||
 ||@Entity|marks that the class is a Spring Data entity||
 ||@Table|defines the corresponding table name in the database in case the two are not the same (most cases)||
 ||@NamedQuery|optional; defines a domain-level query on the entity and renders it to a query method signature from within the domain||
@@ -130,7 +120,7 @@ When using the SEQUENCE strategy, the ID generator also needs a sequence generat
 
 The relation between class fields and table fields are marked with field-level annotations.
 
-||Annotation|Description||
+||ANNOTATION|DESCRIPTION||
 ||@Id|marks that the field will represent a primary key column in the table of the database||
 ||@SequenceGenerator|marks the ID generator parameters||
 ||@GeneratedValue|marks ID generator type||
@@ -311,3 +301,13 @@ Visit the SPRING DATA JPA MAPPING ARRAY COLUMNS page for details.
 MORE HERE: https://www.baeldung.com/hibernate-one-to-many
 MORE HERE: https://www.baeldung.com/jpa-many-to-many
 MORE HERE: https://stackoverflow.com/questions/32427921/jpa-entity-must-be-unit-tested-and-how
+
+=>SPRING BOOT
+=>SPRING DATA JPA DATABASE CONNECTION
+=>SPRING BOOT VALIDATION
+=>SERIALIZATION
+=>POSTGRESQL
+=>SPRING BOOT TESTS;2. ENTITY TEST
+=>SPRING BOOT CONTROLLER;9. IMPLEMENT REST CRUD API
+=>SPRING BOOT CONFIGURATION
+=>SPRING DATA JPA MAPPING ARRAY COLUMNS

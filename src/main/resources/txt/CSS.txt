@@ -6,9 +6,6 @@ CSS
 3. PROPERTIES
 4. SPECIALS
 
-=>SPRING THYMELEAF
-=>SPRING THYMELEAF EXAMPLES
-
 =================================================================================
 1. BASICS
 =================================================================================
@@ -263,7 +260,7 @@ For differentiated sides in a property (e.g. background-position, border-style),
 For value combination for sides (e.g. border-style), the possible combinations are: one value (all sides), two values (top-bottom left-right), three values (top right-left bottom), 4 values (top right bottom left).
 For marked side in the property name (e.g. border-left-width), there must be properties for the other sides as well. For short, these properties are summarized as ...x... where x is the name of the side (e.g. border-x-width).
 
-||Property|Value example|Default|Description||
+||PROPERTY|VALUE EXAMPLE|DEFAULT|DESCRIPTION||
 ||background-color|Tomato|Black|element background color; for <body>: page background||
 ||background-image|url(image.gif)|no image|sets background image for the element, repeats the image horizontally and vertically for full coverage; for <body>: page background image||
 ||background-repeat|repeat-x|horizontally and vertically|sets repeating rule for the background image; values: no-repeat, repeat-x (only horizontally), repeat-y (only vertically)||
@@ -570,3 +567,6 @@ sup {
   top: -0.5em;
 }
 END OF EXAMPLE
+
+=>SPRING THYMELEAF
+=>SPRING THYMELEAF EXAMPLES

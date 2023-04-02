@@ -22,7 +22,7 @@ The constructors has 2 signatures:
     a. no argument: the queue is infinite
     b. integer argument: size of the queue
 
-||Method|Description||
+||METHOD|DESCRIPTION||
 ||add()|inserts element at the end, exception if queue is full||
 ||element()||returns head element of queue, exception if queue is empty||
 ||remove()||returns and removes head element of queue, exception if queue is empty||
@@ -47,7 +47,7 @@ element = abq.poll(tryingTime, timeScale); //tries to return and remove the head
 
 The next methods can block the execution by themselves.
 
-||Method|Description||
+||METHOD|DESCRIPTION||
 ||put()|inserts an element, if queue is full, waits until the queue has enough space||
 ||take()|returns and removes element, waits until the queue will not be empty, exception if waiting is interrupted||
 

@@ -7,13 +7,6 @@ WEB APPLICATION
 4. CURL
 5. API
 
-=>SPRING BOOT
-=>SPRING THYMELEAF
-=>SPRING MODELANDVIEW
-=>SERIALIZATION
-=>TESTS
-=>SPRING BOOT TESTS
-
 =================================================================================
 1. FRONTEND-BACKEND STRUCTURE, WORK CONCEPT
 =================================================================================
@@ -342,10 +335,17 @@ With using a controller as a REST API, only one response mode is available:
 
 The typical manifestation of a REST CRUD API can be seen below.
 
-||API function|Request type|Endpoint|Request body|Response body|HTTP success code||
+||API FUNCTION|REQUEST TYPE|ENDPOINT|REQUEST BODY|RESPONSE BODY|HTTP SUCCESS CODE||
 ||create|POST|api/v1/elementName|all fields (ID is excluded)|all fields (ID is included)|200||
 ||retrieve one|GET|api/v1/elementName?id=idNumber|-|all fields (ID is included)|200||
 ||retrieve all|GET|api/v1/elementNames or api/v1/allElementName|all elements in array, per element all fields (ID is included)|200||
 ||full update|PUT|api/v1/elementName|all fields (ID is included)|all fields (modified version; ID is included)|200||
 ||partial update|PATCH|api/v1/elementName/idNumber|only the fields which need to be updated (ID can not be given)|all fields (modified version; ID is included)|200||
 ||delete|DELETE|api/v1/elementName/idNumber|-|-|204 (No Content)||
+
+=>SPRING BOOT
+=>SPRING THYMELEAF
+=>SPRING MODELANDVIEW
+=>SERIALIZATION
+=>TESTS
+=>SPRING BOOT TESTS

@@ -9,7 +9,7 @@ After closing the stream, any method will raise exception.
 The Writer implements the AutoClosable interface, the try-with-resources statement can be used to ensure proper closing.
 The concept behind the Writer is similar to the StringBuilder (appending several sequences of data) but in this case, it works with characters.
 
-||Method|Description||
+||METHOD|DESCRIPTION||
 ||write(char[] charArray)|writes the characters from the given array||
 ||write(String string)|writes the characters from the given String||
 ||append(char c)|inserts the given character to the Writer||

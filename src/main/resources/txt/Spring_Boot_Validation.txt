@@ -11,14 +11,6 @@ SPRING BOOT VALIDATION
 8. STANDARD VALIDATION EXAMPLES
 9. CUSTOM VALIDATION ANNOTATION
 
-=>SPRING BOOT
-=>SPRING BOOT ENTITY VALIDATION
-=>SPRING BOOT ENTITY
-=>SPRING BOOT CONTROLLER
-=>SPRING BOOT TESTS;2. ENTITY TEST
-=>SPRING BOOT CONTROLLER TESTS
-=>SPRING MODELANDVIEW
-
 =================================================================================
 1. GENERALLY
 =================================================================================
@@ -429,3 +421,11 @@ public class EntityClass {
     //not-validated fields, constructors, getters, setters etc.
 }
 END OF EXAMPLE
+
+=>SPRING BOOT
+=>SPRING BOOT ENTITY VALIDATION
+=>SPRING BOOT ENTITY
+=>SPRING BOOT CONTROLLER
+=>SPRING BOOT TESTS;2. ENTITY TEST
+=>SPRING BOOT CONTROLLER TESTS
+=>SPRING MODELANDVIEW

@@ -5,10 +5,6 @@ Enables accessing package classes and interfaces, furthermore fields and methods
 1. NORMAL IMPORT
 2. STATIC IMPORT
 
-=>CLASSES
-=>METHODS
-=>ACCESS MODIFIERS
-
 =================================================================================
 1. NORMAL IMPORT
 =================================================================================
@@ -55,3 +51,7 @@ import static packageName.className;
 methodName();
 className.methodName();
 END OF EXAMPLE
+
+=>CLASSES
+=>METHODS
+=>ACCESS MODIFIERS

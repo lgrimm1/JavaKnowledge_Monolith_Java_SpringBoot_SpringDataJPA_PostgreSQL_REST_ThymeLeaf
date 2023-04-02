@@ -15,7 +15,7 @@ List<String> list2 = new LinkedList<>(); //uses LinkedList constructor
 
 These instances can use methods in the List interface.
 
-||Method|Description||
+||METHOD|DESCRIPTION||
 ||add()|inserts an element||
 ||addAll()|adds all elements of a List to the List||
 ||get()|accesses an element||

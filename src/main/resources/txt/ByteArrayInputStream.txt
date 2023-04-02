@@ -6,7 +6,7 @@ Reads an array of input data in bytes.
 It includes an internal array to store data.
 All methods of InputStream are implemented and available. Specific methods are below.
 
-||Method|Description||
+||METHOD|DESCRIPTION||
 ||read(byte[] byteArray)|reads the whole available length of bytes into byteArray||
 ||read(byte[] byteArray, int startPosition, int length)|reads length number of bytes into byteArray from startPosition in the array||
 ||close()|this method is implemented differently than its original purpose: while the stream can be closed, no exception raises in case of accessing after invoking||

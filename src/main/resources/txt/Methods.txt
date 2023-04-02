@@ -12,16 +12,6 @@ METHODS
 9. VARIABLE NUMBER OF ARGUMENTS (VARARGS)
 10. METHOD ORGANIZING
 
-=>ACCESS MODIFIERS
-=>CLASSES
-=>INHERITANCE
-=>PRIMITIVE DATA TYPES
-=>OBJECTS
-=>CLASSES;10. GENERICS CLASSES
-=>ANNOTATIONS
-=>CLASSES;3. NEW METHOD, METHOD OVERRIDE, METHOD OVERLOAD
-=>REFLECTION
-
 =================================================================================
 1. DECLARATION
 =================================================================================
@@ -254,3 +244,13 @@ END OF EXAMPLE
 =================================================================================
 A method should be handled as a black box which has its inputs (or uses already defined local variables) and generates an output (and/or changes mutable passed parameters).
 In such structure, if there is a test behind which compares outputs against needed values, after re-developing the method, running the test will ensure the proper results.
+
+=>ACCESS MODIFIERS
+=>CLASSES
+=>INHERITANCE
+=>PRIMITIVE DATA TYPES
+=>OBJECTS
+=>CLASSES;10. GENERICS CLASSES
+=>ANNOTATIONS
+=>CLASSES;3. NEW METHOD, METHOD OVERRIDE, METHOD OVERLOAD
+=>REFLECTION

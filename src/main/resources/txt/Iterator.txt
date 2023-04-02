@@ -6,7 +6,7 @@ The Iterator interface provides a verbal loop for sequential processes.
 Provides one-directional (forward) movements through the elements.
 For List types, the ListIterator interface (extension of Iterator) is the right solution.
 
-||Method|Description||
+||METHOD|DESCRIPTION||
 ||hasNext()|true if there is a next element||
 ||next()|returns the next element, exception if there is none||
 ||remove()|removes the last element returned by next()||

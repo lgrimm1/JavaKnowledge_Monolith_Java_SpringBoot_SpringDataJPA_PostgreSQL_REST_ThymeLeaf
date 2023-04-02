@@ -119,7 +119,7 @@ END OF EXAMPLE
 =================================================================================
 8. PRECEDENCE RULES
 =================================================================================
-||Type|Mark|Direction of execution||
+||TYPE|MARK|DIRECTION OF EXECUTION||
 ||postfix|++ --|->||
 ||prefix and unary|++ -- + - ~ !|<-||
 ||multiplicative|* / %|->||

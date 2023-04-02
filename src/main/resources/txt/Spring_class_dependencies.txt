@@ -6,7 +6,7 @@ In Spring, classes which should be injected, are marked with either of @Bean, @C
 For not having dedicated web app function like controller, service or storage, best expressing annotation is @Component.
 
 Versions for class dependency injections matching with Spring capabilities:
-||Version|Description||
+||VERSION|DESCRIPTION||
 ||Spring, @Autowired prototype|best practice for Spring injection of not-dedicated class, forces Spring to use no-singleton from the class, most possible memory heap overload||
 ||Spring, @Autowired|best practice for Spring injection of dedicated class, Spring creates singleton from the class||
 ||singleton injection|best practice for no-Spring injection of dedicated class but possible memory heap overload in Spring environment (Spring creates a copy from it first on instance level)||

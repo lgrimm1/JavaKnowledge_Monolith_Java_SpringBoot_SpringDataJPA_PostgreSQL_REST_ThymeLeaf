@@ -31,7 +31,7 @@ Matching is not case-sensitive.
 The user's preference is called Language Priority List and expressed as a list of language ranges.
 There is two types of language ranges: basic and extended.
 
-||Method|Description||
+||METHOD|DESCRIPTION||
 ||getCountry()|returns the country or region code||
 ||getDisplayCountry()|returns the country or region verbally||
 ||getISO3Country()|returns the country or region 3-letter code||
@@ -64,7 +64,7 @@ There are several classes which work alongside with Locale, these store the data
 E.g. the NumberFormat class which contains formats of numbers, currency, and percentages.
 Some methods of NumberFormat are below.
 
-||Method|Description||
+||METHOD|DESCRIPTION||
 ||NumberFormat.getInstance()||returns a NumberFormat instance, based on the default FORMAT locale||
 ||NumberFormat.getCurrencyInstance()|returns a NumberFormat instance for currencies, based on the default FORMAT locale||
 ||NumberFormat.getPercentInstance()|returns a NumberFormat instance for percentages, based on the default FORMAT locale||

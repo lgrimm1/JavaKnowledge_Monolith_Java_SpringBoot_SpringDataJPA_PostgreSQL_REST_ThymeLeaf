@@ -8,12 +8,6 @@ ITERATION
 5. RECURSION
 6. INFINITE LOOP
 
-=>STATEMENTS
-=>OPERATORS
-=>KEYWORDS AND IDENTIFIERS
-=>ARRAY
-=>ARRAYLIST
-
 =================================================================================
 1. FOR LOOP
 =================================================================================
@@ -103,3 +97,9 @@ END OF EXAMPLE
 6. INFINITE LOOP
 =================================================================================
 When updating the condition prevents it from turning to false.
+
+=>STATEMENTS
+=>OPERATORS
+=>KEYWORDS AND IDENTIFIERS
+=>ARRAY
+=>ARRAYLIST
