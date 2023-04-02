@@ -55,13 +55,12 @@ The templates are placed under the src/main/resources/templates folder.
 In case of external CSS style, the .css file must be placed into the src/main/resources/static folder. For more, visit the CSS page.
 A template can be created in design-time and in run-time as well, latter before reaching it via GET, POST etc. queries.
 
-EXAMPLE FOR A GENERAL THYMELEAF HTML TEMPLATE WITH REFERENCED EXTERNAL CSS:
+EXAMPLE FOR A GENERAL THYMELEAF HTML TEMPLATE:
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Title</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 <body>
 <!-- code -->
@@ -161,7 +160,6 @@ EXAMPLE FOR A THYMELEAF TEMPLATE (HTML SIDE, ATTRIBUTES):
 <head>
     <title>Title</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 <body>
 <!-- single attributes: -->

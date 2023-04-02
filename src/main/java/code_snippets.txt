@@ -1,19 +1,5 @@
 Code snippets
 ------------------------
-HTML, main structure:
-<!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Java Knowledge - Main Page</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-<!-- HTML code with optional form block, lastly optional script block -->
-</body>
-</html>
-
-
 HTML, table:
 <table class="table">
     <tr class="table_element">

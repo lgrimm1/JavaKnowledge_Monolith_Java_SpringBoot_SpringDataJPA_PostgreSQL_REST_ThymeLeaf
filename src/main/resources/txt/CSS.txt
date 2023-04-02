@@ -58,7 +58,7 @@ EXAMPLE FOR REFERENCING EXTERNAL CSS:
 <head>
     <title>Title</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <link rel="stylesheet" type="text/css" href="CSS_name.css">
+    <link rel="stylesheet" type="text/css" href="/path/CSS_name.css">
 </head>
 <body>
 <!-- code -->

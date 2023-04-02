@@ -20,7 +20,7 @@ The ThymeLeaf HTML tags are in the next order below:
     a. banner
     b. blockquote
     c. div
-    e. favicon
+    e. favicon and style
     f. fieldset
     g. form
     h. formatting (bold, italics, strong, small, sup, sub ,code, quotation etc.)
@@ -65,10 +65,19 @@ EXAMPLE FOR DIV:
 </wrapping_tag>
 END OF EXAMPLE
 
-EXAMPLE FOR FAVICON:
+EXAMPLE FOR FAVICON AND STYLE:
+<!-- pure template -->
 <head>
     <!-- code -->
-    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+    <link rel="icon" type="image/x-icon" th:href="@{/images/favicon.ico}">
+    <link rel="stylesheet" th:href="@{/styles/dark_gray.css}">
+</head>
+
+<!-- pure template used with and without ThymeLeaf -->
+<head>
+    <!-- code -->
+    <link rel="icon" type="image/x-icon" th:href="@{/images/favicon.ico} href="/images/favicon.ico">
+    <link rel="stylesheet" th:href="@{/styles/dark_gray.css} href="/styles/dark_gray.css">
 </head>
 END OF EXAMPLE
 
