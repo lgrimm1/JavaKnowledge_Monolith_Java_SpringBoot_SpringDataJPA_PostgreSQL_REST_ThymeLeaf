@@ -7,24 +7,17 @@
     <link rel="stylesheet" th:href="@{/styles/dark_gray.css}" href="/styles/dark_gray.css">
 </head>
 <body>
-<table class="formatter_table">
-    <tr>
-        <td style="width: 20%">
-            <a href="/"><img src="/images/logo.jpg" alt="Java Knowledge"></a>
-        </td>
-        <td style="width: 80%">
-            <h1 class="page_title">JAVA KNOWLEDGE MANAGEMENT</h1>
-        </td>
-    </tr>
-</table>
-<br>
 <form action="#" th:object="${payload}" th:action="@{/management}" method="post" novalidate>
-<!--
-    <h4><label th:field="*{message}" class="message" /></h4>
--->
-<!--
-    <h4><label th:text="*{message}" class="message" /></h4>
--->
+    <table class="formatter_table">
+        <tr>
+            <td style="width: 20%">
+                <a href="/"><img src="/images/logo.jpg" alt="Java Knowledge"></a>
+            </td>
+            <td style="width: 80%">
+                <h1 class="page_title">JAVA KNOWLEDGE MANAGEMENT</h1>
+            </td>
+        </tr>
+    </table>
     <table class="formatter_table">
         <tr>
             <td style="width: 100%">
@@ -33,11 +26,14 @@
                 </fieldset>
             </td>
         </tr>
+    </table>
+    <br>
+    <table class="formatter_table">
         <tr>
             <td style="width: 65%">
                 <fieldset>
                     <legend>&nbsp;List of All Titles&nbsp;</legend>
-                    <select id="titles_list" th:field="*{titles}" size="15" multiple autofocus>
+                    <select id="titles_list" th:field="*{titles}" size="17" multiple autofocus>
                         <option th:each="title: *{titles}" th:text="${title}" th:value="${title}" />
                     </select>
                 </fieldset>

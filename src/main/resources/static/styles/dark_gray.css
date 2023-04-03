@@ -8,7 +8,7 @@ html {
 
 body {
     background-color: DarkSlateGray;
-    font-family: Tahoma, sans-serif;
+    font-family: Tahoma, Verdana, sans-serif;
     color: LightGray;
     text-align: justify;
     line-height: 1.15;
@@ -29,6 +29,7 @@ legend {
 
 hr {
     display: block;
+    width: 80%;
     height: 1px;
     border: 0;
     border-top: 1px solid LightGray;
@@ -38,16 +39,16 @@ hr {
 }
 
 h1 {
-    font-size: 200%;
+    font-size: 160%;
     text-align: center;
 }
 
 h2 {
-    font-size: 170%;
+    font-size: 140%;
 }
 
 h3 {
-    font-size: 140%;
+    font-size: 120%;
 }
 
 h4 {
@@ -76,7 +77,7 @@ textarea {
 }
 
 select {
-    width: 100%;
+    width: 99%;
     border-radius: 6px;
     border-color: DarkSlateGray;
     background-color: LightGray;
@@ -104,7 +105,7 @@ iframe {
 }
 
 .page_title {
-    font-size: 200%;
+    font-size: 160%;
     text-align: left;
 }
 
@@ -145,6 +146,7 @@ input[type="submit"], input[type="button"] {
     border-radius: 6px;
     border-color: DarkSlateGray;
     background-color: LightGray;
+    font-size: 90%;
 /*
     font-family: Roboto;
 */

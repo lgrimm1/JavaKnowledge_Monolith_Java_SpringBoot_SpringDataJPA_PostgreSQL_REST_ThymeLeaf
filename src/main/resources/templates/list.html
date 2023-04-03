@@ -7,35 +7,46 @@
     <link rel="stylesheet" th:href="@{/styles/dark_gray.css}" href="/styles/dark_gray.css">
 </head>
 <body>
-<table class="formatter_table">
-    <tr>
-        <td style="width: 20%">
-            <a href="/"><img src="/images/logo.jpg" alt="Java Knowledge"></a>
-        </td>
-        <td style="width: 80%">
-            <h1 class="page_title">LIST OF TITLES</h1>
-        </td>
-    </tr>
-</table>
-<br>
 <form action="#" th:object="${payload}" th:action="@{/page}" method="post" novalidate>
-    <h4>SEARCH CRITERIA: <label th:text="*{searchText}" /></h4>
-    <fieldset>
-        <table class="formatter_table">
-            <tr>
-                <td style="width: 75%">
-                    <select id="titles_list" th:field="*{titles}" size="10" autofocus>
+    <table class="formatter_table">
+        <tr>
+            <td style="width: 20%">
+                <a href="/"><img src="/images/logo.jpg" alt="Java Knowledge"></a>
+            </td>
+            <td style="width: 80%">
+                <h1 class="page_title">LIST OF TITLES</h1>
+            </td>
+        </tr>
+    </table>
+    <table class="formatter_table">
+        <tr>
+            <td style="width: 100%">
+                <fieldset style="height: 20px">
+                    <label th:text="'Search Criteria: ' + *{searchText}" class="message" />
+                </fieldset>
+            </td>
+        </tr>
+    </table>
+    <br>
+    <table class="formatter_table">
+        <tr>
+            <td style="width: 65%">
+                <fieldset>
+                    <legend>&nbsp;List of Filtered Titles&nbsp;</legend>
+                    <select id="titles_list" th:field="*{titles}" size="5" autofocus>
                         <option th:each="title: *{titles}" th:text="${title}" th:value="${title}" />
                     </select>
-                    <br>
-                </td>
-                <td style="width: 25%">
+                </fieldset>
+            </td>
+            <td style="width: 35%">
+                <fieldset>
+                    <legend>&nbsp;Actions&nbsp;</legend>
                     <input type="submit" value="VIEW PAGE" formaction="/page" formmethod="post" /><br>
                     <input type="submit" value="BACK" formaction="/" formmethod="get" />
-                </td>
-            </tr>
-        </table>
-    </fieldset>
+                </fieldset>
+            </td>
+        </tr>
+    </table>
     <br>
 </form>
 <script>

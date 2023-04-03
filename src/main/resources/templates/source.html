@@ -1,10 +1,77 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Java Knowledge</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="icon" type="image/x-icon" th:href="@{/images/favicon.ico}" href="/images/favicon.ico">
+    <link rel="stylesheet" th:href="@{/styles/dark_gray.css}" href="/styles/dark_gray.css">
 </head>
 <body>
-SOURCE!
+<form action="#" th:object="${payload}" th:action="@{/management}" method="post" novalidate>
+    <table class="formatter_table">
+        <tr>
+            <td style="width: 20%">
+                <a href="/"><img src="/images/logo.jpg" alt="Java Knowledge"></a>
+            </td>
+            <td style="width: 80%">
+                <h1 class="page_title">JAVA KNOWLEDGE SOURCE PAGE</h1>
+            </td>
+        </tr>
+    </table>
+    <table class="formatter_table">
+        <tr>
+            <td style="width: 100%">
+                <fieldset style="height: 20px">
+                    <label th:text="*{message}" class="message" />
+                </fieldset>
+            </td>
+        </tr>
+    </table>
+    <br>
+    <table class="formatter_table">
+        <tr>
+            <td style="width: 65%">
+                <fieldset>
+                    <legend>&nbsp;Source Text&nbsp;</legend>
+                    <select id="titles_list" th:field="*{titles}" size="17" multiple autofocus>
+                        <option th:each="title: *{titles}" th:text="${title}" th:value="${title}" />
+                    </select>
+                </fieldset>
+                <br>
+            </td>
+            <td style="width: 35%">
+                <fieldset>
+                    <legend>&nbsp;Actions on a Source&nbsp;</legend>
+                    <input type="submit" value="NEW SOURCE PAGE" formaction="/source/new" formmethod="post" /><br>
+                    <input type="submit" value="EDIT SOURCE PAGE" formaction="/source/edit" formmethod="post" /><br>
+                </fieldset>
+                <br>
+                <fieldset>
+                    <legend>&nbsp;Actions on All Sources&nbsp;</legend>
+                    <label for="files" class="custom_file_upload">
+                        <input id="files" type="file" th:field="*{files}" multiple />
+                        BROWSE FILES...
+                    </label>
+                    <br>
+                    <label for="confirm">Confirm action: </label><input id="confirm" type="checkbox" th:field="*{confirm}" /><br>
+                    <br>
+                    <input type="submit" value="DELETE SOURCE PAGES" formaction="/delete" formmethod="post" /><br>
+                    <input type="submit" value="GENERATE HTML PAGES" formaction="/generate" formmethod="post" /><br>
+                    <input type="submit" value="PUBLISH HTML PAGES" formaction="/publish" formmethod="post" /><br>
+                    <input type="submit" value="IMPORT SOURCE FILES" formaction="/import" formmethod="post" /><br>
+                </fieldset>
+                <br>
+                <input type="submit" value="BACK" class="button" formaction="/" formmethod="get" />
+            </td>
+        </tr>
+    </table>
+    <br>
+</form>
+<script>
+    window.onload = function() {
+        var s = document.getElementById("titles_list");
+        s.selectedIndex = 0;
+    }
+</script>
 </body>
 </html>

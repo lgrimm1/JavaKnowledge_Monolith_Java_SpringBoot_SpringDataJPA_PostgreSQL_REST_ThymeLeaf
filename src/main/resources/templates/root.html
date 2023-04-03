@@ -7,18 +7,17 @@
     <link rel="stylesheet" th:href="@{/styles/dark_gray.css}" href="/styles/dark_gray.css">
 </head>
 <body>
-<table class="formatter_table">
-    <tr>
-        <td style="width: 20%">
-            <a href="/"><img src="/images/logo.jpg" alt="Java Knowledge"></a>
-        </td>
-        <td style="width: 80%; text-align: left">
-            <h1 class="page_title">WELCOME TO JAVA KNOWLEDGE!</h1>
-        </td>
-    </tr>
-</table>
-<br>
 <form action="#" th:object="${payload}" th:action="@{/search}" method="post" novalidate>
+    <table class="formatter_table">
+        <tr>
+            <td style="width: 20%">
+                <a href="/"><img src="/images/logo.jpg" alt="Java Knowledge"></a>
+            </td>
+            <td style="width: 80%; text-align: left">
+                <h1 class="page_title">WELCOME TO JAVA KNOWLEDGE!</h1>
+            </td>
+        </tr>
+    </table>
     <fieldset>
         <table class="formatter_table">
             <tr>
