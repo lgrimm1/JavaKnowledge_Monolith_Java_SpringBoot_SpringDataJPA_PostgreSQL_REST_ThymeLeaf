@@ -1,0 +1,181 @@
+=================================================================================
+WEB FONTS
+=================================================================================
+Serif fonts are designed to lead the reader through characters by using special graphic solutions.
+San-serif fonts are designed in the same way but further developed for leading the eyes.
+Monospace fonts are designed to have exact spaces occupied by their characters.
+Cursive fonts are designed to mimic hand-writing.
+Fantasy fonts have unique design, fonts which are not part of the previous groups, fit into this group.
+
+When the browser or the mobil OS is unable to use the defined font, will replace it with a similar present font. If that is not possible, will use the nearest font available in the system. This method is called fallback.
+All fonts are part of a particular font family.
+It is advised that, next to the main font, fallback font and font family is to be defined, in order to prevent unwanted results of changing of the main font.
+
+EXAMPLE FOR DEFINING MAIN, FALLBACK FONT AND FONT FAMILY:
+font-family: "Times New Roman", Times, serif;
+font-family: Georgia, serif;
+font-family: Garamond, serif;
+font-family: Arial, Helvetica, sans-serif;
+font-family: Tahoma, Verdana, sans-serif;
+font-family: "Trebuchet MS", Helvetica, sans-serif;
+font-family: Geneva, Verdana, sans-serif;
+font-family: "Courier New", Courier, monospace;
+font-family: "Brush Script MT", cursive;
+font-family: Copperplate, Papyrus, fantasy;
+END OF EXAMPLE
+
+1. WEB-SAFE AND FALLBACK FONTS
+2. TESTING WEB-SAFE FONT AVAILABILITY
+3. GOOGLE FONTS
+
+=================================================================================
+1. WEB-SAFE AND FALLBACK FONTS
+=================================================================================
+A web-safe font can be read in any web-based systems like web-browsers and mobil apps.
+Exception is the Trebuchet MS which is not available in some mobil operating systems.
+
+||FONT|FONT FAMILY|DESCRIPTION||
+||Arial|sans-serif|most widely used for both online and printed media, default font in Google Docs, available on all major operating systems||
+||Verdana|sans-serif|very popular font, easily readable even for small font sizes||
+||Tahoma|sans-serif|similar to Verdana, less space between the characters||
+||Trebuchet MS|sans-serif|not supported by all mobile OSs||
+||Times New Roman|serif|looks professional and is used in many newspapers and news websites, primary font for Windows devices and applications||
+||Georgia|serif|elegant, very readable at different font sizes, good candidate for mobile-responsive design||
+||Garamond|serif|classical, used for many printed books, timeless look and good readability||
+||Courier New|monospace|most widely used monospace serif, often used with coding displays, default in many email providers, standard font for movie screenplays||
+||Brush Script MT|cursive|elegant and sophisticated, can be hard to read||
+
+Fallback fonts are used when the main font is unavailable. Defining is optional. More fallback fonts can be defined.
+These fonts are excellent replacement of the main fonts within their common font family.
+
+||MAIN FONT|FALLBACK FONT||
+||Times New Roman|Times||
+||Arial|Helvetica||
+||Tahoma|Verdana||
+||Trebuchet MS|Helvetica||
+||Geneva|Verdana||
+||Courier New|Courier||
+||Copperplate|Papyrus||
+
+=================================================================================
+2. TESTING WEB-SAFE FONT AVAILABILITY
+=================================================================================
+EXAMPLE FOR TESTING WEB-SAFE FONTS:
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+    body {
+	    text-align: left;
+    }
+    p {
+        margin: 0px;
+    }
+</style>
+</head>
+<body>
+Arial, sans-serif
+<h1 style="font-family: Arial, sans-serif;">LOREM IPSUM DOLOR SIT AMET</h1>
+<p style="font-family: Arial, sans-serif;">
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nisl turpis, efficitur nec odio a, feugiat semper enim. Vivamus pharetra feugiat ante, eget ultrices libero eleifend ac. Integer tincidunt, dolor a tincidunt bibendum, orci ante pretium ligula, at feugiat sem ligula eu sem. Duis blandit tempor erat, sodales aliquet odio varius vel.<br>
+abcdefghijklmnopqrstuvwxyz<br>
+ABCDEFGHIJKLMNOPQRSTUVWXYZ<br>
+0123456789
+</p>
+<hr>
+Verdana, sans-serif
+<h1 style="font-family: Verdana, sans-serif;">LOREM IPSUM DOLOR SIT AMET</h1>
+<p style="font-family: Verdana, sans-serif;">
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nisl turpis, efficitur nec odio a, feugiat semper enim. Vivamus pharetra feugiat ante, eget ultrices libero eleifend ac. Integer tincidunt, dolor a tincidunt bibendum, orci ante pretium ligula, at feugiat sem ligula eu sem. Duis blandit tempor erat, sodales aliquet odio varius vel.<br>
+abcdefghijklmnopqrstuvwxyz<br>
+ABCDEFGHIJKLMNOPQRSTUVWXYZ<br>
+0123456789
+</p>
+<hr>
+Tahoma, sans-serif
+<h1 style="font-family: Tahoma, sans-serif;">LOREM IPSUM DOLOR SIT AMET</h1>
+<p style="font-family: Tahoma, sans-serif;">
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nisl turpis, efficitur nec odio a, feugiat semper enim. Vivamus pharetra feugiat ante, eget ultrices libero eleifend ac. Integer tincidunt, dolor a tincidunt bibendum, orci ante pretium ligula, at feugiat sem ligula eu sem. Duis blandit tempor erat, sodales aliquet odio varius vel.<br>
+abcdefghijklmnopqrstuvwxyz<br>
+ABCDEFGHIJKLMNOPQRSTUVWXYZ<br>
+0123456789
+</p>
+<hr>
+Trebuchet MS, sans-serif (not supported by all mobile operating systems)
+<h1 style="font-family: Trebuchet MS, sans-serif;">LOREM IPSUM DOLOR SIT AMET</h1>
+<p style="font-family: Trebuchet MS, sans-serif;">
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nisl turpis, efficitur nec odio a, feugiat semper enim. Vivamus pharetra feugiat ante, eget ultrices libero eleifend ac. Integer tincidunt, dolor a tincidunt bibendum, orci ante pretium ligula, at feugiat sem ligula eu sem. Duis blandit tempor erat, sodales aliquet odio varius vel.<br>
+abcdefghijklmnopqrstuvwxyz<br>
+ABCDEFGHIJKLMNOPQRSTUVWXYZ<br>
+0123456789
+</p>
+<hr>
+Times New Roman, serif
+<h1 style="font-family: Times New Roman, serif;">LOREM IPSUM DOLOR SIT AMET</h1>
+<p style="font-family: Times New Roman, serif;">
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nisl turpis, efficitur nec odio a, feugiat semper enim. Vivamus pharetra feugiat ante, eget ultrices libero eleifend ac. Integer tincidunt, dolor a tincidunt bibendum, orci ante pretium ligula, at feugiat sem ligula eu sem. Duis blandit tempor erat, sodales aliquet odio varius vel.<br>
+abcdefghijklmnopqrstuvwxyz<br>
+ABCDEFGHIJKLMNOPQRSTUVWXYZ<br>
+0123456789
+</p>
+<hr>
+Georgia, serif
+<h1 style="font-family: Georgia, serif;">LOREM IPSUM DOLOR SIT AMET</h1>
+<p style="font-family: Georgia, serif;">
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nisl turpis, efficitur nec odio a, feugiat semper enim. Vivamus pharetra feugiat ante, eget ultrices libero eleifend ac. Integer tincidunt, dolor a tincidunt bibendum, orci ante pretium ligula, at feugiat sem ligula eu sem. Duis blandit tempor erat, sodales aliquet odio varius vel.<br>
+abcdefghijklmnopqrstuvwxyz<br>
+ABCDEFGHIJKLMNOPQRSTUVWXYZ<br>
+0123456789
+</p>
+<hr>
+Garamond, serif
+<h1 style="font-family: Garamond, serif;">LOREM IPSUM DOLOR SIT AMET</h1>
+<p style="font-family: Garamond, serif;">
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nisl turpis, efficitur nec odio a, feugiat semper enim. Vivamus pharetra feugiat ante, eget ultrices libero eleifend ac. Integer tincidunt, dolor a tincidunt bibendum, orci ante pretium ligula, at feugiat sem ligula eu sem. Duis blandit tempor erat, sodales aliquet odio varius vel.<br>
+abcdefghijklmnopqrstuvwxyz<br>
+ABCDEFGHIJKLMNOPQRSTUVWXYZ<br>
+0123456789
+</p>
+<hr>
+Courier New, monospace
+<h1 style="font-family: Courier New, monospace;">LOREM IPSUM DOLOR SIT AMET</h1>
+<p style="font-family: Courier New, monospace;">
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nisl turpis, efficitur nec odio a, feugiat semper enim. Vivamus pharetra feugiat ante, eget ultrices libero eleifend ac. Integer tincidunt, dolor a tincidunt bibendum, orci ante pretium ligula, at feugiat sem ligula eu sem. Duis blandit tempor erat, sodales aliquet odio varius vel.<br>
+abcdefghijklmnopqrstuvwxyz<br>
+ABCDEFGHIJKLMNOPQRSTUVWXYZ<br>
+0123456789
+</p>
+<hr>
+Brush Script MT, cursive
+<h1 style="font-family: Brush Script MT, cursive;">LOREM IPSUM DOLOR SIT AMET</h1>
+<p style="font-family: Brush Script MT, cursive;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nisl turpis, efficitur nec odio a, feugiat semper enim. Vivamus pharetra feugiat ante, eget ultrices libero eleifend ac. Integer tincidunt, dolor a tincidunt bibendum, orci ante pretium ligula, at feugiat sem ligula eu sem. Duis blandit tempor erat, sodales aliquet odio varius vel.<br>
+abcdefghijklmnopqrstuvwxyz<br>
+ABCDEFGHIJKLMNOPQRSTUVWXYZ<br>
+0123456789
+</p>
+</body>
+</html>
+END OF EXAMPLE
+
+=================================================================================
+3. GOOGLE FONTS
+=================================================================================
+These fonts are created and/or maintained by Google and free to use.
+By referencing the specific font in the HTML header, the browser will be able to use that font without fallback.
+This technique is not preferred when pre-saved pages are needed offline unless the specific font is downloaded and installed locally in the OS.
+
+The Google fonts are available at https://fonts.google.com/ website. Presently, 1400+ fonts are available.
+
+EXAMPLE FOR REFERENCING A GOOGLE FONT:
+<head>
+    <link href='https://fonts.googleapis.com/css?family=Sofia' rel='stylesheet'>
+    <style>
+        body {
+            font-family: 'Sofia';
+            font-size: 22px;
+        }
+    </style>
+</head>
+END OF EXAMPLE
+
+=>CSS
