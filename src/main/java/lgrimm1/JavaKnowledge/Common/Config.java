@@ -43,7 +43,7 @@ public class Config {
 			content.add("<title>Title 1</title>");
 			content.add("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />");
 			content.add("<link rel=\"icon\" type=\"image/x-icon\" th:href=\"@{/images/favicon.ico}\" href=\"/images/favicon.ico\">");
-			content.add("<link rel=\"stylesheet\" th:href=\"@{/styles/dark_gray.css}\" href=\"/styles/dark_gray.css\">");
+			content.add("<link rel=\"stylesheet\" th:href=\"@{/styles/desktop.css}\" href=\"/styles/desktop.css\">");
 			content.add("</head>");
 			content.add("<body>");
 			content.add(formulas.getTabInSpaces() + "Line 11<br>");
@@ -61,7 +61,7 @@ public class Config {
 			content.add("<title>Title 1</title>");
 			content.add("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />");
 			content.add("<link rel=\"icon\" type=\"image/x-icon\" th:href=\"@{/images/favicon.ico}\" href=\"/images/favicon.ico\">");
-			content.add("<link rel=\"stylesheet\" th:href=\"@{/styles/dark_gray.css}\" href=\"/styles/dark_gray.css\">");
+			content.add("<link rel=\"stylesheet\" th:href=\"@{/styles/desktop.css}\" href=\"/styles/desktop.css\">");
 			content.add("</head>");
 			content.add("<body>");
 			content.add(formulas.getTabInSpaces() + "Line 21<br>");
@@ -79,7 +79,7 @@ public class Config {
 			content.add("<title>Title 1</title>");
 			content.add("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />");
 			content.add("<link rel=\"icon\" type=\"image/x-icon\" th:href=\"@{/images/favicon.ico}\" href=\"/images/favicon.ico\">");
-			content.add("<link rel=\"stylesheet\" th:href=\"@{/styles/dark_gray.css}\" href=\"/styles/dark_gray.css\">");
+			content.add("<link rel=\"stylesheet\" th:href=\"@{/styles/desktop.css}\" href=\"/styles/desktop.css\">");
 			content.add("</head>");
 			content.add("<body>");
 			content.add(formulas.getTabInSpaces() + "Line 21<br>");

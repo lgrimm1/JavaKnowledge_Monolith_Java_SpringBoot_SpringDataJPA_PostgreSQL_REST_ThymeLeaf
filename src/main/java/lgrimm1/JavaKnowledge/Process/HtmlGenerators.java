@@ -26,6 +26,7 @@ public class HtmlGenerators {
 													  TitleRepository titleRepository) {
 		List<String> html = new ArrayList<>();
 		List<String> titles = new ArrayList<>();
+		String line;
 		int textIndex = 0;
 		while (textIndex < text.size()) {
 			//header1
@@ -83,7 +84,13 @@ public class HtmlGenerators {
 
 			//normal text
 			else {
-				html.add(formulas.getTabInSpaces() + changeToHtmlCharsInLine(text.get(textIndex), formulas) + "<br>");
+				line = changeToHtmlCharsInLine(text.get(textIndex), formulas).trim();
+				if (line.isEmpty()) {
+					html.add(formulas.getTabInSpaces() + "<br>");
+				}
+				else {
+					html.add(formulas.getTabInSpaces() + "<p>" + line + "</p>");
+				}
 				textIndex++;
 			}
 		}
@@ -98,7 +105,7 @@ public class HtmlGenerators {
 				formulas.getTabInSpaces() + "<title>" + title + "</title>",
 				formulas.getTabInSpaces() + "<meta charset=\"UTF-8\">",
 				formulas.getTabInSpaces() + "<link rel=\"icon\" type=\"image/x-icon\" th:href=\"@{/images/favicon.ico}\" href=\"/images/favicon.ico\">",
-				formulas.getTabInSpaces() + "<link rel=\"stylesheet\" th:href=\"@{/styles/dark_gray.css}\" href=\"/styles/dark_gray.css\">",
+				formulas.getTabInSpaces() + "<link rel=\"stylesheet\" th:href=\"@{/styles/desktop.css}\" href=\"/styles/desktop.css\">",
 				"</head>",
 				"<body>",
 				formulas.getTabInSpaces() + "<a name=\"top\"></a>",

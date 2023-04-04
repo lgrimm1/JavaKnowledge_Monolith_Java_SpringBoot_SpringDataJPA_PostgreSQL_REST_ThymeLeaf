@@ -4,7 +4,7 @@
     <title>Java Knowledge</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <link rel="icon" type="image/x-icon" th:href="@{/images/favicon.ico}" href="/images/favicon.ico">
-    <link rel="stylesheet" th:href="@{/styles/dark_gray.css}" href="/styles/dark_gray.css">
+    <link rel="stylesheet" th:href="@{/styles/desktop.css}" href="/styles/desktop.css">
 </head>
 <body>
 <form action="#" th:object="${payload}" th:action="@{/management}" method="post" novalidate>
@@ -32,36 +32,34 @@
         <tr>
             <td style="width: 65%">
                 <fieldset>
-                    <legend>&nbsp;Source Text&nbsp;</legend>
-                    <select id="titles_list" th:field="*{titles}" size="17" multiple autofocus>
-                        <option th:each="title: *{titles}" th:text="${title}" th:value="${title}" />
-                    </select>
+                    <legend>&nbsp;Title&nbsp;</legend>
+                    <input type="text" th:field="*{title}" placeholder="Enter the title of the page..." />
+                </fieldset>
+                <br>
+                <fieldset>
+                    <legend>&nbsp;File Name&nbsp;</legend>
+                    <input type="text" th:field="*{fileName}" placeholder="Enter the file name of the page..." />
+                </fieldset>
+                <br>
+                <fieldset>
+                    <legend>&nbsp;Content&nbsp;</legend>
+                    <textarea id="content" th:field="*{content}" autofocus />
                 </fieldset>
                 <br>
             </td>
             <td style="width: 35%">
                 <fieldset>
-                    <legend>&nbsp;Actions on a Source&nbsp;</legend>
-                    <input type="submit" value="NEW SOURCE PAGE" formaction="/source/new" formmethod="post" /><br>
-                    <input type="submit" value="EDIT SOURCE PAGE" formaction="/source/edit" formmethod="post" /><br>
+                    <legend>&nbsp;Inserts&nbsp;</legend>
+                    <input type="submit" value="HEADER 1" formaction="/add/header1" formmethod="post" /><br>
+                    <input type="submit" value="HEADER 2" formaction="/add/header2" formmethod="post" /><br>
+                    <input type="submit" value="TABLE" formaction="/add/table" formmethod="post" /><br>
+                    <input type="submit" value="EXAMPLE" formaction="/add/example" formmethod="post" /><br>
+                    <input type="submit" value="INTERNAL REFERENCE" formaction="/add/reference" formmethod="post" /><br>
+                    <input type="submit" value="EXTERNAL REFERENCE" formaction="/add/more" formmethod="post" /><br>
                 </fieldset>
                 <br>
-                <fieldset>
-                    <legend>&nbsp;Actions on All Sources&nbsp;</legend>
-                    <label for="files" class="custom_file_upload">
-                        <input id="files" type="file" th:field="*{files}" multiple />
-                        BROWSE FILES...
-                    </label>
-                    <br>
-                    <label for="confirm">Confirm action: </label><input id="confirm" type="checkbox" th:field="*{confirm}" /><br>
-                    <br>
-                    <input type="submit" value="DELETE SOURCE PAGES" formaction="/delete" formmethod="post" /><br>
-                    <input type="submit" value="GENERATE HTML PAGES" formaction="/generate" formmethod="post" /><br>
-                    <input type="submit" value="PUBLISH HTML PAGES" formaction="/publish" formmethod="post" /><br>
-                    <input type="submit" value="IMPORT SOURCE FILES" formaction="/import" formmethod="post" /><br>
-                </fieldset>
-                <br>
-                <input type="submit" value="BACK" class="button" formaction="/" formmethod="get" />
+                <input type="submit" value="SAVE" class="button" formaction="/save" formmethod="post" />
+                <input type="submit" value="BACK" class="button" formaction="/management" formmethod="post" />
             </td>
         </tr>
     </table>
@@ -69,8 +67,14 @@
 </form>
 <script>
     window.onload = function() {
-        var s = document.getElementById("titles_list");
-        s.selectedIndex = 0;
+        var s = document.getElementById("content");
+        s.style.height = "";
+        if (element.scrollHeight < "200px") {
+            s.style.height = "200px";
+        }
+        else {
+            s.style.height = element.scrollHeight + "px";
+        }
     }
 </script>
 </body>

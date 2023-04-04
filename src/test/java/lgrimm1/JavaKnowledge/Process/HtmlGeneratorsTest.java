@@ -226,15 +226,19 @@ class HtmlGeneratorsTest {
 				"TABINSPACES" + "Line 2",
 				"TABINSPACES" + "  Line 3",
 				"  Line 4",
-				"\t<tag>" + "TABINSPACES"
+				"\t<tag>" + "TABINSPACES",
+				"  ",
+				""
 		);
 
 		List<String> expectedHtml = List.of(
-				"TABINSPACES" + "Line 1<br>",
-				"TABINSPACES" + "TABINHTML" + "Line 2<br>",
-				"TABINSPACES" + "TABINHTML" + "  Line 3<br>",
-				"TABINSPACES" + "  Line 4<br>",
-				"TABINSPACES" + "TABINHTML" + "&lt;tag>" + "TABINHTML<br>"
+				"TABINSPACES" + "<p>" + "Line 1</p>",
+				"TABINSPACES" + "<p>" + "TABINHTML" + "Line 2</p>",
+				"TABINSPACES" + "<p>" + "TABINHTML" + "  Line 3</p>",
+				"TABINSPACES" + "<p>" + "Line 4</p>",
+				"TABINSPACES" + "<p>" + "TABINHTML" + "&lt;tag>" + "TABINHTML</p>",
+				"TABINSPACES" + "<br>",
+				"TABINSPACES" + "<br>"
 		);
 
 		MainHtmlContentPayload actualPayload = htmlGenerators.generateMainContent(
@@ -256,7 +260,7 @@ class HtmlGeneratorsTest {
 				"TABINSPACES" + "<title>" + title + "</title>",
 				"TABINSPACES" + "<meta charset=\"UTF-8\">",
 				"TABINSPACES" + "<link rel=\"icon\" type=\"image/x-icon\" th:href=\"@{/images/favicon.ico}\" href=\"/images/favicon.ico\">",
-				"TABINSPACES" + "<link rel=\"stylesheet\" th:href=\"@{/styles/dark_gray.css}\" href=\"/styles/dark_gray.css\">",
+				"TABINSPACES" + "<link rel=\"stylesheet\" th:href=\"@{/styles/desktop.css}\" href=\"/styles/desktop.css\">",
 				"</head>",
 				"<body>",
 				"TABINSPACES" + "<a name=\"top\"></a>",
