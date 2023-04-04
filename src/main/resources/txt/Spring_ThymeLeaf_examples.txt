@@ -402,24 +402,35 @@ EXAMPLE FOR JAVASCRIPT:
         document.getElementById(id).select();
         document.execCommand('copy');
     }
+
     <!-- caller side: content_to_clipboard(this) -->
     function content_to_clipboard(element) {
         element.select();
         document.execCommand('copy');
     }
+
     <!-- caller side: input_to_full_size(this) -->
     function input_to_full_size(element) {
         element.style.height = "";
         element.style.height = element.scrollHeight + "px";
     }
-    <!-- select 1st item in <select> on load: - -->
+
+    <!-- <textarea> to full size on page load -->
     window.onload = function() {
-        var s = document.getElementById("titles_list");
+        var s = document.getElementById("textarea_id");
+        s.style.height = "";
+        s.style.height = element.scrollHeight + "px";
+    }
+
+    <!-- select 1st item in <select> on page load: - -->
+    window.onload = function() {
+        var s = document.getElementById("select_id");
         s.selectedIndex = 0;
     }
-    <!-- select last item in <select> on load: - -->
+
+    <!-- select last item in <select> on page load: - -->
     window.onload = function() {
-        var s = document.getElementById("titles_list");
+        var s = document.getElementById("select_id");
         s.selectedIndex = s.options.length - 1;
     }
 </script>
