@@ -154,7 +154,7 @@ input[type="submit"], input[type="button"] {
     color: DarkSlateGray;
 }
 
-input[type="search"] {
+input[type="search"], input[type="text"] {
     height: 25px;
     width: 90%;
     border-radius: 6px;

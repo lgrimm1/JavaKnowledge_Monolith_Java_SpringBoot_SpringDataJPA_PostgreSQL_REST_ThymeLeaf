@@ -74,7 +74,7 @@ content multi-row text field
 "Append Table" button                       POST /add/table     {"title": <String>, "fileName": <String>, "content": [<String>, ...], "editExistingPage": <boolean>}
 "Append Example" button                     POST /add/example   {"title": <String>, "fileName": <String>, "content": [<String>, ...], "editExistingPage": <boolean>}
 "Append Internal Reference" button          POST /add/reference {"title": <String>, "fileName": <String>, "content": [<String>, ...], "editExistingPage": <boolean>}
-"Append External Reference" button          POST /add/reference {"title": <String>, "fileName": <String>, "content": [<String>, ...], "editExistingPage": <boolean>}
+"Append External Reference" button          POST /add/more      {"title": <String>, "fileName": <String>, "content": [<String>, ...], "editExistingPage": <boolean>}
 "Save" button                               POST /save          {"title": <String>, "fileName": <String>, "content": [<String>, ...], "editExistingPage": <boolean>}
 "Back" button                               POST /management    -
 Total returned fields: {"title": <String>, "fileName": <String>, "content": [<String>, ...], "editExistingPage": <boolean>, "message": <String>}
