@@ -83,7 +83,7 @@ class FormulasTest {
 
 	@Test
 	void getFormula_Reference() {
-		String expected = "=>file_name.html[;HEADER]";
+		String expected = "=>TITLE[;HEADER]";
 		Assertions.assertEquals(expected, formulas.getFormula("rEfErEnCe"));
 	}
 

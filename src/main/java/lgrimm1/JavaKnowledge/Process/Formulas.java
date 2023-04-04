@@ -49,7 +49,7 @@ public class Formulas {
 			"EXAMPLE FOR ...\n" +
 			"<codes>\n" +
 			"END OF EXAMPLE\n";
-	private final String FORMULA_REFERENCE = "=>file_name.html[;HEADER]";
+	private final String FORMULA_REFERENCE = "=>TITLE[;HEADER]";
 	private final String FORMULA_MORE = "MORE HERE: ";
 
 	public String getSuperLine() {
