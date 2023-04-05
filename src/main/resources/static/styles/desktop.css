@@ -27,6 +27,11 @@ legend {
     text-align: left;
 }
 
+img {
+    vertical-align: middle;
+    height: 80px;
+}
+
 hr {
     display: block;
     width: 80%;
