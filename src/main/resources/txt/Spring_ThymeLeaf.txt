@@ -73,13 +73,14 @@ The general formula for using a tag parameter follows the HTML standards (parame
 Also from the standards, some parameters do not have value, in this case there is no ="'value'" or ="value" after the parameter_name.
 For controls (inputs), the on...= parameters (e.g. onclick=, onload=) are used for event-driven actions (e.g. onclick="script_method(this)").
 For referring script methods, use parameter_name="method_name(argument)" formula.
-For size-like parameters (e.g. width=, height=), px and % units are accepted (e.g. width="80%" height="50px"). Please note, there is no space between the amount and the unit.
-The class= parameter defines named CSS style name (e.g. class="h4_style"), visit the CSS page for details.
+For size-like parameters (e.g. width=, height=), px, % and other units are accepted (e.g. width="80%" height="50px"). Please note, there is no space between the amount and the unit.
+The class= parameter defines CSS class name (e.g. class="h4_style"), visit the CSS page for details.
 The style= parameter can hold local CSS codes (e.g. style="width=80%; height=50px"); visit the CSS page for details.
 The id= parameter defines a text by which the control can be identified (e.g. id="control_identifier").
 The for= parameter marks that by its name, the control is for which other control (e.g. for="control_identifier"). Mainly used with <label> tags which will be visible only when the marked control is visible.
 
-The template tag parameters can be:
+Almost any parametrized HTML tag parameter has th: counterpart. In case a page needs template parameters, use the th: version, in case static parameters, use standard version. If needed, these versions can be used in the same tag as well.
+The most used template tag parameters are:
     a. th:text= (a text)
     b. th:utext= (a text interpreted as HTML code)
     c. th:each= (iteration through a collection)
@@ -367,7 +368,7 @@ All input-types:
     g. the tabindex= parameter defines order of focusing when pressing TAB (e.g. tabindex="2", default is the order in the code)
 
 Restrictions are useful on form-side but via Javascript it is possible to overwrite or get around them. Always check data on server-side.
-Without setting width and height for an image, the layout will change as the image loads. For proper design, this should be avoided.
+Without setting width and height for an image, the layout will change as the image loads. For proper design, this should be avoided, set the dimensions beforehand.
 Tags can be grouped by using the <fieldset> tag, see below.
 In case an input is not filled by the user, the form will send a null rendered to that HTML attribute as value. Same goes for attributes not distributed for user input on the form.
 

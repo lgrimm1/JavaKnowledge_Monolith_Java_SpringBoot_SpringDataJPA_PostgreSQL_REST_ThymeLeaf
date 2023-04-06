@@ -31,6 +31,8 @@ For surrounding tags (body, fieldset, form), optional parameter:
 
 EXAMPLE FOR BANNER:
 <a href="url"><img src="url" alt="alternative text"></a>
+<a href="url">ANY TEXT<img src="url" alt="alternative text">ANY TEXT</a>
+<a href="url"><img src="url" alt="alternative text"><br>ANY TEXT</a>
 END OF EXAMPLE
 
 EXAMPLE FOR BLOCKQUOTE:
@@ -80,12 +82,12 @@ EXAMPLE FOR FIELDSET:
 </fieldset>
 <!-- fix group caption: -->
 <fieldset>
-    <legend>Group title</legend>
+    <legend>&nbsp;Group title&nbsp;</legend>
     <!-- labels, inputs etc. -->
 </fieldset>
 <!-- dynamic group caption: -->
 <fieldset>
-    <legend th:text="*{fieldName}" />
+    <legend th:text="'&nbsp;' + *{fieldName} + '&nbsp;'" />
     <!-- labels, inputs etc. -->
 </fieldset>
 END OF EXAMPLE
@@ -106,6 +108,14 @@ EXAMPLE FOR IMAGE:
 <img th:src="*{fieldName1}" th:alt="*{fieldName2}">
 <!-- more images from collection: -->
 <img th:each="image : *{collectionFieldName}" th:src="${image.src}" th:alt="${image.alt}">
+<!-- one image with reference: -->
+<a th:href="*{fieldName1}">
+    <img th:src="*{fieldName2}" th:alt="*{fieldName3}">
+</a>
+<!-- more images with references from collection: -->
+<a th:each="image : *{collectionFieldName}" th:href="${image.href}">
+    <img th:src="${image.src}" th:alt="${image.alt}">
+</a>
 END OF EXAMPLE
 
 EXAMPLE FOR LABEL:
@@ -127,7 +137,7 @@ EXAMPLE FOR REFERENCE:
 <a href="*{fieldName.url}" th:text="*{fieldName.text}" tabindex="number" /><br>
 <!-- more references from collection: -->
 <span th:each="reference : *{collectionFieldName}">
-    <a href="${reference.url}" th:text="${reference.text}" tabindex="number" /><br>
+    <a href="${reference.url}" th:text="${reference.text}" /><br>
 </span>
 END OF EXAMPLE
 
@@ -216,8 +226,10 @@ The appearing button and the file-list behind it is not modifiable, CSS paramete
 Workaround is to wrap the input into a label and give button-like style to it while hiding (visually or totally) the original input, visit the CSS page for style examples.
 See examples below.
 
-For select input, when items are dynamically determined from a Collection field, the default selected item will be the last added one. Consider adding a script which selects the needed item on load, see script examples below.
+For <select>, when items are dynamically determined from a Collection field, the default selected item will be the last added one. Consider adding a script which selects the needed item on load, see script examples below.
 For all inputs, consider using <br> tag after the label and-or after the input.
+For <textarea>, although the visible control contains lines, any Collection-type data will be called in as Collection.toString(). That said, for a List of two lines, the visible text will be e.g. [Line1, Line2] by default. Instead, pass String with "\n" line ends.
+
 
 EXAMPLE FOR BUTTON-LIKE INPUTS (SUBMIT, RESET, BUTTON):
 <input type="submit" value="caption text" formaction="/endpoint" formmethod="post" />
@@ -380,15 +392,15 @@ END OF EXAMPLE
 
 EXAMPLE FOR TEXTAREA:
 <!-- starting text is null or from field: -->
-<textarea id="input_name" th:field="*{collectionFieldName}">
+<textarea id="input_name" th:field="*{fieldName}">
 </textarea>
 <!-- fix starting text: -->
-<textarea id="input_name" th:field="*{collectionFieldName}">
+<textarea id="input_name" th:field="*{fieldName}">
     starting text
 </textarea>
 <!-- dynamic starting text: -->
-<textarea id="input_name" th:field="*{collectionFieldName1}">
-    <span th:text="*{collectionFieldName2}" />
+<textarea id="input_name" th:field="*{fieldName1}">
+    <span th:text="*{fieldName2}" />
 </textarea>
 END OF EXAMPLE
 
