@@ -54,17 +54,24 @@ class CommonServiceAddFormulaTest {
 	void addFormula_NullFormulaName() {
 		String title = "Title";
 		String fileName = "file_name";
-		List<String> content = new ArrayList<>();
-		content.add("Line 1");
-		content.add("Line 2");
+		String originalContent = "Line1\nLine2\n";
 		Boolean editExistingPage = true;
 
 		when(formulas.getFormula(null))
-				.thenReturn("");
+				.thenReturn(new ArrayList<>());
+
+		List<String> originalContentList = new ArrayList<>();
+		originalContentList.add("Line 1");
+		originalContentList.add("Line 2");
+		when(processRecords.stringToList(originalContent))
+				.thenReturn(originalContentList);
+
+		when(processRecords.listToString(originalContentList))
+				.thenReturn(originalContent);
 
 		Payload expectedPayload = new Payload(
 				null,
-				content,
+				originalContent,
 				true,
 				fileName,
 				null,
@@ -77,7 +84,7 @@ class CommonServiceAddFormulaTest {
 		Map<String, Object> model = new HashMap<>();
 		model.put("payload", expectedPayload);
 
-		ModelAndView modelAndView = commonService.addFormula("source", null, title, fileName, content, editExistingPage);
+		ModelAndView modelAndView = commonService.addFormula("source", null, title, fileName, originalContent, editExistingPage);
 
 		ModelAndViewAssert.assertViewName(modelAndView, "source");
 		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
@@ -88,17 +95,24 @@ class CommonServiceAddFormulaTest {
 		String formulaName = "  ";
 		String title = "Title";
 		String fileName = "file_name";
-		List<String> content = new ArrayList<>();
-		content.add("Line 1");
-		content.add("Line 2");
+		String originalContent = "Line1\nLine2\n";
 		Boolean editExistingPage = true;
 
 		when(formulas.getFormula(formulaName))
-				.thenReturn("");
+				.thenReturn(new ArrayList<>());
+
+		List<String> originalContentList = new ArrayList<>();
+		originalContentList.add("Line 1");
+		originalContentList.add("Line 2");
+		when(processRecords.stringToList(originalContent))
+				.thenReturn(originalContentList);
+
+		when(processRecords.listToString(originalContentList))
+				.thenReturn(originalContent);
 
 		Payload expectedPayload = new Payload(
 				null,
-				content,
+				originalContent,
 				true,
 				fileName,
 				null,
@@ -111,7 +125,7 @@ class CommonServiceAddFormulaTest {
 		Map<String, Object> model = new HashMap<>();
 		model.put("payload", expectedPayload);
 
-		ModelAndView modelAndView = commonService.addFormula("source", formulaName, title, fileName, content, editExistingPage);
+		ModelAndView modelAndView = commonService.addFormula("source", formulaName, title, fileName, originalContent, editExistingPage);
 
 		ModelAndViewAssert.assertViewName(modelAndView, "source");
 		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
@@ -122,17 +136,24 @@ class CommonServiceAddFormulaTest {
 		String formulaName = "formula name";
 		String title = "Title";
 		String fileName = "file_name";
-		List<String> content = new ArrayList<>();
-		content.add("Line 1");
-		content.add("Line 2");
+		String originalContent = "Line1\nLine2\n";
 		Boolean editExistingPage = true;
 
 		when(formulas.getFormula(formulaName))
-				.thenReturn("");
+				.thenReturn(new ArrayList<>());
+
+		List<String> originalContentList = new ArrayList<>();
+		originalContentList.add("Line 1");
+		originalContentList.add("Line 2");
+		when(processRecords.stringToList(originalContent))
+				.thenReturn(originalContentList);
+
+		when(processRecords.listToString(originalContentList))
+				.thenReturn(originalContent);
 
 		Payload expectedPayload = new Payload(
 				null,
-				content,
+				originalContent,
 				true,
 				fileName,
 				null,
@@ -145,7 +166,7 @@ class CommonServiceAddFormulaTest {
 		Map<String, Object> model = new HashMap<>();
 		model.put("payload", expectedPayload);
 
-		ModelAndView modelAndView = commonService.addFormula("source", formulaName, title, fileName, content, editExistingPage);
+		ModelAndView modelAndView = commonService.addFormula("source", formulaName, title, fileName, originalContent, editExistingPage);
 
 		ModelAndViewAssert.assertViewName(modelAndView, "source");
 		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
@@ -155,18 +176,27 @@ class CommonServiceAddFormulaTest {
 	void addFormula_NullFileName() {
 		String formulaName = "formula name";
 		String title = "Title";
-		List<String> content = new ArrayList<>();
-		content.add("Line 1");
-		content.add("Line 2");
+		String originalContent = "Line1\nLine2\n";
 		Boolean editExistingPage = true;
 
-		String formula = "Formula line 1\nFormula line 2";
+		List<String> formulaList = new ArrayList<>();
+		formulaList.add("Formula line 1");
+		formulaList.add("Formula line 2");
+		String formula = "Formula line 1\nFormula line 2\n";
 		when(formulas.getFormula(formulaName))
-				.thenReturn(formula);
+				.thenReturn(formulaList);
 
-		List<String> newContent = new ArrayList<>(content);
-		newContent.add("Formula line 1");
-		newContent.add("Formula line 2");
+		List<String> originalContentList = new ArrayList<>();
+		originalContentList.add("Line 1");
+		originalContentList.add("Line 2");
+		when(processRecords.stringToList(originalContent))
+				.thenReturn(originalContentList);
+
+		List<String> newContentList = new ArrayList<>(originalContentList);
+		newContentList.addAll(formulaList);
+		String newContent = originalContent + formula;
+		when(processRecords.listToString(newContentList))
+				.thenReturn(newContent);
 
 		Payload expectedPayload = new Payload(
 				null,
@@ -183,7 +213,7 @@ class CommonServiceAddFormulaTest {
 		Map<String, Object> model = new HashMap<>();
 		model.put("payload", expectedPayload);
 
-		ModelAndView modelAndView = commonService.addFormula("source", formulaName, title, null, content, editExistingPage);
+		ModelAndView modelAndView = commonService.addFormula("source", formulaName, title, null, originalContent, editExistingPage);
 
 		ModelAndViewAssert.assertViewName(modelAndView, "source");
 		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
@@ -193,18 +223,27 @@ class CommonServiceAddFormulaTest {
 	void addFormula_NullTitle() {
 		String formulaName = "formula name";
 		String fileName = "file_name";
-		List<String> content = new ArrayList<>();
-		content.add("Line 1");
-		content.add("Line 2");
+		String originalContent = "Line1\nLine2\n";
 		Boolean editExistingPage = true;
 
-		String formula = "Formula line 1\nFormula line 2";
+		List<String> formulaList = new ArrayList<>();
+		formulaList.add("Formula line 1");
+		formulaList.add("Formula line 2");
+		String formula = "Formula line 1\nFormula line 2\n";
 		when(formulas.getFormula(formulaName))
-				.thenReturn(formula);
+				.thenReturn(formulaList);
 
-		List<String> newContent = new ArrayList<>(content);
-		newContent.add("Formula line 1");
-		newContent.add("Formula line 2");
+		List<String> originalContentList = new ArrayList<>();
+		originalContentList.add("Line 1");
+		originalContentList.add("Line 2");
+		when(processRecords.stringToList(originalContent))
+				.thenReturn(originalContentList);
+
+		List<String> newContentList = new ArrayList<>(originalContentList);
+		newContentList.addAll(formulaList);
+		String newContent = originalContent + formula;
+		when(processRecords.listToString(newContentList))
+				.thenReturn(newContent);
 
 		Payload expectedPayload = new Payload(
 				null,
@@ -221,7 +260,7 @@ class CommonServiceAddFormulaTest {
 		Map<String, Object> model = new HashMap<>();
 		model.put("payload", expectedPayload);
 
-		ModelAndView modelAndView = commonService.addFormula("source", formulaName, null, fileName, content, editExistingPage);
+		ModelAndView modelAndView = commonService.addFormula("source", formulaName, null, fileName, originalContent, editExistingPage);
 
 		ModelAndViewAssert.assertViewName(modelAndView, "source");
 		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
@@ -232,18 +271,27 @@ class CommonServiceAddFormulaTest {
 		String formulaName = "formula name";
 		String title = "  ";
 		String fileName = "file_name";
-		List<String> content = new ArrayList<>();
-		content.add("Line 1");
-		content.add("Line 2");
+		String originalContent = "Line1\nLine2\n";
 		Boolean editExistingPage = true;
 
-		String formula = "Formula line 1\nFormula line 2";
+		List<String> formulaList = new ArrayList<>();
+		formulaList.add("Formula line 1");
+		formulaList.add("Formula line 2");
+		String formula = "Formula line 1\nFormula line 2\n";
 		when(formulas.getFormula(formulaName))
-				.thenReturn(formula);
+				.thenReturn(formulaList);
 
-		List<String> newContent = new ArrayList<>(content);
-		newContent.add("Formula line 1");
-		newContent.add("Formula line 2");
+		List<String> originalContentList = new ArrayList<>();
+		originalContentList.add("Line 1");
+		originalContentList.add("Line 2");
+		when(processRecords.stringToList(originalContent))
+				.thenReturn(originalContentList);
+
+		List<String> newContentList = new ArrayList<>(originalContentList);
+		newContentList.addAll(formulaList);
+		String newContent = originalContent + formula;
+		when(processRecords.listToString(newContentList))
+				.thenReturn(newContent);
 
 		Payload expectedPayload = new Payload(
 				null,
@@ -260,7 +308,7 @@ class CommonServiceAddFormulaTest {
 		Map<String, Object> model = new HashMap<>();
 		model.put("payload", expectedPayload);
 
-		ModelAndView modelAndView = commonService.addFormula("source", formulaName, title, fileName, content, editExistingPage);
+		ModelAndView modelAndView = commonService.addFormula("source", formulaName, title, fileName, originalContent, editExistingPage);
 
 		ModelAndViewAssert.assertViewName(modelAndView, "source");
 		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
@@ -271,18 +319,27 @@ class CommonServiceAddFormulaTest {
 		String formulaName = "formula name";
 		String title = "Title";
 		String fileName = "  ";
-		List<String> content = new ArrayList<>();
-		content.add("Line 1");
-		content.add("Line 2");
+		String originalContent = "Line1\nLine2\n";
 		Boolean editExistingPage = true;
 
-		String formula = "Formula line 1\nFormula line 2";
+		List<String> formulaList = new ArrayList<>();
+		formulaList.add("Formula line 1");
+		formulaList.add("Formula line 2");
+		String formula = "Formula line 1\nFormula line 2\n";
 		when(formulas.getFormula(formulaName))
-				.thenReturn(formula);
+				.thenReturn(formulaList);
 
-		List<String> newContent = new ArrayList<>(content);
-		newContent.add("Formula line 1");
-		newContent.add("Formula line 2");
+		List<String> originalContentList = new ArrayList<>();
+		originalContentList.add("Line 1");
+		originalContentList.add("Line 2");
+		when(processRecords.stringToList(originalContent))
+				.thenReturn(originalContentList);
+
+		List<String> newContentList = new ArrayList<>(originalContentList);
+		newContentList.addAll(formulaList);
+		String newContent = originalContent + formula;
+		when(processRecords.listToString(newContentList))
+				.thenReturn(newContent);
 
 		Payload expectedPayload = new Payload(
 				null,
@@ -299,7 +356,7 @@ class CommonServiceAddFormulaTest {
 		Map<String, Object> model = new HashMap<>();
 		model.put("payload", expectedPayload);
 
-		ModelAndView modelAndView = commonService.addFormula("source", formulaName, title, fileName, content, editExistingPage);
+		ModelAndView modelAndView = commonService.addFormula("source", formulaName, title, fileName, originalContent, editExistingPage);
 
 		ModelAndViewAssert.assertViewName(modelAndView, "source");
 		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
@@ -312,13 +369,22 @@ class CommonServiceAddFormulaTest {
 		String fileName = "file_name";
 		Boolean editExistingPage = true;
 
-		String formula = "Formula line 1\nFormula line 2";
+		List<String> formulaList = new ArrayList<>();
+		formulaList.add("Formula line 1");
+		formulaList.add("Formula line 2");
+		String formula = "Formula line 1\nFormula line 2\n";
 		when(formulas.getFormula(formulaName))
-				.thenReturn(formula);
+				.thenReturn(formulaList);
 
-		List<String> newContent = new ArrayList<>();
-		newContent.add("Formula line 1");
-		newContent.add("Formula line 2");
+		List<String> originalContentList = new ArrayList<>();
+		when(processRecords.stringToList(null))
+				.thenReturn(originalContentList);
+
+		List<String> newContentList = new ArrayList<>(originalContentList);
+		newContentList.addAll(formulaList);
+		String newContent = formula;
+		when(processRecords.listToString(newContentList))
+				.thenReturn(newContent);
 
 		Payload expectedPayload = new Payload(
 				null,
@@ -346,17 +412,26 @@ class CommonServiceAddFormulaTest {
 		String formulaName = "formula name";
 		String title = "Title";
 		String fileName = "file_name";
-		List<String> content = new ArrayList<>();
-		content.add("Line 1");
-		content.add("Line 2");
+		String originalContent = "Line1\nLine2\n";
 
-		String formula = "Formula line 1\nFormula line 2";
+		List<String> formulaList = new ArrayList<>();
+		formulaList.add("Formula line 1");
+		formulaList.add("Formula line 2");
+		String formula = "Formula line 1\nFormula line 2\n";
 		when(formulas.getFormula(formulaName))
-				.thenReturn(formula);
+				.thenReturn(formulaList);
 
-		List<String> newContent = new ArrayList<>(content);
-		newContent.add("Formula line 1");
-		newContent.add("Formula line 2");
+		List<String> originalContentList = new ArrayList<>();
+		originalContentList.add("Line 1");
+		originalContentList.add("Line 2");
+		when(processRecords.stringToList(originalContent))
+				.thenReturn(originalContentList);
+
+		List<String> newContentList = new ArrayList<>(originalContentList);
+		newContentList.addAll(formulaList);
+		String newContent = originalContent + formula;
+		when(processRecords.listToString(newContentList))
+				.thenReturn(newContent);
 
 		Payload expectedPayload = new Payload(
 				null,
@@ -373,7 +448,7 @@ class CommonServiceAddFormulaTest {
 		Map<String, Object> model = new HashMap<>();
 		model.put("payload", expectedPayload);
 
-		ModelAndView modelAndView = commonService.addFormula("source", formulaName, title, fileName, content, null);
+		ModelAndView modelAndView = commonService.addFormula("source", formulaName, title, fileName, originalContent, null);
 
 		ModelAndViewAssert.assertViewName(modelAndView, "source");
 		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
@@ -384,18 +459,27 @@ class CommonServiceAddFormulaTest {
 		String formulaName = "formula name";
 		String title = "Title";
 		String fileName = "file_name";
-		List<String> content = new ArrayList<>();
-		content.add("Line 1");
-		content.add("Line 2");
+		String originalContent = "Line1\nLine2\n";
 		Boolean editExistingPage = true;
 
-		String formula = "Formula line 1\nFormula line 2";
+		List<String> formulaList = new ArrayList<>();
+		formulaList.add("Formula line 1");
+		formulaList.add("Formula line 2");
+		String formula = "Formula line 1\nFormula line 2\n";
 		when(formulas.getFormula(formulaName))
-				.thenReturn(formula);
+				.thenReturn(formulaList);
 
-		List<String> newContent = new ArrayList<>(content);
-		newContent.add("Formula line 1");
-		newContent.add("Formula line 2");
+		List<String> originalContentList = new ArrayList<>();
+		originalContentList.add("Line 1");
+		originalContentList.add("Line 2");
+		when(processRecords.stringToList(originalContent))
+				.thenReturn(originalContentList);
+
+		List<String> newContentList = new ArrayList<>(originalContentList);
+		newContentList.addAll(formulaList);
+		String newContent = originalContent + formula;
+		when(processRecords.listToString(newContentList))
+				.thenReturn(newContent);
 
 		Payload expectedPayload = new Payload(
 				null,
@@ -412,7 +496,7 @@ class CommonServiceAddFormulaTest {
 		Map<String, Object> model = new HashMap<>();
 		model.put("payload", expectedPayload);
 
-		ModelAndView modelAndView = commonService.addFormula("source", formulaName, title, fileName, content, editExistingPage);
+		ModelAndView modelAndView = commonService.addFormula("source", formulaName, title, fileName, originalContent, editExistingPage);
 
 		ModelAndViewAssert.assertViewName(modelAndView, "source");
 		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);

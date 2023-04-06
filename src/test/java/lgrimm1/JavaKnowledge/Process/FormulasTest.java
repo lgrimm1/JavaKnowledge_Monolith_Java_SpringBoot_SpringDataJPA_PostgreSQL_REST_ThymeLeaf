@@ -2,6 +2,8 @@ package lgrimm1.JavaKnowledge.Process;
 
 import org.junit.jupiter.api.*;
 
+import java.util.*;
+
 class FormulasTest {
 
 	Formulas formulas = new Formulas();
@@ -48,48 +50,58 @@ class FormulasTest {
 
 	@Test
 	void getFormula_Title() {
-		String expected = "=".repeat(81) + "\nTITLE\n" + "=".repeat(81) + "\n";
+		List<String> expected = List.of(
+				"=".repeat(81),
+				"TITLE",
+				"=".repeat(81));
 		Assertions.assertEquals(expected, formulas.getFormula("tItLe"));
 	}
 
 	@Test
 	void getFormula_Header1() {
-		String expected = "=".repeat(81) + "\nX. HEADER 1\n" + "=".repeat(81) + "\n";
+		List<String> expected = List.of(
+				"=".repeat(81),
+				"X. HEADER 1",
+				"=".repeat(81));
 		Assertions.assertEquals(expected, formulas.getFormula("hEaDeR1"));
 	}
 
 	@Test
 	void getFormula_Header2() {
-		String expected = "X.Y. HEADER 2\n" + "-".repeat(81) + "\n";
+		List<String> expected = List.of(
+				"X.Y. HEADER 2",
+				"-".repeat(81));
 		Assertions.assertEquals(expected, formulas.getFormula("hEaDeR2"));
 	}
 
 	@Test
 	void getFormula_Table() {
-		String expected = "||COLUMN HEADER 1|COLUMN HEADER 2||\n" +
-				"||Cell 11|Cell 12||\n" +
-				"||Cell 21|Cell 22||\n" +
-				"||...|...||\n";
+		List<String> expected = List.of(
+				"||COLUMN HEADER 1|COLUMN HEADER 2||",
+				"||Cell 11|Cell 12||",
+				"||Cell 21|Cell 22||",
+				"||...|...||");
 		Assertions.assertEquals(expected, formulas.getFormula("tAbLe"));
 	}
 
 	@Test
 	void getFormula_Example() {
-		String expected = "EXAMPLE FOR ...\n" +
-				"<codes>\n" +
-				"END OF EXAMPLE\n";
+		List<String> expected = List.of(
+				"EXAMPLE FOR ...",
+				"<codes>",
+				"END OF EXAMPLE");
 		Assertions.assertEquals(expected, formulas.getFormula("eXaMpLe"));
 	}
 
 	@Test
 	void getFormula_Reference() {
-		String expected = "=>TITLE[;HEADER]";
+		List<String> expected = List.of("=>TITLE[;HEADER]");
 		Assertions.assertEquals(expected, formulas.getFormula("rEfErEnCe"));
 	}
 
 	@Test
 	void getFormula_More() {
-		String expected = "MORE HERE: ";
+		List<String> expected = List.of("MORE HERE: ...");
 		Assertions.assertEquals(expected, formulas.getFormula("mOrE"));
 	}
 

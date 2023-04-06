@@ -5,7 +5,7 @@ import java.util.*;
 public class Payload {
 
 	public Boolean confirm;
-	public List<String> content;
+	public String content;
 	public Boolean editExistingPage;
 	public String fileName;
 	public String files;
@@ -57,7 +57,7 @@ public class Payload {
 */
 
 	public Payload(Boolean confirm,
-				   List<String> content,
+				   String content,
 				   Boolean editExistingPage,
 				   String fileName,
 				   String files,
@@ -86,11 +86,11 @@ public class Payload {
 		this.confirm = confirm;
 	}
 
-	public List<String> getContent() {
+	public String getContent() {
 		return content;
 	}
 
-	public void setContent(List<String> content) {
+	public void setContent(String content) {
 		this.content = content;
 	}
 

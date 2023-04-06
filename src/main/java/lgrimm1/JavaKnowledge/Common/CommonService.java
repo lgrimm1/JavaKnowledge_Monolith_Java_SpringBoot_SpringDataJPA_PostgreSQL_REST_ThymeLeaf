@@ -191,7 +191,7 @@ public class CommonService {
 	public ModelAndView createSourcePage(String initialView) {
 		Payload payload = new Payload(
 				null,
-				new ArrayList<>(),
+				"",
 				false,
 				"",
 				null,
@@ -255,7 +255,7 @@ public class CommonService {
 		}
 		Payload payload = new Payload(
 				null,
-				processRecords.stringToList(optionalTxtEntity.get().getContent()),
+				optionalTxtEntity.get().getContent(),
 				true,
 				optionalTitleEntity.get().getFilename(),
 				null,
@@ -346,32 +346,33 @@ public class CommonService {
 								   String formulaName,
 								   String title,
 								   String fileName,
-								   List<String> content,
+								   String content,
 								   Boolean editExistingPage) {
+		List<String> contentList = processRecords.stringToList(content);
 		if (title == null || title.isBlank()) {
 			title = "";
 		}
 		if (fileName == null || fileName.isBlank()) {
 			fileName = "";
 		}
-		if (content == null) {
-			content = new ArrayList<>();
+		if (contentList == null) {
+			contentList = new ArrayList<>();
 		}
 		if (editExistingPage == null) {
 			editExistingPage = false;
 		}
-		String formula = formulas.getFormula(formulaName);
+		List<String> formula = formulas.getFormula(formulaName);
 		String message;
 		if (formula.isEmpty()) {
 			message = "WRONG FORMULA NAME WAS ASKED.";
 		}
 		else {
-			content.addAll(List.of(formula.split("\n")));
+			contentList.addAll(formula);
 			message = "FORMULA WAS APPENDED.";
 		}
 		Payload payload = new Payload(
 				null,
-				content,
+				processRecords.listToString(contentList),
 				editExistingPage,
 				fileName,
 				null,
@@ -387,7 +388,7 @@ public class CommonService {
 	public ModelAndView savePage(String initialView,
 								 String title,
 								 String fileName,
-								 List<String> content,
+								 String content,
 								 Boolean editExistingPage) {
 		String message;
 		if (title == null || title.isBlank()) {
@@ -400,7 +401,7 @@ public class CommonService {
 		}
 		else {
 			if (content == null) {
-				content = new ArrayList<>();
+				content = "";
 			}
 			if (editExistingPage == null) {
 				editExistingPage = false;
@@ -415,7 +416,7 @@ public class CommonService {
 					htmlRepository.deleteById(optionalTitleEntity.get().getHtmlId());
 					titleRepository.deleteById(optionalTitleEntity.get().getId());
 					HtmlEntity htmlEntity = htmlRepository.save(new HtmlEntity(new ArrayList<>(), new ArrayList<>()));
-					TxtEntity txtEntity = txtRepository.save(new TxtEntity(processRecords.listToString(content)));
+					TxtEntity txtEntity = txtRepository.save(new TxtEntity(content));
 					titleRepository.save(new TitleEntity(title, fileName, txtEntity.getId(), htmlEntity.getId()));
 					message = "SOURCE PAGE HAS BEEN OVERWRITTEN.";
 				}
@@ -426,7 +427,7 @@ public class CommonService {
 				}
 				else {
 					HtmlEntity htmlEntity = htmlRepository.save(new HtmlEntity(new ArrayList<>(), new ArrayList<>()));
-					TxtEntity txtEntity = txtRepository.save(new TxtEntity(processRecords.listToString(content)));
+					TxtEntity txtEntity = txtRepository.save(new TxtEntity(content));
 					titleRepository.save(new TitleEntity(title, fileName, txtEntity.getId(), htmlEntity.getId()));
 					editExistingPage = true;
 					message = "SOURCE PAGE HAS BEEN SAVED.";

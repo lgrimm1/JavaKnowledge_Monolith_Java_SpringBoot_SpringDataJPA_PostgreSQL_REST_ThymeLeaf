@@ -235,15 +235,17 @@ class CommonServiceEditSourcePageTest {
 				.thenReturn(Optional.of(new TitleEntity(3L, requestTitle, requestFilename, 2L, 4L)));
 
 		String content = "Line 1\nLine 2\n";
-		List<String> listContent = List.of("Line 1", "Line 2");
+//		List<String> listContent = List.of("Line 1", "Line 2");
 		when(txtRepository.findById(2L))
 				.thenReturn(Optional.of(new TxtEntity(2L, content)));
+/*
 		when(processRecords.stringToList(content))
 				.thenReturn(listContent);
+*/
 
 		Payload expectedPayload = new Payload(
 				null,
-				listContent,
+				content,
 				true,
 				requestFilename,
 				null,

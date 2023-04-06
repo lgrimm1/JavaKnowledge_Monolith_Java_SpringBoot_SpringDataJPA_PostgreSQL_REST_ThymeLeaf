@@ -2,6 +2,8 @@ package lgrimm1.JavaKnowledge.Process;
 
 import org.springframework.stereotype.*;
 
+import java.util.*;
+
 /**
  * Carries constants and formulas.
  * @see #getSuperLine()
@@ -29,28 +31,33 @@ public class Formulas {
 	}
 */
 
-	private final String FORMULA_TITLE =
-			superLine + "\n" +
-			"TITLE\n" +
-					superLine +"\n";
-	private final String FORMULA_HEADER_1 =
-			superLine + "\n" +
-			"X. HEADER 1\n" +
-					superLine +"\n";
-	private final String FORMULA_HEADER_2 =
-			"X.Y. HEADER 2\n" +
-					subLine +"\n";
-	private final String FORMULA_TABLE =
-			"||COLUMN HEADER 1|COLUMN HEADER 2||\n" +
-			"||Cell 11|Cell 12||\n" +
-			"||Cell 21|Cell 22||\n" +
-			"||...|...||\n";
-	private final String FORMULA_EXAMPLE =
-			"EXAMPLE FOR ...\n" +
-			"<codes>\n" +
-			"END OF EXAMPLE\n";
-	private final String FORMULA_REFERENCE = "=>TITLE[;HEADER]";
-	private final String FORMULA_MORE = "MORE HERE: ";
+	private final List<String> FORMULA_TITLE = List.of(
+			superLine,
+			"TITLE",
+			superLine
+	);
+	private final List<String> FORMULA_HEADER_1 = List.of(
+			superLine,
+			"X. HEADER 1",
+			superLine
+	);
+	private final List<String> FORMULA_HEADER_2 = List.of(
+			"X.Y. HEADER 2",
+			subLine
+	);
+	private final List<String> FORMULA_TABLE = List.of(
+			"||COLUMN HEADER 1|COLUMN HEADER 2||",
+			"||Cell 11|Cell 12||",
+			"||Cell 21|Cell 22||",
+			"||...|...||"
+	);
+	private final List<String> FORMULA_EXAMPLE = List.of(
+			"EXAMPLE FOR ...",
+			"<codes>",
+			"END OF EXAMPLE"
+	);
+	private final List<String> FORMULA_REFERENCE = List.of("=>TITLE[;HEADER]");
+	private final List<String> FORMULA_MORE = List.of("MORE HERE: ...");
 
 	public String getSuperLine() {
 		return superLine;
@@ -79,9 +86,9 @@ public class Formulas {
 	/**
 	 * In case of invalid argument, returns empty String.
 	 */
-	public String getFormula(String formulaName) {
+	public List<String> getFormula(String formulaName) {
 		if (formulaName == null) {
-			return "";
+			return List.of();
 		}
 		return switch (formulaName.trim().toUpperCase()) {
 			case "TITLE" -> FORMULA_TITLE;
@@ -91,7 +98,7 @@ public class Formulas {
 			case "EXAMPLE" -> FORMULA_EXAMPLE;
 			case "REFERENCE" -> FORMULA_REFERENCE;
 			case "MORE" -> FORMULA_MORE;
-			default -> "";
+			default -> List.of();
 		};
 	}
 

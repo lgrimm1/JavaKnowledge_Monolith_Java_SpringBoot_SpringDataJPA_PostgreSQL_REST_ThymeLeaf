@@ -108,7 +108,7 @@ class CommonServiceTest {
 	void createSourcePage() {
 		Payload expectedPayload = new Payload(
 				null,
-				new ArrayList<>(),
+				"",
 				false,
 				"",
 				null,
