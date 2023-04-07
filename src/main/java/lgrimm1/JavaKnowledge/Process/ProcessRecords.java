@@ -130,7 +130,7 @@ public class ProcessRecords {
 						HtmlEntity htmlEntity = htmlRepository.save(new HtmlEntity(new ArrayList<>(), new ArrayList<>()));
 						titleRepository.save(new TitleEntity(
 								title,
-								fileOperations.generateFilename(title),
+								fileOperations.generateFilename(title, titleRepository),
 								txtEntity.getId(),
 								htmlEntity.getId()));
 					}

@@ -163,6 +163,11 @@ class ProcessRecordsImportTxtFilesTest {
 		when(titleRepository.findByTitle("Line 22"))
 				.thenReturn(Optional.of(new TitleEntity(2L, "Line 22", "line_22", 2L, 2L)));
 
+		when(fileOperations.generateFilename("Line 12", titleRepository))
+				.thenReturn("line_12");
+		when(fileOperations.generateFilename("Line 22", titleRepository))
+				.thenReturn("line_22");
+
 		when(txtRepository.save(new TxtEntity("Line 14\n")))
 				.thenReturn(new TxtEntity(2L, "Line 14\n"));
 		when(txtRepository.save(new TxtEntity("Line 24\n")))
