@@ -147,7 +147,6 @@ model.addAttribute("person_list", personList);
 END OF EXAMPLE
 
 EXAMPLE FOR A THYMELEAF TEMPLATE (HTML SIDE, ATTRIBUTES):
-//template:
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -241,8 +240,8 @@ In the template the next types can be used for input, data is defined between th
 Button:
     a. a button appears
     b. pressing it means invoking a script method
-    g. with the above parameters more buttons can be used in a form
-    h. the value= parameters defines the button caption
+    c. with the above parameters more buttons can be used in a form
+    d. the value= parameters defines the button caption
 
 Checkbox:
     a. the checked parameter pre-selects

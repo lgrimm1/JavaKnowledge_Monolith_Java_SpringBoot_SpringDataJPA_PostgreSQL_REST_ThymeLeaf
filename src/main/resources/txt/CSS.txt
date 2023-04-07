@@ -504,9 +504,39 @@ legend {
     text-align: left; /* or: center, right */
 }
 
+/* customize list */
+ul {
+    list-style-type: none; /* or: circle, square; not defined: dot */
+    margin: 0; /* or any length number, or leave for default */
+    padding: 0; /* or any length number, or leave for default */
+    color: color value; /* modifies bullet as well */
+    text-align: center; /* or any align value; bullet stays, text is aligned */
+}
+
+ol {
+    list-style-type: none; /* or: number, upper-roman, lower-roman, upper-alpha, lower-alpha; not defined: upper-alpha */
+    margin: 0; /* or any length number, or leave for default */
+    padding: 0; /* or any length number, or leave for default */
+    color: color value; /* modifies bullet as well */
+    text-align: center; /* or any align value; bullet stays, text is aligned */
+}
+
+li { /* valid for items of any list type */
+    list-style-type: none; /* or: number, upper-roman, lower-roman, upper-alpha, lower-alpha; not defined: upper-alpha */
+    margin: 0; /* or any length number, or leave for default */
+    padding: 0; /* or any length number, or leave for default */
+    color: color value; /* modifies bullet as well */
+    text-align: center; /* or any align value; bullet stays, text is aligned */
+}
+
 /* only vertical resizing of <textarea> */
 textarea {
     resize: vertical;
+}
+
+/* no resizing of <textarea> */
+textarea {
+    resize: none;
 }
 
 /* prevent link style changing when visited (use when <a> is basically not styled) */
