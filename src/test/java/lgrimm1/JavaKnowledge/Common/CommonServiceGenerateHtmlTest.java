@@ -4,22 +4,16 @@ import lgrimm1.JavaKnowledge.Html.*;
 import lgrimm1.JavaKnowledge.Process.*;
 import lgrimm1.JavaKnowledge.Title.*;
 import lgrimm1.JavaKnowledge.Txt.*;
-
 import org.junit.jupiter.api.*;
-import org.mockito.Mockito;
 import org.mockito.*;
 import org.springframework.test.web.*;
-import org.springframework.ui.*;
 import org.springframework.web.servlet.*;
 
-import java.io.*;
 import java.util.*;
-import java.util.stream.*;
 
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
+import static org.mockito.Mockito.*;
 
-class CommonServiceTest {
+class CommonServiceGenerateHtmlTest {
 
 	TitleRepository titleRepository;
 	TxtRepository txtRepository;
@@ -56,29 +50,9 @@ class CommonServiceTest {
 	}
 
 	@Test
-	void getRoot() {
-		Payload expectedPayload = new Payload(
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				"",
-				null,
-				null,
-				null
-		);
-		Map<String, Object> model = new HashMap<>();
-		model.put("payload", expectedPayload);
+	void generateHtml_NullPayload() {
+		Payload receivedPayload = null;
 
-		ModelAndView modelAndView = commonService.getRoot("root");
-		ModelAndViewAssert.assertViewName(modelAndView, "root");
-		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
-	}
-
-	@Test
-	void managePages() {
 		List<String> titles = List.of("Title 1", "Title 2");
 		when(processRecords.getAllTitles(titleRepository))
 				.thenReturn(titles);
@@ -89,7 +63,7 @@ class CommonServiceTest {
 				null,
 				null,
 				"",
-				"",
+				"PLEASE CONFIRM GENERATING PAGES.",
 				null,
 				null,
 				null,
@@ -98,52 +72,42 @@ class CommonServiceTest {
 		Map<String, Object> model = new HashMap<>();
 		model.put("payload", expectedPayload);
 
-		ModelAndView modelAndView = commonService.managePages("management");
+		ModelAndView modelAndView = commonService.generateHtml("management", receivedPayload);
 
 		ModelAndViewAssert.assertViewName(modelAndView, "management");
 		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
 	}
 
 	@Test
-	void createSourcePage() {
-		Payload expectedPayload = new Payload(
+	void generateHtml_NullConfirm() {
+		List<String> receivedTitles = List.of("Title 1");
+		String files = "";
+		Boolean confirm = null;
+		String message = "message text";
+		Payload receivedPayload = new Payload(
+				confirm,
 				null,
-				"",
-				false,
-				"",
-				null,
-				"",
 				null,
 				null,
-				"",
-				null
+				files,
+				message,
+				null,
+				null,
+				null,
+				receivedTitles
 		);
-		Map<String, Object> model = new HashMap<>();
-		model.put("payload", expectedPayload);
 
-		ModelAndView modelAndView = commonService.createSourcePage("source");
-
-		ModelAndViewAssert.assertViewName(modelAndView, "source");
-		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
-	}
-
-/*
-	@Test
-	void publishPages() {
 		List<String> titles = List.of("Title 1", "Title 2");
 		when(processRecords.getAllTitles(titleRepository))
 				.thenReturn(titles);
 
-		when(processRecords.publishHtml(titleRepository, htmlRepository, fileOperations))
-				.thenReturn(new long[]{5L, 4L});
-
 		Payload expectedPayload = new Payload(
 				false,
 				null,
 				null,
 				null,
 				"",
-				"5 HTML FILES WERE PRE-DELETED, 4 WERE PUBLISHED.",
+				"PLEASE CONFIRM GENERATING PAGES.",
 				null,
 				null,
 				null,
@@ -152,10 +116,100 @@ class CommonServiceTest {
 		Map<String, Object> model = new HashMap<>();
 		model.put("payload", expectedPayload);
 
-		ModelAndView modelAndView = commonService.publishPages("management");
+		ModelAndView modelAndView = commonService.generateHtml("management", receivedPayload);
 
 		ModelAndViewAssert.assertViewName(modelAndView, "management");
 		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
 	}
-*/
+
+	@Test
+	void generateHtml_NotConfirmed() {
+		List<String> receivedTitles = List.of("Title 1");
+		String files = "";
+		Boolean confirm = false;
+		String message = "message text";
+		Payload receivedPayload = new Payload(
+				confirm,
+				null,
+				null,
+				null,
+				files,
+				message,
+				null,
+				null,
+				null,
+				receivedTitles
+		);
+
+		List<String> titles = List.of("Title 1", "Title 2");
+		when(processRecords.getAllTitles(titleRepository))
+				.thenReturn(titles);
+
+		Payload expectedPayload = new Payload(
+				false,
+				null,
+				null,
+				null,
+				"",
+				"PLEASE CONFIRM GENERATING PAGES.",
+				null,
+				null,
+				null,
+				titles
+		);
+		Map<String, Object> model = new HashMap<>();
+		model.put("payload", expectedPayload);
+
+		ModelAndView modelAndView = commonService.generateHtml("management", receivedPayload);
+
+		ModelAndViewAssert.assertViewName(modelAndView, "management");
+		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
+	}
+
+	@Test
+	void generateHtml_Confirmed() {
+		List<String> receivedTitles = List.of("Title 1");
+		String files = "";
+		Boolean confirm = true;
+		String message = "message text";
+		Payload receivedPayload = new Payload(
+				confirm,
+				null,
+				null,
+				null,
+				files,
+				message,
+				null,
+				null,
+				null,
+				receivedTitles
+		);
+
+		List<String> titles = List.of("Title 1", "Title 2");
+		when(processRecords.getAllTitles(titleRepository))
+				.thenReturn(titles);
+
+		when(processRecords.generate(titleRepository, txtRepository, htmlRepository, formulas, processPage, extractors, htmlGenerators))
+				.thenReturn(new long[]{12, 24});
+
+		Payload expectedPayload = new Payload(
+				false,
+				null,
+				null,
+				null,
+				"",
+				"12 PAGES IN 24 SECONDS HAS BEEN PROCESSED.",
+				null,
+				null,
+				null,
+				titles
+		);
+		Map<String, Object> model = new HashMap<>();
+		model.put("payload", expectedPayload);
+
+		ModelAndView modelAndView = commonService.generateHtml("management", receivedPayload);
+
+		ModelAndViewAssert.assertViewName(modelAndView, "management");
+		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
+	}
 }

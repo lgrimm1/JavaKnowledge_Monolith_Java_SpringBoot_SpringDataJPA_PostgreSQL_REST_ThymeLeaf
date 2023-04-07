@@ -61,9 +61,9 @@ public class CommonController {
 	}
 
 	@PostMapping("/publish")
-	public ModelAndView publishPages(Model model) {
+	public ModelAndView publishPages(@ModelAttribute("payload") Payload payload, Model model) {
 		model.asMap().clear();
-		return commonService.publishPages("management");
+		return commonService.publishPages("management", payload);
 	}
 
 	@PostMapping("/add/{formulaName}")

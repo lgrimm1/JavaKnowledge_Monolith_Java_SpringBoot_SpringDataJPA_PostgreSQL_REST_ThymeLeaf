@@ -356,7 +356,7 @@ class CommonControllerTest {
 
 	@Test
 	void publishPages() throws Exception {
-		List<String> titles = List.of("Title 1", "Title 2");
+		List<String> titles = List.of("Title 1");
 		String files = "";
 		Boolean confirm = true;
 		String message = "message text";
@@ -373,6 +373,7 @@ class CommonControllerTest {
 				titles
 		);
 
+		List<String> titles2 = List.of("Title 1", "Title 2");
 		Boolean confirm2 = false;
 		String message2 = "message text 2";
 		Payload payload2 = new Payload(
@@ -385,11 +386,11 @@ class CommonControllerTest {
 				null,
 				null,
 				null,
-				titles
+				titles2
 		);
 
 		ModelAndView modelAndView = new ModelAndView("management", "payload", payload2);
-		when(commonService.publishPages("management"))
+		when(commonService.publishPages("management", payload))
 				.thenReturn(modelAndView);
 
 		mockMvc

@@ -335,9 +335,24 @@ public class CommonService {
 		return new ModelAndView(initialView, "payload", payload2);
 	}
 
-	public ModelAndView publishPages(String initialView) {
+	public ModelAndView publishPages(String initialView, Payload payload) {
+		if (payload == null || payload.getConfirm() == null || !payload.getConfirm()) {
+			Payload payload2 = new Payload(
+					false,
+					null,
+					null,
+					null,
+					"",
+					"PLEASE CONFIRM PUBLISHING PAGES.",
+					null,
+					null,
+					null,
+					processRecords.getAllTitles(titleRepository)
+			);
+			return new ModelAndView(initialView, "payload", payload2);
+		}
 		long[] publishResults = processRecords.publishHtml(titleRepository, htmlRepository, fileOperations);
-		Payload payload = new Payload(
+		Payload payload2 = new Payload(
 				false,
 				null,
 				null,
@@ -349,7 +364,7 @@ public class CommonService {
 				null,
 				processRecords.getAllTitles(titleRepository)
 		);
-		return new ModelAndView(initialView, "payload", payload);
+		return new ModelAndView(initialView, "payload", payload2);
 	}
 
 	public ModelAndView addFormula(String initialView, String formulaName, Payload payload) {
