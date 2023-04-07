@@ -24,7 +24,7 @@ public class Formulas {
 	private final String tabInSpaces = generateRepeatedPattern(" ", 4);
 	private final String tabInHtml = generateRepeatedPattern("&nbsp;", 4);
 	private final String spaceInHtml = "&nbsp;";
-	private final String versions = "Up to Java 17, Spring Boot 3 (Hibernate 6), JUnit 5, PostgreSQL 11";
+	private final String versions = "Up to Java 17, Spring Boot 3 (Hibernate 6), JUnit 5, PostgreSQL 11, HTML 5, CSS 3";
 /*
 	private enum ConstantName {
 		SUPERLINE, SUBLINE, TAB_IN_SPACES, TAB_IN_HTML, SPACE_IN_HTML, LEVEL_1_SEPARATOR, VERSIONS
