@@ -158,7 +158,9 @@ class CommonServiceTest {
 	}
 
 	@Test
-	void generateHtml_NullConfirm() {
+	void generateHtml_NullPayload() {
+		Payload receivedPayload = null;
+
 		List<String> titles = List.of("Title 1", "Title 2");
 		when(processRecords.getAllTitles(titleRepository))
 				.thenReturn(titles);
@@ -178,7 +180,51 @@ class CommonServiceTest {
 		Map<String, Object> model = new HashMap<>();
 		model.put("payload", expectedPayload);
 
-		ModelAndView modelAndView = commonService.generateHtml("management", null);
+		ModelAndView modelAndView = commonService.generateHtml("management", receivedPayload);
+
+		ModelAndViewAssert.assertViewName(modelAndView, "management");
+		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
+	}
+
+	@Test
+	void generateHtml_NullConfirm() {
+		List<String> receivedTitles = List.of("Title 1");
+		String files = "";
+		Boolean confirm = null;
+		String message = "message text";
+		Payload receivedPayload = new Payload(
+				confirm,
+				null,
+				null,
+				null,
+				files,
+				message,
+				null,
+				null,
+				null,
+				receivedTitles
+		);
+
+		List<String> titles = List.of("Title 1", "Title 2");
+		when(processRecords.getAllTitles(titleRepository))
+				.thenReturn(titles);
+
+		Payload expectedPayload = new Payload(
+				false,
+				null,
+				null,
+				null,
+				"",
+				"PLEASE CONFIRM GENERATING PAGES.",
+				null,
+				null,
+				null,
+				titles
+		);
+		Map<String, Object> model = new HashMap<>();
+		model.put("payload", expectedPayload);
+
+		ModelAndView modelAndView = commonService.generateHtml("management", receivedPayload);
 
 		ModelAndViewAssert.assertViewName(modelAndView, "management");
 		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
@@ -186,6 +232,23 @@ class CommonServiceTest {
 
 	@Test
 	void generateHtml_NotConfirmed() {
+		List<String> receivedTitles = List.of("Title 1");
+		String files = "";
+		Boolean confirm = false;
+		String message = "message text";
+		Payload receivedPayload = new Payload(
+				confirm,
+				null,
+				null,
+				null,
+				files,
+				message,
+				null,
+				null,
+				null,
+				receivedTitles
+		);
+
 		List<String> titles = List.of("Title 1", "Title 2");
 		when(processRecords.getAllTitles(titleRepository))
 				.thenReturn(titles);
@@ -205,7 +268,7 @@ class CommonServiceTest {
 		Map<String, Object> model = new HashMap<>();
 		model.put("payload", expectedPayload);
 
-		ModelAndView modelAndView = commonService.generateHtml("management", false);
+		ModelAndView modelAndView = commonService.generateHtml("management", receivedPayload);
 
 		ModelAndViewAssert.assertViewName(modelAndView, "management");
 		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
@@ -213,6 +276,23 @@ class CommonServiceTest {
 
 	@Test
 	void generateHtml_Confirmed() {
+		List<String> receivedTitles = List.of("Title 1");
+		String files = "";
+		Boolean confirm = true;
+		String message = "message text";
+		Payload receivedPayload = new Payload(
+				confirm,
+				null,
+				null,
+				null,
+				files,
+				message,
+				null,
+				null,
+				null,
+				receivedTitles
+		);
+
 		List<String> titles = List.of("Title 1", "Title 2");
 		when(processRecords.getAllTitles(titleRepository))
 				.thenReturn(titles);
@@ -235,7 +315,7 @@ class CommonServiceTest {
 		Map<String, Object> model = new HashMap<>();
 		model.put("payload", expectedPayload);
 
-		ModelAndView modelAndView = commonService.generateHtml("management", true);
+		ModelAndView modelAndView = commonService.generateHtml("management", receivedPayload);
 
 		ModelAndViewAssert.assertViewName(modelAndView, "management");
 		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);

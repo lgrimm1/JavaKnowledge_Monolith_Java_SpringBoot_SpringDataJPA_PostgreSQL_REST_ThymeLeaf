@@ -27,19 +27,20 @@ class CommonControllerTest {
 
 	@Test
 	void getRoot() throws Exception {
-		Payload payload = new Payload(
+		String searchText = "text";
+		Payload payload2 = new Payload(
 				null,
 				null,
 				null,
 				null,
 				null,
 				null,
-				"text",
+				searchText,
 				null,
 				null,
 				null
 		);
-		ModelAndView modelAndView = new ModelAndView("root", "payload", payload);
+		ModelAndView modelAndView = new ModelAndView("root", "payload", payload2);
 		when(commonService.getRoot("root"))
 				.thenReturn(modelAndView);
 
@@ -51,13 +52,12 @@ class CommonControllerTest {
 				.andDo(print())
 				.andExpect(view().name("root"))
 				.andExpect(model().size(1))
-				.andExpect(model().attribute("payload", payload));
+				.andExpect(model().attribute("payload", payload2));
 	}
 
 	@Test
 	void searchPages() throws Exception {
-		String searchText = "text to search";
-		List<String> titles = List.of("Title 1", "Title 2");
+		String searchText = "text";
 		Payload payload = new Payload(
 				null,
 				null,
@@ -71,6 +71,7 @@ class CommonControllerTest {
 				null
 		);
 
+		List<String> titles = List.of("Title 1", "Title 2");
 		Payload payload2 = new Payload(
 				null,
 				null,
@@ -99,79 +100,75 @@ class CommonControllerTest {
 				.andExpect(model().attribute("payload", payload2));
 	}
 
-/*
 	@Test
 	void getPage() throws Exception {
-		//TODO controller test on getPage
+		String searchText = "text";
+		List<String> titles = List.of("Title 1");
+		Payload payload = new Payload(
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				searchText,
+				null,
+				null,
+				titles
+		);
+
+		String message = "message";
+		String fileName = "title_1";
+		List<String> titleReferences = List.of("TITLE 2");
+		Payload payload2 = new Payload(
+				null,
+				null,
+				null,
+				null,
+				null,
+				message,
+				null,
+				fileName + ".html",
+				null,
+				titleReferences
+		);
+		ModelAndView modelAndView = new ModelAndView("page", "payload", payload2);
+		when(commonService.getPage("page", payload))
+				.thenReturn(modelAndView);
+
+		mockMvc
+				.perform(
+						post("/page")
+								.flashAttr("payload", payload)
+				)
+				.andExpect(status().isOk())
+				.andDo(print())
+				.andExpect(view().name("page"))
+				.andExpect(model().size(1))
+				.andExpect(model().attribute("payload", payload2));
 	}
-*/
 
 	@Test
 	void managePages() throws Exception {
+		String searchText = "text";
+		Payload payload = new Payload(
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				searchText,
+				null,
+				null,
+				null
+		);
+
+		Boolean confirm = false;
+		String files = "";
 		String message = "message text";
 		List<String> titles = List.of("Title 1", "Title 2");
-		Boolean confirm = false;
-		String files = "";
-		ModelAndView modelAndView = new ModelAndView("management");
-		modelAndView.addObject("titles", titles);
-		modelAndView.addObject("files", files);
-		modelAndView.addObject("confirm", confirm);
-		modelAndView.addObject("message", message);
-		when(commonService.managePages("management"))
-				.thenReturn(modelAndView);
-
-		mockMvc
-				.perform(
-						post("/management")
-				)
-				.andExpect(status().isOk())
-				.andDo(print())
-				.andExpect(view().name("management"))
-				.andExpect(model().size(4))
-				.andExpect(model().attribute("titles", titles))
-				.andExpect(model().attribute("files", files))
-				.andExpect(model().attribute("confirm", confirm))
-				.andExpect(model().attribute("message", message));
-	}
-
-	@Test
-	void createSourcePage() throws Exception {
-		String title = "";
-		String filename = "";
-		Boolean editExistingPage = false;
-		List<String> content = new ArrayList<>();
-		String message = "message text";
-		ModelAndView modelAndView = new ModelAndView("source");
-		modelAndView.addObject("title", title);
-		modelAndView.addObject("file_name", filename);
-		modelAndView.addObject("edit_existing_page", editExistingPage);
-		modelAndView.addObject("content", content);
-		modelAndView.addObject("message", message);
-		when(commonService.createSourcePage("source"))
-				.thenReturn(modelAndView);
-
-		mockMvc
-				.perform(
-						post("/source/new")
-				)
-				.andExpect(status().isOk())
-				.andDo(print())
-				.andExpect(view().name("source"))
-				.andExpect(model().size(5))
-				.andExpect(model().attribute("title", title))
-				.andExpect(model().attribute("file_name", filename))
-				.andExpect(model().attribute("edit_existing_page", editExistingPage))
-				.andExpect(model().attribute("content", content))
-				.andExpect(model().attribute("message", message));
-	}
-
-	@Test
-	void editSourcePage() throws Exception {
-		List<String> titles = List.of("Title 1");
-		String files = "";
-		Boolean confirm = false;
-		String message = "message text";
-		Payload receivedPayload = new Payload(
+		Payload payload2 = new Payload(
 				confirm,
 				null,
 				null,
@@ -184,34 +181,126 @@ class CommonControllerTest {
 				titles
 		);
 
-		String title = "Title 1";
-		String filename = "title_1";
+		ModelAndView modelAndView = new ModelAndView("management", "payload", payload2);
+		when(commonService.managePages("management"))
+				.thenReturn(modelAndView);
+
+		mockMvc
+				.perform(
+						post("/management")
+								.flashAttr("payload", payload)
+				)
+				.andExpect(status().isOk())
+				.andDo(print())
+				.andExpect(view().name("management"))
+				.andExpect(model().size(1))
+				.andExpect(model().attribute("payload", payload2));
+	}
+
+	@Test
+	void createSourcePage() throws Exception {
+		Boolean confirm = false;
+		String files = "";
+		String message = "message text";
+		List<String> titles = List.of("Title 1", "Title 2");
+		Payload payload = new Payload(
+				confirm,
+				null,
+				null,
+				null,
+				files,
+				message,
+				null,
+				null,
+				null,
+				titles
+		);
+
+		String content = "";
+		Boolean editExistingPage = false;
+		String fileName = "";
+		String message2 = "message text";
+		String title = "";
+		Payload payload2 = new Payload(
+				null,
+				content,
+				editExistingPage,
+				fileName,
+				null,
+				message2,
+				null,
+				null,
+				title,
+				null
+		);
+
+		ModelAndView modelAndView = new ModelAndView("source", "payload", payload2);
+		when(commonService.createSourcePage("source"))
+				.thenReturn(modelAndView);
+
+		mockMvc
+				.perform(
+						post("/source/new")
+								.flashAttr("payload", payload)
+				)
+				.andExpect(status().isOk())
+				.andDo(print())
+				.andExpect(view().name("source"))
+				.andExpect(model().size(1))
+				.andExpect(model().attribute("payload", payload2));
+	}
+
+	@Test
+	void editSourcePage() throws Exception {
+		Boolean confirm = false;
+		String files = "";
+		String message = "message text";
+		List<String> titles = List.of("Title 1", "Title 2");
+		Payload payload = new Payload(
+				confirm,
+				null,
+				null,
+				null,
+				files,
+				message,
+				null,
+				null,
+				null,
+				titles
+		);
+
+		String content = "Line 1\nLine 2\n";
 		Boolean editExistingPage = true;
-		List<String> content = List.of("Line 1", "Line 2");
-		String message2 = "message text 2";
-		ModelAndView modelAndView = new ModelAndView("source");
-		modelAndView.addObject("title", title);
-		modelAndView.addObject("file_name", filename);
-		modelAndView.addObject("edit_existing_page", editExistingPage);
-		modelAndView.addObject("content", content);
-		modelAndView.addObject("message", message2);
-		when(commonService.editSourcePage("source", titles))
+		String fileName = "title_1";
+		String message2 = "message text";
+		String title = "Title 1";
+		Payload payload2 = new Payload(
+				null,
+				content,
+				editExistingPage,
+				fileName,
+				null,
+				message2,
+				null,
+				null,
+				title,
+				null
+		);
+
+		ModelAndView modelAndView = new ModelAndView("source", "payload", payload2);
+		when(commonService.editSourcePage("source", payload))
 				.thenReturn(modelAndView);
 
 		mockMvc
 				.perform(
 						post("/source/edit")
-								.flashAttr("payload", receivedPayload)
+								.flashAttr("payload", payload)
 				)
 				.andExpect(status().isOk())
 				.andDo(print())
 				.andExpect(view().name("source"))
-				.andExpect(model().size(5))
-				.andExpect(model().attribute("title", title))
-				.andExpect(model().attribute("file_name", filename))
-				.andExpect(model().attribute("edit_existing_page", editExistingPage))
-				.andExpect(model().attribute("content", content))
-				.andExpect(model().attribute("message", message2));
+				.andExpect(model().size(1))
+				.andExpect(model().attribute("payload", payload2));
 	}
 
 	@Test
@@ -220,7 +309,7 @@ class CommonControllerTest {
 		String files = "";
 		Boolean confirm = true;
 		String message = "message text";
-		Payload receivedPayload = new Payload(
+		Payload payload = new Payload(
 				confirm,
 				null,
 				null,
@@ -233,31 +322,36 @@ class CommonControllerTest {
 				titles
 		);
 
-		List<String> titles2 = List.of("Title 4", "Title 3");
-		String files2 = "";
 		Boolean confirm2 = false;
 		String message2 = "message text 2";
-		ModelAndView modelAndView = new ModelAndView("management");
-		modelAndView.addObject("titles", titles2);
-		modelAndView.addObject("files", files2);
-		modelAndView.addObject("confirm", confirm2);
-		modelAndView.addObject("message", message2);
-		when(commonService.deletePages("management", titles, confirm))
+		List<String> titles2 = List.of("Title 3", "Title 4");
+		Payload payload2 = new Payload(
+				confirm2,
+				null,
+				null,
+				null,
+				files,
+				message2,
+				null,
+				null,
+				null,
+				titles2
+		);
+
+		ModelAndView modelAndView = new ModelAndView("management", "payload", payload2);
+		when(commonService.deletePages("management", payload))
 				.thenReturn(modelAndView);
 
 		mockMvc
 				.perform(
 						post("/delete")
-								.flashAttr("payload", receivedPayload)
+								.flashAttr("payload", payload)
 				)
 				.andExpect(status().isOk())
 				.andDo(print())
 				.andExpect(view().name("management"))
-				.andExpect(model().size(4))
-				.andExpect(model().attribute("titles", titles2))
-				.andExpect(model().attribute("files", files2))
-				.andExpect(model().attribute("confirm", confirm2))
-				.andExpect(model().attribute("message", message2));
+				.andExpect(model().size(1))
+				.andExpect(model().attribute("payload", payload2));
 	}
 
 	@Test
@@ -266,40 +360,62 @@ class CommonControllerTest {
 		String files = "";
 		Boolean confirm = true;
 		String message = "message text";
-		ModelAndView modelAndView = new ModelAndView("management");
-		modelAndView.addObject("titles", titles);
-		modelAndView.addObject("files", files);
-		modelAndView.addObject("confirm", confirm);
-		modelAndView.addObject("message", message);
+		Payload payload = new Payload(
+				confirm,
+				null,
+				null,
+				null,
+				files,
+				message,
+				null,
+				null,
+				null,
+				titles
+		);
+
+		Boolean confirm2 = false;
+		String message2 = "message text 2";
+		Payload payload2 = new Payload(
+				confirm2,
+				null,
+				null,
+				null,
+				files,
+				message2,
+				null,
+				null,
+				null,
+				titles
+		);
+
+		ModelAndView modelAndView = new ModelAndView("management", "payload", payload2);
 		when(commonService.publishPages("management"))
 				.thenReturn(modelAndView);
 
 		mockMvc
 				.perform(
 						post("/publish")
+								.flashAttr("payload", payload)
 				)
 				.andExpect(status().isOk())
 				.andDo(print())
 				.andExpect(view().name("management"))
-				.andExpect(model().size(4))
-				.andExpect(model().attribute("titles", titles))
-				.andExpect(model().attribute("files", files))
-				.andExpect(model().attribute("confirm", confirm))
-				.andExpect(model().attribute("message", message));
+				.andExpect(model().size(1))
+				.andExpect(model().attribute("payload", payload2));
 	}
 
 	@Test
 	void addFormula() throws Exception {
 		String title = "Title 1";
-		String filename = "title_1";
-		List<String> content = List.of("Line 1", "Line 2");
+		String fileName = "title_1";
+		String content = "Line 1\nLine 2\n";
 		Boolean editExistingPage = true;
 		String message = "message text";
-		Payload receivedPayload = new Payload(
+		Payload payload = new Payload(
 				null,
 				content,
 				editExistingPage,
-				filename,
+				fileName,
 				null,
 				message,
 				null,
@@ -308,44 +424,45 @@ class CommonControllerTest {
 				null
 		);
 
-		String title2 = "Title 1";
-		String filename2 = "title_1";
-		List<String> content2 = List.of("Line 1", "Line 2", "Line 3");
-		Boolean editExistingPage2 = true;
-		String message2 = "message text 2";
-		ModelAndView modelAndView = new ModelAndView("source");
-		modelAndView.addObject("title", title2);
-		modelAndView.addObject("file_name", filename2);
-		modelAndView.addObject("edit_existing_page", editExistingPage2);
-		modelAndView.addObject("content", content2);
-		modelAndView.addObject("message", message2);
-		when(commonService.addFormula("source", "formula", title, filename, content, editExistingPage))
+		String formulaName = "formula_name";
+		String message2 = "message text";
+		Payload payload2 = new Payload(
+				null,
+				content + formulaName,
+				editExistingPage,
+				fileName,
+				null,
+				message2,
+				null,
+				null,
+				title,
+				null
+		);
+
+		ModelAndView modelAndView = new ModelAndView("source", "payload", payload2);
+		when(commonService.addFormula("source", formulaName, payload))
 				.thenReturn(modelAndView);
 
 		mockMvc
 				.perform(
-						post("/add/formula")
-								.flashAttr("payload", receivedPayload)
+						post("/add/formula_name")
+								.flashAttr("payload", payload)
 				)
 				.andExpect(status().isOk())
 				.andDo(print())
 				.andExpect(view().name("source"))
-				.andExpect(model().size(5))
-				.andExpect(model().attribute("title", title2))
-				.andExpect(model().attribute("file_name", filename2))
-				.andExpect(model().attribute("edit_existing_page", editExistingPage2))
-				.andExpect(model().attribute("content", content2))
-				.andExpect(model().attribute("message", message2));
+				.andExpect(model().size(1))
+				.andExpect(model().attribute("payload", payload2));
 	}
 
 	@Test
 	void savePage() throws Exception {
 		String title = "Title 1";
 		String filename = "title_1";
-		Boolean editExistingPage = false;
-		List<String> content = List.of("Line 1", "Line 2");
+		Boolean editExistingPage = true;
+		String content = "Line 1\nLine 2\n";
 		String message = "message text";
-		Payload receivedPayload = new Payload(
+		Payload payload = new Payload(
 				null,
 				content,
 				editExistingPage,
@@ -358,43 +475,43 @@ class CommonControllerTest {
 				null
 		);
 
-		String title2 = "Title 1";
-		String filename2 = "title_1";
-		List<String> content2 = List.of("Line 1", "Line 2");
-		Boolean editExistingPage2 = true;
-		String message2 = "message text 2";
-		ModelAndView modelAndView = new ModelAndView("source");
-		modelAndView.addObject("title", title2);
-		modelAndView.addObject("file_name", filename2);
-		modelAndView.addObject("edit_existing_page", editExistingPage2);
-		modelAndView.addObject("content", content2);
-		modelAndView.addObject("message", message2);
-		when(commonService.savePage("source", title, filename, content, editExistingPage))
+		String message2 = "message text";
+		Payload payload2 = new Payload(
+				null,
+				content,
+				editExistingPage,
+				filename,
+				null,
+				message2,
+				null,
+				null,
+				title,
+				null
+		);
+
+		ModelAndView modelAndView = new ModelAndView("source", "payload", payload2);
+		when(commonService.savePage("source", payload))
 				.thenReturn(modelAndView);
 
 		mockMvc
 				.perform(
 						post("/save")
-								.flashAttr("payload", receivedPayload)
+								.flashAttr("payload", payload)
 				)
 				.andExpect(status().isOk())
 				.andDo(print())
 				.andExpect(view().name("source"))
-				.andExpect(model().size(5))
-				.andExpect(model().attribute("title", title2))
-				.andExpect(model().attribute("file_name", filename2))
-				.andExpect(model().attribute("edit_existing_page", editExistingPage2))
-				.andExpect(model().attribute("content", content2))
-				.andExpect(model().attribute("message", message2));
+				.andExpect(model().size(1))
+				.andExpect(model().attribute("payload", payload2));
 	}
 
 	@Test
 	void importTxt() throws Exception {
-		List<String> titles = List.of("Title 1", "Title 2");
+		List<String> titles = List.of("Title 1");
 		String files = "file_3;file_4";
 		Boolean confirm = true;
 		String message = "message text";
-		Payload receivedPayload = new Payload(
+		Payload payload = new Payload(
 				confirm,
 				null,
 				null,
@@ -408,39 +525,44 @@ class CommonControllerTest {
 		);
 
 		List<String> titles2 = List.of("Title 1", "Title 2", "Title 3", "Title 4");
-		String files2 = "";
 		Boolean confirm2 = false;
 		String message2 = "message text 2";
-		ModelAndView modelAndView = new ModelAndView("management");
-		modelAndView.addObject("titles", titles2);
-		modelAndView.addObject("files", files2);
-		modelAndView.addObject("confirm", confirm2);
-		modelAndView.addObject("message", message2);
-		when(commonService.importTxt("management", files, confirm))
+		Payload payload2 = new Payload(
+				confirm2,
+				null,
+				null,
+				null,
+				"",
+				message2,
+				null,
+				null,
+				null,
+				titles2
+		);
+
+		ModelAndView modelAndView = new ModelAndView("management", "payload", payload2);
+		when(commonService.importTxt("management", payload))
 				.thenReturn(modelAndView);
 
 		mockMvc
 				.perform(
 						post("/import")
-								.flashAttr("payload", receivedPayload)
+								.flashAttr("payload", payload)
 				)
 				.andExpect(status().isOk())
 				.andDo(print())
 				.andExpect(view().name("management"))
-				.andExpect(model().size(4))
-				.andExpect(model().attribute("titles", titles2))
-				.andExpect(model().attribute("files", files2))
-				.andExpect(model().attribute("confirm", confirm2))
-				.andExpect(model().attribute("message", message2));
+				.andExpect(model().size(1))
+				.andExpect(model().attribute("payload", payload2));
 	}
 
 	@Test
 	void generateHtml() throws Exception {
-		List<String> titles = List.of("Title 1", "Title 2");
+		List<String> titles = List.of("Title 1");
 		String files = "";
 		Boolean confirm = true;
 		String message = "message text";
-		Payload receivedPayload = new Payload(
+		Payload payload = new Payload(
 				confirm,
 				null,
 				null,
@@ -454,29 +576,34 @@ class CommonControllerTest {
 		);
 
 		List<String> titles2 = List.of("Title 1", "Title 2");
-		String files2 = "";
 		Boolean confirm2 = false;
 		String message2 = "message text 2";
-		ModelAndView modelAndView = new ModelAndView("management");
-		modelAndView.addObject("titles", titles2);
-		modelAndView.addObject("files", files2);
-		modelAndView.addObject("confirm", confirm2);
-		modelAndView.addObject("message", message2);
-		when(commonService.generateHtml("management", confirm))
+		Payload payload2 = new Payload(
+				confirm2,
+				null,
+				null,
+				null,
+				"",
+				message2,
+				null,
+				null,
+				null,
+				titles2
+		);
+
+		ModelAndView modelAndView = new ModelAndView("management", "payload", payload2);
+		when(commonService.generateHtml("management", payload))
 				.thenReturn(modelAndView);
 
 		mockMvc
 				.perform(
 						post("/generate")
-								.flashAttr("payload", receivedPayload)
+								.flashAttr("payload", payload)
 				)
 				.andExpect(status().isOk())
 				.andDo(print())
 				.andExpect(view().name("management"))
-				.andExpect(model().size(4))
-				.andExpect(model().attribute("titles", titles2))
-				.andExpect(model().attribute("files", files2))
-				.andExpect(model().attribute("confirm", confirm2))
-				.andExpect(model().attribute("message", message2));
+				.andExpect(model().size(1))
+				.andExpect(model().attribute("payload", payload2));
 	}
 }

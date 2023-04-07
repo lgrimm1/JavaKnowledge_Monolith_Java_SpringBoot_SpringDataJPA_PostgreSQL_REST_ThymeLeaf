@@ -32,7 +32,7 @@ public class CommonController {
 	@PostMapping("/page")
 	public ModelAndView getPage(@ModelAttribute("payload") Payload payload, Model model) {
 		model.asMap().clear();
-		return commonService.getPage("page", payload.getTitles());
+		return commonService.getPage("page", payload);
 	}
 
 	@PostMapping("/management")
@@ -50,13 +50,14 @@ public class CommonController {
 	@PostMapping("/source/edit")
 	public ModelAndView editSourcePage(@ModelAttribute("payload") Payload payload, Model model) {
 		model.asMap().clear();
-		return commonService.editSourcePage("source", payload.getTitles());
+//		return commonService.editSourcePage("source", payload.getTitles());
+		return commonService.editSourcePage("source", payload);
 	}
 
 	@PostMapping("/delete")
 	public ModelAndView deleteSourcePages(@ModelAttribute("payload") Payload payload, Model model) {
 		model.asMap().clear();
-		return commonService.deletePages("management", payload.getTitles(), payload.getConfirm());
+		return commonService.deletePages("management", payload);
 	}
 
 	@PostMapping("/publish")
@@ -70,33 +71,40 @@ public class CommonController {
 								   @ModelAttribute("payload") Payload payload,
 								   Model model) {
 		model.asMap().clear();
+		return commonService.addFormula("source", formulaName, payload);
+/*
 		return commonService.addFormula("source",
 				formulaName,
 				payload.getTitle(),
 				payload.getFileName(),
 				payload.getContent(),
 				payload.getEditExistingPage());
+*/
 	}
 
 	@PostMapping("/save")
 	public ModelAndView savePage(@ModelAttribute("payload") Payload payload, Model model) {
 		model.asMap().clear();
+		return commonService.savePage("source", payload);
+/*
 		return commonService.savePage("source",
 				payload.getTitle(),
 				payload.getFileName(),
 				payload.getContent(),
 				payload.getEditExistingPage());
+*/
 	}
 
 	@PostMapping("/import")
 	public ModelAndView importTxt(@ModelAttribute("payload") Payload payload, Model model) {
 		model.asMap().clear();
-		return commonService.importTxt("management", payload.getFiles(), payload.getConfirm());
+		return commonService.importTxt("management", payload);
+//		return commonService.importTxt("management", payload.getFiles(), payload.getConfirm());
 	}
 
 	@PostMapping("/generate")
 	public ModelAndView generateHtml(@ModelAttribute("payload") Payload payload, Model model) {
 		model.asMap().clear();
-		return commonService.generateHtml("management", payload.getConfirm());
+		return commonService.generateHtml("management", payload);
 	}
 }

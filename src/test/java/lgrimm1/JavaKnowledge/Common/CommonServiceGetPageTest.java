@@ -52,7 +52,7 @@ class CommonServiceGetPageTest {
 	}
 
 	@Test
-	void getPage_NullTitles() {
+	void getPage_NullPayload() {
 		List<String> titles = List.of("Title 1", "Title 2");
 		when(processRecords.getAllTitles(titleRepository))
 				.thenReturn(titles);
@@ -79,7 +79,21 @@ class CommonServiceGetPageTest {
 	}
 
 	@Test
-	void getPage_EmptyTitles() {
+	void getPage_NullTitles() {
+		String searchText = "text";
+		Payload payload = new Payload(
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				searchText,
+				null,
+				null,
+				null
+		);
+
 		List<String> titles = List.of("Title 1", "Title 2");
 		when(processRecords.getAllTitles(titleRepository))
 				.thenReturn(titles);
@@ -99,7 +113,48 @@ class CommonServiceGetPageTest {
 		Map<String, Object> map = new HashMap<>();
 		map.put("payload", expectedPayload);
 
-		ModelAndView modelAndView = commonService.getPage("page", new ArrayList<>());
+		ModelAndView modelAndView = commonService.getPage("page", payload);
+
+		ModelAndViewAssert.assertViewName(modelAndView, "list");
+		ModelAndViewAssert.assertModelAttributeValues(modelAndView, map);
+	}
+
+	@Test
+	void getPage_EmptyTitles() {
+		String searchText = "text";
+		Payload payload = new Payload(
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				searchText,
+				null,
+				null,
+				new ArrayList<>()
+		);
+
+		List<String> titles = List.of("Title 1", "Title 2");
+		when(processRecords.getAllTitles(titleRepository))
+				.thenReturn(titles);
+
+		Payload expectedPayload = new Payload(
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				"<all titles>",
+				null,
+				null,
+				titles
+		);
+		Map<String, Object> map = new HashMap<>();
+		map.put("payload", expectedPayload);
+
+		ModelAndView modelAndView = commonService.getPage("page", payload);
 
 		ModelAndViewAssert.assertViewName(modelAndView, "list");
 		ModelAndViewAssert.assertModelAttributeValues(modelAndView, map);
@@ -107,6 +162,21 @@ class CommonServiceGetPageTest {
 
 	@Test
 	void getPage_TooMuchTitles() {
+		String searchText = "text";
+		List<String> askedTitles = List.of("Title 1", "Title 2");
+		Payload payload = new Payload(
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				searchText,
+				null,
+				null,
+				askedTitles
+		);
+
 		List<String> titles = List.of("Title 1", "Title 2");
 		when(processRecords.getAllTitles(titleRepository))
 				.thenReturn(titles);
@@ -126,7 +196,7 @@ class CommonServiceGetPageTest {
 		Map<String, Object> map = new HashMap<>();
 		map.put("payload", expectedPayload);
 
-		ModelAndView modelAndView = commonService.getPage("page", List.of("Title 1", "Title 2"));
+		ModelAndView modelAndView = commonService.getPage("page", payload);
 
 		ModelAndViewAssert.assertViewName(modelAndView, "list");
 		ModelAndViewAssert.assertModelAttributeValues(modelAndView, map);
@@ -134,6 +204,21 @@ class CommonServiceGetPageTest {
 
 	@Test
 	void getPage_BlankTitle() {
+		String searchText = "text";
+		List<String> askedTitles = List.of("  ");
+		Payload payload = new Payload(
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				searchText,
+				null,
+				null,
+				askedTitles
+		);
+
 		List<String> titles = List.of("Title 1", "Title 2");
 		when(processRecords.getAllTitles(titleRepository))
 				.thenReturn(titles);
@@ -153,7 +238,7 @@ class CommonServiceGetPageTest {
 		Map<String, Object> map = new HashMap<>();
 		map.put("payload", expectedPayload);
 
-		ModelAndView modelAndView = commonService.getPage("page", List.of(" "));
+		ModelAndView modelAndView = commonService.getPage("page", payload);
 
 		ModelAndViewAssert.assertViewName(modelAndView, "list");
 		ModelAndViewAssert.assertModelAttributeValues(modelAndView, map);
@@ -161,11 +246,26 @@ class CommonServiceGetPageTest {
 
 	@Test
 	void getPage_NotExistingTitle() {
+		String searchText = "text";
+		String title = "Title 3";
+		List<String> askedTitles = List.of(title);
+		Payload payload = new Payload(
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				searchText,
+				null,
+				null,
+				askedTitles
+		);
+
 		List<String> titles = List.of("Title 1", "Title 2");
 		when(processRecords.getAllTitles(titleRepository))
 				.thenReturn(titles);
 
-		String title = "Title";
 		when(titleRepository.findByTitle(title))
 				.thenReturn(Optional.empty());
 
@@ -184,7 +284,7 @@ class CommonServiceGetPageTest {
 		Map<String, Object> map = new HashMap<>();
 		map.put("payload", expectedPayload);
 
-		ModelAndView modelAndView = commonService.getPage("page", List.of(title));
+		ModelAndView modelAndView = commonService.getPage("page", payload);
 
 		ModelAndViewAssert.assertViewName(modelAndView, "list");
 		ModelAndViewAssert.assertModelAttributeValues(modelAndView, map);
@@ -192,12 +292,27 @@ class CommonServiceGetPageTest {
 
 	@Test
 	void getPage_ExistingTitle() {
+		String searchText = "text";
+		String title = "Title 2";
+		List<String> askedTitles = List.of(title);
+		Payload payload = new Payload(
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				searchText,
+				null,
+				null,
+				askedTitles
+		);
+
 		List<String> titles = List.of("Title 1", "Title 2");
 		when(processRecords.getAllTitles(titleRepository))
 				.thenReturn(titles);
 
-		String title = "Title";
-		String filename = "title";
+		String filename = "title_2";
 		when(titleRepository.findByTitle(title))
 				.thenReturn(Optional.of(new TitleEntity(2L, title, filename, 2L, 2L)));
 
@@ -221,7 +336,7 @@ class CommonServiceGetPageTest {
 		Map<String, Object> map = new HashMap<>();
 		map.put("payload", expectedPayload);
 
-		ModelAndView modelAndView = commonService.getPage("page", List.of(title));
+		ModelAndView modelAndView = commonService.getPage("page", payload);
 
 		ModelAndViewAssert.assertViewName(modelAndView, "page");
 		ModelAndViewAssert.assertModelAttributeValues(modelAndView, map);

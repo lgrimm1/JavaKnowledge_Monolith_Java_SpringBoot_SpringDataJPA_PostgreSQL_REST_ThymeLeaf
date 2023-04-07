@@ -51,10 +51,48 @@ class CommonServiceSavePageTest {
 	}
 
 	@Test
+	void savePage_NullPayload() {
+		Payload expectedPayload = new Payload(
+				null,
+				"",
+				false,
+				"",
+				null,
+				"THERE WAS A COMMUNICATION ERROR BETWEEN THE BROWSER AND THE SERVER.",
+				null,
+				null,
+				"",
+				null
+		);
+
+		Map<String, Object> model = new HashMap<>();
+		model.put("payload", expectedPayload);
+
+		ModelAndView modelAndView = commonService.savePage("source", null);
+
+		ModelAndViewAssert.assertViewName(modelAndView, "source");
+		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
+	}
+
+	@Test
 	void savePage_NullTitle() {
-		String fileName = "file_name";
 		String content = "Line 1\nLine 2\n";
 		boolean editExistingPage = true;
+		String fileName = "file_name";
+		String message = "";
+		String title = null;
+		Payload receivedPayload = new Payload(
+				null,
+				content,
+				editExistingPage,
+				fileName,
+				null,
+				message,
+				null,
+				null,
+				title,
+				null
+		);
 
 		Payload expectedPayload = new Payload(
 				null,
@@ -62,7 +100,7 @@ class CommonServiceSavePageTest {
 				editExistingPage,
 				fileName,
 				null,
-				"PLEASE DEFINE A TITLE.",
+				"PLEASE DEFINE A TITLE AND A FILE NAME.",
 				null,
 				null,
 				"",
@@ -71,7 +109,7 @@ class CommonServiceSavePageTest {
 		Map<String, Object> model = new HashMap<>();
 		model.put("payload", expectedPayload);
 
-		ModelAndView modelAndView = commonService.savePage("source", null, fileName, content, editExistingPage);
+		ModelAndView modelAndView = commonService.savePage("source", receivedPayload);
 
 		ModelAndViewAssert.assertViewName(modelAndView, "source");
 		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
@@ -79,10 +117,23 @@ class CommonServiceSavePageTest {
 
 	@Test
 	void savePage_BlankTitle() {
-		String title = "  ";
-		String fileName = "file_name";
 		String content = "Line 1\nLine 2\n";
 		boolean editExistingPage = true;
+		String fileName = "file_name";
+		String message = "";
+		String title = "  ";
+		Payload receivedPayload = new Payload(
+				null,
+				content,
+				editExistingPage,
+				fileName,
+				null,
+				message,
+				null,
+				null,
+				title,
+				null
+		);
 
 		Payload expectedPayload = new Payload(
 				null,
@@ -90,7 +141,7 @@ class CommonServiceSavePageTest {
 				editExistingPage,
 				fileName,
 				null,
-				"PLEASE DEFINE A TITLE.",
+				"PLEASE DEFINE A TITLE AND A FILE NAME.",
 				null,
 				null,
 				"",
@@ -99,7 +150,7 @@ class CommonServiceSavePageTest {
 		Map<String, Object> model = new HashMap<>();
 		model.put("payload", expectedPayload);
 
-		ModelAndView modelAndView = commonService.savePage("source", title, fileName, content, editExistingPage);
+		ModelAndView modelAndView = commonService.savePage("source", receivedPayload);
 
 		ModelAndViewAssert.assertViewName(modelAndView, "source");
 		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
@@ -107,9 +158,23 @@ class CommonServiceSavePageTest {
 
 	@Test
 	void savePage_NullFileName() {
-		String title = "Title";
 		String content = "Line 1\nLine 2\n";
 		boolean editExistingPage = true;
+		String fileName = null;
+		String message = "";
+		String title = "Title";
+		Payload receivedPayload = new Payload(
+				null,
+				content,
+				editExistingPage,
+				fileName,
+				null,
+				message,
+				null,
+				null,
+				title,
+				null
+		);
 
 		Payload expectedPayload = new Payload(
 				null,
@@ -117,7 +182,7 @@ class CommonServiceSavePageTest {
 				editExistingPage,
 				"",
 				null,
-				"PLEASE DEFINE A FILE NAME.",
+				"PLEASE DEFINE A TITLE AND A FILE NAME.",
 				null,
 				null,
 				title,
@@ -126,7 +191,7 @@ class CommonServiceSavePageTest {
 		Map<String, Object> model = new HashMap<>();
 		model.put("payload", expectedPayload);
 
-		ModelAndView modelAndView = commonService.savePage("source", title, null, content, editExistingPage);
+		ModelAndView modelAndView = commonService.savePage("source", receivedPayload);
 
 		ModelAndViewAssert.assertViewName(modelAndView, "source");
 		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
@@ -134,10 +199,23 @@ class CommonServiceSavePageTest {
 
 	@Test
 	void savePage_BlankFileName() {
-		String title = "Title";
-		String fileName = "  ";
 		String content = "Line 1\nLine 2\n";
 		boolean editExistingPage = true;
+		String fileName = "  ";
+		String message = "";
+		String title = "Title";
+		Payload receivedPayload = new Payload(
+				null,
+				content,
+				editExistingPage,
+				fileName,
+				null,
+				message,
+				null,
+				null,
+				title,
+				null
+		);
 
 		Payload expectedPayload = new Payload(
 				null,
@@ -145,7 +223,7 @@ class CommonServiceSavePageTest {
 				editExistingPage,
 				"",
 				null,
-				"PLEASE DEFINE A FILE NAME.",
+				"PLEASE DEFINE A TITLE AND A FILE NAME.",
 				null,
 				null,
 				title,
@@ -154,7 +232,7 @@ class CommonServiceSavePageTest {
 		Map<String, Object> model = new HashMap<>();
 		model.put("payload", expectedPayload);
 
-		ModelAndView modelAndView = commonService.savePage("source", title, fileName, content, editExistingPage);
+		ModelAndView modelAndView = commonService.savePage("source", receivedPayload);
 
 		ModelAndViewAssert.assertViewName(modelAndView, "source");
 		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
@@ -162,9 +240,23 @@ class CommonServiceSavePageTest {
 
 	@Test
 	void savePage_NullContentEditButNonExistent() {
-		String title = "Title";
-		String fileName = "file_name";
+		String content = null;
 		boolean editExistingPage = true;
+		String fileName = "file_name";
+		String message = "";
+		String title = "Title";
+		Payload receivedPayload = new Payload(
+				null,
+				content,
+				editExistingPage,
+				fileName,
+				null,
+				message,
+				null,
+				null,
+				title,
+				null
+		);
 
 		when(titleRepository.findByTitle(title))
 				.thenReturn(Optional.empty());
@@ -184,7 +276,7 @@ class CommonServiceSavePageTest {
 		Map<String, Object> model = new HashMap<>();
 		model.put("payload", expectedPayload);
 
-		ModelAndView modelAndView = commonService.savePage("source", title, fileName, null, editExistingPage);
+		ModelAndView modelAndView = commonService.savePage("source", receivedPayload);
 
 		ModelAndViewAssert.assertViewName(modelAndView, "source");
 		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
@@ -192,10 +284,23 @@ class CommonServiceSavePageTest {
 
 	@Test
 	void savePage_EditButNonExistent() {
-		String title = "Title";
-		String fileName = "file_name";
 		String content = "Line 1\nLine 2\n";
 		boolean editExistingPage = true;
+		String fileName = "file_name";
+		String message = "";
+		String title = "Title";
+		Payload receivedPayload = new Payload(
+				null,
+				content,
+				editExistingPage,
+				fileName,
+				null,
+				message,
+				null,
+				null,
+				title,
+				null
+		);
 
 		when(titleRepository.findByTitle(title))
 				.thenReturn(Optional.empty());
@@ -215,7 +320,7 @@ class CommonServiceSavePageTest {
 		Map<String, Object> model = new HashMap<>();
 		model.put("payload", expectedPayload);
 
-		ModelAndView modelAndView = commonService.savePage("source", title, fileName, content, editExistingPage);
+		ModelAndView modelAndView = commonService.savePage("source", receivedPayload);
 
 		ModelAndViewAssert.assertViewName(modelAndView, "source");
 		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
@@ -223,10 +328,23 @@ class CommonServiceSavePageTest {
 
 	@Test
 	void savePage_EditExistent() {
-		String title = "Title";
-		String fileName = "file_name";
 		String content = "Line 1\nLine 2\n";
 		boolean editExistingPage = true;
+		String fileName = "file_name";
+		String message = "";
+		String title = "Title";
+		Payload receivedPayload = new Payload(
+				null,
+				content,
+				editExistingPage,
+				fileName,
+				null,
+				message,
+				null,
+				null,
+				title,
+				null
+		);
 
 		when(titleRepository.findByTitle(title))
 				.thenReturn(Optional.of(new TitleEntity(2L, "Original title", "original_file_name", 3L, 4L)));
@@ -256,7 +374,7 @@ class CommonServiceSavePageTest {
 		Map<String, Object> model = new HashMap<>();
 		model.put("payload", expectedPayload);
 
-		ModelAndView modelAndView = commonService.savePage("source", title, fileName, content, editExistingPage);
+		ModelAndView modelAndView = commonService.savePage("source", receivedPayload);
 
 		ModelAndViewAssert.assertViewName(modelAndView, "source");
 		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
@@ -264,10 +382,23 @@ class CommonServiceSavePageTest {
 
 	@Test
 	void savePage_NewButExistent() {
-		String title = "Title";
-		String fileName = "file_name";
 		String content = "Line 1\nLine 2\n";
 		boolean editExistingPage = false;
+		String fileName = "file_name";
+		String message = "";
+		String title = "Title";
+		Payload receivedPayload = new Payload(
+				null,
+				content,
+				editExistingPage,
+				fileName,
+				null,
+				message,
+				null,
+				null,
+				title,
+				null
+		);
 
 		when(titleRepository.findByTitle(title))
 				.thenReturn(Optional.of(new TitleEntity(2L, "Original title", "original_file_name", 3L, 4L)));
@@ -287,7 +418,7 @@ class CommonServiceSavePageTest {
 		Map<String, Object> model = new HashMap<>();
 		model.put("payload", expectedPayload);
 
-		ModelAndView modelAndView = commonService.savePage("source", title, fileName, content, editExistingPage);
+		ModelAndView modelAndView = commonService.savePage("source", receivedPayload);
 
 		ModelAndViewAssert.assertViewName(modelAndView, "source");
 		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
@@ -295,10 +426,23 @@ class CommonServiceSavePageTest {
 
 	@Test
 	void savePage_NewNonExistent() {
-		String title = "Title";
-		String fileName = "file_name";
 		String content = "Line 1\nLine 2\n";
 		boolean editExistingPage = false;
+		String fileName = "file_name";
+		String message = "";
+		String title = "Title";
+		Payload receivedPayload = new Payload(
+				null,
+				content,
+				editExistingPage,
+				fileName,
+				null,
+				message,
+				null,
+				null,
+				title,
+				null
+		);
 
 		when(titleRepository.findByTitle(title))
 				.thenReturn(Optional.empty());
@@ -328,7 +472,7 @@ class CommonServiceSavePageTest {
 		Map<String, Object> model = new HashMap<>();
 		model.put("payload", expectedPayload);
 
-		ModelAndView modelAndView = commonService.savePage("source", title, fileName, content, editExistingPage);
+		ModelAndView modelAndView = commonService.savePage("source", receivedPayload);
 
 		ModelAndViewAssert.assertViewName(modelAndView, "source");
 		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
@@ -336,9 +480,23 @@ class CommonServiceSavePageTest {
 
 	@Test
 	void savePage_NullEditFlagAndExistent() {
-		String title = "Title";
-		String fileName = "file_name";
 		String content = "Line 1\nLine 2\n";
+		Boolean editExistingPage = null;
+		String fileName = "file_name";
+		String message = "";
+		String title = "Title";
+		Payload receivedPayload = new Payload(
+				null,
+				content,
+				editExistingPage,
+				fileName,
+				null,
+				message,
+				null,
+				null,
+				title,
+				null
+		);
 
 		when(titleRepository.findByTitle(title))
 				.thenReturn(Optional.of(new TitleEntity(2L, "Original title", "original_file_name", 3L, 4L)));
@@ -358,7 +516,7 @@ class CommonServiceSavePageTest {
 		Map<String, Object> model = new HashMap<>();
 		model.put("payload", expectedPayload);
 
-		ModelAndView modelAndView = commonService.savePage("source", title, fileName, content, null);
+		ModelAndView modelAndView = commonService.savePage("source", receivedPayload);
 
 		ModelAndViewAssert.assertViewName(modelAndView, "source");
 		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);

@@ -109,8 +109,8 @@ public class CommonService {
 		return new ModelAndView(initialView, "payload", payload2);
 	}
 
-	public ModelAndView getPage(String initialView, List<String> titles) {
-		if (titles == null || titles.size() != 1 || titles.get(0) == null || titles.get(0).isBlank()) {
+	public ModelAndView getPage(String initialView, Payload payload) {
+		if (payload == null || payload.getTitles() == null || payload.getTitles().size() != 1 || payload.getTitles().get(0) == null || payload.getTitles().get(0).isBlank()) {
 			Payload payload2 = new Payload(
 					null,
 					null,
@@ -125,6 +125,7 @@ public class CommonService {
 			);
 			return new ModelAndView("list", "payload", payload2);
 		}
+		List<String> titles = payload.getTitles();
 		Optional<TitleEntity> optionalTitleEntity = titleRepository.findByTitle(titles.get(0));
 		if (optionalTitleEntity.isEmpty()) {
 			Payload payload2 = new Payload(
@@ -204,9 +205,9 @@ public class CommonService {
 		return new ModelAndView(initialView, "payload", payload);
 	}
 
-	public ModelAndView editSourcePage(String initialView, List<String> titles) {
-		if (titles == null || titles.size() != 1 || titles.get(0) == null || titles.get(0).isBlank()) {
-			Payload payload = new Payload(
+	public ModelAndView editSourcePage(String initialView, Payload payload) {
+		if (payload == null || payload.getTitles() == null || payload.getTitles().size() != 1 || payload.getTitles().get(0) == null || payload.getTitles().get(0).isBlank()) {
+			Payload payload2 = new Payload(
 					false,
 					null,
 					null,
@@ -218,11 +219,12 @@ public class CommonService {
 					null,
 					processRecords.getAllTitles(titleRepository)
 			);
-			return new ModelAndView("management", "payload", payload);
+			return new ModelAndView("management", "payload", payload2);
 		}
+		List<String> titles = payload.getTitles();
 		Optional<TitleEntity> optionalTitleEntity = titleRepository.findByTitle(titles.get(0));
 		if (optionalTitleEntity.isEmpty()) {
-			Payload payload = new Payload(
+			Payload payload2 = new Payload(
 					false,
 					null,
 					null,
@@ -234,12 +236,12 @@ public class CommonService {
 					null,
 					processRecords.getAllTitles(titleRepository)
 			);
-			return new ModelAndView("management", "payload", payload);
+			return new ModelAndView("management", "payload", payload2);
 		}
 		long txtId = optionalTitleEntity.get().getTxtId();
 		Optional<TxtEntity> optionalTxtEntity = txtRepository.findById(txtId);
 		if (optionalTxtEntity.isEmpty()) {
-			Payload payload = new Payload(
+			Payload payload2 = new Payload(
 					false,
 					null,
 					null,
@@ -251,9 +253,9 @@ public class CommonService {
 					null,
 					processRecords.getAllTitles(titleRepository)
 			);
-			return new ModelAndView("management", "payload", payload);
+			return new ModelAndView("management", "payload", payload2);
 		}
-		Payload payload = new Payload(
+		Payload payload2 = new Payload(
 				null,
 				optionalTxtEntity.get().getContent(),
 				true,
@@ -265,13 +267,20 @@ public class CommonService {
 				optionalTitleEntity.get().getTitle(),
 				null
 		);
-		return new ModelAndView(initialView, "payload", payload);
+		return new ModelAndView(initialView, "payload", payload2);
 	}
 
-	public ModelAndView deletePages(String initialView, List<String> titles, Boolean confirm) {
-		if (titles == null || titles.size() == 0 || !confirm) {
-			String message = !confirm ? "PLEASE CONFIRM DELETION." : "PLEASE SELECT TITLES YOU WISH TO DELETE.";
-			Payload payload = new Payload(
+//	public ModelAndView deletePages(String initialView, List<String> titles, Boolean confirm) {
+	public ModelAndView deletePages(String initialView, Payload payload) {
+		if (payload == null || payload.getTitles() == null || payload.getTitles().size() == 0 || payload.getConfirm() == null || !payload.getConfirm()) {
+			String message;
+			if (payload == null) {
+				message = "PLEASE SELECT TITLES YOU WISH TO DELETE.";
+			}
+			else {
+				message = (payload.getConfirm() == null || !payload.getConfirm()) ? "PLEASE CONFIRM DELETION." : "PLEASE SELECT TITLES YOU WISH TO DELETE.";
+			}
+			Payload payload2 = new Payload(
 					false,
 					null,
 					null,
@@ -283,13 +292,14 @@ public class CommonService {
 					null,
 					processRecords.getAllTitles(titleRepository)
 			);
-			return new ModelAndView(initialView, "payload", payload);
+			return new ModelAndView(initialView, "payload", payload2);
 		}
+		List<String> titles = payload.getTitles();
 		titles = titles.stream()
 				.filter(title -> title != null && !title.isBlank())
 				.toList();
 		if (titles.isEmpty()) {
-			Payload payload = new Payload(
+			Payload payload2 = new Payload(
 					false,
 					null,
 					null,
@@ -301,7 +311,7 @@ public class CommonService {
 					null,
 					processRecords.getAllTitles(titleRepository)
 			);
-			return new ModelAndView(initialView, "payload", payload);
+			return new ModelAndView(initialView, "payload", payload2);
 		}
 		long numberOfGivenTitles = titles.size();
 		String message = processRecords.deleteByTitles(
@@ -310,7 +320,7 @@ public class CommonService {
 				txtRepository,
 				htmlRepository) +
 				" OF " + numberOfGivenTitles + " TITLES WERE DELETED.";
-		Payload payload = new Payload(
+		Payload payload2 = new Payload(
 				false,
 				null,
 				null,
@@ -322,7 +332,7 @@ public class CommonService {
 				null,
 				processRecords.getAllTitles(titleRepository)
 		);
-		return new ModelAndView(initialView, "payload", payload);
+		return new ModelAndView(initialView, "payload", payload2);
 	}
 
 	public ModelAndView publishPages(String initialView) {
@@ -342,22 +352,41 @@ public class CommonService {
 		return new ModelAndView(initialView, "payload", payload);
 	}
 
+	public ModelAndView addFormula(String initialView, String formulaName, Payload payload) {
+/*
 	public ModelAndView addFormula(String initialView,
 								   String formulaName,
 								   String title,
 								   String fileName,
 								   String content,
 								   Boolean editExistingPage) {
-		List<String> contentList = processRecords.stringToList(content);
+*/
+		if (payload == null) {
+			Payload payload2 = new Payload(
+					null,
+					"",
+					false,
+					"",
+					null,
+					"THERE WAS A COMMUNICATION ERROR BETWEEN THE BROWSER AND THE SERVER.",
+					null,
+					null,
+					"",
+					null
+			);
+			return new ModelAndView(initialView, "payload", payload2);
+		}
+		String title = payload.getTitle();
 		if (title == null || title.isBlank()) {
 			title = "";
 		}
+		String fileName = payload.getFileName();
 		if (fileName == null || fileName.isBlank()) {
 			fileName = "";
 		}
-		if (contentList == null) {
-			contentList = new ArrayList<>();
-		}
+		String content = payload.getContent();
+		List<String> contentList = processRecords.stringToList(content);
+		Boolean editExistingPage = payload.getEditExistingPage();
 		if (editExistingPage == null) {
 			editExistingPage = false;
 		}
@@ -370,7 +399,7 @@ public class CommonService {
 			contentList.addAll(formula);
 			message = "FORMULA WAS APPENDED.";
 		}
-		Payload payload = new Payload(
+		Payload payload2 = new Payload(
 				null,
 				processRecords.listToString(contentList),
 				editExistingPage,
@@ -382,59 +411,89 @@ public class CommonService {
 				title,
 				null
 		);
-		return new ModelAndView(initialView, "payload", payload);
+		return new ModelAndView(initialView, "payload", payload2);
 	}
 
+	public ModelAndView savePage(String initialView, Payload payload) {
+/*
 	public ModelAndView savePage(String initialView,
 								 String title,
 								 String fileName,
 								 String content,
 								 Boolean editExistingPage) {
+*/
+		if (payload == null) {
+			Payload payload2 = new Payload(
+					null,
+					"",
+					false,
+					"",
+					null,
+					"THERE WAS A COMMUNICATION ERROR BETWEEN THE BROWSER AND THE SERVER.",
+					null,
+					null,
+					"",
+					null
+			);
+			return new ModelAndView(initialView, "payload", payload2);
+		}
 		String message;
-		if (title == null || title.isBlank()) {
-			title = "";
-			message = "PLEASE DEFINE A TITLE.";
+		String title = payload.getTitle();
+		String fileName = payload.getFileName();
+		String content = payload.getContent();
+		Boolean editExistingPage = payload.getEditExistingPage();
+		if (content == null) {
+			content = "";
 		}
-		else if (fileName == null || fileName.isBlank()) {
-			fileName = "";
-			message = "PLEASE DEFINE A FILE NAME.";
+		if (editExistingPage == null) {
+			editExistingPage = false;
 		}
-		else {
-			if (content == null) {
-				content = "";
+		if (title == null || title.isBlank() || fileName == null || fileName.isBlank()) {
+			title = title == null || title.isBlank() ? "" : title;
+			fileName = fileName == null || fileName.isBlank() ? "" : fileName;
+			message = "PLEASE DEFINE A TITLE AND A FILE NAME.";
+			Payload payload2 = new Payload(
+					null,
+					content,
+					editExistingPage,
+					fileName,
+					null,
+					message,
+					null,
+					null,
+					title,
+					null
+			);
+			return new ModelAndView(initialView, "payload", payload2);
+		}
+		Optional<TitleEntity> optionalTitleEntity = titleRepository.findByTitle(title);
+		if (editExistingPage) {
+			if (optionalTitleEntity.isEmpty()) {
+				message = "THERE IS NO EXISTING PAGE WITH THIS TITLE.";
 			}
-			if (editExistingPage == null) {
-				editExistingPage = false;
-			}
-			Optional<TitleEntity> optionalTitleEntity = titleRepository.findByTitle(title);
-			if (editExistingPage) {
-				if (optionalTitleEntity.isEmpty()) {
-					message = "THERE IS NO EXISTING PAGE WITH THIS TITLE.";
-				}
-				else {
-					txtRepository.deleteById(optionalTitleEntity.get().getTxtId());
-					htmlRepository.deleteById(optionalTitleEntity.get().getHtmlId());
-					titleRepository.deleteById(optionalTitleEntity.get().getId());
-					HtmlEntity htmlEntity = htmlRepository.save(new HtmlEntity(new ArrayList<>(), new ArrayList<>()));
-					TxtEntity txtEntity = txtRepository.save(new TxtEntity(content));
-					titleRepository.save(new TitleEntity(title, fileName, txtEntity.getId(), htmlEntity.getId()));
-					message = "SOURCE PAGE HAS BEEN OVERWRITTEN.";
-				}
-			}
-			else { //editExistingPage == false
-				if (optionalTitleEntity.isPresent()) {
-					message = "THERE IS AN EXISTING PAGE WITH THIS TITLE.";
-				}
-				else {
-					HtmlEntity htmlEntity = htmlRepository.save(new HtmlEntity(new ArrayList<>(), new ArrayList<>()));
-					TxtEntity txtEntity = txtRepository.save(new TxtEntity(content));
-					titleRepository.save(new TitleEntity(title, fileName, txtEntity.getId(), htmlEntity.getId()));
-					editExistingPage = true;
-					message = "SOURCE PAGE HAS BEEN SAVED.";
-				}
+			else {
+				txtRepository.deleteById(optionalTitleEntity.get().getTxtId());
+				htmlRepository.deleteById(optionalTitleEntity.get().getHtmlId());
+				titleRepository.deleteById(optionalTitleEntity.get().getId());
+				HtmlEntity htmlEntity = htmlRepository.save(new HtmlEntity(new ArrayList<>(), new ArrayList<>()));
+				TxtEntity txtEntity = txtRepository.save(new TxtEntity(content));
+				titleRepository.save(new TitleEntity(title, fileName, txtEntity.getId(), htmlEntity.getId()));
+				message = "SOURCE PAGE HAS BEEN OVERWRITTEN.";
 			}
 		}
-		Payload payload = new Payload(
+		else { //editExistingPage == false
+			if (optionalTitleEntity.isPresent()) {
+				message = "THERE IS AN EXISTING PAGE WITH THIS TITLE.";
+			}
+			else {
+				HtmlEntity htmlEntity = htmlRepository.save(new HtmlEntity(new ArrayList<>(), new ArrayList<>()));
+				TxtEntity txtEntity = txtRepository.save(new TxtEntity(content));
+				titleRepository.save(new TitleEntity(title, fileName, txtEntity.getId(), htmlEntity.getId()));
+				editExistingPage = true;
+				message = "SOURCE PAGE HAS BEEN SAVED.";
+			}
+		}
+		Payload payload2 = new Payload(
 				null,
 				content,
 				editExistingPage,
@@ -446,12 +505,13 @@ public class CommonService {
 				title,
 				null
 		);
-		return new ModelAndView(initialView, "payload", payload);
+		return new ModelAndView(initialView, "payload", payload2);
 	}
 
-	public ModelAndView importTxt(String initialView, String fileNames, Boolean confirm) {
-		if (fileNames == null || fileNames.isBlank() || confirm == null || !confirm) {
-			Payload payload = new Payload(
+//	public ModelAndView importTxt(String initialView, String fileNames, Boolean confirm) {
+	public ModelAndView importTxt(String initialView, Payload payload) {
+		if (payload == null || payload.getFiles() == null || payload.getFiles().isBlank() || payload.getConfirm() == null || !payload.getConfirm()) {
+			Payload payload2 = new Payload(
 					false,
 					null,
 					null,
@@ -463,9 +523,9 @@ public class CommonService {
 					null,
 					processRecords.getAllTitles(titleRepository)
 			);
-			return new ModelAndView(initialView, "payload", payload);
+			return new ModelAndView(initialView, "payload", payload2);
 		}
-		List<File> files = Stream.of(fileNames.split(fileOperations.getOSPathSeparator()))
+		List<File> files = Stream.of(payload.getFiles().split(fileOperations.getOSPathSeparator()))
 				.map(File::new)
 				.toList();
 		List<File> notImportedFiles = processRecords.importTxtFiles(
@@ -477,7 +537,7 @@ public class CommonService {
 				formulas,
 				extractors);
 		List<String> titles = processRecords.getAllTitles(titleRepository);
-		Payload payload = new Payload(
+		Payload payload2 = new Payload(
 				false,
 				null,
 				null,
@@ -489,12 +549,12 @@ public class CommonService {
 				null,
 				titles
 		);
-		return new ModelAndView(initialView, "payload", payload);
+		return new ModelAndView(initialView, "payload", payload2);
 	}
 
-	public ModelAndView generateHtml(String initialView, Boolean confirm) {
-		if (confirm == null || !confirm) {
-			Payload payload = new Payload(
+	public ModelAndView generateHtml(String initialView, Payload payload) {
+		if (payload == null || payload.getConfirm() == null || !payload.getConfirm()) {
+			Payload payload2 = new Payload(
 					false,
 					null,
 					null,
@@ -506,7 +566,7 @@ public class CommonService {
 					null,
 					processRecords.getAllTitles(titleRepository)
 			);
-			return new ModelAndView(initialView, "payload", payload);
+			return new ModelAndView(initialView, "payload", payload2);
 		}
 		long[] messageData = processRecords.generate(
 				titleRepository,
@@ -516,7 +576,7 @@ public class CommonService {
 				processPage,
 				extractors,
 				htmlGenerators);
-		Payload payload = new Payload(
+		Payload payload2 = new Payload(
 				false,
 				null,
 				null,
@@ -528,7 +588,7 @@ public class CommonService {
 				null,
 				processRecords.getAllTitles(titleRepository)
 		);
-		return new ModelAndView(initialView, "payload", payload);
+		return new ModelAndView(initialView, "payload", payload2);
 	}
 }
 
