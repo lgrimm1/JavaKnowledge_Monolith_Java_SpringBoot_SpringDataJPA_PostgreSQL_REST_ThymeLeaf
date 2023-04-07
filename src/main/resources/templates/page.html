@@ -6,9 +6,9 @@
     <link rel="icon" type="image/x-icon" th:href="@{/images/favicon.ico}" href="/images/favicon.ico">
     <link rel="stylesheet" th:href="@{/styles/desktop.css}" href="/styles/desktop.css">
 </head>
-<body>
+<body id="body">
 <form action="#" th:object="${payload}" th:action="@{/page}" method="post" novalidate>
-    <table class="formatter_table">
+    <table id="banner" class="formatter_table">
         <tr>
             <td style="width: 20%">
                 <a href="/"><img src="/images/logo.jpg" alt="Java Knowledge"></a>
@@ -18,7 +18,7 @@
             </td>
         </tr>
     </table>
-    <fieldset>
+    <fieldset id="references">
         <legend>&nbsp;References to Other Pages&nbsp;</legend>
         <table class="formatter_table">
             <tr>
@@ -36,14 +36,13 @@
         </table>
     </fieldset>
     <br>
-    <div style="width:100%; height:2000px; overflow:hidden;">
-        <iframe th:src="*{staticPageLink}" allow="fullscreen" autofocus />
+    <div id="static_page" style="width:100%; height:300px; overflow:hidden;">
+        <iframe th:src="@{*{staticPageLink}}" style="height:100%" allow="fullscreen" autofocus />
     </div>
 </form>
 <script>
     window.onload = function() {
-        var s = document.getElementById("reference_list");
-        s.selectedIndex = 0;
+        document.getElementById("reference_list").selectedIndex = 0;
     }
 </script>
 </body>
