@@ -61,7 +61,6 @@ class CommonServicePublishPagesTest {
 				false,
 				null,
 				null,
-				null,
 				"",
 				"PLEASE CONFIRM PUBLISHING PAGES.",
 				null,
@@ -88,7 +87,6 @@ class CommonServicePublishPagesTest {
 				confirm,
 				null,
 				null,
-				null,
 				files,
 				message,
 				null,
@@ -103,7 +101,6 @@ class CommonServicePublishPagesTest {
 
 		Payload expectedPayload = new Payload(
 				false,
-				null,
 				null,
 				null,
 				"",
@@ -132,7 +129,6 @@ class CommonServicePublishPagesTest {
 				confirm,
 				null,
 				null,
-				null,
 				files,
 				message,
 				null,
@@ -147,7 +143,6 @@ class CommonServicePublishPagesTest {
 
 		Payload expectedPayload = new Payload(
 				false,
-				null,
 				null,
 				null,
 				"",
@@ -176,7 +171,6 @@ class CommonServicePublishPagesTest {
 				confirm,
 				null,
 				null,
-				null,
 				files,
 				message,
 				null,
@@ -194,7 +188,6 @@ class CommonServicePublishPagesTest {
 
 		Payload expectedPayload = new Payload(
 				false,
-				null,
 				null,
 				null,
 				"",

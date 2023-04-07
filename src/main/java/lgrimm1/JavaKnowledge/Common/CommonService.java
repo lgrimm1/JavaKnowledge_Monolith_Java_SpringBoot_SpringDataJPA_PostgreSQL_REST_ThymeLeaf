@@ -56,7 +56,6 @@ public class CommonService {
 				null,
 				null,
 				null,
-				null,
 				"",
 				null,
 				null,
@@ -74,7 +73,6 @@ public class CommonService {
 	public ModelAndView searchPages(String initialView, Payload payload) {
 		if (payload == null || payload.getSearchText() == null || payload.getSearchText().isBlank()) {
 			Payload payload2 = new Payload(
-					null,
 					null,
 					null,
 					null,
@@ -100,7 +98,6 @@ public class CommonService {
 				null,
 				null,
 				null,
-				null,
 				payload.getSearchText(),
 				null,
 				null,
@@ -117,7 +114,6 @@ public class CommonService {
 					null,
 					null,
 					null,
-					null,
 					"<all titles>",
 					null,
 					null,
@@ -129,7 +125,6 @@ public class CommonService {
 		Optional<TitleEntity> optionalTitleEntity = titleRepository.findByTitle(titles.get(0));
 		if (optionalTitleEntity.isEmpty()) {
 			Payload payload2 = new Payload(
-					null,
 					null,
 					null,
 					null,
@@ -150,7 +145,6 @@ public class CommonService {
 					null,
 					null,
 					null,
-					null,
 					"<all titles>",
 					null,
 					null,
@@ -159,7 +153,6 @@ public class CommonService {
 			return new ModelAndView("list", "payload", payload2);
 		}
 		Payload payload2 = new Payload(
-				null,
 				null,
 				null,
 				null,
@@ -178,7 +171,6 @@ public class CommonService {
 				false,
 				null,
 				null,
-				null,
 				"",
 				"",
 				null,
@@ -194,7 +186,6 @@ public class CommonService {
 				null,
 				"",
 				false,
-				"",
 				null,
 				"",
 				null,
@@ -209,7 +200,6 @@ public class CommonService {
 		if (payload == null || payload.getTitles() == null || payload.getTitles().size() != 1 || payload.getTitles().get(0) == null || payload.getTitles().get(0).isBlank()) {
 			Payload payload2 = new Payload(
 					false,
-					null,
 					null,
 					null,
 					"",
@@ -228,7 +218,6 @@ public class CommonService {
 					false,
 					null,
 					null,
-					null,
 					"",
 					"PLEASE SELECT EXACTLY ONE TITLE FOR EDITING.",
 					null,
@@ -245,7 +234,6 @@ public class CommonService {
 					false,
 					null,
 					null,
-					null,
 					"",
 					"PLEASE SELECT EXACTLY ONE TITLE FOR EDITING.",
 					null,
@@ -259,7 +247,6 @@ public class CommonService {
 				null,
 				optionalTxtEntity.get().getContent(),
 				true,
-				optionalTitleEntity.get().getFilename(),
 				null,
 				"",
 				null,
@@ -284,7 +271,6 @@ public class CommonService {
 					false,
 					null,
 					null,
-					null,
 					"",
 					message,
 					null,
@@ -301,7 +287,6 @@ public class CommonService {
 		if (titles.isEmpty()) {
 			Payload payload2 = new Payload(
 					false,
-					null,
 					null,
 					null,
 					"",
@@ -324,7 +309,6 @@ public class CommonService {
 				false,
 				null,
 				null,
-				null,
 				"",
 				message,
 				null,
@@ -341,7 +325,6 @@ public class CommonService {
 					false,
 					null,
 					null,
-					null,
 					"",
 					"PLEASE CONFIRM PUBLISHING PAGES.",
 					null,
@@ -356,7 +339,6 @@ public class CommonService {
 				false,
 				null,
 				null,
-				null,
 				"",
 				publishResults[0] + " HTML FILES WERE PRE-DELETED, " + publishResults[1] + " WERE PUBLISHED.",
 				null,
@@ -368,20 +350,11 @@ public class CommonService {
 	}
 
 	public ModelAndView addFormula(String initialView, String formulaName, Payload payload) {
-/*
-	public ModelAndView addFormula(String initialView,
-								   String formulaName,
-								   String title,
-								   String fileName,
-								   String content,
-								   Boolean editExistingPage) {
-*/
 		if (payload == null) {
 			Payload payload2 = new Payload(
 					null,
 					"",
 					false,
-					"",
 					null,
 					"THERE WAS A COMMUNICATION ERROR BETWEEN THE BROWSER AND THE SERVER.",
 					null,
@@ -394,10 +367,6 @@ public class CommonService {
 		String title = payload.getTitle();
 		if (title == null || title.isBlank()) {
 			title = "";
-		}
-		String fileName = payload.getFileName();
-		if (fileName == null || fileName.isBlank()) {
-			fileName = "";
 		}
 		String content = payload.getContent();
 		List<String> contentList = processRecords.stringToList(content);
@@ -418,7 +387,6 @@ public class CommonService {
 				null,
 				processRecords.listToString(contentList),
 				editExistingPage,
-				fileName,
 				null,
 				message,
 				null,
@@ -430,19 +398,11 @@ public class CommonService {
 	}
 
 	public ModelAndView savePage(String initialView, Payload payload) {
-/*
-	public ModelAndView savePage(String initialView,
-								 String title,
-								 String fileName,
-								 String content,
-								 Boolean editExistingPage) {
-*/
 		if (payload == null) {
 			Payload payload2 = new Payload(
 					null,
 					"",
 					false,
-					"",
 					null,
 					"THERE WAS A COMMUNICATION ERROR BETWEEN THE BROWSER AND THE SERVER.",
 					null,
@@ -454,7 +414,6 @@ public class CommonService {
 		}
 		String message;
 		String title = payload.getTitle();
-		String fileName = payload.getFileName();
 		String content = payload.getContent();
 		Boolean editExistingPage = payload.getEditExistingPage();
 		if (content == null) {
@@ -463,15 +422,13 @@ public class CommonService {
 		if (editExistingPage == null) {
 			editExistingPage = false;
 		}
-		if (title == null || title.isBlank() || fileName == null || fileName.isBlank()) {
+		if (title == null || title.isBlank()) {
 			title = title == null || title.isBlank() ? "" : title;
-			fileName = fileName == null || fileName.isBlank() ? "" : fileName;
 			message = "PLEASE DEFINE A TITLE AND A FILE NAME.";
 			Payload payload2 = new Payload(
 					null,
 					content,
 					editExistingPage,
-					fileName,
 					null,
 					message,
 					null,
@@ -492,7 +449,7 @@ public class CommonService {
 				titleRepository.deleteById(optionalTitleEntity.get().getId());
 				HtmlEntity htmlEntity = htmlRepository.save(new HtmlEntity(new ArrayList<>(), new ArrayList<>()));
 				TxtEntity txtEntity = txtRepository.save(new TxtEntity(content));
-				titleRepository.save(new TitleEntity(title, fileName, txtEntity.getId(), htmlEntity.getId()));
+				titleRepository.save(new TitleEntity(title, fileOperations.generateFilename(title, titleRepository), txtEntity.getId(), htmlEntity.getId()));
 				message = "SOURCE PAGE HAS BEEN OVERWRITTEN.";
 			}
 		}
@@ -503,7 +460,7 @@ public class CommonService {
 			else {
 				HtmlEntity htmlEntity = htmlRepository.save(new HtmlEntity(new ArrayList<>(), new ArrayList<>()));
 				TxtEntity txtEntity = txtRepository.save(new TxtEntity(content));
-				titleRepository.save(new TitleEntity(title, fileName, txtEntity.getId(), htmlEntity.getId()));
+				titleRepository.save(new TitleEntity(title, fileOperations.generateFilename(title, titleRepository), txtEntity.getId(), htmlEntity.getId()));
 				editExistingPage = true;
 				message = "SOURCE PAGE HAS BEEN SAVED.";
 			}
@@ -512,7 +469,6 @@ public class CommonService {
 				null,
 				content,
 				editExistingPage,
-				fileName,
 				null,
 				message,
 				null,
@@ -523,12 +479,10 @@ public class CommonService {
 		return new ModelAndView(initialView, "payload", payload2);
 	}
 
-//	public ModelAndView importTxt(String initialView, String fileNames, Boolean confirm) {
 	public ModelAndView importTxt(String initialView, Payload payload) {
 		if (payload == null || payload.getFiles() == null || payload.getFiles().isBlank() || payload.getConfirm() == null || !payload.getConfirm()) {
 			Payload payload2 = new Payload(
 					false,
-					null,
 					null,
 					null,
 					"",
@@ -556,7 +510,6 @@ public class CommonService {
 				false,
 				null,
 				null,
-				null,
 				"",
 				notImportedFiles.size() + " OF " + files.size() + " FILES WERE NOT IMPORTED.",
 				null,
@@ -571,7 +524,6 @@ public class CommonService {
 		if (payload == null || payload.getConfirm() == null || !payload.getConfirm()) {
 			Payload payload2 = new Payload(
 					false,
-					null,
 					null,
 					null,
 					"",
@@ -593,7 +545,6 @@ public class CommonService {
 				htmlGenerators);
 		Payload payload2 = new Payload(
 				false,
-				null,
 				null,
 				null,
 				"",

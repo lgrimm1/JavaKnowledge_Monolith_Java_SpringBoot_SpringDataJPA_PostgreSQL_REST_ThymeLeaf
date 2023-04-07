@@ -56,7 +56,6 @@ class CommonServiceSavePageTest {
 				null,
 				"",
 				false,
-				"",
 				null,
 				"THERE WAS A COMMUNICATION ERROR BETWEEN THE BROWSER AND THE SERVER.",
 				null,
@@ -78,14 +77,12 @@ class CommonServiceSavePageTest {
 	void savePage_NullTitle() {
 		String content = "Line 1\nLine 2\n";
 		boolean editExistingPage = true;
-		String fileName = "file_name";
 		String message = "";
 		String title = null;
 		Payload receivedPayload = new Payload(
 				null,
 				content,
 				editExistingPage,
-				fileName,
 				null,
 				message,
 				null,
@@ -98,7 +95,6 @@ class CommonServiceSavePageTest {
 				null,
 				content,
 				editExistingPage,
-				fileName,
 				null,
 				"PLEASE DEFINE A TITLE AND A FILE NAME.",
 				null,
@@ -119,14 +115,12 @@ class CommonServiceSavePageTest {
 	void savePage_BlankTitle() {
 		String content = "Line 1\nLine 2\n";
 		boolean editExistingPage = true;
-		String fileName = "file_name";
 		String message = "";
 		String title = "  ";
 		Payload receivedPayload = new Payload(
 				null,
 				content,
 				editExistingPage,
-				fileName,
 				null,
 				message,
 				null,
@@ -139,94 +133,11 @@ class CommonServiceSavePageTest {
 				null,
 				content,
 				editExistingPage,
-				fileName,
 				null,
 				"PLEASE DEFINE A TITLE AND A FILE NAME.",
 				null,
 				null,
 				"",
-				null
-		);
-		Map<String, Object> model = new HashMap<>();
-		model.put("payload", expectedPayload);
-
-		ModelAndView modelAndView = commonService.savePage("source", receivedPayload);
-
-		ModelAndViewAssert.assertViewName(modelAndView, "source");
-		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
-	}
-
-	@Test
-	void savePage_NullFileName() {
-		String content = "Line 1\nLine 2\n";
-		boolean editExistingPage = true;
-		String fileName = null;
-		String message = "";
-		String title = "Title";
-		Payload receivedPayload = new Payload(
-				null,
-				content,
-				editExistingPage,
-				fileName,
-				null,
-				message,
-				null,
-				null,
-				title,
-				null
-		);
-
-		Payload expectedPayload = new Payload(
-				null,
-				content,
-				editExistingPage,
-				"",
-				null,
-				"PLEASE DEFINE A TITLE AND A FILE NAME.",
-				null,
-				null,
-				title,
-				null
-		);
-		Map<String, Object> model = new HashMap<>();
-		model.put("payload", expectedPayload);
-
-		ModelAndView modelAndView = commonService.savePage("source", receivedPayload);
-
-		ModelAndViewAssert.assertViewName(modelAndView, "source");
-		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
-	}
-
-	@Test
-	void savePage_BlankFileName() {
-		String content = "Line 1\nLine 2\n";
-		boolean editExistingPage = true;
-		String fileName = "  ";
-		String message = "";
-		String title = "Title";
-		Payload receivedPayload = new Payload(
-				null,
-				content,
-				editExistingPage,
-				fileName,
-				null,
-				message,
-				null,
-				null,
-				title,
-				null
-		);
-
-		Payload expectedPayload = new Payload(
-				null,
-				content,
-				editExistingPage,
-				"",
-				null,
-				"PLEASE DEFINE A TITLE AND A FILE NAME.",
-				null,
-				null,
-				title,
 				null
 		);
 		Map<String, Object> model = new HashMap<>();
@@ -242,14 +153,12 @@ class CommonServiceSavePageTest {
 	void savePage_NullContentEditButNonExistent() {
 		String content = null;
 		boolean editExistingPage = true;
-		String fileName = "file_name";
 		String message = "";
 		String title = "Title";
 		Payload receivedPayload = new Payload(
 				null,
 				content,
 				editExistingPage,
-				fileName,
 				null,
 				message,
 				null,
@@ -265,7 +174,6 @@ class CommonServiceSavePageTest {
 				null,
 				"",
 				editExistingPage,
-				fileName,
 				null,
 				"THERE IS NO EXISTING PAGE WITH THIS TITLE.",
 				null,
@@ -286,14 +194,12 @@ class CommonServiceSavePageTest {
 	void savePage_EditButNonExistent() {
 		String content = "Line 1\nLine 2\n";
 		boolean editExistingPage = true;
-		String fileName = "file_name";
 		String message = "";
 		String title = "Title";
 		Payload receivedPayload = new Payload(
 				null,
 				content,
 				editExistingPage,
-				fileName,
 				null,
 				message,
 				null,
@@ -309,7 +215,6 @@ class CommonServiceSavePageTest {
 				null,
 				content,
 				editExistingPage,
-				fileName,
 				null,
 				"THERE IS NO EXISTING PAGE WITH THIS TITLE.",
 				null,
@@ -330,14 +235,12 @@ class CommonServiceSavePageTest {
 	void savePage_EditExistent() {
 		String content = "Line 1\nLine 2\n";
 		boolean editExistingPage = true;
-		String fileName = "file_name";
 		String message = "";
 		String title = "Title";
 		Payload receivedPayload = new Payload(
 				null,
 				content,
 				editExistingPage,
-				fileName,
 				null,
 				message,
 				null,
@@ -348,22 +251,17 @@ class CommonServiceSavePageTest {
 
 		when(titleRepository.findByTitle(title))
 				.thenReturn(Optional.of(new TitleEntity(2L, "Original title", "original_file_name", 3L, 4L)));
-/*
-		when(processRecords.listToString(content))
-				.thenReturn(stringContent);
-*/
 		when(txtRepository.save(new TxtEntity(content)))
 				.thenReturn(new TxtEntity(13L, content));
 		when(htmlRepository.save(new HtmlEntity(new ArrayList<>(), new ArrayList<>())))
 				.thenReturn(new HtmlEntity(14L, new ArrayList<>(), new ArrayList<>()));
-		when(titleRepository.save(new TitleEntity(title, fileName, 13L, 14L)))
-				.thenReturn(new TitleEntity(12L, title, fileName, 13L, 14L));
+		when(titleRepository.save(new TitleEntity(title, "file_name", 13L, 14L)))
+				.thenReturn(new TitleEntity(12L, title, "file_name", 13L, 14L));
 
 		Payload expectedPayload = new Payload(
 				null,
 				content,
 				editExistingPage,
-				fileName,
 				null,
 				"SOURCE PAGE HAS BEEN OVERWRITTEN.",
 				null,
@@ -384,14 +282,12 @@ class CommonServiceSavePageTest {
 	void savePage_NewButExistent() {
 		String content = "Line 1\nLine 2\n";
 		boolean editExistingPage = false;
-		String fileName = "file_name";
 		String message = "";
 		String title = "Title";
 		Payload receivedPayload = new Payload(
 				null,
 				content,
 				editExistingPage,
-				fileName,
 				null,
 				message,
 				null,
@@ -407,7 +303,6 @@ class CommonServiceSavePageTest {
 				null,
 				content,
 				editExistingPage,
-				fileName,
 				null,
 				"THERE IS AN EXISTING PAGE WITH THIS TITLE.",
 				null,
@@ -428,14 +323,12 @@ class CommonServiceSavePageTest {
 	void savePage_NewNonExistent() {
 		String content = "Line 1\nLine 2\n";
 		boolean editExistingPage = false;
-		String fileName = "file_name";
 		String message = "";
 		String title = "Title";
 		Payload receivedPayload = new Payload(
 				null,
 				content,
 				editExistingPage,
-				fileName,
 				null,
 				message,
 				null,
@@ -454,14 +347,13 @@ class CommonServiceSavePageTest {
 				.thenReturn(new TxtEntity(13L, content));
 		when(htmlRepository.save(new HtmlEntity(new ArrayList<>(), new ArrayList<>())))
 				.thenReturn(new HtmlEntity(14L, new ArrayList<>(), new ArrayList<>()));
-		when(titleRepository.save(new TitleEntity(title, fileName, 13L, 14L)))
-				.thenReturn(new TitleEntity(12L, title, fileName, 13L, 14L));
+		when(titleRepository.save(new TitleEntity(title, "file_name", 13L, 14L)))
+				.thenReturn(new TitleEntity(12L, title, "file_name", 13L, 14L));
 
 		Payload expectedPayload = new Payload(
 				null,
 				content,
 				true,
-				fileName,
 				null,
 				"SOURCE PAGE HAS BEEN SAVED.",
 				null,
@@ -482,14 +374,12 @@ class CommonServiceSavePageTest {
 	void savePage_NullEditFlagAndExistent() {
 		String content = "Line 1\nLine 2\n";
 		Boolean editExistingPage = null;
-		String fileName = "file_name";
 		String message = "";
 		String title = "Title";
 		Payload receivedPayload = new Payload(
 				null,
 				content,
 				editExistingPage,
-				fileName,
 				null,
 				message,
 				null,
@@ -505,7 +395,6 @@ class CommonServiceSavePageTest {
 				null,
 				content,
 				false,
-				fileName,
 				null,
 				"THERE IS AN EXISTING PAGE WITH THIS TITLE.",
 				null,

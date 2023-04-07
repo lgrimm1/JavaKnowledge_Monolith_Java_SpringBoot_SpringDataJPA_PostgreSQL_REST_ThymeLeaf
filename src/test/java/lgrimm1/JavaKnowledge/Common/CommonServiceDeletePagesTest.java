@@ -60,7 +60,6 @@ class CommonServiceDeletePagesTest {
 				false,
 				null,
 				null,
-				null,
 				"",
 				"PLEASE SELECT TITLES YOU WISH TO DELETE.",
 				null,
@@ -87,7 +86,6 @@ class CommonServiceDeletePagesTest {
 				confirm,
 				null,
 				null,
-				null,
 				files,
 				message,
 				null,
@@ -102,7 +100,6 @@ class CommonServiceDeletePagesTest {
 
 		Payload expectedPayload = new Payload(
 				false,
-				null,
 				null,
 				null,
 				"",
@@ -131,7 +128,6 @@ class CommonServiceDeletePagesTest {
 				confirm,
 				null,
 				null,
-				null,
 				files,
 				message,
 				null,
@@ -146,7 +142,6 @@ class CommonServiceDeletePagesTest {
 
 		Payload expectedPayload = new Payload(
 				false,
-				null,
 				null,
 				null,
 				"",
@@ -175,7 +170,6 @@ class CommonServiceDeletePagesTest {
 				confirm,
 				null,
 				null,
-				null,
 				files,
 				message,
 				null,
@@ -190,7 +184,6 @@ class CommonServiceDeletePagesTest {
 
 		Payload expectedPayload = new Payload(
 				false,
-				null,
 				null,
 				null,
 				"",
@@ -230,7 +223,6 @@ class CommonServiceDeletePagesTest {
 				confirm,
 				null,
 				null,
-				null,
 				files,
 				message,
 				null,
@@ -245,7 +237,6 @@ class CommonServiceDeletePagesTest {
 
 		Payload expectedPayload = new Payload(
 				false,
-				null,
 				null,
 				null,
 				"",
@@ -282,7 +273,6 @@ class CommonServiceDeletePagesTest {
 				confirm,
 				null,
 				null,
-				null,
 				files,
 				message,
 				null,
@@ -297,7 +287,6 @@ class CommonServiceDeletePagesTest {
 
 		Payload expectedPayload = new Payload(
 				false,
-				null,
 				null,
 				null,
 				"",

@@ -54,7 +54,6 @@ class CommonServiceAddFormulaTest {
 	void addFormula_NullFormulaName() {
 		String formulaName = null;
 		String title = "Title";
-		String fileName = "file_name";
 		String originalContent = "Line1\nLine2\n";
 		Boolean editExistingPage = true;
 		String message = "";
@@ -62,7 +61,6 @@ class CommonServiceAddFormulaTest {
 				null,
 				originalContent,
 				editExistingPage,
-				fileName,
 				null,
 				message,
 				null,
@@ -87,7 +85,6 @@ class CommonServiceAddFormulaTest {
 				null,
 				originalContent,
 				true,
-				fileName,
 				null,
 				"WRONG FORMULA NAME WAS ASKED.",
 				null,
@@ -108,7 +105,6 @@ class CommonServiceAddFormulaTest {
 	void addFormula_BlankFormulaName() {
 		String formulaName = "  ";
 		String title = "Title";
-		String fileName = "file_name";
 		String originalContent = "Line1\nLine2\n";
 		Boolean editExistingPage = true;
 		String message = "";
@@ -116,7 +112,6 @@ class CommonServiceAddFormulaTest {
 				null,
 				originalContent,
 				editExistingPage,
-				fileName,
 				null,
 				message,
 				null,
@@ -141,7 +136,6 @@ class CommonServiceAddFormulaTest {
 				null,
 				originalContent,
 				true,
-				fileName,
 				null,
 				"WRONG FORMULA NAME WAS ASKED.",
 				null,
@@ -162,7 +156,6 @@ class CommonServiceAddFormulaTest {
 	void addFormula_InvalidFormulaName() {
 		String formulaName = "formula name";
 		String title = "Title";
-		String fileName = "file_name";
 		String originalContent = "Line1\nLine2\n";
 		Boolean editExistingPage = true;
 		String message = "";
@@ -170,7 +163,6 @@ class CommonServiceAddFormulaTest {
 				null,
 				originalContent,
 				editExistingPage,
-				fileName,
 				null,
 				message,
 				null,
@@ -195,7 +187,6 @@ class CommonServiceAddFormulaTest {
 				null,
 				originalContent,
 				true,
-				fileName,
 				null,
 				"WRONG FORMULA NAME WAS ASKED.",
 				null,
@@ -218,7 +209,6 @@ class CommonServiceAddFormulaTest {
 		Payload receivedPayload = null;
 
 		String title = "";
-		String fileName = "";
 		String content = "";
 		Boolean editExistingPage = false;
 		String message = "";
@@ -226,70 +216,8 @@ class CommonServiceAddFormulaTest {
 				null,
 				content,
 				editExistingPage,
-				fileName,
 				null,
 				"THERE WAS A COMMUNICATION ERROR BETWEEN THE BROWSER AND THE SERVER.",
-				null,
-				null,
-				title,
-				null
-		);
-		Map<String, Object> model = new HashMap<>();
-		model.put("payload", expectedPayload);
-
-		ModelAndView modelAndView = commonService.addFormula("source", formulaName, receivedPayload);
-
-		ModelAndViewAssert.assertViewName(modelAndView, "source");
-		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
-	}
-
-	@Test
-	void addFormula_NullFileName() {
-		String formulaName = "formula name";
-		String title = "Title";
-		String fileName = null;
-		String originalContent = "Line1\nLine2\n";
-		Boolean editExistingPage = true;
-		String message = "";
-		Payload receivedPayload = new Payload(
-				null,
-				originalContent,
-				editExistingPage,
-				fileName,
-				null,
-				message,
-				null,
-				null,
-				title,
-				null
-		);
-
-		List<String> formulaList = new ArrayList<>();
-		formulaList.add("Formula line 1");
-		formulaList.add("Formula line 2");
-		String formula = "Formula line 1\nFormula line 2\n";
-		when(formulas.getFormula(formulaName))
-				.thenReturn(formulaList);
-
-		List<String> originalContentList = new ArrayList<>();
-		originalContentList.add("Line 1");
-		originalContentList.add("Line 2");
-		when(processRecords.stringToList(originalContent))
-				.thenReturn(originalContentList);
-
-		List<String> newContentList = new ArrayList<>(originalContentList);
-		newContentList.addAll(formulaList);
-		String newContent = originalContent + formula;
-		when(processRecords.listToString(newContentList))
-				.thenReturn(newContent);
-
-		Payload expectedPayload = new Payload(
-				null,
-				newContent,
-				true,
-				"",
-				null,
-				"FORMULA WAS APPENDED.",
 				null,
 				null,
 				title,
@@ -308,7 +236,6 @@ class CommonServiceAddFormulaTest {
 	void addFormula_NullTitle() {
 		String formulaName = "formula name";
 		String title = null;
-		String fileName = "file_name";
 		String originalContent = "Line1\nLine2\n";
 		Boolean editExistingPage = true;
 		String message = "";
@@ -316,7 +243,6 @@ class CommonServiceAddFormulaTest {
 				null,
 				originalContent,
 				editExistingPage,
-				fileName,
 				null,
 				message,
 				null,
@@ -348,7 +274,6 @@ class CommonServiceAddFormulaTest {
 				null,
 				newContent,
 				true,
-				fileName,
 				null,
 				"FORMULA WAS APPENDED.",
 				null,
@@ -369,7 +294,6 @@ class CommonServiceAddFormulaTest {
 	void addFormula_BlankTitle() {
 		String formulaName = "formula name";
 		String title = "  ";
-		String fileName = "file_name";
 		String originalContent = "Line1\nLine2\n";
 		Boolean editExistingPage = true;
 		String message = "";
@@ -377,7 +301,6 @@ class CommonServiceAddFormulaTest {
 				null,
 				originalContent,
 				editExistingPage,
-				fileName,
 				null,
 				message,
 				null,
@@ -409,73 +332,11 @@ class CommonServiceAddFormulaTest {
 				null,
 				newContent,
 				true,
-				fileName,
 				null,
 				"FORMULA WAS APPENDED.",
 				null,
 				null,
 				"",
-				null
-		);
-		Map<String, Object> model = new HashMap<>();
-		model.put("payload", expectedPayload);
-
-		ModelAndView modelAndView = commonService.addFormula("source", formulaName, receivedPayload);
-
-		ModelAndViewAssert.assertViewName(modelAndView, "source");
-		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
-	}
-
-	@Test
-	void addFormula_BlankFileName() {
-		String formulaName = "formula name";
-		String title = "Title";
-		String fileName = "  ";
-		String originalContent = "Line1\nLine2\n";
-		Boolean editExistingPage = true;
-		String message = "";
-		Payload receivedPayload = new Payload(
-				null,
-				originalContent,
-				editExistingPage,
-				fileName,
-				null,
-				message,
-				null,
-				null,
-				title,
-				null
-		);
-
-		List<String> formulaList = new ArrayList<>();
-		formulaList.add("Formula line 1");
-		formulaList.add("Formula line 2");
-		String formula = "Formula line 1\nFormula line 2\n";
-		when(formulas.getFormula(formulaName))
-				.thenReturn(formulaList);
-
-		List<String> originalContentList = new ArrayList<>();
-		originalContentList.add("Line 1");
-		originalContentList.add("Line 2");
-		when(processRecords.stringToList(originalContent))
-				.thenReturn(originalContentList);
-
-		List<String> newContentList = new ArrayList<>(originalContentList);
-		newContentList.addAll(formulaList);
-		String newContent = originalContent + formula;
-		when(processRecords.listToString(newContentList))
-				.thenReturn(newContent);
-
-		Payload expectedPayload = new Payload(
-				null,
-				newContent,
-				true,
-				"",
-				null,
-				"FORMULA WAS APPENDED.",
-				null,
-				null,
-				title,
 				null
 		);
 		Map<String, Object> model = new HashMap<>();
@@ -491,7 +352,6 @@ class CommonServiceAddFormulaTest {
 	void addFormula_NullContent() {
 		String formulaName = "formula name";
 		String title = "Title";
-		String fileName = "file_name";
 		String originalContent = null;
 		Boolean editExistingPage = true;
 		String message = "";
@@ -499,7 +359,6 @@ class CommonServiceAddFormulaTest {
 				null,
 				originalContent,
 				editExistingPage,
-				fileName,
 				null,
 				message,
 				null,
@@ -529,7 +388,6 @@ class CommonServiceAddFormulaTest {
 				null,
 				newContent,
 				true,
-				fileName,
 				null,
 				"FORMULA WAS APPENDED.",
 				null,
@@ -550,7 +408,6 @@ class CommonServiceAddFormulaTest {
 	void addFormula_NullEditExistingPage() {
 		String formulaName = "formula name";
 		String title = "Title";
-		String fileName = "file_name";
 		String originalContent = "Line1\nLine2\n";
 		Boolean editExistingPage = null;
 		String message = "";
@@ -558,7 +415,6 @@ class CommonServiceAddFormulaTest {
 				null,
 				originalContent,
 				editExistingPage,
-				fileName,
 				null,
 				message,
 				null,
@@ -590,7 +446,6 @@ class CommonServiceAddFormulaTest {
 				null,
 				newContent,
 				false,
-				fileName,
 				null,
 				"FORMULA WAS APPENDED.",
 				null,
@@ -611,7 +466,6 @@ class CommonServiceAddFormulaTest {
 	void addFormula_AllValidValues() {
 		String formulaName = "formula name";
 		String title = "Title";
-		String fileName = "file_name";
 		String originalContent = "Line1\nLine2\n";
 		Boolean editExistingPage = true;
 		String message = "";
@@ -619,7 +473,6 @@ class CommonServiceAddFormulaTest {
 				null,
 				originalContent,
 				editExistingPage,
-				fileName,
 				null,
 				message,
 				null,
@@ -651,7 +504,6 @@ class CommonServiceAddFormulaTest {
 				null,
 				newContent,
 				true,
-				fileName,
 				null,
 				"FORMULA WAS APPENDED.",
 				null,

@@ -63,7 +63,6 @@ class CommonServiceTest {
 				null,
 				null,
 				null,
-				null,
 				"",
 				null,
 				null,
@@ -85,7 +84,6 @@ class CommonServiceTest {
 
 		Payload expectedPayload = new Payload(
 				false,
-				null,
 				null,
 				null,
 				"",
@@ -110,7 +108,6 @@ class CommonServiceTest {
 				null,
 				"",
 				false,
-				"",
 				null,
 				"",
 				null,

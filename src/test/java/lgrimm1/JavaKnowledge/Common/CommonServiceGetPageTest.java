@@ -63,7 +63,6 @@ class CommonServiceGetPageTest {
 				null,
 				null,
 				null,
-				null,
 				"<all titles>",
 				null,
 				null,
@@ -87,7 +86,6 @@ class CommonServiceGetPageTest {
 				null,
 				null,
 				null,
-				null,
 				searchText,
 				null,
 				null,
@@ -99,7 +97,6 @@ class CommonServiceGetPageTest {
 				.thenReturn(titles);
 
 		Payload expectedPayload = new Payload(
-				null,
 				null,
 				null,
 				null,
@@ -128,7 +125,6 @@ class CommonServiceGetPageTest {
 				null,
 				null,
 				null,
-				null,
 				searchText,
 				null,
 				null,
@@ -140,7 +136,6 @@ class CommonServiceGetPageTest {
 				.thenReturn(titles);
 
 		Payload expectedPayload = new Payload(
-				null,
 				null,
 				null,
 				null,
@@ -170,7 +165,6 @@ class CommonServiceGetPageTest {
 				null,
 				null,
 				null,
-				null,
 				searchText,
 				null,
 				null,
@@ -182,7 +176,6 @@ class CommonServiceGetPageTest {
 				.thenReturn(titles);
 
 		Payload expectedPayload = new Payload(
-				null,
 				null,
 				null,
 				null,
@@ -212,7 +205,6 @@ class CommonServiceGetPageTest {
 				null,
 				null,
 				null,
-				null,
 				searchText,
 				null,
 				null,
@@ -224,7 +216,6 @@ class CommonServiceGetPageTest {
 				.thenReturn(titles);
 
 		Payload expectedPayload = new Payload(
-				null,
 				null,
 				null,
 				null,
@@ -255,7 +246,6 @@ class CommonServiceGetPageTest {
 				null,
 				null,
 				null,
-				null,
 				searchText,
 				null,
 				null,
@@ -270,7 +260,6 @@ class CommonServiceGetPageTest {
 				.thenReturn(Optional.empty());
 
 		Payload expectedPayload = new Payload(
-				null,
 				null,
 				null,
 				null,
@@ -301,7 +290,6 @@ class CommonServiceGetPageTest {
 				null,
 				null,
 				null,
-				null,
 				searchText,
 				null,
 				null,
@@ -322,7 +310,6 @@ class CommonServiceGetPageTest {
 				.thenReturn(Optional.of(new HtmlEntity(2L, content, titleReferences)));
 
 		Payload expectedPayload = new Payload(
-				null,
 				null,
 				null,
 				null,

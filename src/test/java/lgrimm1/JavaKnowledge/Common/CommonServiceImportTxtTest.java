@@ -63,7 +63,6 @@ class CommonServiceImportTxtTest {
 				false,
 				null,
 				null,
-				null,
 				"",
 				"PLEASE UPLOAD MINIMUM ONE FILE AND CONFIRM SOURCE OVERWRITING.",
 				null,
@@ -90,7 +89,6 @@ class CommonServiceImportTxtTest {
 				confirm,
 				null,
 				null,
-				null,
 				files,
 				message,
 				null,
@@ -105,7 +103,6 @@ class CommonServiceImportTxtTest {
 
 		Payload expectedPayload = new Payload(
 				false,
-				null,
 				null,
 				null,
 				"",
@@ -134,7 +131,6 @@ class CommonServiceImportTxtTest {
 				confirm,
 				null,
 				null,
-				null,
 				files,
 				message,
 				null,
@@ -149,7 +145,6 @@ class CommonServiceImportTxtTest {
 
 		Payload expectedPayload = new Payload(
 				false,
-				null,
 				null,
 				null,
 				"",
@@ -178,7 +173,6 @@ class CommonServiceImportTxtTest {
 				confirm,
 				null,
 				null,
-				null,
 				files,
 				message,
 				null,
@@ -193,7 +187,6 @@ class CommonServiceImportTxtTest {
 
 		Payload expectedPayload = new Payload(
 				false,
-				null,
 				null,
 				null,
 				"",
@@ -222,7 +215,6 @@ class CommonServiceImportTxtTest {
 				confirm,
 				null,
 				null,
-				null,
 				files,
 				message,
 				null,
@@ -237,7 +229,6 @@ class CommonServiceImportTxtTest {
 
 		Payload expectedPayload = new Payload(
 				false,
-				null,
 				null,
 				null,
 				"",
@@ -266,7 +257,6 @@ class CommonServiceImportTxtTest {
 				confirm,
 				null,
 				null,
-				null,
 				files,
 				message,
 				null,
@@ -277,20 +267,6 @@ class CommonServiceImportTxtTest {
 
 		when(fileOperations.getOSPathSeparator())
 				.thenReturn(";");
-
-/*
-		String notImportedFiles = "file_1;file_2;file_3";
-		String allFiles = notImportedFiles + ";file_4;file_5";
-
-		List<File> notImported = Stream.of(notImportedFiles.split(";"))
-				.sorted()
-				.map(File::new)
-				.toList();
-		List<File> all = Stream.of(allFiles.split(";"))
-				.sorted()
-				.map(File::new)
-				.toList();
-*/
 
 		List<File> allFiles = List.of(
 				new File("title_1"),
@@ -320,7 +296,6 @@ class CommonServiceImportTxtTest {
 
 		Payload expectedPayload = new Payload(
 				false,
-				null,
 				null,
 				null,
 				"",

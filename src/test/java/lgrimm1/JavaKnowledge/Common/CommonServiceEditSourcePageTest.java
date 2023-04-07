@@ -59,7 +59,6 @@ class CommonServiceEditSourcePageTest {
 				false,
 				null,
 				null,
-				null,
 				"",
 				"PLEASE SELECT EXACTLY ONE TITLE FOR EDITING.",
 				null,
@@ -82,7 +81,6 @@ class CommonServiceEditSourcePageTest {
 				false,
 				null,
 				null,
-				null,
 				"",
 				"",
 				null,
@@ -97,7 +95,6 @@ class CommonServiceEditSourcePageTest {
 
 		Payload expectedPayload = new Payload(
 				false,
-				null,
 				null,
 				null,
 				"",
@@ -123,7 +120,6 @@ class CommonServiceEditSourcePageTest {
 				false,
 				null,
 				null,
-				null,
 				"",
 				"",
 				null,
@@ -138,7 +134,6 @@ class CommonServiceEditSourcePageTest {
 
 		Payload expectedPayload = new Payload(
 				false,
-				null,
 				null,
 				null,
 				"",
@@ -165,7 +160,6 @@ class CommonServiceEditSourcePageTest {
 				false,
 				null,
 				null,
-				null,
 				"",
 				"",
 				null,
@@ -180,7 +174,6 @@ class CommonServiceEditSourcePageTest {
 
 		Payload expectedPayload = new Payload(
 				false,
-				null,
 				null,
 				null,
 				"",
@@ -207,7 +200,6 @@ class CommonServiceEditSourcePageTest {
 				false,
 				null,
 				null,
-				null,
 				"",
 				"",
 				null,
@@ -222,7 +214,6 @@ class CommonServiceEditSourcePageTest {
 
 		Payload expectedPayload = new Payload(
 				false,
-				null,
 				null,
 				null,
 				"",
@@ -249,7 +240,6 @@ class CommonServiceEditSourcePageTest {
 				false,
 				null,
 				null,
-				null,
 				"",
 				"",
 				null,
@@ -268,7 +258,6 @@ class CommonServiceEditSourcePageTest {
 
 		Payload expectedPayload = new Payload(
 				false,
-				null,
 				null,
 				null,
 				"",
@@ -295,7 +284,6 @@ class CommonServiceEditSourcePageTest {
 				false,
 				null,
 				null,
-				null,
 				"",
 				"",
 				null,
@@ -316,7 +304,6 @@ class CommonServiceEditSourcePageTest {
 
 		Payload expectedPayload = new Payload(
 				false,
-				null,
 				null,
 				null,
 				"",
@@ -341,7 +328,6 @@ class CommonServiceEditSourcePageTest {
 		receivedTitles.add("Title 3");
 		Payload receivedPayload = new Payload(
 				false,
-				null,
 				null,
 				null,
 				"",
@@ -371,7 +357,6 @@ class CommonServiceEditSourcePageTest {
 				null,
 				content,
 				true,
-				expectedFilename,
 				null,
 				"",
 				null,

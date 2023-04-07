@@ -34,7 +34,6 @@ class CommonControllerTest {
 				null,
 				null,
 				null,
-				null,
 				searchText,
 				null,
 				null,
@@ -64,7 +63,6 @@ class CommonControllerTest {
 				null,
 				null,
 				null,
-				null,
 				searchText,
 				null,
 				null,
@@ -73,7 +71,6 @@ class CommonControllerTest {
 
 		List<String> titles = List.of("Title 1", "Title 2");
 		Payload payload2 = new Payload(
-				null,
 				null,
 				null,
 				null,
@@ -110,7 +107,6 @@ class CommonControllerTest {
 				null,
 				null,
 				null,
-				null,
 				searchText,
 				null,
 				null,
@@ -121,7 +117,6 @@ class CommonControllerTest {
 		String fileName = "title_1";
 		List<String> titleReferences = List.of("TITLE 2");
 		Payload payload2 = new Payload(
-				null,
 				null,
 				null,
 				null,
@@ -157,7 +152,6 @@ class CommonControllerTest {
 				null,
 				null,
 				null,
-				null,
 				searchText,
 				null,
 				null,
@@ -170,7 +164,6 @@ class CommonControllerTest {
 		List<String> titles = List.of("Title 1", "Title 2");
 		Payload payload2 = new Payload(
 				confirm,
-				null,
 				null,
 				null,
 				files,
@@ -207,7 +200,6 @@ class CommonControllerTest {
 				confirm,
 				null,
 				null,
-				null,
 				files,
 				message,
 				null,
@@ -218,14 +210,12 @@ class CommonControllerTest {
 
 		String content = "";
 		Boolean editExistingPage = false;
-		String fileName = "";
 		String message2 = "message text";
 		String title = "";
 		Payload payload2 = new Payload(
 				null,
 				content,
 				editExistingPage,
-				fileName,
 				null,
 				message2,
 				null,
@@ -260,7 +250,6 @@ class CommonControllerTest {
 				confirm,
 				null,
 				null,
-				null,
 				files,
 				message,
 				null,
@@ -271,14 +260,12 @@ class CommonControllerTest {
 
 		String content = "Line 1\nLine 2\n";
 		Boolean editExistingPage = true;
-		String fileName = "title_1";
 		String message2 = "message text";
 		String title = "Title 1";
 		Payload payload2 = new Payload(
 				null,
 				content,
 				editExistingPage,
-				fileName,
 				null,
 				message2,
 				null,
@@ -313,7 +300,6 @@ class CommonControllerTest {
 				confirm,
 				null,
 				null,
-				null,
 				files,
 				message,
 				null,
@@ -327,7 +313,6 @@ class CommonControllerTest {
 		List<String> titles2 = List.of("Title 3", "Title 4");
 		Payload payload2 = new Payload(
 				confirm2,
-				null,
 				null,
 				null,
 				files,
@@ -364,7 +349,6 @@ class CommonControllerTest {
 				confirm,
 				null,
 				null,
-				null,
 				files,
 				message,
 				null,
@@ -378,7 +362,6 @@ class CommonControllerTest {
 		String message2 = "message text 2";
 		Payload payload2 = new Payload(
 				confirm2,
-				null,
 				null,
 				null,
 				files,
@@ -408,7 +391,6 @@ class CommonControllerTest {
 	@Test
 	void addFormula() throws Exception {
 		String title = "Title 1";
-		String fileName = "title_1";
 		String content = "Line 1\nLine 2\n";
 		Boolean editExistingPage = true;
 		String message = "message text";
@@ -416,7 +398,6 @@ class CommonControllerTest {
 				null,
 				content,
 				editExistingPage,
-				fileName,
 				null,
 				message,
 				null,
@@ -431,7 +412,6 @@ class CommonControllerTest {
 				null,
 				content + formulaName,
 				editExistingPage,
-				fileName,
 				null,
 				message2,
 				null,
@@ -459,7 +439,6 @@ class CommonControllerTest {
 	@Test
 	void savePage() throws Exception {
 		String title = "Title 1";
-		String filename = "title_1";
 		Boolean editExistingPage = true;
 		String content = "Line 1\nLine 2\n";
 		String message = "message text";
@@ -467,7 +446,6 @@ class CommonControllerTest {
 				null,
 				content,
 				editExistingPage,
-				filename,
 				null,
 				message,
 				null,
@@ -481,7 +459,6 @@ class CommonControllerTest {
 				null,
 				content,
 				editExistingPage,
-				filename,
 				null,
 				message2,
 				null,
@@ -516,7 +493,6 @@ class CommonControllerTest {
 				confirm,
 				null,
 				null,
-				null,
 				files,
 				message,
 				null,
@@ -530,7 +506,6 @@ class CommonControllerTest {
 		String message2 = "message text 2";
 		Payload payload2 = new Payload(
 				confirm2,
-				null,
 				null,
 				null,
 				"",
@@ -567,7 +542,6 @@ class CommonControllerTest {
 				confirm,
 				null,
 				null,
-				null,
 				files,
 				message,
 				null,
@@ -581,7 +555,6 @@ class CommonControllerTest {
 		String message2 = "message text 2";
 		Payload payload2 = new Payload(
 				confirm2,
-				null,
 				null,
 				null,
 				"",
