@@ -1,5 +1,6 @@
 package lgrimm1.JavaKnowledge.Process;
 
+import lgrimm1.JavaKnowledge.Title.*;
 import org.springframework.stereotype.*;
 
 import java.io.*;
@@ -15,7 +16,7 @@ import java.util.*;
  * @see #getOSFileSeparator()
  * @see #getOSPathSeparator()
  * @see #deleteAllFilesInFolder(File, String)
- * @see #generateFilename(String)
+ * @see #generateFilename(String, TitleRepository)
  * @see #getResourcesPath()
  * @see #getStaticPath()
  */
@@ -104,8 +105,9 @@ public class FileOperations {
 	 * Replaces TAB, dot, column, semicolon, :, quote, double-quote and (repeated) SPACE characters
 	 * to simple underline character,
 	 * furthermore transforms the name to lowercase form, in order to form a proper filename.
+	 * Finds exact matching in TitleRepository and creates numbered version if necessary.
 	 */
-	public String generateFilename(String title) {
+	public String generateFilename(String title, TitleRepository titleRepository) {
 		if (title == null || title.isBlank()) {
 			return "";
 		}
@@ -124,7 +126,15 @@ public class FileOperations {
 				.filter(word -> !word.isBlank())
 				.toList()
 				.forEach(word -> sb.append(word).append("_"));
-		return sb.deleteCharAt(sb.length() - 1).toString();
+		String fileName = sb.deleteCharAt(sb.length() - 1).toString();
+		if (titleRepository.findByFilename(fileName).isEmpty()) {
+			return fileName;
+		}
+		int number = 1;
+		while (titleRepository.findByFilename(fileName + "_" + number).isPresent()) {
+			number++;
+		}
+		return fileName + "_" + number;
 	}
 
 	public String getResourcesPath() {
