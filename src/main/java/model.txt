@@ -2,7 +2,6 @@
     "confirm": <boolean>,
     "content": [<String>, ...],
     "editExistingPage": <boolean>,
-    "fileName": <String>,
     "files": <String>,
     "message": <String>,
     "searchText": <String>,

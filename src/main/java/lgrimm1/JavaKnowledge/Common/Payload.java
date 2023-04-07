@@ -7,7 +7,6 @@ public class Payload {
 	public Boolean confirm;
 	public String content;
 	public Boolean editExistingPage;
-	public String fileName;
 	public String files;
 	public String message;
 	public String searchText;
@@ -18,48 +17,9 @@ public class Payload {
 	public Payload() {
 	}
 
-/*
-	public Payload(String searchText) {
-		this.searchText = searchText;
-	}
-
-	public Payload(String searchText, List<String> titles) {
-		this.searchText = searchText;
-		this.titles = titles;
-	}
-
-	public Payload(List<String> titles, String message) {
-		this.titles = titles;
-		this.message = message;
-	}
-
-
-	public Payload(List<String> references, String staticPageLink, String title) {
-		this.references = references;
-		this.staticPageLink = staticPageLink;
-		this.title = title;
-	}
-
-	public Payload(Boolean confirm, String files, String message, List<String> titles) {
-		this.confirm = confirm;
-		this.files = files;
-		this.message = message;
-		this.titles = titles;
-	}
-
-	public Payload(List<String> content, Boolean editExistingPage, String fileName, String message, String title) {
-		this.content = content;
-		this.editExistingPage = editExistingPage;
-		this.fileName = fileName;
-		this.message = message;
-		this.title = title;
-	}
-*/
-
 	public Payload(Boolean confirm,
 				   String content,
 				   Boolean editExistingPage,
-				   String fileName,
 				   String files,
 				   String message,
 				   String searchText,
@@ -69,7 +29,6 @@ public class Payload {
 		this.confirm = confirm;
 		this.content = content;
 		this.editExistingPage = editExistingPage;
-		this.fileName = fileName;
 		this.files = files;
 		this.message = message;
 		this.searchText = searchText;
@@ -100,14 +59,6 @@ public class Payload {
 
 	public void setEditExistingPage(Boolean editExistingPage) {
 		this.editExistingPage = editExistingPage;
-	}
-
-	public String getFileName() {
-		return fileName;
-	}
-
-	public void setFileName(String fileName) {
-		this.fileName = fileName;
 	}
 
 	public String getFiles() {
@@ -166,7 +117,6 @@ public class Payload {
 		return Objects.equals(confirm, payload.confirm) &&
 				Objects.equals(content, payload.content) &&
 				Objects.equals(editExistingPage, payload.editExistingPage) &&
-				Objects.equals(fileName, payload.fileName) &&
 				Objects.equals(files, payload.files) &&
 				Objects.equals(message, payload.message) &&
 				Objects.equals(searchText, payload.searchText) &&
@@ -180,7 +130,6 @@ public class Payload {
 		return Objects.hash(confirm,
 				content,
 				editExistingPage,
-				fileName,
 				files,
 				message,
 				searchText,
@@ -195,7 +144,6 @@ public class Payload {
 				"confirm=" + confirm +
 				", content=" + content +
 				", editExistingPage=" + editExistingPage +
-				", fileName='" + fileName + '\'' +
 				", files='" + files + '\'' +
 				", message='" + message + '\'' +
 				", searchText='" + searchText + '\'' +
