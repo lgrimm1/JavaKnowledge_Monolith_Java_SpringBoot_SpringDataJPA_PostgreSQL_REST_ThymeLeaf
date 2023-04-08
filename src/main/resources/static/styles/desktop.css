@@ -79,9 +79,6 @@ textarea {
     border-radius: 6px;
     border-color: DarkSlateGray;
     background-color: LightGray;
-/*
-    font-family: Roboto;
-*/
     font-family: Courier, monospace;
     font-size: 90%;
     color: DarkSlateGray;
@@ -96,9 +93,6 @@ select {
     border-radius: 6px;
     border-color: DarkSlateGray;
     background-color: LightGray;
-/*
-    font-family: Roboto;
-*/
     font-size: 90%;
     color: DarkSlateGray;
 }
@@ -119,14 +113,19 @@ iframe {
     text-align: center;
 }
 
-.page_title {
-    font-size: 160%;
+.banner_image {
+    width: 50px;
+    height: 50px;
     text-align: left;
 }
 
-.page_image {
-    width: 50px;
-    height: 50px;
+.banner_title {
+    font-size: 160%;
+    text-align: center;
+}
+
+.banner_info {
+    text-align: right;
 }
 
 .message {
@@ -167,9 +166,6 @@ input[type="submit"], input[type="button"] {
     border-color: DarkSlateGray;
     background-color: LightGray;
     font-size: 90%;
-/*
-    font-family: Roboto;
-*/
     font-size: 90%;
     color: DarkSlateGray;
 }
@@ -180,9 +176,6 @@ input[type="search"], input[type="text"] {
     border-radius: 6px;
     border-color: DarkSlateGray;
     background-color: LightGray;
-/*
-    font-family: Roboto;
-*/
     font-size: 90%;
     text-align: center;
     color: DarkSlateGray;
@@ -199,9 +192,6 @@ input[type="file"] {
     border: 1px solid;
     border-radius: 6px;
     background-color: LightGray;
-/*
-    font-family: Roboto;
-*/
     font-size: 90%;
 /*
     vertical-align: middle;
