@@ -5,6 +5,15 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <link rel="icon" type="image/x-icon" th:href="@{/images/favicon.ico}" href="/images/favicon.ico">
     <link rel="stylesheet" th:href="@{/styles/desktop.css}" href="/styles/desktop.css">
+    <style>
+        textarea {
+            resize: none;
+            white-space: pre;
+            overflow-x: scroll;
+            overflow-y: scroll;
+            overflow: -moz-scrollbars-horizontal;
+        }
+    </style>
 </head>
 <body>
 <form action="#" th:object="${payload}" th:action="@{/management}" method="post" novalidate>
@@ -38,7 +47,7 @@
                 <br>
                 <fieldset>
                     <legend>&nbsp;Content&nbsp;</legend>
-                    <textarea id="content" th:field="*{content}" style="resize: none;" rows="20" />
+                    <textarea id="content" th:field="*{content}" rows="20" placeholder="Enter page content..." wrap="soft" />
                 </fieldset>
                 <br>
             </td>

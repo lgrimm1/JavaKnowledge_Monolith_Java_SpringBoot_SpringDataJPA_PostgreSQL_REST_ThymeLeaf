@@ -87,6 +87,8 @@ textarea {
     color: DarkSlateGray;
     text-align: left;
     resize: vertical;
+    white-space: pre;
+    overflow: auto;
 }
 
 select {
