@@ -147,11 +147,10 @@ public class HtmlGenerators {
 				.toList();
 		List<String> newHtml = new ArrayList<>(html);
 		for (String header : headers) {
-			int headerIndex = newHtml.indexOf(formulas.getTabInSpaces() + header + "<br>");
+			int headerIndex = newHtml.indexOf(formulas.getTabInSpaces() + "<p>" + header + "</p>");
 			if (headerIndex > -1) {
 				newHtml.set(headerIndex, formulas.getTabInSpaces() +
-						"<a href=\"#" + header + "\">" + formulas.getTabInSpaces() +
-						header + "</a><br>");
+						"<a href=\"#" + header + "\">" + header + "</a><br>");
 			}
 		}
 		return newHtml;

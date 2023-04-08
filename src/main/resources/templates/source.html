@@ -38,7 +38,7 @@
                 <br>
                 <fieldset>
                     <legend>&nbsp;Content&nbsp;</legend>
-                    <textarea id="content" th:field="*{content}" style="resize: none;" rows="20" autofocus />
+                    <textarea id="content" th:field="*{content}" style="resize: none;" rows="20" />
                 </fieldset>
                 <br>
             </td>
@@ -62,14 +62,9 @@
 </form>
 <script>
     window.onload = function() {
-        var s = document.getElementById("content");
-        s.style.height = "";
-        if (element.scrollHeight < "200px") {
-            s.style.height = "200px";
-        }
-        else {
-            s.style.height = element.scrollHeight + "px";
-        }
+        var textarea = document.getElementById("content");
+        textarea.focus();
+        textarea.setSelectionRange(textarea.value.length, textarea.value.length);
     }
 </script>
 </body>

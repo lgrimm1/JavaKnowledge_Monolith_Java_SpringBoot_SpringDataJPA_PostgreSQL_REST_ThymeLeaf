@@ -303,30 +303,28 @@ class HtmlGeneratorsTest {
 	@Test
 	void collectAndReferencingHeaders() {
 		List<String> html = List.of(
-				formulas.getTabInSpaces() + "Text 1<br>",
-				formulas.getTabInSpaces() + "Text 2<br>",
-				formulas.getTabInSpaces() + "Header 1<br>",
-				formulas.getTabInSpaces() + "Header 2<br>",
+				formulas.getTabInSpaces() + "<p>Text 1</p>",
+				formulas.getTabInSpaces() + "<p>Text 2</p>",
+				formulas.getTabInSpaces() + "<p>Header 1</p>",
+				formulas.getTabInSpaces() + "<p>Header 2</p>",
 				formulas.getTabInSpaces() + "<br>",
 				formulas.getTabInSpaces() + "<h2>Header 1</h2>",
-				formulas.getTabInSpaces() + "Text 3<br>",
+				formulas.getTabInSpaces() + "<p>Text 3</p>",
 				formulas.getTabInSpaces() + "<br>",
 				formulas.getTabInSpaces() + "<h3>Header 2</h3>",
-				formulas.getTabInSpaces() + "Text 4<br>"
+				formulas.getTabInSpaces() + "<p>Text 4</p>"
 		);
 		List<String> needed = List.of(
-				formulas.getTabInSpaces() + "Text 1<br>",
-				formulas.getTabInSpaces() + "Text 2<br>",
-				formulas.getTabInSpaces() + "<a href=\"#Header 1\">" +
-						formulas.getTabInSpaces() + "Header 1</a><br>",
-				formulas.getTabInSpaces() + "<a href=\"#Header 2\">" +
-						formulas.getTabInSpaces() + "Header 2</a><br>",
+				formulas.getTabInSpaces() + "<p>Text 1</p>",
+				formulas.getTabInSpaces() + "<p>Text 2</p>",
+				formulas.getTabInSpaces() + "<a href=\"#Header 1\">Header 1</a><br>",
+				formulas.getTabInSpaces() + "<a href=\"#Header 2\">Header 2</a><br>",
 				formulas.getTabInSpaces() + "<br>",
 				formulas.getTabInSpaces() + "<h2>Header 1</h2>",
-				formulas.getTabInSpaces() + "Text 3<br>",
+				formulas.getTabInSpaces() + "<p>Text 3</p>",
 				formulas.getTabInSpaces() + "<br>",
 				formulas.getTabInSpaces() + "<h3>Header 2</h3>",
-				formulas.getTabInSpaces() + "Text 4<br>"
+				formulas.getTabInSpaces() + "<p>Text 4</p>"
 		);
 		Assertions.assertEquals(needed, htmlGenerators.collectAndReferenceHeaders(html, formulas));
 	}
