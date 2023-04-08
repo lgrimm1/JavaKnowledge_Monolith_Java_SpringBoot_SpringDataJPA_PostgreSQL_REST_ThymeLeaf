@@ -417,7 +417,7 @@ END OF EXAMPLE
 =================================================================================
 EXAMPLE FOR JAVASCRIPT:
 <script>
-    <!-- caller side: content_to_clipboard('id_parameter_value') -->
+    <!-- caller side: content_to_clipboard('element_id') -->
     function content_to_clipboard(id) {
         document.getElementById(id).select();
         document.execCommand('copy');
@@ -437,9 +437,16 @@ EXAMPLE FOR JAVASCRIPT:
 
     <!-- <textarea> to full size on page load -->
     window.onload = function() {
-        var s = document.getElementById("textarea_id");
-        s.style.height = "";
-        s.style.height = element.scrollHeight + "px";
+        var textarea = document.getElementById("textarea_id");
+        textarea.style.height = "";
+        textarea.style.height = textarea.scrollHeight + "px";
+    }
+
+    <!-- text-like <input> and <textarea>, caret to last position on page load -->
+    window.onload = function() {
+        var element = document.getElementById("element_id");
+        element.focus();
+        element.setSelectionRange(element.value.length, element.value.length);
     }
 
     <!-- select 1st item in <select> on page load: - -->
