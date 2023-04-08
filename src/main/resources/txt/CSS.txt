@@ -539,6 +539,18 @@ textarea {
     resize: none;
 }
 
+/* set wrapping behaviour of <textarea> */
+textarea {
+    white-space: nowrap|pre; /* both values disable wrapping; "nowrap" deteriorates number of whitespaces, not useful when the content is code; "pre" keeps indented paragraphs and spaces; leave the property for enable wrapping */
+    overflow-wrap: normal; /* forces turning wrapping on; use it in case a parent element could overwrite this property or explicitly needed wrapping */
+    word-wrap: normal; /* same as overflow-wrap, some browsers use this property instead of overflow-wrap, use them together for safety */
+    overflow-x: auto|scroll|hidden; /* x direction, "auto" shows scroll bar only if needed, "scroll" forces appearance, "hidden forces hiding it" */
+    overflow-y: auto|scroll|hidden; /* y direction, "auto" shows scroll bar only if needed, "scroll" forces appearance, "hidden forces hiding it" */
+    overflow: auto|scroll|hidden; /* in both directions */
+    overflow: -moz-scrollbars-horizontal; /* moz setting for x direction */
+    overflow: -moz-scrollbars-vertical; /* moz setting for y direction */
+}
+
 /* prevent link style changing when visited (use when <a> is basically not styled) */
 a, a:visited {
     /* common properties like: */

@@ -262,7 +262,7 @@ Datetime-local:
     c. shown format follows local settings
 
 File:
-    a. a Browse button appears, next to it the chosen file name or number of files
+    a. a localized Browse button appears, next to it the chosen file name or number of files
     b. the multiple parameter allows the user to enter more than one value
 
 Email:
@@ -330,11 +330,11 @@ Submit:
 
 Textarea:
     a. multi-line text input
-    b. the name= parameter defines name of the control
-    c. the rows= and cols= parameters define the visible dimensions (same as using style= local settings e.g. style="width:200px; height:600px;")
-    d. between the opening and closing markers of the tag the starting text can be written
-    e. default height is 3 rows
-    f. wraps the content
+    b. the rows= and cols= parameters define the visible dimensions (same as using style= local settings e.g. style="width:200px; height:600px;")
+    c. between the opening and closing markers of the tag the starting text can be written
+    d. default height is 3 rows
+    e. wraps the content by default
+    f. the wrap= parameter sets how the wrapped text will be collected when submitting ("hard" will submit the wrapped text, "soft" (only if it does not have effect, use "off" instead) will submit unwrapped text)
 
 Time:
     a. the browser shows a divided input field for time

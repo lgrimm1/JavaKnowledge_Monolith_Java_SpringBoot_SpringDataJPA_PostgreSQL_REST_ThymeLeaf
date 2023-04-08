@@ -39,6 +39,7 @@ END OF EXAMPLE
 EXAMPLE FOR BLOCKQUOTE:
 <!-- simple content: -->
 <blockquote cite="source_url" th:text="*<fieldName>" />
+
 <!-- content-series from collection: -->
 <blockquote cite="source_url">
     <span th:each="line : *{collectionFieldName}" th:text="${line}" />
@@ -48,12 +49,15 @@ END OF EXAMPLE
 EXAMPLE FOR DIV:
 <!-- one div, text: -->
 <div th:text="*{fieldName}" />
+
 <!-- one div, HTML code: -->
 <div th:utext="*{fieldName}" />
+
 <!-- more divs from collection, text: -->
 <wrapping_tag>
     <div th:each="div : *{collectionFieldName}" th:text="${div}" />
 </wrapping_tag>
+
 <!-- more divs from collection, HTML code: -->
 <wrapping_tag>
     <div th:each="div : *{collectionFieldName}" th:utext="${div}" />
@@ -81,11 +85,13 @@ EXAMPLE FOR FIELDSET:
 <fieldset>
     <!-- labels, inputs etc. -->
 </fieldset>
+
 <!-- fix group caption: -->
 <fieldset>
     <legend>&nbsp;Group title&nbsp;</legend>
     <!-- labels, inputs etc. -->
 </fieldset>
+
 <!-- dynamic group caption: -->
 <fieldset>
     <legend th:text="'&nbsp;' + *{fieldName} + '&nbsp;'" />
@@ -107,12 +113,15 @@ END OF EXAMPLE
 EXAMPLE FOR IMAGE:
 <!-- one image: -->
 <img th:src="*{fieldName1}" th:alt="*{fieldName2}">
+
 <!-- more images from collection: -->
 <img th:each="image : *{collectionFieldName}" th:src="${image.src}" th:alt="${image.alt}">
+
 <!-- one image with reference: -->
 <a th:href="*{fieldName1}">
     <img th:src="*{fieldName2}" th:alt="*{fieldName3}">
 </a>
+
 <!-- more images with references from collection: -->
 <a th:each="image : *{collectionFieldName}" th:href="${image.href}">
     <img th:src="${image.src}" th:alt="${image.alt}">
@@ -129,6 +138,7 @@ END OF EXAMPLE
 EXAMPLE FOR LABEL:
 <!-- one label: -->
 <label th:text="*{fieldName}" class="label_style" />
+
 <!-- more labels from collection: -->
 <label th:each="any_name : *{collectionFieldName}" th:text="${any_name}" class="label_style" />
 END OF EXAMPLE
@@ -136,6 +146,7 @@ END OF EXAMPLE
 EXAMPLE FOR PARAGRAPH:
 <!-- one paragraph: -->
 <p th:text="*{fieldName}" class="paragraph_style" />
+
 <!-- more paragraphs from collection -->
 <p th:each="any_name : *{collectionFieldName}" th:text="${any_name}" class="paragraph_style" />
 END OF EXAMPLE
@@ -143,6 +154,7 @@ END OF EXAMPLE
 EXAMPLE FOR REFERENCE:
 <!-- one reference: -->
 <a href="*{fieldName.url}" th:text="*{fieldName.text}" tabindex="number" /><br>
+
 <!-- more references from collection: -->
 <span th:each="reference : *{collectionFieldName}">
     <a href="${reference.url}" th:text="${reference.text}" /><br>
@@ -152,6 +164,7 @@ END OF EXAMPLE
 EXAMPLE FOR SPAN:
 <!-- one span: -->
 <wrapping_tag><span th:text="*{fieldName}" /></wrapping_tag>
+
 <!-- more spans from collection: -->
 <wrapping_tag>
     <span th:each="span : *{collectionFieldName}" th:text="${span}" />
@@ -185,6 +198,7 @@ EXAMPLE FOR TABLE (DATA-PURPOSE):
     </tr>
 </table>
 <br>
+
 <!-- dynamic rows: -->
 <table class="table_style">
     <tr>
@@ -227,16 +241,20 @@ For all text-like inputs, optional parameters:
 For select input, optional parameters:
     size="height_in_number_of_items" multiple
 For textarea input, optional parameters:
-    name="input_name" rows="number_of_rows" cols="number_of_characters"
+    rows="number_of_rows" cols="number_of_characters" wrap="hard|soft|off"
 
 For file-type input, it has the ability to receive focus (tabbing), activate for key press while on focus, opening selection dialog, storing file selection, receive files via drag&drop, showing names of selected files, also lets screen readers to detect it.
 The appearing button and the file-list behind it is not modifiable, CSS parameters have no effect.
 Workaround is to wrap the input into a label and give button-like style to it while hiding (visually or totally) the original input, visit the CSS page for style examples.
 See examples below.
 
-For <select>, when items are dynamically determined from a Collection field, the default selected item will be the last added one. Consider adding a script which selects the needed item on load, see script examples below.
 For all inputs, consider using <br> tag after the label and-or after the input.
+
+For <select>, when items are dynamically determined from a Collection field, the default selected item will be the last added one. Consider adding a script which selects the needed item on load, see script examples below.
+
 For <textarea>, although the visible control contains lines, any Collection-type data will be called in as Collection.toString(). That said, for a List of two lines, the visible text will be e.g. [Line1, Line2] by default. Instead, pass String with "\n" line ends.
+Also, the wrap= parameter sets submit wrapping behaviour: "soft" (only if it has no effect, use "off" instead) will ignore wrapping when submitting, "hard" will submit the content in its visible wrapped form.
+When wrap="hard" is set, the cols= parameter must be defined as well.
 
 EXAMPLE FOR BUTTON-LIKE INPUTS (SUBMIT, RESET, BUTTON):
 <input type="submit" value="caption text" formaction="/endpoint" formmethod="post" />
@@ -248,6 +266,7 @@ EXAMPLE FOR CHECKBOX:
 <!-- label is before: -->
 <label for="input_name" style="style data" class="label_style">label text</label>
 <input id="input_name" type="checkbox" th:field="*{fieldName}" />
+
 <!-- label is after: -->
 <input id="input_name" type="checkbox" th:field="*{fieldName}" />
 <label for="input_name" style="style data" class="label_style">label text</label>
@@ -308,6 +327,7 @@ END OF EXAMPLE
 EXAMPLE FOR NUMERIC INPUTS (NUMBER, RANGE):
 <!-- label for any numeric input: -->
 <label for="input_name" style="style data" class="label_style">label text</label>
+
 <!-- input variants: -->
 <input id="input_name" type="number" th:field="*{fieldName}" />
 <input id="input_name" type="range" th:field="*{fieldName}" />
@@ -316,6 +336,7 @@ END OF EXAMPLE
 EXAMPLE FOR PICKER-LIKE AND TIME INPUTS (COLOR, DATE, DATETIME-LOCAL, TIME):
 <!-- label for any picker-like or time input: -->
 <label for="input_name" style="style data" class="label_style">label text</label>
+
 <!-- input variants: -->
 <input id="input_name" type="color" th:field="*{fieldName}" />
 <input id="input_name" type="date" th:field="*{fieldName}" />
@@ -329,11 +350,13 @@ EXAMPLE FOR RADIO INPUTS:
 <label for="input_name_1" th:text="value1" />
 <input type="radio" id="input_name_2" th:field="*{fieldName2}" value="'value2'" />
 <label for="input_name_2" th:text="value2" />
+
 <!-- dynamic options, text values: -->
 <span th:each="value : *{collectionFieldName}">
     <input type="radio" th:field="*{fieldName}" value="${value}" />
     <label th:text="${value}" /><br>
 </span>
+
 <!-- fix options, enum: -->
 <input type="radio" id="input_name_1" th:field="*{fieldName1}" value="VALUE1" />
 <label for="input_name_1" th:text="value1" />
@@ -344,6 +367,7 @@ END OF EXAMPLE
 EXAMPLE FOR TEXT-LIKE INPUTS (EMAIL, PASSWORD, SEARCH, TEL, TEXT, URL):
 <!-- label for any text-like input: -->
 <label for="input_name" style="style data" class="label_style">label text</label>
+
 <!-- input variants: -->
 <input id="input_name" type="email" th:field="*{fieldName}" multiple />
 <input id="input_name" type="password" th:field="*{fieldName}" />
@@ -351,16 +375,19 @@ EXAMPLE FOR TEXT-LIKE INPUTS (EMAIL, PASSWORD, SEARCH, TEL, TEXT, URL):
 <input id="input_name" type="tel" th:field="*{fieldName}" />
 <input id="input_name" type="text" th:field="*{fieldName}" />
 <input id="input_name" type="url" th:field="*{fieldName}" />
+
 <!-- optional fix data definition to choose from: -->
 <datalist id="datalist_name">
     <option value="value1">
     <option value="value2">
     <option value="value3">
 </datalist>
+
 <!-- optional dynamic data definition to choose from: -->
 <datalist id="datalist_name">
     <option th:each="data : *{collectionFieldName}" th:value="${data}">
 </datalist>
+
 <!-- input variants with datalist: -->
 <input id="input_name" type="email" list="datalist_name" th:field="*{fieldName}" multiple />
 <input id="input_name" type="password" list="datalist_name" th:field="*{fieldName}" />
@@ -377,20 +404,24 @@ EXAMPLE FOR SELECT (SCROLL-DOWN, LIST):
     <option value="value2">value text 2</option>
     <option value="value3">value text 3</option>
 </select>
+
 <!-- list, fix items: -->
 <select id="input_name" th:field="*{fieldName}" size="3">
     <option value="value1">value text 1</option>
     <option value="value2">value text 2</option>
     <option value="value3">value text 3</option>
 </select>
+
 <!-- scroll-down, dynamic items: -->
 <select id="input_name" th:field="*{fieldName}">
     <option th:each="item : *{collectionFieldName}" th:value="${item}" th:text="${item}" />
 </select>
+
 <!-- list, dynamic items: -->
 <select id="input_name" th:field="*{fieldName}" size="10">
     <option th:each="item : *{collectionFieldName}" th:value="${item}" th:text="${item}" />
 </select>
+
 <!-- list, dynamic items, conditional selection: -->
 <select id="input_name" th:field="*{fieldName}" size="10">
     <option th:each="item : *{collectionFieldName}" th:value="${item.value}" th:text="${item.caption}" th:selected="${item.selected}" />
@@ -399,17 +430,25 @@ END OF EXAMPLE
 
 EXAMPLE FOR TEXTAREA:
 <!-- please modify the <text_area> tag name to <textarea>! -->
+
 <!-- starting text is null or from field: -->
 <text_area id="input_name" th:field="*{fieldName}">
 </text_area>
+
 <!-- fix starting text: -->
 <text_area id="input_name" th:field="*{fieldName}">
     starting text
 </text_area>
+
 <!-- dynamic starting text: -->
 <text_area id="input_name" th:field="*{fieldName1}">
     <span th:text="*{fieldName2}" />
 </text_area>
+
+<!-- parameters for code-like content: -->
+<text-area id="input_name" ... wrap="soft">
+    content
+</text-area>
 END OF EXAMPLE
 
 =================================================================================
@@ -440,6 +479,11 @@ EXAMPLE FOR JAVASCRIPT:
         var textarea = document.getElementById("textarea_id");
         textarea.style.height = "";
         textarea.style.height = textarea.scrollHeight + "px";
+    }
+
+    <!-- set <textarea> wrapping behaviour on page load -->
+    window.onload = function() {
+        document.getElementById("textarea_id").wrap='off|soft|hard';
     }
 
     <!-- text-like <input> and <textarea>, caret to last position on page load -->
