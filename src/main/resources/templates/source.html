@@ -48,7 +48,8 @@
             <td style="width: 65%">
                 <fieldset>
                     <legend>&nbsp;Title&nbsp;</legend>
-                    <input type="text" th:field="*{title}" placeholder="Enter the title of the page..." />
+                    <input type="text" th:if="*{editExistingPage}" th:field="*{title}" readonly />
+                    <input type="text" th:unless="*{editExistingPage}" th:field="*{title}" placeholder="Enter the title of the page..." />
                 </fieldset>
                 <br>
                 <fieldset>
