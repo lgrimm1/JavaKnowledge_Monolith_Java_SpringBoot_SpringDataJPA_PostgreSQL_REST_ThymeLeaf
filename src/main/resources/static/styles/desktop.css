@@ -128,6 +128,10 @@ iframe {
     text-align: right;
 }
 
+.banner_link_logo {
+    height: 32px;
+}
+
 .message {
     font-size: 100%;
     color: Yellow;
