@@ -424,7 +424,7 @@ public class CommonService {
 		}
 		if (title == null || title.isBlank()) {
 			title = title == null || title.isBlank() ? "" : title;
-			message = "PLEASE DEFINE A TITLE AND A FILE NAME.";
+			message = "PLEASE DEFINE A TITLE.";
 			Payload payload2 = new Payload(
 					null,
 					content,
