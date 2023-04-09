@@ -64,7 +64,7 @@ class CommonServiceDeletePagesTest {
 				"PLEASE SELECT TITLES YOU WISH TO DELETE.",
 				null,
 				null,
-				null,
+				"",
 				titles
 		);
 		Map<String, Object> model = new HashMap<>();
@@ -90,7 +90,7 @@ class CommonServiceDeletePagesTest {
 				message,
 				null,
 				null,
-				null,
+				"",
 				titles
 		);
 
@@ -106,7 +106,7 @@ class CommonServiceDeletePagesTest {
 				"PLEASE SELECT TITLES YOU WISH TO DELETE.",
 				null,
 				null,
-				null,
+				"",
 				expectedTitles
 		);
 		Map<String, Object> model = new HashMap<>();
@@ -132,7 +132,7 @@ class CommonServiceDeletePagesTest {
 				message,
 				null,
 				null,
-				null,
+				"",
 				titles
 		);
 
@@ -148,7 +148,7 @@ class CommonServiceDeletePagesTest {
 				"PLEASE SELECT TITLES YOU WISH TO DELETE.",
 				null,
 				null,
-				null,
+				"",
 				expectedTitles
 		);
 		Map<String, Object> model = new HashMap<>();
@@ -174,7 +174,7 @@ class CommonServiceDeletePagesTest {
 				message,
 				null,
 				null,
-				null,
+				"",
 				titles
 		);
 
@@ -190,7 +190,7 @@ class CommonServiceDeletePagesTest {
 				"PLEASE CONFIRM DELETION.",
 				null,
 				null,
-				null,
+				"",
 				expectedTitles
 		);
 		Map<String, Object> model = new HashMap<>();
@@ -227,7 +227,7 @@ class CommonServiceDeletePagesTest {
 				message,
 				null,
 				null,
-				null,
+				"",
 				requestTitles
 		);
 
@@ -243,7 +243,7 @@ class CommonServiceDeletePagesTest {
 				"PLEASE SELECT EXISTING TITLES YOU WISH TO DELETE.",
 				null,
 				null,
-				null,
+				"",
 				restOfTitles
 		);
 		Map<String, Object> model = new HashMap<>();
@@ -277,7 +277,7 @@ class CommonServiceDeletePagesTest {
 				message,
 				null,
 				null,
-				null,
+				"",
 				requestTitles
 		);
 
@@ -293,7 +293,7 @@ class CommonServiceDeletePagesTest {
 				"1 OF 2 TITLES WERE DELETED.",
 				null,
 				null,
-				null,
+				"",
 				restOfTitles
 		);
 		Map<String, Object> model = new HashMap<>();

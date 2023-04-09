@@ -67,7 +67,7 @@ class CommonServiceImportTxtTest {
 				"PLEASE UPLOAD MINIMUM ONE FILE AND CONFIRM SOURCE OVERWRITING.",
 				null,
 				null,
-				null,
+				"",
 				titles
 		);
 		Map<String, Object> model = new HashMap<>();
@@ -93,7 +93,7 @@ class CommonServiceImportTxtTest {
 				message,
 				null,
 				null,
-				null,
+				"",
 				receivedTitles
 		);
 
@@ -109,7 +109,7 @@ class CommonServiceImportTxtTest {
 				"PLEASE UPLOAD MINIMUM ONE FILE AND CONFIRM SOURCE OVERWRITING.",
 				null,
 				null,
-				null,
+				"",
 				titles
 		);
 		Map<String, Object> model = new HashMap<>();
@@ -135,7 +135,7 @@ class CommonServiceImportTxtTest {
 				message,
 				null,
 				null,
-				null,
+				"",
 				receivedTitles
 		);
 
@@ -151,7 +151,7 @@ class CommonServiceImportTxtTest {
 				"PLEASE UPLOAD MINIMUM ONE FILE AND CONFIRM SOURCE OVERWRITING.",
 				null,
 				null,
-				null,
+				"",
 				titles
 		);
 		Map<String, Object> model = new HashMap<>();
@@ -177,7 +177,7 @@ class CommonServiceImportTxtTest {
 				message,
 				null,
 				null,
-				null,
+				"",
 				receivedTitles
 		);
 
@@ -193,7 +193,7 @@ class CommonServiceImportTxtTest {
 				"PLEASE UPLOAD MINIMUM ONE FILE AND CONFIRM SOURCE OVERWRITING.",
 				null,
 				null,
-				null,
+				"",
 				titles
 		);
 		Map<String, Object> model = new HashMap<>();
@@ -219,7 +219,7 @@ class CommonServiceImportTxtTest {
 				message,
 				null,
 				null,
-				null,
+				"",
 				receivedTitles
 		);
 
@@ -235,7 +235,7 @@ class CommonServiceImportTxtTest {
 				"PLEASE UPLOAD MINIMUM ONE FILE AND CONFIRM SOURCE OVERWRITING.",
 				null,
 				null,
-				null,
+				"",
 				titles
 		);
 		Map<String, Object> model = new HashMap<>();
@@ -261,7 +261,7 @@ class CommonServiceImportTxtTest {
 				message,
 				null,
 				null,
-				null,
+				"",
 				receivedTitles
 		);
 
@@ -302,7 +302,7 @@ class CommonServiceImportTxtTest {
 				"3 OF 5 FILES WERE NOT IMPORTED.",
 				null,
 				null,
-				null,
+				"",
 				titles
 		);
 		Map<String, Object> model = new HashMap<>();

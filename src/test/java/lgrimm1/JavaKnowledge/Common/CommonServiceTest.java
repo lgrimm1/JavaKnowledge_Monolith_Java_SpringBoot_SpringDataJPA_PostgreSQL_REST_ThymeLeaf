@@ -90,7 +90,7 @@ class CommonServiceTest {
 				"",
 				null,
 				null,
-				null,
+				"",
 				titles
 		);
 		Map<String, Object> model = new HashMap<>();

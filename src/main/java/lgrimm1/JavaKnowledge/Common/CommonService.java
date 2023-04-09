@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.*;
 import org.springframework.lang.*;
 import org.springframework.stereotype.*;
 import org.springframework.ui.*;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.*;
 
 import java.io.*;
@@ -175,7 +176,7 @@ public class CommonService {
 				"",
 				null,
 				null,
-				null,
+				"",
 				processRecords.getAllTitles(titleRepository)
 		);
 		return new ModelAndView(initialView, "payload", payload);
@@ -206,13 +207,12 @@ public class CommonService {
 					"PLEASE SELECT EXACTLY ONE TITLE FOR EDITING.",
 					null,
 					null,
-					null,
+					"",
 					processRecords.getAllTitles(titleRepository)
 			);
 			return new ModelAndView("management", "payload", payload2);
 		}
-		List<String> titles = payload.getTitles();
-		Optional<TitleEntity> optionalTitleEntity = titleRepository.findByTitle(titles.get(0));
+		Optional<TitleEntity> optionalTitleEntity = titleRepository.findByTitle(payload.getTitles().get(0));
 		if (optionalTitleEntity.isEmpty()) {
 			Payload payload2 = new Payload(
 					false,
@@ -222,7 +222,7 @@ public class CommonService {
 					"PLEASE SELECT EXACTLY ONE TITLE FOR EDITING.",
 					null,
 					null,
-					null,
+					"",
 					processRecords.getAllTitles(titleRepository)
 			);
 			return new ModelAndView("management", "payload", payload2);
@@ -238,7 +238,7 @@ public class CommonService {
 					"PLEASE SELECT EXACTLY ONE TITLE FOR EDITING.",
 					null,
 					null,
-					null,
+					"",
 					processRecords.getAllTitles(titleRepository)
 			);
 			return new ModelAndView("management", "payload", payload2);
@@ -275,7 +275,7 @@ public class CommonService {
 					message,
 					null,
 					null,
-					null,
+					"",
 					processRecords.getAllTitles(titleRepository)
 			);
 			return new ModelAndView(initialView, "payload", payload2);
@@ -293,7 +293,7 @@ public class CommonService {
 					"PLEASE SELECT EXISTING TITLES YOU WISH TO DELETE.",
 					null,
 					null,
-					null,
+					"",
 					processRecords.getAllTitles(titleRepository)
 			);
 			return new ModelAndView(initialView, "payload", payload2);
@@ -313,7 +313,7 @@ public class CommonService {
 				message,
 				null,
 				null,
-				null,
+				"",
 				processRecords.getAllTitles(titleRepository)
 		);
 		return new ModelAndView(initialView, "payload", payload2);
@@ -329,7 +329,7 @@ public class CommonService {
 					"PLEASE CONFIRM PUBLISHING PAGES.",
 					null,
 					null,
-					null,
+					"",
 					processRecords.getAllTitles(titleRepository)
 			);
 			return new ModelAndView(initialView, "payload", payload2);
@@ -343,7 +343,7 @@ public class CommonService {
 				publishResults[0] + " HTML FILES WERE PRE-DELETED, " + publishResults[1] + " WERE PUBLISHED.",
 				null,
 				null,
-				null,
+				"",
 				processRecords.getAllTitles(titleRepository)
 		);
 		return new ModelAndView(initialView, "payload", payload2);
@@ -489,7 +489,7 @@ public class CommonService {
 					"PLEASE UPLOAD MINIMUM ONE FILE AND CONFIRM SOURCE OVERWRITING.",
 					null,
 					null,
-					null,
+					"",
 					processRecords.getAllTitles(titleRepository)
 			);
 			return new ModelAndView(initialView, "payload", payload2);
@@ -514,7 +514,7 @@ public class CommonService {
 				notImportedFiles.size() + " OF " + files.size() + " FILES WERE NOT IMPORTED.",
 				null,
 				null,
-				null,
+				"",
 				titles
 		);
 		return new ModelAndView(initialView, "payload", payload2);
@@ -530,7 +530,7 @@ public class CommonService {
 					"PLEASE CONFIRM GENERATING PAGES.",
 					null,
 					null,
-					null,
+					"",
 					processRecords.getAllTitles(titleRepository)
 			);
 			return new ModelAndView(initialView, "payload", payload2);
@@ -551,7 +551,75 @@ public class CommonService {
 				messageData[0] + " PAGES IN " + messageData[1] + " SECONDS HAS BEEN PROCESSED.",
 				null,
 				null,
+				"",
+				processRecords.getAllTitles(titleRepository)
+		);
+		return new ModelAndView(initialView, "payload", payload2);
+	}
+
+	public ModelAndView renameSourcePage(String initialView, Payload payload) {
+		if (payload == null ||
+				payload.getTitles() == null ||
+				payload.getTitles().size() != 1 ||
+				payload.getTitle() == null ||
+				payload.getTitle().isBlank()) {
+			Payload payload2 = new Payload(
+					false,
+					null,
+					null,
+					"",
+					"PLEASE SELECT EXACTLY ONE EXISTING TITLE AND DEFINE A NEW TITLE.",
+					null,
+					null,
+					"",
+					processRecords.getAllTitles(titleRepository)
+			);
+			return new ModelAndView(initialView, "payload", payload2);
+		}
+		Optional<TitleEntity> originalTitleEntity = titleRepository.findByTitle(payload.getTitles().get(0));
+		if (originalTitleEntity.isEmpty()) {
+			Payload payload2 = new Payload(
+					false,
+					null,
+					null,
+					"",
+					"PLEASE SELECT EXACTLY ONE EXISTING TITLE AND DEFINE A NEW TITLE.",
+					null,
+					null,
+					"",
+					processRecords.getAllTitles(titleRepository)
+			);
+			return new ModelAndView(initialView, "payload", payload2);
+		}
+		Optional<TitleEntity> newTitleEntity = titleRepository.findByTitle(payload.getTitle());
+		if (newTitleEntity.isPresent()) {
+			Payload payload2 = new Payload(
+					false,
+					null,
+					null,
+					"",
+					"THE GIVEN NEW TITLE ALREADY EXISTS, PLEASE DEFINE AN OTHER ONE.",
+					null,
+					null,
+					"",
+					processRecords.getAllTitles(titleRepository)
+			);
+			return new ModelAndView(initialView, "payload", payload2);
+		}
+		String fileName = fileOperations.generateFilename(payload.getTitle(), titleRepository);
+		long txtId = originalTitleEntity.get().getTxtId();
+		long htmlId = originalTitleEntity.get().getHtmlId();
+		titleRepository.deleteById(originalTitleEntity.get().getId());
+		titleRepository.save(new TitleEntity(payload.getTitle(), fileName, txtId, htmlId));
+		Payload payload2 = new Payload(
+				false,
 				null,
+				null,
+				"",
+				"PAGE HAS BEEN RENAMED.",
+				null,
+				null,
+				"",
 				processRecords.getAllTitles(titleRepository)
 		);
 		return new ModelAndView(initialView, "payload", payload2);

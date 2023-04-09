@@ -7,14 +7,13 @@ import lgrimm1.JavaKnowledge.Txt.*;
 import org.junit.jupiter.api.*;
 import org.mockito.*;
 import org.springframework.test.web.*;
-import org.springframework.ui.*;
 import org.springframework.web.servlet.*;
 
 import java.util.*;
 
 import static org.mockito.Mockito.*;
 
-class CommonServiceEditSourcePageTest {
+class CommonServiceRenameSourcePageTest {
 	TitleRepository titleRepository;
 	TxtRepository txtRepository;
 	HtmlRepository htmlRepository;
@@ -50,7 +49,7 @@ class CommonServiceEditSourcePageTest {
 	}
 
 	@Test
-	void editSourcePage_NullPayload() {
+	void renameSourcePage_NullPayload() {
 		List<String> titles = List.of("Title 1", "Title 2");
 		when(processRecords.getAllTitles(titleRepository))
 				.thenReturn(titles);
@@ -60,7 +59,7 @@ class CommonServiceEditSourcePageTest {
 				null,
 				null,
 				"",
-				"PLEASE SELECT EXACTLY ONE TITLE FOR EDITING.",
+				"PLEASE SELECT EXACTLY ONE EXISTING TITLE AND DEFINE A NEW TITLE.",
 				null,
 				null,
 				"",
@@ -69,14 +68,14 @@ class CommonServiceEditSourcePageTest {
 		Map<String, Object> model = new HashMap<>();
 		model.put("payload", expectedPayload);
 
-		ModelAndView modelAndView = commonService.editSourcePage("source", null);
+		ModelAndView modelAndView = commonService.renameSourcePage("management", null);
 
 		ModelAndViewAssert.assertViewName(modelAndView, "management");
 		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
 	}
 
 	@Test
-	void editSourcePage_NullTitles() {
+	void renameSourcePage_NullTitles() {
 		Payload receivedPayload = new Payload(
 				false,
 				null,
@@ -85,7 +84,7 @@ class CommonServiceEditSourcePageTest {
 				"",
 				null,
 				null,
-				"",
+				"Title 3",
 				null
 		);
 
@@ -98,7 +97,7 @@ class CommonServiceEditSourcePageTest {
 				null,
 				null,
 				"",
-				"PLEASE SELECT EXACTLY ONE TITLE FOR EDITING.",
+				"PLEASE SELECT EXACTLY ONE EXISTING TITLE AND DEFINE A NEW TITLE.",
 				null,
 				null,
 				"",
@@ -107,14 +106,14 @@ class CommonServiceEditSourcePageTest {
 		Map<String, Object> model = new HashMap<>();
 		model.put("payload", expectedPayload);
 
-		ModelAndView modelAndView = commonService.editSourcePage("source", receivedPayload);
+		ModelAndView modelAndView = commonService.renameSourcePage("management", receivedPayload);
 
 		ModelAndViewAssert.assertViewName(modelAndView, "management");
 		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
 	}
 
 	@Test
-	void editSourcePage_MoreThanOneTitles() {
+	void renameSourcePage_MoreThanOneTitles() {
 		List<String> receivedTitles = List.of("Title 1", "Title 2");
 		Payload receivedPayload = new Payload(
 				false,
@@ -124,7 +123,7 @@ class CommonServiceEditSourcePageTest {
 				"",
 				null,
 				null,
-				"",
+				"Title 3",
 				receivedTitles
 		);
 
@@ -137,7 +136,7 @@ class CommonServiceEditSourcePageTest {
 				null,
 				null,
 				"",
-				"PLEASE SELECT EXACTLY ONE TITLE FOR EDITING.",
+				"PLEASE SELECT EXACTLY ONE EXISTING TITLE AND DEFINE A NEW TITLE.",
 				null,
 				null,
 				"",
@@ -146,14 +145,14 @@ class CommonServiceEditSourcePageTest {
 		Map<String, Object> model = new HashMap<>();
 		model.put("payload", expectedPayload);
 
-		ModelAndView modelAndView = commonService.editSourcePage("source", receivedPayload);
+		ModelAndView modelAndView = commonService.renameSourcePage("management", receivedPayload);
 
 		ModelAndViewAssert.assertViewName(modelAndView, "management");
 		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
 	}
 
 	@Test
-	void editSourcePage_FirstTitleIsNull() {
+	void renameSourcePage_FirstTitleIsNull() {
 		List<String> receivedTitles = new ArrayList<>();
 		receivedTitles.add(null);
 		Payload receivedPayload = new Payload(
@@ -164,7 +163,7 @@ class CommonServiceEditSourcePageTest {
 				"",
 				null,
 				null,
-				"",
+				"Title 3",
 				receivedTitles
 		);
 
@@ -177,7 +176,7 @@ class CommonServiceEditSourcePageTest {
 				null,
 				null,
 				"",
-				"PLEASE SELECT EXACTLY ONE TITLE FOR EDITING.",
+				"PLEASE SELECT EXACTLY ONE EXISTING TITLE AND DEFINE A NEW TITLE.",
 				null,
 				null,
 				"",
@@ -186,14 +185,14 @@ class CommonServiceEditSourcePageTest {
 		Map<String, Object> model = new HashMap<>();
 		model.put("payload", expectedPayload);
 
-		ModelAndView modelAndView = commonService.editSourcePage("source", receivedPayload);
+		ModelAndView modelAndView = commonService.renameSourcePage("management", receivedPayload);
 
 		ModelAndViewAssert.assertViewName(modelAndView, "management");
 		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
 	}
 
 	@Test
-	void editSourcePage_FirstTitleBlank() {
+	void renameSourcePage_FirstTitleBlank() {
 		List<String> receivedTitles = new ArrayList<>();
 		receivedTitles.add("  ");
 		Payload receivedPayload = new Payload(
@@ -204,7 +203,7 @@ class CommonServiceEditSourcePageTest {
 				"",
 				null,
 				null,
-				"",
+				"Title 3",
 				receivedTitles
 		);
 
@@ -217,7 +216,7 @@ class CommonServiceEditSourcePageTest {
 				null,
 				null,
 				"",
-				"PLEASE SELECT EXACTLY ONE TITLE FOR EDITING.",
+				"PLEASE SELECT EXACTLY ONE EXISTING TITLE AND DEFINE A NEW TITLE.",
 				null,
 				null,
 				"",
@@ -226,14 +225,14 @@ class CommonServiceEditSourcePageTest {
 		Map<String, Object> model = new HashMap<>();
 		model.put("payload", expectedPayload);
 
-		ModelAndView modelAndView = commonService.editSourcePage("source", receivedPayload);
+		ModelAndView modelAndView = commonService.renameSourcePage("management", receivedPayload);
 
 		ModelAndViewAssert.assertViewName(modelAndView, "management");
 		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
 	}
 
 	@Test
-	void editSourcePage_NoSuchTitle() {
+	void renameSourcePage_NoSuchTitle() {
 		List<String> receivedTitles = new ArrayList<>();
 		receivedTitles.add("Title 3");
 		Payload receivedPayload = new Payload(
@@ -244,12 +243,11 @@ class CommonServiceEditSourcePageTest {
 				"",
 				null,
 				null,
-				"",
+				"Title 4",
 				receivedTitles
 		);
 
-		List<String> requestTitles = List.of("Title 3");
-		when(titleRepository.findByTitle(requestTitles.get(0)))
+		when(titleRepository.findByTitle("Title 3"))
 				.thenReturn(Optional.empty());
 
 		List<String> titles = List.of("Title 1", "Title 2");
@@ -261,7 +259,7 @@ class CommonServiceEditSourcePageTest {
 				null,
 				null,
 				"",
-				"PLEASE SELECT EXACTLY ONE TITLE FOR EDITING.",
+				"PLEASE SELECT EXACTLY ONE EXISTING TITLE AND DEFINE A NEW TITLE.",
 				null,
 				null,
 				"",
@@ -270,16 +268,16 @@ class CommonServiceEditSourcePageTest {
 		Map<String, Object> model = new HashMap<>();
 		model.put("payload", expectedPayload);
 
-		ModelAndView modelAndView = commonService.editSourcePage("source", receivedPayload);
+		ModelAndView modelAndView = commonService.renameSourcePage("management", receivedPayload);
 
 		ModelAndViewAssert.assertViewName(modelAndView, "management");
 		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
 	}
 
 	@Test
-	void editSourcePage_NoSuchTxt() {
+	void renameSourcePage_NullNewTitle() {
 		List<String> receivedTitles = new ArrayList<>();
-		receivedTitles.add("Title 3");
+		receivedTitles.add("Title 1");
 		Payload receivedPayload = new Payload(
 				false,
 				null,
@@ -288,15 +286,105 @@ class CommonServiceEditSourcePageTest {
 				"",
 				null,
 				null,
+				null,
+				receivedTitles
+		);
+
+/*
+		when(titleRepository.findByTitle(receivedTitles.get(0)))
+				.thenReturn(Optional.of(new TitleEntity(3L, "Title 3", "title_3", 2L, 4L)));
+*/
+
+		List<String> titles = List.of("Title 1", "Title 2");
+		when(processRecords.getAllTitles(titleRepository))
+				.thenReturn(titles);
+
+		Payload expectedPayload = new Payload(
+				false,
+				null,
+				null,
 				"",
+				"PLEASE SELECT EXACTLY ONE EXISTING TITLE AND DEFINE A NEW TITLE.",
+				null,
+				null,
+				"",
+				titles
+		);
+		Map<String, Object> model = new HashMap<>();
+		model.put("payload", expectedPayload);
+
+		ModelAndView modelAndView = commonService.renameSourcePage("management", receivedPayload);
+
+		ModelAndViewAssert.assertViewName(modelAndView, "management");
+		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
+	}
+
+	@Test
+	void renameSourcePage_BlankNewTitle() {
+		List<String> receivedTitles = new ArrayList<>();
+		receivedTitles.add("Title 1");
+		Payload receivedPayload = new Payload(
+				false,
+				null,
+				null,
+				"",
+				"",
+				null,
+				null,
+				"  ",
+				receivedTitles
+		);
+
+/*
+		when(titleRepository.findByTitle(receivedTitles.get(0)))
+				.thenReturn(Optional.of(new TitleEntity(3L, "Title 3", "title_3", 2L, 4L)));
+*/
+
+		List<String> titles = List.of("Title 1", "Title 2");
+		when(processRecords.getAllTitles(titleRepository))
+				.thenReturn(titles);
+
+		Payload expectedPayload = new Payload(
+				false,
+				null,
+				null,
+				"",
+				"PLEASE SELECT EXACTLY ONE EXISTING TITLE AND DEFINE A NEW TITLE.",
+				null,
+				null,
+				"",
+				titles
+		);
+		Map<String, Object> model = new HashMap<>();
+		model.put("payload", expectedPayload);
+
+		ModelAndView modelAndView = commonService.renameSourcePage("management", receivedPayload);
+
+		ModelAndViewAssert.assertViewName(modelAndView, "management");
+		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
+	}
+
+	@Test
+	void renameSourcePage_AlreadyExistingNewTitle() {
+		List<String> receivedTitles = new ArrayList<>();
+		receivedTitles.add("Title 1");
+		Payload receivedPayload = new Payload(
+				false,
+				null,
+				null,
+				"",
+				"",
+				null,
+				null,
+				"Title 2",
 				receivedTitles
 		);
 
 		when(titleRepository.findByTitle(receivedTitles.get(0)))
-				.thenReturn(Optional.of(new TitleEntity(3L, "Title 3", "title_3", 2L, 4L)));
+				.thenReturn(Optional.of(new TitleEntity(3L, "Title 1", "title_1", 2L, 4L)));
 
-		when(txtRepository.findById(2L))
-				.thenReturn(Optional.empty());
+		when(titleRepository.findByTitle("Title 2"))
+				.thenReturn(Optional.of(new TitleEntity(3L, "Title 2", "title_2", 2L, 4L)));
 
 		List<String> titles = List.of("Title 1", "Title 2");
 		when(processRecords.getAllTitles(titleRepository))
@@ -307,7 +395,7 @@ class CommonServiceEditSourcePageTest {
 				null,
 				null,
 				"",
-				"PLEASE SELECT EXACTLY ONE TITLE FOR EDITING.",
+				"THE GIVEN NEW TITLE ALREADY EXISTS, PLEASE DEFINE AN OTHER ONE.",
 				null,
 				null,
 				"",
@@ -316,16 +404,16 @@ class CommonServiceEditSourcePageTest {
 		Map<String, Object> model = new HashMap<>();
 		model.put("payload", expectedPayload);
 
-		ModelAndView modelAndView = commonService.editSourcePage("source", receivedPayload);
+		ModelAndView modelAndView = commonService.renameSourcePage("management", receivedPayload);
 
 		ModelAndViewAssert.assertViewName(modelAndView, "management");
 		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
 	}
 
 	@Test
-	void editSourcePage_ExistingTitleAndTxt() {
+	void renameSourcePage_AllValid() {
 		List<String> receivedTitles = new ArrayList<>();
-		receivedTitles.add("Title 3");
+		receivedTitles.add("Title 2");
 		Payload receivedPayload = new Payload(
 				false,
 				null,
@@ -334,42 +422,43 @@ class CommonServiceEditSourcePageTest {
 				"",
 				null,
 				null,
-				"",
+				"Title 3",
 				receivedTitles
 		);
 
-		String expectedTitle = receivedTitles.get(0);
-		String expectedFilename = "title_3";
-		List<String> expectedTitles = List.of(expectedTitle);
-		when(titleRepository.findByTitle(expectedTitles.get(0)))
-				.thenReturn(Optional.of(new TitleEntity(3L, expectedTitle, expectedFilename, 2L, 4L)));
+		when(titleRepository.findByTitle(receivedTitles.get(0)))
+				.thenReturn(Optional.of(new TitleEntity(3L, "Title 2", "title_2", 2L, 4L)));
 
-		String content = "Line 1\nLine 2\n";
-//		List<String> listContent = List.of("Line 1", "Line 2");
-		when(txtRepository.findById(2L))
-				.thenReturn(Optional.of(new TxtEntity(2L, content)));
-/*
-		when(processRecords.stringToList(content))
-				.thenReturn(listContent);
-*/
+		when(titleRepository.findByTitle("Title 3"))
+				.thenReturn(Optional.empty());
+
+		when(fileOperations.generateFilename("Title 3", titleRepository))
+				.thenReturn("title_3");
+
+		when(titleRepository.save(new TitleEntity("Title 3", "title_3", 2L, 4L)))
+				.thenReturn(new TitleEntity(5L, "Title 3", "title_3", 2L, 4L));
+
+		List<String> titles = List.of("Title 1", "Title 3");
+		when(processRecords.getAllTitles(titleRepository))
+				.thenReturn(titles);
 
 		Payload expectedPayload = new Payload(
+				false,
 				null,
-				content,
-				true,
 				null,
 				"",
+				"PAGE HAS BEEN RENAMED.",
 				null,
 				null,
-				expectedTitle,
-				null
+				"",
+				titles
 		);
 		Map<String, Object> model = new HashMap<>();
 		model.put("payload", expectedPayload);
 
-		ModelAndView modelAndView = commonService.editSourcePage("source", receivedPayload);
+		ModelAndView modelAndView = commonService.renameSourcePage("management", receivedPayload);
 
-		ModelAndViewAssert.assertViewName(modelAndView, "source");
+		ModelAndViewAssert.assertViewName(modelAndView, "management");
 		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
 	}
 }

@@ -65,7 +65,7 @@ class CommonServiceGenerateHtmlTest {
 				"PLEASE CONFIRM GENERATING PAGES.",
 				null,
 				null,
-				null,
+				"",
 				titles
 		);
 		Map<String, Object> model = new HashMap<>();
@@ -91,7 +91,7 @@ class CommonServiceGenerateHtmlTest {
 				message,
 				null,
 				null,
-				null,
+				"",
 				receivedTitles
 		);
 
@@ -107,7 +107,7 @@ class CommonServiceGenerateHtmlTest {
 				"PLEASE CONFIRM GENERATING PAGES.",
 				null,
 				null,
-				null,
+				"",
 				titles
 		);
 		Map<String, Object> model = new HashMap<>();
@@ -133,7 +133,7 @@ class CommonServiceGenerateHtmlTest {
 				message,
 				null,
 				null,
-				null,
+				"",
 				receivedTitles
 		);
 
@@ -149,7 +149,7 @@ class CommonServiceGenerateHtmlTest {
 				"PLEASE CONFIRM GENERATING PAGES.",
 				null,
 				null,
-				null,
+				"",
 				titles
 		);
 		Map<String, Object> model = new HashMap<>();
@@ -175,7 +175,7 @@ class CommonServiceGenerateHtmlTest {
 				message,
 				null,
 				null,
-				null,
+				"",
 				receivedTitles
 		);
 
@@ -194,7 +194,7 @@ class CommonServiceGenerateHtmlTest {
 				"12 PAGES IN 24 SECONDS HAS BEEN PROCESSED.",
 				null,
 				null,
-				null,
+				"",
 				titles
 		);
 		Map<String, Object> model = new HashMap<>();
