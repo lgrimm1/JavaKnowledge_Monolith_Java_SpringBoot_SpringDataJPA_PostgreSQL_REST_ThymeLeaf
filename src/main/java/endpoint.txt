@@ -10,7 +10,9 @@ POST    /management             response view: "management"
 
 POST    /source/new             response view: "source"
 
-POST    /source/edit            response view "source" | "management"
+POST    /source/edit            response view: "source" | "management"
+
+POST    /rename                 response view: "management"
 
 POST    /delete                 response view: "management"
 

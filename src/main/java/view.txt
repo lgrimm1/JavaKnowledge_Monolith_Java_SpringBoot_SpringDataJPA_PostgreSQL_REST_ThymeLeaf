@@ -49,6 +49,8 @@ message text field
 list of all titles
 "New Source Page" button                    POST /source/new    -
 "Edit Source Page" button                   POST /source/edit   {"titles": [<String>, ...]}
+new title text field
+"Rename Source Page" button                 POST /rename        {"titles": [<String>, ...], "title": <String>}
 "Browse files" button
 "Confirm" checkbox
 "Delete Source Page(s)" button              POST /delete        {"titles": [<String>, ...], "confirm": <boolean>}
@@ -56,7 +58,7 @@ list of all titles
 "Publish Static Pages" button               POST /publish       {"confirm": <boolean>}
 "Import Source Files"                       POST /import        {"files": <String>, "confirm": <boolean>}
 "Back" button                               GET /               -
-Total returned fields: {"titles": [<String>, ...], "files": <String>, "confirm": <boolean>, "message": <String>}
+Total returned fields: {"titles": [<String>, ...], "files": <String>, "confirm": <boolean>, "message": <String>, "title": <String>}
 
 
 "source"
