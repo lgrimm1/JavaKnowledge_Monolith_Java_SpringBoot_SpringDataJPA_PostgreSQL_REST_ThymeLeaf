@@ -107,4 +107,10 @@ public class CommonController {
 		model.asMap().clear();
 		return commonService.generateHtml("management", payload);
 	}
+
+	@PostMapping("/rename")
+	public ModelAndView renameSourcePage(@ModelAttribute("payload") Payload payload, Model model) {
+		model.asMap().clear();
+		return commonService.renameSourcePage("management", payload);
+	}
 }

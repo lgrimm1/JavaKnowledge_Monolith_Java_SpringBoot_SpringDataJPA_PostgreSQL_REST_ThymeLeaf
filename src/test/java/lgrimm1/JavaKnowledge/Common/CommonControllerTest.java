@@ -161,6 +161,7 @@ class CommonControllerTest {
 		Boolean confirm = false;
 		String files = "";
 		String message = "message text";
+		String title = "";
 		List<String> titles = List.of("Title 1", "Title 2");
 		Payload payload2 = new Payload(
 				confirm,
@@ -170,7 +171,7 @@ class CommonControllerTest {
 				message,
 				null,
 				null,
-				null,
+				title,
 				titles
 		);
 
@@ -195,6 +196,7 @@ class CommonControllerTest {
 		Boolean confirm = false;
 		String files = "";
 		String message = "message text";
+		String title = "";
 		List<String> titles = List.of("Title 1", "Title 2");
 		Payload payload = new Payload(
 				confirm,
@@ -204,14 +206,14 @@ class CommonControllerTest {
 				message,
 				null,
 				null,
-				null,
+				title,
 				titles
 		);
 
 		String content = "";
 		Boolean editExistingPage = false;
 		String message2 = "message text";
-		String title = "";
+		String title2 = "";
 		Payload payload2 = new Payload(
 				null,
 				content,
@@ -220,7 +222,7 @@ class CommonControllerTest {
 				message2,
 				null,
 				null,
-				title,
+				title2,
 				null
 		);
 
@@ -245,6 +247,7 @@ class CommonControllerTest {
 		Boolean confirm = false;
 		String files = "";
 		String message = "message text";
+		String title = "";
 		List<String> titles = List.of("Title 1", "Title 2");
 		Payload payload = new Payload(
 				confirm,
@@ -254,14 +257,14 @@ class CommonControllerTest {
 				message,
 				null,
 				null,
-				null,
+				title,
 				titles
 		);
 
 		String content = "Line 1\nLine 2\n";
 		Boolean editExistingPage = true;
 		String message2 = "message text";
-		String title = "Title 1";
+		String title2 = "Title 1";
 		Payload payload2 = new Payload(
 				null,
 				content,
@@ -270,7 +273,7 @@ class CommonControllerTest {
 				message2,
 				null,
 				null,
-				title,
+				title2,
 				null
 		);
 
@@ -292,10 +295,11 @@ class CommonControllerTest {
 
 	@Test
 	void deleteSourcePages() throws Exception {
-		List<String> titles = List.of("Title 1", "Title 2");
 		String files = "";
 		Boolean confirm = true;
 		String message = "message text";
+		String title = "";
+		List<String> titles = List.of("Title 1", "Title 2");
 		Payload payload = new Payload(
 				confirm,
 				null,
@@ -304,7 +308,7 @@ class CommonControllerTest {
 				message,
 				null,
 				null,
-				null,
+				title,
 				titles
 		);
 
@@ -319,7 +323,7 @@ class CommonControllerTest {
 				message2,
 				null,
 				null,
-				null,
+				title,
 				titles2
 		);
 
@@ -341,10 +345,11 @@ class CommonControllerTest {
 
 	@Test
 	void publishPages() throws Exception {
-		List<String> titles = List.of("Title 1");
-		String files = "";
 		Boolean confirm = true;
+		String files = "";
 		String message = "message text";
+		String title = "";
+		List<String> titles = List.of("Title 1");
 		Payload payload = new Payload(
 				confirm,
 				null,
@@ -353,13 +358,13 @@ class CommonControllerTest {
 				message,
 				null,
 				null,
-				null,
+				title,
 				titles
 		);
 
-		List<String> titles2 = List.of("Title 1", "Title 2");
 		Boolean confirm2 = false;
 		String message2 = "message text 2";
+		List<String> titles2 = List.of("Title 1", "Title 2");
 		Payload payload2 = new Payload(
 				confirm2,
 				null,
@@ -368,7 +373,7 @@ class CommonControllerTest {
 				message2,
 				null,
 				null,
-				null,
+				title,
 				titles2
 		);
 
@@ -390,10 +395,10 @@ class CommonControllerTest {
 
 	@Test
 	void addFormula() throws Exception {
-		String title = "Title 1";
 		String content = "Line 1\nLine 2\n";
 		Boolean editExistingPage = true;
 		String message = "message text";
+		String title = "Title 1";
 		Payload payload = new Payload(
 				null,
 				content,
@@ -438,10 +443,10 @@ class CommonControllerTest {
 
 	@Test
 	void savePage() throws Exception {
-		String title = "Title 1";
-		Boolean editExistingPage = true;
 		String content = "Line 1\nLine 2\n";
+		Boolean editExistingPage = true;
 		String message = "message text";
+		String title = "Title 1";
 		Payload payload = new Payload(
 				null,
 				content,
@@ -485,10 +490,11 @@ class CommonControllerTest {
 
 	@Test
 	void importTxt() throws Exception {
-		List<String> titles = List.of("Title 1");
-		String files = "file_3;file_4";
 		Boolean confirm = true;
+		String files = "file_3;file_4";
 		String message = "message text";
+		String title = "";
+		List<String> titles = List.of("Title 1");
 		Payload payload = new Payload(
 				confirm,
 				null,
@@ -497,13 +503,13 @@ class CommonControllerTest {
 				message,
 				null,
 				null,
-				null,
+				title,
 				titles
 		);
 
-		List<String> titles2 = List.of("Title 1", "Title 2", "Title 3", "Title 4");
 		Boolean confirm2 = false;
 		String message2 = "message text 2";
+		List<String> titles2 = List.of("Title 1", "Title 2", "Title 3", "Title 4");
 		Payload payload2 = new Payload(
 				confirm2,
 				null,
@@ -512,7 +518,7 @@ class CommonControllerTest {
 				message2,
 				null,
 				null,
-				null,
+				title,
 				titles2
 		);
 
@@ -534,10 +540,11 @@ class CommonControllerTest {
 
 	@Test
 	void generateHtml() throws Exception {
-		List<String> titles = List.of("Title 1");
-		String files = "";
 		Boolean confirm = true;
+		String files = "";
 		String message = "message text";
+		String title = "";
+		List<String> titles = List.of("Title 1");
 		Payload payload = new Payload(
 				confirm,
 				null,
@@ -546,13 +553,13 @@ class CommonControllerTest {
 				message,
 				null,
 				null,
-				null,
+				title,
 				titles
 		);
 
-		List<String> titles2 = List.of("Title 1", "Title 2");
 		Boolean confirm2 = false;
 		String message2 = "message text 2";
+		List<String> titles2 = List.of("Title 1", "Title 2");
 		Payload payload2 = new Payload(
 				confirm2,
 				null,
@@ -561,7 +568,7 @@ class CommonControllerTest {
 				message2,
 				null,
 				null,
-				null,
+				title,
 				titles2
 		);
 
@@ -572,6 +579,57 @@ class CommonControllerTest {
 		mockMvc
 				.perform(
 						post("/generate")
+								.flashAttr("payload", payload)
+				)
+				.andExpect(status().isOk())
+				.andDo(print())
+				.andExpect(view().name("management"))
+				.andExpect(model().size(1))
+				.andExpect(model().attribute("payload", payload2));
+	}
+
+	@Test
+	void renameSourcePage() throws Exception {
+		Boolean confirm = true;
+		String files = "";
+		String message = "message text";
+		String title = "Title 2";
+		List<String> titles = List.of("Title 1");
+		Payload payload = new Payload(
+				confirm,
+				null,
+				null,
+				files,
+				message,
+				null,
+				null,
+				title,
+				titles
+		);
+
+		Boolean confirm2 = false;
+		String message2 = "message text 2";
+		String title2 = "";
+		List<String> titles2 = List.of("Title 2");
+		Payload payload2 = new Payload(
+				confirm2,
+				null,
+				null,
+				"",
+				message2,
+				null,
+				null,
+				title2,
+				titles2
+		);
+
+		ModelAndView modelAndView = new ModelAndView("management", "payload", payload2);
+		when(commonService.renameSourcePage("management", payload))
+				.thenReturn(modelAndView);
+
+		mockMvc
+				.perform(
+						post("/rename")
 								.flashAttr("payload", payload)
 				)
 				.andExpect(status().isOk())
