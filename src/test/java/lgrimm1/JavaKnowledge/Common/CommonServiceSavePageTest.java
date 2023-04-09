@@ -150,11 +150,11 @@ class CommonServiceSavePageTest {
 	}
 
 	@Test
-	void savePage_NullContentEditButNonExistent() {
+	void savePage_Edit_NullContent_NonExistent() {
 		String content = null;
 		boolean editExistingPage = true;
 		String message = "";
-		String title = "Title";
+		String title = "Title 1";
 		Payload receivedPayload = new Payload(
 				null,
 				content,
@@ -191,11 +191,11 @@ class CommonServiceSavePageTest {
 	}
 
 	@Test
-	void savePage_EditButNonExistent() {
+	void savePage_Edit_NonExistent() {
 		String content = "Line 1\nLine 2\n";
 		boolean editExistingPage = true;
 		String message = "";
-		String title = "Title";
+		String title = "Title 1";
 		Payload receivedPayload = new Payload(
 				null,
 				content,
@@ -232,11 +232,11 @@ class CommonServiceSavePageTest {
 	}
 
 	@Test
-	void savePage_EditExistent() {
+	void savePage_Edit_Existent() {
 		String content = "Line 1\nLine 2\n";
 		boolean editExistingPage = true;
 		String message = "";
-		String title = "Title";
+		String title = "Title 1";
 		Payload receivedPayload = new Payload(
 				null,
 				content,
@@ -250,13 +250,15 @@ class CommonServiceSavePageTest {
 		);
 
 		when(titleRepository.findByTitle(title))
-				.thenReturn(Optional.of(new TitleEntity(2L, "Original title", "original_file_name", 3L, 4L)));
+				.thenReturn(Optional.of(new TitleEntity(2L, "Title 1", "title_1", 3L, 4L)));
 		when(txtRepository.save(new TxtEntity(content)))
 				.thenReturn(new TxtEntity(13L, content));
 		when(htmlRepository.save(new HtmlEntity(new ArrayList<>(), new ArrayList<>())))
 				.thenReturn(new HtmlEntity(14L, new ArrayList<>(), new ArrayList<>()));
-		when(titleRepository.save(new TitleEntity(title, "file_name", 13L, 14L)))
-				.thenReturn(new TitleEntity(12L, title, "file_name", 13L, 14L));
+		when(fileOperations.generateFilename(title, titleRepository))
+				.thenReturn("title_1");
+		when(titleRepository.save(new TitleEntity(title, "title_1", 13L, 14L)))
+				.thenReturn(new TitleEntity(12L, title, "title_1", 13L, 14L));
 
 		Payload expectedPayload = new Payload(
 				null,
@@ -279,11 +281,11 @@ class CommonServiceSavePageTest {
 	}
 
 	@Test
-	void savePage_NewButExistent() {
+	void savePage_New_Existent() {
 		String content = "Line 1\nLine 2\n";
 		boolean editExistingPage = false;
 		String message = "";
-		String title = "Title";
+		String title = "Title 1";
 		Payload receivedPayload = new Payload(
 				null,
 				content,
@@ -297,7 +299,7 @@ class CommonServiceSavePageTest {
 		);
 
 		when(titleRepository.findByTitle(title))
-				.thenReturn(Optional.of(new TitleEntity(2L, "Original title", "original_file_name", 3L, 4L)));
+				.thenReturn(Optional.of(new TitleEntity(2L, "Title 1", "title_1", 3L, 4L)));
 
 		Payload expectedPayload = new Payload(
 				null,
@@ -320,11 +322,11 @@ class CommonServiceSavePageTest {
 	}
 
 	@Test
-	void savePage_NewNonExistent() {
+	void savePage_New_NonExistent() {
 		String content = "Line 1\nLine 2\n";
 		boolean editExistingPage = false;
 		String message = "";
-		String title = "Title";
+		String title = "Title 1";
 		Payload receivedPayload = new Payload(
 				null,
 				content,
@@ -347,35 +349,40 @@ class CommonServiceSavePageTest {
 				.thenReturn(new TxtEntity(13L, content));
 		when(htmlRepository.save(new HtmlEntity(new ArrayList<>(), new ArrayList<>())))
 				.thenReturn(new HtmlEntity(14L, new ArrayList<>(), new ArrayList<>()));
-		when(titleRepository.save(new TitleEntity(title, "file_name", 13L, 14L)))
-				.thenReturn(new TitleEntity(12L, title, "file_name", 13L, 14L));
+		when(fileOperations.generateFilename(title, titleRepository))
+				.thenReturn("title_1");
+		when(titleRepository.save(new TitleEntity(title, "title_1", 13L, 14L)))
+				.thenReturn(new TitleEntity(12L, title, "title_1", 13L, 14L));
+		List<String> titles = List.of("Title 1", "Title 2");
+		when(processRecords.getAllTitles(titleRepository))
+				.thenReturn(titles);
 
 		Payload expectedPayload = new Payload(
+				false,
 				null,
-				content,
-				true,
 				null,
+				"",
 				"SOURCE PAGE HAS BEEN SAVED.",
 				null,
 				null,
-				title,
-				null
+				"",
+				titles
 		);
 		Map<String, Object> model = new HashMap<>();
 		model.put("payload", expectedPayload);
 
 		ModelAndView modelAndView = commonService.savePage("source", receivedPayload);
 
-		ModelAndViewAssert.assertViewName(modelAndView, "source");
+		ModelAndViewAssert.assertViewName(modelAndView, "management");
 		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
 	}
 
 	@Test
-	void savePage_NullEditFlagAndExistent() {
+	void savePage_NullEditExistingPage_Existent() {
 		String content = "Line 1\nLine 2\n";
 		Boolean editExistingPage = null;
 		String message = "";
-		String title = "Title";
+		String title = "Title 1";
 		Payload receivedPayload = new Payload(
 				null,
 				content,
@@ -389,7 +396,7 @@ class CommonServiceSavePageTest {
 		);
 
 		when(titleRepository.findByTitle(title))
-				.thenReturn(Optional.of(new TitleEntity(2L, "Original title", "original_file_name", 3L, 4L)));
+				.thenReturn(Optional.of(new TitleEntity(2L, title, "title_1", 3L, 4L)));
 
 		Payload expectedPayload = new Payload(
 				null,

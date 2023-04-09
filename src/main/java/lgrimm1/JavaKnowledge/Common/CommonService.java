@@ -412,7 +412,6 @@ public class CommonService {
 			);
 			return new ModelAndView(initialView, "payload", payload2);
 		}
-		String message;
 		String title = payload.getTitle();
 		String content = payload.getContent();
 		Boolean editExistingPage = payload.getEditExistingPage();
@@ -423,21 +422,20 @@ public class CommonService {
 			editExistingPage = false;
 		}
 		if (title == null || title.isBlank()) {
-			title = title == null || title.isBlank() ? "" : title;
-			message = "PLEASE DEFINE A TITLE.";
 			Payload payload2 = new Payload(
 					null,
 					content,
 					editExistingPage,
 					null,
-					message,
+					"PLEASE DEFINE A TITLE.",
 					null,
 					null,
-					title,
+					"",
 					null
 			);
 			return new ModelAndView(initialView, "payload", payload2);
 		}
+		String message;
 		Optional<TitleEntity> optionalTitleEntity = titleRepository.findByTitle(title);
 		if (editExistingPage) {
 			if (optionalTitleEntity.isEmpty()) {
@@ -452,31 +450,54 @@ public class CommonService {
 				titleRepository.save(new TitleEntity(title, fileOperations.generateFilename(title, titleRepository), txtEntity.getId(), htmlEntity.getId()));
 				message = "SOURCE PAGE HAS BEEN OVERWRITTEN.";
 			}
+			Payload payload2 = new Payload(
+					null,
+					content,
+					editExistingPage,
+					null,
+					message,
+					null,
+					null,
+					title,
+					null
+			);
+			return new ModelAndView(initialView, "payload", payload2);
 		}
 		else { //editExistingPage == false
 			if (optionalTitleEntity.isPresent()) {
 				message = "THERE IS AN EXISTING PAGE WITH THIS TITLE.";
+				Payload payload2 = new Payload(
+						null,
+						content,
+						editExistingPage,
+						null,
+						message,
+						null,
+						null,
+						title,
+						null
+				);
+				return new ModelAndView(initialView, "payload", payload2);
 			}
 			else {
 				HtmlEntity htmlEntity = htmlRepository.save(new HtmlEntity(new ArrayList<>(), new ArrayList<>()));
 				TxtEntity txtEntity = txtRepository.save(new TxtEntity(content));
 				titleRepository.save(new TitleEntity(title, fileOperations.generateFilename(title, titleRepository), txtEntity.getId(), htmlEntity.getId()));
-				editExistingPage = true;
 				message = "SOURCE PAGE HAS BEEN SAVED.";
 			}
+			Payload payload2 = new Payload(
+					false,
+					null,
+					null,
+					"",
+					message,
+					null,
+					null,
+					"",
+					processRecords.getAllTitles(titleRepository)
+			);
+			return new ModelAndView("management", "payload", payload2);
 		}
-		Payload payload2 = new Payload(
-				null,
-				content,
-				editExistingPage,
-				null,
-				message,
-				null,
-				null,
-				title,
-				null
-		);
-		return new ModelAndView(initialView, "payload", payload2);
 	}
 
 	public ModelAndView importTxt(String initialView, Payload payload) {
