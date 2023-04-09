@@ -28,13 +28,10 @@
         <table class="formatter_table">
             <tr>
                 <td style="width: 75%">
-                    <!--
-                                        <input type="text" th:field="*{search_text}" autofocus />
-                    -->
                     <input type="search" th:field="*{searchText}" placeholder="Search for title or content..." autofocus />
                 </td>
                 <td style="width: 25%">
-                    <input type="submit" value="SEARCH" formaction="/search" formmethod="post" />
+                    <input type="submit" value="SEARCH" class="submit_full" formaction="/search" formmethod="post" />
                 </td>
             </tr>
         </table>
@@ -44,7 +41,7 @@
         <tr>
             <td></td>
             <td>
-                <input type="submit" value="MANAGEMENT" class="button" formaction="/management" formmethod="post" />
+                <input type="submit" value="MANAGEMENT" class="submit_full" formaction="/management" formmethod="post" />
             </td>
             <td></td>
         </tr>

@@ -158,9 +158,16 @@ iframe {
      border-left: none;
 }
 
-input[type="submit"], input[type="button"] {
+.submit_full {
+    width: 90%
+}
+
+.submit_half {
+    width: 44%
+}
+
+input[type="submit"] {
     height: 32px;
-    width: 90%;
     border: 1px solid;
     border-radius: 6px;
     border-color: DarkSlateGray;
@@ -188,7 +195,7 @@ input[type="file"] {
 .custom_file_upload {
     display: inline-block;
     height: 32px;
-    width: 90%;
+    width: 44%;
     border: 1px solid;
     border-radius: 6px;
     background-color: LightGray;
