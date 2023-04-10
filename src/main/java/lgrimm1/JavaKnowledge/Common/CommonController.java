@@ -66,35 +66,6 @@ public class CommonController {
 		return commonService.publishPages("management", payload);
 	}
 
-	@PostMapping("/add/{formulaName}")
-	public ModelAndView addFormula(@PathVariable("formulaName") String formulaName,
-								   @ModelAttribute("payload") Payload payload,
-								   Model model) {
-		model.asMap().clear();
-		return commonService.addFormula("source", formulaName, payload);
-/*
-		return commonService.addFormula("source",
-				formulaName,
-				payload.getTitle(),
-				payload.getFileName(),
-				payload.getContent(),
-				payload.getEditExistingPage());
-*/
-	}
-
-	@PostMapping("/save")
-	public ModelAndView savePage(@ModelAttribute("payload") Payload payload, Model model) {
-		model.asMap().clear();
-		return commonService.savePage("source", payload);
-/*
-		return commonService.savePage("source",
-				payload.getTitle(),
-				payload.getFileName(),
-				payload.getContent(),
-				payload.getEditExistingPage());
-*/
-	}
-
 	@PostMapping("/import")
 	public ModelAndView importTxt(@ModelAttribute("payload") Payload payload, Model model) {
 		model.asMap().clear();
@@ -112,5 +83,26 @@ public class CommonController {
 	public ModelAndView renameSourcePage(@ModelAttribute("payload") Payload payload, Model model) {
 		model.asMap().clear();
 		return commonService.renameSourcePage("management", payload);
+	}
+
+	@PostMapping("/add/{formulaName}")
+	public ModelAndView addFormula(@PathVariable("formulaName") String formulaName,
+								   @ModelAttribute("payload") Payload payload,
+								   Model model) {
+		model.asMap().clear();
+		return commonService.addFormula("source", formulaName, payload);
+	}
+
+	@PostMapping("/save")
+	public ModelAndView savePage(@ModelAttribute("payload") Payload payload, Model model) {
+		model.asMap().clear();
+		return commonService.savePage("source", payload);
+/*
+		return commonService.savePage("source",
+				payload.getTitle(),
+				payload.getFileName(),
+				payload.getContent(),
+				payload.getEditExistingPage());
+*/
 	}
 }
