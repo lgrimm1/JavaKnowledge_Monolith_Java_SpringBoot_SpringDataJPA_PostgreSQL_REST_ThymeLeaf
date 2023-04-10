@@ -61,19 +61,23 @@
                 <input type="hidden" th:field="*{editExistingPage}">
                 <fieldset>
                     <legend>&nbsp;Content&nbsp;</legend>
-                    <textarea id="content" th:field="*{content}" rows="15" placeholder="Enter page content..." wrap="soft" />
+                    <textarea id="content" th:field="*{content}" rows="15" placeholder="Enter page content..." wrap="soft" spellcheck="false" />
                 </fieldset>
                 <br>
             </td>
             <td style="width: 35%">
                 <fieldset>
                     <legend>&nbsp;Inserts&nbsp;</legend>
-                    <input type="submit" value="HEADER 1" class="submit_full" formaction="/add/header1" formmethod="post" /><br>
-                    <input type="submit" value="HEADER 2" class="submit_full" formaction="/add/header2" formmethod="post" /><br>
-                    <input type="submit" value="TABLE" class="submit_full" formaction="/add/table" formmethod="post" /><br>
-                    <input type="submit" value="EXAMPLE" class="submit_full" formaction="/add/example" formmethod="post" /><br>
+                    <input type="submit" value="HEADER 1" class="submit_half" formaction="/add/header1" formmethod="post" />
+                    <input type="submit" value="HEADER 2" class="submit_half" formaction="/add/header2" formmethod="post" /><br>
+                    <input type="submit" value="TABLE" class="submit_half" formaction="/add/table" formmethod="post" />
+                    <input type="submit" value="EXAMPLE" class="submit_half" formaction="/add/example" formmethod="post" /><br>
                     <input type="submit" value="INTERNAL REFERENCE" class="submit_full" formaction="/add/reference" formmethod="post" /><br>
                     <input type="submit" value="EXTERNAL REFERENCE" class="submit_full" formaction="/add/more" formmethod="post" /><br>
+                    <input type="submit" value="LIST ITEM" class="submit_half" formaction="/add/list" formmethod="post" />
+                    <input type="submit" value="TABULATOR" class="submit_half" formaction="/add/tab" formmethod="post" /><br>
+                    <input type="submit" value="DOUBLE TAB" class="submit_half" formaction="/add/tab2" formmethod="post" />
+                    <input type="submit" value="TRIPLE TAB" class="submit_half" formaction="/add/tab3" formmethod="post" /><br>
                 </fieldset>
                 <br>
                 <input type="submit" value="SAVE" class="submit_full" formaction="/save" formmethod="post" />

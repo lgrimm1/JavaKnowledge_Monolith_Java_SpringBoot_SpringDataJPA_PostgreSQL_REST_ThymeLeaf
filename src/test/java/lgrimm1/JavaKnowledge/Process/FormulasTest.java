@@ -35,7 +35,7 @@ class FormulasTest {
 
 	@Test
 	void getVersions() {
-		Assertions.assertEquals("Up to Java 17, Spring Boot 3 (Hibernate 6), JUnit 5, PostgreSQL 11, HTML 5, CSS 3",
+		Assertions.assertEquals("Up to Java 17, Spring Boot 3 (Hibernate 6), JUnit 5, PostgreSQL 11, HTML 5, CSS 3.",
 				formulas.getVersions());
 	}
 	@Test
@@ -103,6 +103,30 @@ class FormulasTest {
 	void getFormula_More() {
 		List<String> expected = List.of("MORE HERE: ...");
 		Assertions.assertEquals(expected, formulas.getFormula("mOrE"));
+	}
+
+	@Test
+	void getFormula_List() {
+		List<String> expected = List.of("    - ...");
+		Assertions.assertEquals(expected, formulas.getFormula("lIsT"));
+	}
+
+	@Test
+	void getFormula_Tab() {
+		List<String> expected = List.of("    ...");
+		Assertions.assertEquals(expected, formulas.getFormula("tAb"));
+	}
+
+	@Test
+	void getFormula_Tab2() {
+		List<String> expected = List.of("        ...");
+		Assertions.assertEquals(expected, formulas.getFormula("tAb2"));
+	}
+
+	@Test
+	void getFormula_Tab3() {
+		List<String> expected = List.of("            ...");
+		Assertions.assertEquals(expected, formulas.getFormula("tAb3"));
 	}
 
 	@Test

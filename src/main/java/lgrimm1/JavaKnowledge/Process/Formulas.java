@@ -24,12 +24,7 @@ public class Formulas {
 	private final String tabInSpaces = generateRepeatedPattern(" ", 4);
 	private final String tabInHtml = generateRepeatedPattern("&nbsp;", 4);
 	private final String spaceInHtml = "&nbsp;";
-	private final String versions = "Up to Java 17, Spring Boot 3 (Hibernate 6), JUnit 5, PostgreSQL 11, HTML 5, CSS 3";
-/*
-	private enum ConstantName {
-		SUPERLINE, SUBLINE, TAB_IN_SPACES, TAB_IN_HTML, SPACE_IN_HTML, LEVEL_1_SEPARATOR, VERSIONS
-	}
-*/
+	private final String versions = "Up to Java 17, Spring Boot 3 (Hibernate 6), JUnit 5, PostgreSQL 11, HTML 5, CSS 3.";
 
 	private final List<String> FORMULA_TITLE = List.of(
 			superLine,
@@ -58,6 +53,10 @@ public class Formulas {
 	);
 	private final List<String> FORMULA_REFERENCE = List.of("=>TITLE[;HEADER]");
 	private final List<String> FORMULA_MORE = List.of("MORE HERE: ...");
+	private final List<String> FORMULA_LIST_ITEM = List.of(tabInSpaces + "- ...");
+	private final List<String> FORMULA_TAB = List.of(tabInSpaces + "...");
+	private final List<String> FORMULA_TAB2 = List.of(tabInSpaces + tabInSpaces + "...");
+	private final List<String> FORMULA_TAB3 = List.of(tabInSpaces + tabInSpaces + tabInSpaces + "...");
 
 	public String getSuperLine() {
 		return superLine;
@@ -98,24 +97,13 @@ public class Formulas {
 			case "EXAMPLE" -> FORMULA_EXAMPLE;
 			case "REFERENCE" -> FORMULA_REFERENCE;
 			case "MORE" -> FORMULA_MORE;
+			case "LIST" -> FORMULA_LIST_ITEM;
+			case "TAB" -> FORMULA_TAB;
+			case "TAB2" -> FORMULA_TAB2;
+			case "TAB3" -> FORMULA_TAB3;
 			default -> List.of();
 		};
 	}
-
-/*
-	public String getConstant(ConstantName constantName) {
-		return switch (constantName) {
-			case SUPERLINE -> SUPERLINE;
-			case SUBLINE -> SUBLINE;
-			case TAB_IN_SPACES -> TAB_IN_SPACES;
-			case TAB_IN_HTML -> TAB_IN_HTML;
-			case SPACE_IN_HTML -> SPACE_IN_HTML;
-			case LEVEL_1_SEPARATOR -> LEVEL_1_SEPARATOR;
-			case VERSIONS -> VERSIONS;
-		};
-
-	}
-*/
 
 	public String generateTabInSpaces(int repetition) {
 		if (repetition < 1) {
