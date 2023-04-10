@@ -6,9 +6,9 @@ Tests are divided to test cases. A test case represents a certain group of incom
 A well-designed test series makes it sure that if passes, the code is in proper status and works within the needed parameters. Also, when a test case fails, that marks properly that the code lost it properness and helps to identify the source of error.
 
 There are several test strategies:
-    a. unit tests
-    b. behaviour tests
-    c. integration tests
+    - unit tests
+    - behaviour tests
+    - integration tests
 
 A unit test goes through all public part of that unit (e.g. on class, interface, method level etc.) and examines that unit independently for test cases.
 Due to having independent unit tests, when the tested unit changes but the purpose of it does not, it is enough to re-run the corresponding unit test.

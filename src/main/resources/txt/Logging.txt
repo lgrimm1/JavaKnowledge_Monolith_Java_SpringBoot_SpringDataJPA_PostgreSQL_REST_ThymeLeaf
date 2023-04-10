@@ -55,8 +55,8 @@ END OF EXAMPLE
 
 For a class, it is a good practice to put a logger declaration into the first declarations, and upon extending, implementing or importing, adding them to the main class.
 Next to .log, there are two other methods for creating an event:
-    a. .logp: same as .log but takes class name and method name as arguments as well;
-    b. .logrb: same as .logp but takes the resource bundle name as argument as well.
+    - .logp: same as .log but takes class name and method name as arguments as well;
+    - .logrb: same as .logp but takes the resource bundle name as argument as well.
 
 =================================================================================
 2. LOGRECORD

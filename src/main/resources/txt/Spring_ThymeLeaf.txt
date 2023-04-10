@@ -65,8 +65,8 @@ END OF EXAMPLE
 
 In the template, in case the ThymeLeaf is referenced in the <html> tag, within almost all HTML tags the th:... parameters can be used (th refers to ThymeLeaf). Such parameters are for handling data accessed through Spring Boot via ThymeLeaf. In case no such data is accessed in a tag, th parameters should be avoided.
 ThymeLeaf parameters can be defined in two variants of HTML tags:
-    a. opened tag: <tag_name parameters />
-    b. closed tag: <tag_name parameters>...</tag_name>
+    - opened tag: <tag_name parameters />
+    - closed tag: <tag_name parameters>...</tag_name>
 Please note that opened tags are not supported by all browsers.
 
 The general formula for using a tag parameter follows the HTML standards (parameter_name="'value'" for character and text, parameter_name="value" otherwise).
@@ -81,13 +81,13 @@ The for= parameter marks that by its name, the control is for which other contro
 
 Almost any parametrized HTML tag parameter has th: counterpart. In case a page needs template parameters, use the th: version, in case static parameters, use standard version. If needed, these versions can be used in the same tag as well.
 The most used template tag parameters are:
-    a. th:text= (a text)
-    b. th:utext= (a text interpreted as HTML code)
-    c. th:each= (iteration through a collection)
-    d. th:if= (if the condition is true, does a thing)
-    e. th:unless= (if the condition is false, does a thing)
-    f. th:switch= (multiple condition for enumerable-type attribute)
-    g. th:case= (given variant for switched attribute)
+    - th:text= (a text)
+    - th:utext= (a text interpreted as HTML code)
+    - th:each= (iteration through a collection)
+    - th:if= (if the condition is true, does a thing)
+    - th:unless= (if the condition is false, does a thing)
+    - th:switch= (multiple condition for enumerable-type attribute)
+    - th:case= (given variant for switched attribute)
 
 Any variable can be sent in a template, ThymeLeaf recognizes all wrapper classes and theoretically all Collection types. It also can handle classes with subclasses. In order to send a primitive type to a template, convert it to wrapper class. Enums can be used only with tags which are designed to handle limited values e.g. radio input (see later), otherwise use String instead.
 A variable carrying data in the template is called HTML attribute. Its name can be different from Java variable name, the connection is made by the Model or ModelAndView classes in Spring Boot, see later.
@@ -99,18 +99,18 @@ After preparation, the controller will create a static page under the /static fo
 
 The total of data is called model in Java.
 Attributes can be added to the model via utilizing Model or ModelAndView classes:
-    a. model.addAttribute("attribute_name", object);
-    b. modelAndView.addObject("attribute_name", object);
+    - model.addAttribute("attribute_name", object);
+    - modelAndView.addObject("attribute_name", object);
 
 An attribute can be accessed:
-    th:object="${attribute_name}"
+    - th:object="${attribute_name}"
 A field can be accessed (e.g. from within a form or a multiple-value tag with th:each= parameter):
-    th:field="${attribute_name.fieldName}"
-    th:field="*{fieldName}"
+    - th:field="${attribute_name.fieldName}"
+    - th:field="*{fieldName}"
 General access:
-    th:text="${attribute_name}"
-    th:text="${attribute_name.fieldName}"
-    th:text="*{fieldName}"
+    - th:text="${attribute_name}"
+    - th:text="${attribute_name.fieldName}"
+    - th:text="*{fieldName}"
 Please note, th:text= and th:utext= are for printing out data while th:object= and th:field= are for printing out and-or returning data (see forms later).
 
 EXAMPLE FOR A THYMELEAF TEMPLATE (JAVA SIDE, VARIABLES):
@@ -196,31 +196,31 @@ END OF EXAMPLE
 =================================================================================
 In case the value(s) are needed to be sent back to backend, must use form(s) on the page, otherwise the template serves as an output page.
 In order to create and use forms, 3 main steps are needed:
-    a. a request which invokes a template which carries the form on server side
-    b. the activated form on client side, sends a request to server with filled data at submit
-    c. a POST request handler on server side
+    - a request which invokes a template which carries the form on server side
+    - the activated form on client side, sends a request to server with filled data at submit
+    - a POST request handler on server side
 When the first GET, POST etc. request arrives in, the backend prepares the form template and sends it back to the client. The form at Submit sends a defined request to the backend with the filled data which is processed there.
 
 In the template the <form> tag header contains these parameters:
-    a. th:action="@{/endpoint_name}": on this endpoint the submit request will be sent
-    b. th:object="${object-attribute_name}": this attribute is received and sent by the form, contains data presented with the form
-    c. autocomplete="on_or_off": for all inputs, forces the browser to suggest complete values based upon a few typed characters
-    d. method="post": defines what request the form must send when the user submits
-    e. novalidate: no input value validation will happen when submitting (validation on server side)
-    f. id="form_name": unique name of the form with which actions etc. can refer to it
+    - th:action="@{/endpoint_name}": on this endpoint the submit request will be sent
+    - th:object="${object-attribute_name}": this attribute is received and sent by the form, contains data presented with the form
+    - autocomplete="on_or_off": for all inputs, forces the browser to suggest complete values based upon a few typed characters
+    - method="post": defines what request the form must send when the user submits
+    - novalidate: no input value validation will happen when submitting (validation on server side)
+    - id="form_name": unique name of the form with which actions etc. can refer to it
 
 In the template all data which should be sent back, are rendered into input tags and similar as parameter.
 HTML parameters depend on the tag and the input type.
 If the <input> tag contains object or field data:
-    a. type="text", type="number" or type="checkbox" etc.: the input-type
-    b. th:object="${attribute_name}" or th:field="${attribute_name.fieldName}" or th:field="*{fieldName}": the contained data
-    c. value="default_value" or ="'default_value'": fill the input with default value, Reset renders back to this; should not be defined if the form is bound via ThymeLeaf (it knows the defaults)
+    - type="text", type="number" or type="checkbox" etc.: the input-type
+    - th:object="${attribute_name}" or th:field="${attribute_name.fieldName}" or th:field="*{fieldName}": the contained data
+    - value="default_value" or ="'default_value'": fill the input with default value, Reset renders back to this; should not be defined if the form is bound via ThymeLeaf (it knows the defaults)
 If the <input> tag is button-like:
-    a. type="submit", type="reset" or type="button": the type of the button-like control (the latter generally used for calling a script method)
-    b. value="caption on button": the caption of the button-like control, if not defined, uses local default e.g. Submit, Reset
-    c. formaction="/endpoint": define targeted endpoint for submit-type input
-    d. formmethod="post": define targeted query type for submit-type input
-    e. onclick="script_name" or onclick="alert('message_text')": took action in case of click, or shows a dialog, only for button-type input
+    - type="submit", type="reset" or type="button": the type of the button-like control (the latter generally used for calling a script method)
+    - value="caption on button": the caption of the button-like control, if not defined, uses local default e.g. Submit, Reset
+    - formaction="/endpoint": define targeted endpoint for submit-type input
+    - formmethod="post": define targeted query type for submit-type input
+    - onclick="script_name" or onclick="alert('message_text')": took action in case of click, or shows a dialog, only for button-type input
 
 In the template the next types can be used for input, data is defined within the opening tag.
 
@@ -238,136 +238,136 @@ In the template the next types can be used for input, data is defined between th
 ||select|textarea||
 
 Button:
-    a. a button appears
-    b. pressing it means invoking a script method
-    c. with the above parameters more buttons can be used in a form
-    d. the value= parameters defines the button caption
+    - a button appears
+    - pressing it means invoking a script method
+    - with the above parameters more buttons can be used in a form
+    - the value= parameters defines the button caption
 
 Checkbox:
-    a. the checked parameter pre-selects
-    b. usually used together with <label> tag which produces the shown text (consider id= and for= parameters)
+    - the checked parameter pre-selects
+    - usually used together with <label> tag which produces the shown text (consider id= and for= parameters)
 
 Color:
-    a. the browser shows a color brick button, which will launch a color picker
-    b. the value= parameter sets default color, format is #xxxxxx where RGB codes are stored in 2-letter hexa numbers
+    - the browser shows a color brick button, which will launch a color picker
+    - the value= parameter sets default color, format is #xxxxxx where RGB codes are stored in 2-letter hexa numbers
 
 Date:
-    a. the browser shows a divided input field for date with a date picker icon
-    b. format in the background is YYYY-MM-DD
-    c. shown format follows local settings
+    - the browser shows a divided input field for date with a date picker icon
+    - format in the background is YYYY-MM-DD
+    - shown format follows local settings
 
 Datetime-local:
-    a. the browser shows a divided input field for date and time, with a date picker icon
-    b. format in the background is YYYY-MM-DD
-    c. shown format follows local settings
+    - the browser shows a divided input field for date and time, with a date picker icon
+    - format in the background is YYYY-MM-DD
+    - shown format follows local settings
 
 File:
-    a. a localized Browse button appears, next to it the chosen file name or number of files
-    b. the multiple parameter allows the user to enter more than one value
+    - a localized Browse button appears, next to it the chosen file name or number of files
+    - the multiple parameter allows the user to enter more than one value
 
 Email:
-    the multiple parameter allows the user to enter more than one value
+    - the multiple parameter allows the user to enter more than one value
 
 Hidden:
-    a. the input will not be visible but can store data needed e.g. for a field of object still needed to be sent back
-    b. any developer tools etc. reaches, not proper for secure data
+    - the input will not be visible but can store data needed e.g. for a field of object still needed to be sent back
+    - any developer tools etc. reaches, not proper for secure data
 
 Image:
-    a. the src= parameter defines default image file path
-    b. the alt="Submit" parameter activates Submit if image is clicked
-    c. the width= and height= parameters set presentation dimensions (need in case the page design should be pre-set)
-    d. the POST will send X, Y coordinates of the image
+    - the src= parameter defines default image file path
+    - the alt="Submit" parameter activates Submit if image is clicked
+    - the width= and height= parameters set presentation dimensions (need in case the page design should be pre-set)
+    - the POST will send X, Y coordinates of the image
 
 Month:
-    a. month and year can be asked in
-    b. format is YYYY-MM
-    c. Firefox and Safari do not support it
+    - month and year can be asked in
+    - format is YYYY-MM
+    - Firefox and Safari do not support it
 
 Number:
-    text-like appearance with spin buttons
+    - text-like appearance with spin buttons
 
 Radio:
-    a. the value= parameter defines which radio refers to which value of the possible choices
-    b. the first choice is the 0th
-    c. accepts enum as text
-    d. the checked parameter pre-selects
-    e. only one can be selected per name= parameter value, per <form> or per <fieldset>
-    f. more forms and fieldsets can be used on a page at the same time if needed
-    g. usually used together with <label> tag which produces the shown text (consider id= and for= parameters)
+    - the value= parameter defines which radio refers to which value of the possible choices
+    - the first choice is the 0th
+    - accepts enum as text
+    - the checked parameter pre-selects
+    - only one can be selected per name= parameter value, per <form> or per <fieldset>
+    - more forms and fieldsets can be used on a page at the same time if needed
+    - usually used together with <label> tag which produces the shown text (consider id= and for= parameters)
 
 Range:
-    a. a slider appears
-    b. the min= and the max= parameters define the low and high limits
-    c. for submit, an integer number will be sent
+    - a slider appears
+    - the min= and the max= parameters define the low and high limits
+    - for submit, an integer number will be sent
 
 Reset:
-    a. a button appears
-    b. pressing it re-sets the initial values of all inputs etc.
-    c. the value= parameter sets the caption
+    - a button appears
+    - pressing it re-sets the initial values of all inputs etc.
+    - the value= parameter sets the caption
 
 Search:
-    the input behaves like a text input
+    - the input behaves like a text input
 
 Select:
-    a. it works as a combobox (scroll-down list) by default, as a list otherwise
-    b. the size= parameter defines the number of visible items, and the select will work as a list control, otherwise will work as a combobox
-    c. the multiple parameter lets more items to be selected in list control appearance
-    d. <option> sub-tags define from which items can be the input value chosen
-    e. an <option> tag contains the value= parameter which will be posted
-    f. the selected parameter selects an item
-    g. by default, for manually defined items, the first option, for dynamically defined items, the last added option fills the input
-    h. between the opening and closing markers of an <option> tag the displayed text is written
+    - it works as a combobox (scroll-down list) by default, as a list otherwise
+    - the size= parameter defines the number of visible items, and the select will work as a list control, otherwise will work as a combobox
+    - the multiple parameter lets more items to be selected in list control appearance
+    - <option> sub-tags define from which items can be the input value chosen
+    - an <option> tag contains the value= parameter which will be posted
+    - the selected parameter selects an item
+    - by default, for manually defined items, the first option, for dynamically defined items, the last added option fills the input
+    - between the opening and closing markers of an <option> tag the displayed text is written
 
 Submit:
-    a. a button appears
-    b. pressing it sends the form to the controller
-    c. the formaction= parameter can contain endpoint name or URL, reverts the form submit direction
-    d. the formmethod= parameter can contain "get", "post", "patch", "delete" values and overwrites the form request type
-    e. the formtarget="_blank" opens the target on a new page
-    f. the formnovalidate="formnovalidate" reverts from input value validation (overwrites similar settings of the form)
-    g. the value= parameter sets the caption
-    h. with the above parameters more submit buttons can be used in a form
+    - a button appears
+    - pressing it sends the form to the controller
+    - the formaction= parameter can contain endpoint name or URL, reverts the form submit direction
+    - the formmethod= parameter can contain "get", "post", "patch", "delete" values and overwrites the form request type
+    - the formtarget="_blank" opens the target on a new page
+    - the formnovalidate="formnovalidate" reverts from input value validation (overwrites similar settings of the form)
+    - the value= parameter sets the caption
+    - with the above parameters more submit buttons can be used in a form
 
 Textarea:
-    a. multi-line text input
-    b. the rows= and cols= parameters define the visible dimensions (same as using style= local settings e.g. style="width:200px; height:600px;")
-    c. between the opening and closing markers of the tag the starting text can be written
-    d. default height is 3 rows
-    e. wraps the content by default
-    f. the wrap= parameter sets how the wrapped text will be collected when submitting ("hard" will submit the wrapped text, "soft" (only if it does not have effect, use "off" instead) will submit unwrapped text)
+    - multi-line text input
+    - the rows= and cols= parameters define the visible dimensions (same as using style= local settings e.g. style="width:200px; height:600px;")
+    - between the opening and closing markers of the tag the starting text can be written
+    - default height is 3 rows
+    - wraps the content by default
+    - the wrap= parameter sets how the wrapped text will be collected when submitting ("hard" will submit the wrapped text, "soft" (only if it does not have effect, use "off" instead) will submit unwrapped text)
 
 Time:
-    a. the browser shows a divided input field for time
-    b. shown format follows local settings
+    - the browser shows a divided input field for time
+    - shown format follows local settings
 
 Week:
-    a. week can be asked in
-    b. Firefox and Safari do not support it
+    - week can be asked in
+    - Firefox and Safari do not support it
 
 All numerical inputs (number, range, date, datetime-local, month, time, week):
-    a. min="minvalue" and max="maxvalue" can be defined as parameter as well
-    b. the step="step_value" parameter defines by how many numbers should the value jump when the spin buttons are used (only for number and range)
+    - min="minvalue" and max="maxvalue" can be defined as parameter as well
+    - the step="step_value" parameter defines by how many numbers should the value jump when the spin buttons are used (only for number and range)
 
 All text-like inputs (email, password, search, tel, text, url):
-    a. the maxlength="max_character_length" parameter can be used, when reaching the limit no new characters can be entered, no message or hint will be shown to the user, if that is not acceptable, writing Javascript code is needed
-    b. the pattern="pattern_text" parameter sets how the data will appear in the input, and exactly what characters are accepted in its positions, contains [minValue-maxValue]{validForThisLength} blocks, between blocks any characters can be, e.g. [A-Za-z]{3} or [0-9]{6}-[A-Z]{2}
-    c. the placeholder="hint" parameter defines input hint which appears in the empty input with different appearance than the entered data have, appears only when the input is empty
-    d. the list="datalist_id" parameter lets the user optionally choose from pre-defined texts (defined in <datalist> tag) when typing letters into the input, matching is based upon containing, the input accepts any value but in case a pre-set choice is exists, will show it in a popup list under the input
+    - the maxlength="max_character_length" parameter can be used, when reaching the limit no new characters can be entered, no message or hint will be shown to the user, if that is not acceptable, writing Javascript code is needed
+    - the pattern="pattern_text" parameter sets how the data will appear in the input, and exactly what characters are accepted in its positions, contains [minValue-maxValue]{validForThisLength} blocks, between blocks any characters can be, e.g. [A-Za-z]{3} or [0-9]{6}-[A-Z]{2}
+    - the placeholder="hint" parameter defines input hint which appears in the empty input with different appearance than the entered data have, appears only when the input is empty
+    - the list="datalist_id" parameter lets the user optionally choose from pre-defined texts (defined in <datalist> tag) when typing letters into the input, matching is based upon containing, the input accepts any value but in case a pre-set choice is exists, will show it in a popup list under the input
 
 All text-like inputs plus textarea:
-    spell-check is enabled by default for the first 74 rows, to turn it off use spellcheck="false" parameter
+    - spell-check is enabled by default for the first 74 rows, to turn it off use spellcheck="false" parameter
 
 All text-like inputs plus color, date pickers, time:
-    the autocomplete="on_or_off" parameter forces the browser to suggest complete values based upon a few typed characters, overwrites form settings
+    - the autocomplete="on_or_off" parameter forces the browser to suggest complete values based upon a few typed characters, overwrites form settings
 
 All input-types:
-    a. the readonly parameter makes the input unchangeable
-    b. the disabled parameter sets the input read-only and un-clickable, its value will not be sent when submitting
-    c. the required parameter means the input must be filled
-    d. the size="size_in_characters" parameter sets the maximum value length of the applicable input type (default is 20)
-    e. the autofocus parameter forces the focus on the input when the page loads, use it for one input per page
-    f. the form= parameter marks which form the input is part of, it has effect only when in the header of the form the id= parameter is used, such marked inputs can be placed outside the correspondent <form> tag but they still will be part of the correspondent form
-    g. the tabindex= parameter defines order of focusing when pressing TAB (e.g. tabindex="2", default is the order in the code)
+    - the readonly parameter makes the input unchangeable
+    - the disabled parameter sets the input read-only and un-clickable, its value will not be sent when submitting
+    - the required parameter means the input must be filled
+    - the size="size_in_characters" parameter sets the maximum value length of the applicable input type (default is 20)
+    - the autofocus parameter forces the focus on the input when the page loads, use it for one input per page
+    - the form= parameter marks which form the input is part of, it has effect only when in the header of the form the id= parameter is used, such marked inputs can be placed outside the correspondent <form> tag but they still will be part of the correspondent form
+    - the tabindex= parameter defines order of focusing when pressing TAB (e.g. tabindex="2", default is the order in the code)
 
 Restrictions are useful on form-side but via Javascript it is possible to overwrite or get around them. Always check data on server-side.
 Without setting width and height for an image, the layout will change as the image loads. For proper design, this should be avoided, set the dimensions beforehand.

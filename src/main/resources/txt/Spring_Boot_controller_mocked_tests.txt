@@ -68,15 +68,15 @@ END OF EXAMPLE
 
 In test cases, first task is mocking the correspondent service method with Mockito.
 As second task, with MockMVC, the next data should be defined:
-    a. incoming request type (get, post, put, patch, delete)
-    b. endpoint (with query if there is)
-    c. incoming media type (if there is incoming data)
-    d. accepted incoming media type (if there is incoming data)
-    e. incoming request body (JSON or XML or other, in String)
-    f. expected outgoing media type (if there is outgoing data)
-    g. expected outgoing data (if there is; can be JSON or XLS or other, in String)
-    h. expected HTTP response code (codes are exchanged to verbal constants)
-    i. expected HTTP response message
+    - incoming request type (get, post, put, patch, delete)
+    - endpoint (with query if there is)
+    - incoming media type (if there is incoming data)
+    - accepted incoming media type (if there is incoming data)
+    - incoming request body (JSON or XML or other, in String)
+    - expected outgoing media type (if there is outgoing data)
+    - expected outgoing data (if there is; can be JSON or XLS or other, in String)
+    - expected HTTP response code (codes are exchanged to verbal constants)
+    - expected HTTP response message
 Using the above defined MockMVC components are optional, mainly depends on the particular controller method.
 The HTTP response codes match with HTTP statuses.
 
@@ -87,14 +87,14 @@ Every andExpect() method means an assertion for its argument.
 Important, in model&view and object/model&view modes, when the model is not cleared before new objects are added, the size of the outgoing model can be higher with the number of incoming model objects (see the andExpect(model().size(size)) method below).
 
 Some expected statuses (look for more under StatusResultMatcher methods below):
-    a. isOk()
-    b. isAccepted()
-    c. isBadRequest()
-    d. isCreated()
-    e. isFound()
-    f. notAcceptable()
-    g. notFound()
-    h. notModified()
+    - isOk()
+    - isAccepted()
+    - isBadRequest()
+    - isCreated()
+    - isFound()
+    - notAcceptable()
+    - notFound()
+    - notModified()
 
 EXAMPLE FOR A TEST CASE METHOD (PUT ON /ENDPOINT, OBJECT MODE, JSON REQUEST BODY AND EXPECTED RESPONSE BODY, EXPECTED HTTP200 SUCCESS CODE):
 @Test
@@ -121,11 +121,11 @@ public void testCaseName() throws Exception {
 END OF EXAMPLE
 
 For model&view and object/model&view modes, because these modes are based upon models, the best approach is to declare a class which:
-    a. is capable of storing all objects the model or models might receive or send
-    b. has default and full constructors for Spring
-    c. specific constructors for manual definition of specific portion of data fitting to actual need in controller method
-    d. all getters and setters
-    e. equals() and hashCode() methods
+    - is capable of storing all objects the model or models might receive or send
+    - has default and full constructors for Spring
+    - specific constructors for manual definition of specific portion of data fitting to actual need in controller method
+    - all getters and setters
+    - equals() and hashCode() methods
 This class will represent the payload sent and received to and from the frontend.
 In the tests payload objects will be defined for receiving and sending, the latter will be added to the model (or to the ModelAndView object).
 The test will check whether for the received payload the sent payload is created.
@@ -182,50 +182,50 @@ The MockMvcRequestBuilders class defines the incoming request type, and the endp
 By default, MockMVC does not require to express this class explicitly in its perform() method which means e.g. the MockMvcRequestBuilders.get() methods equals with the get() method.
 
 Every request type has a method in MockMvcRequestBuilders:
-    a. get()
-    b. post()
-    c. put()
-    d. delete()
-    e. options()
-    f. patch()
-    g. head()
-    h. request(): general method for all request types
-    i. multipart(): multipart POST request or any request type if defined with HttpMethod argument
+    - get()
+    - post()
+    - put()
+    - delete()
+    - options()
+    - patch()
+    - head()
+    - request(): general method for all request types
+    - multipart(): multipart POST request or any request type if defined with HttpMethod argument
 
 Variants of get()/.../head() method parameters:
-    a. String URI (which means endpoint; object mode)
-    b. String urlTemplate[, Object... uriVariables] (model&view mode)
+    - String URI (which means endpoint; object mode)
+    - String urlTemplate[, Object... uriVariables] (model&view mode)
 
 Variants of request() method parameters:
-    a. HttpMethod method, String URI (URI means the whole endpoint path)
-    b. HttpMethod method, String urlTemplate[, Object... uriVariables]
-    c. String httpMethod, String urlTemplate[, Object... uriVariables] (lets the developer use any custom request type)
+    - HttpMethod method, String URI (URI means the whole endpoint path)
+    - HttpMethod method, String urlTemplate[, Object... uriVariables]
+    - String httpMethod, String urlTemplate[, Object... uriVariables] (lets the developer use any custom request type)
 
 In case of using path parameters, the urlTemplate/uriVariable1/uriVariable2/... text forms the whole endpoint path. Expressing it by using the (urlTemplate, uriVariables) argument variant:
-    a. "/urlTemplate/{param1}/{param2}", paramValue1, paramValue2
+    - "/urlTemplate/{param1}/{param2}", paramValue1, paramValue2
 
 Every MockMvcRequestBuilders method returns a MockHttpServletRequestBuilder instance. Methods of this instance represents the environment under which the mocked action will be held.
 MockHttpServletRequestBuilder methods:
-    a. accept(String... mediaTypes), accept(MediaType... mediaTypes): sets what the requester can accept
-    b. buildRequest(ServletContext servletContext): builds a request, returns a MockHttpServletRequest instance
-    c. characterEncoding(String encoding), characterEncoding(Charset encoding)
-    d. content(byte[] content), content(String content): sets the request body
-    e. contentType(String contentType), contentType(MediaType contentType): sets the request body type
-    f. contextPath(String contextPath)
-    g. cookie(Cookie... cookies): adds cookies to the request
-    h. createServletRequest(ServletContext servletContext): returns a MockHttpServletRequest instance
-    i. flashAttr(String name, Object value), flashAttrs(Map<String,Object> flashAttributes)
-    j. header(String name, Object... values), headers(HttpHeaders httpHeaders): adds header to the request
-    k. locale(Locale locale), locale(Locale... locales)
-    l. param(String name, String... values), params(MultiValueMap<String,String> params): adds request parameter
-    m. pathInfo(String pathInfo): specify the portion of the requestURI that represents the pathInfo
-    n. postProcessRequest(MockHttpServletRequest request): adds a post-processing server request, returns a MockHttpServletRequest instance
-    o. queryParam(String name, String... values), queryParams(MultiValueMap<String,String> params)
-    p. requestAttr(String name, Object value): adds model attribute to the request (model&view mode)
-    q. secure(boolean secure): indicates secure channel e.g. HTTPS
-    r. servletPath(String servletPath): specify the portion of the requestURI that represents the path to which the Servlet is mapped
-    s. session(MockHttpSession session): set the HTTP session to use, possibly re-used across requests
-    t. sessionAttr(String name, Object value), sessionAttrs(Map<String,Object> sessionAttributes)
+    - accept(String... mediaTypes), accept(MediaType... mediaTypes): sets what the requester can accept
+    - buildRequest(ServletContext servletContext): builds a request, returns a MockHttpServletRequest instance
+    - characterEncoding(String encoding), characterEncoding(Charset encoding)
+    - content(byte[] content), content(String content): sets the request body
+    - contentType(String contentType), contentType(MediaType contentType): sets the request body type
+    - contextPath(String contextPath)
+    - cookie(Cookie... cookies): adds cookies to the request
+    - createServletRequest(ServletContext servletContext): returns a MockHttpServletRequest instance
+    - flashAttr(String name, Object value), flashAttrs(Map<String,Object> flashAttributes)
+    - header(String name, Object... values), headers(HttpHeaders httpHeaders): adds header to the request
+    - locale(Locale locale), locale(Locale... locales)
+    - param(String name, String... values), params(MultiValueMap<String,String> params): adds request parameter
+    - pathInfo(String pathInfo): specify the portion of the requestURI that represents the pathInfo
+    - postProcessRequest(MockHttpServletRequest request): adds a post-processing server request, returns a MockHttpServletRequest instance
+    - queryParam(String name, String... values), queryParams(MultiValueMap<String,String> params)
+    - requestAttr(String name, Object value): adds model attribute to the request (model&view mode)
+    - secure(boolean secure): indicates secure channel e.g. HTTPS
+    - servletPath(String servletPath): specify the portion of the requestURI that represents the path to which the Servlet is mapped
+    - session(MockHttpSession session): set the HTTP session to use, possibly re-used across requests
+    - sessionAttr(String name, Object value), sessionAttrs(Map<String,Object> sessionAttributes)
 
 =================================================================================
 3. MOCKMVC RESULT MATCHERS
@@ -235,139 +235,139 @@ By default, MockMVC does not require to express this class explicitly in its and
 This class makes the expected JSON object to be checked in parts and so on.
 
 MockMvcResultMatchers methods:
-    a. content(): response body; returns a ContentResultMatchers instance
-    b. cookie(), flash(): response cookie, response flash attribute
-    b. forwardedUrl(String url), forwardedUrlPattern(String url)
-    c. forwardedUrlTemplate(String urlTemplate, Object... uriVars)
-    d. jsonPath(String expression, Object... args): response JSON field, returns a JsonPathResultMatchers instance
-    e. jsonPath(String expression, Matcher <? super T> matcher): response JSON field, returns a JsonPathResultMatchers instance
-    f. jsonPath(String expression, Matcher <? super T> matcher, Class <T> targetType): response JSON field, returns a JsonPathResultMatchers instance
-    g. model(): model-related assertion, returns a ModelResultMatchers instance
-    h. redirectedUrl(String url), redirectedUrlPattern(String url)
-    i. redirectedUrlTemplate(String urlTemplate, Object... uriVars)
-    k. request(): returns a RequestResultMatchers instance
-    l. status(): returns a StatusResultMatcher instance
-    m. view(): view-related assertion, returns a ViewResultMatchers instance
+    - content(): response body; returns a ContentResultMatchers instance
+    - cookie(), flash(): response cookie, response flash attribute
+    - forwardedUrl(String url), forwardedUrlPattern(String url)
+    - forwardedUrlTemplate(String urlTemplate, Object... uriVars)
+    - jsonPath(String expression, Object... args): response JSON field, returns a JsonPathResultMatchers instance
+    - jsonPath(String expression, Matcher <? super T> matcher): response JSON field, returns a JsonPathResultMatchers instance
+    - jsonPath(String expression, Matcher <? super T> matcher, Class <T> targetType): response JSON field, returns a JsonPathResultMatchers instance
+    - model(): model-related assertion, returns a ModelResultMatchers instance
+    - redirectedUrl(String url), redirectedUrlPattern(String url)
+    - redirectedUrlTemplate(String urlTemplate, Object... uriVars)
+    - request(): returns a RequestResultMatchers instance
+    - status(): returns a StatusResultMatcher instance
+    - view(): view-related assertion, returns a ViewResultMatchers instance
 These methods return instances with similar namings. Methods of the returned instances will provide the values which the MockMVC will check in andExpect() assertions.
 
 ContentResultMatchers methods:
-    a. bytes(byte[] expectedContent)
-    b. contentType(String contentType), contentType(MediaType contentType)
-    c. contentTypeCompatibleWith(String contentType), contentTypeCompatibleWith(MediaType contentType)
-    d. encoding(String characterEncoding), encoding(Charset characterEncoding)
-    e. json(String jsonContent), json(String jsonContent, boolean strict)
-    f. string(String expectedContent)
-    g. xml(String xmlContent)
+    - bytes(byte[] expectedContent)
+    - contentType(String contentType), contentType(MediaType contentType)
+    - contentTypeCompatibleWith(String contentType), contentTypeCompatibleWith(MediaType contentType)
+    - encoding(String characterEncoding), encoding(Charset characterEncoding)
+    - json(String jsonContent), json(String jsonContent, boolean strict)
+    - string(String expectedContent)
+    - xml(String xmlContent)
 
 JsonPathResultMatchers methods:
-    a. doesNotExist()
-    b. doesNotHaveJsonPath()
-    c. exists()
-    d. hasJsonPath()
-    e. isArray()
-    f. isBoolean()
-    g. isEmpty()
-    h. isMap()
-    i. isNotEmpty()
-    j. isNumber()
-    k. isString()
-    l. value(Object expectedValue), value(Matcher<? super T> matcher)
-    m. value(Matcher<? super T> matcher, Class<T> targetType)
+    - doesNotExist()
+    - doesNotHaveJsonPath()
+    - exists()
+    - hasJsonPath()
+    - isArray()
+    - isBoolean()
+    - isEmpty()
+    - isMap()
+    - isNotEmpty()
+    - isNumber()
+    - isString()
+    - value(Object expectedValue), value(Matcher<? super T> matcher)
+    - value(Matcher<? super T> matcher, Class<T> targetType)
 
 ModelResultMatchers methods:
-    a. attribute(String name, Object value), attribute(String name, Matcher<? super T> matcher)
-    b. attributeDoesNotExist(String... names)
-    c. attributeErrorCount(String name, int expectedCount)
-    d. attributeExists(String... names)
-    e. attributeHasErrors(String... names)
-    f. attributeHasFieldErrorCode(String name, String fieldName, String error)
-    g. attributeHasFieldErrorCode(String name, String fieldName, Matcher<? super String> matcher)
-    h. attributeHasFieldErrors(String name, String... fieldNames)
-    i. attributeHasNoErrors(String... names)
-    j. errorCount(int expectedCount)
-    k. hasErrors()
-    l. hasNoErrors()
-    m. size(int size): number of model attributes
+    - attribute(String name, Object value), attribute(String name, Matcher<? super T> matcher)
+    - attributeDoesNotExist(String... names)
+    - attributeErrorCount(String name, int expectedCount)
+    - attributeExists(String... names)
+    - attributeHasErrors(String... names)
+    - attributeHasFieldErrorCode(String name, String fieldName, String error)
+    - attributeHasFieldErrorCode(String name, String fieldName, Matcher<? super String> matcher)
+    - attributeHasFieldErrors(String name, String... fieldNames)
+    - attributeHasNoErrors(String... names)
+    - errorCount(int expectedCount)
+    - hasErrors()
+    - hasNoErrors()
+    - size(int size): number of model attributes
 
 RequestResultMatchers methods:
-    a. asyncNotStarted(): assert that asynchronous processing was not started
-    b. asyncResult(Object expectedResult): assert the result from asynchronous processing
-    c. asyncResult(Matcher<? super T> matcher): assert the result from asynchronous processing with the given matcher
-    d. asyncStarted(): assert whether asynchronous processing started, usually as a result of a controller method returning Callable or DeferredResult
-    e. attribute(String name, Object expectedValue): assert a request attribute value
-    f. attribute(String name, Matcher<? super T> matcher): assert a request attribute value with the given Hamcrest Matcher
-    g. sessionAttribute(String name, Object value): assert a session attribute value
-    h. sessionAttribute(String name, Matcher<? super T> matcher): assert a session attribute value with the given Hamcrest Matcher
-    i. sessionAttributeDoesNotExist(String... names): assert the given session attributes do not exist
+    - asyncNotStarted(): assert that asynchronous processing was not started
+    - asyncResult(Object expectedResult): assert the result from asynchronous processing
+    - asyncResult(Matcher<? super T> matcher): assert the result from asynchronous processing with the given matcher
+    - asyncStarted(): assert whether asynchronous processing started, usually as a result of a controller method returning Callable or DeferredResult
+    - attribute(String name, Object expectedValue): assert a request attribute value
+    - attribute(String name, Matcher<? super T> matcher): assert a request attribute value with the given Hamcrest Matcher
+    - sessionAttribute(String name, Object value): assert a session attribute value
+    - sessionAttribute(String name, Matcher<? super T> matcher): assert a session attribute value with the given Hamcrest Matcher
+    - sessionAttributeDoesNotExist(String... names): assert the given session attributes do not exist
 
 StatusResultMatcher methods:
-    a. is(int status)
-    b. is1xxInformational(), is2xxSuccessful(), is3xxRedirection(), is4xxClientError(), is5xxServerError()
-    c. isAccepted()
-    d. isAlreadyReported()
-    e. isBadGateway()
-    f. isBadRequest()
-    g. isBandwidthLimitExceeded()
-    h. isCheckpoint()
-    i. isConflict()
-    j. isContinue()
-    k. isCreated()
-    l. isExpectationFailed()
-    m. isFailedDependency()
-    n. isForbidden()
-    o. isFound()
-    p. isGatewayTimeout()
-    q. isGone()
-    r. isHttpVersionNotSupported()
-    s. isIAmATeapot()
-    t. isImUsed()
-    u. isInsufficientStorage()
-    v. isInternalServerError()
-    w. isLengthRequired()
-    x. isLocked()
-    y. isLoopDetected()
-    z. isMethodNotAllowed()
-    aa. isMovedPermanently()
-    ab. isMultipleChoices()
-    ac. isMultiStatus()
-    ad. isNetworkAuthenticationRequired()
-    ae. isNoContent()
-    af. isNonAuthoritativeInformation()
-    ag. isNotAcceptable()
-    ah. isNotExtended()
-    ai. isNotFound()
-    aj. isNotImplemented()
-    ak. isNotModified()
-    al. isOk()
-    am. isPartialContent()
-    an. isPayloadTooLarge()
-    ao. isPaymentRequired()
-    ap. isPermanentRedirect()
-    aq. isPreconditionFailed()
-    ar. isPreconditionRequired()
-    as. isProcessing()
-    at. isProxyAuthenticationRequired()
-    au. isRequestedRangeNotSatisfiable()
-    av. isRequestHeaderFieldsTooLarge()
-    aw. isRequestTimeout()
-    ax. isResetContent()
-    ay. isSeeOther()
-    az. isServiceUnavailable()
-    ba. isSwitchingProtocols()
-    bb. isTemporaryRedirect()
-    bc. isTooEarly()
-    bd. isTooManyRequests()
-    be. isUnauthorized()
-    bf. isUnavailableForLegalReasons()
-    bg. isUnprocessableEntity()
-    bh. isUnsupportedMediaType()
-    bi. isUpgradeRequired()
-    bj. isUriTooLong()
-    bk. isVariantAlsoNegotiates()
+    - is(int status)
+    - is1xxInformational(), is2xxSuccessful(), is3xxRedirection(), is4xxClientError(), is5xxServerError()
+    - isAccepted()
+    - isAlreadyReported()
+    - isBadGateway()
+    - isBadRequest()
+    - isBandwidthLimitExceeded()
+    - isCheckpoint()
+    - isConflict()
+    - isContinue()
+    - isCreated()
+    - isExpectationFailed()
+    - isFailedDependency()
+    - isForbidden()
+    - isFound()
+    - isGatewayTimeout()
+    - isGone()
+    - isHttpVersionNotSupported()
+    - isIAmATeapot()
+    - isImUsed()
+    - isInsufficientStorage()
+    - isInternalServerError()
+    - isLengthRequired()
+    - isLocked()
+    - isLoopDetected()
+    - isMethodNotAllowed()
+    - isMovedPermanently()
+    - isMultipleChoices()
+    - isMultiStatus()
+    - isNetworkAuthenticationRequired()
+    - isNoContent()
+    - isNonAuthoritativeInformation()
+    - isNotAcceptable()
+    - isNotExtended()
+    - isNotFound()
+    - isNotImplemented()
+    - isNotModified()
+    - isOk()
+    - isPartialContent()
+    - isPayloadTooLarge()
+    - isPaymentRequired()
+    - isPermanentRedirect()
+    - isPreconditionFailed()
+    - isPreconditionRequired()
+    - isProcessing()
+    - isProxyAuthenticationRequired()
+    - isRequestedRangeNotSatisfiable()
+    - isRequestHeaderFieldsTooLarge()
+    - isRequestTimeout()
+    - isResetContent()
+    - isSeeOther()
+    - isServiceUnavailable()
+    - isSwitchingProtocols()
+    - isTemporaryRedirect()
+    - isTooEarly()
+    - isTooManyRequests()
+    - isUnauthorized()
+    - isUnavailableForLegalReasons()
+    - isUnprocessableEntity()
+    - isUnsupportedMediaType()
+    - isUpgradeRequired()
+    - isUriTooLong()
+    - isVariantAlsoNegotiates()
 
 ViewResultMatchers methods:
-    a. name(String expectedViewName): assert the selected view name
-    b. name(Matcher<? super String> matcher): assert the selected view name with the given Hamcrest Matcher
+    - name(String expectedViewName): assert the selected view name
+    - name(Matcher<? super String> matcher): assert the selected view name with the given Hamcrest Matcher
 
 =================================================================================
 4. MOCKMVC REQUEST BUILDERS AND RESULT MATCHERS EXAMPLES

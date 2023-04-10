@@ -6,13 +6,6 @@ REFLECTION
 3. THE FIELD CLASS
 4. THE CONSTRUCTOR CLASS
 
-=>CLASSES
-=>METHODS
-=>INHERITANCE
-=>ARRAY
-=>ITERATION
-=>EXCEPTIONS
-
 =================================================================================
 1. THE CLASS CLASS
 =================================================================================
@@ -48,6 +41,7 @@ END OF EXAMPLE
 
 1.2. CLASS METHODS
 ---------------------------------------------------------------------------------
+EXAMPLE FOR CLASS METHODS:
 Class c = ...;
 ...
 try {
@@ -56,29 +50,32 @@ try {
     Class super = c.getSuperClass(); //Class of the superclass of c
 }
 catch (Exception e) {...}
+END OF EXAMPLE
 
 For accessing annotations:
-getAnnotationsByType(...)
-getAnnotations()
+    - getAnnotationsByType(...)
+    - getAnnotations()
 
 1.3. PASSING A CLASS AS METHOD PARAMETER
 ---------------------------------------------------------------------------------
+EXAMPLE FOR PASSING A CLASS AS METHOD PARAMETER:
 returnValue methodName(Object passedObject) {
 //reaching the Class class of the given object by passedObject.class
 }
 ...
 class ClassName {...}
 value = methodName(new ClassName());
+END OF EXAMPLE
 
 =================================================================================
 2. THE METHOD CLASS
 =================================================================================
-
 2.1. CREATING A METHOD OBJECT, METHOD METHODS
 2.2. PASSING A METHOD AS METHOD PARAMETER
 
 2.1. CREATING A METHOD OBJECT, METHOD METHODS
 ---------------------------------------------------------------------------------
+EXAMPLE FOR CREATING A METHOD OBJECT, METHOD METHODS:
 class C {...}
 Class c = ...;
 ...
@@ -111,13 +108,15 @@ try {
     s = m.toString(); //method everything as a String
 }
 catch (Exception e) {...}
+END OF EXAMPLE
 
 For accessing annotations:
-getAnnotationsByType(...)
-getAnnotations()
+    - getAnnotationsByType(...)
+    - getAnnotations()
 
 2.2. PASSING A METHOD AS METHOD PARAMETER
 ---------------------------------------------------------------------------------
+EXAMPLE FOR PASSING A METHOD AS METHOD PARAMETER:
 returnValue methodName(Method method) {
 //process
 }
@@ -126,10 +125,12 @@ class ClassName {
 //declare methodOfClass()
 }
 value = methodName(ClassName.class.getDeclaredMethod("name of methodOfClass", null)); //in case of no parameter in signature
+END OF EXAMPLE
 
 =================================================================================
 3. THE FIELD CLASS
 =================================================================================
+EXAMPLE FOR FIELD CLASS:
 class C {...}
 Class c = ...;
 ...
@@ -153,14 +154,16 @@ try {
     s = Modifier.toString(f.getModifiers()); //access modifier of the field e.g. "public"
 }
 catch (Exception e) {...}
+END OF EXAMPLE
 
 For accessing annotations:
-getAnnotationsByType(...)
-getAnnotations()
+    - getAnnotationsByType(...)
+    - getAnnotations()
 
 =================================================================================
 4. THE CONSTRUCTOR CLASS
 =================================================================================
+EXAMPLE FOR CONSTRUCTOR CLASS:
 class C {...}
 Class c = ...;
 ...
@@ -187,7 +190,15 @@ try {
     s = co.toString(); //constructor everything as a String
 }
 catch (Exception e) {...}
+END OF EXAMPLE
 
 For accessing annotations:
-getAnnotationsByType(...)
-getAnnotations()
+    - getAnnotationsByType(...)
+    - getAnnotations()
+
+=>CLASSES
+=>METHODS
+=>INHERITANCE
+=>ARRAY
+=>ITERATION
+=>EXCEPTIONS

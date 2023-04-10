@@ -12,9 +12,9 @@ HashSet is not synchronized, after modifying by a thread, need external synchron
 1. GENERALLY
 =================================================================================
 Constructor signatures:
-    a. (): default capacity is 16, default load factor is 0.75
-    b. (capacity in int, load factor in float): how many elements it can store, if load factor is exceeded, the set is moved to an other set with double size
-    c. (other Set class): converting from that set to HashSet; need identical pair types
+    - (): default capacity is 16, default load factor is 0.75
+    - (capacity in int, load factor in float): how many elements it can store, if load factor is exceeded, the set is moved to an other set with double size
+    - (other Set class): converting from that set to HashSet; need identical pair types
 
 EXAMPLE FOR CREATING AN INSTANCE:
 import java.util.HashSet;
@@ -29,13 +29,14 @@ All methods of Set are available. Other methods are below.
 ||isEmpty()|true if no elements||
 
 Differences between HashSet and TreeSet:
-    a. TreeSet stores element order, HashSet does not
-    b. TreeSet provides navigation methods along the elements, HashSet does not
-    c. HashSet is faster for basic operations like add, remove, contains and size than TreeMap
+    - TreeSet stores element order, HashSet does not
+    - TreeSet provides navigation methods along the elements, HashSet does not
+    - HashSet is faster for basic operations like add, remove, contains and size than TreeMap
 
 =================================================================================
 2. CONVERT TO ARRAY AND BACK
 =================================================================================
+EXAMPLE FOR CONVERTING ARRAY AND BACK:
 import java.util.HashSet;
 import java.util.List;
 import java.util.stream;
@@ -49,6 +50,7 @@ set.toArray(array);
 Set<String> set2 = new HashSet<>(Arrays.asList(array));
 //or:
 Set<String> set2 = new HashSet<>(Arrays.stream(array).collect(Collectors.toSet()));
+END OF EXAMPLE
 
 =>SET
 =>LINKEDHASHSET

@@ -21,6 +21,7 @@ for (String s : sa) {
     sb.append(s);
 }
 String s = sb.toString(); //exporting the result into String
+END OF EXAMPLE
 
 EXAMPLE FOR USAGE WITH CHARACTERS:
 import java.util.StringBuilder;
@@ -31,6 +32,7 @@ for (char c : ca) {
 	sb.append(c);
 }
 String s = sb.toString();
+END OF EXAMPLE
 
 =>STRING
 =>OUTPUTSTREAM

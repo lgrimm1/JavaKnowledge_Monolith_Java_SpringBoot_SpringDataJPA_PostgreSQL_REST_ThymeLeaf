@@ -14,8 +14,8 @@ After closing the stream, any method will raise exception.
 The OutputStreamWriter implements the AutoClosable interface, the try-with-resources statement can be used to ensure proper closing.
 
 Constructor parameters:
-    a. (FileOutputStream fileOutputStream): links the bridge to the output stream (e.g. FileOutputStream), default character coding
-    b. (FileOutputStream fileOutputStream, Charset charset): links the bridge to the output stream, charset character coding
+    - (FileOutputStream fileOutputStream): links the bridge to the output stream (e.g. FileOutputStream), default character coding
+    - (FileOutputStream fileOutputStream, Charset charset): links the bridge to the output stream, charset character coding
 
 The defined character coding will be forced during accessing the destination stream.
 Available methods are below.

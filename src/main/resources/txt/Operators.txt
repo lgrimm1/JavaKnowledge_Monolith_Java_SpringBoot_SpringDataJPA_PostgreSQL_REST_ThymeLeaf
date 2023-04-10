@@ -10,13 +10,6 @@ OPERATORS
 7. OTHER
 8. PRECEDENCE RULES
 
-=>LITERALS
-=>PRIMITIVE DATA TYPES
-=>VARIABLES
-=>LAMBDA EXPRESSIONS
-=>STATEMENTS
-=>ITERATION
-
 =================================================================================
 1. ARITHMETIC
 =================================================================================
@@ -88,6 +81,7 @@ EXAMPLE FOR OR:
 with code:
 int a = 12, b = 25, c;
 c = a | b; //c == 29
+END OF EXAMPLE
 
 EXAMPLE FOR INVERT:
 12 == 0000 1100
@@ -95,6 +89,7 @@ EXAMPLE FOR INVERT:
 with code:
 int a = 12, c;
 c = ~a; //c == -13
+END OF EXAMPLE
 
 =================================================================================
 7. OTHER
@@ -133,3 +128,10 @@ END OF EXAMPLE
 ||assignment|= += -= *= /= %= &= ^= <<= >>= >>>=|<-||
 
 Chain equality: a = b = c is b = c, then a = b, therefore direction is <-
+
+=>LITERALS
+=>PRIMITIVE DATA TYPES
+=>VARIABLES
+=>LAMBDA EXPRESSIONS
+=>STATEMENTS
+=>ITERATION

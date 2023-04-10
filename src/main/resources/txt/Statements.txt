@@ -19,62 +19,66 @@ STATEMENTS
 16. ENHANCED TRY-WITH-RESOURCES STATEMENT
 17. CHAINED STATEMENTS
 
-=>BREAK AND CONTINUE STATEMENTS
-=>STRINGBUILDER
-=>STREAM
-=>STRING
-=>VARIABLES
-=>ITERATION
-=>KEYWORDS AND IDENTIFIERS
-=>OPERATORS
-
 =================================================================================
 1. GROUP OF STATEMENTS
 =================================================================================
 Between { and } brackets; can be empty; in case no statements inside, can be left.
+Other name of it: code block.
 
 =================================================================================
 2. DECLARATION STATEMENTS
 =================================================================================
+EXAMPLE FOR DECLARATION STATEMENT:
 int i;
 String s;
+END OF EXAMPLE
 
+EXAMPLE FOR DECLARATION STATEMENT COMBINED WITH MEMORY ALLOCATION STATEMENT:
 Can be combined with memory allocation statement:
 int a = 11;
 String[] sa = new String[5];
+END OF EXAMPLE
 
 =================================================================================
 3. MEMORY ALLOCATION STATEMENT
 =================================================================================
+EXAMPLE FOR MEMORY ALLOCATION STATEMENT:
 k = 3 * 5; //3 * 5: expression
 l = new ArrayList<>();
 m = makeImpression(abu, dzabu);
 n = "window";
+END OF EXAMPLE
 
-Can be combined with declaration statement:
+EXAMPLE FOR MEMORY ALLOCATION STATEMENT COMBINED WITH DECLARATION STATEMENT:
 int a = 11;
 String[] sa = new String[5];
+END OF EXAMPLE
 
 =================================================================================
 4. IF STATEMENT
 =================================================================================
+EXAMPLE FOR IF STATEMENT:
 if (condition) {
 	...
 }
+END OF EXAMPLE
 
 =================================================================================
 5. IF-ELSE STATEMENT
 =================================================================================
+EXAMPLE FOR IF-ELSE STATEMENT:
 if (condition) {
 	...
 }
 else {
 	...
 }
+END OF EXAMPLE
 
 =================================================================================
 6. IF-ELSE-IF STATEMENT
 =================================================================================
+EXAMPLE FOR IF-ELSE-IF STATEMENT:
 if (condition) {
 	...
 }
@@ -87,10 +91,12 @@ else if (condition) {
 else {
 	...
 }
+END OF EXAMPLE
 
 =================================================================================
 7. NESTED IF STATEMENT
 =================================================================================
+EXAMPLE FOR NESTED IF STATEMENT:
 if (condition) {
 	if (condition) {
 		...
@@ -107,10 +113,12 @@ else {
 		...
 	}
 }
+END OF EXAMPLE
 
 =================================================================================
 8. SWITCH STATEMENT
 =================================================================================
+EXAMPLE FOR SWITCH STATEMENT:
 switch (variable) {
 	case value1:
 		statement;
@@ -123,6 +131,7 @@ switch (variable) {
 		statement;
 		break;]
 }
+END OF EXAMPLE
 
 Variable can be primitive, enumerated types, String, wrapper classes.
 Leaving a break; statement causes that the flow jumps on the next case.
@@ -130,6 +139,7 @@ Leaving a break; statement causes that the flow jumps on the next case.
 =================================================================================
 9. ENHANCED SWITCH STATEMENT
 =================================================================================
+EXAMPLE FOR ENHANCED SWITCH STATEMENT:
 switch (variable) {
 	case value1 -> statement;
 	case value2 -> {
@@ -138,20 +148,24 @@ switch (variable) {
 	}
 	[default -> statement;]
 }
+END OF EXAMPLE
 
 =================================================================================
 10. RETURN STATEMENT
 =================================================================================
+EXAMPLE FOR RETURN STATEMENT:
 return true;
 return 3 * 2;
 return variable;
 return (condition) ? true : false;
 return (condition) ? 3 * 2 : 5 / 6;
 return (condition) ? variable1 : variable2;
+END OF EXAMPLE
 
 =================================================================================
 11. RETURN-SWITCH STATEMENT
 =================================================================================
+EXAMPLE FOR RETURN-SWITCH STATEMENT:
 return switch (variable) {
 	case value1 -> statement;
 	case value2 -> {
@@ -160,10 +174,12 @@ return switch (variable) {
 	}
 	[default -> statement;]
 };
+END OF EXAMPLE
 
 =================================================================================
 12. TRY-CATCH STATEMENT
 =================================================================================
+EXAMPLE FOR TRY-CATCH STATEMENT:
 try {
     //tried statements
 }
@@ -177,28 +193,32 @@ catch (exceptionType exceptionVariable) {
 catch (exceptionTypeX exceptionVariableX) {
     //process exceptionVariableX in case thrown such exception
 }]
+END OF EXAMPLE
 
 More catch branches can be merged into one:
-catch (exceptionType1 | exceptionType2 exceptionVariable) {...}
+    - catch (exceptionType1 | exceptionType2 exceptionVariable) {...}
 
 =================================================================================
 13. TRY-FINALLY STATEMENT
 =================================================================================
+EXAMPLE FOR TRY-FINALLY STATEMENT:
 try {
     //tried statements
 }
 finally {
     //closing statements, invoked after try clause
 }
+END OF EXAMPLE
 
 The finally block will not apply:
-    a. after System.exit() method
-    b. unhandled exception in finally block
-    c. thread freezes
+    - after System.exit() method
+    - unhandled exception in finally block
+    - thread freezes
 
 =================================================================================
 14. TRY-CATCH-FINALLY STATEMENT
 =================================================================================
+EXAMPLE FOR TRY-CATCH-FINALLY STATEMENT:
 try {
     //tried statements
 }
@@ -215,20 +235,22 @@ catch (exceptionTypeX exceptionVariableX) {
 finally {
     //closing statements, invoked after tried statements and caught exceptions
 }
+END OF EXAMPLE
 
 Less safe try statement for more objects need closing after process: there is a possibility that one of the .close methods will not run if the previous one fails.
 
 More catch branches can be merged into one:
-catch (exceptionType1 | exceptionType2 exceptionVariable) {...}
+    - catch (exceptionType1 | exceptionType2 exceptionVariable) {...}
 
 The "finally" block will not apply:
-    a. after System.exit() method
-    b. unhandled exception in finally block
-    c. thread freezes
+    - after System.exit() method
+    - unhandled exception in finally block
+    - thread freezes
 
 =================================================================================
 15. TRY-WITH-RESOURCES STATEMENT
 =================================================================================
+EXAMPLE FOR TRY-WITH-RESOURCES STATEMENT:
 try (resource declaration) {
     //tried statements
 }
@@ -242,6 +264,7 @@ catch (exceptionType exceptionVariable) {
 catch (exceptionTypeX exceptionVariableX) {
     //process exceptionVariableX in case thrown such exception
 }]
+END OF EXAMPLE
 
 Resource declaration: autoClosableType autoClosableVariable = ...[; ...; autoClosableTypeX autoClosableVariableX = ...]
 After tried statements and caught exceptions, invokes .close() methods for all declared resources.
@@ -254,7 +277,7 @@ FileReader fr = new FileReader(...)
 END OF EXAMPLE
 
 More catch branches can be merged into one:
-catch (exceptionType1 | exceptionType2 exceptionVariable) {...}
+    - catch (exceptionType1 | exceptionType2 exceptionVariable) {...}
 
 =================================================================================
 16. ENHANCED TRY-WITH-RESOURCES STATEMENT
@@ -276,22 +299,16 @@ By using this, less explicit variables can be used since the returned values wil
 The code will be more readable, and less variables will be stored.
 
 Formula 1 for chained statements (variable holds the class; no return value for the last statement):
-variable.method1().method2().method3();
+    - variable.method1().method2().method3();
 
 Formula 2 for chained statements (variable holds the first class, return value for the last statement):
-variable2 = variable.method1().method2().method3();
+    - variable2 = variable.method1().method2().method3();
 
-Formula 3 for chained statements (no return value for the last statement):
-variable //holds the first class
-    .method1()
-    .method2()
-    .method3();
+Formula 3 for chained statements (variable holds the first class; no return value for the last statement):
+    - variable.method1().method2().method3();
 
-Formula 4 for chained statements (return value for the last statement):
-variable2 = variable //holds the first class
-    .method1()
-    .method2()
-    .method3();
+Formula 4 for chained statements (variable holds the first class; return value for the last statement):
+    - variable2 = variable.method1().method2().method3();
 
 These methods will be executed in their respected order.
 Every method will result data the next method will work on. That said, new memory will be allocated with all statement.
@@ -343,3 +360,12 @@ int index = cal
 	.toUpperCase() //returns String
 	.indexOf('B'); //returns int
 END OF EXAMPLE
+
+=>BREAK AND CONTINUE STATEMENTS
+=>STRINGBUILDER
+=>STREAM
+=>STRING
+=>VARIABLES
+=>ITERATION
+=>KEYWORDS AND IDENTIFIERS
+=>OPERATORS

@@ -30,8 +30,8 @@ WeakHashMap<keyType, valueType> whm = new WeakHashMap<>(hm);
 END OF EXAMPLE
 
 Differences between HashMap and WeakHashMap:
-    a. HashMap keys are strong reference type, WeakHashMap keys are weak reference type
-    b. by the GC, released (not used) keys will be left in HashMap while will be freed in WeakHashMap
+    - HashMap keys are strong reference type, WeakHashMap keys are weak reference type
+    - by the GC, released (not used) keys will be left in HashMap while will be freed in WeakHashMap
 
 =>MAP
 =>GARBAGE COLLECTOR

@@ -27,10 +27,10 @@ In case the same class should have more than one validation rule set, either cre
 Failed validation will raise a certain exception with an exception message declared with the condition for which the validation failed.
 Coming from Spring, the exception will instruct the Communication layer that instead of success, a HTTP error code and that message will be sent towards the frontend.
 In order to have that message included into the HTTP response, two conditions must be met:
-    a. the return object (or primitive) type of the corresponding controller method must be String or ResponseEntity<T> or ModelAndView (object and model&view modes)
-    b. the custom exception message output must be allowed in the application.properties config file
+    - the return object (or primitive) type of the corresponding controller method must be String or ResponseEntity<T> or ModelAndView (object and model&view modes)
+    - the custom exception message output must be allowed in the application.properties config file
 The config file should have this line:
-    server.error.include-message=always
+    - server.error.include-message=always
 If the conditions above are not met, with the exception a JPA default message will be sent, see below.
 
 Testing entity behaviour when Validation is used on it, is necessary. Visit the SPRING BOOT TESTS / 2. ENTITY TEST session for details.
@@ -57,61 +57,61 @@ Alternatively, use Spring Initializr to create a ready-to-use empty project with
 3. DECLARE VALIDITY CONDITION SET
 =================================================================================
 Checking the data when an instance is created from the entity class and filled with incoming values, can be done by several ways:
-    a. the constructor uses default values when data is not appropriate (in case of JPA which uses default constructor, this is not a good way, and frontend will not receive error)
-    b. the service manipulates the object values (will not be visible in the entity class, frontend can receive error if coded that way)
-    c. the controller manipulates data (and sends error to frontend in return value, coding is still needed)
-    c. valid data is defined in entity class, the Spring Boot will check validity at controller endpoint (automatically sent error if needed without entering to controller method with the flow)
+    - the constructor uses default values when data is not appropriate (in case of JPA which uses default constructor, this is not a good way, and frontend will not receive error)
+    - the service manipulates the object values (will not be visible in the entity class, frontend can receive error if coded that way)
+    - the controller manipulates data (and sends error to frontend in return value, coding is still needed)
+    - valid data is defined in entity class, the Spring Boot will check validity at controller endpoint (automatically sent error if needed without entering to controller method with the flow)
 
 For data validity, automatism is preferred and prevents unnecessary coding (best practice).
 Automatism is reached by using validation annotations.
 In case no parameter is added to such annotation, using brackets of that annotation is optional.
 
 The next annotations can mark object or wrapper fields for validation:
-    a. @NotNull
-    b. @Null
+    - @NotNull
+    - @Null
 Because the validation can be applied for null values as well, together with Validation annotations, beware using Spring's @NonNull annotation in front of constructor and setter method argument because that annotation prevents reaching the Validation annotation but raises exception beforehand, uncontrollable.
 
 The next annotations can mark String fields for validation:
-    a. @NotBlank (not null and trimmed length is greater than zero)
-    b. @NotEmpty
-    c. @Size(min = minimumNumberOfCharacters)
-    d. @Size(max = maximumNumberOfCharacters)
-    e. @Size(min = minimumNumberOfCharacters, max = maximumNumberOfCharacters)
-    f. @Length(numberOfCharacters)
-    g. @Email
-    g. @URL
-    i. @Pattern(regexp = "regexpString") (e.g. "[0-9 | A-Z | a-z | -_\u00e4\u00f6\u00fc\u00c4\u00d6\u00dc\u00df]+" or "[\\-]?[0-9]{1,13}\\.[0-9]{0,4}" or "AT(XXX|[0-9]{3})")
+    - @NotBlank (not null and trimmed length is greater than zero)
+    - @NotEmpty
+    - @Size(min = minimumNumberOfCharacters)
+    - @Size(max = maximumNumberOfCharacters)
+    - @Size(min = minimumNumberOfCharacters, max = maximumNumberOfCharacters)
+    - @Length(numberOfCharacters)
+    - @Email
+    - @URL
+    - @Pattern(regexp = "regexpString") (e.g. "[0-9 | A-Z | a-z | -_\u00e4\u00f6\u00fc\u00c4\u00d6\u00dc\u00df]+" or "[\\-]?[0-9]{1,13}\\.[0-9]{0,4}" or "AT(XXX|[0-9]{3})")
 
 The next annotations can mark number fields for validation:
-    a. @Min([value = ]minimumValue)
-    b. @Max([value = ]maximumValue)
-    d. @Digits(numberOfDigits)
-    e. @Negative
-    f. @NegativeOrZero
-    g. @Positive
-    h. @PositiveOrZero
-    i. @NumberFormat(pattern = "###,###.##")
-    j. @DecimalMin(value = "minimumDoubleValue"[, inclusive = false]) (value as literal)
-    k. @DecimalMax(value = "maximumDoubleValue"[, inclusive = false]) (value as literal)
-    l. @Currency
-    m. @EAN
-    n. @ISBN
-    o. @CreditCardNumber
+    - @Min([value = ]minimumValue)
+    - @Max([value = ]maximumValue)
+    - @Digits(numberOfDigits)
+    - @Negative
+    - @NegativeOrZero
+    - @Positive
+    - @PositiveOrZero
+    - @NumberFormat(pattern = "###,###.##")
+    - @DecimalMin(value = "minimumDoubleValue"[, inclusive = false]) (value as literal)
+    - @DecimalMax(value = "maximumDoubleValue"[, inclusive = false]) (value as literal)
+    - @Currency
+    - @EAN
+    - @ISBN
+    - @CreditCardNumber
 
 The next annotations can mark date and time fields for validation:
-    a. @Past (value is in the past)
-    b. @PastOrPresent
-    c. @Future (value is in the future)
-    d. @FutureOrPresent
-    e. @DateTimeFormat(pattern = "MM/dd/yyyy")
+    - @Past (value is in the past)
+    - @PastOrPresent
+    - @Future (value is in the future)
+    - @FutureOrPresent
+    - @DateTimeFormat(pattern = "MM/dd/yyyy")
 
 The next annotations can mark List fields for validation:
-    a. @Size(min = minimumNumberOfElements)
-    b. @Size(max = maximumNumberOfElements)
-    c. @Size(min = minimumNumberOfElements, max = maximumNumberOfElements)
+    - @Size(min = minimumNumberOfElements)
+    - @Size(max = maximumNumberOfElements)
+    - @Size(min = minimumNumberOfElements, max = maximumNumberOfElements)
 
 Every annotation can have optional parameter:
-    message = "..." (sends message to the frontend in case of invalidity, along with HTML error code)
+    - message = "..." (sends message to the frontend in case of invalidity, along with HTML error code)
 
 EXAMPLE FOR SETTING FIELD CHECKS:
 package PackageName;
@@ -182,11 +182,11 @@ END OF EXAMPLE
 6. PARTIAL VALIDATION
 =================================================================================
 In case not the whole object should be validated (e.g. user authentication in two steps), instead of using simply the @Valid annotation in-place of checking, the next steps are needed:
-    a. divide the marked-for-validation fields into groups
-    b. validate only a group at a time
+    - divide the marked-for-validation fields into groups
+    - validate only a group at a time
 
 In order to define validation groups, every annotation can have an additional parameter:
-    groups = ClassName.class
+    - groups = ClassName.class
 The ClassName marks a form at frontend side in which the check will be called.
 In case the parameter above is defined on a field, calling partial validation on that group, checks will be done for only the correspondent validation group.
 At the place of validation (e.g. at controller or service method) the @Validated(ClassName.class) annotation must be used in front of the proper incoming argument.
@@ -333,12 +333,12 @@ END OF EXAMPLE
 =================================================================================
 In case of need of checking validity of a custom class or need of custom check on any class, custom validation is needed.
 Creation of such validation is reached via three steps:
-    a. declare custom checking method
-    b. declare custom annotation for the custom checking method
-    c. marking the proper fields for custom validation in the entity
+    - declare custom checking method
+    - declare custom annotation for the custom checking method
+    - marking the proper fields for custom validation in the entity
 
 The example below shows a solution for validating of the next field:
-    private String phone;
+    - private String phone;
 
 EXAMPLE FOR CUSTOM VALIDATION METHOD:
 package packageName;

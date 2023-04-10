@@ -16,25 +16,25 @@ Depending on what should be tested, by using proper annotation, certain componen
 These component packages are called test slices.
 
 Possible test slices are:
-    a. @DataCassandraTest
-    b. @DataCouchbaseTest
-    c. @DataElasticsearchTest
-    d. @DataJdbcTest
-    e. @DataJpaTest
-    f. @DataLdapTest
-    g. @DataMongoTest
-    h. @DataNeo4jTest
-    i. @DataR2dbcTest
-    j. @DataRedisTest
-    k. @GraphQlTest
-    l. @JdbcTest
-    m. @JooqTest
-    n. @JsonTest
-    o. @RestClientTest
-    p. @WebFluxTest
-    q. @WebMvcTest
-    r. @WebServiceClientTest
-    s. @WebServiceServerTest
+    - @DataCassandraTest
+    - @DataCouchbaseTest
+    - @DataElasticsearchTest
+    - @DataJdbcTest
+    - @DataJpaTest
+    - @DataLdapTest
+    - @DataMongoTest
+    - @DataNeo4jTest
+    - @DataR2dbcTest
+    - @DataRedisTest
+    - @GraphQlTest
+    - @JdbcTest
+    - @JooqTest
+    - @JsonTest
+    - @RestClientTest
+    - @WebFluxTest
+    - @WebMvcTest
+    - @WebServiceClientTest
+    - @WebServiceServerTest
 
 =================================================================================
 2. MAIN CLASS TEST

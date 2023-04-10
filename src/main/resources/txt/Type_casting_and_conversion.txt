@@ -2,6 +2,7 @@
 TYPE CASTING AND CONVERSION
 =================================================================================
 Converting a type to an other type.
+
 1. WIDENING (IMPLICIT) CASTING
 2. NARROWING (EXPLICIT) CASTING
 3. TYPE CONVERSION
@@ -12,18 +13,22 @@ Converting a type to an other type.
 =================================================================================
 Automatic, no data loss, a type will be converted to a type which can hold wider data.
 
+EXAMPLE FOR IMPLICIT (WIDENING) CASTING:
 int a = ...;
 long b = a;
 double c = a;
+END OF EXAMPLE
 
 =================================================================================
 2. NARROWING (EXPLICIT) CASTING
 =================================================================================
 The target type is narrower, part of the source type will be truncated or trimmed.
 
+EXAMPLE FOR EXPLICIT (NARROWING) CASTING:
 double a = ...;
 int b = (int) d; //the decimal part will be truncated which means the whole part of the original
 float c = (float) a; //can be processed only when the stored value can fit into the narrower type
+END OF EXAMPLE
 
 EXAMPLE FOR TYPICAL NARROWING CASTING:
 import java.io.File;

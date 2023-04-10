@@ -8,8 +8,8 @@ Extending interfaces are SortedSet.
 Elements can not be primitive type.
 
 Differences between Set and List:
-    a. Set can not include duplicated elements
-    b. Set does not keep order of its elements (similar to a mathematical set)
+    - Set can not include duplicated elements
+    - Set does not keep order of its elements (similar to a mathematical set)
 
 Interface so instance can be created by using constructor of one of its subclasses.
 
@@ -18,6 +18,7 @@ import java.util.Set;
 import java.util.HashSet;
 ...
 Set<elementType> set = new HashSet<>();
+END OF EXAMPLE
 
 All methods of Collection interface are available.
 
@@ -89,6 +90,7 @@ set1.add(6); //[2, 5, 6]
 set2.retainAll(set1); //[2, 5]
 set1.removeAll(set2); //[6]
 boolean contains = set1.containsAll(set2); //false
+END OF EXAMPLE
 
 =>COLLECTION
 =>LINKEDHASHSET

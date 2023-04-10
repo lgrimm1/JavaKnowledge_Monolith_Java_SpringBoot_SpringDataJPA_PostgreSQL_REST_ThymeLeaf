@@ -24,9 +24,9 @@ Specific method are below.
 ||isEmpty()|true if no pairs||
 
 Constructor signatures:
-    a. (): default capacity is 16, default load factor is 0.75
-    b. (capacity in int, load factor in float): how many entries it can store, if load factor is exceeded, the map is moved to an other map with double size
-    c. (other Map class): converting from that map to HashMap; need identical pair types
+    - (): default capacity is 16, default load factor is 0.75
+    - (capacity in int, load factor in float): how many entries it can store, if load factor is exceeded, the map is moved to an other map with double size
+    - (other Map class): converting from that map to HashMap; need identical pair types
 
 EXAMPLE FOR CONVERSION:
 import java.util.HashMap;
@@ -35,6 +35,7 @@ import java.util.TreeMap;
 TreeMap<keyType, valueType> tm = new TreeMap<>();
 ...
 HashMap<keyType, valueType> hm = new HashMap<>(tm);
+END OF EXAMPLE
 
 EXAMPLE FOR USAGE:
 import java.util.HashMap;
@@ -52,6 +53,7 @@ if (hm.containsKey(key)) {
     value = hm.remove(key);
 }
 else {...}
+END OF EXAMPLE
 
 EXAMPLE FOR ITERATION:
 import java.util.HashMap;
@@ -68,18 +70,20 @@ for (valueType value : hm.values()) { //iterating through values
 for (Entry<keyType, valueType> entry : hm.entrySet()) { //iterating through pairs
     //processing: entry
 }
+END OF EXAMPLE
 
 Differences between HashMap and WeakHashMap:
-    a. HashMap keys are strong reference type, WeakHashMap keys are weak reference type
-    b. by the GC, released (not used) keys will be left in HashMap while will be freed in WeakHashMap
+    - HashMap keys are strong reference type, WeakHashMap keys are weak reference type
+    - by the GC, released (not used) keys will be left in HashMap while will be freed in WeakHashMap
 
 Differences between ConcurrentHashMap and HashMap:
-    a. ConcurrentHashMap is thread-safe, HashMap is not
-    b. ConcurrentHashMap provides methods for bulk operations like forEach(), search() and reduce(), HashMap does not
+    - ConcurrentHashMap is thread-safe, HashMap is not
+    - ConcurrentHashMap provides methods for bulk operations like forEach(), search() and reduce(), HashMap does not
 
 =================================================================================
 2. CONVERT TO ARRAYLIST AND BACK
 =================================================================================
+EXAMPLE FOR CONVERTING TO ARRAYLIST AND BACK:
 import java.util.Map;
 import java.util.HashMap;
 import java.util.ArrayList;
@@ -105,6 +109,7 @@ if (lengthKeyList == valueList.size()) {
 else {
     //unable to pair all keys and values
 }
+END OF EXAMPLE
 
 =>MAP
 =>TREEMAP

@@ -8,6 +8,7 @@ Due to the above statement, BlockingQueue is thread-safe.
 Waiting/blocking means the execution of that thread will be halted until condition is met.
 There is no direct implementation, use it through its implementing classes.
 
+EXAMPLE FOR BLOCKINGQUEUE:
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -17,10 +18,11 @@ BlockingQueue<elementType> abq = new ArrayBlockingQueue<>(); //or:
 BlockingQueue<elementType> abq = new ArrayBlockingQueue<>(capacity);
 BlockingQueue<elementType> lbq = new LinkedBlockingQueue<>(); //or:
 BlockingQueue<elementType> lbq = new LinkedBlockingQueue<>(capacity);
+END OF EXAMPLE
 
 The constructors has 2 signatures:
-    a. no argument: the queue is infinite
-    b. integer argument: size of the queue
+    - no argument: the queue is infinite
+    - integer argument: size of the queue
 
 ||METHOD|DESCRIPTION||
 ||add()|inserts element at the end, exception if queue is full||
@@ -38,12 +40,14 @@ The constructors has 2 signatures:
 
 The offer() and poll() methods have 2 signatures.
 
+EXAMPLE FOR OFFER() AND POLL() SIGNATURES:
 boolean b = abq.offer(value);
 b = abq.offer(value, tryingTime, timeScale); //tries to insert value for tryingTime on timeScale
 elementType element = abq.poll();
 element = abq.poll(tryingTime, timeScale); //tries to return and remove the head element for tryingTime on timeScale
 //tryingTime is an int, timeScale can be nanoseconds, microseconds, milliseconds, seconds, minutes, hours, days
 //if succeeded before the time limit, will execute them, if no success, false/null will be returned
+END OF EXAMPLE
 
 The next methods can block the execution by themselves.
 

@@ -16,10 +16,10 @@ Ancestor of CSS technique was using specific property parameters in HTML e.g. wi
 
 A CSS definition contains one or more style property definitions. A property can be width, color of an element, also weight of a border and so on. The final appearance of an element is controlled by values of many properties together.
 A property can be defined by CSS definitions in the hierarchy:
-    a. external (website-level) style definitions (via external CSS file, marked in the header)
-    b. internal (page-level) style definitions (via <style> block in the header)
-    c. inline (tag-level) style definitions (via the style= parameter)
-    d. inline properties (tag-level) definitions (via property parameters)
+    - external (website-level) style definitions (via external CSS file, marked in the header)
+    - internal (page-level) style definitions (via <style> block in the header)
+    - inline (tag-level) style definitions (via the style= parameter)
+    - inline properties (tag-level) definitions (via property parameters)
 
 The external and internal definitions are on the same level. That said, as the code flow goes definition by definition, the last modification of a property will be alive for that property at the checked element.
 The <style> block in the header can be divided and between the parts the external CSS import can take place. Also, several external CSS-s can be imported at different points of the header. Following the flow, the last modification will be alive for the same property.
@@ -29,7 +29,7 @@ A property not modified by any CSS, will keep its browser default value.
 Never use inline definitions (style=) together with property parameters (width=, height= etc.), can confuse the code, hard to find them, and can easily lead to appearance errors.
 
 General syntax of a CSS definition:
-    selector {property:value; property:value; ...}
+    - selector {property:value; property:value; ...}
 There can be space before and-or after the : sign.
 
 It is best practice to define external CSS stylesheet per website in order to make it sure the website has global style. When following this, optional style definitions for local (special) elements are needed only. It also becomes possible to define multiple global appearances for a website.
@@ -112,16 +112,16 @@ General syntax of a CSS definition:
 There can be space before and-or after the : sign.
 
 The selector defines the HTML element. Types are:
-    a. simple (select elements by tag-name, id, class, tag-name and class; all elements, grouped selectors)
-    b. combinator (select elements based on a specific relationship between them)
-    c. pseudo-class (select elements based on a certain state)
-    d. pseudo-elements (select and style a part of an element)
-    e. attribute (select elements based on an attribute or attribute value)
+    - simple (select elements by tag-name, id, class, tag-name and class; all elements, grouped selectors)
+    - combinator (select elements based on a specific relationship between them)
+    - pseudo-class (select elements based on a certain state)
+    - pseudo-elements (select and style a part of an element)
+    - attribute (select elements based on an attribute or attribute value)
 
 A value can be:
-    a. numeric value (e.g. "3")
-    b. numeric value with unit (e.g. "3px", "50%")
-    c. text value ("'some_text'")
+    - numeric value (e.g. "3")
+    - numeric value with unit (e.g. "3px", "50%")
+    - text value ("'some_text'")
 Please note, there must be no space between a numeric value and its unit.
 
 The class-type definition creates a unique set of property values. That said, when referenced inline with the class= parameter, overwrites every matching external and internal property.

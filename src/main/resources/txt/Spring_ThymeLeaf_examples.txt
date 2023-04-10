@@ -9,26 +9,26 @@ SPRING THYMELEAF EXAMPLES
 1. CODE SNIPPETS OF GENERAL TAGS
 =================================================================================
 The ThymeLeaf HTML tags are in the next order below:
-    a. banner
-    b. blockquote
-    c. div
-    e. favicon and style
-    f. fieldset
-    g. form
-    h. formatting (bold, italics, strong, small, sup, sub ,code, quotation etc.)
-    i. image
-    j. iframe
-    k. label
-    l. paragraph
-    m. reference
-    n. span
-    o. table (formatting-purpose)
-    p. table (data-purpose)
+    - banner
+    - blockquote
+    - div
+    - favicon and style
+    - fieldset
+    - form
+    - formatting (bold, italics, strong, small, sup, sub ,code, quotation etc.)
+    - image
+    - iframe
+    - label
+    - paragraph
+    - reference
+    - span
+    - table (formatting-purpose)
+    - table (data-purpose)
 
 For all tags, optional parameters:
-    width="width_value" height="height_value" style="style data" class="style_name" on...="script_method(this)"
+    - width="width_value" height="height_value" style="style data" class="style_name" on...="script_method(this)"
 For surrounding tags (body, fieldset, form), optional parameter:
-    autocomplete="on"
+    - autocomplete="on"
 
 EXAMPLE FOR BANNER:
 <a href="url"><img src="url" alt="alternative text"></a>
@@ -215,33 +215,33 @@ END OF EXAMPLE
 2. CODE SNIPPETS OF INPUT TAGS
 =================================================================================
 Below ThymeLeaf HTML tags are in the next order:
-    a. button-like inputs (submit, reset, button)
-    b. checkbox
-    c. file
-    d. image
-    e. numeric inputs (number, range)
-    f. picker-like and time inputs (color, date, datetime-local, time)
-    g. radio
-    h. text-like inputs (email, password, search, tel, text, url)
-    i. select (scroll-down, list)
-    j. textarea
+    - button-like inputs (submit, reset, button)
+    - checkbox
+    - file
+    - image
+    - numeric inputs (number, range)
+    - picker-like and time inputs (color, date, datetime-local, time)
+    - radio
+    - text-like inputs (email, password, search, tel, text, url)
+    - select (scroll-down, list)
+    - textarea
 
 For all inputs, optional parameters:
-    width="width_value" height="height_value" style="style data" class="style_name" tabindex="number" autofocus form="form_name" on...="script_method(this)" required readonly disabled
+    - width="width_value" height="height_value" style="style data" class="style_name" tabindex="number" autofocus form="form_name" on...="script_method(this)" required readonly disabled
 For checkbox input, optional parameter:
-    checked
+    - checked
 For all picker-like and time inputs, optional parameters:
-    min="min_value" max="max_value" autocomplete="on"
+    - min="min_value" max="max_value" autocomplete="on"
 For all numeric inputs, optional parameters:
-    min="min_value" max="max_value" step="step_value" size="max_size_in_characters" autocomplete="on"
+    - min="min_value" max="max_value" step="step_value" size="max_size_in_characters" autocomplete="on"
 For radio input, optional parameter:
-    name="group_name" checked
+    - name="group_name" checked
 For all text-like inputs, optional parameters:
-    maxlength="max_character_length" size="max_size_in_characters" pattern="pattern_text" list="datalist_name" placeholder="hint" autocomplete="on" spellcheck="false"
+    - maxlength="max_character_length" size="max_size_in_characters" pattern="pattern_text" list="datalist_name" placeholder="hint" autocomplete="on" spellcheck="false"
 For select input, optional parameters:
-    size="height_in_number_of_items" multiple
+    - size="height_in_number_of_items" multiple
 For textarea input, optional parameters:
-    rows="number_of_rows" cols="number_of_characters" wrap="hard|soft|off" spellcheck="false"
+    - rows="number_of_rows" cols="number_of_characters" wrap="hard|soft|off" spellcheck="false"
 
 For file-type input, it has the ability to receive focus (tabbing), activate for key press while on focus, opening selection dialog, storing file selection, receive files via drag&drop, showing names of selected files, also lets screen readers to detect it.
 The appearing button and the file-list behind it is not modifiable, CSS parameters have no effect.

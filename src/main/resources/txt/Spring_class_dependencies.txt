@@ -100,8 +100,8 @@ END OF EXAMPLE
 
 Spring will use the class name for identifying a dependency (component).
 In case the class name is not appropriate or there are component classes with the same name but in different packages, must differentiate between them by using component naming:
-    a. the @Component("alternativeName") defines a virtual name for the marked class
-    b. the @Qualifier("alternativeName") annotation below the @Autowired directs the injection to the right component
+    - the @Component("alternativeName") defines a virtual name for the marked class
+    - the @Qualifier("alternativeName") annotation below the @Autowired directs the injection to the right component
 
 EXAMPLE FOR COMPONENT NAMING:
 @Component("altName")

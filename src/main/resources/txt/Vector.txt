@@ -6,13 +6,15 @@ Extending class is Stack.
 Resizeable array solution like ArrayList.
 
 Differences between Vector and ArrayList:
-    a. in case a thread opens the Vector for writing, the Vector will be blocked for other threads, for them throws an exception (ArrayList is safe for multi-tread access)
-    b. ArrayList uses Collection.synchronizedList() to synchronize accessing methods (Vector blocks instead)
+    - in case a thread opens the Vector for writing, the Vector will be blocked for other threads, for them throws an exception (ArrayList is safe for multi-tread access)
+    - ArrayList uses Collection.synchronizedList() to synchronize accessing methods (Vector blocks instead)
 Based upon these, usage of ArrayList is preferred for thread-safety, and it is more efficient.
 
+EXAMPLE FOR VECTOR:
 java.util.Vector;
 ...
 Vector<elementType> vector = new Vector<>(); //declaration and memory allocation
+END OF EXAMPLE
 
 ||METHOD|DESCRIPTION||
 ||add()|adds or inserts element||

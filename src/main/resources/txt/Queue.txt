@@ -13,8 +13,10 @@ import java.util.Queue;
 Queue<String> animal1 = new LinkedList<>(); //LinkedList implementation of Queue
 Queue<String> animal2 = new ArrayDeque<>(); //ArrayDeque implementation of Queue
 Queue<String> animal3 = new PriorityQueue<>(); //PriorityQueue implementation of Queue
+END OF EXAMPLE
 
-The Queue interface includes all methods from Collection. Declared methods:
+The Queue interface includes all methods from Collection.
+EXAMPLE FOR DECLARED METHODS:
 import java.util.Queue;
 ...
 Queue<elementType> queue = new constructorOfAnImplementingClass<>();

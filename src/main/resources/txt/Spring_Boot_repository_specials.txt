@@ -1,8 +1,6 @@
 =================================================================================
 SPRING BOOT REPOSITORY SPECIALS
 =================================================================================
-=>SPRING BOOT REPOSITORY
-
 1. LIKE QUERY IN POSTGRESQL STRING ARRAY COLUMN (ARRAY_TO_STRING)
 2. NAMED QUERIES
 3. QUERY REWRITER
@@ -19,16 +17,15 @@ Please note, the solution described here is applicable until Hibernate 5. After 
 In case using Hibernate 6+ (Spring Boot 3+), consider having text column type instead of text[] with infinite size.
 Also, array column types are not common among databases which points to aiming for more general data formats.
 
-A query in SQL would be like this:
-    select * from employee where ARRAY_TO_STRING(keywords, ‘,’) LIKE ‘%lunch%’;
-or:
-    select * from employee where UPPER(ARRAY_TO_STRING(keywords, ‘,’)) LIKE UPPER(‘%lunch%’);
+A query in SQL would be like one of these:
+    - select * from employee where ARRAY_TO_STRING(keywords, ‘,’) LIKE ‘%lunch%’;
+    - select * from employee where UPPER(ARRAY_TO_STRING(keywords, ‘,’)) LIKE UPPER(‘%lunch%’);
 
 Defining the custom ARRAY_TO_STRING and LIKE functionalities above needs the steps below:
-    a. define a custom dialect to register the SQL function in JPA
-    b. define a SearchCriteria
-    c. define a custom specification for the entity class
-    d. define repository of the entity class via using custom specification
+    - define a custom dialect to register the SQL function in JPA
+    - define a SearchCriteria
+    - define a custom specification for the entity class
+    - define repository of the entity class via using custom specification
 
 Below is the set of examples shows implementation of LIKE functionality for String array column.
 
@@ -105,8 +102,8 @@ MORE HERE: https://www.baeldung.com/java-hibernate-map-postgresql-array
 2. NAMED QUERIES
 =================================================================================
 Custom named queries can be rendered to the domain class:
-    a. annotation-based configuration (see on SPRING BOOT ENTITY page)
-    b. JPA named queries
+    - annotation-based configuration (see on SPRING BOOT ENTITY page)
+    - JPA named queries
 
 The JPA named queries are defined in XML configuration metafile while attached to the repository with additional method declaration of the repository interface.
 These queries are read at every call runtime.
@@ -140,8 +137,8 @@ END OF EXAMPLE
 In the previous variants queries are a priori defined.
 These queries are sent to the EntityManager of Hibernate upon usage.
 It is possible to alternate a pre-defined query before it reaches the manager by utilizing the QueryRewriter:
-    a. via custom QueryRewriter class
-    b. via extending the repository interface with QueryRewriter
+    - via custom QueryRewriter class
+    - via extending the repository interface with QueryRewriter
 
 When the rewriter is expressed via class, in case such query is invoked, JPA will search for a QueryRewriter bean. That said, the class should be marked with @Component annotation or should be lifted into the configuration class of the entity as a @Bean.
 This version is advised when e.g. more services or more repositories would access the same rewriter.
@@ -218,3 +215,5 @@ END OF EXAMPLE
 
 The EntityManager bean handles all entity (domain) classes available in the Spring hierarchy. By calling read or write functionality, will identify the entity class through its arguments.
 Its most commonly used method is the persist(). It writes a record to the database. In case of fail raises Exception.
+
+=>SPRING BOOT REPOSITORY

@@ -32,6 +32,7 @@ try {
     inputStream.close(); //close the stream (release the source)
 }
 catch (Exception e) {...} //in case the source was not accessible
+END OF EXAMPLE
 
 EXAMPLE FOR USAGE WITH TRY-WITH-RESOURCES:
 import java.io.InputStream;
@@ -43,6 +44,7 @@ try (InputStream inputStream = new FileInputStream(fileName)) {
     String string = new String(byteArray); //convert to String if source contains characters
 }
 catch (Exception e) {...} //in case the source was not accessible
+END OF EXAMPLE
 
 =>STREAM
 =>FILEINPUTSTREAM

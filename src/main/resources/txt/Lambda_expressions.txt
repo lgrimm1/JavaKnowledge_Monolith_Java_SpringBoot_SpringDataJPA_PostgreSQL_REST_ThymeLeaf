@@ -29,22 +29,22 @@ By using it, the readability of passed methods is increasing while the code amou
 It is used to implement a method without an explicitly defined functional interface.
 
 General formula:
-    (virtual parameter list of the abstract method) -> unique implemented algorithm of the abstract method
+    - (virtual parameter list of the abstract method) -> unique implemented algorithm of the abstract method
 or in other way:
-    (parameter list) -> lambda body
+    - (parameter list) -> lambda body
 In case the body consists of more statements:
-    (parameter list) -> {lambda body}
+    - (parameter list) -> {lambda body}
 
 In case the body consists of 1 statement, the body is called expression body.
 In case the body consists of more statements, the body is called block body (avoid it by organizing the statements into an external helper method for better code).
 In case there is only one parameter, using braces becomes optional (do not put one parameter into braces for better code).
 
 In case of no parameter:
-    () -> statement
+    - () -> statement
 In case of 1 parameter:
-    parameter -> statement
+    - parameter -> statement
 In case of more parameters:
-    (parameter1, parameter2, ...) -> statement
+    - (parameter1, parameter2, ...) -> statement
 
 =================================================================================
 2. LAMBDA DERIVING FROM SAM
@@ -132,6 +132,7 @@ fi = () -> statement;
 ...
 //use lambda as a variable passed to a method as parameter
 method(fi.methodName());
+END OF EXAMPLE
 
 EXAMPLE FOR LAMBDA USED NOT IN-PLACE, HANDLING STRING WITH RETURN VALUE:
 @FunctionalInterface
@@ -149,6 +150,7 @@ s = uc.upperCase(s);
 ...
 uc = (s) -> s.toUpperCase();
 s = uc.upperCase(s);
+END OF EXAMPLE
 
 =================================================================================
 4. LAMBDA USED IN-PLACE
@@ -182,6 +184,7 @@ interface GenericsInterfaceName<T> {
 GenericsInterfaceName<String> generic1 = (str) -> {...}; //operate with String data
 GenericsInterfaceName<String> generic1 = (str) -> {...}; //operate with String data
 GenericsInterfaceName generic2 = (a) -> {...}; //operate with type choosen by Java
+END OF EXAMPLE
 
 =================================================================================
 6. METHOD REFERENCE
@@ -190,11 +193,11 @@ For lambdas which use external methods as statements, method reference can be us
 In these cases, 0 or 1 parameter is accepted.
 
 Formulas of lambda:
-    () -> [ClassName.]methodName1()
-    (parameter) -> [ClassName.]methodName2(parameter)
+    - () -> [ClassName.]methodName1()
+    - (parameter) -> [ClassName.]methodName2(parameter)
 Replacer formulas of method reference:
-    ClassName::methodName1
-    ClassName::methodName2
+    - ClassName::methodName1
+    - ClassName::methodName2
 
 This exchange can increase code readability in case the ClassName is a relatively short one.
 In case the ClassName is too long, use the original lambda instead.
@@ -235,3 +238,4 @@ receivingMethod1(() -> methodName());
 receivingMethod1(ClassName::methodName);
 receivingMethod1(() -> ...); //lambda not referencing to outer method
 int newValue = receivingMethod2(methodName(intValue));
+END OF EXAMPLE

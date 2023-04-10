@@ -10,11 +10,11 @@ Some Java methods work with parallel processes inside (e.g. Streams), and after 
 An object is controlled by one and only one thread. The control is gained by accessing that object. No other thread can access an already owned objects except within their flow an access action happens.
 
 A thread has several statuses:
-    a. new (created, never started)
-    b. runnable (started, not stopped, not waiting or blocked)
-    c. waiting (the accessed object is not ready to open its channel towards the thread, the thread will wait until such channel opens then continues so returns to be runnable)
-    d. blocked (the process enters into a situation where the flow is stuck into, e.g. a loop, once freed, continues so returns to be runnable)
-    d. interrupted (stopped, terminated; the flow ends or the thread stops itself or falls under a forced stop)
+    - new (created, never started)
+    - runnable (started, not stopped, not waiting or blocked)
+    - waiting (the accessed object is not ready to open its channel towards the thread, the thread will wait until such channel opens then continues so returns to be runnable)
+    - blocked (the process enters into a situation where the flow is stuck into, e.g. a loop, once freed, continues so returns to be runnable)
+    - interrupted (stopped, terminated; the flow ends or the thread stops itself or falls under a forced stop)
 The waiting thread will be notified by the object in case the channel is freed. The thread would need a few moments until re-activates itself.
 Stopped threads must not be restarted.
 
@@ -24,11 +24,6 @@ A thread has priority level. Such level will determine with what weight (with wh
 
 Be aware of parallel access of data which is not prepared for concurrent access. Furthermore, if such data is written by different threads, misreading (wrong data) can infect the process flows.
 Along with expressed threads, the Stream operations use inner threads as well.
-
-=>GARBAGE COLLECTOR
-=>LAMBDA EXPRESSIONS
-=>STATEMENTS
-=>STREAM;2. STREAMS FOR MANIPULATING SERIES OF DATA
 
 1. THREAD OBJECT
 2. ATOMIC CLASSES FOR CONCURRENT USE OF PRIMITIVES
@@ -141,10 +136,10 @@ The ExecutorService pool lets controlling the service with its methods. There ca
 The actual lambda or method passed to a thread pool can be Runnable (no return value) or Callable(with return value).
 
 The ThreadPoolExecutor is a real thread pool with parameterizable core and pool sizes and time in which inactive threads are kept alive in the core before removing. The getPoolSize() returns the number of threads while the getQueue().size() returns the number of waiting processes (naming can be a bit confusing). This thread pool has several implementations:
-    a. FixedThreadPool
-    b. CachedThreadPool
-    c. SingleThreadExecutor
-    d. ScheduledThreadPoolExecutor
+    - FixedThreadPool
+    - CachedThreadPool
+    - SingleThreadExecutor
+    - ScheduledThreadPoolExecutor
 
 EXAMPLE FOR SINGLE THREAD EXECUTOR VIA EXECUTOR:
 Executor executor = Executors.newSingleThreadExecutor();
@@ -251,3 +246,8 @@ int sum = forkJoinPool.invoke(new CountingTask(tree));
 END OF EXAMPLE
 
 In case of other tasks, e.g. deleting specific files on a node, the TreeNode/value would be a list of files to delete, the Node constructor would call filtering out these files, and in CountingTask/compute() the .collect() would be rewritten, or the whole Stream operation but do not forget creating the new fork.
+
+=>GARBAGE COLLECTOR
+=>LAMBDA EXPRESSIONS
+=>STATEMENTS
+=>STREAM;2. STREAMS FOR MANIPULATING SERIES OF DATA

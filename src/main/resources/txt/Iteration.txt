@@ -1,6 +1,11 @@
 =================================================================================
 ITERATION
 =================================================================================
+Iteration means that a code block must be executed several times, depending a condition.
+Iterations (or loops) can be designed by using loop formulas.
+Every formula has its pros and cons.
+Every iterations can be coded by utilizing any iteration formulas, use the one fitting better for the task or expressing the code better.
+
 1. FOR LOOP
 2. FOR-EACH LOOP
 3. WHILE LOOP
@@ -12,62 +17,136 @@ ITERATION
 1. FOR LOOP
 =================================================================================
 Formula:
-for (initial expressions; test expression; update expression) {
-	...
-}
+for (initial expressions; test expression; update expression) {...}
 
-Initial expression: invokes before starting the loop; declaration.
+Initial expression: invokes once, before starting the loop; declaration.
 Test expression: tested before every cycle for being true.
 Update expression: changes variables of test expression.
 
-EXAMPLE FOR FOR LOOP:
-for (int i = 0, l = 31; i < l; i++) {...}
+In case parts of the test expression comes from a property or a method of an object at the beginning of the iteration, calculating with that will take place at every starting of the loop.
+Against that, the initial expression can contain definitions of several variables which will be alive within the loop only.
+This technique creates an optimized loop fitting for potentially bigger arrays, ArrayLists etc.
+
+In case the loop should go in decrementing direction or the increment should be different that 1, any expression the incrementing part can accept in case that expression has a return value (i++, i--, i + 3, methodName() etc.).
+
+EXAMPLE FOR FOR LOOP WITH CONSTANTS IN ITS HEAD:
+for (int i = 0; i < 31; i++) {
+    //process
+}
+END OF EXAMPLE
+
+EXAMPLE FOR FOR LOOP WITH VARIABLES IN ITS HEAD (NOT OPTIMIZED):
+String string = ...;
+int[] array = ...;
+ArrayList<String> list = ...;
+...
+for (int i = 0; i < string.length(); i++) {
+    //process
+}
+
+for (int i = 0; i < array.length; i++) {
+    //process
+}
+
+for (int i = 0; i < list.size(); i++) {
+    //process
+}
+END OF EXAMPLE
+
+EXAMPLE FOR FOR LOOP WITH VARIABLES IN ITS HEAD (OPTIMIZED):
+String string = ...;
+int[] array = ...;
+ArrayList<String> list = ...;
+...
+for (int i = 0, length = string.length(); i < size; i++) {
+    //process
+}
+
+for (int i = 0, length = array.length; i < length; i++) {
+    //process
+}
+
+for (int i = 0, size = list.size(); i < size; i++) {
+    //process
+}
 END OF EXAMPLE
 
 =================================================================================
 2. FOR-EACH LOOP
 =================================================================================
 For arrays and collections.
+With this technique, all elements will be visited in incrementing order but by default, element indexes will not be accessible within.
 
 Formula:
-for (item : array or collection) {
-	...
-}
+for (item : array or collection) {...}
 
 EXAMPLE FOR FOR-EACH LOOP:
-String s = ...;
-for (char c : s) {...}
+String string = ...;
+int[] array = ...;
+ArrayList<String> list = ...;
+...
+for (char character : string) {
+    //process character
+}
+
+for (int number : array) {
+    //process number
+}
+
+for (String string : list) {
+    //process string
+}
 END OF EXAMPLE
 
 =================================================================================
 3. WHILE LOOP
 =================================================================================
-Formula:
-while (test expression) {
-	...
-}
+This technique lets full manipulation of the loop head.
+Be aware of handling the test expression to have an ending of the loop.
 
-Test expression: tested before every cycle for being true (enters only when conditions met).
+Formula:
+while (test expression) {...}
+
+Test expression: tested before every cycle for being true (enters only when conditions met). Can be optimized by pre-calculating everything possible before reaching the loop.
 
 EXAMPLE FOR WHILE LOOP:
+//not optimized
+String string = ...;
+int i = 0;
+while (i < string.length()) {
+    //process
+}
+
+//optimized
+String string = ...;
+int i = 0;
+int length = string.length();
+while (i < length) {
+    //process
+}
+
 Scanner sc = new Scanner(new File("..."));
-while (sc.hasNextLine()) {...}
+while (sc.hasNextLine()) {
+    //process
+}
 sc.close();
 END OF EXAMPLE
 
 =================================================================================
 4. DO-WHILE LOOP
 =================================================================================
+This technique forms technically an inverted while-loop.
+
 Formula:
-do {
-	...
-} while (test expression);
+do {...} while (test expression);
 
 Test expression: tested after every cycle for being true (enters minimum once).
 
 EXAMPLE FOR DO-WHILE LOOP:
 int i = 1;
-do {...} while (i < 100);
+do {
+    //process
+} while (i < 100);
 END OF EXAMPLE
 
 =================================================================================
@@ -77,7 +156,7 @@ Iteration by using a method which calles itself until condition met, then return
 Typical solution for processing folder tree.
 Initialization of a method is a slower process, will happen in all loops.
 Fast to write and correct, needs less code.
-Fills the stack, therefore with the exception of processing folder tree, advised not to implement it.
+Fills the stack, therefore with the exception of processing folder tree, it is advised not to implement it.
 
 EXAMPLE FOR RECURSION:
 int i = 0;
@@ -96,10 +175,11 @@ END OF EXAMPLE
 =================================================================================
 6. INFINITE LOOP
 =================================================================================
-When updating the condition prevents it from turning to false.
+When updating (or not updating at all) the condition prevents the loop condition from turning to false.
 
 =>STATEMENTS
 =>OPERATORS
 =>KEYWORDS AND IDENTIFIERS
 =>ARRAY
 =>ARRAYLIST
+=>STRING

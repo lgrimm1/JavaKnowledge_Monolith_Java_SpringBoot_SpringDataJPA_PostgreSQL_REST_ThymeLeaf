@@ -11,10 +11,11 @@ BREAK AND CONTINUE STATEMENTS
 =================================================================================
 Breaks are used to exit from an iteration directly.
 
-USUALLY USED FORMULA:
+EXAMPLE FOR USUALLY USED FORMULA:
 if (condition) {
 	break;
 }
+END OF EXAMPLE
 
 Use when the condition can not be placed into the condition of the loop.
 It harms the readable structure, avoid it if possible or use a temporary variable in the head of the loop which you manipulate in place of the break.

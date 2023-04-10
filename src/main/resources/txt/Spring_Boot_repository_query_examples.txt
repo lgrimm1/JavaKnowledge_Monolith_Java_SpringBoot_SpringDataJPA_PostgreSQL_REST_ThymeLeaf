@@ -6,8 +6,6 @@ SPRING BOOT REPOSITORY QUERY EXAMPLES
 3. CUSTOM QUERIES
 4. QUERIES WITH DYNAMIC SORTING, PAGINATION
 
-=>SPRING BOOT REPOSITORY
-
 =================================================================================
 1. DEFAULT QUERIES
 =================================================================================
@@ -249,3 +247,4 @@ END OF EXAMPLE
 
 MORE HERE: Define Repository for JPA Native Query methods, https://www.bezkoder.com/jpa-repository-query/
 
+=>SPRING BOOT REPOSITORY

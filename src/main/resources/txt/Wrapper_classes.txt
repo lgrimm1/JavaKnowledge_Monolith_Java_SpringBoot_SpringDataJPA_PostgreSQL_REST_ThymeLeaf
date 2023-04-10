@@ -21,8 +21,8 @@ Due to immutability, in order to create a deep copy, no constructor is needed, t
 ||-|String||
 
 String has no primitive type version.
-Declaring a String object sets its default "" value (empty String).
-String s; //value is ""
+Declaring a String object sets its default "" value (empty String):
+    - String s; //value is ""
 
 All number-based wrapper classes have minimum and maximum constants like .MIN_VALUE and .MAX_VALUE.
 All number-based wrapper classes are extended from Number abstract class.

@@ -30,6 +30,7 @@ try {
     stringReader.close(); //close the input stream (release the source)
 }
 catch (Exception e) {...} //in case the source was not accessible
+END OF EXAMPLE
 
 EXAMPLE FOR USAGE WITH TRY-WITH-RESOURCES:
 import java.io.StringReader;
@@ -39,6 +40,7 @@ try (StringReader stringReader = new StringReader(string)) {
     stringReader.read(characterArray); //read the source into array
 }
 catch (Exception e) {...} //in case the source was not accessible
+END OF EXAMPLE
 
 =>STREAM
 =>READER

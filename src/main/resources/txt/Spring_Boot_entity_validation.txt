@@ -3,8 +3,8 @@ SPRING BOOT ENTITY VALIDATION
 =================================================================================
 Coming from the nature of Spring Data JPA, the properness of field data can not be checked (validated) from the constructors or the setters of the entity.
 There are two separate ways to apply validation of an entity:
-    a. Spring Validation
-    b. service class validation methods
+    - Spring Validation
+    - service class validation methods
 
 The Spring Validation is mainly used for rendering a condition system on the entity fields.
 Advantage is that there is a wide variety of conditions available, and it is very fast to apply the conditions themselves.

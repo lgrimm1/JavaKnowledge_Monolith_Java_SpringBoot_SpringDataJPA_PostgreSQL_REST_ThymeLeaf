@@ -40,9 +40,9 @@ Mocking a variable means the variable will act like what references to a real me
 Behavior means how the variable will act for calling certain methods, with this, will emulate a true behavior of corresponding class.
 
 Some formulas for emulating methods (setting up behaviors):
-    a. when(mockedVariable.methodWithReturnValue()).thenReturn(value);
-    b. when(mockedVariable.methodWithReturnValue()).thenThrow(exception);
-    c. doThrow(exception).when(mockedVariable).methodWithoutReturnValue();
+    - when(mockedVariable.methodWithReturnValue()).thenReturn(value);
+    - when(mockedVariable.methodWithReturnValue()).thenThrow(exception);
+    - doThrow(exception).when(mockedVariable).methodWithoutReturnValue();
 The thenReturn() method can not receive mocked class in its argument.
 
 Practically, any class can be mocked.
@@ -65,6 +65,7 @@ File[] fileList = testfolder.listFiles(); //will return File[] as set with behav
 //processes
 Mockito.verify(testfolder, Mockito.times(3)).getName(); //checks getName() of testfolder was used 3 times from declaration until this point
 Mockito.verify(testfolder, Mockito.never()).getPath(); //checks getName() of testfolder was never used from declaration until this point
+END OF EXAMPLE
 
 EXAMPLE 2 FOR MOCKING:
 import org.mockito.Mockito;
@@ -93,6 +94,7 @@ Mockito.verify(testfolder, Mockito.times(1)).listFiles(); //true
 
 list = Arrays.asList(testfolder.listFiles());
 Mockito.verify(testfolder, Mockito.times(2)).listFiles(); //true
+END OF EXAMPLE
 
 MORE HERE: https://www.vogella.com/tutorials/Mockito/article.html
 

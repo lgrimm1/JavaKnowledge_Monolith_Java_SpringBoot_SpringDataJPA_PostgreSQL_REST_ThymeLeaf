@@ -26,6 +26,7 @@ liter.remove() //removes the element got via next() or previous()
 element = liter.previous();
 liter.set(element) //replaces the element got via next() or previous()
 liter.add(element); //inserts a new element on the position the ListIterator stands, on the position the added element will be
+END OF EXAMPLE
 
 In case of LinkedList, the ListIterator will handle the reference fields within the node.
 Some of these methods throw exception in case of using them at the edges of the List e.g. calling previous() on the 1st element.

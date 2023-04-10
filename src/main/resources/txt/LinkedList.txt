@@ -5,9 +5,9 @@ Implements List, Queue and Deque.
 Linked list data structure.
 
 An element is a node, contains 3 fields:
-    a. prev: address of the previous element, null if the node is the first element
-    b. next: address of the next element, null if the node is the last element
-    c. data: the element data
+    - prev: address of the previous element, null if the node is the first element
+    - next: address of the next element, null if the node is the last element
+    - data: the element data
 The elements are not stored in order, instead, the order can be followed be using prev and next addresses.
 
 EXAMPLE FOR CREATING LINKEDLIST INSTANCES:
@@ -18,7 +18,9 @@ END OF EXAMPLE
 
 In case Queue and Deque, only methods of those interfaces will be available.
 
-Methods of LinkedList are the following:
+Methods of LinkedList are the following in the example below.
+
+EXAMPLE FOR LINKEDLIST METHODS:
 import java.util.LinkedList;
 import java.util.ListIterator;
 ...
@@ -47,35 +49,36 @@ index = ll2.lastIndexOf(element); //index of last found element
 for (elementType element2 : ll) {
     //processing of element2
 }
+END OF EXAMPLE
 
 The addAll() method can add elements of any Collection type to the LinkedList.
 To add to, remove from, set and reach elements of a LinkedList, also can use the Iterator and the ListIterator classes:
-ll2.iterator() -> Iterator<elementType>
-ll2.listIterator() -> ListIterator<elementType>
+    - ll2.iterator() -> Iterator<elementType>
+    - ll2.listIterator() -> ListIterator<elementType>
 
 Since LinkedList implements Queue and Deque, can be used as a queue or as a deque, it has the next methods as well (see their usage there):
-addFirst()
-addLast()
-getFirst()
-getLast()
-removeFirst()
-removeLast()
-peek()
-poll()
-offer()
+    - addFirst()
+    - addLast()
+    - getFirst()
+    - getLast()
+    - removeFirst()
+    - removeLast()
+    - peek()
+    - poll()
+    - offer()
 
 Differences between ArrayList and LinkedList:
-    a. ArrayList implements List, LinkedList implements List, Queue and Deque
-    b. ArrayList stores a simple value, LinkedList stores the element, previous and next addresses
-    c. ArrayList provides a resizeable array, LinkedList provides a doubly-linked list
-    d. For inserting element, ArrayList shifts all elements after, LinkedList modifies prev and next fields in the surrounding nodes
-    e. To access data, in ArrayList elements can be accessed randomly, in LinkedList sequentially
+    - ArrayList implements List, LinkedList implements List, Queue and Deque
+    - ArrayList stores a simple value, LinkedList stores the element, previous and next addresses
+    - ArrayList provides a resizeable array, LinkedList provides a doubly-linked list
+    - For inserting element, ArrayList shifts all elements after, LinkedList modifies prev and next fields in the surrounding nodes
+    - To access data, in ArrayList elements can be accessed randomly, in LinkedList sequentially
 
 Differences between ArrayDeque and LinkedList:
-    a. Both implements Deque
-    b. LinkedList supports null elements, ArrayDeque does not
-    c. LinkedList nodes contain data plus addresses of next and prev therefore needs more memory than ArrayDeque
-    d. ArrayDeque is faster than LinkedList
+    - Both implements Deque
+    - LinkedList supports null elements, ArrayDeque does not
+    - LinkedList nodes contain data plus addresses of next and prev therefore needs more memory than ArrayDeque
+    - ArrayDeque is faster than LinkedList
 
 =>LIST
 =>QUEUE

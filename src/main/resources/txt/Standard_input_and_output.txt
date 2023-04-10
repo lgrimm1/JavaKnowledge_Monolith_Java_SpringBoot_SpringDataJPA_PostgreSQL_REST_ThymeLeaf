@@ -13,6 +13,7 @@ Scanner sci = new Scanner(System.in);
 //processing input(s)
 ...
 sci.close;
+END OF EXAMPLE
 
 EXAMPLE FOR OUTPUT:
 System.out.println(text); //for a line

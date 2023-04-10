@@ -45,6 +45,7 @@ try {
     fos.close();
 }
 catch (Exception e) {...}
+END OF EXAMPLE
 
 =>STREAM
 =>OUTPUTSTREAM

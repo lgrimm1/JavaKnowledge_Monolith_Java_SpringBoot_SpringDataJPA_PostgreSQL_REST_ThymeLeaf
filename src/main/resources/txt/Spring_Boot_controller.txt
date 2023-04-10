@@ -21,8 +21,8 @@ This class must be a singleton in memory per controller.
 The class must be public in order to let Spring accessing it.
 
 The thinnest controller represents the API to the web application:
-    a. the @Controller annotation in a class marks that the class is a controller, normal API.
-    b. the @RestController annotation in a class marks that the class is a controller, REST API.
+    - the @Controller annotation in a class marks that the class is a controller, normal API.
+    - the @RestController annotation in a class marks that the class is a controller, REST API.
 
 The normal API uses Spring MVC framework which is based upon views. That said, the return value (the response body) represents a view (the targeted part of the frontend) and a collection of objects (forms a model which is read by the frontend). When a controller (or a controller method) operates with such data, it operates in model&view mode (or pure view mode).
 The RESTful API uses Spring MVC REST framework which is based upon objects. That said, the controller returns the object or value as it is, usually packed into a JSON or XML format. When a controller (or a controller method) operates with such data, it operates in called object mode.
@@ -109,8 +109,8 @@ With a controller, the next annotations can be used.
 ||@ResponseStatus|before a method|defines a custom HTTP code which will be added to the answer from the endpoint when its method ends successfully||
 
 The @RestController annotation automatically adds two annotations to the class on class-level:
-    a. @Controller
-    b. @ResponseBody
+    - @Controller
+    - @ResponseBody
 That said, the class will be a REST controller, and all methods will operate in object mode.
 When using the @ResponseBody annotation on class-level, will mark all controller methods.
 In case the @ResponseBody annotation is used independently on controller methods, the annotation can be before the method signature or before the return value in the signature.
@@ -119,30 +119,30 @@ By using the @ControllerAdvise annotation the Spring is instructed to look for i
 Such instruction can be e.g. adding general objects to all models, see @ModelAttribute annotation on method level below.
 
 Parameters of @Request/Get/Post/Put/Delete/PatchMapping:
-    a. "/endpoint" (can be used when only this parameter is given)
-    b. value = "/endpoint" (defines the endpoint)
-    c. path = "/endpoint" (same as previous)
-    d. consumes = contentType (in what context type the data will be received; optional)
-    e. produces = contentType (in what context type the data will be sent; optional)
-    f. method = POST (only for @RequestMapping, defines request type, value can be any request type)
+    - "/endpoint" (can be used when only this parameter is given)
+    - value = "/endpoint" (defines the endpoint)
+    - path = "/endpoint" (same as previous)
+    - consumes = contentType (in what context type the data will be received; optional)
+    - produces = contentType (in what context type the data will be sent; optional)
+    - method = POST (only for @RequestMapping, defines request type, value can be any request type)
 
 Parameters of @RequestParam:
-    a. name = "parameter_name_in_request"
-    b. required = true (optional; using false value is possible but leaving this argument means the same)
-    c. defaultValue = "default_value" (optional; if this argument does not exist and there is no passed value for the marked parameter, null will be passed)
+    - name = "parameter_name_in_request"
+    - required = true (optional; using false value is possible but leaving this argument means the same)
+    - defaultValue = "default_value" (optional; if this argument does not exist and there is no passed value for the marked parameter, null will be passed)
 
 The @ModelAttribute annotation can be used with two different tasks:
-    a. marking a general object to be added to all models in the controller before the correspondent endpoint method is started
-    b. marking an incoming parameter which is sent by model of a template
+    - marking a general object to be added to all models in the controller before the correspondent endpoint method is started
+    - marking an incoming parameter which is sent by model of a template
 Using this functionality is optional.
 When used on method-level, the method will not be used as an endpoint. When a class (can be the controller as well) contains such information, the @ControllerAdvice annotation must be used on class-level.
 Spring allows for a method to have several arguments marked with @ModelAttribute, however it is very hard to specify proper mocked tests for such case. Declare a custom class for dealing with the payload, and use this class as the only one argument marked with @ModelAttribute.
 
 Parameter versions of @ResponseStatus:
-    a. HttpStatus status
-    b. code = HttpStatus status
-    c. HttpStatus status, reason = reasonString
-    d. code = HttpStatus status, reason = reasonString
+    - HttpStatus status
+    - code = HttpStatus status
+    - HttpStatus status, reason = reasonString
+    - code = HttpStatus status, reason = reasonString
 
 EXAMPLE FOR MAPPING PARAMETERS:
 @RequestMapping(path = "/endpoint", produces = MediaType.APPLICATION_XML_VALUE)
@@ -188,26 +188,26 @@ public class ControllerClass3 {
 END OF EXAMPLE
 
 Some content type definitions:
-    a. MediaType.APPLICATION_JSON_VALUE
-    b. MediaType.APPLICATION_JSON_UTF8_VALUE
-    c. MediaType.APPLICATION_XML_VALUE
-    d. MediaType.TEXT_HTML
+    - MediaType.APPLICATION_JSON_VALUE
+    - MediaType.APPLICATION_JSON_UTF8_VALUE
+    - MediaType.APPLICATION_XML_VALUE
+    - MediaType.TEXT_HTML
 
 =================================================================================
 3. CONTROLLER DATA
 =================================================================================
 In controller methods, there can be the next kind of incoming and outgoing data:
-    a. request type definition (in method annotation)
-    b. incoming content type definition (how the JSON data is deserialized when received from the frontend, object mode)
-    c. outgoing content type definition (how the JSON data is serialized when sent to the frontend, object mode)
-    d. request body parameters (marked in method annotation, received in argument list, object mode)
-    e. query parameters (in argument list, object mode)
-    f. model attributes (submitted from the form of a template, sent by browser; model&view and object/model&view modes)
-    g. Model (sent to a template; model&view mode)
-    h. ModelAndView (sent to a template, object/model&view mode)
-    i. view (model&view and object/model&view modes)
-    j. sent data (all modes)
-    k. HTTP response code (HTTP status code, all modes)
+    - request type definition (in method annotation)
+    - incoming content type definition (how the JSON data is deserialized when received from the frontend, object mode)
+    - outgoing content type definition (how the JSON data is serialized when sent to the frontend, object mode)
+    - request body parameters (marked in method annotation, received in argument list, object mode)
+    - query parameters (in argument list, object mode)
+    - model attributes (submitted from the form of a template, sent by browser; model&view and object/model&view modes)
+    - Model (sent to a template; model&view mode)
+    - ModelAndView (sent to a template, object/model&view mode)
+    - view (model&view and object/model&view modes)
+    - sent data (all modes)
+    - HTTP response code (HTTP status code, all modes)
 
 The Spring Boot automatically handles the HTTP response code (e.g. 200, 404, 500) sent to the frontend, it is not needed to send these explicitly.
 Of course, can be overwritten manually by using ResponseEntity (see later) or ModelAndView (see the SPRING MODELANDVIEW page).
@@ -399,28 +399,28 @@ For such cases an exception handler method (marked with the @ExceptionHandler an
 Visit the SPRING EXCEPTION HANDLING page for description.
 
 Constructor argument variations:
-    a. responseBodyObject, HttpStatus
-    b. responseBodyObject, HttpHeaders, HttpStatus
+    - responseBodyObject, HttpStatus
+    - responseBodyObject, HttpHeaders, HttpStatus
 
 The ResponseEntity has two nested interfaces which provide additional functionality on method level:
-    a. HeadersBuilder
-    b. BodyBuilder
+    - HeadersBuilder
+    - BodyBuilder
 
 Some of the methods coming from these interfaces:
-    a. BodyBuilder accepted(): defines the HTTP code
-    b. BodyBuilder badRequest(): defines the HTTP code
-    c. BodyBuilder ok(): defines the HTTP code
-    d. BodyBuilder created(java.net.URI location)
-    e. BodyBuilder status(HttpStatus status): defines the HTTP code
-    f. BodyBuilder status(int status): defines the HTTP code
-    g. HeadersBuilder<?> noContent()
-    h. HeadersBuilder<?> notFound()
-    g. ResponseEntity body(value): defines the response body, must be used as last method
+    - BodyBuilder accepted(): defines the HTTP code
+    - BodyBuilder badRequest(): defines the HTTP code
+    - BodyBuilder ok(): defines the HTTP code
+    - BodyBuilder created(java.net.URI location)
+    - BodyBuilder status(HttpStatus status): defines the HTTP code
+    - BodyBuilder status(int status): defines the HTTP code
+    - HeadersBuilder<?> noContent()
+    - HeadersBuilder<?> notFound()
+    - ResponseEntity body(value): defines the response body, must be used as last method
 
 Typical usage of BodyBuilder methods:
-    a. ResponseEntity.methodNameOfStatus(value)
-    b. ResponseEntity.methodNameOfStatus().body(value)
-    c. ResponseEntity.methodNameOfStatus().header("headerName", "headerValue").body(value)
+    - ResponseEntity.methodNameOfStatus(value)
+    - ResponseEntity.methodNameOfStatus().body(value)
+    - ResponseEntity.methodNameOfStatus().header("headerName", "headerValue").body(value)
 
 With using HeaderBuilder, no properties of the response body can be set.
 

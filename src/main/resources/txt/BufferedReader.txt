@@ -8,8 +8,8 @@ During operations, pre-reads the buffer from the external file, actual reading h
 The BufferedReader implements the AutoClosable interface, the try-with-resources statement can be used to ensure proper closing.
 
 Constructors:
-    a. (FileReader fileReader)
-    b. (FileReader fileReader, int bufferSize)
+    - (FileReader fileReader)
+    - (FileReader fileReader, int bufferSize)
 
 ||METHOD|DESCRIPTION||
 ||ready()|checks if the reader is ready to be read||
@@ -33,6 +33,7 @@ try {
     fileReader.close(); //release file
 }
 catch (Exception e) {...}
+END OF EXAMPLE
 
 EXAMPLE FOR USAGE WITH TRY-WITH-RESOURCES:
 import java.io.FileReader;
@@ -43,6 +44,7 @@ try (FileReader fileReader = new FileReader(fileName); BufferedReader bufferedRe
     r.read(charArray);
 }
 catch (Exception e) {...}
+END OF EXAMPLE
 
 =>STREAM
 =>READER

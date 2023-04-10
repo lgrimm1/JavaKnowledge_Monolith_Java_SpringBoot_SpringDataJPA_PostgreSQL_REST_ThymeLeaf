@@ -28,6 +28,7 @@ try {
     outputStream.close(); //close the stream (release the source)
 }
 catch (Exception e) {...} //in case the destination was not accessible
+END OF EXAMPLE
 
 EXAMPLE FOR USAGE WITH TRY-WITH-RESOURCES:
 import java.io.OutputStream;
@@ -40,6 +41,7 @@ try (OutputStream outputStream = new FileOutputStream(fileName)) {
     outputStream.write(byteArray); //write to the destination
 }
 catch (Exception e) {...} //in case the destination was not accessible
+END OF EXAMPLE
 
 =>STREAM
 =>FILEOUTPUTSTREAM

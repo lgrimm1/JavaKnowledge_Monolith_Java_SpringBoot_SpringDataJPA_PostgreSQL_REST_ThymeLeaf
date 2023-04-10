@@ -11,8 +11,8 @@ SPRING MODELANDVIEW
 1. GENERALLY
 =================================================================================
 The Communication layer as a whole, or endpoints of the layer can work in two basic modes:
-    a. model&view mode
-    b. object mode
+    - model&view mode
+    - object mode
 Included by the object mode, the endpoint or the layer can work in object/model&view mode.
 
 The model&view and the object/model&view modes cover working with models and templates. That said, the sent payload is rendered into a view and a model.
@@ -100,13 +100,13 @@ END OF EXAMPLE
 3. CONSTRUCTORS
 =================================================================================
 The constructor parameters of ModelAndView can have the next main variants:
-    a. String viewName
-    b. View view
-    c. String viewName, Map<String, ?> model
-    d. View view, Map<String, ?> model
-    e. String viewName, HttpStatusCode status
-    f. String viewName, Map<String, ?> model, HttpStatusCode status
-    g. (no arguments)
+    - String viewName
+    - View view
+    - String viewName, Map<String, ?> model
+    - View view, Map<String, ?> model
+    - String viewName, HttpStatusCode status
+    - String viewName, Map<String, ?> model, HttpStatusCode status
+    - (no arguments)
 
 It is possible to create a ModelAndView object without defining the view name (or the View). This can be done only by giving no arguments to the constructor.
 
@@ -133,7 +133,7 @@ The ModelAndView has the next methods.
 ||getModelMap()|returns a ModelMap||
 
 The returned View object has one method:
-    getContentType(): returns the content-type as String
+    - getContentType(): returns the content-type as String
 
 The returned ModelMap has methods with which the attribute names and objects can be managed.
 This class is inherited from the Map interface, additional methods are below.
@@ -166,9 +166,9 @@ END OF EXAMPLE
 5. TESTING
 =================================================================================
 Full test of an attribute requires tree steps:
-    a. checking existence of the attribute
-    b. checking class of the attribute
-    c. checking content of the attribute
+    - checking existence of the attribute
+    - checking class of the attribute
+    - checking content of the attribute
 
 With JUnit, please note that in tests when stored attributes are checked with Assertions, assertEquals(true|false, ...) is preferred over assertTrue|assertFalse() on Boolean HTML attributes.
 Similarly, assertEquals(new ArrayList<>(), ...) is preferred over checking emptiness of a List with assertTrue|assertFalse(...isEmpty()).

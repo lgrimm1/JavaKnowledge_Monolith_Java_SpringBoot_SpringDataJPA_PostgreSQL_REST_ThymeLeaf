@@ -2,10 +2,10 @@
 RECORD
 =================================================================================
 An immutable class where its purpose is to hold data, the next structure is needed:
-    a. fields are private final
-    b. the only constructor is public and holds all the setters of the fields
-    c. there is no explicit setter method (immutable)
-    d. the only methods are the getters, equals(), hashCode() and toString() to all fields
+    - fields are private final
+    - the only constructor is public and holds all the setters of the fields
+    - there is no explicit setter method (immutable)
+    - the only methods are the getters, equals(), hashCode() and toString() to all fields
 In order to create such a data container, a lot of boilerplate code is needed.
 Modifying the data container need other coding since the methods should be updated not just the fields.
 From Java 17 the whole class can be replaced with a record structure which ensures that the class is a data container for purpose but no need to maintain the rest of the code.
@@ -28,12 +28,13 @@ String s = names.toString(); //RecordName[fieldName1=..., fieldName2=...]
 RecordName newNames = new RecordName(name1, name2);
 boolean b = names.equals(newNames);
 assertEquals(names.hashCode(), newNames.hashCode());
+END OF EXAMPLE
 
 A record can be extended:
-    a. overloading its constructor
-    b. adding additional constructors
-    c. adding additional (static) fields
-    d. adding additional (static) methods
+    - overloading its constructor
+    - adding additional constructors
+    - adding additional (static) fields
+    - adding additional (static) methods
 The this keyword points to the record itself, the this() method points to the original (automatically generated) constructor.
 Overloading the automatically created constructor is valid, however, overloading again with the same method signature is not allowed.
 
@@ -44,6 +45,7 @@ public record RecordName (FieldType1 fieldName1, FieldType2 fieldName2) {
         Objects.requireNonNull(fieldName2);
     }
 }
+END OF EXAMPLE
 
 EXAMPLE FOR ADDING NEW CONSTRUCTOR TO A RECORD:
 public record RecordName (FieldType1 fieldName1, FieldType2 fieldName2) {
@@ -51,6 +53,7 @@ public record RecordName (FieldType1 fieldName1, FieldType2 fieldName2) {
         this(fieldName1, valueForFieldName2);
     }
 }
+END OF EXAMPLE
 
 EXAMPLE FOR ADDING STATIC CONTENT TO A RECORD:
 public record RecordName (FieldType1 fieldName1, FieldType2 fieldName2) {
@@ -62,5 +65,6 @@ public record RecordName (FieldType1 fieldName1, FieldType2 fieldName2) {
 ...
 FieldType3 var3 = RecordName.fieldName3;
 returnType4 var4 = RecordName.methodName4(...);
+END OF EXAMPLE
 
 =>CLASSES;6. IMMUTABILITY

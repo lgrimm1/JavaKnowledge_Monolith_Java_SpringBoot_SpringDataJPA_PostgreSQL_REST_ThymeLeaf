@@ -5,28 +5,28 @@ Represents a specific geographical, political, or cultural region.
 An operation is locale-sensitive in case requires a Locale to perform its task, e.g. optionally the Scanner.
 References information of number, money, date and time formats etc. It does not contain the data itself but points to several classes which contain the data itself.
 Components:
-    a. language (e.g. en for English, hu for Hungarian, ja for Japanese; not case-sensitive but canonicalizes to lower case)
-    b. script (e.g. Latn for latin, Cyrl for cyrillic)
-    c. country or region (e.g. US for United States, FR for France, 029 for Caribbean)
-    d. variant (defines a language or a dialect or a variant for culture behavior which is not covered by the previous 3 components; e.g. polyton for Polytonic Greek)
-    e. extensions (a map for single character keys to string values with which the specific Locale differs from the standard; e.g. key="u"/value="ca-japanese" (Japanese Calendar), key="x"/value="java-1-7")
+    - language (e.g. en for English, hu for Hungarian, ja for Japanese; not case-sensitive but canonicalizes to lower case)
+    - script (e.g. Latn for latin, Cyrl for cyrillic)
+    - country or region (e.g. US for United States, FR for France, 029 for Caribbean)
+    - variant (defines a language or a dialect or a variant for culture behavior which is not covered by the previous 3 components; e.g. polyton for Polytonic Greek)
+    - extensions (a map for single character keys to string values with which the specific Locale differs from the standard; e.g. key="u"/value="ca-japanese" (Japanese Calendar), key="x"/value="java-1-7")
 The language, script, country parameters are coming from the IANA Language Subtag Registry (similarly to Charset), the variant, extensions parameters are coming from the IETF BCP 47 standards.
 The Locale class does not provide any validation features, its Builder checks only the syntax.
 The Locale class provides constants for easy and fast use, e.g. Locale.US marks all parameters for the US standard locale.
 The Unicode has a locale+language extension. A keyword is represented by a pair of key and type, e.g. nu-thai is for formatting numbers (key=nu) the Thai local digits (value=thai) should be used. The keywords are mapped to a BCP 47 extension value using the extension key 'u', e.g. "u-nu-thai".code will mark Unicode extension of nu-thai.
 
 Constructing a Locale:
-    a. Locale.Builder: any combinations as parameters are put together, following the needed syntax
-    b. constructor
+    - Locale.Builder: any combinations as parameters are put together, following the needed syntax
+    - constructor
 Constructors:
-    a. (String language)
-    b. (String language, String country)
-    c. (String language, String country, String variant)
+    - (String language)
+    - (String language, String country)
+    - (String language, String country, String variant)
 Constructors can not specify script or extensions.
 
 In internationalized environment (multiple localization) there can be a need to find specific locales e.g. when the user chooses a language from a verbal list. There is two possibility integrated into Locale class:
-    a. filtering: returns all matching locales
-    b. lookup: returns the best matching locale
+    - filtering: returns all matching locales
+    - lookup: returns the best matching locale
 Matching is not case-sensitive.
 The user's preference is called Language Priority List and expressed as a list of language ranges.
 There is two types of language ranges: basic and extended.

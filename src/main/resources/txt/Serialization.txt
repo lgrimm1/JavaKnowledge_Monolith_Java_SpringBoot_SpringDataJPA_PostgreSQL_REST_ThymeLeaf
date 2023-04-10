@@ -1,21 +1,11 @@
 =================================================================================
 SERIALIZATION
 =================================================================================
-
 1. GENERALLY
 2. SERIALIZATION OF SERIALIZABLE CLASSES
 3. SERIALIZATION OF NOT-SERIALIZABLE CLASSES
 4. CHECK IF A CLASS IS SERIALIZABLE
 5. CONVERT OBJECT TO JSON STRING
-
-=>WEB APPLICATION
-=>SPRING BOOT
-=>SPRING BOOT ENTITY
-=>SPRING BOOT CONTROLLER
-=>SPRING THYMELEAF
-=>CLASSES
-=>OBJECTINPUTSTREAM
-=>OBJECTOUTPUTSTREAM
 
 =================================================================================
 1. GENERALLY
@@ -52,7 +42,7 @@ public class ClassName {
     private String name;
     private CarType carType;
 }
-
+END OF EXAMPLE
 
 =================================================================================
 3. SERIALIZATION OF NOT-SERIALIZABLE CLASSES
@@ -89,6 +79,7 @@ class ClassName implements Serializable {
         notSerializableVariable = ...; //transforming serializableVariable to not-serializable form
     }
 }
+END OF EXAMPLE
 
 EXAMPLE FOR CUSTOM SERIALIZABLE CLASS (METHODS IN OUTER CLASS):
 class SerializableClass extends NotSerializableClass implements Serializable {
@@ -114,6 +105,7 @@ class ClassName implements Serializable {
     //serializable fields
     private SerializableClass serializableVariable;
 }
+END OF EXAMPLE
 
 =================================================================================
 4. CHECK IF A CLASS IS SERIALIZABLE
@@ -131,6 +123,7 @@ import com.fasterxml.jackson.databind.*;
 boolean isSerializable(Object object) {
     return new ObjectMapper().canSerialize(object.getClass());
 }
+END OF EXAMPLE
 
 =================================================================================
 5. CONVERT OBJECT TO JSON STRING
@@ -151,6 +144,7 @@ private String objectToJSON(Object object) {
 	    return null;
 	}
 }
+END OF EXAMPLE
 
 EXAMPLE FOR CONVERTING OBJECT TO JSON STRING (BUILT-IN JACKSON, NOT-ESCAPED QUOTE MARKS):
 import com.fasterxml.jackson.core.*;
@@ -169,6 +163,7 @@ private String objectToJSON(Object object) {
 	    return null;
 	}
 }
+END OF EXAMPLE
 
 EXAMPLE FOR CONVERTING OBJECT TO JSON STRING (BUILT-IN JACKSON, ESCAPED QUOTE MARKS, FORMATTED):
 import com.fasterxml.jackson.core.*;
@@ -183,6 +178,7 @@ private String objectToJSON(Object object) {
 	    return null;
 	}
 }
+END OF EXAMPLE
 
 EXAMPLE FOR CONVERTING OBJECT TO JSON STRING (BUILT-IN JACKSON, THROUGH JSON OBJECT, ESCAPED QUOTE MARKS, FORMATTED):
 import com.fasterxml.jackson.core.*;
@@ -198,3 +194,13 @@ private String objectToJSON(Object object) {
 	    return null;
 	}
 }
+END OF EXAMPLE
+
+=>WEB APPLICATION
+=>SPRING BOOT
+=>SPRING BOOT ENTITY
+=>SPRING BOOT CONTROLLER
+=>SPRING THYMELEAF
+=>CLASSES
+=>OBJECTINPUTSTREAM
+=>OBJECTOUTPUTSTREAM

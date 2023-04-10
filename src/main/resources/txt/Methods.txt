@@ -15,9 +15,11 @@ METHODS
 =================================================================================
 1. DECLARATION
 =================================================================================
+EXAMPLE FOR DECLARATION OF METHODS:
 [access modifiers] returnType methodName([paramType paramName[, paramType2 paramName2, ...]) {
 	//body
 }
+END OF EXAMPLE
 
 =================================================================================
 2. ACTUAL AND PASSED PARAMETERS
@@ -109,9 +111,8 @@ END OF EXAMPLE
 =================================================================================
 Signature of method: name of the method and the types of passed parameters in order.
 The element type of ArrayList, Maps etc. (between < and > at their definition) will not be analysed when the signature is checked. Due to this, the next two methods are the same for signatures:
-
-methodName(ArrayList<String> sal)
-methodName(ArrayList<Integer> ial)
+    - methodName(ArrayList<String> sal)
+    - methodName(ArrayList<Integer> ial)
 
 There can not be methods in a class with the same signature.
 
@@ -134,10 +135,14 @@ END OF EXAMPLE
 =================================================================================
 An application needs a main (root) class and within the main method which invokes first when the application starts.
 
-The declaration must be this:
+The declaration has standard form, see below.
+
+EXAMPLE FOR MAIN METHOD DECLARATION:
 public static void main(String[] args) {
 	...
 }
+END OF EXAMPLE
+
 The main method is static, no need to create an instance from the root class for the system to access it.
 The args contains the application launch parameters with which the application (the root class) was called.
 The launch parameters are divided and stored in a String array based upon separation by white space.
@@ -198,16 +203,16 @@ EXAMPLE FOR DECLARING GENERICS METHOD ACCEPTING ONLY NUMBERS:
 END OF EXAMPLE
 
 Advantages of using generics:
-    a. code re-usability
-    b. compile-time type checking
+    - code re-usability
+    - compile-time type checking
 
 =================================================================================
 9. VARIABLE NUMBER OF ARGUMENTS (VARARGS)
 =================================================================================
 The method which accepts variable argument, is called variable-arity method or varargs.
 The parameter which represents the variable argument is called vararg.
-
-<access modifier> returnType methodName(dataType... arg) {...}
+For using varargs, the next formula can be used:
+    - <access modifier> returnType methodName(dataType... arg) {...}
 
 It allows to have high amount of passed variables handled. The actual number of passed variables depends on the caller side.
 A vararg means zero or many parameters of the same type.

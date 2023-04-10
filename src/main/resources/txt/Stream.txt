@@ -7,20 +7,12 @@ From newer Java versions, streams are also used for manipulating a series of dat
 1. STREAMS FOR HANDLING INPUT AND OUTPUT DATA
 2. STREAMS FOR MANIPULATING SERIES OF DATA
 
-=>INPUTSTREAM
-=>OUTPUTSTREAM
-=>READER
-=>WRITER
-=>COLLECTION
-=>THREADS
-=>THREADS;2. ATOMIC CLASSES FOR CONCURRENT USE OF PRIMITIVES
-
 =================================================================================
 1. STREAMS FOR HANDLING INPUT AND OUTPUT DATA
 =================================================================================
 Based upon handled data type:
-    a. byte streams
-    b. character streams
+    - byte streams
+    - character streams
 
 Byte streams are used for read and write 8-bit (single byte) data.
 For byte streams, abstract classes are InputStream and OutputStream.
@@ -77,6 +69,7 @@ import java.util.stream.Stream;
 List<type> list = new ArrayList<>();
 ...
 Stream<type> stream = list.stream();
+END OF EXAMPLE
 
 EXAMPLE FOR CONVERTING LIST FROM A STREAM:
 import java.util.List;
@@ -86,6 +79,8 @@ import java.util.stream.Collectors;
 Stream<type> stream = ...;
 ...
 List<type> list = stream.collect(Collectors.toList());
+List<type> immutableList = stream.toList());
+END OF EXAMPLE
 
 ||Method|Description||
 ||map(lambda)|processes the original stream elements, the lambda can create new element type as well||
@@ -127,6 +122,7 @@ Integer total = list.stream().reduce(0, Integer::sum);
 Double average = list.stream().reduce(0, (a, b) -> Integer.sum(a, b)) / (double) list.size(); //or:
 Double average = list.stream().reduce(0, Integer::sum) / (double) list.size();
 //or: convert it into IntStream and use its methods
+END OF EXAMPLE
 
 EXAMPLE 1 FOR CHAINED OPERATIONS WITH STREAMS:
 import java.util.ArrayList;
@@ -138,6 +134,7 @@ sal.stream() //convert to Stream<String>
     .map((p) -> p.toUpperCase()) //execute toUpperCase() on every element, return Stream<String>
     .sorted() //sort in natural order, return Stream<String>
     .forEach((p) -> System.out.println(p)); //iterate, write on console
+END OF EXAMPLE
 
 EXAMPLE 2 FOR CHAINED OPERATIONS WITH STREAMS:
 import java.util.List;
@@ -162,6 +159,7 @@ List<Integer> list =
     .filter(permutations -> permutations.stream().allMatch(AllPermutationPrime::isPrime))
     .map(permutations -> permutations.get(0))
     .collect(Collectors.toList());
+END OF EXAMPLE
 
 2.2. INTSTREAM, LONGSTREAM, DOUBLESTREAM
 ---------------------------------------------------------------------------------
@@ -214,6 +212,7 @@ import java.util.stream.Stream;
 ...
 IntStream iStream = ...;
 Stream<Integer> = iStream.boxed();
+END OF EXAMPLE
 
 2.3. COLLECTORS
 ---------------------------------------------------------------------------------
@@ -256,6 +255,7 @@ AtomicInteger ai = new AtomicInteger(0); //key, starts with zero; Stream means p
 Map<Integer, String> map = list.stream() //Stream<String>, possible duplicates
 		.map(string -> new String[]{String.valueOf(ai.getAndIncrement()), string}) //Stream<String[2]>
 		.collect(Collectors.toMap(array -> Integer.valueOf(array[0]), array -> array[1])); //Map<Integer, String>
+END OF EXAMPLE
 
 EXAMPLE FOR COLLECTING INTO MAP (INTEGER, STRING) WITH NO DUPLICATED SOURCE ELEMENTS):
 import java.util.stream.Collectors.*;
@@ -293,6 +293,7 @@ import java.util.*;
 List<...> list = Arrays.asList(...); //source
 List<...> result = list.stream()
         .collect(collectingAndThen(toList(), ImmutableList::copyOf)) //turn the result to be immutable
+END OF EXAMPLE
 
 EXAMPLE FOR JOINING:
 import java.util.stream.Collectors.*;
@@ -320,6 +321,7 @@ double sum = result.getSum();
 Double avg2 = givenList.stream().collect(Collectors.averagingDouble(String::length));
 Double sum2 = givenList.stream().collect(Collectors.summingDouble(String::length));
 Optional<String> maxby = list.stream().collect(Collectors.maxBy(Comparator.naturalOrder()));
+END OF EXAMPLE
 
 EXAMPLE FOR GROUPINGBY:
 import java.util.stream.Collectors.*;
@@ -331,6 +333,7 @@ Map<Integer, Set<String>> result = list.stream() //Stream<String>
 HashSet<String> hs1 = result.get(1); //"a", "b" as Set
 HashSet<String> hs2 = result.get(2); //"cc", "dd" as Set
 HashSet<String> hs3 = result.get(3); //"eee" as Set
+END OF EXAMPLE
 
 EXAMPLE FOR PARTITIONINGBY:
 import java.util.stream.Collectors.*;
@@ -341,6 +344,7 @@ Map<Boolean, List<String>> result = givenList.stream()
     .collect(Collectors.partitioningBy(s -> s.length() == 2));
 List<String> trueResult = result.get(true); //"cc", "dd" as List
 List<String> falseResult = result.get(false); //"a", "b", "eee" as List
+END OF EXAMPLE
 
 EXAMPLE FOR TEEING (STRUCTURE, NOT THE WHOLE CODE):
 import java.util.stream.Collectors.*;
@@ -354,3 +358,12 @@ numbers.stream()
         (min, max) -> //receives the result from those collectors and combines them
         )
     );
+END OF EXAMPLE
+
+=>INPUTSTREAM
+=>OUTPUTSTREAM
+=>READER
+=>WRITER
+=>COLLECTION
+=>THREADS
+=>THREADS;2. ATOMIC CLASSES FOR CONCURRENT USE OF PRIMITIVES

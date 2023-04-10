@@ -62,9 +62,13 @@ When the class is refactored to be a JPA entity class, before the first test run
 The entity is called domain class under Spring JPA.
 
 In case the repository solution will be not in-memory, before the first test run, also need to create a new and empty database in PostgreSQL or other database system beforehand via using console or admin interface provided by the database system.
-For console, the next SQL commands are needed:
-    CREATE DATABASE db-name;
-    GRANT ALL PRIVILEGES ON DATABASE "db-name" TO username;
+For console, the next SQL commands are needed.
+
+EXAMPLE FOR SQL COMMANDS NEEDED FOR PREPARING DATABASE FOR BACKEND DEVELOPMENT:
+CREATE DATABASE db-name;
+GRANT ALL PRIVILEGES ON DATABASE "db-name" TO username;
+END OF EXAMPLE
+
 The db-name is name of the database, username is the user which we want to use to manage the database, both are set in the application.properties file.
 The default username e.g. under PostgreSQL is postgres.
 Visit the SPRING DATA JPA DATABASE CONNECTION page for the know-how of application.properties file content.
@@ -94,17 +98,17 @@ The entity class is marked with Spring (Hibernate) class-level annotations.
 ||@NamedQuery|optional; defines a domain-level query on the entity and renders it to a query method signature from within the domain||
 
 The Spring name of the entity is defined by the class name. This can be overwritten via using the optional name parameter:
-    @Entity(name = "entityName")
+    - @Entity(name = "entityName")
 
 The @Table annotation can have two parameters:
-    a. name = "table name in database"
-    b. schema = "name of set of tables in the database" (optional)
+    - name = "table name in database"
+    - schema = "name of set of tables in the database" (optional)
 
 The @NamedQuery annotation has the next parameters:
-    a. name = "EntityClassName.queryMethodName"
-    b. query = "JPQL expression"
+    - name = "EntityClassName.queryMethodName"
+    - query = "JPQL expression"
 By using it, the query will be bounded to the domain class and will be accessible by calling the method in static mode:
-    variable = EntityClassName.queryMethodName();
+    - variable = EntityClassName.queryMethodName();
 For JPQL examples see the SPRING BOOT REPOSITORY page.
 By using this annotation on a domain class, annotation-based configuration is created.
 
@@ -112,10 +116,10 @@ By using this annotation on a domain class, annotation-based configuration is cr
 ---------------------------------------------------------------------------------
 Every JPA entity must have a primary key which follows the standard table structure in relational database world.
 The ID can be generated via following four strategics, defined with the @GeneratedValue annotation:
-    a. AUTO (any strategy will be used by JPA)
-    b. TABLE
-    c. SEQUENCE (preferred for PostgreSQL, needs a sequence generator)
-    d. IDENTITY
+    - AUTO (any strategy will be used by JPA)
+    - TABLE
+    - SEQUENCE (preferred for PostgreSQL, needs a sequence generator)
+    - IDENTITY
 When using the SEQUENCE strategy, the ID generator also needs a sequence generator with which the IDs are generated.
 
 The relation between class fields and table fields are marked with field-level annotations.
@@ -133,41 +137,41 @@ The @Id annotation marks that the field matches with the table column with prima
 Using the @Column annotation is still needed.
 
 The @SequenceGenerator annotation also marks the ID field and has the next parameters:
-    a. name = "generator_name" (practically same as sequence_name)
-    b. sequenceName = "sequence_name"
-    c. allocationSize = 1 (defines how the ID value will increase)
+    - name = "generator_name" (practically same as sequence_name)
+    - sequenceName = "sequence_name"
+    - allocationSize = 1 (defines how the ID value will increase)
 With the values above, the generator will start the IDs with 1 and steps with 1 (allocationSize). The maximum value will be determined by the field type (e.g. long or Long will be bigint in the table, int or Integer will be integer in the table).
 
 The @GeneratedValue annotation also marks the ID field, and has the next parameters:
-    a. strategy = GenerationType.SEQUENCE
-    b. generator = "sequence_name" (connects the strategy with the sequence generator defined with @SequenceGenerator annotation)
+    - strategy = GenerationType.SEQUENCE
+    - generator = "sequence_name" (connects the strategy with the sequence generator defined with @SequenceGenerator annotation)
 
 The @Column annotation can have the next parameters:
-    a. name = "column name in database"
-    b. length = number (maximum length of the text values, default is 255)
-    c. precision = number (maximum number of digits, default is zero)
-    d. scale = number (maximum number of decimal digits, default is zero)
-    e. nullable = true|false (does the column accept null as value, default is true)
-    f. unique = true|false (is accepting unique value for the column obligatory, default is false)
-    g. insertable = true|false (is accepting new rows, default is true)
-    h. updatable = true|false (is accepting updating existing rows, default is true)
-    i. table = "table name" (default is "")
-    j. columnDefinition = "" (default is "")
+    - name = "column name in database"
+    - length = number (maximum length of the text values, default is 255)
+    - precision = number (maximum number of digits, default is zero)
+    - scale = number (maximum number of decimal digits, default is zero)
+    - nullable = true|false (does the column accept null as value, default is true)
+    - unique = true|false (is accepting unique value for the column obligatory, default is false)
+    - insertable = true|false (is accepting new rows, default is true)
+    - updatable = true|false (is accepting updating existing rows, default is true)
+    - table = "table name" (default is "")
+    - columnDefinition = "" (default is "")
 In database tables, every cell value can be null unless marked differently. That said, every type when transferred or set directly to and in database, can be null in the database so marking the column for nullability is preferred even in case of primitive type in entity.
 In case the @Column annotation is not used on a field, that field will be matched with table column by the field name, and will apply default values of all parameters of the virtually non-existent annotation.
 Please note, Spring will map VARCHAR(256) to any String field in case columnDefinition is not given. Visit the POSTGRESQL page for details on character types.
 
 The @Temporal annotation has a TemporalType parameter e.g. TemporalType.DATE.
 The newer JPA supports the next field types (no need for annotation):
-    a. LocalDate
-    b. LocalTime
-    c. LocalDateTime
-    d. OffsetTime
-    e. OffsetDateTime
+    - LocalDate
+    - LocalTime
+    - LocalDateTime
+    - OffsetTime
+    - OffsetDateTime
 
 The @Enumerated annotation can have the next parameters:
-    a. [value = ]EnumType.STRING (will use the String value of the enum)
-    b. [value = ]EnumType.ORDINAL (default, will use ordinals of the enum)
+    - [value = ]EnumType.STRING (will use the String value of the enum)
+    - [value = ]EnumType.ORDINAL (default, will use ordinals of the enum)
 In case the order of possible enum values can change in time, use String version in order to prevent necessary database processing.
 
 If needed, transient fields can be connected to table columns as well, by using @Column annotation.

@@ -6,11 +6,12 @@ Extending interface is NavigableMap.
 Implementing class through NavigableMap is TreeMap.
 It is an interface, must use constructor of TreeMap in order to reach its functionalities.
 
-Creating instance by using a constructor of its subclass:
+EXAMPLE FOR CREATING INSTANCE BY USING A CONSTRUCTOR OF ITS SUBCLASS:
 import java.util.SortedMap;
 import java.util.TreeMap;
 ...
 SortedMap<keyType, valueType> sm = new TreeMap<>();
+END OF EXAMPLE
 
 All methods of Map are available.
 Specific methods are below.

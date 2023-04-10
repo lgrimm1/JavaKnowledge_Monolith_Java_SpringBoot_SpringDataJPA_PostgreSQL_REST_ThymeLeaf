@@ -7,14 +7,15 @@ Elements are stored in hash tables similar to HashSet but internally, data are s
 Need more storage and has slower speed, compared to HashSet.
 
 Constructor signatures:
-    a. (): default capacity is 16, default load factor is 0.75
-    b. (capacity in int, load factor in float): how many elements it can store, if load factor is exceeded, the set is moved to an other set with double size
-    c. (other Set class): converting from that set to LinkedHashSet; need identical pair types
+    - (): default capacity is 16, default load factor is 0.75
+    - (capacity in int, load factor in float): how many elements it can store, if load factor is exceeded, the set is moved to an other set with double size
+    - (other Set class): converting from that set to LinkedHashSet; need identical pair types
 
 EXAMPLE FOR CREATING AN INSTANCE:
 import java.util.LinkedHashSet;
 ...
 LinkedHashSet<elementType> set = new LinkedHashSet<>();
+END OF EXAMPLE
 
 All methods of Set are available. Other methods are below.
 Because the element adding order is stored, e.g. the toArray(), toString(), iterator() methods will follow that order.

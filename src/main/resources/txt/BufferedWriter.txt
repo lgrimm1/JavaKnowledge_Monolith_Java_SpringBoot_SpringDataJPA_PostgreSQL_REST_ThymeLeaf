@@ -8,8 +8,8 @@ During operations, collects character data into the buffer until it is filled or
 The BufferedWriter implements the AutoClosable interface, the try-with-resources statement can be used to ensure proper closing.
 
 Constructors:
-    a. (FileWriter fileWriter)
-    b. (FileWriter fileWriter, int bufferSize)
+    - (FileWriter fileWriter)
+    - (FileWriter fileWriter, int bufferSize)
 
 ||METHOD|DESCRIPTION||
 ||write()|writes a character to the buffer||

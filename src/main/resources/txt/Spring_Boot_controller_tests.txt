@@ -203,17 +203,17 @@ In case if using JUnit4, the class-level @RunWith(SpringRunner.class) annotation
 The application layers will be cached by default so Spring will not start-stop the application per test method.
 In case the test modifies the context (e.g. the state of a singleton bean or the state of an embedded database) and that modification could have an effect on other test results, usage of @DirtiesContext annotation is needed. When the flow reaches this annotation, the context will be emptied and reloaded.
 Effect of the @DirtiesContext annotation depends on its placement:
-    a. before class
-    b. before each test method
-    c. before a specific test method
-    d. after a specific test method
-    e. after each test method
-    f. after class
+    - before class
+    - before each test method
+    - before a specific test method
+    - after a specific test method
+    - after each test method
+    - after class
 
 In case there are more controllers, because running tests for them is executes parallel, there can be communication conflicts (they should use the same (8080 by default) port).
 That said, the @SpringBootTest annotation can have the next formulas:
-    a. @SpringBootTest
-    b. @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
+    - @SpringBootTest
+    - @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 In case of the latter version, an additional @Value (under older Spring versions, @LocalServerPort) annotation and its field must be declared (will be used by Spring automatically). In case the port can be given specifically, use other constant of WebEnvironment.
 The @LocalServerPort is deprecated under newer Spring versions, and because the servlet is started along with the context which is cached, can lead to unwanted errors and conflicts.
 In case the servlet startup and loading the context can be tested via testing the Main class, furthermore the controller class can be tested in a mocked web environment, the test cases will be separated from the startup and there should not be problems due to cached context either, see the next session.

@@ -8,12 +8,14 @@ Implementing classes are ArrayDeque, LinkedList.
 Extending class is BlockingDeque.
 For creating instances, use constructors of classes which implements the Deque interface.
 
+EXAMPLE FOR DEQUE:
 import java.util.Deque;
 import java.util.ArrayDeque;
 import java.util.LinkedList;
 ...
 Deque<String> animal1 = new ArrayDeque<>(); //ArrayDeque implementation of Deque
 Deque<String> animal2 = new LinkedList<>(); //LinkedList implementation of Deque
+END OF EXAMPLE
 
 These implementations can use declared methods in the Deque interface.
 
@@ -53,6 +55,7 @@ int firstElement = numbers.peekFirst(); //3
 int lastElement = numbers.peekLast(); //2
 int removedNumber1 = numbers.pollFirst(); //3, [1, 2]
 int removedNumber2 = numbers.pollLast(); //2, [1]
+END OF EXAMPLE
 
 =>QUEUE
 =>ARRAYDEQUE

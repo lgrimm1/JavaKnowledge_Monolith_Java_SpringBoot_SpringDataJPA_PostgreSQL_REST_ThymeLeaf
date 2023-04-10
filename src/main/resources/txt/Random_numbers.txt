@@ -5,8 +5,6 @@ RANDOM NUMBERS
 1. PSEUDO-RANDOM NUMBERS
 3. SECURE RANDOM NUMBERS
 
-=>LITERALS
-
 =================================================================================
 1. ONE RANDOM NUMBER
 =================================================================================
@@ -66,6 +64,7 @@ import java.security.SecureRandom;
 SecureRandom random = new SecureRandom(); //no seed numbers
 byte[] byteArray = new byte[numberOfNumbers];
 random.nextBytes(byteArray); //fill the array with random numbers; forces the random to generate new seeds before it
+END OF EXAMPLE
 
 EXAMPLE 2 FOR TRUE RANDOM NUMBERS:
 import java.security.SecureRandom;
@@ -74,6 +73,7 @@ byte[] seedArray = random.generateSeed(numberOfSeeds); //generate new series of 
 SecureRandom random = new SecureRandom(seedArray); //use given seed
 byte[] byteArray = new byte[numberOfNumbers];
 random.nextBytes(byteArray); //fill the array with random numbers
+END OF EXAMPLE
 
 Other methods are below.
 
@@ -81,3 +81,5 @@ Other methods are below.
 ||setSeed(byte[] seedArray)|sets seed numbers||
 ||setSeed(long seed)|sets seed from the 8th bits of the given long number||
 ||getSeed(int numberOfBytes)|returns the used seed numbers as a byte[numberOfBytes]
+
+=>LITERALS

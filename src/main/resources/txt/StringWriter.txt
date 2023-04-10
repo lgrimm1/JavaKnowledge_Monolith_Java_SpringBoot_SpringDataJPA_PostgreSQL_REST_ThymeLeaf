@@ -11,8 +11,8 @@ Available methods are below.
 Its working mechanism is similar to StringBuilder.
 
 Constructors:
-    a. (): uses default buffer size
-    a. (int bufferSize): uses the given buffer size
+    - (): uses default buffer size
+    - (int bufferSize): uses the given buffer size
 
 ||Method|Description||
 ||write()|writes a single character to the buffer||
@@ -37,6 +37,7 @@ try {
     stringWriter.close(); //close the StringWriter
 }
 catch (Exception e) {...} //in case the source was not accessible or the buffer was not created
+END OF EXAMPLE
 
 EXAMPLE FOR USAGE WITH TRY-WITH-RESOURCES:
 import java.io.StringWriter;
@@ -49,6 +50,7 @@ try (StringWriter stringWriter = new StringWriter(string)) {
     String s = stringWriter.toString(); //export the buffer to a String
 }
 catch (Exception e) {...} //in case the source was not accessible or the buffer was not created
+END OF EXAMPLE
 
 =>STREAM
 =>READER

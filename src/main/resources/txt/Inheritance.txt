@@ -32,6 +32,7 @@ The inheritance keyword is extends.
 EXAMPLE FOR INHERITANCE:
 class A {...} //superclass
 class B extends A {..} //subclass of A
+END OF EXAMPLE
 
 The object of a subclass will be an instance of the object of its superclass.
 
@@ -46,6 +47,7 @@ class Main {
         boolean b = b instanceof a; //true
     }
 }
+END OF EXAMPLE
 
 A class has fields and methods with access modifiers attached to them.
 The subclass will inherit all fields and methods with their access modifiers from the superclass except the constructors which should be declared independently, and final fields and methods.
@@ -103,6 +105,7 @@ class Main {
         System.out.println("d: " + d); //accessing new field d: true
     }
 }
+END OF EXAMPLE
 
 =================================================================================
 3. NEW METHOD, METHOD OVERRIDE, METHOD OVERLOAD
@@ -149,6 +152,7 @@ class B extends A {
         System.out.println("x % y: " + calc4(x, y)); //new method calc4: 3
     }
 }
+END OF EXAMPLE
 
 In case all the variants of possible parameters are not known or the number of possibilities are high, use vargargs instead.
 
@@ -195,6 +199,7 @@ abstract class A { //declaring abstract class
     }
     abstract int calc2(int a); //declaring abstract method
 }
+END OF EXAMPLE
 
 In case the subclass is an abstract class as well, the subclass will inherit all methods (normal and abstract), and there is no obligation to implement all abstract methods of the super.
 
@@ -221,6 +226,7 @@ class B extends A {
         this.m = m;
     }
 }
+END OF EXAMPLE
 
 =================================================================================
 7. INTERFACE
@@ -288,6 +294,7 @@ class Main {
     type4 = methodName4(args4); //implemented in D
     typeVariant4 = methodName4(args4); //implemented in E with different code block
 }
+END OF EXAMPLE
 
 7.2. ORGANIZING INTERFACES
 ---------------------------------------------------------------------------------
@@ -312,6 +319,7 @@ import java.lang.FunctionalInterface;
 interface functionalInterfaceName {
     <return value> methodName(arguments);
 }
+END OF EXAMPLE
 
 EXAMPLE FOR USING FUNCTIONAL INTERFACE AS PASSED ANONYMOUS CLASS:
 //declare the interface as a SAM type
@@ -326,6 +334,7 @@ customMethodName(new functionalInterfaceName {
     @Override
     <access modifier> <return value> methodName(arguments) {...} //implementation of the abstract method
 });
+END OF EXAMPLE
 
 EXAMPLE FOR USING FUNCTIONAL INTERFACE AS PASSED LAMBDA EXPRESSION:
 //declare a custom method
@@ -333,6 +342,7 @@ EXAMPLE FOR USING FUNCTIONAL INTERFACE AS PASSED LAMBDA EXPRESSION:
 ...
 //call the custom method with a lambda; the lambda will exist only within the scope of the method
 customMethodName((virtual parameter list of the abstract method) -> unique implemented algorithm of the abstract method);
+END OF EXAMPLE
 
 EXAMPLE FOR USAGE:
 interface Circle {
@@ -352,6 +362,7 @@ Circle circle = (double radius) -> 2 * radius * Math.PI;
 //changing the function
 circle = (double radius) -> Math.pow(radius, 2) * Math.PI;
 //processing circle.calc(r) as area
+END OF EXAMPLE
 
 7.4. STANDARD FUNCTIONAL INTERFACES
 ---------------------------------------------------------------------------------
@@ -377,10 +388,12 @@ EXAMPLE FOR DECLARING GENERICS FUNCTIONAL INTERFACE:
 interface GenericInterfaceName<T> { //T typed interface
     T func(T data); //func as mandatory name of method, T as return value type, T as argument type
 }
+END OF EXAMPLE
 
 EXAMPLE FOR USING INTERFACE (DECLARED IN PREVIOUS EXAMPLE) AS PASSED LAMBDA EXPRESSION:
 GenericsInterfaceName<String> generic1 = (str) -> {...}; //operate with String data
 GenericsInterfaceName<Integer> generic2 = (a) -> {...}; //operate with Integer data
+END OF EXAMPLE
 
 By using <T>, any types except primitive types can be accepted. Narrowing is possible by using <T extends typeClass> where typeClass can be e.g. Number for numbers or any custom types so T can be only a subtype of typeClass.
 Such T is called bounded type.
@@ -388,10 +401,11 @@ Such T is called bounded type.
 EXAMPLE FOR DECLARING GENERICS FUNCTIONAL INTERFACE OF NUMBERS:
 @FunctionalInterface
 interface genericsInterfaceName<T extends Number> {...} //a class represents T as subtype of Number
+END OF EXAMPLE
 
 Advantages of using generics:
-    a. code re-usability
-    b. compile-time type checking
+    - code re-usability
+    - compile-time type checking
 
 =================================================================================
 8. POLYMORPHISM
@@ -399,10 +413,10 @@ Advantages of using generics:
 OOP basic theory.
 An entity can handle different tasks in different situations. E.g. under an identical name which shows the basic task, with different implementations the method processes data in different ways.
 Polymorphism can be reached by using
-    a. method override (inheritance: extending and implementing classes and interfaces; run-time polymorphism)
-    b. method overload (due to different signatures, different code blocks, compile-time polymorphism)
-    c. operator overload (same operator provides different actions for different types, e.g. + can mean adding and concatenation; Java does not support user-defined operator overloading)
-    d. polymorphic variable (type (class) of variable can change during running; Java does not support it)
+    - method override (inheritance: extending and implementing classes and interfaces; run-time polymorphism)
+    - method overload (due to different signatures, different code blocks, compile-time polymorphism)
+    - operator overload (same operator provides different actions for different types, e.g. + can mean adding and concatenation; Java does not support user-defined operator overloading)
+    - polymorphic variable (type (class) of variable can change during running; Java does not support it)
 
 =================================================================================
 9. ENCAPSULATION
@@ -414,9 +428,9 @@ Fields and methods which are connected by their common task, are placed into a c
 10. DATA HIDING
 =================================================================================
 OOP basic theory.
-    a. Encapsulation in method: fields can not be accessed from outside the method.
-    b. Encapsulation in class: fields and methods can not be accessed from outside the class.
-    c. Encapsulation in package: classes and their fields and methods can not be accessed from outside the package.
+    - Encapsulation in method: fields can not be accessed from outside the method.
+    - Encapsulation in class: fields and methods can not be accessed from outside the class.
+    - Encapsulation in package: classes and their fields and methods can not be accessed from outside the package.
 
 =================================================================================
 11. GENERIC ALGORITHMS
@@ -431,9 +445,9 @@ Due to operating on different types and structures, implementations of such algo
 Through generics classes, a special inheritance can be achieved as a generics class carrying T as its type can be virtually inherited by its instances carrying specific type.
 
 Advantages of using generics:
-    a. code re-usability
-    b. compile-time type checking
-    c. used with Collections (e.g. ArrayList<String> creates a String-based instance of ArrayList<T>)
+    - code re-usability
+    - compile-time type checking
+    - used with Collections (e.g. ArrayList<String> creates a String-based instance of ArrayList<T>)
 
 =>ACCESS MODIFIERS
 =>CLASSES

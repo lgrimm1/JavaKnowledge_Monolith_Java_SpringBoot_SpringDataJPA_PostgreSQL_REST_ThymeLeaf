@@ -57,8 +57,9 @@ Using this formula means that the developer knows that some operations can raise
 3. SUPPRESSED EXCEPTION
 =================================================================================
 In case of using try-with-resources statement and in the resource declaration and in the try block exception is raised at the same time, the exception will be thrown from the try block but not from the resource declaration, the last one is suppressed.
+To handle such problem, use the next formula.
 
-To handle such problem, use the next formula:
+EXAMPLE FOR HANDLING SUPRESSED EXCEPTION:
 catch (exceptionType e) {
     //processing e which comes from the try block
     Throwable[] sups = e.getSuppressed();
@@ -66,6 +67,7 @@ catch (exceptionType e) {
         //processing suppressed exceptions
     }
 }
+END OF EXAMPLE
 
 =>STATEMENTS
 =>METHODS

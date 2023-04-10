@@ -26,8 +26,8 @@ END OF EXAMPLE
 With the putAll() method it is possible to insert elements from an other map type however, the other map should have the same enum as key type and valueType.
 
 Differences between EnumSet and EnumMap:
-    a. EnumSet is stored as a sequence of bits, EnumMap is stored as arrays
-    b. EnumSet is created with its methods e.g. allOf(), noneOf(), range(), of(), EnumMap is created with its constructor
+    - EnumSet is stored as a sequence of bits, EnumMap is stored as arrays
+    - EnumSet is created with its methods e.g. allOf(), noneOf(), range(), of(), EnumMap is created with its constructor
 
 =>MAP
 =>CLASSES;9.1. USED AS ENUMERATION TYPE

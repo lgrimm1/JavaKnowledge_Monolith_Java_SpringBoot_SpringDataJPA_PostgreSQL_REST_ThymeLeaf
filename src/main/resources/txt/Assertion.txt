@@ -11,11 +11,15 @@ For direct debugging purposes from within source code.
 Inserting an assertion means comparing a result against its needed value.
 The developer assumes that at the checked line a condition is true. If the condition fails, that shows a bug.
 
+EXAMPLE FOR ASSERTS:
 assert condition; //if the condition is false, throws an AssertionError and the flow stops, otherwise the flow steps through
 assert condition : expression; //if the condition is false, throws an AssertionError with the expression as details, then the flow stops
+END OF EXAMPLE
 
 Normally, the assertions are not evaluated since they are for debugging purposes.
-In order to force the compiler for evaluation, use the next formulas:
+In order to force the compiler TO evaluate, use the next formulas.
+
+EXAMPLE FOR FORCING THE COMPILER TO EVALUATE:
 java -ea:arguments //enables assertions in all classes except system classes; or:
 java -enableassertions:arguments
 java -esa:arguments //enables assertions in system classes; or:
@@ -24,6 +28,7 @@ java -da:arguments //disables assertions in all classes except system classes; o
 java -disableassertions:arguments
 java -dsa:arguments //disables assertions in system classes; or:
 java -disablesystemassertions:arguments
+END OF EXAMPLE
 
 EXAMPLE FOR ENABLING ASSERTIONS:
 java -ea //evaluates assertions in all classes except system classes

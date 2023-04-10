@@ -183,13 +183,13 @@ It is possible to save a code part in the editor by selecting it and choosing Sa
 The live templates below are recommended for adding to Live Templates.
 
 For all templates here:
-	a. Applicable in Java: statement
-	b. Reformat according to style
+	- Applicable in Java: statement
+	- Reformat according to style
 
 Order of data here follows the next:
-	a. abbreviation
-	b. description
-	c. template text
+	- abbreviation
+	- description
+	- template text
 
 2.1. IF TEMPLATES
 2.2. SWITCH TEMPLATES
@@ -199,6 +199,7 @@ Order of data here follows the next:
 
 2.1. IF TEMPLATES
 ---------------------------------------------------------------------------------
+EXAMPLE FOR IF TEMPLATES:
 if
 Add if branch
 if ($CONDITION$) {
@@ -245,9 +246,11 @@ if ($EXPR$ instanceof $TYPE$) {
 ift
 Add ternary branches
 if ($CONDITION$) ? $EXPR1$ : $EXPR2$;
+END OF EXAMPLE
 
 2.2. SWITCH TEMPLATES
 ---------------------------------------------------------------------------------
+EXAMPLE FOR SWITCH TEMPLATES:
 switch
 Add switch statement
 switch ($VAR$) {
@@ -273,9 +276,11 @@ switch ($VAR$) {
 	case $VALUE3$ -> $EXPR3$;
 	default -> $EXPR4$;
 }
+END OF EXAMPLE
 
 2.3. ITERATION TEMPLATES
 ---------------------------------------------------------------------------------
+EXAMPLE FOR ITERATION TEMPLATES:
 for
 Create for iteration with index variable
 for (int $INDEX$ = 0, limit = $LIMIT$; $INDEX$ < limit; $INDEX$++) {
@@ -356,9 +361,11 @@ Create do-while iteration
 do {
 	$END$
 } while ($CONDITION$)
+END OF EXAMPLE
 
 2.4. TRY TEMPLATES
 ---------------------------------------------------------------------------------
+EXAMPLE FOR TRY TEMPLATES:
 try
 Create try-catch statement
 try {
@@ -419,9 +426,11 @@ Add finally branch
 finally {
     $EXPR$
 }
+END OF EXAMPLE
 
 2.5. RETURN TEMPLATES
 ---------------------------------------------------------------------------------
+EXAMPLE FOR RETURN TEMPLATES:
 returns
 Create return-switch statement
 return switch ($VAR$) {
@@ -451,3 +460,4 @@ return switch ($VAR$) {
 returnt
 Create return-ternary statement
 return ($CONDITION$) ? $EXPR1$ : $EXPR2$;
+END OF EXAMPLE

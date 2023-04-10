@@ -204,7 +204,7 @@ The controller class needs an endpoint which handles the error page. Following a
 The handler method is REST compatible.
 
 The folder to keep web.xml is:
-    src/main/webapp/WEB-INF
+    - src/main/webapp/WEB-INF
 
 EXAMPLE FOR CUSTOMIZING WEB.XML:
 <error-page>

@@ -30,21 +30,21 @@ This file contains configuration and environment-specific settings of the applic
 ||server.error.include-message|sets whether the server error messages should be sent to the frontend, optional, needed for Spring Validation||
 
 The database communicates through a port defined at installation. The default ports are:
-    a. mySQL: 3306
-    b. PostgreSQL: 5432
-    c. Oracle: 1521
-    d. SQL Server: 1434
+    - mySQL: 3306
+    - PostgreSQL: 5432
+    - Oracle: 1521
+    - SQL Server: 1434
 
 The database login data (username and password) can be default which comes from the database installation or can be unique which was pre-prepared in the database.
 Default usernames:
-    a. mySQL: root
-    b. PostgreSQL: postgres
+    - mySQL: root
+    - PostgreSQL: postgres
 
 The spring.jpa.hibernate.ddl-auto parameter can have the next values:
-    a. create (will create the database structure if it does not exist)
-    b. create-drop (will create the database structure if it does not exist, deletes it when the backend is stopped)
-    c. validate (for production)
-    d. update (will not create but update with model changing)
+    - create (will create the database structure if it does not exist)
+    - create-drop (will create the database structure if it does not exist, deletes it when the backend is stopped)
+    - validate (for production)
+    - update (will not create but update with model changing)
 While pure backend development is ongoing, create-drop is proper since the structure is not finalized.
 Once the database (entity) design time is over, create or validate is proper.
 When the system goes alive, after creating the structure, update will serve.

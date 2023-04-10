@@ -4,22 +4,22 @@ SPRING BOOT MAIN CLASS
 Under the src/main/java/<package> folder, the Main.java can be found or must be placed. Of course, can have different name in which case all Main references should be re-written to that name, please see below.
 This class contains the web application launcher.
 The @SpringBootApplication annotation marks that this is the launcher class. This annotation summarizes the next annotations, courtesy of Spring Boot:
-    a. @Configuration
-    b. @EnableAutoConfiguration
-    c. @EnableWebMvc
-    d. @ComponentScan
+    - @Configuration
+    - @EnableAutoConfiguration
+    - @EnableWebMvc
+    - @ComponentScan
 
 The @ComponentScan part:
-    a. instructs Spring Boot that find and instantiate all classes marked with @Bean or @Component or @Repository or @Service or @Controller or @RestController annotation
-    b. in case the @Autowired annotation is used for class dependency injection (see later), the dependent class will be instantiated as singleton class
-    b. in case the @Scope(value = "prototype") annotation is used for class dependency injection (see later), the dependent class will not be instantiated as singleton class
+    - instructs Spring Boot that find and instantiate all classes marked with @Bean or @Component or @Repository or @Service or @Controller or @RestController annotation
+    - in case the @Autowired annotation is used for class dependency injection (see later), the dependent class will be instantiated as singleton class
+    - in case the @Scope(value = "prototype") annotation is used for class dependency injection (see later), the dependent class will not be instantiated as singleton class
 
 The @EnableJpaRepositories annotation configures JPA, also instructs the Spring that the repository classes can be managed by Spring Data JPA if the repository is an interface and extends JpaRepository.
 In case of in-memory storage (no database) solution, this annotation can be left out.
 
 Optional parameters of @EnableJpaRepositories annotation:
-    a. escapeCharacter = 'character' (defines custom escape character e.g. in JSON Strings)
-    b. value = "Package[.Package...].RepositoryClassName" (marks the exact class path of the repository with which the JPA can build-up)
+    - escapeCharacter = 'character' (defines custom escape character e.g. in JSON Strings)
+    - value = "Package[.Package...].RepositoryClassName" (marks the exact class path of the repository with which the JPA can build-up)
 Tt is possible to use the same annotation with different parameters on different class paths. Be aware of having duplicated annotation use (when there would be more than one enabled repository alive on the given class level).
 In case the value is used, JPA will build up the referred repository from the class of the annotation and below in the classpath graph.
 

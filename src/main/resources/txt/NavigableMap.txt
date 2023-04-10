@@ -5,11 +5,12 @@ Extends the SortedMap interface.
 Implementing class is TreeMap.
 It is an interface, must use constructor of TreeMap in order to reach its functionalities.
 
-Creating instance by using a constructor of its subclass:
+EXAMPLE FOR CREATING INSTANCE BY USING A CONSTRUCTOR OF ITS SUBCLASS:
 import java.util.NavigableMap;
 import java.util.TreeMap;
 ...
 NavigableMap<keyType, valueType> nm = new TreeMap<>();
+END OF EXAMPLE
 
 All methods of SortedMap are available. However, headMap(), tailMap(), and subMap() are defined differently.
 Specific methods are below.

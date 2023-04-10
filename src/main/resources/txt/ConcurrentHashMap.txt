@@ -4,15 +4,16 @@ CONCURRENTHASHMAP
 Implementing class of ConcurrentMap.
 
 Constructor signatures:
-    a. (): default capacity is 16, default load factor is 0.75
-    b. (capacity in int, load factor in float): how many entries it can store, if load factor is exceeded, the map is moved to an other map with double size
-    c. (other Map class): converting from that map to HashMap; need identical pair types
+    - (): default capacity is 16, default load factor is 0.75
+    - (capacity in int, load factor in float): how many entries it can store, if load factor is exceeded, the map is moved to an other map with double size
+    - (other Map class): converting from that map to HashMap; need identical pair types
 
-Creating instance by using a constructor:
+EXAMPLE FOR CREATING INSTANCE BY USING CONSTRUCTOR:
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ConcurrentHashMap;
 ...
 ConcurrentHashMap<keyType, valueType> chm = new ConcurrentHashMap<>();
+END OF EXAMPLE
 
 EXAMPLE FOR CONVERSION:
 import java.util.concurrent.ConcurrentHashMap;
@@ -52,8 +53,8 @@ valueType value = chm.reduce(4, (k, v) -> v, (v1, v2) -> v1+v2); //transforms ev
 END OF EXAMPLE
 
 Differences between ConcurrentHashMap and HashMap:
-    a. ConcurrentHashMap is thread-safe, HashMap is not
-    b. ConcurrentHashMap provides methods for bulk operations like forEach(), search() and reduce(), HashMap does not
+    - ConcurrentHashMap is thread-safe, HashMap is not
+    - ConcurrentHashMap provides methods for bulk operations like forEach(), search() and reduce(), HashMap does not
 
 ConcurrentHashMap is divided into 16 segments which allows 16 thread accesses parallel. Handles it in case more threads want to access the map at the same time.
 It provides its own synchronization.

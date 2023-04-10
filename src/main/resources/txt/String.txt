@@ -8,14 +8,6 @@ STRING
 5. STRING-CHAR[]-ARRAYLIST<CHARACTER> CONVERSIONS
 6. STRING METHODS
 
-=>WRAPPER CLASSES
-=>TYPE CASTING AND CONVERSION;3. TYPE CONVERSION
-=>EQUALITY
-=>STANDARD INPUT AND OUTPUT
-=>PRINTSTREAM
-=>STRINGBUILDER
-=>PRINTWRITER
-
 =================================================================================
 1. STRING OBJECT
 =================================================================================
@@ -24,17 +16,21 @@ The referenced literal can not be changed but new literal can be assigned to it.
 A String object is an instance of the String wrapper class.
 In case a String object is declared without giving a value to it, its constructor will render an empty String ("") to it. Therefore, the String will not point to null unless we give that value to it explicitly.
 
-A String can be concatenated with another using simple adding operators:
-    String s1 = ...;
-    String s2 = ...;
-	String s = s1 + s2;
-	s += s1; //s = s + s1;
+A String can be concatenated with another using simple adding operators.
 
-In case concatenation is placed inside an iteration and/or processed many times, use StringBuilder for the operations then save the result into a String.
+EXAMPLE FOR STRING ADDING OPERATORS:
+String s1 = ...;
+String s2 = ...;
+String s = s1 + s2;
+s += s1; //s = s + s1;
+END OF EXAMPLE
+
+In case concatenation is placed inside an iteration and-or processed many times, use StringBuilder for the operations then save the result into a String.
 
 =================================================================================
 2. COMPARING STRINGS
 =================================================================================
+EXAMPLE FOR COMPARING STRINGS:
 String s1 = ...;
 String s2 = ...;
 char[] ca = new ca[]{...};
@@ -46,10 +42,12 @@ int pos = s1.indexOf(s2); //pos > -1: contents of s2 is within s1
 b = s1.ContentEquals(s2);
 b = s1.ContentEquals(ca);
 b = s1.ContentEquals(cal);
+END OF EXAMPLE
 
 =================================================================================
 3. PARSE FROM STRING, CONVERT TO STRING
 =================================================================================
+EXAMPLE FOR PARSING AND CONVERTING STRING:
 String s = ...;
 int pos = ...;
 byte a = Byte.parseByte(s);
@@ -61,14 +59,15 @@ double f = Double.parseDouble(s);
 boolean g = Boolean.parseBoolean(s);
 char h = s.charAt(pos);
 byte[] ba = s.getBytes(); //handles ASCII and Unicode as well
+END OF EXAMPLE
 
 Converting to String:
-	a. by automated literal conversion primitive types can be converted (e.g. String s = "" + 12 + 'c' + -65.12 + true -> "12c-65.12true", slow for iteration or many tags)
-	b. by using StringBuilder (e.g. in iteration it is the fastest)
-	c. by using the .toString() method of a class (e.g. String s = Character.toString('c'), fast and obvious)
-	d. by using String.valueOf() (e.g. String s = String.valueOf(-32.45), can be used for char[] as well, fast)
-	e. by using constructor (e.g. String s = new String(variable), can be used for byte[], int[] (following ASCII and Unicode) and char[] as well)
-	f. by using String formatting (slower process for many data e.g. hexadecimal conversion of byte[] with higher length)
+	- by automated literal conversion primitive types can be converted (e.g. String s = "" + 12 + 'c' + -65.12 + true -> "12c-65.12true", slow for iteration or many tags)
+	- by using StringBuilder (e.g. in iteration it is the fastest)
+	- by using the .toString() method of a class (e.g. String s = Character.toString('c'), fast and obvious)
+	- by using String.valueOf() (e.g. String s = String.valueOf(-32.45), can be used for char[] as well, fast)
+	- by using constructor (e.g. String s = new String(variable), can be used for byte[], int[] (following ASCII and Unicode) and char[] as well)
+	- by using String formatting (slower process for many data e.g. hexadecimal conversion of byte[] with higher length)
 
 =================================================================================
 4. STRING FORMATTING
@@ -76,51 +75,48 @@ Converting to String:
 Rules are equal with rules used at formatted standard output or console (.printf()).
 Also can be used with PrintStreams (System.out is a PrintStream).
 
+EXAMPLE FOR STRING FORMATTING:
 String text = ...;
 String fs = String.format(formatString, text);
 System.out.println(text); //shows original text
 System.out.println(fs); //shows formatted text
+END OF EXAMPLE
 
 The formatting rules as reference will be merged with fs String, any later use will carry this information.
 More formatting references can be declared for an original String.
 In case an object contains more Strings (e.g. ArrayList<String>, String[]), accessing String.format to its elements is possible as well.
 
-formatString:
-"[pre-text]%[flags][width][.precision]conversionCharacter[post-text]"
+The formatter String has the next formula: "[pre-text]%[flags][width][.precision]conversionCharacter[post-text]"
 
-Flags:
-[-][+][0][,][ ]
+Flags: [-][+][0][,][ ]
 They are for numbers only except the - character.
 Follow the order of options above at writing the flags into formatString.
-	-: left justified (default: right)
-	+: show + sign for positive numbers
-	0: zero-padded (fill the rest of width with zeros)
-	,:	show thousand separator (the shown character depends on locale settings)
-	white space: minus sign for negative, white space for positive numbers
+	- -: left justified (default: right)
+	- +: show + sign for positive numbers
+	- 0: zero-padded (fill the rest of width with zeros)
+	- ,:	show thousand separator (the shown character depends on locale settings)
+	- white space: minus sign for negative, white space for positive numbers
 Use + or white space or none but not both.
 
-Width:
-A minimum number which shows on how many characters should the value be drawn.
+Width: a minimum number which shows on how many characters should the value be drawn.
 Include the white space, thousand separators, decimal sign, precision as well.
 
-Precision:
-How many decimal digits should be shown within the width.
+Precision: how many decimal digits should be shown within the width.
 The decimal sign (a character depends on locale settings) and the number of precision digits will decrease the whole width.
 In case less decimal digits than the available precision, will fill the rest of digits with zeros.
 In case more decimal digits the number will be rounded.
 This parameter will be used only with floating-point numbers.
 
-conversionCharacter:
-d|f|c|C|s|S|h|X[\n|%n]
-	d: whole number (byte..long)
-	f: foating-point number (float, double)
-	c: character, not case-sensitive
-	C: uppercase character
-	s: text (String)
-	S: uppercase text (String)
-	h: hashcode
-	X: convert the number input to hexadecimal value (2 characters per byte, it is slower process)
-	\n, %n: new line character, platform-dependent
+Conversion character: d|f|c|C|s|S|h|X[\n|%n]
+    - d: whole number (byte..long)
+    - f: foating-point number (float, double)
+    - c: character, not case-sensitive
+    - C: uppercase character
+    - s: text (String)
+    - S: uppercase text (String)
+    - h: hashcode
+    - X: convert the number input to hexadecimal value (2 characters per byte, it is slower process)
+    - \n, %n: new line character, platform-dependent
 
 EXAMPLE FOR FORMATTING RULES:
 "Total is: $%,.2f\n"
@@ -148,11 +144,14 @@ END OF EXAMPLE
 
 5.1. STRING TO CHAR[]
 ---------------------------------------------------------------------------------
+EXAMPLE FOR STRING TO CHAR ARRAY:
 String s = ...;
 char[] ca = s.toCharArray();
+END OF EXAMPLE
 
 5.2. CHAR[] TO STRING
 ---------------------------------------------------------------------------------
+EXAMPLE FOR CHAR ARRAY TO STRING:
 char[] charArray = new char[]{...};
 String s1 = new String(charArray);
 String s2 = String.valueOf(charArray);
@@ -161,26 +160,32 @@ for (char c : charArray) {
 	sb.append(c);
 }
 String s3 = sb.toString();
+END OF EXAMPLE
 
 5.3. CHAR[] TO ARRAYLIST<CHARACTER>
 ---------------------------------------------------------------------------------
+EXAMPLE FOR CHAR ARRAY TO CHARACTER ARRAYLIST:
 char[] ca = new char[]{...};
 ArrayList<Character> cal = new ArrayList<>();
 for (char c : ca) {
 	cal.add(c);
 }
+END OF EXAMPLE
 
 5.4. ARRAYLIST<CHARACTER> TO CHAR[]
 ---------------------------------------------------------------------------------
+EXAMPLE FOR CHARACTER ARRAYLIST TO CHAR ARRAY:
 ArrayList<Character> = new ArrayList<>();
 ...
 char[] ca = new char[cal.size()];
 for (int index = 0, length = cal.size(); index < length; ++index) {
 	ca[index] = cal.get(index);
 }
+END OF EXAMPLE
 
 5.5. STRING TO ARRAYLIST<CHARACTER>
 ---------------------------------------------------------------------------------
+EXAMPLE FOR STRING TO CHARACTER ARRAYLIST:
 String s = ...;
 ArrayList<Character> cal1 = new ArrayList<>();
 for (int index = 0, length = s.length(); index < length; ++index) {
@@ -190,18 +195,22 @@ ArrayList<Character> cal2 = new ArrayList<>();
 for (char c : s) {
 	cal2.add(c);
 }
+END OF EXAMPLE
 
 5.6. ARRAYLIST<CHARACTER> TO STRING
 ---------------------------------------------------------------------------------
+EXAMPLE FOR CHARACTER ARRAYLIST TO STRING:
 StringBuilder sb = new StringBuilder(cal.size());
 for (Character c : cal) {
 	sb.append(c);
 }
 String s = sb.toString();
+END OF EXAMPLE
 
 =================================================================================
 6. STRING METHODS
 =================================================================================
+EXAMPLE FOR STRING METHODS:
 String s = ...;
 s = s.trim(); //deletes trailing white spaces and empty lines from beginning and ending of the String
 s = s.toUpperCase(); //transforms all characters into their upcase forms following UTF-8.
@@ -230,3 +239,12 @@ byte[] ba = s.getBytes(); //return the bytes of the String
 byte[] ba = s.getBytes(Charset cs); //return the bytes of the String, following the Charset
 byte[] ba = s.getBytes(String charsetName); //return the bytes of the String, following the Charset from charsetName
 s2 = String.join(s, s2, ...); //adds up the Strings
+END OF EXAMPLE
+
+=>WRAPPER CLASSES
+=>TYPE CASTING AND CONVERSION;3. TYPE CONVERSION
+=>EQUALITY
+=>STANDARD INPUT AND OUTPUT
+=>PRINTSTREAM
+=>STRINGBUILDER
+=>PRINTWRITER

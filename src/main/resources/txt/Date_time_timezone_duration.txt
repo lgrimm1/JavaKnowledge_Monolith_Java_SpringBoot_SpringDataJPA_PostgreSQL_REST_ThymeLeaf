@@ -35,13 +35,13 @@ The GregorianCalendar is an extending class of Calendar, follows the Gregorian c
 =================================================================================
 Every time zone has an inner identifier. Such ID can be used with ZonedDateTime methods. In order to produce it, use the ZoneId class.
 For methods, passed time zone Strings can be:
-    a. offset from Greenwich Mean Time (e.g. GMT+01:30); will not use Daylight Saving Time (DST) offset
-    b. offset from Universal Coordinated Time (e.g. UTM+01:30); will not use DST offset
-    c. offset from Universal Time (e.g. UT+01:30); will not use DST offset
-    d. regional time definition in continent/city format (e.g. America/Los_Angeles); will use DST offset
-    e. short mosaic letters (e.g. CET) of time zone; due to having the same mosaic words for different zones on Earth, use it only when the ID is unique; will use DST offset
-    f. Z for the absolute zeroth time zone; will not use DST offset
-    e. in case wrong time zone is given, exception raises
+    - offset from Greenwich Mean Time (e.g. GMT+01:30); will not use Daylight Saving Time (DST) offset
+    - offset from Universal Coordinated Time (e.g. UTM+01:30); will not use DST offset
+    - offset from Universal Time (e.g. UT+01:30); will not use DST offset
+    - regional time definition in continent/city format (e.g. America/Los_Angeles); will use DST offset
+    - short mosaic letters (e.g. CET) of time zone; due to having the same mosaic words for different zones on Earth, use it only when the ID is unique; will use DST offset
+    - Z for the absolute zeroth time zone; will not use DST offset
+    - in case wrong time zone is given, exception raises
 
 =================================================================================
 3. LOCALDATE, LOCALTIME, LOCALDATETIME, FORMATTING
@@ -71,6 +71,7 @@ formattedLocalDateTime = currentDT.format(formatter2); //yyyyMMdd
 //String format with localized style
 DateTimeFormatter formatter3 = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM); //or: FULL, LONG, SHORT
 formattedLocalDateTime = currentDT.format(formatter3);
+END OF EXAMPLE
 
 ||Pattern component|Meaning||
 ||G|era as text||
@@ -110,6 +111,7 @@ EXAMPLE FOR INITIALIZATION OF LOCAL TIME ZONE AND LOCAL DATETIME:
 import java.time.ZonedDateTime;
 ...
 ZonedDateTime zdt1 = ZonedDateTime.now();
+END OF EXAMPLE
 
 EXAMPLE FOR INITIALIZATION OF A TIME ZONE AND LOCAL DATETIME:
 import java.time.ZonedDateTime;
@@ -124,6 +126,7 @@ try {
 catch (Exception e) {
 	zdt2 = ZonedDateTime.now();
 }
+END OF EXAMPLE
 
 EXAMPLE FOR INITIALIZATION OF A LOCAL TIME ZONE AND A LOCAL DATETIME:
 import java.time.ZonedDateTime;
@@ -153,6 +156,7 @@ catch (Exception e) {
 		zdt3 = ZonedDateTime.now(zi);
 	}
 }
+END OF EXAMPLE
 
 =================================================================================
 5. MANAGEMENT OF PARAMETERS
@@ -164,6 +168,7 @@ import java.time.ZoneId;
 ZonedDateTime zdt = ...;
 String newTimezone = ...;
 zdt = zdt.withZoneSameInstant(ZoneId.of(newTimezone)); //exception if fails
+END OF EXAMPLE
 
 EXAMPLE FOR CHANGING DATETIME PARAMETERS:
 import java.time.ZonedDateTime;
@@ -184,6 +189,7 @@ try {
 catch (Exception e) {
     //failed
 }
+END OF EXAMPLE
 
 EXAMPLE FOR RELATIVELY CHANGING DATE AND TIME:
 import java.time.ZonedDateTime;
@@ -202,6 +208,7 @@ try {
 catch (Exception e) {
     //failed
 }
+END OF EXAMPLE
 
 =================================================================================
 6. CALCULATIONS
@@ -223,6 +230,7 @@ int nanoseconds = Duration.between(zdt1, zdt2).toNanos(); //returns long
 //difference separated to time components
 Duration d = Duration.between(zdt1, zdt2);
 long[] trueDifference = new long[]{d.toDaysPart(), d.toHoursPart(), d.toMinutesPart(), d.toSecondsPart(), d.toNanosPart()};
+END OF EXAMPLE
 
 EXAMPLE FOR TIME UNIT CALCULATIONS:
 import java.util.concurrent.TimeUnit;
@@ -234,7 +242,7 @@ long minutes = TimeUnit.MILLISECONDS.toMinutes(milliseconds); //trims the fracti
 //or use basic mathematical formulas
 seconds = milliseconds / 1000; //trims the fractional part
 minutes = milliseconds / 1000 / 60; //trims the fractional part
-
+END OF EXAMPLE
 
 =================================================================================
 7. GETTING PARAMETERS
@@ -267,5 +275,6 @@ n = zdt.getDayOfYear();
 LocalDate ld = zdt.toLocalDate();
 WeekFields weekFields = WeekFields.of(Locale.getDefault());
 n = ld.get(weekFields.weekOfWeekBasedYear());
+END OF EXAMPLE
 
 =>LOCALE

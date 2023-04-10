@@ -5,41 +5,37 @@ SPRING BOOT REQUESTS
 2. POST, PUT, DELETE, OPTIONS, PATCH, HEAD REQUESTS
 3. PARAMETERS IN REQUEST
 
-=>SPRING BOOT
-=>SPRING BOOT CONTROLLER
-=>SPRING MODELANDVIEW
-
 =================================================================================
 1. GET REQUESTS
 =================================================================================
 About GET requests in controller class:
-    a. for every received request parameter, the @RequestParam(...) annotation is needed then the type and the name of the passed parameter.
-    b. for every parameter received from a template model, the @ModelAttribute annotation is needed then the type and the name of the passed parameter
-    c. the GET request will arrive at the endpoint marked as "endpointName" (see below)
-    d. the endpoint is reached 1: the next request arrives: base_path/endpointName, or:
-    e. the endpoint is reached 2: the next request arrives: base_path/endpointName?, or:
-    f. the endpoint is reached 3: the next request arrives: base_path/endpointName?parameter_name_in_request=some_value, or:
-    g. the endpoint is reached 4: the next request arrives: base_path/endpointName?parameter_name_in_request=some_value&title=some_other_value
-    h. the passedObjectName (see below) will receive some_value, coming from parameter_name_in_request parameter in request
-    i. if required=true (see below), the request reaches the endpoint only when that parameter was passed
-    j. if no value is given in the request, passedObjectName will take the defaultValue value (see below), in case no default is defined, null will be passed
-    k. the Model model (see below) will be used for storing response data in model&view mode
-    l. in model&view mode the returned value will be the name of the targeted template
-    m. in object mode the returned value will be an object
-    n. in object/model&view mode the returned value will be a ModelAndView object
-    o. with GET request, no request body should be sent and received, if needed use other request types
+    - for every received request parameter, the @RequestParam(...) annotation is needed then the type and the name of the passed parameter.
+    - for every parameter received from a template model, the @ModelAttribute annotation is needed then the type and the name of the passed parameter
+    - the GET request will arrive at the endpoint marked as "endpointName" (see below)
+    - the endpoint is reached 1: the next request arrives: base_path/endpointName, or:
+    - the endpoint is reached 2: the next request arrives: base_path/endpointName?, or:
+    - the endpoint is reached 3: the next request arrives: base_path/endpointName?parameter_name_in_request=some_value, or:
+    - the endpoint is reached 4: the next request arrives: base_path/endpointName?parameter_name_in_request=some_value&title=some_other_value
+    - the passedObjectName (see below) will receive some_value, coming from parameter_name_in_request parameter in request
+    - if required=true (see below), the request reaches the endpoint only when that parameter was passed
+    - if no value is given in the request, passedObjectName will take the defaultValue value (see below), in case no default is defined, null will be passed
+    - the Model model (see below) will be used for storing response data in model&view mode
+    - in model&view mode the returned value will be the name of the targeted template
+    - in object mode the returned value will be an object
+    - in object/model&view mode the returned value will be a ModelAndView object
+    - with GET request, no request body should be sent and received, if needed use other request types
 
 Relations between GET request parameter and passed parameter:
-    a. endpoint: runtime error, no parameter passed from browser but needed on server side
-    b. endpoint?parameter: passes null
-    c. endpoint?parameter=: passes null
-    d. endpoint?parameter=xxx: passes value
+    - endpoint: runtime error, no parameter passed from browser but needed on server side
+    - endpoint?parameter: passes null
+    - endpoint?parameter=: passes null
+    - endpoint?parameter=xxx: passes value
 In case the passed type is Number, only number will be passed (or as it narrowed down to Double or Integer), otherwise error page will be sent back.
 
 Parameters of a request parameter:
-    a. name = "..." (parameter name in request)
-    b. required = true (optional)
-    c. defaultValue="..." (optional)
+    - name = "..." (parameter name in request)
+    - required = true (optional)
+    - defaultValue="..." (optional)
 In case of name parameter only, using "..." is satisfying.
 In case of required = false or not defined, and the parameter is not defined in the GET query, the method argument will receive null.
 In case the default value is defined and there is no value in the query for that, the method argument will receive the default value.
@@ -105,18 +101,18 @@ END OF EXAMPLE
 2. POST, PUT, DELETE, OPTIONS, PATCH, HEAD REQUESTS
 =================================================================================
 About POST, PUT, DELETE, OPTIONS, PATCH, HEAD requests in controller class:
-    a. for having request parameters from a query, use the GET request type
-    b. for every parameter received from a template model, the @ModelAttribute annotation is needed then the type and the name of the passed parameter (model&view, object/model&view modes)
-    c. the request will arrive at the endpoint
-    d. the endpoint is always reached when it was sent to endpointName
-    e. the request body will be hidden from URL field of the browser (from the URL field always GET arrives)
-    f. passedObjectName (see below) will receive some_value from the sender page in browser
-    g. if no value is given in the request, passedObjectName will take the defaultValue value (see below), in case no default is defined, null will be passed
-    h. the Model model (see below) will be used for storing response data in model&view mode
-    i. in model&view mode the returned value will be the name of the targeted template
-    j. in object mode the returned value will be an object
-    k. in object/model&view mode the returned value will be a ModelAndView object
-    l. the request body can contain more variables but all will be rendered into one transfer object or a Map object where keys are variable names
+    - for having request parameters from a query, use the GET request type
+    - for every parameter received from a template model, the @ModelAttribute annotation is needed then the type and the name of the passed parameter (model&view, object/model&view modes)
+    - the request will arrive at the endpoint
+    - the endpoint is always reached when it was sent to endpointName
+    - the request body will be hidden from URL field of the browser (from the URL field always GET arrives)
+    - passedObjectName (see below) will receive some_value from the sender page in browser
+    - if no value is given in the request, passedObjectName will take the defaultValue value (see below), in case no default is defined, null will be passed
+    - the Model model (see below) will be used for storing response data in model&view mode
+    - in model&view mode the returned value will be the name of the targeted template
+    - in object mode the returned value will be an object
+    - in object/model&view mode the returned value will be a ModelAndView object
+    - the request body can contain more variables but all will be rendered into one transfer object or a Map object where keys are variable names
 
 EXAMPLE FOR METHOD HANDLING A POST, PUT, PATCH, DELETE REQUEST (OBJECT AS REQUEST BODY, OBJECT MODE):
 class RequestClassName {...} //somewhere in Business layer
@@ -225,8 +221,8 @@ Important as well that Spring identifies the last dot (.) in an endpoint as sepa
 Solution is to make the compiler to use the dot as part of last parameter, or use an ending / sign which pushes the aim of last parameter; see below.
 
 The endpoint path marks a virtual folder system. it is possible to use request parameter and path characters on the same virtual level:
-    a. /api/employees/{name} (path variable forms a level)
-    b. /api/employees/{name}.xml (path variable forms a part of a level)
+    - /api/employees/{name} (path variable forms a level)
+    - /api/employees/{name}.xml (path variable forms a part of a level)
 
 EXAMPLE FOR PARAMETER IN REQUEST (TEMPLATE PARAMETER NAME EQUALS METHOD PARAMETER NAME):
 @GetMapping("/api/employees/{id}")
@@ -313,3 +309,7 @@ public String getEmployeesByIdWithMap(@PathVariable Map<String, String> pathVars
     }
 }
 END OF EXAMPLE
+
+=>SPRING BOOT
+=>SPRING BOOT CONTROLLER
+=>SPRING MODELANDVIEW

@@ -13,8 +13,8 @@ After closing the stream, any method will raise exception.
 The InputStreamReader implements the AutoClosable interface, the try-with-resources statement can be used to ensure proper closing.
 
 Constructor parameters:
-    a. (FileInputStream fileInputStream): links the bridge to the input stream (e.g. FileInputStream), default character coding
-    b. (FileInputStream fileInputStream, Charset charset): links the bridge to the input stream, charset character coding
+    - (FileInputStream fileInputStream): links the bridge to the input stream (e.g. FileInputStream), default character coding
+    - (FileInputStream fileInputStream, Charset charset): links the bridge to the input stream, charset character coding
 
 The defined character coding will be forced during accessing the source stream.
 Available methods are below.
@@ -43,6 +43,7 @@ try {
     fileInputStream.close(); //close the input stream (release the source)
 }
 catch (Exception e) {...} //in case the source was not accessible or the bridge was not built over the stream
+END OF EXAMPLE
 
 EXAMPLE FOR USAGE WITH TRY-WITH-RESOURCES:
 import java.io.FileInputStream;
@@ -60,6 +61,7 @@ InputStreamReader inputStreamReader1 = new InputStreamReader(fileInputStream); /
 InputStreamReader inputStreamReader2 = new InputStreamReader(fileInputStream, Charset.forName("UTF8")); //will use the given naming
 String s = inputStreamReader1.getEncoding(); //"Cp1252"
 s = inputStreamReader2.getEncoding(); //"UTF8"
+END OF EXAMPLE
 
 =>STREAM
 =>READER

@@ -12,6 +12,7 @@ For creating instances, use constructors of classes which implement the List int
 EXAMPLE FOR CREATING INSTANCES:
 List<String> list1 = new ArrayList<>(); //uses ArrayList constructor
 List<String> list2 = new LinkedList<>(); //uses LinkedList constructor
+END OF EXAMPLE
 
 These instances can use methods in the List interface.
 
@@ -46,8 +47,8 @@ List<Long> mutableList = new ArrayList<>(List.of(
 END OF EXAMPLE
 
 Differences between List and Set:
-    a. List can include duplicated elements
-    b. List keeps order of its elements
+    - List can include duplicated elements
+    - List keeps order of its elements
 
 =>COLLECTION
 =>ARRAYLIST
