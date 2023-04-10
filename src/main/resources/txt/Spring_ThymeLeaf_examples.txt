@@ -256,6 +256,13 @@ For <textarea>, although the visible control contains lines, any Collection-type
 Also, the wrap= parameter sets submit wrapping behaviour: "soft" (only if it has no effect, use "off" instead) will ignore wrapping when submitting, "hard" will submit the content in its visible wrapped form.
 When wrap="hard" is set, the cols= parameter must be defined as well.
 
+EXAMPLE FOR NOT EDITABLE BUT SUBMITTED FIELDS:
+<!-- visible: -->
+<input type="text" th:field="*{fieldName}" readonly>
+<!-- not visible: -->
+<input type="hidden" th:field="*{fieldName}">
+END OF EXAMPLE
+
 EXAMPLE FOR BUTTON-LIKE INPUTS (SUBMIT, RESET, BUTTON):
 <input type="submit" value="caption text" formaction="/endpoint" formmethod="post" />
 <input type="reset" value="caption text" />

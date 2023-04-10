@@ -369,7 +369,7 @@ All input-types:
 Restrictions are useful on form-side but via Javascript it is possible to overwrite or get around them. Always check data on server-side.
 Without setting width and height for an image, the layout will change as the image loads. For proper design, this should be avoided, set the dimensions beforehand.
 Tags can be grouped by using the <fieldset> tag, see below.
-In case an input is not filled by the user, the form will send a null rendered to that HTML attribute as value. Same goes for attributes not distributed for user input on the form.
+In case a field or object is not rendered into an input, that field will be null upon submit at server side. That said, the attribute must have an <input th:object|field="..."> counterpart within the form. In case that attribute should not be offered for changing by the user, the input should be either readonly (but appears) or type="hidden" (will not appear).
 
 =================================================================================
 5. EXAMPLES
