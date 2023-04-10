@@ -1,5 +1,5 @@
 =================================================================================
-SPRING THYMELEAF
+SPRING BOOT THYMELEAF
 =================================================================================
 1. GENERALLY
 2. SETTING UP
@@ -10,7 +10,7 @@ SPRING THYMELEAF
 =================================================================================
 1. GENERALLY
 =================================================================================
-The Spring ThymeLeaf is part of the Spring framework which enables using automated templates of frontend for backend communication in model&view or object/model&view mode.
+The Spring Boot ThymeLeaf is part of the Spring framework which enables using automated templates of frontend for backend communication in model&view or object/model&view mode.
 A template is an JSON/HTML/XML/etc. page into which the answer is injected via defining HTML variables and e.g. Javascript codes.
 
 On frontend side, different file formats can be used, e.g. HTML or PHP.
@@ -25,16 +25,20 @@ Above the pages, frontend scripts can form an other layer with which data manipu
 In order to address ThymeLeaf, the following tags should be inserted into pom.xml.
 After these modifications, type "mvn compile" to make Maven to find and install all what needed.
 
-If there is not, create a block under the properties block:
-    <dependencies>
-    </dependencies>
-Then inside, add the next (it is possible to define version tag with all dependencies, in case no version tag, the best compatible version will be used by Maven):
+Spring Boot ThymeLeaf has two main versions:
+    - optimized for working with Spring
+    - optimized for working with Spring Boot
+
+Spring Boot ThymeLeaf is an extension of Spring Boot. Therefore, before adding the dependency, make sure that all Spring Boot dependencies already are added.
+
+EXAMPLE FOR ADDING THYMELEAF DEPENDENCY:
+<!-- (it is possible to define version tag with the dependency) -->
+<!-- (in case of no version tag, the best compatible version read from the parent tag, will be used by Maven) -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-thymeleaf</artifactId>
 		</dependency>
-
-Spring ThymeLeaf will not work without dependencies of Spring Boot since it is build upon the framework. See the Setting up section there.
+END OF EXAMPLE
 
 Alternatively, use Spring Initializr to generate a new empty project with added ThymeLeaf.
 
@@ -377,7 +381,7 @@ In case a field or object is not rendered into an input, that field will be null
 =================================================================================
 5. EXAMPLES
 =================================================================================
-Visit the SPRING THYMELEAF EXAMPLES page for examples.
+Visit the SPRING BOOT THYMELEAF EXAMPLES page for examples.
 
 MORE HERE: https://www.javatpoint.com/spring-boot-thymeleaf-view
 MORE HERE: https://stackoverflow.com/questions/28325708/thymeleaf-how-to-pass-html-to-the-div
@@ -389,5 +393,5 @@ MORE HERE: https://www.baeldung.com/spring-thymeleaf-error-messages
 =>SPRING BOOT CONTROLLER
 =>SERIALIZATION
 =>SPRING MODELANDVIEW
-=>SPRING THYMELEAF EXAMPLES
+=>SPRING BOOT THYMELEAF EXAMPLES
 =>CSS

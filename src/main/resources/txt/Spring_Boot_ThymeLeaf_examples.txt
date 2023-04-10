@@ -1,5 +1,5 @@
 =================================================================================
-SPRING THYMELEAF EXAMPLES
+SPRING BOOT THYMELEAF EXAMPLES
 =================================================================================
 1. CODE SNIPPETS OF GENERAL TAGS
 2. CODE SNIPPETS OF INPUT TAGS
@@ -517,7 +517,7 @@ END OF EXAMPLE
 MORE HERE: https://www.baeldung.com/thymeleaf-select-option
 MORE HERE: https://o7planning.org/11659/thymeleaf-form-select-option
 
-=>SPRING THYMELEAF
+=>SPRING BOOT THYMELEAF
 =>WEB APPLICATION
 =>SPRING BOOT
 =>SPRING BOOT CONTROLLER

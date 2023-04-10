@@ -41,15 +41,20 @@ Testing entity behaviour when Validation is used on it, is necessary. Visit the 
 In order to address the framework, the following tags should be inserted into pom.xml.
 After these modifications, type "mvn compile" to make Maven to find and install all what needed.
 
-If there is not, create a block under the properties block:
-    <dependencies>
-    </dependencies>
-Then inside, add the next (it is possible to define version tag with all dependencies, in case no version tag, the best compatible version will be used by Maven):
+Spring Validation has two main versions:
+    - optimized for working with Spring
+    - optimized for working with Spring Boot
+
+Spring Boot Validation is an extension of Spring Boot. Therefore, before adding the dependency, make sure that all Spring Boot dependencies already are added.
+
+EXAMPLE FOR ADDING VALIDATION DEPENDENCY:
+<!-- (it is possible to define version tag with the dependency) -->
+<!-- (in case of no version tag, the best compatible version read from the parent tag, will be used by Maven) -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-validation</artifactId>
 		</dependency>
-Spring Validation will not work without dependencies of Spring Boot framework since it is an extension of the framework. See the Setting up section there.
+END OF EXAMPLE
 
 Alternatively, use Spring Initializr to create a ready-to-use empty project with Validation added.
 

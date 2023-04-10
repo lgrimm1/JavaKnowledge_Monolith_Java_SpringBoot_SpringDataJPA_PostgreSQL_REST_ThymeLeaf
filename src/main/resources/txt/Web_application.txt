@@ -349,7 +349,7 @@ The typical manifestation of a REST CRUD API can be seen below.
 ||delete|DELETE|api/v1/elementName/idNumber|-|-|204 (No Content)||
 
 =>SPRING BOOT
-=>SPRING THYMELEAF
+=>SPRING BOOT THYMELEAF
 =>SPRING MODELANDVIEW
 =>SERIALIZATION
 =>TESTS
