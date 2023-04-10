@@ -32,7 +32,7 @@
                     <a href="https://github.com/lgrimm1">
                         <img src="/images/logo_GitHub.jpg" alt="GitHub" class="banner_link_logo">
                     </a>
-                    <a href="https://www.linkedin.com/in/laszlo-grimm/">
+                    <a href="https://www.linkedin.com/in/laszlo-grimm">
                         <img src="/images/logo_LinkedIn.jpg" alt="LinkedIn" class="banner_link_logo">
                     </a>
                 </p>
@@ -58,6 +58,7 @@
                     <input type="text" th:unless="*{editExistingPage}" th:field="*{title}" placeholder="Enter the title of the page..." />
                 </fieldset>
                 <br>
+                <input type="hidden" th:field="*{editExistingPage}">
                 <fieldset>
                     <legend>&nbsp;Content&nbsp;</legend>
                     <textarea id="content" th:field="*{content}" rows="15" placeholder="Enter page content..." wrap="soft" />
