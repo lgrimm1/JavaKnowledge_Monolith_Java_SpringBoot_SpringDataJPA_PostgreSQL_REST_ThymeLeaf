@@ -354,6 +354,9 @@ All text-like inputs (email, password, search, tel, text, url):
     c. the placeholder="hint" parameter defines input hint which appears in the empty input with different appearance than the entered data have, appears only when the input is empty
     d. the list="datalist_id" parameter lets the user optionally choose from pre-defined texts (defined in <datalist> tag) when typing letters into the input, matching is based upon containing, the input accepts any value but in case a pre-set choice is exists, will show it in a popup list under the input
 
+All text-like inputs plus textarea:
+    spell-check is enabled by default for the first 74 rows, to turn it off use spellcheck="false" parameter
+
 All text-like inputs plus color, date pickers, time:
     the autocomplete="on_or_off" parameter forces the browser to suggest complete values based upon a few typed characters, overwrites form settings
 
