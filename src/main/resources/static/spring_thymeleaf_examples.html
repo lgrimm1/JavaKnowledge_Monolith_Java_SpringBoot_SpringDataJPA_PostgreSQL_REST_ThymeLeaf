@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>SPRING THYMELEAF EXAMPLES</title>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/x-icon" th:href="@{/images/favicon.ico}" href="/images/favicon.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/styles/desktop.css}" href="/styles/desktop.css">
+</head>
+<body>
+    <a name="top"></a>
+    Up to Java 17, Spring Boot 3 (Hibernate 6), JUnit 5, PostgreSQL 11, HTML 5, CSS 3.<br>
+    <h1>SPRING THYMELEAF EXAMPLES</h1>
+    <a href="#1. CODE SNIPPETS OF INPUT TAGS">1. CODE SNIPPETS OF INPUT TAGS</a><br>
+    <a href="#2. CODE SNIPPETS FOR SCRIPTS">2. CODE SNIPPETS FOR SCRIPTS</a><br>
+    <br>
+    <a href="#top">Back to top of page</a><br>
+    <a name="1. CODE SNIPPETS OF INPUT TAGS"></a>
+    <h2>1. CODE SNIPPETS OF INPUT TAGS</h2>
+    <p>Below ThymeLeaf HTML tags are in the next order:</p>
+    <ol>
+        <li>button-like inputs (submit, reset, button)</li>
+        <li>checkbox</li>
+        <li>file</li>
+        <li>image</li>
+        <li>numeric inputs (number, range)</li>
+        <li>picker-like and time inputs (color, date, datetime-local, time)</li>
+        <li>radio</li>
+        <li>text-like inputs (email, password, search, tel, text, url)</li>
+        <li>select (scroll-down, list)</li>
+        <li>textarea</li>
+    </ol>
+    <br>
+    <p>For all inputs, optional parameters:</p>
+    <ol>
+        <li>width="width_value" height="height_value" style="style data" class="style_name" tabindex="number" autofocus form="form_name" on...="script_method(this)" required readonly disabled</li>
+    </ol>
+    <p>For checkbox input, optional parameter:</p>
+    <ol>
+        <li>checked</li>
+    </ol>
+    <p>For all picker-like and time inputs, optional parameters:</p>
+    <ol>
+        <li>min="min_value" max="max_value" autocomplete="on"</li>
+    </ol>
+    <p>For all numeric inputs, optional parameters:</p>
+    <ol>
+        <li>min="min_value" max="max_value" step="step_value" size="max_size_in_characters" autocomplete="on"</li>
+    </ol>
+    <p>For radio input, optional parameter:</p>
+    <ol>
+        <li>name="group_name" checked</li>
+    </ol>
+    <p>For all text-like inputs, optional parameters:</p>
+    <ol>
+        <li>maxlength="max_character_length" size="max_size_in_characters" pattern="pattern_text" list="datalist_name" placeholder="hint" autocomplete="on"</li>
+    </ol>
+    <p>For select input, optional parameters:</p>
+    <ol>
+        <li>size="height_in_number_of_items" multiple</li>
+    </ol>
+    <p>For textarea input, optional parameters:</p>
+    <ol>
+        <li>name="input_name" rows="number_of_rows" cols="number_of_characters"</li>
+    </ol>
+    <br>
+    <p>For file-type input, it has the ability to receive focus (tabbing), activate for key press while on focus, opening selection dialog, storing file selection, receive files via drag&drop, showing names of selected files, also lets screen readers to detect it.</p>
+    <p>The appearing button and the file-list behind it is not modifiable, CSS parameters have no effect.</p>
+    <p>Workaround is to wrap the input into a label and give button-like style to it while hiding (visually or totally) the original input, visit the CSS page for style examples.</p>
+    <p>See examples below.</p>
+    <br>
+    <p>For &lt;select>, when items are dynamically determined from a Collection field, the default selected item will be the last added one. Consider adding a script which selects the needed item on load, see script examples below.</p>
+    <p>For all inputs, consider using &lt;br> tag after the label and-or after the input.</p>
+    <p>For &lt;textarea>, although the visible control contains lines, any Collection-type data will be called in as Collection.toString(). That said, for a List of two lines, the visible text will be e.g. [Line1, Line2] by default. Instead, pass String with "\n" line ends.</p>
+    <br>
+    <h4>EXAMPLE FOR BUTTON-LIKE INPUTS (SUBMIT, RESET, BUTTON):</h4>
+    <table class="formatter_table">
+        <tr>
+            <td style="width: 85%">
+                <textarea onclick="element_to_full_size(this)" readonly>
+<input type="submit" value="caption text" formaction="/endpoint" formmethod="post" />
+<input type="reset" value="caption text" />
+<input type="button" value="caption text" onclick="script_method(this)" />
+                </textarea>
+            </td>
+            <td style="width: 15%">
+                <input type="button" value="COPY" class="button_full" onclick="content_to_clipboard(this)" />
+            </td>
+        </tr>
+    </table>
+    <br>
+    <h4>EXAMPLE FOR CHECKBOX:</h4>
+    <table class="formatter_table">
+        <tr>
+            <td style="width: 85%">
+                <textarea onclick="element_to_full_size(this)" readonly>
+<!-- label is before: -->
+<label for="input_name" style="style data" class="label_style">label text</label>
+<input id="input_name" type="checkbox" th:field="*{fieldName}" />
+<!-- label is after: -->
+<input id="input_name" type="checkbox" th:field="*{fieldName}" />
+<label for="input_name" style="style data" class="label_style">label text</label>
+                </textarea>
+            </td>
+            <td style="width: 15%">
+                <input type="button" value="COPY" class="button_full" onclick="content_to_clipboard(this)" />
+            </td>
+        </tr>
+    </table>
+    <br>
+    <h4>EXAMPLE FOR FILE:</h4>
+    <table class="formatter_table">
+        <tr>
+            <td style="width: 85%">
+                <textarea onclick="element_to_full_size(this)" readonly>
+<!-- CSS class definitions for labels of file-type inputs: .label_of_custom_file_input {...} -->
+<!-- CSS definitions for file-type inputs: input[type="file"] {...} -->
+
+<!-- Javascript: -->
+<label for="file-upload" class="custom_file_upload">
+	<span id="file-selected"></span>
+   <input id="file-upload" type="file" th:field="*{fieldName}" onchange="show_name(this) multiple />
+	button text
+</label>
+<script>
+    <!-- show selected file names: -->
+	function show_name(input) {
+		document.getElementById("file-selected").innerHTML = input.files.item(0).name;
+	};
+    <!-- show selected file names: -->
+	function show_name(input) {
+		document.getElementById("file-selected").innerHTML = input.files.item(0).name;
+	};
+    <!-- show there are selected files: -->
+	function show_name(input) {
+		document.getElementById("file-selected").innerHTML = 'File(s) were selected.';
+	};
+</script>
+
+<!-- JQuery: -->
+<label for="file-upload" class="custom_file_upload" onchange="show_name(this)">
+	<span id="file-selected"></span>
+	<input id="file-upload" type="file" th:field="*{fieldName}" multiple />
+	button text
+</label>
+<script>
+    <!-- show selected file names: -->
+	$('#file-upload').bind('change', function() {
+		var fileName = '';
+		fileName = $(this).val();
+		$('#file-selected').html(fileName); <!-- or, in case it shows fake file path: -->
+		$('#file-selected').html(fileName.replace(/^.*\\/, ""));
+	})
+    <!-- show there are selected files: -->
+	$('#file-upload').bind('change', function() {
+		var fileName = '';
+		fileName = 'File(s) were selected.';
+		$('#file-selected').html(fileName);
+	})
+</script>
+                </textarea>
+            </td>
+            <td style="width: 15%">
+                <input type="button" value="COPY" class="button_full" onclick="content_to_clipboard(this)" />
+            </td>
+        </tr>
+    </table>
+    <br>
+    <h4>EXAMPLE FOR IMAGE:</h4>
+    <table class="formatter_table">
+        <tr>
+            <td style="width: 85%">
+                <textarea onclick="element_to_full_size(this)" readonly>
+<input id="input_name" type="image" src="*{fieldName}" alt="Submit" />
+                </textarea>
+            </td>
+            <td style="width: 15%">
+                <input type="button" value="COPY" class="button_full" onclick="content_to_clipboard(this)" />
+            </td>
+        </tr>
+    </table>
+    <br>
+    <h4>EXAMPLE FOR NUMERIC INPUTS (NUMBER, RANGE):</h4>
+    <table class="formatter_table">
+        <tr>
+            <td style="width: 85%">
+                <textarea onclick="element_to_full_size(this)" readonly>
+<!-- label for any numeric input: -->
+<label for="input_name" style="style data" class="label_style">label text</label>
+<!-- input variants: -->
+<input id="input_name" type="number" th:field="*{fieldName}" />
+<input id="input_name" type="range" th:field="*{fieldName}" />
+                </textarea>
+            </td>
+            <td style="width: 15%">
+                <input type="button" value="COPY" class="button_full" onclick="content_to_clipboard(this)" />
+            </td>
+        </tr>
+    </table>
+    <br>
+    <h4>EXAMPLE FOR PICKER-LIKE AND TIME INPUTS (COLOR, DATE, DATETIME-LOCAL, TIME):</h4>
+    <table class="formatter_table">
+        <tr>
+            <td style="width: 85%">
+                <textarea onclick="element_to_full_size(this)" readonly>
+<!-- label for any picker-like or time input: -->
+<label for="input_name" style="style data" class="label_style">label text</label>
+<!-- input variants: -->
+<input id="input_name" type="color" th:field="*{fieldName}" />
+<input id="input_name" type="date" th:field="*{fieldName}" />
+<input id="input_name" type="datetime-local" th:field="*{fieldName}" />
+<input id="input_name" type="time" th:field="*{fieldName}" />
+                </textarea>
+            </td>
+            <td style="width: 15%">
+                <input type="button" value="COPY" class="button_full" onclick="content_to_clipboard(this)" />
+            </td>
+        </tr>
+    </table>
+    <br>
+    <h4>EXAMPLE FOR RADIO INPUTS:</h4>
+    <table class="formatter_table">
+        <tr>
+            <td style="width: 85%">
+                <textarea onclick="element_to_full_size(this)" readonly>
+<!-- fix options, text values: -->
+<input type="radio" id="input_name_1" th:field="*{fieldName1}" value="'value1'" />
+<label for="input_name_1" th:text="value1" />
+<input type="radio" id="input_name_2" th:field="*{fieldName2}" value="'value2'" />
+<label for="input_name_2" th:text="value2" />
+<!-- dynamic options, text values: -->
+<span th:each="value : *{collectionFieldName}">
+    <input type="radio" th:field="*{fieldName}" value="${value}" />
+    <label th:text="${value}" /><br>
+</span>
+<!-- fix options, enum: -->
+<input type="radio" id="input_name_1" th:field="*{fieldName1}" value="VALUE1" />
+<label for="input_name_1" th:text="value1" />
+<input type="radio" id="input_name_2" th:field="*{fieldName2}" value="VALUE2" />
+<label for="input_name_2" th:text="value2" />
+                </textarea>
+            </td>
+            <td style="width: 15%">
+                <input type="button" value="COPY" class="button_full" onclick="content_to_clipboard(this)" />
+            </td>
+        </tr>
+    </table>
+    <br>
+    <h4>EXAMPLE FOR TEXT-LIKE INPUTS (EMAIL, PASSWORD, SEARCH, TEL, TEXT, URL):</h4>
+    <table class="formatter_table">
+        <tr>
+            <td style="width: 85%">
+                <textarea onclick="element_to_full_size(this)" readonly>
+<!-- label for any text-like input: -->
+<label for="input_name" style="style data" class="label_style">label text</label>
+<!-- input variants: -->
+<input id="input_name" type="email" th:field="*{fieldName}" multiple />
+<input id="input_name" type="password" th:field="*{fieldName}" />
+<input id="input_name" type="search" th:field="*{fieldName}" />
+<input id="input_name" type="tel" th:field="*{fieldName}" />
+<input id="input_name" type="text" th:field="*{fieldName}" />
+<input id="input_name" type="url" th:field="*{fieldName}" />
+<!-- optional fix data definition to choose from: -->
+<datalist id="datalist_name">
+    <option value="value1">
+    <option value="value2">
+    <option value="value3">
+</datalist>
+<!-- optional dynamic data definition to choose from: -->
+<datalist id="datalist_name">
+    <option th:each="data : *{collectionFieldName}" th:value="${data}">
+</datalist>
+<!-- input variants with datalist: -->
+<input id="input_name" type="email" list="datalist_name" th:field="*{fieldName}" multiple />
+<input id="input_name" type="password" list="datalist_name" th:field="*{fieldName}" />
+<input id="input_name" type="search" list="datalist_name" th:field="*{fieldName}" />
+<input id="input_name" type="tel" list="datalist_name" th:field="*{fieldName}" />
+<input id="input_name" type="text" list="datalist_name" th:field="*{fieldName}" />
+<input id="input_name" type="url" list="datalist_name" th:field="*{fieldName}" />
+                </textarea>
+            </td>
+            <td style="width: 15%">
+                <input type="button" value="COPY" class="button_full" onclick="content_to_clipboard(this)" />
+            </td>
+        </tr>
+    </table>
+    <br>
+    <h4>EXAMPLE FOR SELECT (SCROLL-DOWN, LIST):</h4>
+    <table class="formatter_table">
+        <tr>
+            <td style="width: 85%">
+                <textarea onclick="element_to_full_size(this)" readonly>
+<!-- scroll-down, fix items: -->
+<select id="input_name" th:field="*{fieldName}">
+    <option value="value1">value text 1</option>
+    <option value="value2">value text 2</option>
+    <option value="value3">value text 3</option>
+</select>
+<!-- list, fix items: -->
+<select id="input_name" th:field="*{fieldName}" size="3">
+    <option value="value1">value text 1</option>
+    <option value="value2">value text 2</option>
+    <option value="value3">value text 3</option>
+</select>
+<!-- scroll-down, dynamic items: -->
+<select id="input_name" th:field="*{fieldName}">
+    <option th:each="item : *{collectionFieldName}" th:value="${item}" th:text="${item}" />
+</select>
+<!-- list, dynamic items: -->
+<select id="input_name" th:field="*{fieldName}" size="10">
+    <option th:each="item : *{collectionFieldName}" th:value="${item}" th:text="${item}" />
+</select>
+<!-- list, dynamic items, conditional selection: -->
+<select id="input_name" th:field="*{fieldName}" size="10">
+    <option th:each="item : *{collectionFieldName}" th:value="${item.value}" th:text="${item.caption}" th:selected="${item.selected}" />
+</select>
+                </textarea>
+            </td>
+            <td style="width: 15%">
+                <input type="button" value="COPY" class="button_full" onclick="content_to_clipboard(this)" />
+            </td>
+        </tr>
+    </table>
+    <br>
+    <h4>EXAMPLE FOR TEXTAREA:</h4>
+    <table class="formatter_table">
+        <tr>
+            <td style="width: 85%">
+                <textarea onclick="element_to_full_size(this)" readonly>
+<!-- please modify the <text_area> tag name to <textarea>! -->
+<!-- starting text is null or from field: -->
+<text_area id="input_name" th:field="*{fieldName}">
+</text_area>
+<!-- fix starting text: -->
+<text_area id="input_name" th:field="*{fieldName}">
+	starting text
+</text_area>
+<!-- dynamic starting text: -->
+<text_area id="input_name" th:field="*{fieldName1}">
+    <span th:text="*{fieldName2}" />
+</text_area>
+                </textarea>
+            </td>
+            <td style="width: 15%">
+                <input type="button" value="COPY" class="button_full" onclick="content_to_clipboard(this)" />
+            </td>
+        </tr>
+    </table>
+    <br>
+    <a href="#top">Back to top of page</a><br>
+    <a name="2. CODE SNIPPETS FOR SCRIPTS"></a>
+    <h2>2. CODE SNIPPETS FOR SCRIPTS</h2>
+    <h4>EXAMPLE FOR JAVASCRIPT:</h4>
+    <table class="formatter_table">
+        <tr>
+            <td style="width: 85%">
+                <textarea onclick="element_to_full_size(this)" readonly>
+<script>
+    <!-- caller side: content_to_clipboard('id_parameter_value') -->
+	function content_to_clipboard(id) {
+		document.getElementById(id).select();
+		document.execCommand('copy');
+	}
+
+    <!-- caller side: content_to_clipboard(this) -->
+	function content_to_clipboard(element) {
+		element.select();
+		document.execCommand('copy');
+	}
+
+    <!-- caller side: input_to_full_size(this) -->
+	function input_to_full_size(element) {
+		element.style.height = "";
+		element.style.height = element.scrollHeight + "px";
+	}
+
+    <!-- <textarea> to full size on page load -->
+	window.onload = function() {
+		var s = document.getElementById("textarea_id");
+		s.style.height = "";
+		s.style.height = element.scrollHeight + "px";
+	}
+
+    <!-- select 1st item in <select> on page load: - -->
+	window.onload = function() {
+		var s = document.getElementById("select_id");
+		s.selectedIndex = 0;
+	}
+
+    <!-- select last item in <select> on page load: - -->
+	window.onload = function() {
+		var s = document.getElementById("select_id");
+		s.selectedIndex = s.options.length - 1;
+	}
+</script>
+                </textarea>
+            </td>
+            <td style="width: 15%">
+                <input type="button" value="COPY" class="button_full" onclick="content_to_clipboard(this)" />
+            </td>
+        </tr>
+    </table>
+    <br>
+    <p>MORE HERE: https://www.baeldung.com/thymeleaf-select-option</p>
+    <p>MORE HERE: https://o7planning.org/11659/thymeleaf-form-select-option</p>
+    <br>
+    <a href="spring_thymeleaf.html">See: SPRING THYMELEAF</a></br>
+    <a href="css.html">See: CSS</a></br>
+    <br>
+    <a href="#top">Back to top of page</a><br>
+    <script>
+        function content_to_clipboard(element) {
+            element.select();
+            document.execCommand('copy');
+        }
+        function element_to_full_size(element) {
+            element.style.height = "";
+            element.style.height = element.scrollHeight + "px";
+        }
+    </script>
+</body>
+</html>

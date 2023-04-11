@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>CSS</title>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/x-icon" th:href="@{/images/favicon.ico}" href="/images/favicon.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/styles/desktop.css}" href="/styles/desktop.css">
+</head>
+<body>
+    <a name="top"></a>
+    Up to Java 17, Spring Boot 3 (Hibernate 6), JUnit 5, PostgreSQL 11, HTML 5, CSS 3.<br>
+    <h1>CSS</h1>
+    <p>CSS stands for Cascading Style Sheets, stylesheets for short.</p>
+    <p>The basic HTML page appearance is handled by the actual browser (browser default). A CSS definition modifies these default definitions.</p>
+    <p>A CSS is a definition contains stylistics (appearance) of an HTML web page, including the design, layout and variations in display for different devices and screen sizes.</p>
+    <p>Ancestor of CSS technique was using specific property parameters in HTML e.g. width=, height=, border=. This technique is inline (local on tags) and need much effort to maintain the style throughout elements, page and website.</p>
+    <br>
+    <p>A CSS definition contains one or more style property definitions. A property can be width, color of an element, also weight of a border and so on. The final appearance of an element is controlled by values of many properties together.</p>
+    <p>A property can be defined by CSS definitions in the hierarchy:</p>
+    <ol>
+        <li>external (website-level) style definitions (via external CSS file, marked in the header)</li>
+        <li>internal (page-level) style definitions (via style block in the header)</li>
+        <li>inline (tag-level) style definitions (via the style= parameter)</li>
+        <li>inline properties (tag-level) definitions (via property parameters)</li>
+    </ol>
+    <br>
+    <p>The external and internal definitions are on the same level. That said, as the code flow goes definition by definition, the last modification of a property will be alive for that property at the checked element.</p>
+    <p>The style block in the header can be divided and between the parts the external CSS import can take place. Also, several external CSS-s can be imported at different points of the header. Following the flow, the last modification will be alive for the same property.</p>
+    <p>An inline definition is on higher level since it has explicit effect on tag-level. That said, for the same property, overwrites external and internal values.</p>
+    <p>A property not modified by any CSS, will keep its browser default value.</p>
+    <br>
+    <p>Never use inline definitions (style=) together with property parameters (width=, height= etc.), can confuse the code, hard to find them, and can easily lead to appearance errors.</p>
+    <br>
+    <a href="spring_thymeleaf.html">See: SPRING THYMELEAF</a></br>
+    <a href="spring_thymeleaf_examples.html">See: SPRING THYMELEAF EXAMPLES</a></br>
+    <br>
+    <a href="#top">Back to top of page</a><br>
+    <script>
+        function content_to_clipboard(element) {
+            element.select();
+            document.execCommand('copy');
+        }
+        function element_to_full_size(element) {
+            element.style.height = "";
+            element.style.height = element.scrollHeight + "px";
+        }
+    </script>
+</body>
+</html>

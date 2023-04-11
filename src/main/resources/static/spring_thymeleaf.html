@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>SPRING THYMELEAF</title>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/x-icon" th:href="@{/images/favicon.ico}" href="/images/favicon.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/styles/desktop.css}" href="/styles/desktop.css">
+</head>
+<body>
+    <a name="top"></a>
+    Up to Java 17, Spring Boot 3 (Hibernate 6), JUnit 5, PostgreSQL 11, HTML 5, CSS 3.<br>
+    <h1>SPRING THYMELEAF</h1>
+    <a href="#1. GENERALLY">1. GENERALLY</a><br>
+    <a href="#2. SETTING UP">2. SETTING UP</a><br>
+    <a href="#3. TEMPLATES">3. TEMPLATES</a><br>
+    <a href="#4. FORMS">4. FORMS</a><br>
+    <a href="#5. EXAMPLES">5. EXAMPLES</a><br>
+    <br>
+    <a href="#top">Back to top of page</a><br>
+    <a name="1. GENERALLY"></a>
+    <h2>1. GENERALLY</h2>
+    <p>The Spring ThymeLeaf is part of the Spring framework which enables using automated templates of frontend for backend communication in model&view or object/model&view mode.</p>
+    <p>A template is an JSON/HTML/XML/etc. page into which the answer is injected via defining HTML variables and e.g. Javascript codes.</p>
+    <br>
+    <p>On frontend side, different file formats can be used, e.g. HTML or PHP.</p>
+    <p>The frontend communicates with the backend through the Communication layer of the backend.</p>
+    <p>Basically, the frontend sends requests to the backend on which the backend sends answers like a normal website would do.</p>
+    <p>The answers are data which can be rendered into HTML, PHP etc. pages.</p>
+    <p>Above the pages, frontend scripts can form an other layer with which data manipulation, visual elements etc. can be managed, also the data sent back to the server.</p>
+    <br>
+    <a href="#top">Back to top of page</a><br>
+    <a name="2. SETTING UP"></a>
+    <h2>2. SETTING UP</h2>
+    <p>In order to address ThymeLeaf, the following tags should be inserted into pom.xml.</p>
+    <p>After these modifications, type "mvn compile" to make Maven to find and install all what needed.</p>
+    <br>
+    <p>If there is not, create a block under the properties block:</p>
+    <p>&lt;dependencies></p>
+    <p>&lt;/dependencies></p>
+    <p>Then inside, add the next (it is possible to define version tag with all dependencies, in case no version tag, the best compatible version will be used by Maven):</p>
+    <p>&lt;dependency></p>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;&lt;groupId>org.springframework.boot&lt;/groupId></p>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;&lt;artifactId>spring-boot-starter-thymeleaf&lt;/artifactId></p>
+    <p>&lt;/dependency></p>
+    <br>
+    <p>Spring ThymeLeaf will not work without dependencies of Spring Boot since it is build upon the framework. See the Setting up section there.</p>
+    <br>
+    <p>Alternatively, use Spring Initializr to generate a new empty project with added ThymeLeaf.</p>
+    <br>
+    <a href="#top">Back to top of page</a><br>
+    <a name="3. TEMPLATES"></a>
+    <h2>3. TEMPLATES</h2>
+    <p>The server answer (if there is any) sends message to the frontend via filling out a template and sending that template to caller client (e.g. browser).</p>
+    <p>For a template, HTML, JSON etc. files can be created.</p>
+    <p>The templates are placed under the src/main/resources/templates folder.</p>
+    <p>In case of external CSS style, the .css file must be placed into the src/main/resources/static folder. For more, visit the CSS page.</p>
+    <p>A template can be created in design-time and in run-time as well, latter before reaching it via GET, POST etc. queries.</p>
+    <br>
+    <h4>EXAMPLE FOR A GENERAL THYMELEAF HTML TEMPLATE:</h4>
+    <table class="formatter_table">
+        <tr>
+            <td style="width: 85%">
+                <textarea onclick="element_to_full_size(this)" readonly>
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Title</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+<!-- code -->
+<script>
+    <!-- script codes -->
+</script>
+</body>
+</html>
+                </textarea>
+            </td>
+            <td style="width: 15%">
+                <input type="button" value="COPY" class="button_full" onclick="content_to_clipboard(this)" />
+            </td>
+        </tr>
+    </table>
+    <br>
+    <p>In the template, in case the ThymeLeaf is referenced in the html tag, within almost all HTML tags the th:... parameters can be used (th refers to ThymeLeaf). Such parameters are for handling data accessed through Spring Boot via ThymeLeaf. In case no such data is accessed in a tag, th parameters should be avoided.</p>
+    <p>ThymeLeaf parameters can be defined in two variants of HTML tags:</p>
+    <ol>
+        <li>opened tag: <tag_name parameters /></li>
+        <li>closed tag: <tag_name parameters>...</tag_name></li>
+    </ol>
+    <p>Please note that opened tags are not supported by all browsers.</p>
+    <br>
+    <p>The general formula for using a tag parameter follows the HTML standards (parameter_name="'value'" for character and text, parameter_name="value" otherwise).</p>
+    <p>Also from the standards, some parameters do not have value, in this case there is no ="'value'" or ="value" after the parameter_name.</p>
+    <p>For controls (inputs), the on...= parameters (e.g. onclick=, onload=) are used for event-driven actions (e.g. onclick="script_method(this)").</p>
+    <p>For referring script methods, use parameter_name="method_name(argument)" formula.</p>
+    <p>For size-like parameters (e.g. width=, height=), px, % and other units are accepted (e.g. width="80%" height="50px"). Please note, there is no space between the amount and the unit.</p>
+    <p>The class= parameter defines CSS class name (e.g. class="h4_style"), visit the CSS page for details.</p>
+    <p>The style= parameter can hold local CSS codes (e.g. style="width=80%; height=50px"); visit the CSS page for details.</p>
+    <p>The id= parameter defines a text by which the control can be identified (e.g. id="control_identifier").</p>
+    <p>The for= parameter marks that by its name, the control is for which other control (e.g. for="control_identifier"). Mainly used with label tags which will be visible only when the marked control is visible.</p>
+    <br>
+    <p>Almost any parametrized HTML tag parameter has th: counterpart. In case a page needs template parameters, use the th: version, in case static parameters, use standard version. If needed, these versions can be used in the same tag as well.</p>
+    <p>The most used template tag parameters are:</p>
+    <ol>
+        <li>th:text= (a text)</li>
+        <li>th:utext= (a text interpreted as HTML code)</li>
+        <li>th:each= (iteration through a collection)</li>
+        <li>th:if= (if the condition is true, does a thing)</li>
+        <li>th:unless= (if the condition is false, does a thing)</li>
+        <li>th:switch= (multiple condition for enumerable-type attribute)</li>
+        <li>th:case= (given variant for switched attribute)</li>
+    </ol>
+    <br>
+    <p>Any variable can be sent in a template, ThymeLeaf recognizes all wrapper classes and theoretically all Collection types. It also can handle classes with subclasses. In order to send a primitive type to a template, convert it to wrapper class. Enums can be used only with tags which are designed to handle limited values e.g. radio input (see later), otherwise use String instead.</p>
+    <p>A variable carrying data in the template is called HTML attribute. Its name can be different from Java variable name, the connection is made by the Model or ModelAndView classes in Spring Boot, see later.</p>
+    <p>Attribute names are case-sensitive.</p>
+    <p>In case the type of Java variable is a class with sub-classes (e.g. a whole entity is sent as HTML attribute), inside that, attribute fields can be accessed by their Java names (case-sensitive).</p>
+    <br>
+    <p>A template filled with data is called a view in Java.</p>
+    <p>After preparation, the controller will create a static page under the /static folder and will send a view referring to that static page to the frontend.</p>
+    <br>
+    <p>The total of data is called model in Java.</p>
+    <p>Attributes can be added to the model via utilizing Model or ModelAndView classes:</p>
+    <ol>
+        <li>model.addAttribute("attribute_name", object);</li>
+        <li>modelAndView.addObject("attribute_name", object);</li>
+    </ol>
+    <br>
+    <p>An attribute can be accessed:</p>
+    <ol>
+        <li>th:object="${attribute_name}"</li>
+    </ol>
+    <p>A field can be accessed (e.g. from within a form or a multiple-value tag with th:each= parameter):</p>
+    <ol>
+        <li>th:field="${attribute_name.fieldName}"</li>
+        <li>th:field="*{fieldName}"</li>
+    </ol>
+    <p>General access:</p>
+    <ol>
+        <li>th:text="${attribute_name}"</li>
+        <li>th:text="${attribute_name.fieldName}"</li>
+        <li>th:text="*{fieldName}"</li>
+    </ol>
+    <p>Please note, th:text= and th:utext= are for printing out data while th:object= and th:field= are for printing out and-or returning data (see forms later).</p>
+    <br>
+    <h4>EXAMPLE FOR A THYMELEAF TEMPLATE (JAVA SIDE, VARIABLES):</h4>
+    <table class="formatter_table">
+        <tr>
+            <td style="width: 85%">
+                <textarea onclick="element_to_full_size(this)" readonly>
+//single variables
+String firstName;
+Integer retirementAge;
+String htmlCode;
+
+//subclasses-in-a-class type
+enum GenderType {
+	MALE, FEMALE
+}
+class Person implements Serializable {
+	String lastName;
+	Integer age;
+	String htmlCode;
+	Character gender;
+	GenderType genderType;
+	//constructors, getters-setters
+}
+
+//subclasses-in-a-class variable
+Person p = new Person(...);
+
+//collection variable
+List<Person> personList = ...;
+
+//add data by variables, literals or objects, to a Model or ModelAndView
+model.addAttribute("first_name", firstName);
+model.addAttribute("retirement_age", retirementAge);
+model.addAttribute("html_code", htmlCode);
+model.addAttribute("person", person);
+model.addAttribute("person_list", personList);
+                </textarea>
+            </td>
+            <td style="width: 15%">
+                <input type="button" value="COPY" class="button_full" onclick="content_to_clipboard(this)" />
+            </td>
+        </tr>
+    </table>
+    <br>
+    <h4>EXAMPLE FOR A THYMELEAF TEMPLATE (HTML SIDE, ATTRIBUTES):</h4>
+    <table class="formatter_table">
+        <tr>
+            <td style="width: 85%">
+                <textarea onclick="element_to_full_size(this)" readonly>
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Title</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+<!-- single attributes: -->
+<p th:text="'Hello, ' + ${name} + '!'" />
+<span th:text="'Retirement age: ' + ${retirement_age}" />
+<div th:utext="${html_code}" />
+<!-- subclasses-in-a-class attribute: -->
+<p th:text="'Name: ' + ${person.lastName}" />
+<p th:text="'Age: ' + ${person.age}" />
+<div th:utext="${person.htmlCode}" />
+<table>
+    <tr>
+        <th>NAME</th><th>AGE</th><th>RETIRED</th>
+    </tr>
+    <!-- collection attribute: -->
+    <tr th:each="person: ${person_list}">
+        <td th:text="${person.name}"/>
+        <td th:text="${person.age}"/>
+        <div th:utext="${person.htmlCode}" />
+        <!-- conditional attribute: -->
+        <td>
+            <span th:if="${person.age} >= ${retirement_age}" th:text="'YES'"/>
+            <span th:unless="${person.age} >= ${retirement_age}" th:text="'NO'"/>
+        </td>
+        <!-- switched attribute: -->
+        <td th:switch="${person.gender}">
+            <span th:case="'M'" th:text="'male'"/>
+            <span th:case="'F'" th:text="'female'"/>
+        </td>
+        <td th:switch="${person.genderType}">
+            <span th:case="MALE" th:text="'male'"/>
+            <span th:case="FEMALE" th:text="'female'"/>
+        </td>
+    </tr>
+</table>
+</body>
+</html>
+                </textarea>
+            </td>
+            <td style="width: 15%">
+                <input type="button" value="COPY" class="button_full" onclick="content_to_clipboard(this)" />
+            </td>
+        </tr>
+    </table>
+    <br>
+    <a href="#top">Back to top of page</a><br>
+    <a name="4. FORMS"></a>
+    <h2>4. FORMS</h2>
+    <p>In case the value(s) are needed to be sent back to backend, must use form(s) on the page, otherwise the template serves as an output page.</p>
+    <p>In order to create and use forms, 3 main steps are needed:</p>
+    <ol>
+        <li>a request which invokes a template which carries the form on server side</li>
+        <li>the activated form on client side, sends a request to server with filled data at submit</li>
+        <li>a POST request handler on server side</li>
+    </ol>
+    <p>When the first GET, POST etc. request arrives in, the backend prepares the form template and sends it back to the client. The form at Submit sends a defined request to the backend with the filled data which is processed there.</p>
+    <br>
+    <p>In the template the form tag header contains these parameters:</p>
+    <ol>
+        <li>th:action="@{/endpoint_name}": on this endpoint the submit request will be sent</li>
+        <li>th:object="${object-attribute_name}": this attribute is received and sent by the form, contains data presented with the form</li>
+        <li>autocomplete="on_or_off": for all inputs, forces the browser to suggest complete values based upon a few typed characters</li>
+        <li>method="post": defines what request the form must send when the user submits</li>
+        <li>novalidate: no input value validation will happen when submitting (validation on server side)</li>
+        <li>id="form_name": unique name of the form with which actions etc. can refer to it</li>
+    </ol>
+    <br>
+    <p>In the template all data which should be sent back, are rendered into input tags and similar as parameter.</p>
+    <p>HTML parameters depend on the tag and the input type.</p>
+    <p>If the input tag contains object or field data:</p>
+    <ol>
+        <li>type="text", type="number" or type="checkbox" etc.: the input-type</li>
+        <li>th:object="${attribute_name}" or th:field="${attribute_name.fieldName}" or th:field="*{fieldName}": the contained data</li>
+        <li>value="default_value" or ="'default_value'": fill the input with default value, Reset renders back to this; should not be defined if the form is bound via ThymeLeaf (it knows the defaults)</li>
+    </ol>
+    <p>If the input tag is button-like:</p>
+    <ol>
+        <li>type="submit", type="reset" or type="button": the type of the button-like control (the latter generally used for calling a script method)</li>
+        <li>value="caption on button": the caption of the button-like control, if not defined, uses local default e.g. Submit, Reset</li>
+        <li>formaction="/endpoint": define targeted endpoint for submit-type input</li>
+        <li>formmethod="post": define targeted query type for submit-type input</li>
+        <li>onclick="script_name" or onclick="alert('message_text')": took action in case of click, or shows a dialog, only for button-type input</li>
+    </ol>
+    <br>
+    <p>In the template the next types can be used for input, data is defined within the opening tag.</p>
+    <br>
+    <table class="table">
+        <tr>
+            <th class="table_th">INPUT</th>
+            <th class="table_th">INPUT</th>
+            <th class="table_th">INPUT</th>
+            <th class="table_th">INPUT</th>
+        </tr>
+        <tr>
+            <td class="table_td">button</td>
+            <td class="table_td">checkbox</td>
+            <td class="table_td">color</td>
+            <td class="table_td">date</td>
+        </tr>
+        <tr>
+            <td class="table_td">datetime-local</td>
+            <td class="table_td">email</td>
+            <td class="table_td">file</td>
+            <td class="table_td">hidden</td>
+        </tr>
+        <tr>
+            <td class="table_td">image</td>
+            <td class="table_td">month</td>
+            <td class="table_td">number</td>
+            <td class="table_td">password</td>
+        </tr>
+        <tr>
+            <td class="table_td">radio</td>
+            <td class="table_td">range</td>
+            <td class="table_td">reset</td>
+            <td class="table_td">search</td>
+        </tr>
+        <tr>
+            <td class="table_td">submit</td>
+            <td class="table_td">tel</td>
+            <td class="table_td">text</td>
+            <td class="table_td">time</td>
+        </tr>
+        <tr>
+            <td class="table_td">url</td>
+            <td class="table_td">week</td>
+            <td class="table_td">-</td>
+            <td class="table_td">-</td>
+        </tr>
+    </table>
+    <br>
+    <p>In the template the next types can be used for input, data is defined between the opening and closing tags.</p>
+    <br>
+    <table class="table">
+        <tr>
+            <th class="table_th">INPUT</th>
+            <th class="table_th">INPUT</th>
+        </tr>
+        <tr>
+            <td class="table_td">select</td>
+            <td class="table_td">textarea</td>
+        </tr>
+    </table>
+    <br>
+    <p>Button:</p>
+    <ol>
+        <li>a button appears</li>
+        <li>pressing it means invoking a script method</li>
+        <li>with the above parameters more buttons can be used in a form</li>
+        <li>the value= parameters defines the button caption</li>
+    </ol>
+    <br>
+    <p>Checkbox:</p>
+    <ol>
+        <li>the checked parameter pre-selects</li>
+        <li>usually used together with label tag which produces the shown text (consider id= and for= parameters)</li>
+    </ol>
+    <br>
+    <p>Color:</p>
+    <ol>
+        <li>the browser shows a color brick button, which will launch a color picker</li>
+        <li>the value= parameter sets default color, format is #xxxxxx where RGB codes are stored in 2-letter hexa numbers</li>
+    </ol>
+    <br>
+    <p>Date:</p>
+    <ol>
+        <li>the browser shows a divided input field for date with a date picker icon</li>
+        <li>format in the background is YYYY-MM-DD</li>
+        <li>shown format follows local settings</li>
+    </ol>
+    <br>
+    <p>Datetime-local:</p>
+    <ol>
+        <li>the browser shows a divided input field for date and time, with a date picker icon</li>
+        <li>format in the background is YYYY-MM-DD</li>
+        <li>shown format follows local settings</li>
+    </ol>
+    <br>
+    <p>File:</p>
+    <ol>
+        <li>a Browse button appears, next to it the chosen file name or number of files</li>
+        <li>the multiple parameter allows the user to enter more than one value</li>
+    </ol>
+    <br>
+    <p>Email:</p>
+    <ol>
+        <li>the multiple parameter allows the user to enter more than one value</li>
+    </ol>
+    <br>
+    <p>Hidden:</p>
+    <ol>
+        <li>the input will not be visible but can store data needed e.g. for a field of object still needed to be sent back</li>
+        <li>any developer tools etc. reaches, not proper for secure data</li>
+    </ol>
+    <br>
+    <p>Image:</p>
+    <ol>
+        <li>the src= parameter defines default image file path</li>
+        <li>the alt="Submit" parameter activates Submit if image is clicked</li>
+        <li>the width= and height= parameters set presentation dimensions (need in case the page design should be pre-set)</li>
+        <li>the POST will send X, Y coordinates of the image</li>
+    </ol>
+    <br>
+    <p>Month:</p>
+    <ol>
+        <li>month and year can be asked in</li>
+        <li>format is YYYY-MM</li>
+        <li>Firefox and Safari do not support it</li>
+    </ol>
+    <br>
+    <p>Number:</p>
+    <ol>
+        <li>text-like appearance with spin buttons</li>
+    </ol>
+    <br>
+    <p>Radio:</p>
+    <ol>
+        <li>the value= parameter defines which radio refers to which value of the possible choices</li>
+        <li>the first choice is the 0th</li>
+        <li>accepts enum as text</li>
+        <li>the checked parameter pre-selects</li>
+        <li>only one can be selected per name= parameter value, per form or per fieldset</li>
+        <li>more forms and fieldsets can be used on a page at the same time if needed</li>
+        <li>usually used together with label tag which produces the shown text (consider id= and for= parameters)</li>
+    </ol>
+    <br>
+    <p>Range:</p>
+    <ol>
+        <li>a slider appears</li>
+        <li>the min= and the max= parameters define the low and high limits</li>
+        <li>for submit, an integer number will be sent</li>
+    </ol>
+    <br>
+    <p>Reset:</p>
+    <ol>
+        <li>a button appears</li>
+        <li>pressing it re-sets the initial values of all inputs etc.</li>
+        <li>the value= parameter sets the caption</li>
+    </ol>
+    <br>
+    <p>Search:</p>
+    <ol>
+        <li>the input behaves like a text input</li>
+    </ol>
+    <br>
+    <p>Select:</p>
+    <ol>
+        <li>it works as a combobox (scroll-down list) by default, as a list otherwise</li>
+        <li>the size= parameter defines the number of visible items, and the select will work as a list control, otherwise will work as a combobo</li>
+        <li>the multiple parameter lets more items to be selected in list control appearance</li>
+        <li>option sub-tags define from which items can be the input value chosen</li>
+        <li>an option tag contains the value= parameter which will be posted</li>
+        <li>the selected parameter selects an item</li>
+        <li>by default, for manually defined items, the first option, for dynamically defined items, the last added option fills the input</li>
+        <li>between the opening and closing markers of an option tag the displayed text is written</li>
+    </ol>
+    <br>
+    <p>Submit:</p>
+    <ol>
+        <li>a button appears</li>
+        <li>pressing it sends the form to the controller</li>
+        <li>the formaction= parameter can contain endpoint name or URL, reverts the form submit direction</li>
+        <li>the formmethod= parameter can contain "get", "post", "patch", "delete" values and overwrites the form request type</li>
+        <li>the formtarget="_blank" opens the target on a new page</li>
+        <li>the formnovalidate="formnovalidate" reverts from input value validation (overwrites similar settings of the form)</li>
+        <li>the value= parameter sets the caption</li>
+        <li>with the above parameters more submit buttons can be used in a form</li>
+    </ol>
+    <br>
+    <p>Textarea:</p>
+    <ol>
+        <li>multi-line text input</li>
+        <li>the name= parameter defines name of the control</li>
+        <li>the rows= and cols= parameters define the visible dimensions (same as using style= local settings e.g. style="width:200px; height:600px;")</li>
+        <li>between the opening and closing markers of the tag the starting text can be written</li>
+        <li>default height is 3 rows</li>
+        <li>wraps the content</li>
+    </ol>
+    <br>
+    <p>Time:</p>
+    <ol>
+        <li>the browser shows a divided input field for time</li>
+        <li>shown format follows local settings</li>
+    </ol>
+    <br>
+    <p>Week:</p>
+    <ol>
+        <li>week can be asked in</li>
+        <li>Firefox and Safari do not support it</li>
+    </ol>
+    <br>
+    <p>All numerical inputs (number, range, date, datetime-local, month, time, week):</p>
+    <ol>
+        <li>min="minvalue" and max="maxvalue" can be defined as parameter as well</li>
+        <li>the step="step_value" parameter defines by how many numbers should the value jump when the spin buttons are used (only for number and range)</li>
+    </ol>
+    <br>
+    <p>All text-like inputs (email, password, search, tel, text, url):</p>
+    <ol>
+        <li>the maxlength="max_character_length" parameter can be used, when reaching the limit no new characters can be entered, no message or hint will be shown to the user, if that is not acceptable, writing Javascript code is needed</li>
+        <li>the pattern="pattern_text" parameter sets how the data will appear in the input, and exactly what characters are accepted in its positions, contains [minValue-maxValue]{validForThisLength} blocks, between blocks any characters can be, e.g. [A-Za-z]{3} or [0-9]{6}-[A-Z]{2}</li>
+        <li>the placeholder="hint" parameter defines input hint which appears in the empty input with different appearance than the entered data have, appears only when the input is empty</li>
+        <li>the list="datalist_id" parameter lets the user optionally choose from pre-defined texts (defined in datalist tag) when typing letters into the input, matching is based upon containing, the input accepts any value but in case a pre-set choice is exists, will show it in a popup list under the input</li>
+    </ol>
+    <br>
+    <p>All text-like inputs plus color, date pickers, time:</p>
+    <ol>
+        <li>the autocomplete="on_or_off" parameter forces the browser to suggest complete values based upon a few typed characters, overwrites form settings</li>
+    </ol>
+    <br>
+    <p>All input-types:</p>
+    <ol>
+        <li>the readonly parameter makes the input unchangeable</li>
+        <li>the disabled parameter sets the input read-only and un-clickable, its value will not be sent when submitting</li>
+        <li>the required parameter means the input must be filled</li>
+        <li>the size="size_in_characters" parameter sets the maximum value length of the applicable input type (default is 20)</li>
+        <li>the autofocus parameter forces the focus on the input when the page loads, use it for one input per page</li>
+        <li>the form= parameter marks which form the input is part of, it has effect only when in the header of the form the id= parameter is used, such marked inputs can be placed outside the correspondent form tag but they still will be part of the correspondent form</li>
+        <li>the tabindex= parameter defines order of focusing when pressing TAB (e.g. tabindex="2", default is the order in the code)</li>
+    </ol>
+    <br>
+    <p>Restrictions are useful on form-side but via Javascript it is possible to overwrite or get around them. Always check data on server-side.</p>
+    <p>Without setting width and height for an image, the layout will change as the image loads. For proper design, this should be avoided, set the dimensions beforehand.</p>
+    <p>Tags can be grouped by using the fieldset tag, see below.</p>
+    <p>In case an input is not filled by the user, the form will send a null rendered to that HTML attribute as value. Same goes for attributes not distributed for user input on the form.</p>
+    <br>
+    <a href="#top">Back to top of page</a><br>
+    <a name="5. EXAMPLES"></a>
+    <h2>5. EXAMPLES</h2>
+    <p>Visit the SPRING THYMELEAF EXAMPLES page for examples.</p>
+    <br>
+    <p>MORE HERE: https://www.javatpoint.com/spring-boot-thymeleaf-view</p>
+    <p>MORE HERE: https://stackoverflow.com/questions/28325708/thymeleaf-how-to-pass-html-to-the-div</p>
+    <p>MORE HERE: https://www.baeldung.com/spring-boot-crud-thymeleaf</p>
+    <p>MORE HERE: https://www.baeldung.com/spring-thymeleaf-error-messages</p>
+    <br>
+    <a href="spring_thymeleaf_examples.html">See: SPRING THYMELEAF EXAMPLES</a></br>
+    <a href="css.html">See: CSS</a></br>
+    <br>
+    <a href="#top">Back to top of page</a><br>
+    <script>
+        function content_to_clipboard(element) {
+            element.select();
+            document.execCommand('copy');
+        }
+        function element_to_full_size(element) {
+            element.style.height = "";
+            element.style.height = element.scrollHeight + "px";
+        }
+    </script>
+</body>
+</html>
