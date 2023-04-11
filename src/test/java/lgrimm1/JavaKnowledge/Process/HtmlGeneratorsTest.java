@@ -35,6 +35,20 @@ class HtmlGeneratorsTest {
 				.thenReturn("TABINSPACESTABINSPACESTABINSPACES");
 		when(formulas.generateTabInSpaces(4))
 				.thenReturn("TABINSPACESTABINSPACESTABINSPACESTABINSPACES");
+		when(formulas.getMore())
+				.thenReturn("MORE");
+		when(formulas.getTableStart())
+				.thenReturn("TABLESTART");
+		when(formulas.getExampleStart())
+				.thenReturn("EXAMPLESTART");
+		when(formulas.getExampleEnd())
+				.thenReturn("EXAMPLEEND");
+		when(formulas.getReference())
+				.thenReturn("REFERENCE");
+		when(formulas.getBulletWithSpaces())
+				.thenReturn("BULLETSPACES");
+		when(formulas.getBulletWithTab())
+				.thenReturn("BULLETTAB");
 		titleRepository = Mockito.mock(TitleRepository.class);
 	}
 
@@ -88,24 +102,22 @@ class HtmlGeneratorsTest {
 	@Test
 	void generateMainContent_Table() {
 		List<String> txtContent = List.of(
-				"||Header 1|Header 2|Header 3||",
-				"||Cell 11|Cell 12|Cell 13||",
-				"||Cell 21|Cell 22|Cell 23||"
+				"TABLESTARTHeader 1|Header 2|Header 3TABLESTART",
+				"TABLESTARTCell 11|Cell 12|Cell 13TABLESTART",
+				"TABLESTARTCell 21|Cell 22|Cell 23TABLESTART"
 		);
 
 		when(extractors.extractTable(List.of(
-				"||Header 1|Header 2|Header 3||",
-				"||Cell 11|Cell 12|Cell 13||",
-				"||Cell 21|Cell 22|Cell 23||"
+				"TABLESTARTHeader 1|Header 2|Header 3TABLESTART",
+				"TABLESTARTCell 11|Cell 12|Cell 13TABLESTART",
+				"TABLESTARTCell 21|Cell 22|Cell 23TABLESTART"
 		), formulas))
 				.thenReturn(List.of(
-						"HTML table line 1",
-						"HTML table line 2"
+						"HTML table"
 				));
 
 		List<String> expectedHtml = List.of(
-				"HTML table line 1",
-				"HTML table line 2"
+				"HTML table"
 		);
 
 		MainHtmlContentPayload actualPayload = htmlGenerators.generateMainContent(
@@ -120,7 +132,7 @@ class HtmlGeneratorsTest {
 	@Test
 	void generateMainContent_ExampleWithoutClosingText() {
 		List<String> txtContent = List.of(
-				"EXAMPLE FOR SOMETHING:",
+				"EXAMPLESTART",
 				"first row",
 				"  second row",
 				"some other rows"
@@ -148,10 +160,10 @@ class HtmlGeneratorsTest {
 	@Test
 	void generateMainContent_ExampleWithClosingText() {
 		List<String> txtContent = List.of(
-				"EXAMPLE FOR SOMETHING:",
+				"EXAMPLESTART",
 				"first row",
 				"  second row",
-				"END OF EXAMPLE"
+				"EXAMPLEEND"
 		);
 
 		List<String> expectedHtml = List.of(
@@ -175,18 +187,18 @@ class HtmlGeneratorsTest {
 	@Test
 	void generateMainContent_InternalReference() {
 		List<String> txtContent = List.of(
-				"=>Title Word 1",
-				"=>Title Word 2;1.2. Header header"
+				"REFERENCETitle Word 1",
+				"REFERENCETitle Word 2;1.2. Header header"
 		);
 
-		when(extractors.extractReference("=>Title Word 1", formulas, titleRepository))
-				.thenReturn("Existing reference");
-		when(extractors.extractReference("=>Title Word 2;1.2. Header header", formulas, titleRepository))
-				.thenReturn("Existing reference");
+		when(extractors.extractReference("REFERENCETitle Word 1", formulas, titleRepository))
+				.thenReturn("Existing reference 1");
+		when(extractors.extractReference("REFERENCETitle Word 2;1.2. Header header", formulas, titleRepository))
+				.thenReturn("Existing reference 2");
 
 		List<String> expectedHtml = List.of(
-				"Existing reference",
-				"Existing reference"
+				"Existing reference 1",
+				"Existing reference 2"
 		);
 		List<String> expectedTitles = List.of(
 				"Title Word 1",
@@ -205,10 +217,43 @@ class HtmlGeneratorsTest {
 	@Test
 	void generateMainContent_ExternalReference() {
 		List<String> txtContent = List.of(
-				"MORE HERE: abc"
+				"MOREexternal reference text"
 		);
 
 		List<String> expectedHtml = new ArrayList<>();
+
+		MainHtmlContentPayload actualPayload = htmlGenerators.generateMainContent(
+				txtContent,
+				formulas,
+				extractors,
+				titleRepository);
+		Assertions.assertEquals(expectedHtml, actualPayload.content());
+		Assertions.assertTrue(actualPayload.titles().isEmpty());
+	}
+
+	@Test
+	void generateMainContent_BulletedList() {
+		List<String> txtContent = List.of(
+				"BULLETSPACESList item 1",
+				"BULLETTABList item 2",
+				"BULLETSPACESList item 3"
+		);
+
+		when(extractors.extractBulletedList(txtContent, formulas))
+				.thenReturn(List.of(
+						"List header tag",
+						"HTML List item 1",
+						"HTML List item 2",
+						"HTML List item 3",
+						"List footer tag"
+				));
+		List<String> expectedHtml = List.of(
+				"List header tag",
+				"HTML List item 1",
+				"HTML List item 2",
+				"HTML List item 3",
+				"List footer tag"
+		);
 
 		MainHtmlContentPayload actualPayload = htmlGenerators.generateMainContent(
 				txtContent,
@@ -260,6 +305,9 @@ class HtmlGeneratorsTest {
 				"TABINSPACES" + "<title>" + title + "</title>",
 				"TABINSPACES" + "<meta charset=\"UTF-8\">",
 				"TABINSPACES" + "<link rel=\"icon\" type=\"image/x-icon\" th:href=\"@{/images/favicon.ico}\" href=\"/images/favicon.ico\">",
+				"TABINSPACES" + "<link rel=\"preconnect\" href=\"https://fonts.googleapis.com\">",
+				"TABINSPACES" + "<link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin>",
+				"TABINSPACES" + "<link href=\"https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap\" rel=\"stylesheet\">",
 				"TABINSPACES" + "<link rel=\"stylesheet\" th:href=\"@{/styles/desktop.css}\" href=\"/styles/desktop.css\">",
 				"</head>",
 				"<body>",

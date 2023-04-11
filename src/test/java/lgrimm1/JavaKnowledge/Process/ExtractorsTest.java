@@ -21,6 +21,8 @@ class ExtractorsTest {
 				.thenReturn("TABINSPACES");
 		when(formulas.getSuperLine())
 				.thenReturn("SUPERLINE");
+		when(formulas.getHeaderSeparator())
+				.thenReturn(";");
 		when(formulas.generateTabInSpaces(0))
 				.thenReturn("");
 		when(formulas.generateTabInSpaces(1))
@@ -31,85 +33,17 @@ class ExtractorsTest {
 				.thenReturn("TABINSPACESTABINSPACESTABINSPACES");
 		when(formulas.generateTabInSpaces(4))
 				.thenReturn("TABINSPACESTABINSPACESTABINSPACESTABINSPACES");
+		when(formulas.getBulletWithSpaces())
+				.thenReturn("BULLETWITHSPACES");
+		when(formulas.getBulletWithTab())
+				.thenReturn("BULLETWITHTAB");
+		when(formulas.getHeaderSeparator())
+				.thenReturn("HEADERSEPARATOR");
+		when(formulas.getTableStart())
+				.thenReturn("TABLESTART");
+		when(formulas.getReference())
+				.thenReturn("REFERENCE");
 		titleRepository = Mockito.mock(TitleRepository.class);
-	}
-
-	@Test
-	void extractReference_NoHeader() {
-		String line = "=>Title Text";
-
-		when(titleRepository.findByTitle("Title Text"))
-				.thenReturn(Optional.of(new TitleEntity(
-						1L,
-						"Title Text",
-						"title_text",
-						1L,
-						1L
-				)));
-		Assertions.assertEquals(
-				"TABINSPACES" + "<a href=\"title_text.html\">See: Title Text</a></br>",
-				extractors.extractReference(line, formulas, titleRepository)
-		);
-
-		when(titleRepository.findByTitle("Title Text"))
-				.thenReturn(Optional.empty());
-		Assertions.assertEquals(
-				"TABINSPACES" + "See: Title Text</br>",
-				extractors.extractReference(line, formulas, titleRepository)
-		);
-	}
-
-	@Test
-	void extractReference_WithHeader() {
-		String line = "=>Title Text;1.2. Header Word";
-
-		when(titleRepository.findByTitle("Title Text"))
-				.thenReturn(Optional.of(new TitleEntity(1L,
-						"Title Text",
-						"title_text",
-						1L,
-						1L
-				)));
-		Assertions.assertEquals(
-				"TABINSPACES" + "<a href=\"title_text.html#1.2. Header Word\">See: Title Text / 1.2. Header Word</a></br>",
-				extractors.extractReference(line, formulas, titleRepository)
-		);
-
-		when(titleRepository.findByTitle("Title Text"))
-				.thenReturn(Optional.empty());
-		Assertions.assertEquals(
-				"TABINSPACES" + "See: Title Text / 1.2. Header Word</br>",
-				extractors.extractReference(line, formulas, titleRepository)
-		);
-	}
-
-	@Test
-	void extractTable() {
-		List<String> originalText = List.of(
-				"||Header 1|Header 2|Header 3||",
-				"||Cell 11|Cell 12|Cell 13||",
-				"||Cell 21|Cell 22|Cell 23||"
-		);
-		List<String> expectedHtml = List.of(
-				"TABINSPACES" + "<table class=\"table\">",
-				"TABINSPACES" + "TABINSPACES" + "<tr>",
-				"TABINSPACES" + "TABINSPACES" + "TABINSPACES" + "<th class=\"table_th\">Header 1</th>",
-				"TABINSPACES" + "TABINSPACES" + "TABINSPACES" + "<th class=\"table_th\">Header 2</th>",
-				"TABINSPACES" + "TABINSPACES" + "TABINSPACES" + "<th class=\"table_th\">Header 3</th>",
-				"TABINSPACES" + "TABINSPACES" + "</tr>",
-				"TABINSPACES" + "TABINSPACES" + "<tr>",
-				"TABINSPACES" + "TABINSPACES" + "TABINSPACES" + "<td class=\"table_td\">Cell 11</td>",
-				"TABINSPACES" + "TABINSPACES" + "TABINSPACES" + "<td class=\"table_td\">Cell 12</td>",
-				"TABINSPACES" + "TABINSPACES" + "TABINSPACES" + "<td class=\"table_td\">Cell 13</td>",
-				"TABINSPACES" + "TABINSPACES" + "</tr>",
-				"TABINSPACES" + "TABINSPACES" + "<tr>",
-				"TABINSPACES" + "TABINSPACES" + "TABINSPACES" + "<td class=\"table_td\">Cell 21</td>",
-				"TABINSPACES" + "TABINSPACES" + "TABINSPACES" + "<td class=\"table_td\">Cell 22</td>",
-				"TABINSPACES" + "TABINSPACES" + "TABINSPACES" + "<td class=\"table_td\">Cell 23</td>",
-				"TABINSPACES" + "TABINSPACES" + "</tr>",
-				"TABINSPACES" + "</table>"
-		);
-		Assertions.assertIterableEquals(expectedHtml, extractors.extractTable(originalText, formulas));
 	}
 
 	@Test
@@ -137,7 +71,36 @@ class ExtractorsTest {
 		);
 		Assertions.assertEquals("Title Text".toUpperCase(), extractors.extractTitle(originalText, formulas));
 	}
-	
+
+	@Test
+	void extractTable() {
+		List<String> originalText = List.of(
+				"TABLESTARTHeader 1|Header 2|Header 3TABLESTART",
+				"TABLESTARTCell 11|Cell 12|Cell 13TABLESTART",
+				"TABLESTARTCell 21|Cell 22|Cell 23TABLESTART"
+		);
+		List<String> expectedHtml = List.of(
+				"TABINSPACES" + "<table class=\"table\">",
+				"TABINSPACES" + "TABINSPACES" + "<tr>",
+				"TABINSPACES" + "TABINSPACES" + "TABINSPACES" + "<th class=\"table_th\">Header 1</th>",
+				"TABINSPACES" + "TABINSPACES" + "TABINSPACES" + "<th class=\"table_th\">Header 2</th>",
+				"TABINSPACES" + "TABINSPACES" + "TABINSPACES" + "<th class=\"table_th\">Header 3</th>",
+				"TABINSPACES" + "TABINSPACES" + "</tr>",
+				"TABINSPACES" + "TABINSPACES" + "<tr>",
+				"TABINSPACES" + "TABINSPACES" + "TABINSPACES" + "<td class=\"table_td\">Cell 11</td>",
+				"TABINSPACES" + "TABINSPACES" + "TABINSPACES" + "<td class=\"table_td\">Cell 12</td>",
+				"TABINSPACES" + "TABINSPACES" + "TABINSPACES" + "<td class=\"table_td\">Cell 13</td>",
+				"TABINSPACES" + "TABINSPACES" + "</tr>",
+				"TABINSPACES" + "TABINSPACES" + "<tr>",
+				"TABINSPACES" + "TABINSPACES" + "TABINSPACES" + "<td class=\"table_td\">Cell 21</td>",
+				"TABINSPACES" + "TABINSPACES" + "TABINSPACES" + "<td class=\"table_td\">Cell 22</td>",
+				"TABINSPACES" + "TABINSPACES" + "TABINSPACES" + "<td class=\"table_td\">Cell 23</td>",
+				"TABINSPACES" + "TABINSPACES" + "</tr>",
+				"TABINSPACES" + "</table>"
+		);
+		Assertions.assertIterableEquals(expectedHtml, extractors.extractTable(originalText, formulas));
+	}
+
 	@Test
 	void extractExample() {
 		List<String> originalText = List.of(
@@ -158,11 +121,77 @@ class ExtractorsTest {
 		expectedHtml.add("TABINSPACES" + "TABINSPACES" + "TABINSPACES" + "</td>");
 		expectedHtml.add("TABINSPACES" + "TABINSPACES" + "TABINSPACES" + "<td style=\"width: 15%\">");
 		expectedHtml.add("TABINSPACES" + "TABINSPACES" + "TABINSPACES" + "TABINSPACES" +
-				"<input type=\"button\" value=\"COPY\" class=\"button\" onclick=\"content_to_clipboard(this)\" />");
+				"<input type=\"button\" value=\"COPY\" class=\"button_full\" onclick=\"content_to_clipboard(this)\" />");
 		expectedHtml.add("TABINSPACES" + "TABINSPACES" + "TABINSPACES" + "</td>");
 		expectedHtml.add("TABINSPACES" + "TABINSPACES" + "</tr>");
 		expectedHtml.add("TABINSPACES" + "</table>");
 
 		Assertions.assertEquals(expectedHtml, extractors.extractExample(originalText, formulas));
+	}
+
+	@Test
+	void extractReference_NoHeader() {
+		String line = "REFERENCETitle Text";
+
+		when(titleRepository.findByTitle("Title Text"))
+				.thenReturn(Optional.of(new TitleEntity(
+						1L,
+						"Title Text",
+						"title_text",
+						1L,
+						1L
+				)));
+		Assertions.assertEquals(
+				"TABINSPACES" + "<a href=\"title_text.html\">See: Title Text</a></br>",
+				extractors.extractReference(line, formulas, titleRepository)
+		);
+
+		when(titleRepository.findByTitle("Title Text"))
+				.thenReturn(Optional.empty());
+		Assertions.assertEquals(
+				"TABINSPACES" + "See: Title Text</br>",
+				extractors.extractReference(line, formulas, titleRepository)
+		);
+	}
+
+	@Test
+	void extractReference_WithHeader() {
+		String line = "REFERENCETitle TextHEADERSEPARATOR1.2. Header Word";
+
+		when(titleRepository.findByTitle("Title Text"))
+				.thenReturn(Optional.of(new TitleEntity(1L,
+						"Title Text",
+						"title_text",
+						1L,
+						1L
+				)));
+		Assertions.assertEquals(
+				"TABINSPACES" + "<a href=\"title_text.html#1.2. Header Word\">See: Title Text / 1.2. Header Word</a></br>",
+				extractors.extractReference(line, formulas, titleRepository)
+		);
+
+		when(titleRepository.findByTitle("Title Text"))
+				.thenReturn(Optional.empty());
+		Assertions.assertEquals(
+				"TABINSPACES" + "See: Title Text / 1.2. Header Word</br>",
+				extractors.extractReference(line, formulas, titleRepository)
+		);
+	}
+
+	@Test
+	void extractBulletedList() {
+		List<String> originalText = List.of(
+				"BULLETWITHSPACESList item 1",
+				"BULLETWITHTABList item 2",
+				"BULLETWITHSPACESList item 3"
+		);
+		List<String> expectedHtml = new ArrayList<>();
+		expectedHtml.add("TABINSPACES" + "<ol>");
+		expectedHtml.add("TABINSPACES" + "TABINSPACES" + "<li>List item 1</li>");
+		expectedHtml.add("TABINSPACES" + "TABINSPACES" + "<li>List item 2</li>");
+		expectedHtml.add("TABINSPACES" + "TABINSPACES" + "<li>List item 3</li>");
+		expectedHtml.add("TABINSPACES" + "</ol>");
+
+		Assertions.assertEquals(expectedHtml, extractors.extractBulletedList(originalText, formulas));
 	}
 }

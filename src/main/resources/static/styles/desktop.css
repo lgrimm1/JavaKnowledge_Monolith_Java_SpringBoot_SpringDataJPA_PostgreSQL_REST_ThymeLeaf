@@ -8,7 +8,7 @@ html {
 
 body {
     background-color: DarkSlateGray;
-    font-family: Tahoma, Verdana, sans-serif;
+    font-family: 'Roboto Mono', monospace;
     color: LightGray;
     text-align: left;
     line-height: 1.15;
@@ -51,6 +51,11 @@ p {
     margin-bottom: 2px;
 }
 
+ol {
+    margin: 0px;
+    list-style-type: lower-alpha;
+}
+
 h1 {
     font-size: 160%;
     text-align: center;
@@ -79,7 +84,7 @@ textarea {
     border-radius: 6px;
     border-color: DarkSlateGray;
     background-color: LightGray;
-    font-family: Courier, monospace;
+    font-family: 'Roboto Mono', monospace;
     font-size: 90%;
     color: DarkSlateGray;
     text-align: left;
@@ -93,6 +98,7 @@ select {
     border-radius: 6px;
     border-color: DarkSlateGray;
     background-color: LightGray;
+    font-family: 'Roboto Mono', monospace;
     font-size: 90%;
     color: DarkSlateGray;
 }
@@ -162,7 +168,7 @@ iframe {
      border-left: none;
 }
 
-.submit_full {
+.submit_full, .button_full {
     width: 90%
 }
 
@@ -170,13 +176,13 @@ iframe {
     width: 44%
 }
 
-input[type="submit"] {
+input[type="submit"], input[type="button"] {
     height: 32px;
     border: 1px solid;
     border-radius: 6px;
     border-color: DarkSlateGray;
     background-color: LightGray;
-    font-size: 90%;
+    font-family: 'Roboto Mono', monospace;
     font-size: 90%;
     color: DarkSlateGray;
 }
@@ -187,6 +193,7 @@ input[type="search"], input[type="text"] {
     border-radius: 6px;
     border-color: DarkSlateGray;
     background-color: LightGray;
+    font-family: 'Roboto Mono', monospace;
     font-size: 90%;
     text-align: center;
     color: DarkSlateGray;
@@ -203,6 +210,7 @@ input[type="file"] {
     border: 1px solid;
     border-radius: 6px;
     background-color: LightGray;
+    font-family: 'Roboto Mono', monospace;
     font-size: 90%;
 /*
     vertical-align: middle;

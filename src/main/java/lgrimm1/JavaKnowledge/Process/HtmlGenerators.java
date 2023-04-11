@@ -49,11 +49,11 @@ public class HtmlGenerators {
 			}
 
 			//table
-			else if ((text.get(textIndex).length() > 3) && (text.get(textIndex).startsWith("||"))) {
+			else if ((text.get(textIndex).length() > 3) && (text.get(textIndex).startsWith(formulas.getTableStart()))) {
 				int textIndex2 = textIndex + 1;
 				while ((textIndex2 < text.size()) &&
 						(text.get(textIndex2).length() > 2) &&
-						(text.get(textIndex2).startsWith("||"))) {
+						(text.get(textIndex2).startsWith(formulas.getTableStart()))) {
 					textIndex2++;
 				}
 				html.addAll(extractors.extractTable(text.subList(textIndex, textIndex2), formulas));
@@ -61,9 +61,9 @@ public class HtmlGenerators {
 			}
 
 			//example
-			else if (text.get(textIndex).contains("EXAMPLE FOR")) {
+			else if (text.get(textIndex).contains(formulas.getExampleStart())) {
 				int textIndex2 = textIndex + 1;
-				while (textIndex2 < text.size() && !text.get(textIndex2).equals("END OF EXAMPLE")) {
+				while (textIndex2 < text.size() && !text.get(textIndex2).equals(formulas.getExampleEnd())) {
 					textIndex2++;
 				}
 				html.addAll(extractors.extractExample(text.subList(textIndex, textIndex2), formulas));
@@ -71,15 +71,27 @@ public class HtmlGenerators {
 			}
 
 			//reference
-			else if ((text.get(textIndex).startsWith("=>"))) {
+			else if ((text.get(textIndex).startsWith(formulas.getReference()))) {
 				html.add(extractors.extractReference(text.get(textIndex), formulas, titleRepository));
-				titles.add(text.get(textIndex).substring(2));
+				titles.add(text.get(textIndex).substring(formulas.getReference().length()));
 				textIndex++;
 			}
 
 			//external reference, skipped
-			else if (text.get(textIndex).startsWith("MORE HERE:")) {
+			else if (text.get(textIndex).startsWith(formulas.getMore())) {
 				textIndex++;
+			}
+
+			//bulleted list
+			else if (text.get(textIndex).startsWith(formulas.getBulletWithSpaces()) || text.get(textIndex).startsWith(formulas.getBulletWithTab())) {
+				int textIndex2 = textIndex + 1;
+				while (textIndex2 < text.size() && (
+						text.get(textIndex2).startsWith(formulas.getBulletWithSpaces()) ||
+								text.get(textIndex2).startsWith(formulas.getBulletWithTab()))) {
+					textIndex2++;
+				}
+				html.addAll(extractors.extractBulletedList(text.subList(textIndex, textIndex2), formulas));
+				textIndex = textIndex2;
 			}
 
 			//normal text
@@ -105,6 +117,9 @@ public class HtmlGenerators {
 				formulas.getTabInSpaces() + "<title>" + title + "</title>",
 				formulas.getTabInSpaces() + "<meta charset=\"UTF-8\">",
 				formulas.getTabInSpaces() + "<link rel=\"icon\" type=\"image/x-icon\" th:href=\"@{/images/favicon.ico}\" href=\"/images/favicon.ico\">",
+				formulas.getTabInSpaces() + "<link rel=\"preconnect\" href=\"https://fonts.googleapis.com\">",
+				formulas.getTabInSpaces() + "<link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin>",
+    			formulas.getTabInSpaces() + "<link href=\"https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap\" rel=\"stylesheet\">",
 				formulas.getTabInSpaces() + "<link rel=\"stylesheet\" th:href=\"@{/styles/desktop.css}\" href=\"/styles/desktop.css\">",
 				"</head>",
 				"<body>",

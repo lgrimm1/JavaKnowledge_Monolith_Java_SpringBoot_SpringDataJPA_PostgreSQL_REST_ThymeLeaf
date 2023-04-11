@@ -38,6 +38,47 @@ class FormulasTest {
 		Assertions.assertEquals("Up to Java 17, Spring Boot 3 (Hibernate 6), JUnit 5, PostgreSQL 11, HTML 5, CSS 3.",
 				formulas.getVersions());
 	}
+
+	@Test
+	void getHeaderSeparator() {
+		Assertions.assertEquals(";", formulas.getHeaderSeparator());
+	}
+
+	@Test
+	void getBulletWithSpaces() {
+		Assertions.assertEquals("    - ", formulas.getBulletWithSpaces());
+	}
+
+	@Test
+	void getBulletWithTab() {
+		Assertions.assertEquals("\t- ", formulas.getBulletWithTab());
+	}
+
+	@Test
+	void getMore() {
+		Assertions.assertEquals("MORE: ", formulas.getMore());
+	}
+
+	@Test
+	void getTableStart() {
+		Assertions.assertEquals("||", formulas.getTableStart());
+	}
+
+	@Test
+	void getExampleStart() {
+		Assertions.assertEquals("EXAMPLE FOR ", formulas.getExampleStart());
+	}
+
+	@Test
+	void getExampleEnd() {
+		Assertions.assertEquals("END OF EXAMPLE", formulas.getExampleEnd());
+	}
+
+	@Test
+	void getReference() {
+		Assertions.assertEquals("=>", formulas.getReference());
+	}
+
 	@Test
 	void getFormula_NullName() {
 		Assertions.assertTrue(formulas.getFormula(null).isEmpty());

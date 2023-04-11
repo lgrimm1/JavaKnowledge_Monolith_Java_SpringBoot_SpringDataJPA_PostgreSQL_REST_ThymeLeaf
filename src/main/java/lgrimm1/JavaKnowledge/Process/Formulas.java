@@ -12,6 +12,13 @@ import java.util.*;
  * @see #getTabInHtml()
  * @see #getSpaceInHtml()
  * @see #getVersions()
+ * @see #getHeaderSeparator()
+ * @see #getBulletWithSpaces()
+ * @see #getBulletWithTab()
+ * @see #getMore()
+ * @see #getTableStart()
+ * @see #getExampleStart()
+ * @see #getExampleEnd()
  * @see #getFormula(String)
  * @see #generateTabInSpaces(int)
  * @see #generateRepeatedPattern(String, int)
@@ -25,6 +32,14 @@ public class Formulas {
 	private final String tabInHtml = generateRepeatedPattern("&nbsp;", 4);
 	private final String spaceInHtml = "&nbsp;";
 	private final String versions = "Up to Java 17, Spring Boot 3 (Hibernate 6), JUnit 5, PostgreSQL 11, HTML 5, CSS 3.";
+	private final String headerSeparator = ";";
+	private final String bulletWithSpaces = tabInSpaces + "- ";
+	private final String bulletWithTab = "\t- ";
+	private final String more = "MORE: ";
+	private final String tableStart = "||";
+	private final String exampleStart = "EXAMPLE FOR ";
+	private final String exampleEnd = "END OF EXAMPLE";
+	private final String reference = "=>";
 
 	private final List<String> FORMULA_TITLE = List.of(
 			superLine,
@@ -80,6 +95,38 @@ public class Formulas {
 
 	public String getVersions() {
 		return versions;
+	}
+
+	public String getHeaderSeparator() {
+		return headerSeparator;
+	}
+
+	public String getBulletWithSpaces() {
+		return bulletWithSpaces;
+	}
+
+	public String getBulletWithTab() {
+		return bulletWithTab;
+	}
+
+	public String getMore() {
+		return more;
+	}
+
+	public String getTableStart() {
+		return tableStart;
+	}
+
+	public String getExampleStart() {
+		return exampleStart;
+	}
+
+	public String getExampleEnd() {
+		return exampleEnd;
+	}
+
+	public String getReference() {
+		return reference;
 	}
 
 	/**

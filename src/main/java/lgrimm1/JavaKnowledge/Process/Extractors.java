@@ -7,44 +7,28 @@ import java.util.*;
 
 /**
  * Extractors of special data.
- * @see #extractReference(String, Formulas, TitleRepository)
+ * @see #extractTitle(List, Formulas)
  * @see #extractTable(List, Formulas)
  * @see #extractCells(String)
  * @see #extractExample(List, Formulas)
- * @see #extractTitle(List, Formulas)
+ * @see #extractReference(String, Formulas, TitleRepository)
+ * @see #extractBulletedList(List, Formulas)
  */
 @Component
 public class Extractors {
 
 	/**
-	 * Extracts reference components from a line.
-	 * The first ; separates file reference from name reference inside the file, using it is optional.
-	 * In case there is no matching title in TitleRepository, instead of link a text will be returned.
+	 * Returns empty string if title is not valid.
 	 */
-	public String extractReference(String line, Formulas formulas, TitleRepository titleRepository) {
-		line = line.substring(2);
-		String title, link, linkText;
-		int posHeader = line.indexOf(";");
-		if (posHeader == -1) { //only page, no header
-			title = line;
-			Optional<TitleEntity> optionalTitleEntity = titleRepository.findByTitle(title);
-			link = optionalTitleEntity
-					.map(titleEntity -> titleEntity.getFilename() + ".html")
-					.orElse("");
-			linkText = "See: " + title;
+	public String extractTitle(List<String> txt, Formulas formulas) {
+		if (txt != null &&
+				txt.size() > 2 &&
+				txt.get(0).equals(formulas.getSuperLine()) &&
+				txt.get(2).equals(formulas.getSuperLine()) &&
+				!txt.get(1).isBlank()) {
+			return txt.get(1).trim().toUpperCase();
 		}
-		else { //page with header
-			title = line.substring(0, posHeader);
-			String header = line.substring(posHeader + 1);
-			Optional<TitleEntity> optionalTitleEntity = titleRepository.findByTitle(title);
-			link = optionalTitleEntity
-					.map(titleEntity -> titleEntity.getFilename() + ".html#" + header)
-					.orElse("");
-			linkText = "See: " + title + " / " + header;
-		}
-		return link.isEmpty() ?
-				formulas.getTabInSpaces() + linkText + "</br>" :
-				formulas.getTabInSpaces() + "<a href=\"" + link + "\">" + linkText + "</a></br>";
+		return "";
 	}
 
 	/**
@@ -55,7 +39,7 @@ public class Extractors {
 		tableInHtml.add(formulas.getTabInSpaces() + "<table class=\"table\">");
 		for (int i = 0; i < tableText.size(); i++) {
 			tableInHtml.add(formulas.generateTabInSpaces(2) + "<tr>");
-			List<String> cells = extractCells(tableText.get(i).replace("||", ""));
+			List<String> cells = extractCells(tableText.get(i).replace(formulas.getTableStart(), ""));
 			for (String s : cells) {
 				if (i == 0) {
 					tableInHtml.add(formulas.generateTabInSpaces(3) +
@@ -110,7 +94,7 @@ public class Extractors {
 		exampleInHtml.add(formulas.generateTabInSpaces(3) + "</td>");
 		exampleInHtml.add(formulas.generateTabInSpaces(3) + "<td style=\"width: 15%\">");
 		exampleInHtml.add(formulas.generateTabInSpaces(4) +
-				"<input type=\"button\" value=\"COPY\" class=\"button\" onclick=\"content_to_clipboard(this)\" />");
+				"<input type=\"button\" value=\"COPY\" class=\"button_full\" onclick=\"content_to_clipboard(this)\" />");
 		exampleInHtml.add(formulas.generateTabInSpaces(3) + "</td>");
 		exampleInHtml.add(formulas.generateTabInSpaces(2) + "</tr>");
 		exampleInHtml.add(formulas.getTabInSpaces() + "</table>");
@@ -119,16 +103,48 @@ public class Extractors {
 	}
 
 	/**
-	 * Returns empty string if title is not valid.
+	 * Extracts reference components from a line.
+	 * The first header separator separates file reference from name reference inside the file, using it is optional.
+	 * In case there is no matching title in TitleRepository, instead of link a text will be returned.
 	 */
-	public String extractTitle(List<String> txt, Formulas formulas) {
-		if (txt != null &&
-				txt.size() > 2 &&
-				txt.get(0).equals(formulas.getSuperLine()) &&
-				txt.get(2).equals(formulas.getSuperLine()) &&
-				!txt.get(1).isBlank()) {
-			return txt.get(1).trim().toUpperCase();
+	public String extractReference(String line, Formulas formulas, TitleRepository titleRepository) {
+		line = line.substring(formulas.getReference().length());
+		String title, link, linkText;
+		int posHeader = line.indexOf(formulas.getHeaderSeparator());
+		if (posHeader == -1) { //only page, no header
+			title = line;
+			Optional<TitleEntity> optionalTitleEntity = titleRepository.findByTitle(title);
+			link = optionalTitleEntity
+					.map(titleEntity -> titleEntity.getFilename() + ".html")
+					.orElse("");
+			linkText = "See: " + title;
 		}
-		return "";
+		else { //page with header
+			title = line.substring(0, posHeader);
+			String header = line.substring(posHeader + formulas.getHeaderSeparator().length());
+			Optional<TitleEntity> optionalTitleEntity = titleRepository.findByTitle(title);
+			link = optionalTitleEntity
+					.map(titleEntity -> titleEntity.getFilename() + ".html#" + header)
+					.orElse("");
+			linkText = "See: " + title + " / " + header;
+		}
+		return link.isEmpty() ?
+				formulas.getTabInSpaces() + linkText + "</br>" :
+				formulas.getTabInSpaces() + "<a href=\"" + link + "\">" + linkText + "</a></br>";
+	}
+
+	public List<String> extractBulletedList(List<String> bulletedListText, Formulas formulas) {
+		List<String> bulletedListInHtml = new ArrayList<>();
+		bulletedListInHtml.add(formulas.getTabInSpaces() + "<ol>");
+		for (String textLine : bulletedListText) {
+			if (textLine.startsWith(formulas.getBulletWithSpaces())) {
+				bulletedListInHtml.add(formulas.getTabInSpaces() + formulas.getTabInSpaces() + "<li>" + textLine.substring(formulas.getBulletWithSpaces().length()) + "</li>");
+			}
+			else {
+				bulletedListInHtml.add(formulas.getTabInSpaces() + formulas.getTabInSpaces() + "<li>" + textLine.substring(formulas.getBulletWithTab().length()) + "</li>");
+			}
+		}
+		bulletedListInHtml.add(formulas.getTabInSpaces() + "</ol>");
+		return bulletedListInHtml;
 	}
 }
