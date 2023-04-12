@@ -11,6 +11,8 @@ When the browser or the mobil OS is unable to use the defined font, will replace
 All fonts are part of a particular font family.
 It is advised that, next to the main font, fallback font and font family is to be defined, in order to prevent unwanted results of changing of the main font.
 
+Please note, in HTML bulleted list (<li>) the leading numbers or alphabet characters are aligned to the divider point which is to their right. Due to the different horizontal character sizes in a (san-)serif font, the leading characters will be seen as they would not being aligned, the look can be chaotic. In such case, monospace font is preferred.
+
 EXAMPLE FOR DEFINING MAIN, FALLBACK FONT AND FONT FAMILY:
 font-family: "Times New Roman", Times, serif;
 font-family: Georgia, serif;
@@ -25,8 +27,10 @@ font-family: Copperplate, Papyrus, fantasy;
 END OF EXAMPLE
 
 1. WEB-SAFE AND FALLBACK FONTS
-2. TESTING WEB-SAFE FONT AVAILABILITY
-3. GOOGLE FONTS
+2. GOOGLE FONTS
+3. TESTING FONT
+4. TESTING WEB-SAFE FONT AVAILABILITY
+5. LOREM IPSUM
 
 =================================================================================
 1. WEB-SAFE AND FALLBACK FONTS
@@ -58,117 +62,21 @@ These fonts are excellent replacement of the main fonts within their common font
 ||Copperplate|Papyrus||
 
 =================================================================================
-2. TESTING WEB-SAFE FONT AVAILABILITY
-=================================================================================
-EXAMPLE FOR TESTING WEB-SAFE FONTS:
-<!DOCTYPE html>
-<html>
-<head>
-<style>
-    body {
-	    text-align: left;
-    }
-    p {
-        margin: 0px;
-    }
-</style>
-</head>
-<body>
-Arial, sans-serif
-<h1 style="font-family: Arial, sans-serif;">LOREM IPSUM DOLOR SIT AMET</h1>
-<p style="font-family: Arial, sans-serif;">
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nisl turpis, efficitur nec odio a, feugiat semper enim. Vivamus pharetra feugiat ante, eget ultrices libero eleifend ac. Integer tincidunt, dolor a tincidunt bibendum, orci ante pretium ligula, at feugiat sem ligula eu sem. Duis blandit tempor erat, sodales aliquet odio varius vel.<br>
-abcdefghijklmnopqrstuvwxyz<br>
-ABCDEFGHIJKLMNOPQRSTUVWXYZ<br>
-0123456789
-</p>
-<hr>
-Verdana, sans-serif
-<h1 style="font-family: Verdana, sans-serif;">LOREM IPSUM DOLOR SIT AMET</h1>
-<p style="font-family: Verdana, sans-serif;">
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nisl turpis, efficitur nec odio a, feugiat semper enim. Vivamus pharetra feugiat ante, eget ultrices libero eleifend ac. Integer tincidunt, dolor a tincidunt bibendum, orci ante pretium ligula, at feugiat sem ligula eu sem. Duis blandit tempor erat, sodales aliquet odio varius vel.<br>
-abcdefghijklmnopqrstuvwxyz<br>
-ABCDEFGHIJKLMNOPQRSTUVWXYZ<br>
-0123456789
-</p>
-<hr>
-Tahoma, sans-serif
-<h1 style="font-family: Tahoma, sans-serif;">LOREM IPSUM DOLOR SIT AMET</h1>
-<p style="font-family: Tahoma, sans-serif;">
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nisl turpis, efficitur nec odio a, feugiat semper enim. Vivamus pharetra feugiat ante, eget ultrices libero eleifend ac. Integer tincidunt, dolor a tincidunt bibendum, orci ante pretium ligula, at feugiat sem ligula eu sem. Duis blandit tempor erat, sodales aliquet odio varius vel.<br>
-abcdefghijklmnopqrstuvwxyz<br>
-ABCDEFGHIJKLMNOPQRSTUVWXYZ<br>
-0123456789
-</p>
-<hr>
-Trebuchet MS, sans-serif (not supported by all mobile operating systems)
-<h1 style="font-family: Trebuchet MS, sans-serif;">LOREM IPSUM DOLOR SIT AMET</h1>
-<p style="font-family: Trebuchet MS, sans-serif;">
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nisl turpis, efficitur nec odio a, feugiat semper enim. Vivamus pharetra feugiat ante, eget ultrices libero eleifend ac. Integer tincidunt, dolor a tincidunt bibendum, orci ante pretium ligula, at feugiat sem ligula eu sem. Duis blandit tempor erat, sodales aliquet odio varius vel.<br>
-abcdefghijklmnopqrstuvwxyz<br>
-ABCDEFGHIJKLMNOPQRSTUVWXYZ<br>
-0123456789
-</p>
-<hr>
-Times New Roman, serif
-<h1 style="font-family: Times New Roman, serif;">LOREM IPSUM DOLOR SIT AMET</h1>
-<p style="font-family: Times New Roman, serif;">
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nisl turpis, efficitur nec odio a, feugiat semper enim. Vivamus pharetra feugiat ante, eget ultrices libero eleifend ac. Integer tincidunt, dolor a tincidunt bibendum, orci ante pretium ligula, at feugiat sem ligula eu sem. Duis blandit tempor erat, sodales aliquet odio varius vel.<br>
-abcdefghijklmnopqrstuvwxyz<br>
-ABCDEFGHIJKLMNOPQRSTUVWXYZ<br>
-0123456789
-</p>
-<hr>
-Georgia, serif
-<h1 style="font-family: Georgia, serif;">LOREM IPSUM DOLOR SIT AMET</h1>
-<p style="font-family: Georgia, serif;">
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nisl turpis, efficitur nec odio a, feugiat semper enim. Vivamus pharetra feugiat ante, eget ultrices libero eleifend ac. Integer tincidunt, dolor a tincidunt bibendum, orci ante pretium ligula, at feugiat sem ligula eu sem. Duis blandit tempor erat, sodales aliquet odio varius vel.<br>
-abcdefghijklmnopqrstuvwxyz<br>
-ABCDEFGHIJKLMNOPQRSTUVWXYZ<br>
-0123456789
-</p>
-<hr>
-Garamond, serif
-<h1 style="font-family: Garamond, serif;">LOREM IPSUM DOLOR SIT AMET</h1>
-<p style="font-family: Garamond, serif;">
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nisl turpis, efficitur nec odio a, feugiat semper enim. Vivamus pharetra feugiat ante, eget ultrices libero eleifend ac. Integer tincidunt, dolor a tincidunt bibendum, orci ante pretium ligula, at feugiat sem ligula eu sem. Duis blandit tempor erat, sodales aliquet odio varius vel.<br>
-abcdefghijklmnopqrstuvwxyz<br>
-ABCDEFGHIJKLMNOPQRSTUVWXYZ<br>
-0123456789
-</p>
-<hr>
-Courier New, monospace
-<h1 style="font-family: Courier New, monospace;">LOREM IPSUM DOLOR SIT AMET</h1>
-<p style="font-family: Courier New, monospace;">
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nisl turpis, efficitur nec odio a, feugiat semper enim. Vivamus pharetra feugiat ante, eget ultrices libero eleifend ac. Integer tincidunt, dolor a tincidunt bibendum, orci ante pretium ligula, at feugiat sem ligula eu sem. Duis blandit tempor erat, sodales aliquet odio varius vel.<br>
-abcdefghijklmnopqrstuvwxyz<br>
-ABCDEFGHIJKLMNOPQRSTUVWXYZ<br>
-0123456789
-</p>
-<hr>
-Brush Script MT, cursive
-<h1 style="font-family: Brush Script MT, cursive;">LOREM IPSUM DOLOR SIT AMET</h1>
-<p style="font-family: Brush Script MT, cursive;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nisl turpis, efficitur nec odio a, feugiat semper enim. Vivamus pharetra feugiat ante, eget ultrices libero eleifend ac. Integer tincidunt, dolor a tincidunt bibendum, orci ante pretium ligula, at feugiat sem ligula eu sem. Duis blandit tempor erat, sodales aliquet odio varius vel.<br>
-abcdefghijklmnopqrstuvwxyz<br>
-ABCDEFGHIJKLMNOPQRSTUVWXYZ<br>
-0123456789
-</p>
-</body>
-</html>
-END OF EXAMPLE
-
-=================================================================================
-3. GOOGLE FONTS
+2. GOOGLE FONTS
 =================================================================================
 These fonts are created and/or maintained by Google and free to use.
 By referencing the specific font in the HTML header, the browser will be able to use that font without fallback.
 This technique is not preferred when pre-saved pages are needed offline unless the specific font is downloaded and installed locally in the OS.
 
 The Google fonts are available at https://fonts.google.com/ website. Presently, 1400+ fonts are available.
+After filtering and selecting a font, choose a font preface (type) and find the add-like icon next to it. This will add the font to your font list.
+Once you finished with font selection, in the font list you can copy-paste HTML tags CSS styles.
 
 EXAMPLE FOR REFERENCING A GOOGLE FONT:
 <head>
-    <link href='https://fonts.googleapis.com/css?family=Sofia' rel='stylesheet'>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Sofia';
@@ -177,5 +85,300 @@ EXAMPLE FOR REFERENCING A GOOGLE FONT:
     </style>
 </head>
 END OF EXAMPLE
+
+=================================================================================
+3. TESTING FONT
+=================================================================================
+EXAMPLE FOR TESTING FONT:
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            font-family: 'Courier New', monospace;
+            text-align: left;
+            line-height: 1.15;
+            -webkit-text-size-adjust: 100%;
+        }
+
+        h2 {
+            font-size: 140%;
+        }
+
+        p {
+            margin-top: 2px;
+            margin-bottom: 2px;
+        }
+
+        ol {
+            margin: 0px;
+            list-style-type: lower-alpha;
+        }
+
+        a {
+            font-size: 100%;
+        }
+
+        input[type="text"] {
+            font-family: 'Courier New', monospace;
+            width: 70%;
+            height: 21px;
+        }
+
+        textarea {
+            font-family: 'Courier New', monospace;
+            width: 70%;
+            resize: none;
+            overflow: hidden;
+        }
+
+        table {
+            width: 100%;
+            border: none;
+        }
+
+        td {
+            width: 50%;
+            padding: 5px;
+        }
+
+        .normal {
+            color: Black;
+            text-color: Black;
+            background-color: White;
+        }
+
+        .inverted {
+            color: White;
+            text-color: White;
+            background-color: Black;
+        }
+    </style>
+</head>
+<body>
+<div class="normal">
+    <p>Courier New</p>
+    <h2>LOREM IPSUM DOLOR SIT AMET</h2>
+    <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam massa erat, pretium sed nibh vel, ornare finibus nulla. Donec elit dui, gravida at ante et, cursus semper mauris. Proin vitae posuere tortor. Donec id lectus at purus fringilla hendrerit. Vestibulum sed tincidunt augue. Sed euismod luctus tincidunt. In hac habitasse platea dictumst. Nulla dignissim enim in convallis dapibus. Maecenas sit amet eros nibh. Nam lectus ligula, tincidunt a sodales eu, laoreet vitae eros. Pellentesque in diam sit amet sem fringilla lacinia. Vestibulum odio lorem, ornare quis ex commodo, facilisis semper massa. Sed eu nunc ac urna suscipit eleifend ut at mi.<br>
+        abcdefghijklmnopqrstuvwxyz&nbsp;&nbsp;&nbsp;&nbsp;ABCDEFGHIJKLMNOPQRSTUVWXYZ&nbsp;&nbsp;&nbsp;&nbsp;0123456789
+    </p>
+    <a href="" class="normal">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</a><br>
+    <a href="" class="normal">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</a><br>
+    <a href="" class="normal">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</a><br>
+    <table>
+        <tr>
+            <td>
+                <ol>
+                    <li>lorem ipsum dolor sit amet</li>
+                    <li>lorem ipsum dolor sit amet</li>
+                    <li>lorem ipsum dolor sit amet</li>
+                    <li>lorem ipsum dolor sit amet</li>
+                    <li>lorem ipsum dolor sit amet</li>
+                    <li>lorem ipsum dolor sit amet</li>
+                    <li>lorem ipsum dolor sit amet</li>
+                </ol>
+            </td>
+            <td>
+                <input type="text" class="inverted" value="Lorem ipsum dolor sit amet"><br>
+                <br>
+                <textarea class="inverted" rows="5" spellcheck="false">
+lorem ipsum dolor sit amet
+    consectetur adipiscing elit
+        aliquam massa erat
+            pretium sed nibh vel
+                </textarea>
+            </td>
+        </tr>
+    </table>
+</div>
+<div class="inverted">
+    <p>Courier New</p>
+    <h2>LOREM IPSUM DOLOR SIT AMET</h2>
+    <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam massa erat, pretium sed nibh vel, ornare finibus nulla. Donec elit dui, gravida at ante et, cursus semper mauris. Proin vitae posuere tortor. Donec id lectus at purus fringilla hendrerit. Vestibulum sed tincidunt augue. Sed euismod luctus tincidunt. In hac habitasse platea dictumst. Nulla dignissim enim in convallis dapibus. Maecenas sit amet eros nibh. Nam lectus ligula, tincidunt a sodales eu, laoreet vitae eros. Pellentesque in diam sit amet sem fringilla lacinia. Vestibulum odio lorem, ornare quis ex commodo, facilisis semper massa. Sed eu nunc ac urna suscipit eleifend ut at mi.<br>
+        abcdefghijklmnopqrstuvwxyz&nbsp;&nbsp;&nbsp;&nbsp;ABCDEFGHIJKLMNOPQRSTUVWXYZ&nbsp;&nbsp;&nbsp;&nbsp;0123456789
+    </p>
+    <a href="" class="inverted">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</a><br>
+    <a href="" class="inverted">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</a><br>
+    <a href="" class="inverted">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</a><br>
+    <table>
+        <tr>
+            <td>
+                <ol>
+                    <li>lorem ipsum dolor sit amet</li>
+                    <li>lorem ipsum dolor sit amet</li>
+                    <li>lorem ipsum dolor sit amet</li>
+                    <li>lorem ipsum dolor sit amet</li>
+                    <li>lorem ipsum dolor sit amet</li>
+                    <li>lorem ipsum dolor sit amet</li>
+                    <li>lorem ipsum dolor sit amet</li>
+                </ol>
+            </td>
+            <td>
+                <input type="text" class="normal" value="Lorem ipsum dolor sit amet"><br>
+                <br>
+                <textarea class="normal" rows="5" spellcheck="false">
+lorem ipsum dolor sit amet
+    consectetur adipiscing elit
+        aliquam massa erat
+            pretium sed nibh vel
+                </textarea>
+            </td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>
+END OF EXAMPLE
+
+=================================================================================
+4. TESTING WEB-SAFE FONT AVAILABILITY
+=================================================================================
+EXAMPLE FOR TESTING WEB-SAFE FONTS:
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+    	    text-align: left;
+        }
+        p {
+            margin: 0px;
+        }
+        h1 {
+            font-size: 110%;
+            text-align: left;
+        }
+        .arial {
+            font-family: Arial, sans-serif;
+        }
+        .verdana {
+            font-family: Verdana, sans-serif;
+        }
+        .tahoma {
+            font-family: Tahoma, sans-serif;
+        }
+        .trebuchet {
+            font-family: 'Trebuchet MS', sans-serif;
+        }
+        .times {
+            font-family: 'Times New Roman', serif;
+        }
+        .georgia {
+            font-family: Georgia, serif;
+        }
+        .garamond {
+            font-family: Garamond, serif;
+        }
+        .courier {
+            font-family: 'Courier New', monospace;
+        }
+        .brush {
+            font-family: Brush Script MT, cursive;
+        }
+    </style>
+</head>
+<body>
+<div class="arial">
+    <p>Arial, sans-serif</p>
+    <h1>LOREM IPSUM DOLOR SIT AMET</h1>
+    <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nisl turpis, efficitur nec odio a, feugiat semper enim. Vivamus pharetra feugiat ante, eget ultrices libero eleifend ac. Integer tincidunt, dolor a tincidunt bibendum, orci ante pretium ligula, at feugiat sem ligula eu sem. Duis blandit tempor erat, sodales aliquet odio varius vel.<br>
+        abcdefghijklmnopqrstuvwxyz&nbsp;&nbsp;&nbsp;&nbsp;ABCDEFGHIJKLMNOPQRSTUVWXYZ&nbsp;&nbsp;&nbsp;&nbsp;0123456789
+    </p>
+</div>
+<hr>
+<div class="verdana">
+    <p>Verdana, sans-serif</p>
+    <h1>LOREM IPSUM DOLOR SIT AMET</h1>
+    <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nisl turpis, efficitur nec odio a, feugiat semper enim. Vivamus pharetra feugiat ante, eget ultrices libero eleifend ac. Integer tincidunt, dolor a tincidunt bibendum, orci ante pretium ligula, at feugiat sem ligula eu sem. Duis blandit tempor erat, sodales aliquet odio varius vel.<br>
+        abcdefghijklmnopqrstuvwxyz&nbsp;&nbsp;&nbsp;&nbsp;ABCDEFGHIJKLMNOPQRSTUVWXYZ&nbsp;&nbsp;&nbsp;&nbsp;0123456789
+    </p>
+</div>
+<hr>
+<div class="tahoma">
+    <p>Tahoma, sans-serif</p>
+    <h1>LOREM IPSUM DOLOR SIT AMET</h1>
+    <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nisl turpis, efficitur nec odio a, feugiat semper enim. Vivamus pharetra feugiat ante, eget ultrices libero eleifend ac. Integer tincidunt, dolor a tincidunt bibendum, orci ante pretium ligula, at feugiat sem ligula eu sem. Duis blandit tempor erat, sodales aliquet odio varius vel.<br>
+        abcdefghijklmnopqrstuvwxyz&nbsp;&nbsp;&nbsp;&nbsp;ABCDEFGHIJKLMNOPQRSTUVWXYZ&nbsp;&nbsp;&nbsp;&nbsp;0123456789
+    </p>
+</div>
+<hr>
+<div class="trebuchet">
+    <p>Trebuchet MS, sans-serif (not supported by all mobile operating systems)</p>
+    <h1>LOREM IPSUM DOLOR SIT AMET</h1>
+    <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nisl turpis, efficitur nec odio a, feugiat semper enim. Vivamus pharetra feugiat ante, eget ultrices libero eleifend ac. Integer tincidunt, dolor a tincidunt bibendum, orci ante pretium ligula, at feugiat sem ligula eu sem. Duis blandit tempor erat, sodales aliquet odio varius vel.<br>
+        abcdefghijklmnopqrstuvwxyz&nbsp;&nbsp;&nbsp;&nbsp;ABCDEFGHIJKLMNOPQRSTUVWXYZ&nbsp;&nbsp;&nbsp;&nbsp;0123456789
+    </p>
+</div>
+<hr>
+<div class="times">
+    <p>Times New Roman, serif</p>
+    <h1>LOREM IPSUM DOLOR SIT AMET</h1>
+    <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nisl turpis, efficitur nec odio a, feugiat semper enim. Vivamus pharetra feugiat ante, eget ultrices libero eleifend ac. Integer tincidunt, dolor a tincidunt bibendum, orci ante pretium ligula, at feugiat sem ligula eu sem. Duis blandit tempor erat, sodales aliquet odio varius vel.<br>
+        abcdefghijklmnopqrstuvwxyz&nbsp;&nbsp;&nbsp;&nbsp;ABCDEFGHIJKLMNOPQRSTUVWXYZ&nbsp;&nbsp;&nbsp;&nbsp;0123456789
+    </p>
+</div>
+<hr>
+<div class="georgia">
+    <p>Georgia, serif</p>
+    <h1>LOREM IPSUM DOLOR SIT AMET</h1>
+    <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nisl turpis, efficitur nec odio a, feugiat semper enim. Vivamus pharetra feugiat ante, eget ultrices libero eleifend ac. Integer tincidunt, dolor a tincidunt bibendum, orci ante pretium ligula, at feugiat sem ligula eu sem. Duis blandit tempor erat, sodales aliquet odio varius vel.<br>
+        abcdefghijklmnopqrstuvwxyz&nbsp;&nbsp;&nbsp;&nbsp;ABCDEFGHIJKLMNOPQRSTUVWXYZ&nbsp;&nbsp;&nbsp;&nbsp;0123456789
+    </p>
+</div>
+<hr>
+<div class="garamond">
+    <p>Garamond, serif</p>
+    <h1>LOREM IPSUM DOLOR SIT AMET</h1>
+    <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nisl turpis, efficitur nec odio a, feugiat semper enim. Vivamus pharetra feugiat ante, eget ultrices libero eleifend ac. Integer tincidunt, dolor a tincidunt bibendum, orci ante pretium ligula, at feugiat sem ligula eu sem. Duis blandit tempor erat, sodales aliquet odio varius vel.<br>
+        abcdefghijklmnopqrstuvwxyz&nbsp;&nbsp;&nbsp;&nbsp;ABCDEFGHIJKLMNOPQRSTUVWXYZ&nbsp;&nbsp;&nbsp;&nbsp;0123456789
+    </p>
+</div>
+<hr>
+<div class="courier">
+    <p>Courier New, monospace</p>
+    <h1>LOREM IPSUM DOLOR SIT AMET</h1>
+    <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nisl turpis, efficitur nec odio a, feugiat semper enim. Vivamus pharetra feugiat ante, eget ultrices libero eleifend ac. Integer tincidunt, dolor a tincidunt bibendum, orci ante pretium ligula, at feugiat sem ligula eu sem. Duis blandit tempor erat, sodales aliquet odio varius vel.<br>
+        abcdefghijklmnopqrstuvwxyz&nbsp;&nbsp;&nbsp;&nbsp;ABCDEFGHIJKLMNOPQRSTUVWXYZ&nbsp;&nbsp;&nbsp;&nbsp;0123456789
+    </p>
+</div>
+<hr>
+<div class="brush">
+    <p>Brush Script MT, cursive</p>
+    <h1>LOREM IPSUM DOLOR SIT AMET</h1>
+    <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nisl turpis, efficitur nec odio a, feugiat semper enim. Vivamus pharetra feugiat ante, eget ultrices libero eleifend ac. Integer tincidunt, dolor a tincidunt bibendum, orci ante pretium ligula, at feugiat sem ligula eu sem. Duis blandit tempor erat, sodales aliquet odio varius vel.<br>
+        abcdefghijklmnopqrstuvwxyz&nbsp;&nbsp;&nbsp;&nbsp;ABCDEFGHIJKLMNOPQRSTUVWXYZ&nbsp;&nbsp;&nbsp;&nbsp;0123456789
+    </p>
+/div>
+</body>
+</html>
+END OF EXAMPLE
+
+=================================================================================
+5. LOREM IPSUM
+=================================================================================
+The Lorem ipsum is very useful when a font, style or layout should be tested.
+Basically, it is a text generated from random latin words.
+The text can be used in part or full, depending on the need. See below.
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam massa erat, pretium sed nibh vel, ornare finibus nulla. Donec elit dui, gravida at ante et, cursus semper mauris. Proin vitae posuere tortor. Donec id lectus at purus fringilla hendrerit. Vestibulum sed tincidunt augue. Sed euismod luctus tincidunt. In hac habitasse platea dictumst. Nulla dignissim enim in convallis dapibus. Maecenas sit amet eros nibh. Nam lectus ligula, tincidunt a sodales eu, laoreet vitae eros. Pellentesque in diam sit amet sem fringilla lacinia. Vestibulum odio lorem, ornare quis ex commodo, facilisis semper massa. Sed eu nunc ac urna suscipit eleifend ut at mi.
+
+Pellentesque eget dui rhoncus, malesuada orci sollicitudin, fringilla arcu. Maecenas quis felis convallis, dapibus ex non, cursus sem. Morbi at dolor sit amet nisi maximus auctor at a ante. Vivamus sagittis nunc in mi aliquet efficitur. Aliquam quis felis a quam lobortis consequat. Aenean risus nunc, ultrices aliquet diam cursus, ultrices rhoncus tortor. Aliquam erat volutpat. Quisque lorem dui, hendrerit in velit a, semper faucibus augue. In quis odio non nisl ornare vulputate. Donec eget metus ac neque sagittis vestibulum feugiat sit amet erat. Suspendisse sed rhoncus quam, vitae sagittis mauris.
+
+Praesent metus augue, accumsan et dignissim sed, mattis quis arcu. Praesent et tortor lectus. Vestibulum eu metus accumsan, molestie dolor vitae, venenatis purus. In in aliquet arcu, et posuere lorem. Vestibulum suscipit nunc quis ligula suscipit, non ultricies dolor condimentum. In hac habitasse platea dictumst. Curabitur ut diam quis risus auctor congue. Vivamus dapibus tellus nec massa rutrum, at vestibulum lectus aliquam. Nulla accumsan, erat vitae posuere euismod, justo lorem egestas mauris, id pharetra ante est sit amet nisi. Cras eget hendrerit purus. Praesent maximus enim vitae mi tristique semper. Duis commodo ac magna id commodo. Nulla pharetra molestie enim, et dictum odio varius nec. Mauris semper sed sapien ut molestie. Cras eu leo nec metus pretium euismod. Donec posuere, diam vel malesuada auctor, elit felis semper lectus, ac faucibus ex sem in justo.
+
+Donec euismod nisi ac enim elementum luctus in et nisi. Nulla scelerisque semper turpis id pulvinar. In semper quam fringilla tincidunt aliquet. Cras ac est dolor. Integer nec mi neque. Aliquam non erat ac augue consectetur ultrices. Nam vel pharetra lectus. Duis sit amet ligula augue. Sed lobortis tortor eu leo imperdiet dapibus. Donec sagittis vehicula urna vitae placerat. Nulla pulvinar mollis tincidunt. Proin id lectus nec ante dignissim ultricies.
+
+Sed lorem turpis, gravida vitae sem sed, volutpat tincidunt velit. Proin porta laoreet augue, et interdum metus hendrerit sit amet. Vestibulum eleifend nisi eget metus finibus tempor. Sed nec libero cursus, elementum urna non, pharetra tellus. Maecenas ante metus, volutpat et felis vitae, fermentum mattis orci. Sed tincidunt nisl libero, sagittis volutpat dui pharetra vel. Mauris ultrices pellentesque erat vel molestie. In hac habitasse platea dictumst. In feugiat mi libero, sed lobortis ipsum vestibulum sed. Nunc consectetur hendrerit risus, non rutrum urna dictum in. Phasellus varius, felis consectetur porttitor pharetra, arcu diam condimentum enim, sit amet venenatis magna lectus eu est.
 
 =>CSS
