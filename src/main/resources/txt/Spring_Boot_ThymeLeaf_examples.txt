@@ -248,11 +248,12 @@ The appearing button and the file-list behind it is not modifiable, CSS paramete
 Workaround is to wrap the input into a label and give button-like style to it while hiding (visually or totally) the original input, visit the CSS page for style examples.
 See examples below.
 
-For all inputs, consider using <br> tag after the label and-or after the input.
+For all inputs, consider using a br tag after the label and-or after the input.
+Also, inputs will not inherit font properties, must define these on the inputs as well.
 
-For <select>, when items are dynamically determined from a Collection field, the default selected item will be the last added one. Consider adding a script which selects the needed item on load, see script examples below.
+For select, when items are dynamically determined from a Collection field, the default selected item will be the last added one. Consider adding a script which selects the needed item on load, see script examples below.
 
-For <textarea>, although the visible control contains lines, any Collection-type data will be called in as Collection.toString(). That said, for a List of two lines, the visible text will be e.g. [Line1, Line2] by default. Instead, pass String with "\n" line ends.
+For textarea, although the visible control contains lines, any Collection-type data will be called in as Collection.toString(). That said, for a List of two lines, the visible text will be e.g. [Line1, Line2] by default. Instead, pass String with "\n" line ends.
 Also, the wrap= parameter sets submit wrapping behaviour: "soft" (only if it has no effect, use "off" instead) will ignore wrapping when submitting, "hard" will submit the content in its visible wrapped form.
 When wrap="hard" is set, the cols= parameter must be defined as well.
 
@@ -436,21 +437,21 @@ EXAMPLE FOR SELECT (SCROLL-DOWN, LIST):
 END OF EXAMPLE
 
 EXAMPLE FOR TEXTAREA:
-<!-- please modify the <text_area> tag name to <textarea>! -->
+<!-- please modify the text-area tag name to textarea! -->
 
 <!-- starting text is null or from field: -->
-<text_area id="input_name" th:field="*{fieldName}">
-</text_area>
+<text-area id="input_name" th:field="*{fieldName}">
+</text-area>
 
 <!-- fix starting text: -->
-<text_area id="input_name" th:field="*{fieldName}">
+<text-area id="input_name" th:field="*{fieldName}">
     starting text
-</text_area>
+</text-area>
 
 <!-- dynamic starting text: -->
-<text_area id="input_name" th:field="*{fieldName1}">
+<text-area id="input_name" th:field="*{fieldName1}">
     <span th:text="*{fieldName2}" />
-</text_area>
+</text-area>
 
 <!-- parameters for code-like content: -->
 <text-area id="input_name" ... wrap="soft">
@@ -481,19 +482,19 @@ EXAMPLE FOR JAVASCRIPT:
         element.style.height = element.scrollHeight + "px";
     }
 
-    <!-- <textarea> to full size on page load -->
+    <!-- textarea to full size on page load -->
     window.onload = function() {
         var textarea = document.getElementById("textarea_id");
         textarea.style.height = "";
         textarea.style.height = textarea.scrollHeight + "px";
     }
 
-    <!-- set <textarea> wrapping behaviour on page load -->
+    <!-- set textarea wrapping behaviour on page load -->
     window.onload = function() {
         document.getElementById("textarea_id").wrap='off|soft|hard';
     }
 
-    <!-- text-like <input> and <textarea>, caret to last position on page load -->
+    <!-- text-like input and textarea, caret to last position on page load -->
     window.onload = function() {
         var element = document.getElementById("element_id");
         element.focus();

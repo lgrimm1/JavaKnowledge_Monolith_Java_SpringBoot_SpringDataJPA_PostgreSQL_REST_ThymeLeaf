@@ -17,12 +17,12 @@ Ancestor of CSS technique was using specific property parameters in HTML e.g. wi
 A CSS definition contains one or more style property definitions. A property can be width, color of an element, also weight of a border and so on. The final appearance of an element is controlled by values of many properties together.
 A property can be defined by CSS definitions in the hierarchy:
     - external (website-level) style definitions (via external CSS file, marked in the header)
-    - internal (page-level) style definitions (via <style> block in the header)
+    - internal (page-level) style definitions (via style block in the header)
     - inline (tag-level) style definitions (via the style= parameter)
     - inline properties (tag-level) definitions (via property parameters)
 
 The external and internal definitions are on the same level. That said, as the code flow goes definition by definition, the last modification of a property will be alive for that property at the checked element.
-The <style> block in the header can be divided and between the parts the external CSS import can take place. Also, several external CSS-s can be imported at different points of the header. Following the flow, the last modification will be alive for the same property.
+The style block in the header can be divided and between the parts the external CSS import can take place. Also, several external CSS-s can be imported at different points of the header. Following the flow, the last modification will be alive for the same property.
 An inline definition is on higher level since it has explicit effect on tag-level. That said, for the same property, overwrites external and internal values.
 A property not modified by any CSS, will keep its browser default value.
 
@@ -34,7 +34,7 @@ There can be space before and-or after the : sign.
 
 It is best practice to define external CSS stylesheet per website in order to make it sure the website has global style. When following this, optional style definitions for local (special) elements are needed only. It also becomes possible to define multiple global appearances for a website.
 The external CSS is a .css file which is then referenced from the head block of an HTML page.
-For referencing, the <link> tag is used within the <head> block. The optional type= property identifies the CSS file format, when left, default is text/css.
+For referencing, the link tag is used within the head block. The optional type= property identifies the CSS file format, when left, default is text/css.
 Commenting is possible in external or internal CSS by utilizing /* opening and */ closing markers. Can be line or multiline, also at the end of a line.
 
 EXAMPLE FOR AN EXTERNAL CSS (CSS_name.css):
@@ -261,8 +261,8 @@ For value combination for sides (e.g. border-style), the possible combinations a
 For marked side in the property name (e.g. border-left-width), there must be properties for the other sides as well. For short, these properties are summarized as ...x... where x is the name of the side (e.g. border-x-width).
 
 ||PROPERTY|VALUE EXAMPLE|DEFAULT|DESCRIPTION||
-||background-color|Tomato|Black|element background color; for <body>: page background||
-||background-image|url(image.gif)|no image|sets background image for the element, repeats the image horizontally and vertically for full coverage; for <body>: page background image||
+||background-color|Tomato|Black|element background color; for body tag: page background||
+||background-image|url(image.gif)|no image|sets background image for the element, repeats the image horizontally and vertically for full coverage; for body tag: page background image||
 ||background-repeat|repeat-x|horizontally and vertically|sets repeating rule for the background image; values: no-repeat, repeat-x (only horizontally), repeat-y (only vertically)||
 ||background-position|right top|left top|position the background image; values: left top, left center, left bottom, right top, right center, right bottom, top, center, bottom||
 ||background-attachment|fixed|scroll|sets whether the background follows scrolling of the page or element; values: fixed, scroll||
@@ -283,7 +283,7 @@ For marked side in the property name (e.g. border-left-width), there must be pro
 ||margin|12px 3px|0px|shorthand property of the margin in value combination for sides||
 ||padding-x|12px|1px|sets space inside the border (visible or not) of the element on x side; values: inherit (inherits property from its container), length number||
 ||padding|12px 5px|0px|shorthand property of padding in value combination for sides||
-||width|50%|dynamically set|sets the width of the element inside padding; values: length number; the <div> block shows a horizontal scroll bar when the browser window smaller than the set width, in such case use max-width instead||
+||width|50%|dynamically set|sets the width of the element inside padding; values: length number; the div block shows a horizontal scroll bar when the browser window smaller than the set width, in such case use max-width instead||
 ||height|50%|auto|sets the height of the element inside padding; values: auto, initial (default HTML value), inherit (from container element), length number||
 ||max-width|50%|none|sets the maximum value the width property can get; values: none (no maximum), length number; if smaller then the width value, that will be ignored||
 
@@ -444,7 +444,7 @@ END OF EXAMPLE
 Tables have cornered design by default. In order to give radius to corners, need to give style to border elements independently.
 
 EXAMPLE FOR TABLE, RADIUS IN CORNERS:
-/* in HTML use class="table" for <table>, class="table_th" for <th> and class="table_td" for <td> */
+/* in HTML use class="table" in table tag, class="table_th" in th and class="table_td" in td tags */
 .table {
     border: 1px solid DarkGray;
     border-collapse: separate;
@@ -491,7 +491,7 @@ body { /* or: html { */
     margin: 0; /* when page should fill the browser from wall to wall */
 }
 
-/* customize <fieldset> */
+/* customize fieldset */
 fieldset {
     border: 1px solid;
     border-radius: 6px;
@@ -529,17 +529,17 @@ li { /* valid for items of any list type */
     text-align: center; /* or any align value; bullet stays, text is aligned */
 }
 
-/* only vertical resizing of <textarea> */
+/* only vertical resizing of textarea */
 textarea {
     resize: vertical;
 }
 
-/* no resizing of <textarea> */
+/* no resizing of textarea */
 textarea {
     resize: none;
 }
 
-/* set wrapping behaviour of <textarea> */
+/* set wrapping behaviour of textarea */
 textarea {
     white-space: nowrap|pre; /* both values disable wrapping; "nowrap" deteriorates number of whitespaces, not useful when the content is code; "pre" keeps indented paragraphs and spaces; leave the property for enable wrapping */
     overflow-wrap: normal; /* forces turning wrapping on; use it in case a parent element could overwrite this property or explicitly needed wrapping */
@@ -551,7 +551,7 @@ textarea {
     overflow: -moz-scrollbars-vertical; /* moz setting for y direction */
 }
 
-/* prevent link style changing when visited (use when <a> is basically not styled) */
+/* prevent link style changing when visited (use when the a tag is basically not styled) */
 a, a:visited {
     /* common properties like: */
     text-decoration: underline;
@@ -568,7 +568,7 @@ hr {
     border-color: MiddleColor;
 }
 
-/* customize hover effect on <select> */
+/* customize hover effect on select */
 option:hover {
     color: InkColor;
     background-color: MiddleColor;

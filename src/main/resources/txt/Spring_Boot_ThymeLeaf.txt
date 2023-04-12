@@ -67,7 +67,7 @@ EXAMPLE FOR A GENERAL THYMELEAF HTML TEMPLATE:
 </html>
 END OF EXAMPLE
 
-In the template, in case the ThymeLeaf is referenced in the <html> tag, within almost all HTML tags the th:... parameters can be used (th refers to ThymeLeaf). Such parameters are for handling data accessed through Spring Boot via ThymeLeaf. In case no such data is accessed in a tag, th parameters should be avoided.
+In the template, in case the ThymeLeaf is referenced in the html tag, within almost all HTML tags the th:... parameters can be used (th refers to ThymeLeaf). Such parameters are for handling data accessed through Spring Boot via ThymeLeaf. In case no such data is accessed in a tag, th parameters should be avoided.
 ThymeLeaf parameters can be defined in two variants of HTML tags:
     - opened tag: <tag_name parameters />
     - closed tag: <tag_name parameters>...</tag_name>
@@ -81,7 +81,7 @@ For size-like parameters (e.g. width=, height=), px, % and other units are accep
 The class= parameter defines CSS class name (e.g. class="h4_style"), visit the CSS page for details.
 The style= parameter can hold local CSS codes (e.g. style="width=80%; height=50px"); visit the CSS page for details.
 The id= parameter defines a text by which the control can be identified (e.g. id="control_identifier").
-The for= parameter marks that by its name, the control is for which other control (e.g. for="control_identifier"). Mainly used with <label> tags which will be visible only when the marked control is visible.
+The for= parameter marks that by its name, the control is for which other control (e.g. for="control_identifier"). Mainly used with label tags which will be visible only when the marked control is visible.
 
 Almost any parametrized HTML tag parameter has th: counterpart. In case a page needs template parameters, use the th: version, in case static parameters, use standard version. If needed, these versions can be used in the same tag as well.
 The most used template tag parameters are:
@@ -205,7 +205,7 @@ In order to create and use forms, 3 main steps are needed:
     - a POST request handler on server side
 When the first GET, POST etc. request arrives in, the backend prepares the form template and sends it back to the client. The form at Submit sends a defined request to the backend with the filled data which is processed there.
 
-In the template the <form> tag header contains these parameters:
+In the template the form tag header contains these parameters:
     - th:action="@{/endpoint_name}": on this endpoint the submit request will be sent
     - th:object="${object-attribute_name}": this attribute is received and sent by the form, contains data presented with the form
     - autocomplete="on_or_off": for all inputs, forces the browser to suggest complete values based upon a few typed characters
@@ -215,11 +215,11 @@ In the template the <form> tag header contains these parameters:
 
 In the template all data which should be sent back, are rendered into input tags and similar as parameter.
 HTML parameters depend on the tag and the input type.
-If the <input> tag contains object or field data:
+If the input tag contains object or field data:
     - type="text", type="number" or type="checkbox" etc.: the input-type
     - th:object="${attribute_name}" or th:field="${attribute_name.fieldName}" or th:field="*{fieldName}": the contained data
     - value="default_value" or ="'default_value'": fill the input with default value, Reset renders back to this; should not be defined if the form is bound via ThymeLeaf (it knows the defaults)
-If the <input> tag is button-like:
+If the input tag is button-like:
     - type="submit", type="reset" or type="button": the type of the button-like control (the latter generally used for calling a script method)
     - value="caption on button": the caption of the button-like control, if not defined, uses local default e.g. Submit, Reset
     - formaction="/endpoint": define targeted endpoint for submit-type input
@@ -249,7 +249,7 @@ Button:
 
 Checkbox:
     - the checked parameter pre-selects
-    - usually used together with <label> tag which produces the shown text (consider id= and for= parameters)
+    - usually used together with label tag which produces the shown text (consider id= and for= parameters)
 
 Color:
     - the browser shows a color brick button, which will launch a color picker
@@ -295,9 +295,9 @@ Radio:
     - the first choice is the 0th
     - accepts enum as text
     - the checked parameter pre-selects
-    - only one can be selected per name= parameter value, per <form> or per <fieldset>
+    - only one can be selected per name= parameter value, per form or per fieldset
     - more forms and fieldsets can be used on a page at the same time if needed
-    - usually used together with <label> tag which produces the shown text (consider id= and for= parameters)
+    - usually used together with label tag which produces the shown text (consider id= and for= parameters)
 
 Range:
     - a slider appears
@@ -316,11 +316,11 @@ Select:
     - it works as a combobox (scroll-down list) by default, as a list otherwise
     - the size= parameter defines the number of visible items, and the select will work as a list control, otherwise will work as a combobox
     - the multiple parameter lets more items to be selected in list control appearance
-    - <option> sub-tags define from which items can be the input value chosen
-    - an <option> tag contains the value= parameter which will be posted
+    - option sub-tags define from which items can be the input value chosen
+    - an option sub-tag contains the value= parameter which will be posted
     - the selected parameter selects an item
     - by default, for manually defined items, the first option, for dynamically defined items, the last added option fills the input
-    - between the opening and closing markers of an <option> tag the displayed text is written
+    - between the opening and closing markers of an option sub-tag the displayed text is written (or use open tag with th:text= parameter)
 
 Submit:
     - a button appears
@@ -356,7 +356,7 @@ All text-like inputs (email, password, search, tel, text, url):
     - the maxlength="max_character_length" parameter can be used, when reaching the limit no new characters can be entered, no message or hint will be shown to the user, if that is not acceptable, writing Javascript code is needed
     - the pattern="pattern_text" parameter sets how the data will appear in the input, and exactly what characters are accepted in its positions, contains [minValue-maxValue]{validForThisLength} blocks, between blocks any characters can be, e.g. [A-Za-z]{3} or [0-9]{6}-[A-Z]{2}
     - the placeholder="hint" parameter defines input hint which appears in the empty input with different appearance than the entered data have, appears only when the input is empty
-    - the list="datalist_id" parameter lets the user optionally choose from pre-defined texts (defined in <datalist> tag) when typing letters into the input, matching is based upon containing, the input accepts any value but in case a pre-set choice is exists, will show it in a popup list under the input
+    - the list="datalist_id" parameter lets the user optionally choose from pre-defined texts (defined in datalist tag) when typing letters into the input, matching is based upon containing, the input accepts any value but in case a pre-set choice is exists, will show it in a popup list under the input
 
 All text-like inputs plus textarea:
     - spell-check is enabled by default for the first 74 rows, to turn it off use spellcheck="false" parameter
@@ -370,13 +370,13 @@ All input-types:
     - the required parameter means the input must be filled
     - the size="size_in_characters" parameter sets the maximum value length of the applicable input type (default is 20)
     - the autofocus parameter forces the focus on the input when the page loads, use it for one input per page
-    - the form= parameter marks which form the input is part of, it has effect only when in the header of the form the id= parameter is used, such marked inputs can be placed outside the correspondent <form> tag but they still will be part of the correspondent form
+    - the form= parameter marks which form the input is part of, it has effect only when in the header of the form the id= parameter is used, such marked inputs can be placed outside the correspondent form tag, they still will be part of the correspondent form
     - the tabindex= parameter defines order of focusing when pressing TAB (e.g. tabindex="2", default is the order in the code)
 
 Restrictions are useful on form-side but via Javascript it is possible to overwrite or get around them. Always check data on server-side.
 Without setting width and height for an image, the layout will change as the image loads. For proper design, this should be avoided, set the dimensions beforehand.
-Tags can be grouped by using the <fieldset> tag, see below.
-In case a field or object is not rendered into an input, that field will be null upon submit at server side. That said, the attribute must have an <input th:object|field="..."> counterpart within the form. In case that attribute should not be offered for changing by the user, the input should be either readonly (but appears) or type="hidden" (will not appear).
+Tags can be grouped by using the fieldset tag, see below.
+In case a field or object is not rendered into an input, that field will be null upon submit at server side. That said, the attribute must have an input tag with th:object|field="..." parameter counterpart within the form. In case that attribute should not be offered for changing by the user, the input should be either readonly (but appears) or type="hidden" (will not appear).
 
 =================================================================================
 5. EXAMPLES
