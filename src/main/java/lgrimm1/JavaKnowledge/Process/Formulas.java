@@ -35,7 +35,7 @@ public class Formulas {
 	private final String headerSeparator = ";";
 	private final String bulletWithHtmlSpaces = tabInHtml + "- ";
 	private final String bulletWithTab = "\t- ";
-	private final String more = "MORE: ";
+	private final String more = "MORE HERE: ";
 	private final String tableStart = "||";
 	private final String exampleStart = "EXAMPLE FOR ";
 	private final String exampleEnd = "END OF EXAMPLE";

@@ -56,7 +56,7 @@ class FormulasTest {
 
 	@Test
 	void getMore() {
-		Assertions.assertEquals("MORE: ", formulas.getMore());
+		Assertions.assertEquals("MORE HERE: ", formulas.getMore());
 	}
 
 	@Test
