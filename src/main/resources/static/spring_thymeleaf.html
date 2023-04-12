@@ -85,11 +85,11 @@
         </tr>
     </table>
     <br>
-    <p>In the template, in case the ThymeLeaf is referenced in the html tag, within almost all HTML tags the th:... parameters can be used (th refers to ThymeLeaf). Such parameters are for handling data accessed through Spring Boot via ThymeLeaf. In case no such data is accessed in a tag, th parameters should be avoided.</p>
+    <p>In the template, in case the ThymeLeaf is referenced in the &lt;html> tag, within almost all HTML tags the th:... parameters can be used (th refers to ThymeLeaf). Such parameters are for handling data accessed through Spring Boot via ThymeLeaf. In case no such data is accessed in a tag, th parameters should be avoided.</p>
     <p>ThymeLeaf parameters can be defined in two variants of HTML tags:</p>
     <ol>
-        <li>opened tag: <tag_name parameters /></li>
-        <li>closed tag: <tag_name parameters>...</tag_name></li>
+        <li>opened tag: &lt;tag_name parameters /></li>
+        <li>closed tag: &lt;tag_name parameters>...&lt;/tag_name></li>
     </ol>
     <p>Please note that opened tags are not supported by all browsers.</p>
     <br>
@@ -257,7 +257,7 @@ model.addAttribute("person_list", personList);
     </ol>
     <p>When the first GET, POST etc. request arrives in, the backend prepares the form template and sends it back to the client. The form at Submit sends a defined request to the backend with the filled data which is processed there.</p>
     <br>
-    <p>In the template the form tag header contains these parameters:</p>
+    <p>In the template the &lt;form> tag header contains these parameters:</p>
     <ol>
         <li>th:action="@{/endpoint_name}": on this endpoint the submit request will be sent</li>
         <li>th:object="${object-attribute_name}": this attribute is received and sent by the form, contains data presented with the form</li>
@@ -269,13 +269,13 @@ model.addAttribute("person_list", personList);
     <br>
     <p>In the template all data which should be sent back, are rendered into input tags and similar as parameter.</p>
     <p>HTML parameters depend on the tag and the input type.</p>
-    <p>If the input tag contains object or field data:</p>
+    <p>If the &lt;input> tag contains object or field data:</p>
     <ol>
         <li>type="text", type="number" or type="checkbox" etc.: the input-type</li>
         <li>th:object="${attribute_name}" or th:field="${attribute_name.fieldName}" or th:field="*{fieldName}": the contained data</li>
         <li>value="default_value" or ="'default_value'": fill the input with default value, Reset renders back to this; should not be defined if the form is bound via ThymeLeaf (it knows the defaults)</li>
     </ol>
-    <p>If the input tag is button-like:</p>
+    <p>If the &lt;input> tag is button-like:</p>
     <ol>
         <li>type="submit", type="reset" or type="button": the type of the button-like control (the latter generally used for calling a script method)</li>
         <li>value="caption on button": the caption of the button-like control, if not defined, uses local default e.g. Submit, Reset</li>
@@ -355,7 +355,7 @@ model.addAttribute("person_list", personList);
     <p>Checkbox:</p>
     <ol>
         <li>the checked parameter pre-selects</li>
-        <li>usually used together with label tag which produces the shown text (consider id= and for= parameters)</li>
+        <li>usually used together with &lt;label> tag which produces the shown text (consider id= and for= parameters)</li>
     </ol>
     <br>
     <p>Color:</p>
@@ -423,7 +423,7 @@ model.addAttribute("person_list", personList);
         <li>the checked parameter pre-selects</li>
         <li>only one can be selected per name= parameter value, per form or per fieldset</li>
         <li>more forms and fieldsets can be used on a page at the same time if needed</li>
-        <li>usually used together with label tag which produces the shown text (consider id= and for= parameters)</li>
+        <li>usually used together with &lt;label> tag which produces the shown text (consider id= and for= parameters)</li>
     </ol>
     <br>
     <p>Range:</p>
@@ -450,11 +450,11 @@ model.addAttribute("person_list", personList);
         <li>it works as a combobox (scroll-down list) by default, as a list otherwise</li>
         <li>the size= parameter defines the number of visible items, and the select will work as a list control, otherwise will work as a combobo</li>
         <li>the multiple parameter lets more items to be selected in list control appearance</li>
-        <li>option sub-tags define from which items can be the input value chosen</li>
-        <li>an option tag contains the value= parameter which will be posted</li>
+        <li>&lt;option> sub-tags define from which items can be the input value chosen</li>
+        <li>an &lt;option> tag contains the value= parameter which will be posted</li>
         <li>the selected parameter selects an item</li>
         <li>by default, for manually defined items, the first option, for dynamically defined items, the last added option fills the input</li>
-        <li>between the opening and closing markers of an option tag the displayed text is written</li>
+        <li>between the opening and closing markers of an &lt;option> tag the displayed text is written</li>
     </ol>
     <br>
     <p>Submit:</p>
@@ -502,7 +502,7 @@ model.addAttribute("person_list", personList);
         <li>the maxlength="max_character_length" parameter can be used, when reaching the limit no new characters can be entered, no message or hint will be shown to the user, if that is not acceptable, writing Javascript code is needed</li>
         <li>the pattern="pattern_text" parameter sets how the data will appear in the input, and exactly what characters are accepted in its positions, contains [minValue-maxValue]{validForThisLength} blocks, between blocks any characters can be, e.g. [A-Za-z]{3} or [0-9]{6}-[A-Z]{2}</li>
         <li>the placeholder="hint" parameter defines input hint which appears in the empty input with different appearance than the entered data have, appears only when the input is empty</li>
-        <li>the list="datalist_id" parameter lets the user optionally choose from pre-defined texts (defined in datalist tag) when typing letters into the input, matching is based upon containing, the input accepts any value but in case a pre-set choice is exists, will show it in a popup list under the input</li>
+        <li>the list="datalist_id" parameter lets the user optionally choose from pre-defined texts (defined in &lt;datalist> tag) when typing letters into the input, matching is based upon containing, the input accepts any value but in case a pre-set choice is exists, will show it in a popup list under the input</li>
     </ol>
     <br>
     <p>All text-like inputs plus color, date pickers, time:</p>
@@ -517,13 +517,13 @@ model.addAttribute("person_list", personList);
         <li>the required parameter means the input must be filled</li>
         <li>the size="size_in_characters" parameter sets the maximum value length of the applicable input type (default is 20)</li>
         <li>the autofocus parameter forces the focus on the input when the page loads, use it for one input per page</li>
-        <li>the form= parameter marks which form the input is part of, it has effect only when in the header of the form the id= parameter is used, such marked inputs can be placed outside the correspondent form tag but they still will be part of the correspondent form</li>
+        <li>the form= parameter marks which form the input is part of, it has effect only when in the header of the form the id= parameter is used, such marked inputs can be placed outside the correspondent &lt;form> tag but they still will be part of the correspondent form</li>
         <li>the tabindex= parameter defines order of focusing when pressing TAB (e.g. tabindex="2", default is the order in the code)</li>
     </ol>
     <br>
     <p>Restrictions are useful on form-side but via Javascript it is possible to overwrite or get around them. Always check data on server-side.</p>
     <p>Without setting width and height for an image, the layout will change as the image loads. For proper design, this should be avoided, set the dimensions beforehand.</p>
-    <p>Tags can be grouped by using the fieldset tag, see below.</p>
+    <p>Tags can be grouped by using the &lt;fieldset> tag, see below.</p>
     <p>In case an input is not filled by the user, the form will send a null rendered to that HTML attribute as value. Same goes for attributes not distributed for user input on the form.</p>
     <br>
     <a href="#top">Back to top of page</a><br>

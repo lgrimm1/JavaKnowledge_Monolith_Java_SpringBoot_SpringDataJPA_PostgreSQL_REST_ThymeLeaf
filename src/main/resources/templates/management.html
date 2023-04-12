@@ -48,7 +48,7 @@
             <td style="width: 65%">
                 <fieldset>
                     <legend>&nbsp;List of All Titles&nbsp;</legend>
-                    <select id="titles_list" th:field="*{titles}" size="17" multiple autofocus>
+                    <select id="titles_list" th:field="*{titles}" size="15" multiple autofocus>
                         <option th:each="title: *{titles}" th:text="${title}" th:value="${title}" />
                     </select>
                 </fieldset>
