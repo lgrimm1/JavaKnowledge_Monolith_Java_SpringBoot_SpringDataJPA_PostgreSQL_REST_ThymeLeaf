@@ -45,10 +45,10 @@ class HtmlGeneratorsTest {
 				.thenReturn("EXAMPLEEND");
 		when(formulas.getReference())
 				.thenReturn("REFERENCE");
-		when(formulas.getBulletWithSpaces())
-				.thenReturn("BULLETSPACES");
+		when(formulas.getBulletWithHtmlSpaces())
+				.thenReturn("TABINSPACES- ");
 		when(formulas.getBulletWithTab())
-				.thenReturn("BULLETTAB");
+				.thenReturn("\t- ");
 		titleRepository = Mockito.mock(TitleRepository.class);
 	}
 
@@ -234,25 +234,21 @@ class HtmlGeneratorsTest {
 	@Test
 	void generateMainContent_BulletedList() {
 		List<String> txtContent = List.of(
-				"BULLETSPACESList item 1",
-				"BULLETTABList item 2",
-				"BULLETSPACESList item 3"
+				"TABINSPACES- List item 1",
+				"TABINSPACES- List item 2",
+				"TABINSPACES- List item 3"
 		);
-
-		when(extractors.extractBulletedList(txtContent, formulas))
+		List<String> txtContentWithHtmlSpaces = List.of(
+				"TABINHTML- List item 1",
+				"TABINHTML- List item 2",
+				"TABINHTML- List item 3"
+		);
+		when(extractors.extractBulletedList(txtContentWithHtmlSpaces, formulas))
 				.thenReturn(List.of(
-						"List header tag",
-						"HTML List item 1",
-						"HTML List item 2",
-						"HTML List item 3",
-						"List footer tag"
+						"List"
 				));
 		List<String> expectedHtml = List.of(
-				"List header tag",
-				"HTML List item 1",
-				"HTML List item 2",
-				"HTML List item 3",
-				"List footer tag"
+				"List"
 		);
 
 		MainHtmlContentPayload actualPayload = htmlGenerators.generateMainContent(

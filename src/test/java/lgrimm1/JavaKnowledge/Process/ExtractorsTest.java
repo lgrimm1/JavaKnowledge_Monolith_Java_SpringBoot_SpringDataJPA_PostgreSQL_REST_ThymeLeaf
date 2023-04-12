@@ -33,7 +33,7 @@ class ExtractorsTest {
 				.thenReturn("TABINSPACESTABINSPACESTABINSPACES");
 		when(formulas.generateTabInSpaces(4))
 				.thenReturn("TABINSPACESTABINSPACESTABINSPACESTABINSPACES");
-		when(formulas.getBulletWithSpaces())
+		when(formulas.getBulletWithHtmlSpaces())
 				.thenReturn("BULLETWITHSPACES");
 		when(formulas.getBulletWithTab())
 				.thenReturn("BULLETWITHTAB");

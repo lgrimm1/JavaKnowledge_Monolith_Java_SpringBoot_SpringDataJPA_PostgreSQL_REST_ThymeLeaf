@@ -45,8 +45,8 @@ class FormulasTest {
 	}
 
 	@Test
-	void getBulletWithSpaces() {
-		Assertions.assertEquals("    - ", formulas.getBulletWithSpaces());
+	void getBulletWithHtmlSpaces() {
+		Assertions.assertEquals("&nbsp;&nbsp;&nbsp;&nbsp;- ", formulas.getBulletWithHtmlSpaces());
 	}
 
 	@Test

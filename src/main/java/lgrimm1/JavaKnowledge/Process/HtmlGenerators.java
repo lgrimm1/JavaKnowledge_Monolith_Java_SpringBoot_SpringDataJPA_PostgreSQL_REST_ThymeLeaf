@@ -4,6 +4,7 @@ import lgrimm1.JavaKnowledge.Title.*;
 import org.springframework.stereotype.*;
 
 import java.util.*;
+import java.util.stream.*;
 
 /**
  * Generates elements of HTML pages.
@@ -83,14 +84,18 @@ public class HtmlGenerators {
 			}
 
 			//bulleted list
-			else if (text.get(textIndex).startsWith(formulas.getBulletWithSpaces()) || text.get(textIndex).startsWith(formulas.getBulletWithTab())) {
+			else if (text.get(textIndex).startsWith(formulas.getBulletWithHtmlSpaces()) || text.get(textIndex).startsWith(formulas.getBulletWithTab())) {
 				int textIndex2 = textIndex + 1;
 				while (textIndex2 < text.size() && (
-						text.get(textIndex2).startsWith(formulas.getBulletWithSpaces()) ||
+						text.get(textIndex2).startsWith(formulas.getBulletWithHtmlSpaces()) ||
 								text.get(textIndex2).startsWith(formulas.getBulletWithTab()))) {
 					textIndex2++;
 				}
-				html.addAll(extractors.extractBulletedList(text.subList(textIndex, textIndex2), formulas));
+				List<String> textWithHtmlCharacters = new ArrayList<>();
+				for (String bulletedLine : text.subList(textIndex, textIndex2)) {
+						textWithHtmlCharacters.add(changeToHtmlCharsInLine(bulletedLine, formulas));
+				}
+				html.addAll(extractors.extractBulletedList(textWithHtmlCharacters, formulas));
 				textIndex = textIndex2;
 			}
 

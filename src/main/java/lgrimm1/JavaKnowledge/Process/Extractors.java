@@ -137,8 +137,8 @@ public class Extractors {
 		List<String> bulletedListInHtml = new ArrayList<>();
 		bulletedListInHtml.add(formulas.getTabInSpaces() + "<ol>");
 		for (String textLine : bulletedListText) {
-			if (textLine.startsWith(formulas.getBulletWithSpaces())) {
-				bulletedListInHtml.add(formulas.getTabInSpaces() + formulas.getTabInSpaces() + "<li>" + textLine.substring(formulas.getBulletWithSpaces().length()) + "</li>");
+			if (textLine.startsWith(formulas.getBulletWithHtmlSpaces())) {
+				bulletedListInHtml.add(formulas.getTabInSpaces() + formulas.getTabInSpaces() + "<li>" + textLine.substring(formulas.getBulletWithHtmlSpaces().length()) + "</li>");
 			}
 			else {
 				bulletedListInHtml.add(formulas.getTabInSpaces() + formulas.getTabInSpaces() + "<li>" + textLine.substring(formulas.getBulletWithTab().length()) + "</li>");
