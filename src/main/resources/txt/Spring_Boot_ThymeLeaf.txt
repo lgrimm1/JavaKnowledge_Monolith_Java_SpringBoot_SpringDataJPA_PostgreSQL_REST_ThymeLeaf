@@ -67,7 +67,7 @@ EXAMPLE FOR A GENERAL THYMELEAF HTML TEMPLATE:
 </html>
 END OF EXAMPLE
 
-In the template, in case the ThymeLeaf is referenced in the html tag, within almost all HTML tags the th:... parameters can be used (th refers to ThymeLeaf). Such parameters are for handling data accessed through Spring Boot via ThymeLeaf. In case no such data is accessed in a tag, th parameters should be avoided.
+In the template, in case the ThymeLeaf is referenced in the <html> tag, within almost all HTML tags the th:... parameters can be used (th refers to ThymeLeaf). Such parameters are for handling data accessed through Spring Boot via ThymeLeaf. In case no such data is accessed in a tag, th parameters should be avoided.
 ThymeLeaf parameters can be defined in two variants of HTML tags:
     - opened tag: <tag_name parameters />
     - closed tag: <tag_name parameters>...</tag_name>
@@ -205,7 +205,7 @@ In order to create and use forms, 3 main steps are needed:
     - a POST request handler on server side
 When the first GET, POST etc. request arrives in, the backend prepares the form template and sends it back to the client. The form at Submit sends a defined request to the backend with the filled data which is processed there.
 
-In the template the form tag header contains these parameters:
+In the template the <form> tag header contains these parameters:
     - th:action="@{/endpoint_name}": on this endpoint the submit request will be sent
     - th:object="${object-attribute_name}": this attribute is received and sent by the form, contains data presented with the form
     - autocomplete="on_or_off": for all inputs, forces the browser to suggest complete values based upon a few typed characters
@@ -244,12 +244,12 @@ In the template the next types can be used for input, data is defined between th
 Button:
     - a button appears
     - pressing it means invoking a script method
-    - with the above parameters more buttons can be used in a form
+    - with the above parameters more buttons can be used in a <form>
     - the value= parameters defines the button caption
 
 Checkbox:
     - the checked parameter pre-selects
-    - usually used together with label tag which produces the shown text (consider id= and for= parameters)
+    - usually used together with <label> tag which produces the shown text (consider id= and for= parameters)
 
 Color:
     - the browser shows a color brick button, which will launch a color picker
@@ -295,9 +295,9 @@ Radio:
     - the first choice is the 0th
     - accepts enum as text
     - the checked parameter pre-selects
-    - only one can be selected per name= parameter value, per form or per fieldset
-    - more forms and fieldsets can be used on a page at the same time if needed
-    - usually used together with label tag which produces the shown text (consider id= and for= parameters)
+    - only one can be selected per name= parameter value, per <form> or per <fieldset>
+    - more <form>-s and <fieldset>-s can be used on a page at the same time if needed
+    - usually used together with <label> tag which produces the shown text (consider id= and for= parameters)
 
 Range:
     - a slider appears
@@ -317,10 +317,10 @@ Select:
     - the size= parameter defines the number of visible items, and the select will work as a list control, otherwise will work as a combobox
     - the multiple parameter lets more items to be selected in list control appearance
     - option sub-tags define from which items can be the input value chosen
-    - an option sub-tag contains the value= parameter which will be posted
+    - an <option> sub-tag contains the value= parameter which will be posted
     - the selected parameter selects an item
     - by default, for manually defined items, the first option, for dynamically defined items, the last added option fills the input
-    - between the opening and closing markers of an option sub-tag the displayed text is written (or use open tag with th:text= parameter)
+    - between the opening and closing markers of an <option> sub-tag the displayed text is written (or use open tag with th:text= parameter)
 
 Submit:
     - a button appears
@@ -328,9 +328,9 @@ Submit:
     - the formaction= parameter can contain endpoint name or URL, reverts the form submit direction
     - the formmethod= parameter can contain "get", "post", "patch", "delete" values and overwrites the form request type
     - the formtarget="_blank" opens the target on a new page
-    - the formnovalidate="formnovalidate" reverts from input value validation (overwrites similar settings of the form)
+    - the formnovalidate="formnovalidate" reverts from input value validation (overwrites similar settings of the <form>)
     - the value= parameter sets the caption
-    - with the above parameters more submit buttons can be used in a form
+    - with the above parameters more submit buttons can be used in a <form>
 
 Textarea:
     - multi-line text input
@@ -356,13 +356,13 @@ All text-like inputs (email, password, search, tel, text, url):
     - the maxlength="max_character_length" parameter can be used, when reaching the limit no new characters can be entered, no message or hint will be shown to the user, if that is not acceptable, writing Javascript code is needed
     - the pattern="pattern_text" parameter sets how the data will appear in the input, and exactly what characters are accepted in its positions, contains [minValue-maxValue]{validForThisLength} blocks, between blocks any characters can be, e.g. [A-Za-z]{3} or [0-9]{6}-[A-Z]{2}
     - the placeholder="hint" parameter defines input hint which appears in the empty input with different appearance than the entered data have, appears only when the input is empty
-    - the list="datalist_id" parameter lets the user optionally choose from pre-defined texts (defined in datalist tag) when typing letters into the input, matching is based upon containing, the input accepts any value but in case a pre-set choice is exists, will show it in a popup list under the input
+    - the list="datalist_id" parameter lets the user optionally choose from pre-defined texts (defined in <datalist> tag) when typing letters into the input, matching is based upon containing, the input accepts any value but in case a pre-set choice is exists, will show it in a popup list under the input
 
 All text-like inputs plus textarea:
     - spell-check is enabled by default for the first 74 rows, to turn it off use spellcheck="false" parameter
 
 All text-like inputs plus color, date pickers, time:
-    - the autocomplete="on_or_off" parameter forces the browser to suggest complete values based upon a few typed characters, overwrites form settings
+    - the autocomplete="on_or_off" parameter forces the browser to suggest complete values based upon a few typed characters, overwrites <form> settings
 
 All input-types:
     - the readonly parameter makes the input unchangeable
@@ -370,13 +370,13 @@ All input-types:
     - the required parameter means the input must be filled
     - the size="size_in_characters" parameter sets the maximum value length of the applicable input type (default is 20)
     - the autofocus parameter forces the focus on the input when the page loads, use it for one input per page
-    - the form= parameter marks which form the input is part of, it has effect only when in the header of the form the id= parameter is used, such marked inputs can be placed outside the correspondent form tag, they still will be part of the correspondent form
+    - the form= parameter marks which <form> the input is part of, it has effect only when in the header of the <form> the id= parameter is used, such marked inputs can be placed outside the correspondent <form> tag, they still will be part of the correspondent <form>
     - the tabindex= parameter defines order of focusing when pressing TAB (e.g. tabindex="2", default is the order in the code)
 
 Restrictions are useful on form-side but via Javascript it is possible to overwrite or get around them. Always check data on server-side.
 Without setting width and height for an image, the layout will change as the image loads. For proper design, this should be avoided, set the dimensions beforehand.
-Tags can be grouped by using the fieldset tag, see below.
-In case a field or object is not rendered into an input, that field will be null upon submit at server side. That said, the attribute must have an input tag with th:object|field="..." parameter counterpart within the form. In case that attribute should not be offered for changing by the user, the input should be either readonly (but appears) or type="hidden" (will not appear).
+Tags can be grouped by using the <fieldset> tag, see below.
+In case a field or object is not rendered into an input, that field will be null upon submit at server side. That said, the attribute must have an <input> tag with th:object|field="..." parameter counterpart within the <form>. In case that attribute should not be offered for changing by the user, the <input> should be either readonly (but appears) or type="hidden" (will not appear).
 
 =================================================================================
 5. EXAMPLES
