@@ -1,10 +1,40 @@
 =================================================================================
-SPRING DATA JPA DATABASE CONNECTION
+SPRING APPLICATION PROPERTIES
 =================================================================================
-Under the same (src/main/resources) folder, the next file should be created:
-    application.properties
+1. GENERALLY
+2. DATABASE PARAMETERS
+3. OTHER PARAMETERS
+
+=================================================================================
+1. GENERALLY
+=================================================================================
+All the Spring environmental settings can be defined in one or several external files. Such an external file contains a full setting-package set for a purpose, and only one such file can be active at a time.
+An external settings file can be in two different format:
+    - application.properties
+    - Yaml
+
+Under the src/main/resources folder, one of the next files should be created:
+    - application.properties
+    - application.yml
 This file contains configuration and environment-specific settings of the application, mainly for Hibernate (part of Spring Data JPA core).
 
+The Yaml format separates the hierarchy into different lines. That said, the two formats are equivalent.
+
+EXAMPLE FOR SETTINGS FORMATS:
+application.properties:
+level1.level2.level3=value
+
+Yaml:
+level1:
+    level2:
+        level3: "value"
+END OF EXAMPLE
+
+When a setting has default value and the needed value would follow that default, presenting of the setting line is optional.
+
+=================================================================================
+2. DATABASE PARAMETERS
+=================================================================================
 ||DATABASE ACCESS PARAMETERS|DESCRIPTION||
 ||spring.datasource.driverClassName|what driver Hibernate should use for the database, needed when JPA uses Hibernate for this configuration||
 ||spring.datasource.url|the database URL||
@@ -14,7 +44,7 @@ This file contains configuration and environment-specific settings of the applic
 ||DATABASE MANAGEMENT PARAMETERS|DESCRIPTION||
 ||spring.jpa.properties.hibernate.jdbc.lob.non_contextual_creation|optional||
 ||spring.jpa.properties.hibernate.dialect|in what dialect the SQL command should be written||
-||spring.jpa.hibernate.ddl-auto|how Hibernate should initialize the database||
+||spring.jpa.hibernate.ddl-auto|how Hibernate should initialize the database during development phase||
 ||spring.jpa.show-sql|sets visibility of executed SQL commands on console||
 ||spring.jpa.properties.hibernate.format_sql|sets formatting on printed SQL commands on console, optional||
 
@@ -25,9 +55,6 @@ This file contains configuration and environment-specific settings of the applic
 ||LOGGING PARAMETERS|DESCRIPTION||
 ||logging.level.org.hibernate.SQL|for DEBUG value prints SQL debug information on console, optional||
 ||logging.level.org.hibernate.type.descriptor.sql|for TRACE value prints SQL debug information on console for prepared statements, optional||
-
-||OTHER PARAMETERS|DESCRIPTION||
-||server.error.include-message|sets whether the server error messages should be sent to the frontend, optional, needed for Spring Validation||
 
 The database communicates through a port defined at installation. The default ports are:
     - mySQL: 3306
@@ -40,14 +67,19 @@ Default usernames:
     - mySQL: root
     - PostgreSQL: postgres
 
-The spring.jpa.hibernate.ddl-auto parameter can have the next values:
-    - create (will create the database structure if it does not exist)
-    - create-drop (will create the database structure if it does not exist, deletes it when the backend is stopped)
-    - validate (for production)
-    - update (will not create but update with model changing)
+The spring.jpa.hibernate.ddl-auto parameter is needed only in development phase. It can have the next values:
+    - create-only (creates the database)
+    - create (creates the schema and destroys previous data)
+    - update (updates the schema)
+    - drop (drops the database)
+    - create-drop (creates the schema, then drops the schema when the SessionFactory is closed explicitly, typically when the application is stopped)
+    - validate (validates the schema, makes no changes to the database)
+    - none (does nothing with the schema, makes no changes to the database)
 While pure backend development is ongoing, create-drop is proper since the structure is not finalized.
-Once the database (entity) design time is over, create or validate is proper.
-When the system goes alive, after creating the structure, update will serve.
+Once the database (entity) design time is over, and automation is needed in database creation, use create or create-only once.
+In production time, use none or validate (latter prevents malfunction in case the structure is damaged or unwillingly changed, and the server will not start up).
+When the existing database structure should be changed, use update (on live database must look for possible data loss).
+In case there is a Configuration bean with CommandLineRunner which adds prepared records for development, will be added with create, create-only etc., but must not and will not do it in production mode (e.g. validation), will cause exception.
 
 EXAMPLE FOR CONNECTION DATA (APPLICATION.PROPERTIES FILE, H2):
 spring.datasource.driverClassName = org.h2.Driver
@@ -111,4 +143,42 @@ spring.jpa.show-sql = true
 spring.jpa.properties.hibernate.format_sql = true
 END OF EXAMPLE
 
+=================================================================================
+3. OTHER PARAMETERS
+=================================================================================
+||OTHER PARAMETERS|DESCRIPTION||
+||server.error.include-message|sets whether the server error messages should be sent to the frontend, optional, needed for Spring Validation||
+||server.port|defines on which HTTP port the application will be available, optional, default is 8080||
+||server.compression.enabled|sets HTTP response compression, default is false||
+||server.compression.min-response-size|sets the minimum response size for applying compression, default is 2048 in bytes||
+||server.compression.mime-types|defines on which response formats the compression will be executed||
+
+For server.port, the -1 value closes the HTTP ports but the application context will be built-up (can be useful for testing).
+The 0 (zero) port number makes the server to scan for an open port.
+
+For the compression, Jetty, Tomcat, Reactor Netty, and Undertow supports response compression. Reaching the minimum size is needed, under it there will be no compressing.
+Also, the compression is possible when the response has one of the next formats (mime-types) by default:
+    - text/html
+    - text/xml
+    - text/plain
+    - text/css
+    - text/javascript
+    - application/javascript
+    - application/json
+    - application/xml
+
+EXAMPLE FOR SSL SETTINGS:
+server.port=8443
+server.ssl.certificate=classpath:my-cert.crt
+server.ssl.certificate-private-key=classpath:my-cert.key
+server.ssl.trust-certificate=classpath:ca-cert.crt
+END OF EXAMPLE
+
+MORE HERE: https://www.google.com/search?client=firefox-b-d&q=thymeleaf+reload+cache+programmatically
+MORE HERE: https://stackoverflow.com/questions/58275418/live-reload-for-thymeleaf-template
+MORE HERE: https://docs.spring.io/spring-boot/docs/current/reference/html/howto.html#howto.properties-and-configuration
+
 =>SPRING BOOT
+=>POSTGRESQL
+=>SPRING BOOT REPOSITORY
+=>SPRING BOOT ENTITY

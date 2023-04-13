@@ -25,24 +25,6 @@ Optionally, further boiler-coding time can be spared when instead of manual chec
 9. JSON AND XML CONVERSION
 10. START AND STOP WEB APPLICATION
 
-=>WEB APPLICATION
-=>SPRING BOOT THYMELEAF
-=>SPRING CLASS DEPENDENCIES
-=>CLASSES;13. CLASS DEPENDENCY INJECTION
-=>SPRING DATA JPA DATABASE CONNECTION
-=>SPRING BOOT MAIN CLASS
-=>SPRING BOOT ENTITY
-=>SPRING BOOT REPOSITORY
-=>SPRING BOOT SERVICE
-=>SPRING BOOT CONTROLLER
-=>SPRING BOOT REQUESTSs
-=>SERIALIZATION
-=>SPRING BOOT TESTS
-=>POSTGRESQL
-=>SPRING BOOT VALIDATION
-=>SPRING EXCEPTION HANDLING
-=>MOCKITO
-
 =================================================================================
 1. SETTING UP
 =================================================================================
@@ -161,9 +143,10 @@ The Spring Test dependency is automatically added.
 1.3. DATABASE CONNECTION
 ---------------------------------------------------------------------------------
 Under the same (src/main/resources) folder, the next file should be created:
-    application.properties
+    - application.properties
 This file contains configuration and environment-specific properties of the application, mainly for Hibernate (part of Spring Data JPA core).
-Visit the SPRING DATA JPA DATABASE CONNECTION page for details.
+Alternatively, a Yaml file should be created.
+Visit the SPRING APPLICATION PROPERTIES page for details.
 
 1.4. PRE-SETTINGS
 ---------------------------------------------------------------------------------
@@ -296,3 +279,21 @@ MORE HERE: Spring Data JPA tutorial, https://www.youtube.com/watch?v=8SGI_XS5OPw
 MORE HERE: https://spring.io/guides/tutorials/rest/
 MORE HERE: https://www.digitalocean.com/community/tutorials/spring-configuration-annotation
 MORE HERE: https://www.digitalocean.com/community/tutorials/spring-configuration-annotation
+
+=>WEB APPLICATION
+=>SPRING BOOT THYMELEAF
+=>SPRING CLASS DEPENDENCIES
+=>CLASSES;13. CLASS DEPENDENCY INJECTION
+=>SPRING APPLICATION PROPERTIES
+=>SPRING BOOT MAIN CLASS
+=>SPRING BOOT ENTITY
+=>SPRING BOOT REPOSITORY
+=>SPRING BOOT SERVICE
+=>SPRING BOOT CONTROLLER
+=>SPRING BOOT REQUESTSs
+=>SERIALIZATION
+=>SPRING BOOT TESTS
+=>POSTGRESQL
+=>SPRING BOOT VALIDATION
+=>SPRING EXCEPTION HANDLING
+=>MOCKITO

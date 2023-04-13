@@ -137,9 +137,10 @@ The array marking ([]) is equal with the separate array keyword (e.g. varchar(3)
 =================================================================================
 5. BACKEND CONNECTION PARAMETERS
 =================================================================================
-These parameters are declared in the application.properties file under the project directory.
-Visit SPRING DATA JPA DATABASE CONNECTION page for more details.
+These parameters are declared in the application.properties or a Yaml file under the project directory.
+Visit SPRING APPLICATION PROPERTIES page for more details.
 
 =>SPRING BOOT
 =>SPRING BOOT ENTITY
 =>SPRING BOOT REPOSITORY
+=>SPRING APPLICATION PROPERTIES

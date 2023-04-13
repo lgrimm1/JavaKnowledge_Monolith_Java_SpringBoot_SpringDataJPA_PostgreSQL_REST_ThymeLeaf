@@ -69,9 +69,9 @@ CREATE DATABASE db-name;
 GRANT ALL PRIVILEGES ON DATABASE "db-name" TO username;
 END OF EXAMPLE
 
-The db-name is name of the database, username is the user which we want to use to manage the database, both are set in the application.properties file.
+The db-name is name of the database, username is the user which we want to use to manage the database, both are set in the application.properties or a Yaml file.
 The default username e.g. under PostgreSQL is postgres.
-Visit the SPRING DATA JPA DATABASE CONNECTION page for the know-how of application.properties file content.
+Visit the SPRING APPLICATION PROPERTIES page for the know-how.
 
 The entity will represent a row in a table, also carries the backend and database behaviour connected to the correspondent table via annotations.
 The Spring Data framework (especially the database dependency) will handle the conversion processes from-to the database.
@@ -79,7 +79,7 @@ The Spring Data framework (especially the database dependency) will handle the c
 The JPA software development aims for the backend. The database itself is not part of the backend which means the new database is needed for software development only at first.
 All application launch starts with that Hibernate in the background fills the database with tables and other elements.
 Every action with the repository will be rendered to SQL commands by Hibernate and also sent to the database.
-All application ends with that Hibernate empties the database for rows, tables and everything else unless configured differently or the software is in production. Visit the SPRING DATA JPA DATABASE CONNECTION page for further details.
+All application ends with that Hibernate empties the database for rows, tables and everything else unless configured differently or the software is in production. Visit the SPRING APPLICATION PROPERTIES page for further details.
 
 2.1. GENERAL CLASS STRUCTURE
 2.2. FIELDS
@@ -307,7 +307,7 @@ MORE HERE: https://www.baeldung.com/jpa-many-to-many
 MORE HERE: https://stackoverflow.com/questions/32427921/jpa-entity-must-be-unit-tested-and-how
 
 =>SPRING BOOT
-=>SPRING DATA JPA DATABASE CONNECTION
+=>SPRING APPLICATION PROPERTIES
 =>SPRING BOOT VALIDATION
 =>SERIALIZATION
 =>POSTGRESQL

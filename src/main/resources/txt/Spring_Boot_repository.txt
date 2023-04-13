@@ -65,7 +65,7 @@ Via extending such interface, there is no need to define any fields or methods, 
 
 In order to define an interface as repository, the @Repository annotation is needed.
 The interface must be public in order to let Spring accessing it.
-The best solution is to engage with an in-memory or in-server database. Such database can be H2 (in-memory) or PostgreSQL (or postgres) or mySQL or Oracle etc. In this version the Spring Boot must connect to the storage by using application.properties file under the src/main/resources directory.
+The best solution is to engage with an in-memory or in-server database. Such database can be H2 (in-memory) or PostgreSQL (or postgres) or mySQL or Oracle etc. In this version the Spring Boot must connect to the storage by using application.properties or Yaml file under the src/main/resources directory.
 
 The JpaRepository is a generics for handling basic repository functions like CRUD (Create, Retrieve, Update, Delete). Two types it needs in declaration:
     - EntityClassName: the class of the entity it manages
@@ -98,7 +98,7 @@ public interface RepositoryClassName extends JpaRepository<EntityClassName, Type
 }
 END OF EXAMPLE
 
-In case of using a database, database access and other parameters must be defined in the application.properties file under the project directory, visit the SPRING DATA JPA DATABASE CONNECTION page for details.
+In case of using a database, database access and other parameters must be defined in the application.properties or a Yaml file under the project directory, visit the SPRING APPLICATION PROPERTIES page for details.
 
 By extending the JPA repository, the next inherited methods will be accessible. The access can happen from within the repository class or from the service class into which the repository was injected.
 The entity is the element of the table of the database defined with @Entity under Spring, accessible via the repository.
@@ -392,3 +392,4 @@ MORE HERE: Using Advanced LIKE Expressions, https://docs.spring.io/spring-data/j
 =>SPRING BOOT REPOSITORY SPECIALS
 =>SPRING BOOT TESTS;3. REPOSITORY TESTS
 =>SPRING DATA JPA TESTS
+=>SPRING APPLICATION PROPERTIES
