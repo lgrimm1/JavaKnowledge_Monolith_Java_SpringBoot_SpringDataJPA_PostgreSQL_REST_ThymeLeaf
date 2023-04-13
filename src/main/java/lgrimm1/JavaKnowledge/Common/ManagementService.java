@@ -10,6 +10,16 @@ import java.io.*;
 import java.util.*;
 import java.util.stream.*;
 
+/**
+ * @see #managePages(String, ProcessRecords, TitleRepository)
+ * @see #createSourcePage(String)
+ * @see #editSourcePage(String, Payload, ProcessRecords, TitleRepository, TxtRepository)
+ * @see #renameSourcePage(String, Payload, ProcessRecords, TitleRepository, FileOperations)
+ * @see #deletePages(String, Payload, ProcessRecords, TitleRepository, TxtRepository, HtmlRepository)
+ * @see #publishPages(String, Payload, ProcessRecords, TitleRepository, HtmlRepository, FileOperations)
+ * @see #importTxt(String, Payload, ProcessRecords, TitleRepository, FileOperations, TxtRepository, HtmlRepository, Formulas, Extractors)
+ * @see #generateHtml(String, Payload, ProcessRecords, TitleRepository, TxtRepository, HtmlRepository, Formulas, ProcessPage, Extractors, HtmlGenerators)
+ */
 public class ManagementService {
 	public static ModelAndView managePages(String initialView,
 										   ProcessRecords processRecords,

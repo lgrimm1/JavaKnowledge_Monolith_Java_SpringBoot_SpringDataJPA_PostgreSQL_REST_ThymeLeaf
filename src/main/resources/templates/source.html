@@ -17,6 +17,7 @@
             overflow: -moz-scrollbars-horizontal;
         }
     </style>
+    <script type="text/javascript" th:src="@{/js/desktop.js}" src="/js/desktop.js"></script>
 </head>
 <body>
 <form action="#" th:object="${payload}" th:action="@{/management}" method="post" novalidate>
@@ -29,16 +30,12 @@
                 <h1 class="banner_title">JAVA KNOWLEDGE SOURCE PAGE</h1>
             </td>
             <td style="width: 30%">
-                <p class="banner_info">
+                <p class="banner_info"><i>
                     Author: lgrimm, created: 2022-2023<br>
                     Find me:&nbsp;
-                    <a href="https://github.com/lgrimm1">
-                        <img src="/images/logo_GitHub.jpg" alt="GitHub" class="banner_link_logo">
-                    </a>
-                    <a href="https://www.linkedin.com/in/laszlo-grimm">
-                        <img src="/images/logo_LinkedIn.jpg" alt="LinkedIn" class="banner_link_logo">
-                    </a>
-                </p>
+                    <a href="https://github.com/lgrimm1"><img src="/images/logo_GitHub.jpg" alt="GitHub" class="banner_link_logo"></a>
+                    <a href="https://www.linkedin.com/in/laszlo-grimm/"><img src="/images/logo_LinkedIn.jpg" alt="LinkedIn" class="banner_link_logo"></a>
+                </i></p>
             </td>
         </tr>
     </table>
@@ -64,7 +61,7 @@
                 <input type="hidden" th:field="*{editExistingPage}">
                 <fieldset>
                     <legend>&nbsp;Content&nbsp;</legend>
-                    <textarea id="content" th:field="*{content}" style="height: 15em;" placeholder="Enter page content..." wrap="soft" spellcheck="false" />
+                    <textarea id="txt_content" th:field="*{content}" style="height: 15em;" placeholder="Enter page content..." wrap="soft" spellcheck="false" />
                 </fieldset>
                 <br>
             </td>
@@ -90,12 +87,5 @@
     </table>
     <br>
 </form>
-<script>
-    window.onload = function() {
-        var textarea = document.getElementById("content");
-        textarea.focus();
-        textarea.setSelectionRange(textarea.value.length, textarea.value.length);
-    }
-</script>
 </body>
 </html>

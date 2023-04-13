@@ -132,6 +132,12 @@ class ExtractorsTest {
 	@Test
 	void extractReference_NoHeader() {
 		String line = "REFERENCETitle Text";
+		Assertions.assertEquals(
+				"TABINSPACES" + "<p><i>See: Title Text</i></p>",
+				extractors.extractReference(line, formulas, titleRepository)
+		);
+/*
+		String line = "REFERENCETitle Text";
 
 		when(titleRepository.findByTitle("Title Text"))
 				.thenReturn(Optional.of(new TitleEntity(
@@ -152,12 +158,18 @@ class ExtractorsTest {
 				"TABINSPACES" + "See: Title Text</br>",
 				extractors.extractReference(line, formulas, titleRepository)
 		);
+*/
 	}
 
 	@Test
 	void extractReference_WithHeader() {
 		String line = "REFERENCETitle TextHEADERSEPARATOR1.2. Header Word";
+		Assertions.assertEquals(
+				"TABINSPACES" + "<p><i>See: Title Text / 1.2. Header Word</i></p>",
+				extractors.extractReference(line, formulas, titleRepository)
+		);
 
+/*
 		when(titleRepository.findByTitle("Title Text"))
 				.thenReturn(Optional.of(new TitleEntity(1L,
 						"Title Text",
@@ -176,6 +188,7 @@ class ExtractorsTest {
 				"TABINSPACES" + "See: Title Text / 1.2. Header Word</br>",
 				extractors.extractReference(line, formulas, titleRepository)
 		);
+*/
 	}
 
 	@Test

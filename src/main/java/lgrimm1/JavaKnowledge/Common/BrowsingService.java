@@ -8,6 +8,10 @@ import org.springframework.web.servlet.*;
 
 import java.util.*;
 
+/**
+ * @see #searchPages(String, Payload, ProcessRecords, TitleRepository, TxtRepository)
+ * @see #getPage(String, Payload, ProcessRecords, TitleRepository, HtmlRepository)
+ */
 public class BrowsingService {
 	public static ModelAndView searchPages(String initialView,
 										   Payload payload,
@@ -110,7 +114,10 @@ public class BrowsingService {
 				null,
 				null,
 				null,
+/*
 				optionalTitleEntity.get().getFilename() + ".html",
+*/
+				processRecords.listToString(optionalHtmlEntity.get().getContent()),
 				null,
 				optionalHtmlEntity.get().getTitleReferences()
 		);

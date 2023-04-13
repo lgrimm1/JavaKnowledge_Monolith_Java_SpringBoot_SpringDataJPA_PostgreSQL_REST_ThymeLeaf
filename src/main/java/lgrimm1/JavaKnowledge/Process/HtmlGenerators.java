@@ -34,7 +34,7 @@ public class HtmlGenerators {
 			if ((text.get(textIndex).equals(formulas.getSuperLine())) &&
 					(text.size() > textIndex + 2) &&
 					(text.get(textIndex + 2).equals(formulas.getSuperLine()))) {
-				html.add(formulas.getTabInSpaces() + "<a href=\"#top\">Back to top of page</a><br>");
+				html.add(formulas.getTabInSpaces() + "<a href=\"#top\"><i>Back to top of page</i></a><br>");
 				html.add(formulas.getTabInSpaces() + "<a name=\"" + text.get(textIndex + 1) + "\"></a>");
 				html.add(formulas.getTabInSpaces() + "<h2>" + text.get(textIndex + 1) + "</h2>");
 				textIndex += 3;
@@ -43,7 +43,7 @@ public class HtmlGenerators {
 			//header2
 			else if ((text.size() > textIndex + 1) &&
 					(text.get(textIndex + 1).equals(formulas.getSubLine()))) {
-				html.add(formulas.getTabInSpaces() + "<a href=\"#top\">Back to top of page</a><br>");
+				html.add(formulas.getTabInSpaces() + "<a href=\"#top\"><i>Back to top of page</i></a><br>");
 				html.add(formulas.getTabInSpaces() + "<a name=\"" + text.get(textIndex) + "\"></a>");
 				html.add(formulas.getTabInSpaces() + "<h3>" + text.get(textIndex) + "</h3>");
 				textIndex += 2;
@@ -115,7 +115,8 @@ public class HtmlGenerators {
 	}
 
 	public List<String> generateFirstTags(String title, Formulas formulas) {
-		return new ArrayList<>(List.of(
+		return new ArrayList<String>(List.of(
+/*
 				"<!DOCTYPE html>",
 				"<html lang=\"en\">",
 				"<head>",
@@ -129,7 +130,8 @@ public class HtmlGenerators {
 				"</head>",
 				"<body>",
 				formulas.getTabInSpaces() + "<a name=\"top\"></a>",
-				formulas.getTabInSpaces() + formulas.getVersions() + "<br>",
+*/
+				formulas.getTabInSpaces() + "<i>" + formulas.getVersions() + "</i><br>",
 				formulas.getTabInSpaces() + "<h1>" + title + "</h1>"
 		));
 	}
@@ -137,7 +139,8 @@ public class HtmlGenerators {
 	public List<String> generateLastTags(Formulas formulas) {
 		return List.of(
 				formulas.getTabInSpaces() + "<br>",
-				formulas.getTabInSpaces() + "<a href=\"#top\">Back to top of page</a><br>",
+				formulas.getTabInSpaces() + "<a href=\"#top\"><i>Back to top of page</i></a><br>"
+/*
 				formulas.getTabInSpaces() + "<script>",
 				formulas.generateTabInSpaces(2) + "function content_to_clipboard(element) {",
 				formulas.generateTabInSpaces(3) + "element.select();",
@@ -147,9 +150,10 @@ public class HtmlGenerators {
 				formulas.generateTabInSpaces(3) + "element.style.height = \"\";",
 				formulas.generateTabInSpaces(3) + "element.style.height = element.scrollHeight + \"px\";",
 				formulas.generateTabInSpaces(2) + "}",
-				formulas.getTabInSpaces() + "</script>",
+				formulas.getTabInSpaces() + "</script>"
 				"</body>",
 				"</html>"
+*/
 		);
 	}
 
@@ -170,7 +174,7 @@ public class HtmlGenerators {
 			int headerIndex = newHtml.indexOf(formulas.getTabInSpaces() + "<p>" + header + "</p>");
 			if (headerIndex > -1) {
 				newHtml.set(headerIndex, formulas.getTabInSpaces() +
-						"<a href=\"#" + header + "\">" + header + "</a><br>");
+						"<a href=\"#" + header + "\"><i>" + header + "</i></a><br>");
 			}
 		}
 		return newHtml;

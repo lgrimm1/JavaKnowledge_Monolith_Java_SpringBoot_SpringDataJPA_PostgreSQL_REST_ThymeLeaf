@@ -10,7 +10,7 @@ public class Payload {
 	public String files;
 	public String message;
 	public String searchText;
-	public String staticPageLink;
+	public String htmlContent;
 	public String title;
 	public List<String> titles;
 
@@ -23,7 +23,7 @@ public class Payload {
 				   String files,
 				   String message,
 				   String searchText,
-				   String staticPageLink,
+				   String htmlContent,
 				   String title,
 				   List<String> titles) {
 		this.confirm = confirm;
@@ -32,7 +32,7 @@ public class Payload {
 		this.files = files;
 		this.message = message;
 		this.searchText = searchText;
-		this.staticPageLink = staticPageLink;
+		this.htmlContent = htmlContent;
 		this.title = title;
 		this.titles = titles;
 	}
@@ -85,12 +85,12 @@ public class Payload {
 		this.searchText = searchText;
 	}
 
-	public String getStaticPageLink() {
-		return staticPageLink;
+	public String getHtmlContent() {
+		return htmlContent;
 	}
 
-	public void setStaticPageLink(String staticPageLink) {
-		this.staticPageLink = staticPageLink;
+	public void setHtmlContent(String htmlContent) {
+		this.htmlContent = htmlContent;
 	}
 
 	public String getTitle() {
@@ -120,7 +120,7 @@ public class Payload {
 				Objects.equals(files, payload.files) &&
 				Objects.equals(message, payload.message) &&
 				Objects.equals(searchText, payload.searchText) &&
-				Objects.equals(staticPageLink, payload.staticPageLink) &&
+				Objects.equals(htmlContent, payload.htmlContent) &&
 				Objects.equals(title, payload.title) &&
 				Objects.equals(titles, payload.titles);
 	}
@@ -133,7 +133,7 @@ public class Payload {
 				files,
 				message,
 				searchText,
-				staticPageLink,
+				htmlContent,
 				title,
 				titles);
 	}
@@ -147,7 +147,7 @@ public class Payload {
 				", files='" + files + '\'' +
 				", message='" + message + '\'' +
 				", searchText='" + searchText + '\'' +
-				", staticPageLink='" + staticPageLink + '\'' +
+				", htmlContent='" + htmlContent + '\'' +
 				", title='" + title + '\'' +
 				", titles=" + titles +
 				'}';

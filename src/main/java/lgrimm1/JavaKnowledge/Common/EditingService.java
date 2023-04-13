@@ -8,6 +8,10 @@ import org.springframework.web.servlet.*;
 
 import java.util.*;
 
+/**
+ * @see #addFormula(String, String, Payload, ProcessRecords, Formulas)
+ * @see #savePage(String, Payload, TitleRepository, TxtRepository, HtmlRepository, FileOperations, ProcessRecords)
+ */
 public class EditingService {
 	public static ModelAndView addFormula(String initialView,
 										  String formulaName,

@@ -114,7 +114,7 @@ class CommonControllerTest {
 		);
 
 		String message = "message";
-		String fileName = "title_1";
+		String htmlContent = "Html Content";
 		List<String> titleReferences = List.of("TITLE 2");
 		Payload payload2 = new Payload(
 				null,
@@ -123,7 +123,7 @@ class CommonControllerTest {
 				null,
 				message,
 				null,
-				fileName + ".html",
+				htmlContent,
 				null,
 				titleReferences
 		);

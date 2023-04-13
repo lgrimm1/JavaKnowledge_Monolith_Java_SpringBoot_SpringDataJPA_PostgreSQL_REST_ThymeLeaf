@@ -8,6 +8,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/styles/desktop.css}" href="/styles/desktop.css">
+    <script type="text/javascript" th:src="@{/js/desktop.js}" src="/js/desktop.js"></script>
 </head>
 <body>
 <form action="#" th:object="${payload}" th:action="@{/management}" method="post" novalidate>
@@ -20,16 +21,12 @@
                 <h1 class="banner_title">JAVA KNOWLEDGE MANAGEMENT</h1>
             </td>
             <td style="width: 30%">
-                <p class="banner_info">
+                <p class="banner_info"><i>
                     Author: lgrimm, created: 2022-2023<br>
                     Find me:&nbsp;
-                    <a href="https://github.com/lgrimm1">
-                        <img src="/images/logo_GitHub.jpg" alt="GitHub" class="banner_link_logo">
-                    </a>
-                    <a href="https://www.linkedin.com/in/laszlo-grimm/">
-                        <img src="/images/logo_LinkedIn.jpg" alt="LinkedIn" class="banner_link_logo">
-                    </a>
-                </p>
+                    <a href="https://github.com/lgrimm1"><img src="/images/logo_GitHub.jpg" alt="GitHub" class="banner_link_logo"></a>
+                    <a href="https://www.linkedin.com/in/laszlo-grimm/"><img src="/images/logo_LinkedIn.jpg" alt="LinkedIn" class="banner_link_logo"></a>
+                </i></p>
             </td>
         </tr>
     </table>
@@ -84,11 +81,5 @@
     </table>
     <br>
 </form>
-<script>
-    window.onload = function() {
-        var s = document.getElementById("titles_list");
-        s.selectedIndex = 0;
-    }
-</script>
 </body>
 </html>

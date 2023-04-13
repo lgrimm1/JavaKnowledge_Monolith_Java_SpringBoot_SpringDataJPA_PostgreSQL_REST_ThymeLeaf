@@ -105,11 +105,17 @@ public class Extractors {
 	/**
 	 * Extracts reference components from a line.
 	 * The first header separator separates file reference from name reference inside the file, using it is optional.
-	 * In case there is no matching title in TitleRepository, instead of link a text will be returned.
 	 */
 	public String extractReference(String line, Formulas formulas, TitleRepository titleRepository) {
+		line = formulas.getTabInSpaces() + "<p><i>See: " + line.substring(formulas.getReference().length()) + "</i></p>";
+		return line.contains(formulas.getHeaderSeparator()) ?
+				line.replace(formulas.getHeaderSeparator(), " / ") :
+				line;
+/*
 		line = line.substring(formulas.getReference().length());
-		String title, link, linkText;
+		String title;
+		String link;
+		String linkText;
 		int posHeader = line.indexOf(formulas.getHeaderSeparator());
 		if (posHeader == -1) { //only page, no header
 			title = line;
@@ -131,6 +137,7 @@ public class Extractors {
 		return link.isEmpty() ?
 				formulas.getTabInSpaces() + linkText + "</br>" :
 				formulas.getTabInSpaces() + "<a href=\"" + link + "\">" + linkText + "</a></br>";
+*/
 	}
 
 	public List<String> extractBulletedList(List<String> bulletedListText, Formulas formulas) {

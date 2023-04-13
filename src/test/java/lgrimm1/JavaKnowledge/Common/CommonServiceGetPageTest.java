@@ -299,15 +299,17 @@ class CommonServiceGetPageTest {
 		List<String> titles = List.of("Title 1", "Title 2");
 		when(processRecords.getAllTitles(titleRepository))
 				.thenReturn(titles);
-
-		String filename = "title_2";
+		String fileName = "title_2";
 		when(titleRepository.findByTitle(title))
-				.thenReturn(Optional.of(new TitleEntity(2L, title, filename, 2L, 2L)));
+				.thenReturn(Optional.of(new TitleEntity(2L, title, fileName, 2L, 2L)));
 
-		List<String> content = List.of("Line 1", "Line 2");
+		List<String> htmlContent = List.of("Line 1", "Line 2");
+		String htmlContentString = "Line 1\nLine2\n";
 		List<String> titleReferences = List.of("Reference 1", "Reference 2");
 		when(htmlRepository.findById(2L))
-				.thenReturn(Optional.of(new HtmlEntity(2L, content, titleReferences)));
+				.thenReturn(Optional.of(new HtmlEntity(2L, htmlContent, titleReferences)));
+		when(processRecords.listToString(new HtmlEntity(2L, htmlContent, titleReferences).getContent()))
+				.thenReturn(htmlContentString);
 
 		Payload expectedPayload = new Payload(
 				null,
@@ -316,7 +318,7 @@ class CommonServiceGetPageTest {
 				null,
 				null,
 				null,
-				filename + ".html",
+				htmlContentString,
 				null,
 				titleReferences
 		);

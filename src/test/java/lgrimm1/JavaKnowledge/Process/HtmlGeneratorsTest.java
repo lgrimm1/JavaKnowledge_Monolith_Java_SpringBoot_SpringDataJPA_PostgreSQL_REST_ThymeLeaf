@@ -62,7 +62,7 @@ class HtmlGeneratorsTest {
 		);
 
 		List<String> expectedHtml = List.of(
-				"TABINSPACES" + "<a href=\"#top\">Back to top of page</a><br>",
+				"TABINSPACES" + "<a href=\"#top\"><i>Back to top of page</i></a><br>",
 				"TABINSPACES" + "<a name=\"" + header1 + "\"></a>",
 				"TABINSPACES" + "<h2>" + header1 + "</h2>"
 		);
@@ -85,7 +85,7 @@ class HtmlGeneratorsTest {
 		);
 
 		List<String> expectedHtml = List.of(
-				"TABINSPACES" + "<a href=\"#top\">Back to top of page</a><br>",
+				"TABINSPACES" + "<a href=\"#top\"><i>Back to top of page</i></a><br>",
 				"TABINSPACES" + "<a name=\"" + header2 + "\"></a>",
 				"TABINSPACES" + "<h3>" + header2 + "</h3>"
 		);
@@ -295,6 +295,7 @@ class HtmlGeneratorsTest {
 	void generateFirstTags() {
 		String title = "TITLE TITLE";
 		List<String> neededFirstTags = List.of(
+/*
 				"<!DOCTYPE html>",
 				"<html lang=\"en\">",
 				"<head>",
@@ -308,7 +309,8 @@ class HtmlGeneratorsTest {
 				"</head>",
 				"<body>",
 				"TABINSPACES" + "<a name=\"top\"></a>",
-				"TABINSPACES" + "VERSIONS" + "<br>",
+*/
+				"TABINSPACES" + "<i>VERSIONS" + "</i><br>",
 				"TABINSPACES" + "<h1>" + title + "</h1>"
 		);
 		Assertions.assertEquals(neededFirstTags, htmlGenerators.generateFirstTags(title, formulas));
@@ -318,7 +320,8 @@ class HtmlGeneratorsTest {
 	void generateLastTags() {
 		List<String> neededLastTags = List.of(
 				"TABINSPACES" + "<br>",
-				"TABINSPACES" + "<a href=\"#top\">Back to top of page</a><br>",
+				"TABINSPACES" + "<a href=\"#top\"><i>Back to top of page</i></a><br>"
+/*
 				"TABINSPACES" + "<script>",
 				"TABINSPACES" + "TABINSPACES" + "function content_to_clipboard(element) {",
 				"TABINSPACES" + "TABINSPACES" + "TABINSPACES" + "element.select();",
@@ -331,6 +334,7 @@ class HtmlGeneratorsTest {
 				"TABINSPACES" + "</script>",
 				"</body>",
 				"</html>"
+*/
 		);
 		Assertions.assertEquals(neededLastTags, htmlGenerators.generateLastTags(formulas));
 	}
@@ -361,8 +365,8 @@ class HtmlGeneratorsTest {
 		List<String> needed = List.of(
 				formulas.getTabInSpaces() + "<p>Text 1</p>",
 				formulas.getTabInSpaces() + "<p>Text 2</p>",
-				formulas.getTabInSpaces() + "<a href=\"#Header 1\">Header 1</a><br>",
-				formulas.getTabInSpaces() + "<a href=\"#Header 2\">Header 2</a><br>",
+				formulas.getTabInSpaces() + "<a href=\"#Header 1\"><i>Header 1</i></a><br>",
+				formulas.getTabInSpaces() + "<a href=\"#Header 2\"><i>Header 2</i></a><br>",
 				formulas.getTabInSpaces() + "<br>",
 				formulas.getTabInSpaces() + "<h2>Header 1</h2>",
 				formulas.getTabInSpaces() + "<p>Text 3</p>",

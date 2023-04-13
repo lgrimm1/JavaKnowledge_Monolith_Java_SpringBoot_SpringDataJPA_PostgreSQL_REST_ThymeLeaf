@@ -8,9 +8,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
     <link rel="icon" type="image/x-icon" th:href="@{/images/favicon.ico}" href="/images/favicon.ico">
     <link rel="stylesheet" th:href="@{/styles/desktop.css}" href="/styles/desktop.css">
+    <script type="text/javascript" th:src="@{/js/desktop.js}" src="/js/desktop.js"></script>
 </head>
 <body id="body">
 <form action="#" th:object="${payload}" th:action="@{/page}" method="post" novalidate>
+    <a name="top"></a>
     <table id="banner" class="formatter_table">
         <tr>
             <td style="width: 10%">
@@ -20,16 +22,12 @@
                 <h1 class="banner_title">KNOWLEDGE PAGE</h1>
             </td>
             <td style="width: 30%">
-                <p class="banner_info">
+                <p class="banner_info"><i>
                     Author: lgrimm, created: 2022-2023<br>
                     Find me:&nbsp;
-                    <a href="https://github.com/lgrimm1">
-                        <img src="/images/logo_GitHub.jpg" alt="GitHub" class="banner_link_logo">
-                    </a>
-                    <a href="https://www.linkedin.com/in/laszlo-grimm/">
-                        <img src="/images/logo_LinkedIn.jpg" alt="LinkedIn" class="banner_link_logo">
-                    </a>
-                </p>
+                    <a href="https://github.com/lgrimm1"><img src="/images/logo_GitHub.jpg" alt="GitHub" class="banner_link_logo"></a>
+                    <a href="https://www.linkedin.com/in/laszlo-grimm/"><img src="/images/logo_LinkedIn.jpg" alt="LinkedIn" class="banner_link_logo"></a>
+                </i></p>
             </td>
         </tr>
     </table>
@@ -38,7 +36,7 @@
         <table class="formatter_table">
             <tr>
                 <td style="width: 75%">
-                    <select id="reference_list" th:field="*{titles}" size="3">
+                    <select id="titles_list" th:field="*{titles}" size="3">
                         <option th:each="title: *{titles}" th:text="${title}" th:value="${title}" />
                     </select>
                     <br>
@@ -51,14 +49,12 @@
         </table>
     </fieldset>
     <br>
+    <div id="static_page" th:utext="*{htmlContent}" style="width:100%;" />
+<!--
     <div id="static_page" style="width:100%; height:300px; overflow:hidden;">
         <iframe th:src="@{*{staticPageLink}}" style="height:100%" allow="fullscreen" autofocus />
     </div>
+-->
 </form>
-<script>
-    window.onload = function() {
-        document.getElementById("reference_list").selectedIndex = 0;
-    }
-</script>
 </body>
 </html>
