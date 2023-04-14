@@ -13,7 +13,7 @@ import java.util.*;
  * @see #getSpaceInHtml()
  * @see #getVersions()
  * @see #getHeaderSeparator()
- * @see #getBulletWithHtmlSpaces()
+ * @see #getBulletWithSpaces()
  * @see #getBulletWithTab()
  * @see #getMore()
  * @see #getTableStart()
@@ -33,7 +33,7 @@ public class Formulas {
 	private final String spaceInHtml = "&nbsp;";
 	private final String versions = "Up to Java 17, Spring Boot 3 (Hibernate 6), JUnit 5, PostgreSQL 11, HTML 5, CSS 3.";
 	private final String headerSeparator = ";";
-	private final String bulletWithHtmlSpaces = tabInHtml + "- ";
+	private final String bulletWithSpaces = tabInSpaces + "- ";
 	private final String bulletWithTab = "\t- ";
 	private final String more = "MORE HERE: ";
 	private final String tableStart = "||";
@@ -101,8 +101,8 @@ public class Formulas {
 		return headerSeparator;
 	}
 
-	public String getBulletWithHtmlSpaces() {
-		return bulletWithHtmlSpaces;
+	public String getBulletWithSpaces() {
+		return bulletWithSpaces;
 	}
 
 	public String getBulletWithTab() {

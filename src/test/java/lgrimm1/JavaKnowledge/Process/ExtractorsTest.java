@@ -33,7 +33,7 @@ class ExtractorsTest {
 				.thenReturn("TABINSPACESTABINSPACESTABINSPACES");
 		when(formulas.generateTabInSpaces(4))
 				.thenReturn("TABINSPACESTABINSPACESTABINSPACESTABINSPACES");
-		when(formulas.getBulletWithHtmlSpaces())
+		when(formulas.getBulletWithSpaces())
 				.thenReturn("BULLETWITHSPACES");
 		when(formulas.getBulletWithTab())
 				.thenReturn("BULLETWITHTAB");
@@ -82,9 +82,9 @@ class ExtractorsTest {
 		List<String> expectedHtml = List.of(
 				"TABINSPACES" + "<table class=\"table\">",
 				"TABINSPACES" + "TABINSPACES" + "<tr>",
-				"TABINSPACES" + "TABINSPACES" + "TABINSPACES" + "<th class=\"table_th\">Header 1</th>",
-				"TABINSPACES" + "TABINSPACES" + "TABINSPACES" + "<th class=\"table_th\">Header 2</th>",
-				"TABINSPACES" + "TABINSPACES" + "TABINSPACES" + "<th class=\"table_th\">Header 3</th>",
+				"TABINSPACES" + "TABINSPACES" + "TABINSPACES" + "<th class=\"table_th\"><i>Header 1</i></th>",
+				"TABINSPACES" + "TABINSPACES" + "TABINSPACES" + "<th class=\"table_th\"><i>Header 2</i></th>",
+				"TABINSPACES" + "TABINSPACES" + "TABINSPACES" + "<th class=\"table_th\"><i>Header 3</i></th>",
 				"TABINSPACES" + "TABINSPACES" + "</tr>",
 				"TABINSPACES" + "TABINSPACES" + "<tr>",
 				"TABINSPACES" + "TABINSPACES" + "TABINSPACES" + "<td class=\"table_td\">Cell 11</td>",
@@ -114,15 +114,14 @@ class ExtractorsTest {
 		expectedHtml.add("TABINSPACES" + "<table class=\"formatter_table\">");
 		expectedHtml.add("TABINSPACES" + "TABINSPACES" + "<tr>");
 		expectedHtml.add("TABINSPACES" + "TABINSPACES" + "TABINSPACES" + "<td style=\"width: 85%\">");
-		expectedHtml.add("TABINSPACES" + "TABINSPACES" + "TABINSPACES" + "TABINSPACES" +
-				"<textarea id=\"example_2\" onclick=\"element_to_full_size(this)\" readonly>");
+		expectedHtml.add("<textarea id=\"example_2\" onclick=\"element_to_full_size(this)\" readonly>");
 		expectedHtml.add("Line 1");
 		expectedHtml.add("    Line 2");
-		expectedHtml.add("TABINSPACES" + "TABINSPACES" + "TABINSPACES" + "TABINSPACES" + "</textarea>");
+		expectedHtml.add("</textarea>");
 		expectedHtml.add("TABINSPACES" + "TABINSPACES" + "TABINSPACES" + "</td>");
 		expectedHtml.add("TABINSPACES" + "TABINSPACES" + "TABINSPACES" + "<td style=\"width: 15%\">");
 		expectedHtml.add("TABINSPACES" + "TABINSPACES" + "TABINSPACES" + "TABINSPACES" +
-				"<input type=\"button\" value=\"COPY\" class=\"button_full\" onclick=\"content_to_clipboard(example_2)\" />");
+				"<input type=\"button\" value=\"COPY\" class=\"button_full\" onclick=\"content_to_clipboard('example_2')\" />");
 		expectedHtml.add("TABINSPACES" + "TABINSPACES" + "TABINSPACES" + "</td>");
 		expectedHtml.add("TABINSPACES" + "TABINSPACES" + "</tr>");
 		expectedHtml.add("TABINSPACES" + "</table>");

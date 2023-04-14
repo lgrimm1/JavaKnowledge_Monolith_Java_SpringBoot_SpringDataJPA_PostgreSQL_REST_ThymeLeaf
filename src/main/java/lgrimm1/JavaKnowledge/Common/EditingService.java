@@ -116,6 +116,9 @@ public class EditingService {
 				message = "THERE IS NO EXISTING PAGE WITH THIS TITLE.";
 			}
 			else {
+				content = content
+						.replaceAll("\r\n", "\n")
+						.replaceAll("\r", "\n");
 				txtRepository.deleteById(optionalTitleEntity.get().getTxtId());
 				htmlRepository.deleteById(optionalTitleEntity.get().getHtmlId());
 				titleRepository.deleteById(optionalTitleEntity.get().getId());
@@ -158,6 +161,9 @@ public class EditingService {
 				return new ModelAndView(initialView, "payload", payload2);
 			}
 			else {
+				content = content
+						.replaceAll("\r\n", "\n")
+						.replaceAll("\r", "\n");
 				HtmlEntity htmlEntity = htmlRepository.save(new HtmlEntity(new ArrayList<>(), new ArrayList<>()));
 				TxtEntity txtEntity = txtRepository.save(new TxtEntity(content));
 				titleRepository.save(new TitleEntity(

@@ -45,7 +45,7 @@ class HtmlGeneratorsTest {
 				.thenReturn("EXAMPLEEND");
 		when(formulas.getReference())
 				.thenReturn("REFERENCE");
-		when(formulas.getBulletWithHtmlSpaces())
+		when(formulas.getBulletWithSpaces())
 				.thenReturn("TABINSPACES- ");
 		when(formulas.getBulletWithTab())
 				.thenReturn("\t- ");
@@ -237,15 +237,17 @@ class HtmlGeneratorsTest {
 	void generateMainContent_BulletedList() {
 		List<String> txtContent = List.of(
 				"TABINSPACES- List item 1",
-				"TABINSPACES- List item 2",
+				"\t- List item 2",
 				"TABINSPACES- List item 3"
 		);
+/*
 		List<String> txtContentWithHtmlSpaces = List.of(
 				"TABINHTML- List item 1",
 				"TABINHTML- List item 2",
 				"TABINHTML- List item 3"
 		);
-		when(extractors.extractBulletedList(txtContentWithHtmlSpaces, formulas))
+*/
+		when(extractors.extractBulletedList(txtContent, formulas))
 				.thenReturn(List.of(
 						"List"
 				));

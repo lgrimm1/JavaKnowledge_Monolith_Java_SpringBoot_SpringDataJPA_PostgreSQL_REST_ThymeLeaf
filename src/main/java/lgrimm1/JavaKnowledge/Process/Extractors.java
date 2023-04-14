@@ -23,8 +23,8 @@ public class Extractors {
 	public String extractTitle(List<String> txt, Formulas formulas) {
 		if (txt != null &&
 				txt.size() > 2 &&
-				txt.get(0).equals(formulas.getSuperLine()) &&
-				txt.get(2).equals(formulas.getSuperLine()) &&
+				txt.get(0).contains(formulas.getSuperLine()) &&
+				txt.get(2).contains(formulas.getSuperLine()) &&
 				!txt.get(1).isBlank()) {
 			return txt.get(1).trim().toUpperCase();
 		}
@@ -43,7 +43,7 @@ public class Extractors {
 			for (String s : cells) {
 				if (i == 0) {
 					tableInHtml.add(formulas.generateTabInSpaces(3) +
-							"<th class=\"table_th\">" + s + "</th>");
+							"<th class=\"table_th\"><i>" + s + "</i></th>");
 				}
 				else {
 					tableInHtml.add(formulas.generateTabInSpaces(3) +
@@ -142,8 +142,8 @@ public class Extractors {
 		List<String> bulletedListInHtml = new ArrayList<>();
 		bulletedListInHtml.add(formulas.getTabInSpaces() + "<ol>");
 		for (String textLine : bulletedListText) {
-			if (textLine.startsWith(formulas.getBulletWithHtmlSpaces())) {
-				bulletedListInHtml.add(formulas.getTabInSpaces() + formulas.getTabInSpaces() + "<li>" + textLine.substring(formulas.getBulletWithHtmlSpaces().length()) + "</li>");
+			if (textLine.startsWith(formulas.getBulletWithSpaces())) {
+				bulletedListInHtml.add(formulas.getTabInSpaces() + formulas.getTabInSpaces() + "<li>" + textLine.substring(formulas.getBulletWithSpaces().length()) + "</li>");
 			}
 			else {
 				bulletedListInHtml.add(formulas.getTabInSpaces() + formulas.getTabInSpaces() + "<li>" + textLine.substring(formulas.getBulletWithTab().length()) + "</li>");
