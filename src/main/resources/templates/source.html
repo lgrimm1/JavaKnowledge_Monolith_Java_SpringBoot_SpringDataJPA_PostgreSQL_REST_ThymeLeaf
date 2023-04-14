@@ -87,5 +87,12 @@
     </table>
     <br>
 </form>
+<script>
+    window.onload = function() {
+        var contentTextArea = document.getElementById("txt_content");
+        contentTextArea.focus();
+        contentTextArea.setSelectionRange(contentTextArea.value.length, contentTextArea.value.length);
+    }
+</script>
 </body>
 </html>
