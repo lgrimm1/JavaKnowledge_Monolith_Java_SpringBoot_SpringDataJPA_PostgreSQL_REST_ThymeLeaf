@@ -108,25 +108,26 @@ class ExtractorsTest {
 				"Line 1",
 				"    Line 2"
 		);
+		int exampleCounter = 2;
 		List<String> expectedHtml = new ArrayList<>();
 		expectedHtml.add("TABINSPACES" + "<h4>" + originalText.get(0) + "</h4>");
 		expectedHtml.add("TABINSPACES" + "<table class=\"formatter_table\">");
 		expectedHtml.add("TABINSPACES" + "TABINSPACES" + "<tr>");
 		expectedHtml.add("TABINSPACES" + "TABINSPACES" + "TABINSPACES" + "<td style=\"width: 85%\">");
 		expectedHtml.add("TABINSPACES" + "TABINSPACES" + "TABINSPACES" + "TABINSPACES" +
-				"<textarea onclick=\"element_to_full_size(this)\" readonly>");
+				"<textarea id=\"example_2\" onclick=\"element_to_full_size(this)\" readonly>");
 		expectedHtml.add("Line 1");
 		expectedHtml.add("    Line 2");
 		expectedHtml.add("TABINSPACES" + "TABINSPACES" + "TABINSPACES" + "TABINSPACES" + "</textarea>");
 		expectedHtml.add("TABINSPACES" + "TABINSPACES" + "TABINSPACES" + "</td>");
 		expectedHtml.add("TABINSPACES" + "TABINSPACES" + "TABINSPACES" + "<td style=\"width: 15%\">");
 		expectedHtml.add("TABINSPACES" + "TABINSPACES" + "TABINSPACES" + "TABINSPACES" +
-				"<input type=\"button\" value=\"COPY\" class=\"button_full\" onclick=\"content_to_clipboard(this)\" />");
+				"<input type=\"button\" value=\"COPY\" class=\"button_full\" onclick=\"content_to_clipboard(example_2)\" />");
 		expectedHtml.add("TABINSPACES" + "TABINSPACES" + "TABINSPACES" + "</td>");
 		expectedHtml.add("TABINSPACES" + "TABINSPACES" + "</tr>");
 		expectedHtml.add("TABINSPACES" + "</table>");
 
-		Assertions.assertEquals(expectedHtml, extractors.extractExample(originalText, formulas));
+		Assertions.assertEquals(expectedHtml, extractors.extractExample(originalText, formulas, exampleCounter));
 	}
 
 	@Test

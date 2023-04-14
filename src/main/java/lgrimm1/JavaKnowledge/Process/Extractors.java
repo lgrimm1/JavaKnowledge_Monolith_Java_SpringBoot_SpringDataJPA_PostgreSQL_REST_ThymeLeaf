@@ -10,7 +10,7 @@ import java.util.*;
  * @see #extractTitle(List, Formulas)
  * @see #extractTable(List, Formulas)
  * @see #extractCells(String)
- * @see #extractExample(List, Formulas)
+ * @see #extractExample(List, Formulas, int)
  * @see #extractReference(String, Formulas, TitleRepository)
  * @see #extractBulletedList(List, Formulas)
  */
@@ -77,24 +77,22 @@ public class Extractors {
 	 * By definition, the content is an example if starts with EXAMPLE FOR text, optionally ends with END OF EXAMPLE text.
 	 * In case no ending text until the end of the content, every line after the starting one will be rendered into the example.
 	 */
-	public List<String> extractExample(List<String> exampleText, Formulas formulas) {
+	public List<String> extractExample(List<String> exampleText, Formulas formulas, int exampleCounter) {
 		List<String> exampleInHtml = new ArrayList<>();
 		exampleInHtml.add(formulas.getTabInSpaces() + "<h4>" + exampleText.get(0) + "</h4>");
 		exampleInHtml.add(formulas.getTabInSpaces() + "<table class=\"formatter_table\">");
 		exampleInHtml.add(formulas.generateTabInSpaces(2) + "<tr>");
 		exampleInHtml.add(formulas.generateTabInSpaces(3) + "<td style=\"width: 85%\">");
-		exampleInHtml.add(formulas.generateTabInSpaces(4) +
-				"<textarea onclick=\"element_to_full_size(this)\" readonly>");
-
+		exampleInHtml.add("<textarea id=\"example_" + exampleCounter + "\" onclick=\"element_to_full_size(this)\" readonly>");
 		for (int index = 1, size = exampleText.size(); index < size; index++) {
 			exampleInHtml.add(exampleText.get(index));
 		}
 
-		exampleInHtml.add(formulas.generateTabInSpaces(4) + "</textarea>");
+		exampleInHtml.add("</textarea>");
 		exampleInHtml.add(formulas.generateTabInSpaces(3) + "</td>");
 		exampleInHtml.add(formulas.generateTabInSpaces(3) + "<td style=\"width: 15%\">");
 		exampleInHtml.add(formulas.generateTabInSpaces(4) +
-				"<input type=\"button\" value=\"COPY\" class=\"button_full\" onclick=\"content_to_clipboard(this)\" />");
+				"<input type=\"button\" value=\"COPY\" class=\"button_full\" onclick=\"content_to_clipboard('example_" + exampleCounter + "')\" />");
 		exampleInHtml.add(formulas.generateTabInSpaces(3) + "</td>");
 		exampleInHtml.add(formulas.generateTabInSpaces(2) + "</tr>");
 		exampleInHtml.add(formulas.getTabInSpaces() + "</table>");

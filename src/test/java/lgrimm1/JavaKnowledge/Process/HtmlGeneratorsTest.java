@@ -145,7 +145,8 @@ class HtmlGeneratorsTest {
 				"some other rows"
 		);
 
-		when(extractors.extractExample(txtContent, formulas))
+		int exampleCounter = 1;
+		when(extractors.extractExample(txtContent, formulas, exampleCounter))
 				.thenReturn(expectedHtml);
 
 		MainHtmlContentPayload actualPayload = htmlGenerators.generateMainContent(
@@ -172,7 +173,8 @@ class HtmlGeneratorsTest {
 				"  second row"
 		);
 
-		when(extractors.extractExample(txtContent.subList(0, 3), formulas))
+		int exampleCounter = 1;
+		when(extractors.extractExample(txtContent.subList(0, 3), formulas, exampleCounter))
 				.thenReturn(expectedHtml);
 
 		MainHtmlContentPayload actualPayload = htmlGenerators.generateMainContent(

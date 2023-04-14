@@ -5,8 +5,8 @@ window.onload = function() {
     contentTextArea.setSelectionRange(contentTextArea.value.length, contentTextArea.value.length);
 }
 
-function content_to_clipboard(element) {
-    element.select();
+function content_to_clipboard(id) {
+    document.getElementById(id).select();
     document.execCommand('copy');
 }
 

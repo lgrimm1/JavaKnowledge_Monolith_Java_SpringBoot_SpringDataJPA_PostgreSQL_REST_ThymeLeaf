@@ -27,6 +27,7 @@ public class HtmlGenerators {
 													  TitleRepository titleRepository) {
 		List<String> html = new ArrayList<>();
 		List<String> titles = new ArrayList<>();
+		int exampleCounter = 0;
 		String line;
 		int textIndex = 0;
 		while (textIndex < text.size()) {
@@ -67,7 +68,8 @@ public class HtmlGenerators {
 				while (textIndex2 < text.size() && !text.get(textIndex2).equals(formulas.getExampleEnd())) {
 					textIndex2++;
 				}
-				html.addAll(extractors.extractExample(text.subList(textIndex, textIndex2), formulas));
+				exampleCounter++;
+				html.addAll(extractors.extractExample(text.subList(textIndex, textIndex2), formulas, exampleCounter));
 				textIndex = textIndex2 + 1;
 			}
 
