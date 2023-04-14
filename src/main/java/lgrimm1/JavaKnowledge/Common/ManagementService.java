@@ -16,7 +16,6 @@ import java.util.stream.*;
  * @see #editSourcePage(String, Payload, ProcessRecords, TitleRepository, TxtRepository)
  * @see #renameSourcePage(String, Payload, ProcessRecords, TitleRepository, FileOperations)
  * @see #deletePages(String, Payload, ProcessRecords, TitleRepository, TxtRepository, HtmlRepository)
- * @see #publishPages(String, Payload, ProcessRecords, TitleRepository, HtmlRepository, FileOperations)
  * @see #importTxt(String, Payload, ProcessRecords, TitleRepository, FileOperations, TxtRepository, HtmlRepository, Formulas, Extractors)
  * @see #generateHtml(String, Payload, ProcessRecords, TitleRepository, TxtRepository, HtmlRepository, Formulas, ProcessPage, Extractors, HtmlGenerators)
  */
@@ -257,41 +256,6 @@ public class ManagementService {
 				null,
 				"",
 				message,
-				null,
-				null,
-				"",
-				processRecords.getAllTitles(titleRepository)
-		);
-		return new ModelAndView(initialView, "payload", payload2);
-	}
-
-	public static ModelAndView publishPages(String initialView,
-											Payload payload,
-											ProcessRecords processRecords,
-											TitleRepository titleRepository,
-											HtmlRepository htmlRepository,
-											FileOperations fileOperations) {
-		if (payload == null || payload.getConfirm() == null || !payload.getConfirm()) {
-			Payload payload2 = new Payload(
-					false,
-					null,
-					null,
-					"",
-					"PLEASE CONFIRM PUBLISHING PAGES.",
-					null,
-					null,
-					"",
-					processRecords.getAllTitles(titleRepository)
-			);
-			return new ModelAndView(initialView, "payload", payload2);
-		}
-		long[] publishResults = processRecords.publishHtml(titleRepository, htmlRepository, fileOperations);
-		Payload payload2 = new Payload(
-				false,
-				null,
-				null,
-				"",
-				publishResults[0] + " HTML FILES WERE PRE-DELETED, " + publishResults[1] + " WERE PUBLISHED.",
 				null,
 				null,
 				"",

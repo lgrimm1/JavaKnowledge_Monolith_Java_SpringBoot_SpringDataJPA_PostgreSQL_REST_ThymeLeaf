@@ -115,16 +115,6 @@ public class CommonService {
 				htmlRepository);
 	}
 
-	public ModelAndView publishPages(String initialView, Payload payload) {
-		return ManagementService.publishPages(
-				initialView,
-				payload,
-				processRecords,
-				titleRepository,
-				htmlRepository,
-				fileOperations);
-	}
-
 	public ModelAndView importTxt(String initialView, Payload payload) {
 		return ManagementService.importTxt(
 				initialView,

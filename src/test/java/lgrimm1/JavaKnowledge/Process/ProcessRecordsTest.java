@@ -172,55 +172,6 @@ class ProcessRecordsTest {
 	}
 
 	@Test
-	void publishHtml_NotValidTargetFolder() {
-		when(fileOperations.getStaticPath())
-				.thenReturn("static_path");
-		when(fileOperations.createNonExistentDirectory(new File("static_path")))
-				.thenReturn(false);
-		Assertions.assertArrayEquals(
-				new long[]{0, 0},
-				processRecords.publishHtml(titleRepository, htmlRepository, fileOperations
-				));
-	}
-
-	@Test
-	void publishHtml_ValidTargetFolder() {
-		when(fileOperations.getStaticPath())
-				.thenReturn("static_path");
-		when(fileOperations.createNonExistentDirectory(new File("static_path")))
-				.thenReturn(true);
-		when(fileOperations.getOSFileSeparator())
-				.thenReturn("/");
-
-		when(fileOperations.deleteAllFilesInFolder(new File("static_path"), ".html"))
-				.thenReturn(10L);
-
-		when(titleRepository.findAll())
-				.thenReturn(List.of(
-						new TitleEntity(1L, "title 1", "title_1", 1L, 1L),
-						new TitleEntity(2L, "title 2", "title_2", 2L, 2L),
-						new TitleEntity(3L, "title 3", "title_3", 3L, 3L)
-				));
-
-		when(htmlRepository.findById(1L))
-				.thenReturn(Optional.of(new HtmlEntity(1L, List.of("Content 11"), new ArrayList<>())));
-		when(htmlRepository.findById(2L))
-				.thenReturn(Optional.of(new HtmlEntity(2L, List.of("Content 21"), new ArrayList<>())));
-		when(htmlRepository.findById(3L))
-				.thenReturn(Optional.empty());
-
-		when(fileOperations.writeFile(new File("static_path/title_1.html"), List.of("Content 11")))
-				.thenReturn(true);
-		when(fileOperations.writeFile(new File("static_path/title_2.html"), List.of("Content 12")))
-				.thenReturn(false);
-
-		Assertions.assertArrayEquals(
-				new long[]{10L, 1L},
-				processRecords.publishHtml(titleRepository, htmlRepository, fileOperations
-				));
-	}
-
-	@Test
 	void stringToList_NullString() {
 		Assertions.assertTrue(processRecords.stringToList(null).isEmpty());
 	}

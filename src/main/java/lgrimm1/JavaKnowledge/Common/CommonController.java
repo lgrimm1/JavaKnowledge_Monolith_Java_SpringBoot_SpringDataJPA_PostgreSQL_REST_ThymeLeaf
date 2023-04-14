@@ -60,12 +60,6 @@ public class CommonController {
 		return commonService.deletePages("management", payload);
 	}
 
-	@PostMapping("/publish")
-	public ModelAndView publishPages(@ModelAttribute("payload") Payload payload, Model model) {
-		model.asMap().clear();
-		return commonService.publishPages("management", payload);
-	}
-
 	@PostMapping("/import")
 	public ModelAndView importTxt(@ModelAttribute("payload") Payload payload, Model model) {
 		model.asMap().clear();

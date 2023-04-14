@@ -8,7 +8,6 @@ Item                                        Endpoint            Minimum sent mod
 banner                                      GET /               -
 search text field
 "Search" button                             POST /search        {"searchText": <String>}
-static links to pages                       -                   -
 "Management" button                         POST /management    -
 Total returned fields: {"searchText": <String>}
 
@@ -28,7 +27,7 @@ Total returned fields: {"titles": [<String>, ...], "searchText": <String>}
 
 "page"
 Received model: payload
-Minimum fields: {"titles": [<String>, ...], "staticPageLink": <String>}
+Minimum fields: {"titles": [<String>, ...], "htmlContent": <String>}
 Item                                        Endpoint            Minimum sent model
 ----------                                  ----------          ----------
 banner                                      GET /               -
@@ -36,7 +35,7 @@ list of references
 "View Page" button                          POST /page          {"titles": <String>}
 "Back" button                               GET /               -
 content of a page in a frame
-Total returned fields: {"titles": [<String>, ...], "staticPageLink": <String>}
+Total returned fields: {"titles": [<String>, ...], "htmlContent": <String>}
 
 
 "management"
@@ -55,7 +54,6 @@ new title text field
 "Confirm" checkbox
 "Delete Source Page(s)" button              POST /delete        {"titles": [<String>, ...], "confirm": <boolean>}
 "Generate Pages from Sources" button        POST /generate      {"confirm": <boolean>}
-"Publish Static Pages" button               POST /publish       {"confirm": <boolean>}
 "Import Source Files"                       POST /import        {"files": <String>, "confirm": <boolean>}
 "Back" button                               GET /               -
 Total returned fields: {"titles": [<String>, ...], "files": <String>, "confirm": <boolean>, "message": <String>, "title": <String>}
@@ -76,6 +74,10 @@ content multi-row text field
 "Append Example" button                     POST /add/example   {"title": <String>, "content": [<String>, ...], "editExistingPage": <boolean>}
 "Append Internal Reference" button          POST /add/reference {"title": <String>, "content": [<String>, ...], "editExistingPage": <boolean>}
 "Append External Reference" button          POST /add/more      {"title": <String>, "content": [<String>, ...], "editExistingPage": <boolean>}
+"Append List Item" button                   POST /add/list      {"title": <String>, "content": [<String>, ...], "editExistingPage": <boolean>}
+"Append Tabulator" button                   POST /add/tab       {"title": <String>, "content": [<String>, ...], "editExistingPage": <boolean>}
+"Append Double Tab" button                  POST /add/tab2      {"title": <String>, "content": [<String>, ...], "editExistingPage": <boolean>}
+"Append Triple Tab" button                  POST /add/tab3      {"title": <String>, "content": [<String>, ...], "editExistingPage": <boolean>}
 "Save" button                               POST /save          {"title": <String>, "content": [<String>, ...], "editExistingPage": <boolean>}
 "Back" button                               POST /management    -
 Total returned fields: {"title": <String>, "content": [<String>, ...], "editExistingPage": <boolean>, "message": <String>}

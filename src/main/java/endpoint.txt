@@ -16,8 +16,6 @@ POST    /rename                 response view: "management"
 
 POST    /delete                 response view: "management"
 
-POST    /publish                response view: "management"
-
 POST    /add/{formulaName}      response view: "source"
 
 POST    /save                   response view: "source"

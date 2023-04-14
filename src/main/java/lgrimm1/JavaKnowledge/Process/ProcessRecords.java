@@ -17,7 +17,6 @@ import java.util.stream.*;
  * @see #getAllTitles(TitleRepository)
  * @see #importTxtFiles(List, TitleRepository, TxtRepository, HtmlRepository, FileOperations, Formulas, Extractors)
  * @see #generate(TitleRepository, TxtRepository, HtmlRepository, Formulas, ProcessPage, Extractors, HtmlGenerators)
- * @see #publishHtml(TitleRepository, HtmlRepository, FileOperations)
  * @see #stringToList(String)
  * @see #listToString(List)
  */
@@ -174,34 +173,6 @@ public class ProcessRecords {
 		return new long[]{
 				titleEntities.size(),
 				Duration.between(startTime, LocalTime.now().plusSeconds(1)).toSeconds()
-		};
-	}
-
-	/**
-	 * Returns long[2] where [0] is the number of pre-deleted HTML files, [1] is the number of published HTMLs.
-	 */
-	public long[] publishHtml(TitleRepository titleRepository,
-							  HtmlRepository htmlRepository,
-							  FileOperations fileOperations) {
-		File staticFolder = new File(fileOperations.getStaticPath());
-		if (!fileOperations.createNonExistentDirectory(staticFolder)) {
-			return new long[]{0, 0};
-		}
-		long deleted = fileOperations.deleteAllFilesInFolder(staticFolder, ".html");
-		return new long[]{
-				deleted,
-				titleRepository.findAll().stream()
-						.filter(titleEntity ->
-								htmlRepository.findById(titleEntity.getHtmlId()).isPresent() &&
-										fileOperations.writeFile(
-												new File(fileOperations.getStaticPath() +
-														fileOperations.getOSFileSeparator() +
-														titleEntity.getFilename() +
-														".html"),
-												htmlRepository.findById(titleEntity.getHtmlId()).get().getContent()
-										)
-						)
-						.count()
 		};
 	}
 

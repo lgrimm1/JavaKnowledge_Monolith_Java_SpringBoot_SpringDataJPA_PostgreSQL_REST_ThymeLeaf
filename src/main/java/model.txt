@@ -5,7 +5,7 @@
     "files": <String>,
     "message": <String>,
     "searchText": <String>,
-    "staticPageLink": <String>,
+    "htmlContent": <String>,
     "title": <String>,
     "titles": [<String>, ...]
 }
