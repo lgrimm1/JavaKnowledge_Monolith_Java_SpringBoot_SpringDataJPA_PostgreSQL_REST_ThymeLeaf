@@ -30,6 +30,8 @@ For all tags, optional parameters:
 For surrounding tags (body, fieldset, form), optional parameter:
     - autocomplete="on"
 
+Please note, in case more images are nested into am anchor (<a><img ...><img ...></a>), always write the nested <img> tags inline with the <a> tag. Reason is that some browsers will put an underlined space between every image.
+
 EXAMPLE FOR BANNER:
 <a href="url"><img src="url" alt="alternative text"></a>
 <a href="url">ANY TEXT<img src="url" alt="alternative text">ANY TEXT</a>
@@ -462,57 +464,78 @@ END OF EXAMPLE
 =================================================================================
 3. CODE SNIPPETS FOR SCRIPTS
 =================================================================================
-EXAMPLE FOR JAVASCRIPT:
+JavaScripts can be declared internally or externally.
+For internal solution, one or more <script> closed tag(s) should be placed somewhere in the <body> block, inside the scripts will take place.
+In case scripts are used by several pages and templates, create external JavaScript file(s) under /static/js directory, write the scripts into these and import the files in the <head> block of the correspondent page or template. The a .js file should contain all lines which would be inside a <script> block but without the <script> tag.
+
+EXAMPLE FOR INTERNAL SCRIPT BLOCKS:
+<body>
 <script>
-    <!-- caller side: content_to_clipboard('element_id') -->
-    function content_to_clipboard(id) {
-        document.getElementById(id).select();
-        document.execCommand('copy');
-    }
-
-    <!-- caller side: content_to_clipboard(this) -->
-    function content_to_clipboard(element) {
-        element.select();
-        document.execCommand('copy');
-    }
-
-    <!-- caller side: input_to_full_size(this) -->
-    function input_to_full_size(element) {
-        element.style.height = "";
-        element.style.height = element.scrollHeight + "px";
-    }
-
-    <!-- textarea to full size on page load -->
-    window.onload = function() {
-        var textarea = document.getElementById("textarea_id");
-        textarea.style.height = "";
-        textarea.style.height = textarea.scrollHeight + "px";
-    }
-
-    <!-- set textarea wrapping behaviour on page load -->
-    window.onload = function() {
-        document.getElementById("textarea_id").wrap='off|soft|hard';
-    }
-
-    <!-- text-like input and textarea, caret to last position on page load -->
-    window.onload = function() {
-        var element = document.getElementById("element_id");
-        element.focus();
-        element.setSelectionRange(element.value.length, element.value.length);
-    }
-
-    <!-- select 1st item in <select> on page load: - -->
-    window.onload = function() {
-        var s = document.getElementById("select_id");
-        s.selectedIndex = 0;
-    }
-
-    <!-- select last item in <select> on page load: - -->
-    window.onload = function() {
-        var s = document.getElementById("select_id");
-        s.selectedIndex = s.options.length - 1;
-    }
+    <!-- codes -->
 </script>
+</body>
+END OF EXAMPLE
+
+EXAMPLE FOR EXTERNAL JAVASCRIPT FILE:
+<!-- in the page or template: -->
+<head>
+    ...
+    <script type="text/javascript" th:src="@{/js/scriptfile.js}"></script>
+</head>
+
+<!-- content of scriptfile.js: -->
+<!-- codes -->
+END OF EXAMPLE
+
+EXAMPLE FOR JAVASCRIPT SOLUTIONS:
+<!-- caller side: content_to_clipboard('element_id') -->
+function content_to_clipboard(id) {
+    document.getElementById(id).select();
+    document.execCommand('copy');
+}
+
+<!-- caller side: content_to_clipboard(this) -->
+function content_to_clipboard(element) {
+    element.select();
+    document.execCommand('copy');
+}
+
+<!-- caller side: input_to_full_size(this) -->
+function input_to_full_size(element) {
+    element.style.height = "";
+    element.style.height = element.scrollHeight + "px";
+}
+
+<!-- textarea to full size on page load -->
+window.onload = function() {
+    var textarea = document.getElementById("textarea_id");
+    textarea.style.height = "";
+    textarea.style.height = textarea.scrollHeight + "px";
+}
+
+<!-- set textarea wrapping behaviour on page load -->
+window.onload = function() {
+    document.getElementById("textarea_id").wrap='off|soft|hard';
+}
+
+<!-- text-like input and textarea, caret to last position on page load -->
+window.onload = function() {
+    var element = document.getElementById("element_id");
+    element.focus();
+    element.setSelectionRange(element.value.length, element.value.length);
+}
+
+<!-- select 1st item in <select> on page load: - -->
+window.onload = function() {
+    var s = document.getElementById("select_id");
+    s.selectedIndex = 0;
+}
+
+<!-- select last item in <select> on page load: - -->
+window.onload = function() {
+    var s = document.getElementById("select_id");
+    s.selectedIndex = s.options.length - 1;
+}
 END OF EXAMPLE
 
 MORE HERE: https://www.baeldung.com/thymeleaf-select-option
