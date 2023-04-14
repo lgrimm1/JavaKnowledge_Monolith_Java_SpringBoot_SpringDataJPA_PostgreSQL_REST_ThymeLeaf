@@ -339,6 +339,7 @@ Textarea:
     - default height is 3 rows
     - wraps the content by default
     - the wrap= parameter sets how the wrapped text will be collected when submitting ("hard" will submit the wrapped text, "soft" (only if it does not have effect, use "off" instead) will submit unwrapped text)
+    - new line will be marked with CR LF characters upon submit (see details below)
 
 Time:
     - the browser shows a divided input field for time
@@ -377,6 +378,14 @@ Restrictions are useful on form-side but via Javascript it is possible to overwr
 Without setting width and height for an image, the layout will change as the image loads. For proper design, this should be avoided, set the dimensions beforehand.
 Tags can be grouped by using the <fieldset> tag, see below.
 In case a field or object is not rendered into an input, that field will be null upon submit at server side. That said, the attribute must have an <input> tag with th:object|field="..." parameter counterpart within the <form>. In case that attribute should not be offered for changing by the user, the <input> should be either readonly (but appears) or type="hidden" (will not appear).
+
+For <textarea>, there are 3 variants how operating systems and browsers handle line feeds:
+    - CR (carriage return; #0D or #13 \r; one character)
+    - LF (line feed; $0A or #10 or \n; one character)
+    - CR LF ($0D $0A or #13#10 or \r\n; two characters)
+HTML standard defines that a <textarea> can receive any variant from above and will translate it to the 2-character (\r\n) variant. Furthermore, upon submit, the 2-character version will be sent back.
+The length property of a <textarea> will always count the new line as it would be one-character variant.
+In case at backend only \n character would be preferred, upon receiving data, replace the \r\n to \n, then the \r to \n for safety.
 
 =================================================================================
 5. EXAMPLES
