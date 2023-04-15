@@ -4,24 +4,7 @@
 <body id="body">
 <form action="#" th:object="${payload}" th:action="@{/page}" method="post" novalidate>
     <a name="top"></a>
-    <table id="banner" class="formatter_table">
-        <tr>
-            <td style="width: 10%">
-                <a href="/"><img src="/images/logo.jpg" alt="Java Knowledge" class="banner_image"></a>
-            </td>
-            <td style="width: 60%">
-                <h1 class="banner_title">KNOWLEDGE PAGE</h1>
-            </td>
-            <td style="width: 30%">
-                <p class="banner_info"><i>
-                    Author: lgrimm, created: 2022-2023<br>
-                    Find me:&nbsp;
-                    <a href="https://github.com/lgrimm1"><img src="/images/logo_GitHub.jpg" alt="GitHub" class="banner_link_logo"></a>
-                    <a href="https://www.linkedin.com/in/laszlo-grimm/"><img src="/images/logo_LinkedIn.jpg" alt="LinkedIn" class="banner_link_logo"></a>
-                </i></p>
-            </td>
-        </tr>
-    </table>
+    <table th:replace="~{/fragments/banner.html::banner}" />
     <fieldset id="references">
         <legend>&nbsp;References to Other Pages&nbsp;</legend>
         <table class="formatter_table">
