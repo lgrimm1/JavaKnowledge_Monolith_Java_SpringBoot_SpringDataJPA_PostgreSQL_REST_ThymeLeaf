@@ -247,8 +247,8 @@ For textarea input, optional parameters:
 
 For file-type input, it has the ability to receive focus (tabbing), activate for key press while on focus, opening selection dialog, storing file selection, receive files via drag&drop, showing names of selected files, also lets screen readers to detect it.
 The appearing button and the file-list behind it is not modifiable, CSS parameters have no effect.
-Workaround is to wrap the input into a label and give button-like style to it while hiding (visually or totally) the original input, visit the CSS page for style examples.
-See examples below.
+Workaround is to wrap the input into a label and give button-like style to it while hiding (visually or totally) the original input, visit the CSS page for style examples. See examples below.
+The accept= parameter of the <input> lets the developer define which files are accepted by the <input>. In case of more types, separate them with comma (without space). File types can be extension or MIME-type or combined.
 
 For all inputs, consider using a br tag after the label and-or after the input.
 Also, inputs will not inherit font properties, must define these on the inputs as well.
@@ -280,6 +280,16 @@ EXAMPLE FOR CHECKBOX:
 <!-- label is after: -->
 <input id="input_name" type="checkbox" th:field="*{fieldName}" />
 <label for="input_name" style="style data" class="label_style">label text</label>
+END OF EXAMPLE
+
+EXAMPLE FOR FILE TYPES (ACCEPT=):
+.jpg
+image/*
+image/jpg
+audio/*
+video/*
+.doc,.docx,.xml,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document (anything which might be Microsoft Office Word file)
+combined (.pdf,.png,audio/*)
 END OF EXAMPLE
 
 EXAMPLE FOR FILE:
@@ -538,6 +548,7 @@ window.onload = function() {
 }
 END OF EXAMPLE
 
+MORE HERE: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file
 MORE HERE: https://www.baeldung.com/thymeleaf-select-option
 MORE HERE: https://o7planning.org/11659/thymeleaf-form-select-option
 

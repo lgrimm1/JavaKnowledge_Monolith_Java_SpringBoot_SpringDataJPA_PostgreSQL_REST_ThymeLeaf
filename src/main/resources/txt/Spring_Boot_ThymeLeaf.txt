@@ -73,6 +73,8 @@ ThymeLeaf parameters can be defined in two variants of HTML tags:
     - closed tag: <tag_name parameters>...</tag_name>
 Please note that opened tags are not supported by all browsers.
 
+ThymeLeaf offers a <th:block> closed tag which serves literally as a block tag without any special meaning. Useful when other tags should be rendered together as nested tags and <span>, <div> or other HTML block tags do not fit.
+
 The general formula for using a tag parameter follows the HTML standards (parameter_name="'value'" for character and text, parameter_name="value" otherwise).
 Also from the standards, some parameters do not have value, in this case there is no ="'value'" or ="value" after the parameter_name.
 For controls (inputs), the on...= parameters (e.g. onclick=, onload=) are used for event-driven actions (e.g. onclick="script_method(this)").
@@ -92,6 +94,80 @@ The most used template tag parameters are:
     - th:unless= (if the condition is false, does a thing)
     - th:switch= (multiple condition for enumerable-type attribute)
     - th:case= (given variant for switched attribute)
+
+Next to the above th parameters which handles HTML attributes, there are some which helps to organize the template(s) better:
+    - th:fragment= (marks the tag and all nested tags of it as a named fragment; any HTML code tag can be marked and used as fragment, even <head> and <body> as well)
+    - th:insert= (inserts a tag marked with as fragment from a given external file into the tag)
+    - th:replace= (replaces the tag with tag marked as fragment from a given external file)
+    - th:include= (obsolete parameter)
+
+For fragmenting technique, the external file can be a whole template, a complete HTML file or a tag. Tag can be any (even a <head> or <script> block) and can consist of nested tags as well. This technique can be used in the next ways:
+    - if in the :insert or :replace parameters the fragment name is not defined, the entire external file will be used
+    - if in the :insert or :replace parameters the fragment name is defined, but that fragment name is not in the external file, the whole external file will be used
+    - if the :insert or :replace parameter matches with a fragment name in the external file, only that fragment will be used
+Following the logic, it became possible to design a template from parts and divide it into smaller (more handleable) pieces.
+In order to make the th: parameters in the external file understandable for the interpreter, the DOCTYPE and the <html> tag should be defined as well, see the example below.
+The fragment files should be placed under /templates/fragments directory (ThymeLeaf will handle them as templates). The reference used when inserting or replacing, follows the "~{/path/fragmentFile[.html]::fragmentName}" (obsolete version: "/path/fragmentFile[.extension] :: fragmentName") format where the spaces around the :: sign are optional, and the extension is .html by default.
+
+EXAMPLE FOR INSERTING AND REPLACING EXTERNAL HTML CODE:
+<!-- /fragments/fragment1.html (external file): -->
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link th:fragment="css" ...>
+</head>
+<body>
+    <table th:fragment="table">
+        <!-- code 1 -->
+    </table>
+    <p th:fragment="p">
+        <!-- code 2 -->
+    </p>
+</body>
+</html>
+
+<!-- template: -->
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Title</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link th:replace="~{/fragments/fragment1::css}">
+</head>
+<body>
+...
+<div th:insert="~{/fragments/fragment1::table}">
+</div>
+...
+<div th:replace="~{/fragments/fragment1.html::p}">
+</div>
+...
+</body>
+</html>
+
+<!-- resulted template: -->
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Title</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link th:fragment="css" ...>
+</head>
+<body>
+...
+<div>
+    <table>
+        <!-- code -->
+    </table>
+</div>
+...
+<p>
+    <!-- code -->
+</p>
+...
+</body>
+</html>
+END OF EXAMPLE
 
 Any variable can be sent in a template, ThymeLeaf recognizes all wrapper classes and theoretically all Collection types. It also can handle classes with subclasses. In order to send a primitive type to a template, convert it to wrapper class. Enums can be used only with tags which are designed to handle limited values e.g. radio input (see later), otherwise use String instead.
 A variable carrying data in the template is called HTML attribute. Its name can be different from Java variable name, the connection is made by the Model or ModelAndView classes in Spring Boot, see later.
@@ -268,6 +344,14 @@ Datetime-local:
 File:
     - a localized Browse button appears, next to it the chosen file name or number of files
     - the multiple parameter allows the user to enter more than one value
+    - the value= parameter contains empty String at the beginning, when file(s) is-are selected, will contain the first file path and name as C:\fakepath\filename or similar for security reasons (exchanged with th:field= or :object=)
+    - the HTMLInputElement.files property will contain all selected files, as C:\fakepath\filename or similar (exchanged with th:field= or :object=); this property is a list of files.
+    - a file element of the list contains filename, last modification datetime and date, size, MIME-type
+    - the accept= parameter contains allowed file types separated by comma (will not provide thorough check)
+    - the capture= parameter is a String identifies which camera channel should be used (user-facing or main) for capturing video or image (depending on accept= type); if not present, file mode is activated
+    - the user= parameter defines that the user-facing camera and/or microphone should be used (used together with capture=)
+    - the environment= parameter specifies that the outward-facing camera and/or microphone should be used (if missing, will decide on its own; used together with capture=)
+    - returns either a file name array or a text in which the file names are separated by commas
 
 Email:
     - the multiple parameter allows the user to enter more than one value
