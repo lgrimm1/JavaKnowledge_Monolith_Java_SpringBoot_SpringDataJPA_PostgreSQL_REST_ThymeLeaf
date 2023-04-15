@@ -171,6 +171,31 @@ class FormulasTest {
 	}
 
 	@Test
+	void getTitleRoot() {
+		Assertions.assertEquals("WELCOME TO JAVA KNOWLEDGE!", formulas.getTitleRoot());
+	}
+
+	@Test
+	void getTitleList() {
+		Assertions.assertEquals("LIST OF TITLES", formulas.getTitleList());
+	}
+
+	@Test
+	void getTitlePage() {
+		Assertions.assertEquals("KNOWLEDGE PAGE", formulas.getTitlePage());
+	}
+
+	@Test
+	void getTitleManagement() {
+		Assertions.assertEquals("JAVA KNOWLEDGE MANAGEMENT", formulas.getTitleManagement());
+	}
+
+	@Test
+	void getTitleSource() {
+		Assertions.assertEquals("JAVA KNOWLEDGE SOURCE PAGE", formulas.getTitleSource());
+	}
+
+	@Test
 	void generateTabInSpaces() {
 		Assertions.assertEquals(formulas.getTabInSpaces().repeat(3), formulas.generateTabInSpaces(3));
 	}

@@ -11,19 +11,21 @@ import java.util.*;
 import java.util.stream.*;
 
 /**
- * @see #managePages(String, ProcessRecords, TitleRepository)
- * @see #createSourcePage(String)
- * @see #editSourcePage(String, Payload, ProcessRecords, TitleRepository, TxtRepository)
- * @see #renameSourcePage(String, Payload, ProcessRecords, TitleRepository, FileOperations)
- * @see #deletePages(String, Payload, ProcessRecords, TitleRepository, TxtRepository, HtmlRepository)
+ * @see #managePages(String, ProcessRecords, TitleRepository, Formulas)
+ * @see #createSourcePage(String, Formulas)
+ * @see #editSourcePage(String, Payload, ProcessRecords, TitleRepository, TxtRepository, Formulas)
+ * @see #renameSourcePage(String, Payload, ProcessRecords, TitleRepository, FileOperations, Formulas)
+ * @see #deletePages(String, Payload, ProcessRecords, TitleRepository, TxtRepository, HtmlRepository, Formulas)
  * @see #importTxt(String, Payload, ProcessRecords, TitleRepository, FileOperations, TxtRepository, HtmlRepository, Formulas, Extractors)
  * @see #generateHtml(String, Payload, ProcessRecords, TitleRepository, TxtRepository, HtmlRepository, Formulas, ProcessPage, Extractors, HtmlGenerators)
  */
 public class ManagementService {
 	public static ModelAndView managePages(String initialView,
 										   ProcessRecords processRecords,
-										   TitleRepository titleRepository) {
+										   TitleRepository titleRepository,
+										   Formulas formulas) {
 		Payload payload = new Payload(
+				formulas.getTitleManagement(),
 				false,
 				null,
 				null,
@@ -37,8 +39,9 @@ public class ManagementService {
 		return new ModelAndView(initialView, "payload", payload);
 	}
 
-	public static ModelAndView createSourcePage(String initialView) {
+	public static ModelAndView createSourcePage(String initialView, Formulas formulas) {
 		Payload payload = new Payload(
+				formulas.getTitleSource(),
 				null,
 				"",
 				false,
@@ -56,13 +59,15 @@ public class ManagementService {
 											  Payload payload,
 											  ProcessRecords processRecords,
 											  TitleRepository titleRepository,
-											  TxtRepository txtRepository) {
+											  TxtRepository txtRepository,
+											  Formulas formulas) {
 		if (payload == null ||
 				payload.getTitles() == null ||
 				payload.getTitles().size() != 1 ||
 				payload.getTitles().get(0) == null ||
 				payload.getTitles().get(0).isBlank()) {
 			Payload payload2 = new Payload(
+					formulas.getTitleManagement(),
 					false,
 					null,
 					null,
@@ -78,6 +83,7 @@ public class ManagementService {
 		Optional<TitleEntity> optionalTitleEntity = titleRepository.findByTitle(payload.getTitles().get(0));
 		if (optionalTitleEntity.isEmpty()) {
 			Payload payload2 = new Payload(
+					formulas.getTitleManagement(),
 					false,
 					null,
 					null,
@@ -94,6 +100,7 @@ public class ManagementService {
 		Optional<TxtEntity> optionalTxtEntity = txtRepository.findById(txtId);
 		if (optionalTxtEntity.isEmpty()) {
 			Payload payload2 = new Payload(
+					formulas.getTitleManagement(),
 					false,
 					null,
 					null,
@@ -107,6 +114,7 @@ public class ManagementService {
 			return new ModelAndView("management", "payload", payload2);
 		}
 		Payload payload2 = new Payload(
+				formulas.getTitleSource(),
 				null,
 				optionalTxtEntity.get().getContent(),
 				true,
@@ -124,13 +132,15 @@ public class ManagementService {
 												Payload payload,
 												ProcessRecords processRecords,
 												TitleRepository titleRepository,
-												FileOperations fileOperations) {
+												FileOperations fileOperations,
+												Formulas formulas) {
 		if (payload == null ||
 				payload.getTitles() == null ||
 				payload.getTitles().size() != 1 ||
 				payload.getTitle() == null ||
 				payload.getTitle().isBlank()) {
 			Payload payload2 = new Payload(
+					formulas.getTitleManagement(),
 					false,
 					null,
 					null,
@@ -146,6 +156,7 @@ public class ManagementService {
 		Optional<TitleEntity> originalTitleEntity = titleRepository.findByTitle(payload.getTitles().get(0));
 		if (originalTitleEntity.isEmpty()) {
 			Payload payload2 = new Payload(
+					formulas.getTitleManagement(),
 					false,
 					null,
 					null,
@@ -161,6 +172,7 @@ public class ManagementService {
 		Optional<TitleEntity> newTitleEntity = titleRepository.findByTitle(payload.getTitle());
 		if (newTitleEntity.isPresent()) {
 			Payload payload2 = new Payload(
+					formulas.getTitleManagement(),
 					false,
 					null,
 					null,
@@ -179,6 +191,7 @@ public class ManagementService {
 		titleRepository.deleteById(originalTitleEntity.get().getId());
 		titleRepository.save(new TitleEntity(payload.getTitle(), fileName, txtId, htmlId));
 		Payload payload2 = new Payload(
+				formulas.getTitleManagement(),
 				false,
 				null,
 				null,
@@ -197,7 +210,8 @@ public class ManagementService {
 										   ProcessRecords processRecords,
 										   TitleRepository titleRepository,
 										   TxtRepository txtRepository,
-										   HtmlRepository htmlRepository) {
+										   HtmlRepository htmlRepository,
+										   Formulas formulas) {
 		if (payload == null ||
 				payload.getTitles() == null ||
 				payload.getTitles().size() == 0 ||
@@ -213,6 +227,7 @@ public class ManagementService {
 						"PLEASE SELECT TITLES YOU WISH TO DELETE.";
 			}
 			Payload payload2 = new Payload(
+					formulas.getTitleManagement(),
 					false,
 					null,
 					null,
@@ -231,6 +246,7 @@ public class ManagementService {
 				.toList();
 		if (titles.isEmpty()) {
 			Payload payload2 = new Payload(
+					formulas.getTitleManagement(),
 					false,
 					null,
 					null,
@@ -251,6 +267,7 @@ public class ManagementService {
 				htmlRepository) +
 				" OF " + numberOfGivenTitles + " TITLES WERE DELETED.";
 		Payload payload2 = new Payload(
+				formulas.getTitleManagement(),
 				false,
 				null,
 				null,
@@ -279,6 +296,7 @@ public class ManagementService {
 				payload.getConfirm() == null ||
 				!payload.getConfirm()) {
 			Payload payload2 = new Payload(
+					formulas.getTitleManagement(),
 					false,
 					null,
 					null,
@@ -304,6 +322,7 @@ public class ManagementService {
 				extractors);
 		List<String> titles = processRecords.getAllTitles(titleRepository);
 		Payload payload2 = new Payload(
+				formulas.getTitleManagement(),
 				false,
 				null,
 				null,
@@ -329,6 +348,7 @@ public class ManagementService {
 									HtmlGenerators htmlGenerators) {
 		if (payload == null || payload.getConfirm() == null || !payload.getConfirm()) {
 			Payload payload2 = new Payload(
+					formulas.getTitleManagement(),
 					false,
 					null,
 					null,
@@ -350,6 +370,7 @@ public class ManagementService {
 				extractors,
 				htmlGenerators);
 		Payload payload2 = new Payload(
+				formulas.getTitleManagement(),
 				false,
 				null,
 				null,

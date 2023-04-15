@@ -47,6 +47,8 @@ class CommonServiceGenerateHtmlTest {
 				extractors,
 				processPage,
 				htmlGenerators);
+		when(formulas.getTitleManagement())
+				.thenReturn("MANAGEMENTTITLE");
 	}
 
 	@Test
@@ -58,6 +60,7 @@ class CommonServiceGenerateHtmlTest {
 				.thenReturn(titles);
 
 		Payload expectedPayload = new Payload(
+				formulas.getTitleManagement(),
 				false,
 				null,
 				null,
@@ -84,6 +87,7 @@ class CommonServiceGenerateHtmlTest {
 		Boolean confirm = null;
 		String message = "message text";
 		Payload receivedPayload = new Payload(
+				formulas.getTitleManagement(),
 				confirm,
 				null,
 				null,
@@ -100,6 +104,7 @@ class CommonServiceGenerateHtmlTest {
 				.thenReturn(titles);
 
 		Payload expectedPayload = new Payload(
+				formulas.getTitleManagement(),
 				false,
 				null,
 				null,
@@ -126,6 +131,7 @@ class CommonServiceGenerateHtmlTest {
 		Boolean confirm = false;
 		String message = "message text";
 		Payload receivedPayload = new Payload(
+				formulas.getTitleManagement(),
 				confirm,
 				null,
 				null,
@@ -142,6 +148,7 @@ class CommonServiceGenerateHtmlTest {
 				.thenReturn(titles);
 
 		Payload expectedPayload = new Payload(
+				formulas.getTitleManagement(),
 				false,
 				null,
 				null,
@@ -168,6 +175,7 @@ class CommonServiceGenerateHtmlTest {
 		Boolean confirm = true;
 		String message = "message text";
 		Payload receivedPayload = new Payload(
+				formulas.getTitleManagement(),
 				confirm,
 				null,
 				null,
@@ -187,6 +195,7 @@ class CommonServiceGenerateHtmlTest {
 				.thenReturn(new long[]{12, 24});
 
 		Payload expectedPayload = new Payload(
+				formulas.getTitleManagement(),
 				false,
 				null,
 				null,

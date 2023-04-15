@@ -48,6 +48,8 @@ class CommonServiceDeletePagesTest {
 				extractors,
 				processPage,
 				htmlGenerators);
+		when(formulas.getTitleManagement())
+				.thenReturn("MANAGEMENTTITLE");
 	}
 
 	@Test
@@ -57,6 +59,7 @@ class CommonServiceDeletePagesTest {
 				.thenReturn(titles);
 
 		Payload expectedPayload = new Payload(
+				formulas.getTitleManagement(),
 				false,
 				null,
 				null,
@@ -83,6 +86,7 @@ class CommonServiceDeletePagesTest {
 		String message = "";
 		List<String> titles = null;
 		Payload receivedPayload = new Payload(
+				formulas.getTitleManagement(),
 				confirm,
 				null,
 				null,
@@ -99,6 +103,7 @@ class CommonServiceDeletePagesTest {
 				.thenReturn(expectedTitles);
 
 		Payload expectedPayload = new Payload(
+				formulas.getTitleManagement(),
 				false,
 				null,
 				null,
@@ -125,6 +130,7 @@ class CommonServiceDeletePagesTest {
 		String message = "";
 		List<String> titles = new ArrayList<>();
 		Payload receivedPayload = new Payload(
+				formulas.getTitleManagement(),
 				confirm,
 				null,
 				null,
@@ -141,6 +147,7 @@ class CommonServiceDeletePagesTest {
 				.thenReturn(expectedTitles);
 
 		Payload expectedPayload = new Payload(
+				formulas.getTitleManagement(),
 				false,
 				null,
 				null,
@@ -167,6 +174,7 @@ class CommonServiceDeletePagesTest {
 		String message = "";
 		List<String> titles = List.of("Title 1");
 		Payload receivedPayload = new Payload(
+				formulas.getTitleManagement(),
 				confirm,
 				null,
 				null,
@@ -183,6 +191,7 @@ class CommonServiceDeletePagesTest {
 				.thenReturn(expectedTitles);
 
 		Payload expectedPayload = new Payload(
+				formulas.getTitleManagement(),
 				false,
 				null,
 				null,
@@ -220,6 +229,7 @@ class CommonServiceDeletePagesTest {
 		String files = "";
 		String message = "";
 		Payload receivedPayload = new Payload(
+				formulas.getTitleManagement(),
 				confirm,
 				null,
 				null,
@@ -236,6 +246,7 @@ class CommonServiceDeletePagesTest {
 				.thenReturn(restOfTitles);
 
 		Payload expectedPayload = new Payload(
+				formulas.getTitleManagement(),
 				false,
 				null,
 				null,
@@ -270,6 +281,7 @@ class CommonServiceDeletePagesTest {
 		String files = "";
 		String message = "";
 		Payload receivedPayload = new Payload(
+				formulas.getTitleManagement(),
 				confirm,
 				null,
 				null,
@@ -286,6 +298,7 @@ class CommonServiceDeletePagesTest {
 				.thenReturn(restOfTitles);
 
 		Payload expectedPayload = new Payload(
+				formulas.getTitleManagement(),
 				false,
 				null,
 				null,

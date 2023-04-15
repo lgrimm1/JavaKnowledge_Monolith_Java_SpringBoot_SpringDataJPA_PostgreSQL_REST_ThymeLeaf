@@ -48,11 +48,14 @@ class CommonServiceSavePageTest {
 				extractors,
 				processPage,
 				htmlGenerators);
+		when(formulas.getTitleSource())
+				.thenReturn("SOURCETITLE");
 	}
 
 	@Test
 	void savePage_NullPayload() {
 		Payload expectedPayload = new Payload(
+				formulas.getTitleSource(),
 				null,
 				"",
 				false,
@@ -80,6 +83,7 @@ class CommonServiceSavePageTest {
 		String message = "";
 		String title = null;
 		Payload receivedPayload = new Payload(
+				formulas.getTitleSource(),
 				null,
 				content,
 				editExistingPage,
@@ -92,6 +96,7 @@ class CommonServiceSavePageTest {
 		);
 
 		Payload expectedPayload = new Payload(
+				formulas.getTitleSource(),
 				null,
 				content,
 				editExistingPage,
@@ -118,6 +123,7 @@ class CommonServiceSavePageTest {
 		String message = "";
 		String title = "  ";
 		Payload receivedPayload = new Payload(
+				formulas.getTitleSource(),
 				null,
 				content,
 				editExistingPage,
@@ -130,6 +136,7 @@ class CommonServiceSavePageTest {
 		);
 
 		Payload expectedPayload = new Payload(
+				formulas.getTitleSource(),
 				null,
 				content,
 				editExistingPage,
@@ -156,6 +163,7 @@ class CommonServiceSavePageTest {
 		String message = "";
 		String title = "Title 1";
 		Payload receivedPayload = new Payload(
+				formulas.getTitleSource(),
 				null,
 				content,
 				editExistingPage,
@@ -171,6 +179,7 @@ class CommonServiceSavePageTest {
 				.thenReturn(Optional.empty());
 
 		Payload expectedPayload = new Payload(
+				formulas.getTitleSource(),
 				null,
 				"",
 				editExistingPage,
@@ -197,6 +206,7 @@ class CommonServiceSavePageTest {
 		String message = "";
 		String title = "Title 1";
 		Payload receivedPayload = new Payload(
+				formulas.getTitleSource(),
 				null,
 				content,
 				editExistingPage,
@@ -212,6 +222,7 @@ class CommonServiceSavePageTest {
 				.thenReturn(Optional.empty());
 
 		Payload expectedPayload = new Payload(
+				formulas.getTitleSource(),
 				null,
 				content,
 				editExistingPage,
@@ -238,6 +249,7 @@ class CommonServiceSavePageTest {
 		String message = "";
 		String title = "Title 1";
 		Payload receivedPayload = new Payload(
+				formulas.getTitleSource(),
 				null,
 				content,
 				editExistingPage,
@@ -261,6 +273,7 @@ class CommonServiceSavePageTest {
 				.thenReturn(new TitleEntity(12L, title, "title_1", 13L, 14L));
 
 		Payload expectedPayload = new Payload(
+				formulas.getTitleSource(),
 				null,
 				content,
 				editExistingPage,
@@ -287,6 +300,7 @@ class CommonServiceSavePageTest {
 		String message = "";
 		String title = "Title 1";
 		Payload receivedPayload = new Payload(
+				formulas.getTitleSource(),
 				null,
 				content,
 				editExistingPage,
@@ -302,6 +316,7 @@ class CommonServiceSavePageTest {
 				.thenReturn(Optional.of(new TitleEntity(2L, "Title 1", "title_1", 3L, 4L)));
 
 		Payload expectedPayload = new Payload(
+				formulas.getTitleSource(),
 				null,
 				content,
 				editExistingPage,
@@ -328,6 +343,7 @@ class CommonServiceSavePageTest {
 		String message = "";
 		String title = "Title 1";
 		Payload receivedPayload = new Payload(
+				formulas.getTitleSource(),
 				null,
 				content,
 				editExistingPage,
@@ -358,6 +374,7 @@ class CommonServiceSavePageTest {
 				.thenReturn(titles);
 
 		Payload expectedPayload = new Payload(
+				formulas.getTitleSource(),
 				false,
 				null,
 				null,
@@ -384,6 +401,7 @@ class CommonServiceSavePageTest {
 		String message = "";
 		String title = "Title 1";
 		Payload receivedPayload = new Payload(
+				formulas.getTitleSource(),
 				null,
 				content,
 				editExistingPage,
@@ -399,6 +417,7 @@ class CommonServiceSavePageTest {
 				.thenReturn(Optional.of(new TitleEntity(2L, title, "title_1", 3L, 4L)));
 
 		Payload expectedPayload = new Payload(
+				formulas.getTitleSource(),
 				null,
 				content,
 				false,

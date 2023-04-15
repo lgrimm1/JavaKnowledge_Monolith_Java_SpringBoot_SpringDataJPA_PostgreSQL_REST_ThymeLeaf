@@ -5,6 +5,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import lgrimm1.JavaKnowledge.Process.*;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.*;
@@ -25,10 +26,14 @@ class CommonControllerTest {
 	@MockBean
 	private CommonService commonService;
 
+	@MockBean
+	private Formulas formulas;
+
 	@Test
 	void getRoot() throws Exception {
 		String searchText = "text";
 		Payload payload2 = new Payload(
+				formulas.getTitleRoot(),
 				null,
 				null,
 				null,
@@ -42,6 +47,8 @@ class CommonControllerTest {
 		ModelAndView modelAndView = new ModelAndView("root", "payload", payload2);
 		when(commonService.getRoot("root"))
 				.thenReturn(modelAndView);
+		when(formulas.getTitleRoot())
+				.thenReturn("ROOTTITLE");
 
 		mockMvc
 				.perform(
@@ -57,7 +64,10 @@ class CommonControllerTest {
 	@Test
 	void searchPages() throws Exception {
 		String searchText = "text";
+		when(formulas.getTitleRoot())
+				.thenReturn("ROOTTITLE");
 		Payload payload = new Payload(
+				formulas.getTitleRoot(),
 				null,
 				null,
 				null,
@@ -70,7 +80,10 @@ class CommonControllerTest {
 		);
 
 		List<String> titles = List.of("Title 1", "Title 2");
+		when(formulas.getTitleRoot())
+				.thenReturn("LISTTITLE");
 		Payload payload2 = new Payload(
+				formulas.getTitleList(),
 				null,
 				null,
 				null,
@@ -101,7 +114,10 @@ class CommonControllerTest {
 	void getPage() throws Exception {
 		String searchText = "text";
 		List<String> titles = List.of("Title 1");
+		when(formulas.getTitleList())
+				.thenReturn("LISTTITLE");
 		Payload payload = new Payload(
+				formulas.getTitleList(),
 				null,
 				null,
 				null,
@@ -116,7 +132,10 @@ class CommonControllerTest {
 		String message = "message";
 		String htmlContent = "Html Content";
 		List<String> titleReferences = List.of("TITLE 2");
+		when(formulas.getTitlePage())
+				.thenReturn("PAGETITLE");
 		Payload payload2 = new Payload(
+				formulas.getTitlePage(),
 				null,
 				null,
 				null,
@@ -146,7 +165,10 @@ class CommonControllerTest {
 	@Test
 	void managePages() throws Exception {
 		String searchText = "text";
+		when(formulas.getTitleRoot())
+				.thenReturn("ROOTTITLE");
 		Payload payload = new Payload(
+				formulas.getTitleRoot(),
 				null,
 				null,
 				null,
@@ -163,7 +185,10 @@ class CommonControllerTest {
 		String message = "message text";
 		String title = "";
 		List<String> titles = List.of("Title 1", "Title 2");
+		when(formulas.getTitleManagement())
+				.thenReturn("MANAGEMENTTITLE");
 		Payload payload2 = new Payload(
+				formulas.getTitleManagement(),
 				confirm,
 				null,
 				null,
@@ -198,7 +223,10 @@ class CommonControllerTest {
 		String message = "message text";
 		String title = "";
 		List<String> titles = List.of("Title 1", "Title 2");
+		when(formulas.getTitleManagement())
+				.thenReturn("MANAGEMENTTITLE");
 		Payload payload = new Payload(
+				formulas.getTitleManagement(),
 				confirm,
 				null,
 				null,
@@ -214,7 +242,10 @@ class CommonControllerTest {
 		Boolean editExistingPage = false;
 		String message2 = "message text";
 		String title2 = "";
+		when(formulas.getTitleSource())
+				.thenReturn("SOURCETITLE");
 		Payload payload2 = new Payload(
+				formulas.getTitleSource(),
 				null,
 				content,
 				editExistingPage,
@@ -249,7 +280,10 @@ class CommonControllerTest {
 		String message = "message text";
 		String title = "";
 		List<String> titles = List.of("Title 1", "Title 2");
+		when(formulas.getTitleManagement())
+				.thenReturn("MANAGEMENTTITLE");
 		Payload payload = new Payload(
+				formulas.getTitleManagement(),
 				confirm,
 				null,
 				null,
@@ -265,7 +299,10 @@ class CommonControllerTest {
 		Boolean editExistingPage = true;
 		String message2 = "message text";
 		String title2 = "Title 1";
+		when(formulas.getTitleSource())
+				.thenReturn("SOURCETITLE");
 		Payload payload2 = new Payload(
+				formulas.getTitleSource(),
 				null,
 				content,
 				editExistingPage,
@@ -294,13 +331,71 @@ class CommonControllerTest {
 	}
 
 	@Test
+	void renameSourcePage() throws Exception {
+		Boolean confirm = true;
+		String files = "";
+		String message = "message text";
+		String title = "Title 2";
+		List<String> titles = List.of("Title 1");
+		when(formulas.getTitleManagement())
+				.thenReturn("MANAGEMENTTITLE");
+		Payload payload = new Payload(
+				formulas.getTitleManagement(),
+				confirm,
+				null,
+				null,
+				files,
+				message,
+				null,
+				null,
+				title,
+				titles
+		);
+
+		Boolean confirm2 = false;
+		String message2 = "message text 2";
+		String title2 = "";
+		List<String> titles2 = List.of("Title 2");
+		Payload payload2 = new Payload(
+				formulas.getTitleManagement(),
+				confirm2,
+				null,
+				null,
+				"",
+				message2,
+				null,
+				null,
+				title2,
+				titles2
+		);
+
+		ModelAndView modelAndView = new ModelAndView("management", "payload", payload2);
+		when(commonService.renameSourcePage("management", payload))
+				.thenReturn(modelAndView);
+
+		mockMvc
+				.perform(
+						post("/rename")
+								.flashAttr("payload", payload)
+				)
+				.andExpect(status().isOk())
+				.andDo(print())
+				.andExpect(view().name("management"))
+				.andExpect(model().size(1))
+				.andExpect(model().attribute("payload", payload2));
+	}
+
+	@Test
 	void deleteSourcePages() throws Exception {
 		String files = "";
 		Boolean confirm = true;
 		String message = "message text";
 		String title = "";
 		List<String> titles = List.of("Title 1", "Title 2");
+		when(formulas.getTitleManagement())
+				.thenReturn("MANAGEMENTTITLE");
 		Payload payload = new Payload(
+				formulas.getTitleManagement(),
 				confirm,
 				null,
 				null,
@@ -316,6 +411,7 @@ class CommonControllerTest {
 		String message2 = "message text 2";
 		List<String> titles2 = List.of("Title 3", "Title 4");
 		Payload payload2 = new Payload(
+				formulas.getTitleManagement(),
 				confirm2,
 				null,
 				null,
@@ -344,158 +440,16 @@ class CommonControllerTest {
 	}
 
 	@Test
-	void publishPages() throws Exception {
-		Boolean confirm = true;
-		String files = "";
-		String message = "message text";
-		String title = "";
-		List<String> titles = List.of("Title 1");
-		Payload payload = new Payload(
-				confirm,
-				null,
-				null,
-				files,
-				message,
-				null,
-				null,
-				title,
-				titles
-		);
-
-		Boolean confirm2 = false;
-		String message2 = "message text 2";
-		List<String> titles2 = List.of("Title 1", "Title 2");
-		Payload payload2 = new Payload(
-				confirm2,
-				null,
-				null,
-				files,
-				message2,
-				null,
-				null,
-				title,
-				titles2
-		);
-
-		ModelAndView modelAndView = new ModelAndView("management", "payload", payload2);
-		when(commonService.publishPages("management", payload))
-				.thenReturn(modelAndView);
-
-		mockMvc
-				.perform(
-						post("/publish")
-								.flashAttr("payload", payload)
-				)
-				.andExpect(status().isOk())
-				.andDo(print())
-				.andExpect(view().name("management"))
-				.andExpect(model().size(1))
-				.andExpect(model().attribute("payload", payload2));
-	}
-
-	@Test
-	void addFormula() throws Exception {
-		String content = "Line 1\nLine 2\n";
-		Boolean editExistingPage = true;
-		String message = "message text";
-		String title = "Title 1";
-		Payload payload = new Payload(
-				null,
-				content,
-				editExistingPage,
-				null,
-				message,
-				null,
-				null,
-				title,
-				null
-		);
-
-		String formulaName = "formula_name";
-		String message2 = "message text";
-		Payload payload2 = new Payload(
-				null,
-				content + formulaName,
-				editExistingPage,
-				null,
-				message2,
-				null,
-				null,
-				title,
-				null
-		);
-
-		ModelAndView modelAndView = new ModelAndView("source", "payload", payload2);
-		when(commonService.addFormula("source", formulaName, payload))
-				.thenReturn(modelAndView);
-
-		mockMvc
-				.perform(
-						post("/add/formula_name")
-								.flashAttr("payload", payload)
-				)
-				.andExpect(status().isOk())
-				.andDo(print())
-				.andExpect(view().name("source"))
-				.andExpect(model().size(1))
-				.andExpect(model().attribute("payload", payload2));
-	}
-
-	@Test
-	void savePage() throws Exception {
-		String content = "Line 1\nLine 2\n";
-		Boolean editExistingPage = true;
-		String message = "message text";
-		String title = "Title 1";
-		Payload payload = new Payload(
-				null,
-				content,
-				editExistingPage,
-				null,
-				message,
-				null,
-				null,
-				title,
-				null
-		);
-
-		String message2 = "message text";
-		Payload payload2 = new Payload(
-				null,
-				content,
-				editExistingPage,
-				null,
-				message2,
-				null,
-				null,
-				title,
-				null
-		);
-
-		ModelAndView modelAndView = new ModelAndView("source", "payload", payload2);
-		when(commonService.savePage("source", payload))
-				.thenReturn(modelAndView);
-
-		mockMvc
-				.perform(
-						post("/save")
-								.flashAttr("payload", payload)
-				)
-				.andExpect(status().isOk())
-				.andDo(print())
-				.andExpect(view().name("source"))
-				.andExpect(model().size(1))
-				.andExpect(model().attribute("payload", payload2));
-	}
-
-	@Test
 	void importTxt() throws Exception {
 		Boolean confirm = true;
 		String files = "file_3;file_4";
 		String message = "message text";
 		String title = "";
 		List<String> titles = List.of("Title 1");
+		when(formulas.getTitleManagement())
+				.thenReturn("MANAGEMENTTITLE");
 		Payload payload = new Payload(
+				formulas.getTitleManagement(),
 				confirm,
 				null,
 				null,
@@ -511,6 +465,7 @@ class CommonControllerTest {
 		String message2 = "message text 2";
 		List<String> titles2 = List.of("Title 1", "Title 2", "Title 3", "Title 4");
 		Payload payload2 = new Payload(
+				formulas.getTitleManagement(),
 				confirm2,
 				null,
 				null,
@@ -545,7 +500,10 @@ class CommonControllerTest {
 		String message = "message text";
 		String title = "";
 		List<String> titles = List.of("Title 1");
+		when(formulas.getTitleManagement())
+				.thenReturn("MANAGEMENTTITLE");
 		Payload payload = new Payload(
+				formulas.getTitleManagement(),
 				confirm,
 				null,
 				null,
@@ -561,6 +519,7 @@ class CommonControllerTest {
 		String message2 = "message text 2";
 		List<String> titles2 = List.of("Title 1", "Title 2");
 		Payload payload2 = new Payload(
+				formulas.getTitleManagement(),
 				confirm2,
 				null,
 				null,
@@ -589,52 +548,104 @@ class CommonControllerTest {
 	}
 
 	@Test
-	void renameSourcePage() throws Exception {
-		Boolean confirm = true;
-		String files = "";
+	void addFormula() throws Exception {
+		String content = "Line 1\nLine 2\n";
+		Boolean editExistingPage = true;
 		String message = "message text";
-		String title = "Title 2";
-		List<String> titles = List.of("Title 1");
+		String title = "Title 1";
+		when(formulas.getTitleSource())
+				.thenReturn("SOURCETITLE");
 		Payload payload = new Payload(
-				confirm,
+				formulas.getTitleSource(),
 				null,
+				content,
+				editExistingPage,
 				null,
-				files,
 				message,
 				null,
 				null,
 				title,
-				titles
+				null
 		);
 
-		Boolean confirm2 = false;
-		String message2 = "message text 2";
-		String title2 = "";
-		List<String> titles2 = List.of("Title 2");
+		String formulaName = "formula_name";
+		String message2 = "message text";
 		Payload payload2 = new Payload(
-				confirm2,
+				formulas.getTitleSource(),
 				null,
+				content + formulaName,
+				editExistingPage,
 				null,
-				"",
 				message2,
 				null,
 				null,
-				title2,
-				titles2
+				title,
+				null
 		);
 
-		ModelAndView modelAndView = new ModelAndView("management", "payload", payload2);
-		when(commonService.renameSourcePage("management", payload))
+		ModelAndView modelAndView = new ModelAndView("source", "payload", payload2);
+		when(commonService.addFormula("source", formulaName, payload))
 				.thenReturn(modelAndView);
 
 		mockMvc
 				.perform(
-						post("/rename")
+						post("/add/formula_name")
 								.flashAttr("payload", payload)
 				)
 				.andExpect(status().isOk())
 				.andDo(print())
-				.andExpect(view().name("management"))
+				.andExpect(view().name("source"))
+				.andExpect(model().size(1))
+				.andExpect(model().attribute("payload", payload2));
+	}
+
+	@Test
+	void savePage() throws Exception {
+		String content = "Line 1\nLine 2\n";
+		Boolean editExistingPage = true;
+		String message = "message text";
+		String title = "Title 1";
+		when(formulas.getTitleSource())
+				.thenReturn("SOURCETITLE");
+		Payload payload = new Payload(
+				formulas.getTitleSource(),
+				null,
+				content,
+				editExistingPage,
+				null,
+				message,
+				null,
+				null,
+				title,
+				null
+		);
+
+		String message2 = "message text";
+		Payload payload2 = new Payload(
+				formulas.getTitleSource(),
+				null,
+				content,
+				editExistingPage,
+				null,
+				message2,
+				null,
+				null,
+				title,
+				null
+		);
+
+		ModelAndView modelAndView = new ModelAndView("source", "payload", payload2);
+		when(commonService.savePage("source", payload))
+				.thenReturn(modelAndView);
+
+		mockMvc
+				.perform(
+						post("/save")
+								.flashAttr("payload", payload)
+				)
+				.andExpect(status().isOk())
+				.andDo(print())
+				.andExpect(view().name("source"))
 				.andExpect(model().size(1))
 				.andExpect(model().attribute("payload", payload2));
 	}

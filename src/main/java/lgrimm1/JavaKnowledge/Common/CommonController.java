@@ -54,6 +54,12 @@ public class CommonController {
 		return commonService.editSourcePage("source", payload);
 	}
 
+	@PostMapping("/rename")
+	public ModelAndView renameSourcePage(@ModelAttribute("payload") Payload payload, Model model) {
+		model.asMap().clear();
+		return commonService.renameSourcePage("management", payload);
+	}
+
 	@PostMapping("/delete")
 	public ModelAndView deleteSourcePages(@ModelAttribute("payload") Payload payload, Model model) {
 		model.asMap().clear();
@@ -71,12 +77,6 @@ public class CommonController {
 	public ModelAndView generateHtml(@ModelAttribute("payload") Payload payload, Model model) {
 		model.asMap().clear();
 		return commonService.generateHtml("management", payload);
-	}
-
-	@PostMapping("/rename")
-	public ModelAndView renameSourcePage(@ModelAttribute("payload") Payload payload, Model model) {
-		model.asMap().clear();
-		return commonService.renameSourcePage("management", payload);
 	}
 
 	@PostMapping("/add/{formulaName}")

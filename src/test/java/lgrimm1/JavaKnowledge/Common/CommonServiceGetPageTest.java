@@ -49,6 +49,10 @@ class CommonServiceGetPageTest {
 				extractors,
 				processPage,
 				htmlGenerators);
+		when(formulas.getTitleList())
+				.thenReturn("LISTTITLE");
+		when(formulas.getTitlePage())
+				.thenReturn("PAGETITLE");
 	}
 
 	@Test
@@ -58,6 +62,7 @@ class CommonServiceGetPageTest {
 				.thenReturn(titles);
 
 		Payload expectedPayload = new Payload(
+				formulas.getTitleList(),
 				null,
 				null,
 				null,
@@ -81,6 +86,7 @@ class CommonServiceGetPageTest {
 	void getPage_NullTitles() {
 		String searchText = "text";
 		Payload payload = new Payload(
+				formulas.getTitleList(),
 				null,
 				null,
 				null,
@@ -97,6 +103,7 @@ class CommonServiceGetPageTest {
 				.thenReturn(titles);
 
 		Payload expectedPayload = new Payload(
+				formulas.getTitleList(),
 				null,
 				null,
 				null,
@@ -120,6 +127,7 @@ class CommonServiceGetPageTest {
 	void getPage_EmptyTitles() {
 		String searchText = "text";
 		Payload payload = new Payload(
+				formulas.getTitleList(),
 				null,
 				null,
 				null,
@@ -136,6 +144,7 @@ class CommonServiceGetPageTest {
 				.thenReturn(titles);
 
 		Payload expectedPayload = new Payload(
+				formulas.getTitleList(),
 				null,
 				null,
 				null,
@@ -160,6 +169,7 @@ class CommonServiceGetPageTest {
 		String searchText = "text";
 		List<String> askedTitles = List.of("Title 1", "Title 2");
 		Payload payload = new Payload(
+				formulas.getTitleList(),
 				null,
 				null,
 				null,
@@ -176,6 +186,7 @@ class CommonServiceGetPageTest {
 				.thenReturn(titles);
 
 		Payload expectedPayload = new Payload(
+				formulas.getTitleList(),
 				null,
 				null,
 				null,
@@ -200,6 +211,7 @@ class CommonServiceGetPageTest {
 		String searchText = "text";
 		List<String> askedTitles = List.of("  ");
 		Payload payload = new Payload(
+				formulas.getTitleList(),
 				null,
 				null,
 				null,
@@ -216,6 +228,7 @@ class CommonServiceGetPageTest {
 				.thenReturn(titles);
 
 		Payload expectedPayload = new Payload(
+				formulas.getTitleList(),
 				null,
 				null,
 				null,
@@ -241,6 +254,7 @@ class CommonServiceGetPageTest {
 		String title = "Title 3";
 		List<String> askedTitles = List.of(title);
 		Payload payload = new Payload(
+				formulas.getTitleList(),
 				null,
 				null,
 				null,
@@ -260,6 +274,7 @@ class CommonServiceGetPageTest {
 				.thenReturn(Optional.empty());
 
 		Payload expectedPayload = new Payload(
+				formulas.getTitleList(),
 				null,
 				null,
 				null,
@@ -285,6 +300,7 @@ class CommonServiceGetPageTest {
 		String title = "Title 2";
 		List<String> askedTitles = List.of(title);
 		Payload payload = new Payload(
+				formulas.getTitleList(),
 				null,
 				null,
 				null,
@@ -312,6 +328,7 @@ class CommonServiceGetPageTest {
 				.thenReturn(htmlContentString);
 
 		Payload expectedPayload = new Payload(
+				formulas.getTitlePage(),
 				null,
 				null,
 				null,

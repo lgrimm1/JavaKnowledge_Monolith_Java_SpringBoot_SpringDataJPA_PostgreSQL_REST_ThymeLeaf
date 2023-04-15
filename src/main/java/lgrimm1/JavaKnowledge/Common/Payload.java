@@ -3,6 +3,7 @@ package lgrimm1.JavaKnowledge.Common;
 import java.util.*;
 
 public class Payload {
+	public String templateTitle;
 
 	public Boolean confirm;
 	public String content;
@@ -17,7 +18,8 @@ public class Payload {
 	public Payload() {
 	}
 
-	public Payload(Boolean confirm,
+	public Payload(String templateTitle,
+				   Boolean confirm,
 				   String content,
 				   Boolean editExistingPage,
 				   String files,
@@ -26,6 +28,7 @@ public class Payload {
 				   String htmlContent,
 				   String title,
 				   List<String> titles) {
+		this.templateTitle = templateTitle;
 		this.confirm = confirm;
 		this.content = content;
 		this.editExistingPage = editExistingPage;
@@ -35,6 +38,14 @@ public class Payload {
 		this.htmlContent = htmlContent;
 		this.title = title;
 		this.titles = titles;
+	}
+
+	public String getTemplateTitle() {
+		return templateTitle;
+	}
+
+	public void setTemplateTitle(String templateTitle) {
+		this.templateTitle = templateTitle;
 	}
 
 	public Boolean getConfirm() {
@@ -114,35 +125,20 @@ public class Payload {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
 		Payload payload = (Payload) o;
-		return Objects.equals(confirm, payload.confirm) &&
-				Objects.equals(content, payload.content) &&
-				Objects.equals(editExistingPage, payload.editExistingPage) &&
-				Objects.equals(files, payload.files) &&
-				Objects.equals(message, payload.message) &&
-				Objects.equals(searchText, payload.searchText) &&
-				Objects.equals(htmlContent, payload.htmlContent) &&
-				Objects.equals(title, payload.title) &&
-				Objects.equals(titles, payload.titles);
+		return Objects.equals(templateTitle, payload.templateTitle) && Objects.equals(confirm, payload.confirm) && Objects.equals(content, payload.content) && Objects.equals(editExistingPage, payload.editExistingPage) && Objects.equals(files, payload.files) && Objects.equals(message, payload.message) && Objects.equals(searchText, payload.searchText) && Objects.equals(htmlContent, payload.htmlContent) && Objects.equals(title, payload.title) && Objects.equals(titles, payload.titles);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(confirm,
-				content,
-				editExistingPage,
-				files,
-				message,
-				searchText,
-				htmlContent,
-				title,
-				titles);
+		return Objects.hash(templateTitle, confirm, content, editExistingPage, files, message, searchText, htmlContent, title, titles);
 	}
 
 	@Override
 	public String toString() {
 		return "Payload{" +
-				"confirm=" + confirm +
-				", content=" + content +
+				"templateTitle='" + templateTitle + '\'' +
+				", confirm=" + confirm +
+				", content='" + content + '\'' +
 				", editExistingPage=" + editExistingPage +
 				", files='" + files + '\'' +
 				", message='" + message + '\'' +

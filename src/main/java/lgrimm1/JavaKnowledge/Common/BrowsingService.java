@@ -9,17 +9,19 @@ import org.springframework.web.servlet.*;
 import java.util.*;
 
 /**
- * @see #searchPages(String, Payload, ProcessRecords, TitleRepository, TxtRepository)
- * @see #getPage(String, Payload, ProcessRecords, TitleRepository, HtmlRepository)
+ * @see #searchPages(String, Payload, ProcessRecords, TitleRepository, TxtRepository, Formulas)
+ * @see #getPage(String, Payload, ProcessRecords, TitleRepository, HtmlRepository, Formulas)
  */
 public class BrowsingService {
 	public static ModelAndView searchPages(String initialView,
 										   Payload payload,
 										   ProcessRecords processRecords,
 										   TitleRepository titleRepository,
-										   TxtRepository txtRepository) {
+										   TxtRepository txtRepository,
+										   Formulas formulas) {
 		if (payload == null || payload.getSearchText() == null || payload.getSearchText().isBlank()) {
 			Payload payload2 = new Payload(
+					formulas.getTitleList(),
 					null,
 					null,
 					null,
@@ -40,6 +42,7 @@ public class BrowsingService {
 				.sorted()
 				.toList();
 		Payload payload2 = new Payload(
+				formulas.getTitleList(),
 				null,
 				null,
 				null,
@@ -57,13 +60,15 @@ public class BrowsingService {
 									   Payload payload,
 									   ProcessRecords processRecords,
 									   TitleRepository titleRepository,
-									   HtmlRepository htmlRepository) {
+									   HtmlRepository htmlRepository,
+									   Formulas formulas) {
 		if (payload == null ||
 				payload.getTitles() == null ||
 				payload.getTitles().size() != 1 ||
 				payload.getTitles().get(0) == null ||
 				payload.getTitles().get(0).isBlank()) {
 			Payload payload2 = new Payload(
+					formulas.getTitleList(),
 					null,
 					null,
 					null,
@@ -80,6 +85,7 @@ public class BrowsingService {
 		Optional<TitleEntity> optionalTitleEntity = titleRepository.findByTitle(titles.get(0));
 		if (optionalTitleEntity.isEmpty()) {
 			Payload payload2 = new Payload(
+					formulas.getTitleList(),
 					null,
 					null,
 					null,
@@ -95,6 +101,7 @@ public class BrowsingService {
 		Optional<HtmlEntity> optionalHtmlEntity = htmlRepository.findById(optionalTitleEntity.get().getHtmlId());
 		if (optionalHtmlEntity.isEmpty()) {
 			Payload payload2 = new Payload(
+					formulas.getTitleList(),
 					null,
 					null,
 					null,
@@ -108,6 +115,7 @@ public class BrowsingService {
 			return new ModelAndView("list", "payload", payload2);
 		}
 		Payload payload2 = new Payload(
+				formulas.getTitlePage(),
 				null,
 				null,
 				null,

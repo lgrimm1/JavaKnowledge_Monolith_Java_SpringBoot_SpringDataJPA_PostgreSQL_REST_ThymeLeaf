@@ -52,6 +52,7 @@ public class CommonService {
 
 	public ModelAndView getRoot(String initialView) {
 		Payload payload = new Payload(
+				formulas.getTitleRoot(),
 				null,
 				null,
 				null,
@@ -72,19 +73,19 @@ public class CommonService {
 	 * In case there is no search text given, returns all titles.
 	 */
 	public ModelAndView searchPages(String initialView, Payload payload) {
-		return BrowsingService.searchPages(initialView, payload, processRecords, titleRepository, txtRepository);
+		return BrowsingService.searchPages(initialView, payload, processRecords, titleRepository, txtRepository, formulas);
 	}
 
 	public ModelAndView getPage(String initialView, Payload payload) {
-		return BrowsingService.getPage(initialView, payload, processRecords, titleRepository, htmlRepository);
+		return BrowsingService.getPage(initialView, payload, processRecords, titleRepository, htmlRepository, formulas);
 	}
 
 	public ModelAndView managePages(String initialView) {
-		return ManagementService.managePages(initialView, processRecords, titleRepository);
+		return ManagementService.managePages(initialView, processRecords, titleRepository, formulas);
 	}
 
 	public ModelAndView createSourcePage(String initialView) {
-		return ManagementService.createSourcePage(initialView);
+		return ManagementService.createSourcePage(initialView, formulas);
 	}
 
 	public ModelAndView editSourcePage(String initialView, Payload payload) {
@@ -93,7 +94,8 @@ public class CommonService {
 				payload,
 				processRecords,
 				titleRepository,
-				txtRepository);
+				txtRepository,
+				formulas);
 	}
 
 	public ModelAndView renameSourcePage(String initialView, Payload payload) {
@@ -102,7 +104,8 @@ public class CommonService {
 				payload,
 				processRecords,
 				titleRepository,
-				fileOperations);
+				fileOperations,
+				formulas);
 	}
 
 	public ModelAndView deletePages(String initialView, Payload payload) {
@@ -112,7 +115,8 @@ public class CommonService {
 				processRecords,
 				titleRepository,
 				txtRepository,
-				htmlRepository);
+				htmlRepository,
+				formulas);
 	}
 
 	public ModelAndView importTxt(String initialView, Payload payload) {
@@ -159,7 +163,8 @@ public class CommonService {
 				txtRepository,
 				htmlRepository,
 				fileOperations,
-				processRecords);
+				processRecords,
+				formulas);
 	}
 }
 

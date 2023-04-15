@@ -49,6 +49,8 @@ class CommonServiceImportTxtTest {
 				extractors,
 				processPage,
 				htmlGenerators);
+		when(formulas.getTitleManagement())
+				.thenReturn("MANAGEMENTTITLE");
 	}
 
 	@Test
@@ -60,6 +62,7 @@ class CommonServiceImportTxtTest {
 				.thenReturn(titles);
 
 		Payload expectedPayload = new Payload(
+				formulas.getTitleManagement(),
 				false,
 				null,
 				null,
@@ -86,6 +89,7 @@ class CommonServiceImportTxtTest {
 		String message = "";
 		List<String> receivedTitles = List.of("Title 1");
 		Payload receivedPayload = new Payload(
+				formulas.getTitleManagement(),
 				confirm,
 				null,
 				null,
@@ -102,6 +106,7 @@ class CommonServiceImportTxtTest {
 				.thenReturn(titles);
 
 		Payload expectedPayload = new Payload(
+				formulas.getTitleManagement(),
 				false,
 				null,
 				null,
@@ -128,6 +133,7 @@ class CommonServiceImportTxtTest {
 		String message = "";
 		List<String> receivedTitles = List.of("Title 1");
 		Payload receivedPayload = new Payload(
+				formulas.getTitleManagement(),
 				confirm,
 				null,
 				null,
@@ -144,6 +150,7 @@ class CommonServiceImportTxtTest {
 				.thenReturn(titles);
 
 		Payload expectedPayload = new Payload(
+				formulas.getTitleManagement(),
 				false,
 				null,
 				null,
@@ -170,6 +177,7 @@ class CommonServiceImportTxtTest {
 		String message = "";
 		List<String> receivedTitles = List.of("Title 1");
 		Payload receivedPayload = new Payload(
+				formulas.getTitleManagement(),
 				confirm,
 				null,
 				null,
@@ -186,6 +194,7 @@ class CommonServiceImportTxtTest {
 				.thenReturn(titles);
 
 		Payload expectedPayload = new Payload(
+				formulas.getTitleManagement(),
 				false,
 				null,
 				null,
@@ -212,6 +221,7 @@ class CommonServiceImportTxtTest {
 		String message = "";
 		List<String> receivedTitles = List.of("Title 1");
 		Payload receivedPayload = new Payload(
+				formulas.getTitleManagement(),
 				confirm,
 				null,
 				null,
@@ -228,6 +238,7 @@ class CommonServiceImportTxtTest {
 				.thenReturn(titles);
 
 		Payload expectedPayload = new Payload(
+				formulas.getTitleManagement(),
 				false,
 				null,
 				null,
@@ -254,6 +265,7 @@ class CommonServiceImportTxtTest {
 		String message = "";
 		List<String> receivedTitles = List.of("Title 1");
 		Payload receivedPayload = new Payload(
+				formulas.getTitleManagement(),
 				confirm,
 				null,
 				null,
@@ -295,6 +307,7 @@ class CommonServiceImportTxtTest {
 				.thenReturn(titles);
 
 		Payload expectedPayload = new Payload(
+				formulas.getTitleManagement(),
 				false,
 				null,
 				null,

@@ -20,6 +20,11 @@ import java.util.*;
  * @see #getExampleStart()
  * @see #getExampleEnd()
  * @see #getFormula(String)
+ * @see #getTitleRoot()
+ * @see #getTitleList()
+ * @see #getTitlePage()
+ * @see #getTitleManagement()
+ * @see #getTitleSource()
  * @see #generateTabInSpaces(int)
  * @see #generateRepeatedPattern(String, int)
  */
@@ -72,6 +77,11 @@ public class Formulas {
 	private final List<String> FORMULA_TAB = List.of(tabInSpaces + "...");
 	private final List<String> FORMULA_TAB2 = List.of(tabInSpaces + tabInSpaces + "...");
 	private final List<String> FORMULA_TAB3 = List.of(tabInSpaces + tabInSpaces + tabInSpaces + "...");
+	private final String titleRoot = "WELCOME TO JAVA KNOWLEDGE!";
+	private final String titleList = "LIST OF TITLES";
+	private final String titlePage = "KNOWLEDGE PAGE";
+	private final String titleManagement = "JAVA KNOWLEDGE MANAGEMENT";
+	private final String titleSource = "JAVA KNOWLEDGE SOURCE PAGE";
 
 	public String getSuperLine() {
 		return superLine;
@@ -150,6 +160,26 @@ public class Formulas {
 			case "TAB3" -> FORMULA_TAB3;
 			default -> List.of();
 		};
+	}
+
+	public String getTitleRoot() {
+		return titleRoot;
+	}
+
+	public String getTitleList() {
+		return titleList;
+	}
+
+	public String getTitlePage() {
+		return titlePage;
+	}
+
+	public String getTitleManagement() {
+		return titleManagement;
+	}
+
+	public String getTitleSource() {
+		return titleSource;
 	}
 
 	public String generateTabInSpaces(int repetition) {

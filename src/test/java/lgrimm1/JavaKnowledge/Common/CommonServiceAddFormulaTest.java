@@ -48,6 +48,8 @@ class CommonServiceAddFormulaTest {
 				extractors,
 				processPage,
 				htmlGenerators);
+		when(formulas.getTitleSource())
+				.thenReturn("SOURCETITLE");
 	}
 
 	@Test
@@ -58,6 +60,7 @@ class CommonServiceAddFormulaTest {
 		Boolean editExistingPage = true;
 		String message = "";
 		Payload receivedPayload = new Payload(
+				formulas.getTitleSource(),
 				null,
 				originalContent,
 				editExistingPage,
@@ -82,6 +85,7 @@ class CommonServiceAddFormulaTest {
 				.thenReturn(originalContent);
 
 		Payload expectedPayload = new Payload(
+				formulas.getTitleSource(),
 				null,
 				originalContent,
 				true,
@@ -109,6 +113,7 @@ class CommonServiceAddFormulaTest {
 		Boolean editExistingPage = true;
 		String message = "";
 		Payload receivedPayload = new Payload(
+				formulas.getTitleSource(),
 				null,
 				originalContent,
 				editExistingPage,
@@ -133,6 +138,7 @@ class CommonServiceAddFormulaTest {
 				.thenReturn(originalContent);
 
 		Payload expectedPayload = new Payload(
+				formulas.getTitleSource(),
 				null,
 				originalContent,
 				true,
@@ -160,6 +166,7 @@ class CommonServiceAddFormulaTest {
 		Boolean editExistingPage = true;
 		String message = "";
 		Payload receivedPayload = new Payload(
+				formulas.getTitleSource(),
 				null,
 				originalContent,
 				editExistingPage,
@@ -184,6 +191,7 @@ class CommonServiceAddFormulaTest {
 				.thenReturn(originalContent);
 
 		Payload expectedPayload = new Payload(
+				formulas.getTitleSource(),
 				null,
 				originalContent,
 				true,
@@ -213,6 +221,7 @@ class CommonServiceAddFormulaTest {
 		Boolean editExistingPage = false;
 		String message = "";
 		Payload expectedPayload = new Payload(
+				formulas.getTitleSource(),
 				null,
 				content,
 				editExistingPage,
@@ -240,6 +249,7 @@ class CommonServiceAddFormulaTest {
 		Boolean editExistingPage = true;
 		String message = "";
 		Payload receivedPayload = new Payload(
+				formulas.getTitleSource(),
 				null,
 				originalContent,
 				editExistingPage,
@@ -271,6 +281,7 @@ class CommonServiceAddFormulaTest {
 				.thenReturn(newContent);
 
 		Payload expectedPayload = new Payload(
+				formulas.getTitleSource(),
 				null,
 				newContent,
 				true,
@@ -298,6 +309,7 @@ class CommonServiceAddFormulaTest {
 		Boolean editExistingPage = true;
 		String message = "";
 		Payload receivedPayload = new Payload(
+				formulas.getTitleSource(),
 				null,
 				originalContent,
 				editExistingPage,
@@ -329,6 +341,7 @@ class CommonServiceAddFormulaTest {
 				.thenReturn(newContent);
 
 		Payload expectedPayload = new Payload(
+				formulas.getTitleSource(),
 				null,
 				newContent,
 				true,
@@ -356,6 +369,7 @@ class CommonServiceAddFormulaTest {
 		Boolean editExistingPage = true;
 		String message = "";
 		Payload receivedPayload = new Payload(
+				formulas.getTitleSource(),
 				null,
 				originalContent,
 				editExistingPage,
@@ -385,6 +399,7 @@ class CommonServiceAddFormulaTest {
 				.thenReturn(newContent);
 
 		Payload expectedPayload = new Payload(
+				formulas.getTitleSource(),
 				null,
 				newContent,
 				true,
@@ -412,6 +427,7 @@ class CommonServiceAddFormulaTest {
 		Boolean editExistingPage = null;
 		String message = "";
 		Payload receivedPayload = new Payload(
+				formulas.getTitleSource(),
 				null,
 				originalContent,
 				editExistingPage,
@@ -443,6 +459,7 @@ class CommonServiceAddFormulaTest {
 				.thenReturn(newContent);
 
 		Payload expectedPayload = new Payload(
+				formulas.getTitleSource(),
 				null,
 				newContent,
 				false,
@@ -470,6 +487,7 @@ class CommonServiceAddFormulaTest {
 		Boolean editExistingPage = true;
 		String message = "";
 		Payload receivedPayload = new Payload(
+				formulas.getTitleSource(),
 				null,
 				originalContent,
 				editExistingPage,
@@ -501,6 +519,7 @@ class CommonServiceAddFormulaTest {
 				.thenReturn(newContent);
 
 		Payload expectedPayload = new Payload(
+				formulas.getTitleSource(),
 				null,
 				newContent,
 				true,

@@ -46,6 +46,8 @@ class CommonServiceRenameSourcePageTest {
 				extractors,
 				processPage,
 				htmlGenerators);
+		when(formulas.getTitleManagement())
+				.thenReturn("MANAGEMENTTITLE");
 	}
 
 	@Test
@@ -55,6 +57,7 @@ class CommonServiceRenameSourcePageTest {
 				.thenReturn(titles);
 
 		Payload expectedPayload = new Payload(
+				formulas.getTitleManagement(),
 				false,
 				null,
 				null,
@@ -77,6 +80,7 @@ class CommonServiceRenameSourcePageTest {
 	@Test
 	void renameSourcePage_NullTitles() {
 		Payload receivedPayload = new Payload(
+				formulas.getTitleManagement(),
 				false,
 				null,
 				null,
@@ -93,6 +97,7 @@ class CommonServiceRenameSourcePageTest {
 				.thenReturn(titles);
 
 		Payload expectedPayload = new Payload(
+				formulas.getTitleManagement(),
 				false,
 				null,
 				null,
@@ -116,6 +121,7 @@ class CommonServiceRenameSourcePageTest {
 	void renameSourcePage_MoreThanOneTitles() {
 		List<String> receivedTitles = List.of("Title 1", "Title 2");
 		Payload receivedPayload = new Payload(
+				formulas.getTitleManagement(),
 				false,
 				null,
 				null,
@@ -132,6 +138,7 @@ class CommonServiceRenameSourcePageTest {
 				.thenReturn(titles);
 
 		Payload expectedPayload = new Payload(
+				formulas.getTitleManagement(),
 				false,
 				null,
 				null,
@@ -156,6 +163,7 @@ class CommonServiceRenameSourcePageTest {
 		List<String> receivedTitles = new ArrayList<>();
 		receivedTitles.add(null);
 		Payload receivedPayload = new Payload(
+				formulas.getTitleManagement(),
 				false,
 				null,
 				null,
@@ -172,6 +180,7 @@ class CommonServiceRenameSourcePageTest {
 				.thenReturn(titles);
 
 		Payload expectedPayload = new Payload(
+				formulas.getTitleManagement(),
 				false,
 				null,
 				null,
@@ -196,6 +205,7 @@ class CommonServiceRenameSourcePageTest {
 		List<String> receivedTitles = new ArrayList<>();
 		receivedTitles.add("  ");
 		Payload receivedPayload = new Payload(
+				formulas.getTitleManagement(),
 				false,
 				null,
 				null,
@@ -212,6 +222,7 @@ class CommonServiceRenameSourcePageTest {
 				.thenReturn(titles);
 
 		Payload expectedPayload = new Payload(
+				formulas.getTitleManagement(),
 				false,
 				null,
 				null,
@@ -236,6 +247,7 @@ class CommonServiceRenameSourcePageTest {
 		List<String> receivedTitles = new ArrayList<>();
 		receivedTitles.add("Title 3");
 		Payload receivedPayload = new Payload(
+				formulas.getTitleManagement(),
 				false,
 				null,
 				null,
@@ -255,6 +267,7 @@ class CommonServiceRenameSourcePageTest {
 				.thenReturn(titles);
 
 		Payload expectedPayload = new Payload(
+				formulas.getTitleManagement(),
 				false,
 				null,
 				null,
@@ -279,6 +292,7 @@ class CommonServiceRenameSourcePageTest {
 		List<String> receivedTitles = new ArrayList<>();
 		receivedTitles.add("Title 1");
 		Payload receivedPayload = new Payload(
+				formulas.getTitleManagement(),
 				false,
 				null,
 				null,
@@ -300,6 +314,7 @@ class CommonServiceRenameSourcePageTest {
 				.thenReturn(titles);
 
 		Payload expectedPayload = new Payload(
+				formulas.getTitleManagement(),
 				false,
 				null,
 				null,
@@ -324,6 +339,7 @@ class CommonServiceRenameSourcePageTest {
 		List<String> receivedTitles = new ArrayList<>();
 		receivedTitles.add("Title 1");
 		Payload receivedPayload = new Payload(
+				formulas.getTitleManagement(),
 				false,
 				null,
 				null,
@@ -345,6 +361,7 @@ class CommonServiceRenameSourcePageTest {
 				.thenReturn(titles);
 
 		Payload expectedPayload = new Payload(
+				formulas.getTitleManagement(),
 				false,
 				null,
 				null,
@@ -369,6 +386,7 @@ class CommonServiceRenameSourcePageTest {
 		List<String> receivedTitles = new ArrayList<>();
 		receivedTitles.add("Title 1");
 		Payload receivedPayload = new Payload(
+				formulas.getTitleManagement(),
 				false,
 				null,
 				null,
@@ -391,6 +409,7 @@ class CommonServiceRenameSourcePageTest {
 				.thenReturn(titles);
 
 		Payload expectedPayload = new Payload(
+				formulas.getTitleManagement(),
 				false,
 				null,
 				null,
@@ -415,6 +434,7 @@ class CommonServiceRenameSourcePageTest {
 		List<String> receivedTitles = new ArrayList<>();
 		receivedTitles.add("Title 2");
 		Payload receivedPayload = new Payload(
+				formulas.getTitleManagement(),
 				false,
 				null,
 				null,
@@ -443,6 +463,7 @@ class CommonServiceRenameSourcePageTest {
 				.thenReturn(titles);
 
 		Payload expectedPayload = new Payload(
+				formulas.getTitleManagement(),
 				false,
 				null,
 				null,

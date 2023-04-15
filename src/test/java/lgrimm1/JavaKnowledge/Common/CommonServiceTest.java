@@ -53,11 +53,18 @@ class CommonServiceTest {
 				extractors,
 				processPage,
 				htmlGenerators);
+		when(formulas.getTitleRoot())
+				.thenReturn("ROOTTITLE");
+		when(formulas.getTitleManagement())
+				.thenReturn("MANAGEMENTTITLE");
+		when(formulas.getTitleSource())
+				.thenReturn("SOURCETITLE");
 	}
 
 	@Test
 	void getRoot() {
 		Payload expectedPayload = new Payload(
+				formulas.getTitleRoot(),
 				null,
 				null,
 				null,
@@ -83,6 +90,7 @@ class CommonServiceTest {
 				.thenReturn(titles);
 
 		Payload expectedPayload = new Payload(
+				formulas.getTitleManagement(),
 				false,
 				null,
 				null,
@@ -105,6 +113,7 @@ class CommonServiceTest {
 	@Test
 	void createSourcePage() {
 		Payload expectedPayload = new Payload(
+				formulas.getTitleSource(),
 				null,
 				"",
 				false,

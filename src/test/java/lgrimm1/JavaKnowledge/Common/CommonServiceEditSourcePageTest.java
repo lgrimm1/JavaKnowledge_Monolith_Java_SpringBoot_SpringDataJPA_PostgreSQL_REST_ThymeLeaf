@@ -47,6 +47,10 @@ class CommonServiceEditSourcePageTest {
 				extractors,
 				processPage,
 				htmlGenerators);
+		when(formulas.getTitleManagement())
+				.thenReturn("MANAGEMENTTITLE");
+		when(formulas.getTitleSource())
+				.thenReturn("SOURCETITLE");
 	}
 
 	@Test
@@ -56,6 +60,7 @@ class CommonServiceEditSourcePageTest {
 				.thenReturn(titles);
 
 		Payload expectedPayload = new Payload(
+				formulas.getTitleManagement(),
 				false,
 				null,
 				null,
@@ -78,6 +83,7 @@ class CommonServiceEditSourcePageTest {
 	@Test
 	void editSourcePage_NullTitles() {
 		Payload receivedPayload = new Payload(
+				formulas.getTitleManagement(),
 				false,
 				null,
 				null,
@@ -94,6 +100,7 @@ class CommonServiceEditSourcePageTest {
 				.thenReturn(titles);
 
 		Payload expectedPayload = new Payload(
+				formulas.getTitleManagement(),
 				false,
 				null,
 				null,
@@ -117,6 +124,7 @@ class CommonServiceEditSourcePageTest {
 	void editSourcePage_MoreThanOneTitles() {
 		List<String> receivedTitles = List.of("Title 1", "Title 2");
 		Payload receivedPayload = new Payload(
+				formulas.getTitleManagement(),
 				false,
 				null,
 				null,
@@ -133,6 +141,7 @@ class CommonServiceEditSourcePageTest {
 				.thenReturn(titles);
 
 		Payload expectedPayload = new Payload(
+				formulas.getTitleManagement(),
 				false,
 				null,
 				null,
@@ -157,6 +166,7 @@ class CommonServiceEditSourcePageTest {
 		List<String> receivedTitles = new ArrayList<>();
 		receivedTitles.add(null);
 		Payload receivedPayload = new Payload(
+				formulas.getTitleManagement(),
 				false,
 				null,
 				null,
@@ -173,6 +183,7 @@ class CommonServiceEditSourcePageTest {
 				.thenReturn(titles);
 
 		Payload expectedPayload = new Payload(
+				formulas.getTitleManagement(),
 				false,
 				null,
 				null,
@@ -197,6 +208,7 @@ class CommonServiceEditSourcePageTest {
 		List<String> receivedTitles = new ArrayList<>();
 		receivedTitles.add("  ");
 		Payload receivedPayload = new Payload(
+				formulas.getTitleManagement(),
 				false,
 				null,
 				null,
@@ -213,6 +225,7 @@ class CommonServiceEditSourcePageTest {
 				.thenReturn(titles);
 
 		Payload expectedPayload = new Payload(
+				formulas.getTitleManagement(),
 				false,
 				null,
 				null,
@@ -237,6 +250,7 @@ class CommonServiceEditSourcePageTest {
 		List<String> receivedTitles = new ArrayList<>();
 		receivedTitles.add("Title 3");
 		Payload receivedPayload = new Payload(
+				formulas.getTitleManagement(),
 				false,
 				null,
 				null,
@@ -257,6 +271,7 @@ class CommonServiceEditSourcePageTest {
 				.thenReturn(titles);
 
 		Payload expectedPayload = new Payload(
+				formulas.getTitleManagement(),
 				false,
 				null,
 				null,
@@ -281,6 +296,7 @@ class CommonServiceEditSourcePageTest {
 		List<String> receivedTitles = new ArrayList<>();
 		receivedTitles.add("Title 3");
 		Payload receivedPayload = new Payload(
+				formulas.getTitleManagement(),
 				false,
 				null,
 				null,
@@ -303,6 +319,7 @@ class CommonServiceEditSourcePageTest {
 				.thenReturn(titles);
 
 		Payload expectedPayload = new Payload(
+				formulas.getTitleManagement(),
 				false,
 				null,
 				null,
@@ -327,6 +344,7 @@ class CommonServiceEditSourcePageTest {
 		List<String> receivedTitles = new ArrayList<>();
 		receivedTitles.add("Title 3");
 		Payload receivedPayload = new Payload(
+				formulas.getTitleManagement(),
 				false,
 				null,
 				null,
@@ -354,6 +372,7 @@ class CommonServiceEditSourcePageTest {
 */
 
 		Payload expectedPayload = new Payload(
+				formulas.getTitleSource(),
 				null,
 				content,
 				true,

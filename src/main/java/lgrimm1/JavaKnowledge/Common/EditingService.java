@@ -10,7 +10,7 @@ import java.util.*;
 
 /**
  * @see #addFormula(String, String, Payload, ProcessRecords, Formulas)
- * @see #savePage(String, Payload, TitleRepository, TxtRepository, HtmlRepository, FileOperations, ProcessRecords)
+ * @see #savePage(String, Payload, TitleRepository, TxtRepository, HtmlRepository, FileOperations, ProcessRecords, Formulas)
  */
 public class EditingService {
 	public static ModelAndView addFormula(String initialView,
@@ -20,6 +20,7 @@ public class EditingService {
 										  Formulas formulas) {
 		if (payload == null) {
 			Payload payload2 = new Payload(
+					formulas.getTitleSource(),
 					null,
 					"",
 					false,
@@ -52,6 +53,7 @@ public class EditingService {
 			message = "FORMULA WAS APPENDED.";
 		}
 		Payload payload2 = new Payload(
+				formulas.getTitleSource(),
 				null,
 				processRecords.listToString(contentList),
 				editExistingPage,
@@ -71,9 +73,11 @@ public class EditingService {
 										TxtRepository txtRepository,
 										HtmlRepository htmlRepository,
 										FileOperations fileOperations,
-										ProcessRecords processRecords) {
+										ProcessRecords processRecords,
+										Formulas formulas) {
 		if (payload == null) {
 			Payload payload2 = new Payload(
+					formulas.getTitleSource(),
 					null,
 					"",
 					false,
@@ -97,6 +101,7 @@ public class EditingService {
 		}
 		if (title == null || title.isBlank()) {
 			Payload payload2 = new Payload(
+					formulas.getTitleSource(),
 					null,
 					content,
 					editExistingPage,
@@ -132,6 +137,7 @@ public class EditingService {
 				message = "SOURCE PAGE HAS BEEN OVERWRITTEN.";
 			}
 			Payload payload2 = new Payload(
+					formulas.getTitleSource(),
 					null,
 					content,
 					true,
@@ -148,6 +154,7 @@ public class EditingService {
 			if (optionalTitleEntity.isPresent()) {
 				message = "THERE IS AN EXISTING PAGE WITH THIS TITLE.";
 				Payload payload2 = new Payload(
+						formulas.getTitleSource(),
 						null,
 						content,
 						false,
@@ -174,6 +181,7 @@ public class EditingService {
 				message = "SOURCE PAGE HAS BEEN SAVED.";
 			}
 			Payload payload2 = new Payload(
+					formulas.getTitleSource(),
 					false,
 					null,
 					null,

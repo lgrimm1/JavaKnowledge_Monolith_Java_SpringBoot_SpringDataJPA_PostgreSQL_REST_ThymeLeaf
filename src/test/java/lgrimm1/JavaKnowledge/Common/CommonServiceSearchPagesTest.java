@@ -47,6 +47,10 @@ public class CommonServiceSearchPagesTest {
 				extractors,
 				processPage,
 				htmlGenerators);
+		when(formulas.getTitleRoot())
+				.thenReturn("ROOTTITLE");
+		when(formulas.getTitleList())
+				.thenReturn("LISTTITLE");
 	}
 
 	@Test
@@ -56,6 +60,7 @@ public class CommonServiceSearchPagesTest {
 				.thenReturn(titles);
 
 		Payload expectedPayload = new Payload(
+				formulas.getTitleList(),
 				null,
 				null,
 				null,
@@ -82,6 +87,7 @@ public class CommonServiceSearchPagesTest {
 				.thenReturn(titles);
 
 		Payload expectedPayload = new Payload(
+				formulas.getTitleList(),
 				null,
 				null,
 				null,
@@ -96,6 +102,7 @@ public class CommonServiceSearchPagesTest {
 		model.put("payload", expectedPayload);
 
 		Payload incomingPayload = new Payload(
+				formulas.getTitleRoot(),
 				null,
 				null,
 				null,
@@ -119,6 +126,7 @@ public class CommonServiceSearchPagesTest {
 				.thenReturn(titles);
 
 		Payload expectedPayload = new Payload(
+				formulas.getTitleList(),
 				null,
 				null,
 				null,
@@ -133,6 +141,7 @@ public class CommonServiceSearchPagesTest {
 		model.put("payload", expectedPayload);
 
 		Payload incomingPayload = new Payload(
+				formulas.getTitleRoot(),
 				null,
 				null,
 				null,
@@ -153,6 +162,7 @@ public class CommonServiceSearchPagesTest {
 	void searchPages_ExistingSearchText() {
 		String searchText = "Word2 Word1";
 		Payload incomingPayload = new Payload(
+				formulas.getTitleRoot(),
 				null,
 				null,
 				null,
@@ -170,6 +180,7 @@ public class CommonServiceSearchPagesTest {
 
 		List<String> titles = List.of("Title 1", "Title 2");
 		Payload expectedPayload = new Payload(
+				formulas.getTitleList(),
 				null,
 				null,
 				null,
