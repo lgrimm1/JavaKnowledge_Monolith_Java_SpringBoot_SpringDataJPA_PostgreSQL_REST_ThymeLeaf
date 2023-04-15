@@ -1,4 +1,5 @@
 "payload": {
+    "templateTitle": <String>
     "confirm": <boolean>,
     "content": [<String>, ...],
     "editExistingPage": <boolean>,

@@ -2,19 +2,19 @@ Views
 ------------------------
 "root"
 Received model: "payload"
-Minimum fields: {}
+Minimum fields: {"templateTitle": <String>}
 Item                                        Endpoint            Minimum sent model
 ----------                                  ----------          ----------
 banner                                      GET /               -
 search text field
 "Search" button                             POST /search        {"searchText": <String>}
 "Management" button                         POST /management    -
-Total returned fields: {"searchText": <String>}
+Total returned fields: {"templateTitle": <String>, "searchText": <String>}
 
 
 "list"
 Received model: payload
-Minimum fields: {"titles": [<String>, ...], "searchText": <String>}
+Minimum fields: {"templateTitle": <String>, "titles": [<String>, ...], "searchText": <String>}
 Item                                        Endpoint            Minimum sent model
 ----------                                  ----------          ----------
 banner                                      GET /               -
@@ -22,12 +22,12 @@ text of search text
 list of filtered titles
 "View Page" button                          POST /page          {"titles": <String>}
 "Back" button                               GET /               -
-Total returned fields: {"titles": [<String>, ...], "searchText": <String>}
+Total returned fields: {"templateTitle": <String>, "titles": [<String>, ...], "searchText": <String>}
 
 
 "page"
 Received model: payload
-Minimum fields: {"titles": [<String>, ...], "htmlContent": <String>}
+Minimum fields: {"templateTitle": <String>, "titles": [<String>, ...], "htmlContent": <String>}
 Item                                        Endpoint            Minimum sent model
 ----------                                  ----------          ----------
 banner                                      GET /               -
@@ -35,12 +35,12 @@ list of references
 "View Page" button                          POST /page          {"titles": <String>}
 "Back" button                               GET /               -
 content of a page in a frame
-Total returned fields: {"titles": [<String>, ...], "htmlContent": <String>}
+Total returned fields: {"templateTitle": <String>, "titles": [<String>, ...], "htmlContent": <String>}
 
 
 "management"
 Received model: payload
-Minimum fields: {"titles": [<String>, ...], "message": <String>}
+Minimum fields: {"templateTitle": <String>, "titles": [<String>, ...], "message": <String>}
 Item                                        Endpoint            Minimum sent model
 ----------                                  ----------          ----------
 banner                                      GET /               -
@@ -56,12 +56,12 @@ new title text field
 "Generate Pages from Sources" button        POST /generate      {"confirm": <boolean>}
 "Import Source Files"                       POST /import        {"files": <String>, "confirm": <boolean>}
 "Back" button                               GET /               -
-Total returned fields: {"titles": [<String>, ...], "files": <String>, "confirm": <boolean>, "message": <String>, "title": <String>}
+Total returned fields: {"templateTitle": <String>, "titles": [<String>, ...], "files": <String>, "confirm": <boolean>, "message": <String>, "title": <String>}
 
 
 "source"
 Received model: payload
-Minimum fields: {"title": <String>, "content": [<String>, ...], "editExistingPage": <boolean>, "message": <String>}
+Minimum fields: {"templateTitle": <String>, "title": <String>, "content": [<String>, ...], "editExistingPage": <boolean>, "message": <String>}
 Item                                        Endpoint            Minimum sent model
 ----------                                  ----------          ----------
 banner                                      GET /               -
@@ -80,4 +80,4 @@ content multi-row text field
 "Append Triple Tab" button                  POST /add/tab3      {"title": <String>, "content": [<String>, ...], "editExistingPage": <boolean>}
 "Save" button                               POST /save          {"title": <String>, "content": [<String>, ...], "editExistingPage": <boolean>}
 "Back" button                               POST /management    -
-Total returned fields: {"title": <String>, "content": [<String>, ...], "editExistingPage": <boolean>, "message": <String>}
+Total returned fields: {"templateTitle": <String>, "title": <String>, "content": [<String>, ...], "editExistingPage": <boolean>, "message": <String>}
