@@ -162,6 +162,15 @@ iframe {
      border-left: none;
 }
 
+.source_textarea {
+    resize: none;
+    height: 15em;
+    white-space: pre;
+    overflow-x: scroll;
+    overflow-y: scroll;
+    overflow: -moz-scrollbars-horizontal;
+}
+
 .submit_full, .button_full {
     width: 90%
 }

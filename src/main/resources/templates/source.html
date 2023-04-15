@@ -1,24 +1,6 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Java Knowledge</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <link rel="icon" type="image/x-icon" th:href="@{/images/favicon.ico}" href="/images/favicon.ico">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
-    <link rel="stylesheet" th:href="@{/styles/desktop.css}" href="/styles/desktop.css">
-    <style>
-        textarea {
-            resize: none;
-            white-space: pre;
-            overflow-x: scroll;
-            overflow-y: scroll;
-            overflow: -moz-scrollbars-horizontal;
-        }
-    </style>
-    <script type="text/javascript" th:src="@{/js/desktop.js}" src="/js/desktop.js"></script>
-</head>
+<head th:replace="~{/fragments/head.html::head}" />
 <body>
 <form action="#" th:object="${payload}" th:action="@{/management}" method="post" novalidate>
     <table class="formatter_table">
@@ -61,7 +43,7 @@
                 <input type="hidden" th:field="*{editExistingPage}">
                 <fieldset>
                     <legend>&nbsp;Content&nbsp;</legend>
-                    <textarea id="txt_content" th:field="*{content}" style="height: 15em;" placeholder="Enter page content..." wrap="soft" spellcheck="false" />
+                    <textarea id="txt_content" th:field="*{content}" class="source_textarea" placeholder="Enter page content..." wrap="soft" spellcheck="false" />
                 </fieldset>
                 <br>
             </td>
