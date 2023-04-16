@@ -434,6 +434,7 @@ In case at backend only \n character would be preferred, upon receiving data, re
 =================================================================================
 Visit the SPRING BOOT THYMELEAF EXAMPLES page for examples.
 
+MORE HERE: https://www.baeldung.com/spring-thymeleaf-3-expressions
 MORE HERE: https://www.javatpoint.com/spring-boot-thymeleaf-view
 MORE HERE: https://stackoverflow.com/questions/28325708/thymeleaf-how-to-pass-html-to-the-div
 MORE HERE: https://www.baeldung.com/spring-boot-crud-thymeleaf
