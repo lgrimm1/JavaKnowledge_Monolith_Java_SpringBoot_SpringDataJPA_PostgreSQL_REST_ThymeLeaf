@@ -3,9 +3,12 @@ SPRING BOOT THYMELEAF
 =================================================================================
 1. GENERALLY
 2. SETTING UP
-3. TEMPLATES
-4. FORMS
-5. EXAMPLES
+3. THYMELEAF TEMPLATES
+4. HTML STANDARD TAG PARAMETERS
+5. THYMELEAF TEMPLATE TAG PARAMETERS
+6. THYMELEAF TEMPLATE FRAGMENTATION
+7. THYMELEAF TEMPLATE FORMS
+8. EXAMPLES
 
 =================================================================================
 1. GENERALLY
@@ -43,7 +46,7 @@ END OF EXAMPLE
 Alternatively, use Spring Initializr to generate a new empty project with added ThymeLeaf.
 
 =================================================================================
-3. TEMPLATES
+3. THYMELEAF TEMPLATES
 =================================================================================
 The server answer (if there is any) sends message to the frontend via filling out a template and sending that template to caller client (e.g. browser).
 For a template, HTML, JSON etc. files can be created.
@@ -75,18 +78,33 @@ Please note that opened tags are not supported by all browsers.
 
 ThymeLeaf offers a <th:block> closed tag which serves literally as a block tag without any special meaning. Useful when other tags should be rendered together as nested tags and <span>, <div> or other HTML block tags do not fit.
 
-The general formula for using a tag parameter follows the HTML standards (parameter_name="'value'" for character and text, parameter_name="value" otherwise).
-Also from the standards, some parameters do not have value, in this case there is no ="'value'" or ="value" after the parameter_name.
-For controls (inputs), the on...= parameters (e.g. onclick=, onload=) are used for event-driven actions (e.g. onclick="script_method(this)").
-For referring script methods, use parameter_name="method_name(argument)" formula.
+=================================================================================
+4. HTML STANDARD TAG PARAMETERS
+=================================================================================
+In a tag, depending on the tag itself, pre-defined tag parameters can be defined. Most of them are optional. In case a parameter is required but not given, the interpreter (the browser) will skip the tag along with logging an error.
+
+The tag parameters have two versions:
+    - parameterized (a value must be given along)
+    - not parameterized (only giving the parameter is needed)
+
+The general formula for giving parameter value follows the HTML standards:
+    - for character and text value: parameter_name="'value'"
+    - other types: parameter_name="value"
+    - for referring script methods: parameter_name="method_name(argument)"
+
+For controls (inputs), the on...= parameters (e.g. onclick=, onload=) are used for capturing event-driven actions (e.g. onclick="script_method(this)").
 For size-like parameters (e.g. width=, height=), px, % and other units are accepted (e.g. width="80%" height="50px"). Please note, there is no space between the amount and the unit.
 The class= parameter defines CSS class name (e.g. class="h4_style"), visit the CSS page for details.
 The style= parameter can hold local CSS codes (e.g. style="width=80%; height=50px"); visit the CSS page for details.
-The id= parameter defines a text by which the control can be identified (e.g. id="control_identifier").
-The for= parameter marks that by its name, the control is for which other control (e.g. for="control_identifier"). Mainly used with label tags which will be visible only when the marked control is visible.
+The id= parameter defines a text by which the tag can be identified (e.g. id="tag_identifier").
+The for= parameter marks that by its name, the control is for which other control (e.g. for="control_identifier"). Mainly used with label tags which will be visible only when the marked control is visible and transfers the onclick event to the marked control (easier aimed control).
 
-Almost any parametrized HTML tag parameter has th: counterpart. In case a page needs template parameters, use the th: version, in case static parameters, use standard version. If needed, these versions can be used in the same tag as well.
-The most used template tag parameters are:
+=================================================================================
+5. THYMELEAF TEMPLATE TAG PARAMETERS
+=================================================================================
+Almost any parametrized tag parameter has ThymeLeaf counterpart. Such parameter names are equal with the standard names but with a th: marker directly before the parameter name. By using a th: parameter, HTML attributes can be addressed which are sent by and to the backend. In case a tag needs ThymeLeaf parameter(s), use the th: version, in case not, use standard name.
+
+The most used th: tag parameters are:
     - th:text= (a text)
     - th:utext= (a text interpreted as HTML code)
     - th:each= (iteration through a collection)
@@ -94,80 +112,6 @@ The most used template tag parameters are:
     - th:unless= (if the condition is false, does a thing)
     - th:switch= (multiple condition for enumerable-type attribute)
     - th:case= (given variant for switched attribute)
-
-Next to the above th parameters which handles HTML attributes, there are some which helps to organize the template(s) better:
-    - th:fragment= (marks the tag and all nested tags of it as a named fragment; any HTML code tag can be marked and used as fragment, even <head> and <body> as well)
-    - th:insert= (inserts a tag marked with as fragment from a given external file into the tag)
-    - th:replace= (replaces the tag with tag marked as fragment from a given external file)
-    - th:include= (obsolete parameter)
-
-For fragmenting technique, the external file can be a whole template, a complete HTML file or a tag. Tag can be any (even a <head> or <script> block) and can consist of nested tags as well. This technique can be used in the next ways:
-    - if in the :insert or :replace parameters the fragment name is not defined, the entire external file will be used
-    - if in the :insert or :replace parameters the fragment name is defined, but that fragment name is not in the external file, the whole external file will be used
-    - if the :insert or :replace parameter matches with a fragment name in the external file, only that fragment will be used
-Following the logic, it became possible to design a template from parts and divide it into smaller (more handleable) pieces.
-In order to make the th: parameters in the external file understandable for the interpreter, the DOCTYPE and the <html> tag should be defined as well, see the example below.
-The fragment files should be placed under /templates/fragments directory (ThymeLeaf will handle them as templates). The reference used when inserting or replacing, follows the "~{/path/fragmentFile[.html]::fragmentName}" (obsolete version: "/path/fragmentFile[.extension] :: fragmentName") format where the spaces around the :: sign are optional, and the extension is .html by default.
-
-EXAMPLE FOR INSERTING AND REPLACING EXTERNAL HTML CODE:
-<!-- /fragments/fragment1.html (external file): -->
-<!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <link th:fragment="css" ...>
-</head>
-<body>
-    <table th:fragment="table">
-        <!-- code 1 -->
-    </table>
-    <p th:fragment="p">
-        <!-- code 2 -->
-    </p>
-</body>
-</html>
-
-<!-- template: -->
-<!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Title</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <link th:replace="~{/fragments/fragment1::css}">
-</head>
-<body>
-...
-<div th:insert="~{/fragments/fragment1::table}">
-</div>
-...
-<div th:replace="~{/fragments/fragment1.html::p}">
-</div>
-...
-</body>
-</html>
-
-<!-- resulted template: -->
-<!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Title</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <link th:fragment="css" ...>
-</head>
-<body>
-...
-<div>
-    <table>
-        <!-- code -->
-    </table>
-</div>
-...
-<p>
-    <!-- code -->
-</p>
-...
-</body>
-</html>
-END OF EXAMPLE
 
 Any variable can be sent in a template, ThymeLeaf recognizes all wrapper classes and theoretically all Collection types. It also can handle classes with subclasses. In order to send a primitive type to a template, convert it to wrapper class. Enums can be used only with tags which are designed to handle limited values e.g. radio input (see later), otherwise use String instead.
 A variable carrying data in the template is called HTML attribute. Its name can be different from Java variable name, the connection is made by the Model or ModelAndView classes in Spring Boot, see later.
@@ -272,8 +216,20 @@ EXAMPLE FOR A THYMELEAF TEMPLATE (HTML SIDE, ATTRIBUTES):
 END OF EXAMPLE
 
 =================================================================================
-4. FORMS
+6. THYMELEAF TEMPLATE FRAGMENTATION
 =================================================================================
+It is possible to design a template from parts and divide it into smaller (more handleable) pieces. This is called fragmentation.
+The fragments can be re-used several times, the template system becomes modular.
+For details, visit the SPRING BOOT THYMELEAF TEMPLATE FRAGMENTATION page.
+
+=================================================================================
+7. THYMELEAF TEMPLATE FORMS
+=================================================================================
+7.1. FORM TAG
+7.2. INPUTS
+
+7.1. FORM TAG
+---------------------------------------------------------------------------------
 In case the value(s) are needed to be sent back to backend, must use form(s) on the page, otherwise the template serves as an output page.
 In order to create and use forms, 3 main steps are needed:
     - a request which invokes a template which carries the form on server side
@@ -289,6 +245,8 @@ In the template the <form> tag header contains these parameters:
     - novalidate: no input value validation will happen when submitting (validation on server side)
     - id="form_name": unique name of the form with which actions etc. can refer to it
 
+7.2. INPUTS
+---------------------------------------------------------------------------------
 In the template all data which should be sent back, are rendered into input tags and similar as parameter.
 HTML parameters depend on the tag and the input type.
 If the input tag contains object or field data:
@@ -472,7 +430,7 @@ The length property of a <textarea> will always count the new line as it would b
 In case at backend only \n character would be preferred, upon receiving data, replace the \r\n to \n, then the \r to \n for safety.
 
 =================================================================================
-5. EXAMPLES
+8. EXAMPLES
 =================================================================================
 Visit the SPRING BOOT THYMELEAF EXAMPLES page for examples.
 
@@ -481,10 +439,11 @@ MORE HERE: https://stackoverflow.com/questions/28325708/thymeleaf-how-to-pass-ht
 MORE HERE: https://www.baeldung.com/spring-boot-crud-thymeleaf
 MORE HERE: https://www.baeldung.com/spring-thymeleaf-error-messages
 
+=>SPRING BOOT THYMELEAF EXAMPLES
+=>SPRING BOOT THYMELEAF TEMPLATE FRAGMENTATION
+=>CSS
 =>WEB APPLICATION
 =>SPRING BOOT
 =>SPRING BOOT CONTROLLER
 =>SERIALIZATION
 =>SPRING MODELANDVIEW
-=>SPRING BOOT THYMELEAF EXAMPLES
-=>CSS

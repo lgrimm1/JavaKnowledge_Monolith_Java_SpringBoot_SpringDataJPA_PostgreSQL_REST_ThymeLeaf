@@ -1,0 +1,314 @@
+=================================================================================
+SPRING BOOT THYMELEAF TEMPLATE FRAGMENTATION
+=================================================================================
+It is possible to design a template from parts and divide it into smaller (more handleable) pieces. This is called fragmentation.
+The fragments can be re-used several times, the template system becomes modular.
+
+Next to the th: parameters which handle HTML attributes, there are some which helps to organize the template(s) better:
+    - th:fragment= (marks the tag and all nested tags of it as a named fragment; any HTML code tag can be marked and used as fragment, even <head> and <body> as well)
+    - th:insert= (inserts a tag marked with as fragment from a given external file into the tag)
+    - th:replace= (replaces the tag with tag marked as fragment from a given external file)
+    - th:include= (obsolete parameter)
+
+For fragmenting technique, the external file can be a whole template, a complete HTML file or a tag. Tag can be any (even a <head> or <script> block) and can consist of nested tags as well. This technique can be used in the next ways:
+    - if in the :insert or :replace parameters the fragment name is not defined, the entire external file will be used
+    - if in the :insert or :replace parameters the fragment name is defined, but that fragment name is not in the external file, the entire external file will be used
+    - if the :insert or :replace parameter matches with a fragment name in the external file, only that fragment will be used
+    - if in the :insert or :replace parameter a tag and a CSS class is marked, that tag with that class from the external file will be used (if exists)
+    - if in the :insert or :replace parameter a tag is marked, that tag from the external file will be used (if exists)
+    - parameterized fragmentation
+    - conditional fragmentation (inclusion expressions)
+
+In order to make the th: parameters in the external file understandable for the interpreter, the DOCTYPE and the <html> tag should be defined as well, see the example below.
+The fragment files should be placed under /templates/fragments directory (ThymeLeaf will handle them as templates). The reference used when inserting or replacing, follows the "~{/path/fragmentFile[.html]::fragmentName}" (obsolete version: "/path/fragmentFile[.extension] :: fragmentName") format where the spaces around the :: sign are optional, and the extension is .html by default.
+
+The parameterized fragmentation technique is parallel to methods and their arguments: a fragment is prepared to receive parameters, and when ThymeLeaf inserts or replaces the fragment, will put the parameters into the new code.
+
+The conditional fragmentation means that a fragment is inserted or replaced only when a certain condition met. For this, ThymeLeaf uses Elvis operator (in Java: ternary operator). The condition needs data received from the backend.
+
+EXAMPLE FOR FRAGMENTATION BY FRAGMENT NAME (IN HEAD):
+<!-- /fragments/fragment1.html (external file): -->
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link th:fragment="css" ...>
+</head>
+</html>
+
+<!-- template: -->
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Title</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link th:replace="~{/fragments/fragment1::css}">
+</head>
+...
+</html>
+
+<!-- resulted template: -->
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Title</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link ...>
+</head>
+...
+</html>
+END OF EXAMPLE
+
+EXAMPLE FOR FRAGMENTATION BY FRAGMENT NAME (HEAD):
+<!-- /fragments/fragment1.html (external file): -->
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="head">
+    <title>Title</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    ...
+</head>
+</html>
+
+<!-- template: -->
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{/fragments/fragment1::head}" />
+...
+</html>
+
+<!-- resulted template: -->
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Title</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    ...
+</head>
+...
+</html>
+END OF EXAMPLE
+
+EXAMPLE FOR FRAGMENTATION BY FRAGMENT NAME (INSERT AND REPLACE):
+<!-- /fragments/fragment1.html (external file): -->
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<table th:fragment="table_fragment">
+    <!-- code 1 -->
+</table>
+<p th:fragment="p_fragment">
+    <!-- code 2 -->
+</p>
+</body>
+</html>
+
+<!-- template: -->
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    ...
+</head>
+<body>
+...
+<div th:insert="~{/fragments/fragment1::table_fragment}" />
+...
+<div th:replace="~{/fragments/fragment1::p_fragment}" />
+...
+</body>
+</html>
+
+<!-- resulted template: -->
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    ...
+</head>
+<body>
+...
+<div>
+    <table>
+        <!-- code 1 -->
+    </table>
+</div>
+...
+<p>
+    <!-- code 2 -->
+</p>
+...
+</body>
+</html>
+END OF EXAMPLE
+
+EXAMPLE FOR FRAGMENTATION BY TAG:
+<!-- /fragments/fragment1.html (external file): -->
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<footer>
+    <!-- code 4 -->
+</footer>
+</body>
+</html>
+
+<!-- template: -->
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    ...
+</head>
+<body>
+...
+<footer th:replace="~{/fragments/fragment1::footer}" />
+</body>
+</html>
+
+<!-- resulted template: -->
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    ...
+</head>
+<body>
+...
+<footer>
+    <!-- code 4 -->
+</footer>
+</body>
+</html>
+END OF EXAMPLE
+
+EXAMPLE FOR FRAGMENTATION BY TAG AND CSS CLASS:
+<!-- /fragments/fragment1.html (external file): -->
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<!-- by tag and CSS class: -->
+<textarea class="class_name">
+<!-- content -->
+</textarea>
+</body>
+</html>
+
+<!-- template: -->
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    ...
+</head>
+<body>
+...
+<span th:replace="~{/fragments/fragment1.html::textarea.class_name}" />
+...
+</body>
+</html>
+
+<!-- resulted template: -->
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    ...
+</head>
+<body>
+...
+<textarea class="class_name">
+<!-- content -->
+</textarea>
+...
+</body>
+</html>
+END OF EXAMPLE
+
+EXAMPLE FOR PARAMETERIZED FRAGMENTATION:
+<!-- /fragments/fragment1.html (external file): -->
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="formField (field, value, size)">
+    <div>
+        <label th:for="${#strings.toLowerCase(field)}">
+            <span th:text="${field}">Field</span>
+        </label>
+    </div>
+    <div>
+        <input type="text" th:id="${#strings.toLowerCase(field)}" th:name="${#strings.toLowerCase(field)}" th:value="${value}" th:size="${size}">
+    </div>
+</div>
+</body>
+</html>
+
+<!-- template: -->
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    ...
+</head>
+<body>
+...
+<div th:replace="~{/fragments/fragment1::formField(field='Name', value='John Doe', size='40')}" />
+...
+</body>
+</html>
+
+<!-- resulted template: -->
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    ...
+</head>
+<body>
+...
+<div>
+    <div>
+        <label for="name">
+            <span>Name</span>
+        </label>
+    </div>
+    <div>
+        <input type="text" id="name" name="name" value="John Doe" size="40" />
+    </div>
+</div>
+...
+</body>
+</html>
+END OF EXAMPLE
+
+EXAMPLE FOR CONDITIONAL FRAGMENTATION:
+<!-- /fragments/fragment1.html (external file): -->
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="dataPresent">Data received</div>
+<div th:fragment="noData">No data</div>
+</body>
+</html>
+
+<!-- template: -->
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    ...
+</head>
+<body>
+...
+<div th:replace="${#lists.size(data) > 0} ? ~{/fragments/fragment1.html::dataPresent} : ~{/fragments/fragment1.html::noData}" />
+...
+</body>
+</html>
+
+<!-- resulted template (here: lists.size(data) > 0): -->
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    ...
+</head>
+<body>
+...
+<div>Data received</div>
+...
+</body>
+</html>
+END OF EXAMPLE
+
+=>SPRING BOOT THYMELEAF
+=>SPRING BOOT THYMELEAF EXAMPLES
+=>CSS
