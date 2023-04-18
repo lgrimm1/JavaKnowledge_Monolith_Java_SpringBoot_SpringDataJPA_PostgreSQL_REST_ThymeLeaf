@@ -53,6 +53,7 @@ For a template, HTML, JSON etc. files can be created.
 The templates are placed under the src/main/resources/templates folder.
 In case of external CSS style, the .css file must be placed into the src/main/resources/static folder. For more, visit the CSS page.
 A template can be created in design-time and in run-time as well, latter before reaching it via GET, POST etc. queries.
+The <html> tag must contain the xmlns:th="http://www.thymeleaf.org" parameter in order to let the interpreters understand the ThymeLeaf dialect.
 
 EXAMPLE FOR A GENERAL THYMELEAF HTML TEMPLATE:
 <!DOCTYPE HTML>
@@ -92,12 +93,12 @@ The general formula for giving parameter value follows the HTML standards:
     - other types: parameter_name="value"
     - for referring script methods: parameter_name="method_name(argument)"
 
+The id= parameter defines a text by which the tag can be identified (e.g. id="tag_identifier").
+The for= parameter marks that by its name, the control is for which other control (e.g. for="control_identifier"). Mainly used with label tags which will be visible only when the marked control is visible and transfers the onclick event to the marked control (easier aimed control).
 For controls (inputs), the on...= parameters (e.g. onclick=, onload=) are used for capturing event-driven actions (e.g. onclick="script_method(this)").
 For size-like parameters (e.g. width=, height=), px, % and other units are accepted (e.g. width="80%" height="50px"). Please note, there is no space between the amount and the unit.
 The class= parameter defines CSS class name (e.g. class="h4_style"), visit the CSS page for details.
 The style= parameter can hold local CSS codes (e.g. style="width=80%; height=50px"); visit the CSS page for details.
-The id= parameter defines a text by which the tag can be identified (e.g. id="tag_identifier").
-The for= parameter marks that by its name, the control is for which other control (e.g. for="control_identifier"). Mainly used with label tags which will be visible only when the marked control is visible and transfers the onclick event to the marked control (easier aimed control).
 
 =================================================================================
 5. THYMELEAF TEMPLATE TAG PARAMETERS
@@ -237,13 +238,14 @@ In order to create and use forms, 3 main steps are needed:
     - a POST request handler on server side
 When the first GET, POST etc. request arrives in, the backend prepares the form template and sends it back to the client. The form at Submit sends a defined request to the backend with the filled data which is processed there.
 
-In the template the <form> tag header contains these parameters:
+In the template the <form> tag header can contain these parameters:
     - th:action="@{/endpoint_name}": on this endpoint the submit request will be sent
     - th:object="${object-attribute_name}": this attribute is received and sent by the form, contains data presented with the form
     - autocomplete="on_or_off": for all inputs, forces the browser to suggest complete values based upon a few typed characters
     - method="post": defines what request the form must send when the user submits
     - novalidate: no input value validation will happen when submitting (validation on server side)
     - id="form_name": unique name of the form with which actions etc. can refer to it
+    - enctype="multipart/form-data": defines that to the form Multipart will be attached, required for file uploading
 
 7.2. INPUTS
 ---------------------------------------------------------------------------------
@@ -259,6 +261,7 @@ If the input tag is button-like:
     - formaction="/endpoint": define targeted endpoint for submit-type input
     - formmethod="post": define targeted query type for submit-type input
     - onclick="script_name" or onclick="alert('message_text')": took action in case of click, or shows a dialog, only for button-type input
+The name= parameter of an input tag, in case no th:object or :field is rendered to the input, defines a new HTML attribute name which will be posted upon submit. In controller endpoint this attribute will be accessible via the @RequestParam("html_attribute_name") annotation; required explicitly when multipart (file or files) is submitted, see at description of file input below.
 
 In the template the next types can be used for input, data is defined within the opening tag.
 
@@ -310,6 +313,11 @@ File:
     - the user= parameter defines that the user-facing camera and/or microphone should be used (used together with capture=)
     - the environment= parameter specifies that the outward-facing camera and/or microphone should be used (if missing, will decide on its own; used together with capture=)
     - returns either a file name array or a text in which the file names are separated by commas
+    - uploaded file content will be attached to the posted data as Multipart part, works only when enctype="multipart/form-data" parameter is defined in the <form> tag
+    - the name= parameter is required for file uploading (defines a new HTML attribute name, rendered to the Multipart itself)
+    - the th:object or :field can be used for the file names and descriptive data but not for the file content
+    - at backend side, the receiver endpoint signature must contain a @RequestParam("html_attribute_name") annotation and its marked argument must have MultipartFile (single file) or MultipartFile[] (multiple files) type
+    - for file upload technique, visit the SPRING BOOT THYMELEAF FILE UPLOAD page
 
 Email:
     - the multiple parameter allows the user to enter more than one value
@@ -418,6 +426,7 @@ All input-types:
     - the autofocus parameter forces the focus on the input when the page loads, use it for one input per page
     - the form= parameter marks which <form> the input is part of, it has effect only when in the header of the <form> the id= parameter is used, such marked inputs can be placed outside the correspondent <form> tag, they still will be part of the correspondent <form>
     - the tabindex= parameter defines order of focusing when pressing TAB (e.g. tabindex="2", default is the order in the code)
+    - the title= parameter defines hint text which appears on hovering above the input
 
 Restrictions are useful on form-side but via Javascript it is possible to overwrite or get around them. Always check data on server-side.
 Without setting width and height for an image, the layout will change as the image loads. For proper design, this should be avoided, set the dimensions beforehand.
