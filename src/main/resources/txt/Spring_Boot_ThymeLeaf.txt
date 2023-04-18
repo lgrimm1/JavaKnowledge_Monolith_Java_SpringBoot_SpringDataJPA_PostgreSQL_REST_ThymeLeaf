@@ -358,11 +358,14 @@ Select:
     - it works as a combobox (scroll-down list) by default, as a list otherwise
     - the size= parameter defines the number of visible items, and the select will work as a list control, otherwise will work as a combobox
     - the multiple parameter lets more items to be selected in list control appearance
-    - option sub-tags define from which items can be the input value chosen
-    - an <option> sub-tag contains the value= parameter which will be posted
-    - the selected parameter selects an item
+    - nested <option> tags define from which items can be the input value chosen
+    - between the opening and closing <option> tags the visible item value is defined (HTML standard, use it when the items are static)
+    - in an opened <option> tag the th:text= parameter defines the visible item text (use it when items are dynamic)
+    - an <option> tag contains the value= parameter which means the postable value of the item (HTML standard, static)
+    - an <option> tag contains the th:value= parameter which means the postable value of the item (dynamic)
+    - the selected <option> parameter pre-selects an item
     - by default, for manually defined items, the first option, for dynamically defined items, the last added option fills the input
-    - between the opening and closing markers of an <option> sub-tag the displayed text is written (or use open tag with th:text= parameter)
+    - the disabled parameter of an <option> makes that item un-selectable
 
 Submit:
     - a button appears
@@ -442,6 +445,7 @@ MORE HERE: https://www.baeldung.com/spring-thymeleaf-error-messages
 
 =>SPRING BOOT THYMELEAF EXAMPLES
 =>SPRING BOOT THYMELEAF TEMPLATE FRAGMENTATION
+=>SPRING BOOT THYMELEAF FILE UPLOAD
 =>CSS
 =>WEB APPLICATION
 =>SPRING BOOT

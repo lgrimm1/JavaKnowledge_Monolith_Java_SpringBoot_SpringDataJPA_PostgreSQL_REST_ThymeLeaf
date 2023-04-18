@@ -14,18 +14,6 @@ In case of using file/folder list, File.pathSeparator constant will give OS inde
 7. LIST FILES AND FOLDERS
 8. READ AND WRITE INPUTSTREAMS
 
-=>STATEMENTS
-=>ITERATION
-=>EXCEPTIONS
-=>SCANNER
-=>ARRAY
-=>IMPORT
-=>FILEREADER
-=>FILEWRITER
-=>INPUTSTREAM
-=>OUTPUTSTREAM
-=>FILES
-
 =================================================================================
 1. INFORMATION
 =================================================================================
@@ -73,7 +61,7 @@ END OF EXAMPLE
 =================================================================================
 2. CREATE AND DELETE
 =================================================================================
-EXAMPLE FOR CREATING AND DELETING FILE:
+EXAMPLE FOR CREATING AND DELETING FILE (FILE CLASS):
 import java.io.File;
 ...
 String path = ...;
@@ -89,6 +77,21 @@ try {
 }
 catch (Exception e) {
 	...
+}
+END OF EXAMPLE
+
+EXAMPLE FOR CREATING DIRECTORY (PATHS, PATH AND FILES CLASS):
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.Files;
+import java.io.IOException;
+...
+Path path = Paths.get("./uploads"); //the directory will open from project root, on the same level with /scr and /target
+try {
+    Files.createDirectories(root);
+}
+catch (IOException e) {
+    throw new RuntimeException("Could not initialize folder for upload!");
 }
 END OF EXAMPLE
 
@@ -283,3 +286,15 @@ catch (Exception e) {
 	...
 }
 END OF EXAMPLE
+
+=>STATEMENTS
+=>ITERATION
+=>EXCEPTIONS
+=>SCANNER
+=>ARRAY
+=>IMPORT
+=>FILEREADER
+=>FILEWRITER
+=>INPUTSTREAM
+=>OUTPUTSTREAM
+=>FILES

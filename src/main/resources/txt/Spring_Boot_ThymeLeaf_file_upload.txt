@@ -1,0 +1,475 @@
+=================================================================================
+SPRING BOOT THYMELEAF FILE UPLOAD
+=================================================================================
+In order to provide file upload functionality, Spring Boot offers solution for the backend. The frontend is made of ThymeLeaf templates.
+For the frontend part, visit the SPRING BOOT THYMELEAF and SPRING BOOT THYMELEAF EXAMPLES pages.
+
+The uploaded files will be stored in the /upload folder which will be on the same level with /scr and /target directories of the project. The uploaded files will not be added to the repository however if this is needed, inject the right repository class into the service class.
+
+Please note, the example below does not follow best practices: the controller class is too thick, re-organizing the code might be advised.
+
+1. DEPENDENCIES
+2. FILE INFO MODEL
+3. SERVICE
+4. CONTROLLER
+5. APPLICATION.PROPERTIES
+6. EXCEPTION HANDLING
+7. APPLICATION
+8. THYMELEAF TEMPLATES
+
+=================================================================================
+1. DEPENDENCIES
+=================================================================================
+EXAMPLE FOR DEPENDENCIES:
+        <dependency>
+        	<groupId>org.springframework.boot</groupId>
+        	<artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+        	<groupId>org.springframework.boot</groupId>
+        	<artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
+        <dependency>
+        	<groupId>org.webjars</groupId>
+        	<artifactId>bootstrap</artifactId>
+        	<version>4.6.2</version>
+        </dependency>
+        <dependency>
+        	<groupId>org.webjars</groupId>
+        	<artifactId>jquery</artifactId>
+        	<version>3.6.1</version>
+        </dependency>
+        <dependency>
+        	<groupId>org.webjars</groupId>
+        	<artifactId>webjars-locator-core</artifactId>
+        </dependency>
+END OF EXAMPLE
+
+=================================================================================
+2. FILE INFO MODEL
+=================================================================================
+EXAMPLE FOR FILE INFO MODEL:
+public class FileInfo {
+
+private String name;
+private String url;
+
+    public FileInfo(String name, String url) {
+        this.name = name;
+        this.url = url;
+    }
+
+    //getters, setters
+}
+END OF EXAMPLE
+
+=================================================================================
+3. SERVICE
+=================================================================================
+EXAMPLE FOR FILE UPLOAD SERVICE:
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.nio.file.FileAlreadyExistsException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.stream.Stream;
+
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.stereotype.Service;
+import org.springframework.util.FileSystemUtils;
+import org.springframework.web.multipart.MultipartFile;
+
+@Service
+public class FilesStorageService {
+
+    private final Path root = Paths.get("./uploads");
+
+    public void init() {
+        try {
+            Files.createDirectories(root);
+        }
+        catch (IOException e) {
+            throw new RuntimeException("Could not initialize folder for upload!");
+        }
+    }
+
+    public void save(MultipartFile file) {
+        try {
+            Files.copy(file.getInputStream(), this.root.resolve(file.getOriginalFilename()));
+        }
+        catch (Exception e) {
+            if (e instanceof FileAlreadyExistsException) {
+                throw new RuntimeException("A file of that name already exists.");
+            }
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
+    public Resource load(String filename) {
+        try {
+            Path file = root.resolve(filename);
+            Resource resource = new UrlResource(file.toUri());
+            if (resource.exists() || resource.isReadable()) {
+                return resource;
+            }
+            else {
+                throw new RuntimeException("Could not read the file!");
+            }
+        }
+        catch (MalformedURLException e) {
+            throw new RuntimeException("Error: " + e.getMessage());
+        }
+    }
+
+    public boolean delete(String filename) {
+        try {
+            Path file = root.resolve(filename);
+            return Files.deleteIfExists(file);
+        }
+        catch (IOException e) {
+            throw new RuntimeException("Error: " + e.getMessage());
+        }
+    }
+
+    public void deleteAll() {
+        FileSystemUtils.deleteRecursively(root.toFile());
+    }
+
+    public Stream<Path> loadAll() {
+        try {
+            return Files
+                    .walk(this.root, 1)
+                    .filter(path -> !path.equals(this.root))
+                    .map(this.root::relativize);
+        }
+        catch (IOException e) {
+            throw new RuntimeException("Could not load the files!");
+        }
+    }
+}
+END OF EXAMPLE
+
+=================================================================================
+4. CONTROLLER
+=================================================================================
+EXAMPLE FOR FILE UPLOAD CONTROLLER:
+import org.springframework.beans.factory.annotation.*;
+import org.springframework.ui.*;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.*;
+import org.springframework.web.servlet.*;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Controller
+public class FileController {
+
+    @Autowired
+    FilesStorageService storageService;
+
+    @GetMapping("/")
+    public String homepage() {
+        return "redirect:/files";
+    }
+
+    @GetMapping("/files/new")
+    public String newFile(Model model) {
+        return "upload_form";
+    }
+
+    /**
+     * upload single file
+     */
+    @PostMapping("/files/upload/single")
+    public String uploadFile(@RequestParam("file") MultipartFile file, Model model) {
+        String message = "";
+        try {
+            storageService.save(file);
+            message = "Uploaded the file successfully: " + file.getOriginalFilename();
+            model.addAttribute("message", message);
+        }
+        catch (Exception e) {
+            message = "Could not upload the file: " + file.getOriginalFilename() + ". Error: " + e.getMessage();
+            model.addAttribute("message", message);
+        }
+        return "upload_form";
+    }
+
+    /**
+     * upload multiple files
+     */
+    @PostMapping("/files/upload/multiple")
+    public String uploadFiles(@RequestParam("files") MultipartFile[] files, Model model) {
+        List<String> messages = new ArrayList<>();
+        Arrays.asList(files).stream()
+                .forEach(file -> {
+                        try {
+                            storageService.save(file);
+                            messages.add(file.getOriginalFilename() + " [Successful]");
+                        }
+                        catch (Exception e) {
+                            messages.add(file.getOriginalFilename() + " <Failed> - " + e.getMessage());
+                        }
+                });
+        model.addAttribute("messages", messages);
+        return "upload_form";
+    }
+
+    @GetMapping("/files")
+    public String getListFiles(Model model) {
+        List<FileInfo> fileInfos = storageService.loadAll()
+                .map(path -> {
+                        String filename = path.getFileName().toString();
+                        String url = MvcUriComponentsBuilder
+                                .fromMethodName(FileController.class, "getFile", path.getFileName().toString())
+                                .build()
+                                .toString();
+                        return new FileInfo(filename, url);
+                })
+                .collect(Collectors.toList());
+        model.addAttribute("files", fileInfos);
+        return "files";
+    }
+
+    @GetMapping("/files/{filename:.+}")
+    public ResponseEntity<Resource> getFile(@PathVariable String filename) {
+        Resource file = storageService.load(filename);
+        return ResponseEntity
+                .ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"")
+                .body(file);
+    }
+
+    @GetMapping("/files/delete/{filename:.+}")
+    public String deleteFile(@PathVariable String filename, RedirectAttributes redirectAttributes, Model model) {
+        try {
+        boolean existed = storageService.delete(filename);
+            if (existed) {
+                redirectAttributes.addFlashAttribute("message", "Delete the file successfully: " + filename);
+            }
+            else {
+                redirectAttributes.addFlashAttribute("message", "The file does not exist!");
+            }
+        }
+        catch (Exception e) {
+            redirectAttributes.addFlashAttribute("message", "Could not delete the file: " + filename + ". Error: " + e.getMessage());
+        }
+        return "redirect:/files";
+    }
+}
+END OF EXAMPLE
+
+=================================================================================
+5. APPLICATION.PROPERTIES
+=================================================================================
+EXAMPLE FOR FILE UPLOAD LIMITS:
+spring.servlet.multipart.max-file-size=1MB
+spring.servlet.multipart.max-request-size=1MB
+END OF EXAMPLE
+
+=================================================================================
+6. EXCEPTION HANDLING
+=================================================================================
+EXAMPLE FOR EXCEPTION HANDLING OF EXCEEDING MAX UPLOAD SIZE:
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@ControllerAdvice
+public class FileUploadExceptionAdvice {
+
+    /**
+     * upload single file
+     */
+/*
+    @ExceptionHandler(MaxUploadSizeExceededException.class)
+    public String handleMaxSizeExceptionSingle(MaxUploadSizeExceededException e, Model model) {
+        model.addAttribute("message", "File is too large!");
+        return "upload_form";
+    }
+*/
+
+    /**
+     * upload multiple file
+     */
+    @ExceptionHandler(MaxUploadSizeExceededException.class)
+    public String handleMaxSizeExceptionMultiple(MaxUploadSizeExceededException e, Model model) {
+        List<String> messages = new ArrayList<>();
+        messages.add("One of selected files is too large!");
+        model.addAttribute("messages", messages);
+        return "upload_form";
+    }
+}
+END OF EXAMPLE
+
+=================================================================================
+7. APPLICATION
+=================================================================================
+EXAMPLE FOR INITIALIZATION AT STARTUP:
+import javax.annotation.Resource;
+
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class ThymeleafFileUploadApplication implements CommandLineRunner {
+
+    @Resource
+    FilesStorageService storageService;
+
+    public static void main(String[] args) {
+        SpringApplication.run(ThymeleafFileUploadApplication.class, args);
+    }
+
+    @Override
+    public void run(String... arg) throws Exception {
+        //storageService.deleteAll();
+        storageService.init();
+    }
+}
+END OF EXAMPLE
+
+=================================================================================
+8. THYMELEAF TEMPLATES
+=================================================================================
+For templates, in the examples below only the effective part will be presented.
+
+EXAMPLE FOR FILE UPLOAD TEMPLATES:
+<!-- head fragment: -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0" />
+    <title>...</title>
+
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+</head>
+
+<!-- header fragment: -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<header>
+    <a class="nav-link" th:href="@{/files/new}">Upload</a>
+    <a class="nav-link" th:href="@{/files}">Files</a>
+</header>
+
+<!-- upload_form.html, single file: -->
+<div class="container" style="max-width: 500px">
+    <h3 class="mb-3">File Upload</h3>
+    <form id="uploadForm" th:action="@{/files/upload/single}" method="post" enctype="multipart/form-data">
+        <input id="input-file" type="file" name="file" />
+        <button class="btn btn-sm btn-outline-success float-right" type="submit">
+            Upload
+        </button>
+    </form>
+    <div th:if="${message != null}" class="alert alert-secondary alert-dismissible fade show text-center message mt-3" role="alert">
+        [[${message}]]
+        <button type="button" class="close btn-sm" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">×</span>
+        </button>
+    </div>
+</div>
+
+<!-- upload_form.html, multiple files: -->
+<div class="container" style="max-width: 500px">
+    <h3 class="mb-3">File Upload</h3>
+    <form id="uploadForm" th:action="@{/files/upload/multiple}" method="post" enctype="multipart/form-data">
+        <input type="file" name="files" multiple />
+        <button class="btn btn-sm btn-outline-success float-right" type="submit">
+            Upload
+        </button>
+    </form>
+    <div th:if="${messages != null}" class="alert alert-secondary alert-dismissible fade show message mt-3" role="alert">
+        <div th:each="message : ${messages}">
+            [[${message}]]
+        </div>
+        <button type="button" class="close btn-sm" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">×</span>
+        </button>
+    </div>
+</div>
+
+<!-- files.html: -->
+<div class="container-fluid" style="max-width: 600px; margin: 0 auto;">
+    <h2 class="text-center">List of Files</h2>
+    <div th:if="${files.size() > 0}">
+        <table class="table table-hover">
+            <thead class="thead-light">
+                <tr>
+                    <th scope="col">File Name</th>
+                    <th scope="col">Link</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="file : ${files}">
+                    <td>[[${file.name}]]</td>
+                    <td><a th:href="@{${file.url}}">Download</a></td>
+                    <td>
+                        <a th:href="@{'/files/delete/' + ${file.name}}" th:fileName="${file.name}" id="btnDelete" title="Delete this file" class="fa-regular fa-trash-can icon-dark btn-delete"></a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div th:unless="${files.size() > 0}">
+        <span>No files found!</span>
+    </div>
+</div>
+<div class="modal fade text-center" id="confirmModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Delete Confirmation</h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <span id="confirmText"></span>
+            </div>
+            <div class="modal-footer">
+                <a type="button" id="yesBtn" class="btn btn-danger">Yes</a>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".btn-delete").on("click", function (e) {
+          e.preventDefault();
+          link = $(this);
+
+          fileName = link.attr("fileName");
+          $("#yesBtn").attr("href", link.attr("href"));
+          $("#confirmText").html("Do you want to delete the File: \<strong\>" + fileName + "\<\/strong\>?");
+          $("#confirmModal").modal();
+      });
+    });
+</script>
+END OF EXAMPLE
+
+=>SPRING BOOT
+=>SPRING BOOT THYMELEAF
+=>SPRING BOOT THYMELEAF EXAMPLES
+=>SPRING BOOT THYMELEAF TEMPLATE FRAGMENTATION
+=>SPRING APPLICATION PROPERTIES

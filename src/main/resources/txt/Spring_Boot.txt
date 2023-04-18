@@ -297,3 +297,4 @@ MORE HERE: https://www.digitalocean.com/community/tutorials/spring-configuration
 =>SPRING BOOT VALIDATION
 =>SPRING EXCEPTION HANDLING
 =>MOCKITO
+=>SPRING BOOT THYMELEAF FILE UPLOAD

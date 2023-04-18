@@ -102,7 +102,7 @@ spring.datasource.url = jdbc:mysql://localhost:3306/databaseName?useSSL=false
 spring.datasource.username =
 spring.datasource.password =
 
-spring.jpa.properties.hibernate.dialect = org.hibernate.dialect.MySQL5InnoDBDialect
+spring.jpa.properties.hibernate.dialect = org.hibernate.dialect.MySQLInnoDBDialect
 spring.jpa.hibernate.ddl-auto = create-drop
 spring.jpa.show-sql = true
 spring.jpa.properties.hibernate.format_sql = true
@@ -152,6 +152,8 @@ END OF EXAMPLE
 ||server.compression.enabled|sets HTTP response compression, default is false||
 ||server.compression.min-response-size|sets the minimum response size for applying compression, default is 2048 in bytes||
 ||server.compression.mime-types|defines on which response formats the compression will be executed||
+||spring.servlet.multipart.max-file-size|sets the maximum up-loadable file size||
+||spring.servlet.multipart.max-request-size|sets the maximum request size in case of file uploading||
 
 For server.port, the -1 value closes the HTTP ports but the application context will be built-up (can be useful for testing).
 The 0 (zero) port number makes the server to scan for an open port.
@@ -167,11 +169,18 @@ Also, the compression is possible when the response has one of the next formats 
     - application/json
     - application/xml
 
+For multipart sizes, in case the actual request exceeds the limits, will raise exception.
+
 EXAMPLE FOR SSL SETTINGS:
 server.port=8443
 server.ssl.certificate=classpath:my-cert.crt
 server.ssl.certificate-private-key=classpath:my-cert.key
 server.ssl.trust-certificate=classpath:ca-cert.crt
+END OF EXAMPLE
+
+EXAMPLE FOR MULTIPART SETTINGS:
+spring.servlet.multipart.max-file-size=1MB
+spring.servlet.multipart.max-request-size=1MB
 END OF EXAMPLE
 
 MORE HERE: https://www.google.com/search?client=firefox-b-d&q=thymeleaf+reload+cache+programmatically
@@ -182,3 +191,4 @@ MORE HERE: https://docs.spring.io/spring-boot/docs/current/reference/html/howto.
 =>POSTGRESQL
 =>SPRING BOOT REPOSITORY
 =>SPRING BOOT ENTITY
+=>SPRING BOOT THYMELEAF FILE UPLOAD

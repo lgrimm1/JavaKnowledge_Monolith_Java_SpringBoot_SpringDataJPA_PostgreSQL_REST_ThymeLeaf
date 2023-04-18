@@ -8,14 +8,6 @@ Most of its functions are delegated to platform operations by the JVM which make
 2. STANDARD OPEN OPTIONS
 3. WALK FILE TREE
 
-=>FILE OPERATIONS
-=>INPUTSTREAM
-=>OUTPUTSTREAM
-=>BUFFEREDREADER
-=>BUFFEREDWRITER
-=>COLLECTION
-=>LIST
-
 =================================================================================
 1. FILES METHODS
 =================================================================================
@@ -333,3 +325,11 @@ class CustomFileVisitor extends SimpleFileVisitor<Path> {
 	}
 }
 END OF EXAMPLE
+
+=>FILE OPERATIONS
+=>INPUTSTREAM
+=>OUTPUTSTREAM
+=>BUFFEREDREADER
+=>BUFFEREDWRITER
+=>COLLECTION
+=>LIST
