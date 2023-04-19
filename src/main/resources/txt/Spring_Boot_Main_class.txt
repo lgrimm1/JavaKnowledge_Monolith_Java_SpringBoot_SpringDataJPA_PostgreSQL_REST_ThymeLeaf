@@ -1,8 +1,8 @@
 =================================================================================
 SPRING BOOT MAIN CLASS
 =================================================================================
-Under the src/main/java/<package> folder, the Main.java can be found or must be placed. Of course, can have different name in which case all Main references should be re-written to that name, please see below.
-This class contains the web application launcher.
+Under the src/main/java/<package> folder, the Main.java can be found or must be placed. Of course, can have different name (advised to rename it in order to resemble the project name or purpose) in which case all Main references should be re-written to that name, please see below.
+This class contains the web application launcher, and optionally, calls on-time initialization methods from the Business layer.
 The @SpringBootApplication annotation marks that this is the launcher class. This annotation summarizes the next annotations, courtesy of Spring Boot:
     - @Configuration
     - @EnableAutoConfiguration
@@ -42,11 +42,37 @@ public class Main {
 }
 END OF EXAMPLE
 
+EXAMPLE FOR MAIN CLASS (JPA, INITIALIZATION, RENAMED MAIN CLASS):
+package packageName;
+
+import javax.annotation.Resource;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.data.jpa.repository.config.*;
+import org.springframework.boot.CommandLineRunner;
+
+@SpringBootApplication
+@EnableJpaRepositories
+public class ApplicationName implements CommandLineRunner {
+	@Resource
+	ServiceClassName serviceName;
+
+	public static void main(String[] args) {
+		SpringApplication.run(ApplicationName.class, args);
+	}
+
+	@Override
+	public void run(String... arg) throws Exception {
+		serviceName.initMethodName();
+	}
+}
+END OF EXAMPLE
+
 The application context means what objects and variables are created at a certain point of the program flow.
 In case of Spring Boot, the context means the class and object structure existing when the flow reaches the SpringApplication.run(). It is possible to catch the context by storing the returned value of this method.
 In Spring terminology all objects are beans (components).
 
-EXAMPLE FOR CATCHING CONTEXT:
+EXAMPLE FOR MAIN CLASS (CATCHING CONTEXT, JPA):
 package packageName;
 
 import org.springframework.boot.SpringApplication;
