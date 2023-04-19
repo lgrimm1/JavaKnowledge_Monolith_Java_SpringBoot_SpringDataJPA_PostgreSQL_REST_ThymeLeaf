@@ -1,5 +1,5 @@
 =================================================================================
-SPRING BOOT THYMELEAF FILE UPLOAD
+SPRING BOOT THYMELEAF FILE UPLOAD EXAMPLE
 =================================================================================
 In order to provide file upload functionality, Spring Boot offers solution for the backend. The frontend is made of ThymeLeaf templates.
 For the frontend part, visit the SPRING BOOT THYMELEAF and SPRING BOOT THYMELEAF EXAMPLES pages.
