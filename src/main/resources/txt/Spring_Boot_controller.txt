@@ -124,14 +124,18 @@ Parameters of @Request/Get/Post/Put/Delete/PatchMapping:
     - path = "/endpoint" (same as previous)
     - consumes = contentType (in what context type the data will be received; optional)
     - produces = contentType (in what context type the data will be sent; optional)
-    - method = POST (only for @RequestMapping, defines request type, value can be any request type)
+    - method = POST or method = RequestMethod.POST (only for @RequestMapping, defines request type, value can be any request type)
+    - headers="name=pankaj" (attribute value of which present needs to be in order to enter into the endpoint)
+    - for all parameters, more values can be declared by following: parameter_name = {"value1", "value2", ...} (e.g. path = {"/endpoint1", "/endpoint2"} or headers={"name=pankaj", "id=1"})
+In case there is no parameter defined for the annotation, will work as a default endpoint (useful when all not-defined queries should be redirected to the home endpoint).
+In case "*" value is given as path, the endpoint will serve as fallback. In case of any not defined URI is used, custom data or view can be sent back, or redirects to home endpoint.
 
 Parameters of @RequestParam:
     - name = "parameter_name_in_request"
     - required = true (optional; using false value is possible but leaving this argument means the same)
     - defaultValue = "default_value" (optional; if this argument does not exist and there is no passed value for the marked parameter, null will be passed)
 
-The @ModelAttribute annotation can be used with two different tasks:
+The @ModelAttribute annotation can be used for two different tasks:
     - marking a general object to be added to all models in the controller before the correspondent endpoint method is started
     - marking an incoming parameter which is sent by model of a template
 Using this functionality is optional.
@@ -146,11 +150,16 @@ Parameter versions of @ResponseStatus:
 
 EXAMPLE FOR MAPPING PARAMETERS:
 @RequestMapping(path = "/endpoint", produces = MediaType.APPLICATION_XML_VALUE)
-@RequestMapping(method=GET, path = "/endpoint", produces = MediaType.APPLICATION_XML_VALUE)
+@RequestMapping(method = RequestMethod.GET, path = "/endpoint", produces = MediaType.APPLICATION_XML_VALUE)
+@RequestMapping(method = RequestMethod.GET, path = "/endpoint", consumes = "text/html", produces = {"application/xml", "application/json"})
+@RequestMapping(method = POST, path = "/endpoint", produces = MediaType.APPLICATION_XML_VALUE)
+@RequestMapping(method = {RequestMethod.POST,RequestMethod.GET}, path = "/endpoint")
 @GetMapping("/endpoint")
 @PutMapping(value = "/endpoint")
+@PutMapping(value = "/endpoint", headers="name=pankaj")
 @DeleteMapping(path = "/endpoint")
 @PostMapping(path = "/endpoint", consumes = MediaType.APPLICATION_JSON_VALUE)
+@PatchMapping(path = "/endpoint", consumes = MediaType.APPLICATION_JSON_VALUE)
 END OF EXAMPLE
 
 Using the @RequestMapping annotation for the whole class is useful when more controllers are defined and a controller covers a certain endpoint root (all endpoints starts with the same common part).
@@ -187,11 +196,16 @@ public class ControllerClass3 {
 }
 END OF EXAMPLE
 
-Some content type definitions:
+Some content type definitions with MediaType:
     - MediaType.APPLICATION_JSON_VALUE
     - MediaType.APPLICATION_JSON_UTF8_VALUE
     - MediaType.APPLICATION_XML_VALUE
     - MediaType.TEXT_HTML
+
+Some content type definitions with Content-Type:
+    - application/json
+    - application/xml
+    - text/html
 
 =================================================================================
 3. CONTROLLER DATA
@@ -235,6 +249,32 @@ In object/model&view mode, there can be a Model object in the method signature h
 For incoming data, arguments are needed, marked with @ModelAttribute annotation, just like in model&view mode.
 Please note, similarly to model&view mode, the model is handled by Spring in the background, contains the incoming model objects sent by the frontend, and unless not deleted manually, the new added objects will be merged with the original objects. If that is not acceptable (e.g. the new model will be sent to a new view), clear the model before accepting new objects by accessing the Model object from the method signature.
 
+The frontend intents to send objects to the backend. These objects can be received one-by-one by the proper endpoint method which, in case of more objects, can increase the method signature size.
+Data binding means that Spring parses the incoming data to method arguments marked with proper annotations.
+As first step before invoking the method of the endpoint, Spring examines whether the marked argument will receive an object from the frontend. In case of no matching incoming object, Spring tries to initialise a new object by calling proper constructor and passes that object to the argument.
+Please note, in case of Collection or more @ModelAttribute arguments, it is difficult to write working mocking unit test for the controller method. Proper solution is to declare a payload class containing fields for all possible data and receive only that payload in the controller method signature. This payload class needs to have setters next to the constructors and getters in order to let Spring manipulate its instances freely, therefore the payload class is not immutable. However, fields should be private.
+
+Optionally, the method signature can contain a BindingResult argument. This argument will tell if data binding was successful.
+
+EXAMPLE FOR DECLARING PAYLOAD CLASS:
+package ...;
+
+//imports
+
+public class Payload {
+    //private fields
+
+    public Payload() {}
+    public Payload(all fields) {...}
+    //optionally:
+    public Payload(field variation 1) {...}
+    ...
+    public Payload(field variation n) {...}
+
+    //getters, setters, equals(), hashCode(), toString()
+}
+END OF EXAMPLE
+
 =================================================================================
 4. CONTROLLER MODEL&VIEW MODE
 =================================================================================
@@ -247,12 +287,7 @@ In case data should be sent to the frontend, in the method signature a Model obj
 Initially, the Model object contains the incoming objects and the new data will be put into it by the Business layer. Any kind of object can be added to the model represented by this object.
 The Model is extending the Map interface where keys are HTML attributes, values are Objects rendered to them. Of course, the value type can be narrowed down for e.g. String.
 The Model object is created by Spring Boot. No legal constructor is available which means objects can be added to these objects but creating new one nor assigning new one to its variable must be prevented.
-
-Data binding means that Spring parses the incoming model data to model attribute arguments marked with @ModelAttribute annotation.
-As first step before invoking the method of the endpoint, Spring examines whether the marked argument will receive an object from the frontend. In case of no matching incoming object, Spring tries to initialise a new object by calling proper constructor and passes that object to the argument.
-Please note, in case of Collection or more @ModelAttribute arguments, it is difficult to write working mocking unit test for the controller method. Proper solution is to declare a payload class containing fields for all possible data and receive only that payload as a @ModelAttribute.
-
-Optionally, the method signature can contain a BindingResult argument. This argument will tell if data binding was successful.
+As for making the controller method testable, model attributes should be added to the Model within the controller method, the Business layer should provide the attribute data themselves.
 
 An incoming request can be redirected to an other view by using the "redirect:/" text before the returned view name. It is typically used for root queries.
 
@@ -281,39 +316,32 @@ class Controller {
 }
 END OF EXAMPLE
 
-EXAMPLE FOR DECLARING PAYLOAD CLASS:
-package ...;
-
-//imports
-
-public class Payload {
-    //private fields
-
-    public Payload() {}
-    public Payload(all fields) {...}
-    public Payload(field variation 1) {...}
-    ...
-    public Payload(field variation n) {...}
-
-    //getters, setters, equals(), hashCode()
-}
-END OF EXAMPLE
-
-EXAMPLE FOR CONTROLLER AND SERVICE METHODS (MODEL&VIEW MODE, ONE INCOMING PARAMETER):
-public String controllerMethod(@ModelAttribute Payload payload, BindingResult bindingResult, Model model) {
+EXAMPLE FOR CONTROLLER AND SERVICE METHODS (MODEL&VIEW MODE, PAYLOAD):
+public String controllerMethod(@ModelAttribute Payload payload, BindingResult bindingResult, Model model) { //using BindingResult is optional
     model.asMap().clear();
+    //optional part:
     if (bindingResult.hasErrors()) {
-        return "error";
+        ModelAndView modelAndView = service.serviceErrorMethod("error_view_name");
+        return modelAndView.getViewName();
     }
-	ModelAndView modelAndView = service.serviceMethod("initial_view_name", invoking_getter(s)_of_payload);
+	ModelAndView modelAndView = service.serviceMethod("initial_view_name", payload); //or:
+	ModelAndView modelAndView = service.serviceMethod(payload);
 	model.addAllAttributes(modelAndView.getModel());
 	return modelAndView.getViewName();
 }
 ...
-public String serviceMethod(String initialView, variables_received_from_getters_of_payload) {
-	ModelAndView modelAndView = new ModelAndView(initialView);
+public ModelAndView serviceMethod(String initialView, Payload payload) { //or:
+public ModelAndView serviceMethod(Payload payload) {
     //process
-	modelAndView.addObject("html_attribute_name", attributeValue);
+	ModelAndView modelAndView = new ModelAndView(initialView); //or:
+	ModelAndView modelAndView = new ModelAndView("view_name");
+	modelAndView.addObject("html_attribute_name", attributeValue); //repeated as needed
+	return modelAndView;
+}
+public ModelAndView serviceErrorMethod(String errorViewName) {
+    //process
+    ModelAndView modelAndView = new ModelAndView(errorViewName);
+    //add elements to modelAndView
 	return modelAndView;
 }
 END OF EXAMPLE
@@ -324,9 +352,54 @@ See SPRING BOOT REQUESTS page for code examples.
 5. CONTROLLER OBJECT MODE
 =================================================================================
 In order to use object mode on a controller method, the controller class must be marked with @RestController annotation, or the correspondent method marked with @ResponseBody annotation.
-The return value can be any type or a Map with String keys and values where keys are HTML attribute names and values are their respective values (converted to String).
+The return value can be any type or a Map with String keys and Object values where keys are HTML attribute names and values are their respective values (make sure all Objects are convertible to String and back).
 In the method signature, every incoming object (sent by frontend) must be marked with @RequestBody annotation.
+Instead of utilizing a payload class for data transfer in and out, using any wrapper or other classes is appropriate.
 Alternatively, all incoming objects can be rendered into one Map of String keys and Object or String values, also marked with @RequestBody annotation.
+
+EXAMPLE FOR CONTROLLER AND SERVICE METHODS (OBJECT MODE, PAYLOAD):
+@ResponseBody
+public Payload controllerMethod(@RequestParam("payload") Payload payload, BindingResult bindingResult) { //using BindingResult is optional
+    //optional part:
+    if (bindingResult.hasErrors()) {
+        return service.serviceErrorMethod();
+    }
+	return service.serviceMethod(payload);
+}
+...
+public Payload serviceMethod(Payload payload) {
+    //process
+	return new Payload(...);
+}
+public Payload serviceErrorMethod() {
+    //process
+	return new Payload(...);
+}
+END OF EXAMPLE
+
+EXAMPLE FOR CONTROLLER AND SERVICE METHODS (OBJECT MODE, MAP):
+@ResponseBody
+public Map<String, Object> controllerMethod(@RequestParam("map") Map<String, Object> map, BindingResult bindingResult) { //using BindingResult is optional
+    //optional part:
+    if (bindingResult.hasErrors()) {
+        return service.serviceErrorMethod();
+    }
+	return service.serviceMethod(map);
+}
+...
+public Map<String, Object> serviceMethod(Map<String, Object> map) {
+    //process
+    Map<String, Object> newMap = new HashMap<>();
+    //add elements to newMap
+	return newMap;
+}
+public Map<String, Object> serviceErrorMethod() {
+    //process
+    Map<String, Object> newMap = new HashMap<>();
+    //add elements to newMap
+	return newMap;
+}
+END OF EXAMPLE
 
 See SPRING BOOT REQUESTS page for code examples.
 
@@ -356,38 +429,30 @@ class Controller {
 }
 END OF EXAMPLE
 
-EXAMPLE FOR DECLARING PAYLOAD CLASS:
-package ...;
-
-//imports
-
-public class Payload {
-    //private fields
-
-    public Payload() {}
-    public Payload(all fields) {...}
-    public Payload(field variation 1) {...}
-    ...
-    public Payload(field variation n) {...}
-
-    //getters, setters, equals(), hashCode()
-}
-END OF EXAMPLE
-
-EXAMPLE FOR CONTROLLER AND SERVICE METHODS (OBJECT/MODEL&VIEW MODE, ONE INCOMING PARAMETER):
-public ModelAndView controllerMethod(@ModelAttribute Payload payload, BindingResult bindingResult, Model model) {
+EXAMPLE FOR CONTROLLER AND SERVICE METHODS (OBJECT/MODEL&VIEW MODE, PAYLOAD):
+@ResponseBody
+public ModelAndView controllerMethod(@ModelAttribute Payload payload, BindingResult bindingResult, Model model) { //using BindingResult is optional
     model.asMap().clear();
+    //optional part:
     if (bindingResult.hasErrors()) {
-        //return a new ModelAndView object with error view and objects
+        //return a new ModelAndView object with error view and attributes
     }
-	return service.serviceMethod("initial_view_name", invoking_getter(s)_of_payload);
+	return service.serviceMethod("initial_view_name", payload); //or:
+	return service.serviceMethod(payload);
 }
 ...
-public ModelAndView serviceMethod(String initialView, variables_received_from_getters_of_payload) {
-	ModelAndView modelAndView = new ModelAndView(initialView);
+public ModelAndView serviceMethod(String initialView, Payload payload) { //or:
+public ModelAndView serviceMethod(Payload payload) {
     //process
-    modelAndView.setViewName("new_view_name"); //if needed
-	modelAndView.addObject("html_attribute_name", attributeValue);
+	ModelAndView modelAndView = new ModelAndView(initialView); //or:
+	ModelAndView modelAndView = new ModelAndView("view_name");
+	modelAndView.addObject("html_attribute_name", attributeValue); //repeated as needed
+	return modelAndView;
+}
+public ModelAndView serviceErrorMethod() {
+    //process
+    ModelAndView modelAndView = new ModelAndView("error_view_name");
+    //add elements to modelAndView
 	return modelAndView;
 }
 END OF EXAMPLE

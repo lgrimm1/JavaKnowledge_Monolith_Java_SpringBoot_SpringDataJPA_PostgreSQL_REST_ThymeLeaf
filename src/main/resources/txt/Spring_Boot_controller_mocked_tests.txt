@@ -84,7 +84,7 @@ With perform() method the test case is set. Order of the perform steps is import
 Optionally, the MockMVC can be forced to print information about the results of performed action with the print() method. By default, the same information will appear when using Spring Data JPA because Hibernate is verbal.
 Every andExpect() method means an assertion for its argument.
 
-Important, in model&view and object/model&view modes, when the model is not cleared before new objects are added, the size of the outgoing model can be higher with the number of incoming model objects (see the andExpect(model().size(size)) method below).
+Important, in model&view and object/model&view modes, when the model is not cleared before new objects are added, the size of the outgoing model can be higher with the number of incoming model objects (see the andExpect(model().size(size)) method below). In order to have proper testing, always clear the model in the controller before adding data to it.
 
 Some expected statuses (look for more under StatusResultMatcher methods below):
     - isOk()
@@ -120,12 +120,14 @@ public void testCaseName() throws Exception {
 }
 END OF EXAMPLE
 
-For model&view and object/model&view modes, because these modes are based upon models, the best approach is to declare a class which:
+For model&view and object/model&view modes, these modes are based upon models.
+In model&view mode, the received object should be a Map<String, Object> or the Model itself.
+In object/model&view mode, the best approach is to declare a payload class which:
     - is capable of storing all objects the model or models might receive or send
     - has default and full constructors for Spring
     - specific constructors for manual definition of specific portion of data fitting to actual need in controller method
     - all getters and setters
-    - equals() and hashCode() methods
+    - equals(), hashCode() and toString() methods
 This class will represent the payload sent and received to and from the frontend.
 In the tests payload objects will be defined for receiving and sending, the latter will be added to the model (or to the ModelAndView object).
 The test will check whether for the received payload the sent payload is created.
@@ -144,15 +146,16 @@ public class Payload {
     ...
     public Payload(field variation n) {...}
 
-    //getters, setters, equals(), hashCode()
+    //getters, setters, equals(), hashCode(), toString()
 }
 END OF EXAMPLE
 
-EXAMPLE FOR A TEST CASE METHOD (PUT ON /ENDPOINT, MODEL&VIEW AND OBJECT/MODEL&VIEW MODES, EXPECTED HTTP200 SUCCESS CODE):
+EXAMPLE FOR A TEST CASE METHOD (POST ON /ENDPOINT, OBJECT/MODEL&VIEW MODE, EXPECTED HTTP200 SUCCESS CODE):
 @Test
 public void testCaseName() throws Exception {
     //definition of variables containing received data
 	Payload receivedPayload = new Payload(...); //use proper special constructor with received data
+
     //definition of variables containing sent data
 	Payload sentPayload = new Payload(...); //use proper special constructor with sent data
 	ModelAndView modelAndView = new ModelAndView("initial_view_name", "payload", sentPayload);

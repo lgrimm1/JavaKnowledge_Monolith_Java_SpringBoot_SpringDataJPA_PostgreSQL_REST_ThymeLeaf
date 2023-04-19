@@ -233,7 +233,7 @@ Important parameters:
     - -d "data" or --data "data" (for POST, PUT, DELETE, ... request body)
     - -X <request_type> (overwrite GET/POST request type with GET, POST, PUT etc.)
     - --write-out (extract HTTP response code)
-    - -H "header" (use given header)
+    - -H "header" (use given header, means incoming HTML attributes)
     - -i (show request body along with response protocol headers e.g. HTTP version with response code (200, 404 etc.), content type, encoding, zoned date and time)
     - -o <file> or --output <file> (output into file instead of console)
     - -T <file> or --upload-file <file> (send local file to server)
@@ -275,6 +275,9 @@ curl -X PUT https://www.wind.com/category?strength=3&level=800&db=65
 
 //POST with JSON data and content-type headers:
 curl -i -H "Accept: application/json" -H "Content-Type: application/json" --data '{"variable1": "value1", "variable2": "value2"}' "https://server/endpoint"
+
+//PATCH with header data
+curl -i -H "name:pankaj" -H "id:1" "https://server/endpoint"
 
 //POST with JSON data and content-type headers (with line breaks, Windows)
 curl -i -H "Accept: application/json" -H "Content-Type: application/json" ^
