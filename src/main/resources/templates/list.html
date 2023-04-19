@@ -19,7 +19,7 @@
             <td style="width: 65%">
                 <fieldset>
                     <legend>&nbsp;List of Filtered Titles&nbsp;</legend>
-                    <select id="titles_list" th:field="*{titles}" size="8" autofocus>
+                    <select id="titles_list" th:field="*{titles}" title="Select a Title" size="8" autofocus>
                         <option th:each="title: *{titles}" th:text="${title}" th:value="${title}" />
                     </select>
                 </fieldset>
@@ -27,8 +27,8 @@
             <td style="width: 35%">
                 <fieldset>
                     <legend>&nbsp;Actions&nbsp;</legend>
-                    <input type="submit" value="VIEW PAGE" class="submit_full" formaction="/page" formmethod="post" /><br>
-                    <input type="submit" value="BACK" class="submit_full" formaction="/" formmethod="get" />
+                    <input type="submit" value="VIEW PAGE" title="Press to View Selected Page" class="submit_full" formaction="/page" formmethod="post" /><br>
+                    <input type="submit" value="BACK" title="Press to Jump Home" class="submit_full" formaction="/" formmethod="get" />
                 </fieldset>
             </td>
         </tr>

@@ -19,7 +19,7 @@
             <td style="width: 65%">
                 <fieldset>
                     <legend>&nbsp;List of All Titles&nbsp;</legend>
-                    <select id="titles_list" th:field="*{titles}" size="15" multiple autofocus>
+                    <select id="titles_list" th:field="*{titles}" title="Select Titles" size="15" multiple autofocus>
                         <option th:each="title: *{titles}" th:text="${title}" th:value="${title}" />
                     </select>
                 </fieldset>
@@ -28,27 +28,28 @@
             <td style="width: 35%">
                 <fieldset>
                     <legend>&nbsp;Actions on a Source&nbsp;</legend>
-                    <input type="submit" value="NEW SOURCE PAGE" class="submit_half" formaction="/source/new" formmethod="post" />
-                    <input type="submit" value="EDIT SOURCE PAGE" class="submit_half" formaction="/source/edit" formmethod="post" /><br>
+                    <input type="submit" value="NEW SOURCE PAGE" title="Press to Begin a New Page" class="submit_half" formaction="/source/new" formmethod="post" />
+                    <input type="submit" value="EDIT SOURCE PAGE" title="Press to Continue the Selected Page" class="submit_half" formaction="/source/edit" formmethod="post" /><br>
                     <input type="text" th:field="*{title}" placeholder="Enter a new title..." >
-                    <input type="submit" value="RENAME SOURCE PAGE" class="submit_full" formaction="/rename" formmethod="post" /><br>
+                    <input type="submit" value="RENAME SOURCE PAGE" title="Press to Rename the Selected Page" class="submit_full" formaction="/rename" formmethod="post" /><br>
                 </fieldset>
                 <br>
                 <fieldset>
                     <legend>&nbsp;Actions on All Sources&nbsp;</legend>
-                    <label for="files" class="custom_file_upload">
+                    <label for="files" title="Press to Select Files" class="custom_file_upload">
                         <input id="files" type="file" th:field="*{files}" class="submit_half" accept=".txt" multiple />
                         BROWSE FILES...
                     </label>
                     &nbsp;
-                    <label for="confirm">Confirm Action: </label><input id="confirm" type="checkbox" th:field="*{confirm}" /><br>
+                    <label for="confirm" title="Check for Confirmation of Wanted Action">Confirm Action: </label>
+                    <input id="confirm" type="checkbox" th:field="*{confirm}" title="Check for Confirmation of Wanted Action" /><br>
                     <br>
-                    <input type="submit" value="DELETE SOURCE PAGES" class="submit_full" formaction="/delete" formmethod="post" /><br>
-                    <input type="submit" value="GENERATE HTML PAGES" class="submit_half" formaction="/generate" formmethod="post" />
-                    <input type="submit" value="IMPORT SOURCE FILES" class="submit_half" formaction="/import" formmethod="post" /><br>
+                    <input type="submit" value="DELETE SOURCE PAGES" title="Press to Delete Selected Source Pages" class="submit_full" formaction="/delete" formmethod="post" /><br>
+                    <input type="submit" value="GENERATE HTML PAGES" title="Press to Generate HTML Pages from All Sources" class="submit_half" formaction="/generate" formmethod="post" />
+                    <input type="submit" value="IMPORT SOURCE FILES" title="Press to Import Selected Files as New Sources" class="submit_half" formaction="/import" formmethod="post" /><br>
                 </fieldset>
                 <br>
-                <input type="submit" value="BACK" class="submit_full" formaction="/" formmethod="get" />
+                <input type="submit" value="BACK" title="Press to Jump Home" class="submit_full" formaction="/" formmethod="get" />
             </td>
         </tr>
     </table>

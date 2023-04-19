@@ -10,14 +10,14 @@
         <table class="formatter_table">
             <tr>
                 <td style="width: 75%">
-                    <select id="titles_list" th:field="*{titles}" size="3">
+                    <select id="titles_list" th:field="*{titles}" title="Select a Title" size="3">
                         <option th:each="title: *{titles}" th:text="${title}" th:value="${title}" />
                     </select>
                     <br>
                 </td>
                 <td style="width: 25%">
-                    <input type="submit" value="VIEW PAGE" class="submit_full" formaction="/page" formmethod="post" /><br>
-                    <input type="submit" value="BACK" class="submit_full" formaction="/" formmethod="get" />
+                    <input type="submit" value="VIEW PAGE" title="Press to View the Selected Page" class="submit_full" formaction="/page" formmethod="post" /><br>
+                    <input type="submit" value="BACK" title="Press to Jump Home" class="submit_full" formaction="/" formmethod="get" />
                 </td>
             </tr>
         </table>
