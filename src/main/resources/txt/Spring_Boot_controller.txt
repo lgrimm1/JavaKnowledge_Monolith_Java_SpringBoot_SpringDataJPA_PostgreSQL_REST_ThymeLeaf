@@ -254,6 +254,15 @@ Please note, in case of Collection or more @ModelAttribute arguments, it is diff
 
 Optionally, the method signature can contain a BindingResult argument. This argument will tell if data binding was successful.
 
+An incoming request can be redirected to an other view by using the "redirect:/" text before the returned view name. It is typically used for root queries.
+
+EXAMPLE FOR REDIRECTING A QUERY:
+@GetMapping("/")
+public String root() {
+    return "redirect:/index";
+}
+END OF EXAMPLE
+
 EXAMPLE FOR DEFINING GENERAL MODEL ATTRIBUTE IN A CONTROLLER:
 package ...;
 
