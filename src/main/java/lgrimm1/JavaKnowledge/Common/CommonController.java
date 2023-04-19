@@ -17,6 +17,12 @@ public class CommonController {
 		this.commonService = commonService;
 	}
 
+	@RequestMapping("*")
+	public ModelAndView getFallback(Model model) {
+		model.asMap().clear();
+		return commonService.getRoot("root");
+	}
+
 	@GetMapping("/")
 	public ModelAndView getRoot(Model model) {
 		model.asMap().clear();

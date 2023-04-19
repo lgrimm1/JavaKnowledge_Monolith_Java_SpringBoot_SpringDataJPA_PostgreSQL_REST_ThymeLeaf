@@ -30,6 +30,38 @@ class CommonControllerTest {
 	private Formulas formulas;
 
 	@Test
+	void getFallback() throws Exception {
+		String searchText = "text";
+		Payload payload2 = new Payload(
+				formulas.getTitleRoot(),
+				null,
+				null,
+				null,
+				null,
+				null,
+				searchText,
+				null,
+				null,
+				null
+		);
+		ModelAndView modelAndView = new ModelAndView("root", "payload", payload2);
+		when(commonService.getRoot("root"))
+				.thenReturn(modelAndView);
+		when(formulas.getTitleRoot())
+				.thenReturn("ROOTTITLE");
+
+		mockMvc
+				.perform(
+						get("/something")
+				)
+				.andExpect(status().isOk())
+				.andDo(print())
+				.andExpect(view().name("root"))
+				.andExpect(model().size(1))
+				.andExpect(model().attribute("payload", payload2));
+	}
+
+	@Test
 	void getRoot() throws Exception {
 		String searchText = "text";
 		Payload payload2 = new Payload(
