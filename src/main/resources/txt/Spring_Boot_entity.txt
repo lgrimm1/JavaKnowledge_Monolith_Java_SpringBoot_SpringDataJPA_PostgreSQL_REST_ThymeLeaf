@@ -302,6 +302,7 @@ Spring Boot pairs column types and entity fields automatically.
 In case Spring Data JPA is used but without Spring Boot, must properly map the columns and the fields together.
 Visit the SPRING DATA JPA MAPPING ARRAY COLUMNS page for details.
 
+MORE HERE: https://www.baeldung.com/hibernate-lob
 MORE HERE: https://www.baeldung.com/hibernate-one-to-many
 MORE HERE: https://www.baeldung.com/jpa-many-to-many
 MORE HERE: https://stackoverflow.com/questions/32427921/jpa-entity-must-be-unit-tested-and-how
