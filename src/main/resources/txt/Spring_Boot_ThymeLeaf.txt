@@ -245,7 +245,7 @@ In the template the <form> tag header can contain these parameters:
     - method="post": defines what request the form must send when the user submits
     - novalidate: no input value validation will happen when submitting (validation on server side)
     - id="form_name": unique name of the form with which actions etc. can refer to it
-    - enctype="multipart/form-data": defines that to the form Multipart will be attached, required for file uploading
+    - enctype="multipart/form-data": defines that to the submitted post Multipart will be attached, required for file uploading
 
 7.2. INPUTS
 ---------------------------------------------------------------------------------
@@ -305,19 +305,20 @@ Datetime-local:
 File:
     - a localized Browse button appears, next to it the chosen file name or number of files
     - the multiple parameter allows the user to enter more than one value
+    - the webkitdirectory parameter instructs the interpreter to launch a directory dialog instead of file dialog; there can be some internet browsers which do not recognize this parameter
+    - the accept= parameter contains allowed file types separated by comma (will not provide thorough check)
     - the value= parameter contains empty String at the beginning, when file(s) is-are selected, will contain the first file path and name as C:\fakepath\filename or similar for security reasons (exchanged with th:field= or :object=)
     - the HTMLInputElement.files property will contain all selected files, as C:\fakepath\filename or similar (exchanged with th:field= or :object=); this property is a list of files.
     - a file element of the list contains filename, last modification datetime and date, size, MIME-type
-    - the accept= parameter contains allowed file types separated by comma (will not provide thorough check)
     - the capture= parameter is a String identifies which camera channel should be used (user-facing or main) for capturing video or image (depending on accept= type); if not present, file mode is activated
     - the user= parameter defines that the user-facing camera and/or microphone should be used (used together with capture=)
     - the environment= parameter specifies that the outward-facing camera and/or microphone should be used (if missing, will decide on its own; used together with capture=)
     - returns either a file name array or a text in which the file names are separated by commas
-    - uploaded file content will be attached to the posted data as Multipart part, works only when enctype="multipart/form-data" parameter is defined in the <form> tag
+    - uploaded file content will be attached to the posted data as Multipart, works only when enctype="multipart/form-data" parameter is defined in the <form> tag
     - the name= parameter is required for file uploading (defines a new HTML attribute name, rendered to the Multipart itself)
     - the th:object or :field can be used for the file names and descriptive data but not for the file content
     - at backend side, the receiver endpoint signature must contain a @RequestParam("html_attribute_name") annotation and its marked argument must have MultipartFile (single file) or MultipartFile[] (multiple files) type
-    - for file upload technique, visit the SPRING BOOT THYMELEAF FILE UPLOAD page
+    - for file upload technique, visit the SPRING BOOT THYMELEAF FILE STORAGE EXAMPLE page
 
 Email:
     - the multiple parameter allows the user to enter more than one value
@@ -388,7 +389,7 @@ Submit:
 Textarea:
     - multi-line text input
     - the rows= and cols= parameters define the visible dimensions (same as using style= local settings e.g. style="width:200px; height:600px;")
-    - between the opening and closing markers of the tag the starting text can be written
+    - between the opening and closing markers of the tag the starting text can be written (the text will contain all spaces before the effective text, do not indent the text to fit to the <textarea> tag)
     - default height is 3 rows
     - wraps the content by default
     - the wrap= parameter sets how the wrapped text will be collected when submitting ("hard" will submit the wrapped text, "soft" (only if it does not have effect, use "off" instead) will submit unwrapped text)
@@ -413,12 +414,12 @@ All text-like inputs (email, password, search, tel, text, url):
     - the list="datalist_id" parameter lets the user optionally choose from pre-defined texts (defined in <datalist> tag) when typing letters into the input, matching is based upon containing, the input accepts any value but in case a pre-set choice is exists, will show it in a popup list under the input
 
 All text-like inputs plus textarea:
-    - spell-check is enabled by default for the first 74 rows, to turn it off use spellcheck="false" parameter
+    - spell-check is enabled by default for the first approximately 74 rows, to turn it off use spellcheck="false" parameter
 
 All text-like inputs plus color, date pickers, time:
     - the autocomplete="on_or_off" parameter forces the browser to suggest complete values based upon a few typed characters, overwrites <form> settings
 
-All input-types:
+All input-types (if relevant):
     - the readonly parameter makes the input unchangeable
     - the disabled parameter sets the input read-only and un-clickable, its value will not be sent when submitting
     - the required parameter means the input must be filled
@@ -454,7 +455,7 @@ MORE HERE: https://www.baeldung.com/spring-thymeleaf-error-messages
 
 =>SPRING BOOT THYMELEAF EXAMPLES
 =>SPRING BOOT THYMELEAF TEMPLATE FRAGMENTATION
-=>SPRING BOOT THYMELEAF FILE UPLOAD
+=>SPRING BOOT THYMELEAF FILE STORAGE EXAMPLE
 =>CSS
 =>WEB APPLICATION
 =>SPRING BOOT

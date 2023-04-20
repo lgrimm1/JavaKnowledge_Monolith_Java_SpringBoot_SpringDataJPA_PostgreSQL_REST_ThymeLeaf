@@ -13,14 +13,43 @@ When with the solution the response body is accessible and the exception handler
 When the response body is not accessible, the body will be practically null, the solution will not be REST compatible, and Spring will send a default HTTP error page back with an HTTP error code and additional error message, see later session.
 For the latter, workaround can be releasing the REST standard for exception handling which is not advised.
 
-1. EXCEPTION HANDLER
-2. HANDLER EXCEPTION RESOLVER
-3. CONTROLLER ADVISE
-4. RESPONSE STATUS EXCEPTION
-5. THE DEFAULT ERROR PAGE
+1. GENERAL APPROACH
+2. EXCEPTION HANDLER
+3. HANDLER EXCEPTION RESOLVER
+4. CONTROLLER ADVISE
+5. RESPONSE STATUS EXCEPTION
+6. THE DEFAULT ERROR PAGE
 
 =================================================================================
-1. EXCEPTION HANDLER
+1. GENERAL APPROACH
+=================================================================================
+Any exception handler class means advice for Spring to use it at starting up: will build the handlers.
+In the example below with the @Resource annotation the service becomes accessible.
+Please note, any business logic should be placed into the service class and its subclasses in the chain.
+
+EXAMPLE FOR CONTROLLER ADVICE CLASS:
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.servlet.*;
+import javax.annotation.*;
+
+@ControllerAdvice
+public class FileExceptionAdvice {
+
+	@Resource
+	ServiceClass service;
+
+	@ExceptionHandler(ExceptionClassName.class)
+	public ModelAndView methodName(ExceptionClassName e, Model model) {
+		model.asMap().clear();
+		return service.handlerMethod();
+	}
+END OF EXAMPLE
+
+=================================================================================
+2. EXCEPTION HANDLER
 =================================================================================
 The @ExceptionHandler is the oldest solution in Spring.
 It is a method declared in a controller class and handles a certain number of exceptions within that controller.
@@ -46,15 +75,15 @@ public ResponseEntity<String> handleException(IOException ex) {
 END OF EXCEPTION
 
 =================================================================================
-2. HANDLER EXCEPTION RESOLVER
+3. HANDLER EXCEPTION RESOLVER
 =================================================================================
 The Handler Exception Resolver carries the core mechanism of the Exception Handler and is enabled by default in the DispatcherServlet from Spring 3.
 
-2.1. DEFAULT HANDLER EXCEPTION RESOLVER
-2.2. RESPONSE STATUS EXCEPTION RESOLVER
-2.3. CUSTOM HANDLER EXCEPTION RESOLVER
+3.1. DEFAULT HANDLER EXCEPTION RESOLVER
+3.2. RESPONSE STATUS EXCEPTION RESOLVER
+3.3. CUSTOM HANDLER EXCEPTION RESOLVER
 
-2.1. DEFAULT HANDLER EXCEPTION RESOLVER
+3.1. DEFAULT HANDLER EXCEPTION RESOLVER
 ---------------------------------------------------------------------------------
 The DefaultHandlerExceptionResolver is handling the standard HTTP error codes by itself.
 Not compatible with REST (sends back the error page).
@@ -67,7 +96,7 @@ Not compatible with REST (sends back the error page).
 ||415 (Unsupported Media Type)|HttpMediaTypeNotSupportedException||
 ||500 (Internal Server Error)|ConversionNotSupportedException, HttpMessageNotWritableException||
 
-2.2. RESPONSE STATUS EXCEPTION RESOLVER
+3.2. RESPONSE STATUS EXCEPTION RESOLVER
 ---------------------------------------------------------------------------------
 The ResponseStatusExceptionResolver is also enabled by default in the DispatcherServlet.
 Using the @ResponseStatus annotation on custom exceptions maps these exceptions to HTTP status codes.
@@ -111,7 +140,7 @@ public class MyResourceNotFoundException extends RuntimeException {
 }
 END OF EXCEPTION
 
-2.3. CUSTOM HANDLER EXCEPTION RESOLVER
+3.3. CUSTOM HANDLER EXCEPTION RESOLVER
 ---------------------------------------------------------------------------------
 Combination of the previous two.
 This version works via a handler class.
@@ -146,7 +175,7 @@ public class RestResponseStatusExceptionResolver extends AbstractHandlerExceptio
 END OF EXCEPTION
 
 =================================================================================
-3. CONTROLLER ADVISE
+4. CONTROLLER ADVISE
 =================================================================================
 Since Spring 3.2 using of global @ExceptionHandler with the @ControllerAdvice annotation is possible.
 Utilizes the ResponseEntity (REST compatible). Choosing String for ResponseEntity type can lead to view mode, choosing any class leads to object mode.
@@ -168,7 +197,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 END OF EXCEPTION
 
 =================================================================================
-4. RESPONSE STATUS EXCEPTION
+5. RESPONSE STATUS EXCEPTION
 =================================================================================
 Since Spring 5.
 The ResponseStatusException can be used with the specific controller method.
@@ -191,12 +220,12 @@ public Foo findById(@PathVariable("id") Long id, HttpServletResponse response) {
 END OF EXCEPTION
 
 =================================================================================
-5. THE DEFAULT ERROR PAGE
+6. THE DEFAULT ERROR PAGE
 =================================================================================
-1. SPRING ERROR PAGE
-2. SPRING BOOT ERROR PAGE
+6.1. SPRING ERROR PAGE
+6.2. SPRING BOOT ERROR PAGE
 
-1. SPRING ERROR PAGE
+6.1. SPRING ERROR PAGE
 ---------------------------------------------------------------------------------
 When the status of the response is set to an error status code and the body of the response is empty, Servlet containers commonly render an HTML formatted error page.
 To customize the default error page of the container, you can declare an <error-page> element in web.xml. Up until Servlet 3, that element had to be mapped to a specific status code or exception type. Starting with Servlet 3 an error page does not need to be mapped, which effectively means the specified location customizes the default Servlet container error page.
@@ -227,7 +256,7 @@ public class ErrorController {
 }
 END OF EXCEPTION
 
-2. SPRING BOOT ERROR PAGE
+6.2. SPRING BOOT ERROR PAGE
 ---------------------------------------------------------------------------------
 Spring Boot provides a fallback page called Whitelabel Error Page for HTML requests.
 For RESTful, non-HTML requests it provides a JSON answer.

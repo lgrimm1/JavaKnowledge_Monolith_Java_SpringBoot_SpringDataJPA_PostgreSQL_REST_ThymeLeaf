@@ -160,16 +160,16 @@ Alternative way is to type "mvn compile" to make Maven to find and install all w
 2. CREATING CLASSES AND DIRECTORIES
 =================================================================================
 The framework needs several classes in order to work at top efficiency and to follow best practices:
-    a. Main (application)
-    b. Controller
-    c. Service
-    d. Repository
-    e. Entity
+    - Main (application)
+    - Controller
+    - Service
+    - Repository
+    - Entity
 
 The Main class will launch the web application.
-The Controller class handles the communication.
-The Service class is the core of the web app.
-The Repository class represents and manages the storage side.
+The Controller class equals with the Communication layer.
+The Service class represents the Business Layer and or a hub for other Business layer classes.
+The Repository class represents the Data (Storage) layer.
 The Entity class forms the data element itself.
 
 Although the Main class is very short in code, and some schools use it for inserting the Controller endpoints into it, furthermore the controller methods could contain processing code as well, the best practice is to keep the layers separated on class level, which structure creates and keeps modularity and independent unit tests become possible.
@@ -205,13 +205,13 @@ common package
 web application class
 
 Under the src/main/resources folder, the next folders should be created:
-    a. static (contains the static part of frontend)
-    b. templates (contains template (pre-set page) part of frontend, handled with backend web development)
+    - static (contains the static part of frontend)
+    - templates (contains template (pre-set page) part of frontend, handled with backend web development)
 
 Spring Boot uses automatism when the web application starts (invoking Main class):
-    a. Spring Boot finds all controller classes marked with proper annotation and invokes their constructors
-    b. Spring Boot follows the class dependency injection chain from the controllers downwards until the last components (service, repository, entity classes and other beans) are injected
-    c. finally Spring Boot injects the controller class dependencies into the main application class and starts the application
+    - Spring Boot finds all controller classes marked with proper annotation and invokes their constructors
+    - Spring Boot follows the class dependency injection chain from the controllers downwards until the last components (service, repository, entity classes and other beans) are injected
+    - finally Spring Boot injects the controller class dependencies into the main application class and starts the application
 
 =================================================================================
 3. CLASS DEPENDENCIES IN SPRING
@@ -262,9 +262,9 @@ The class name or the object variable name can be different at backend and front
 10. START AND STOP WEB APPLICATION
 =================================================================================
 To start the web application, use Maven in console:
-mvn spring-boot:run
+    - mvn spring-boot:run
 or
-mvnw spring-boot:run
+    - mvnw spring-boot:run
 The Maven will compile the project, then attempt to start it.
 
 To stop the application, press ^C in the console.
@@ -297,4 +297,4 @@ MORE HERE: https://www.digitalocean.com/community/tutorials/spring-configuration
 =>SPRING BOOT VALIDATION
 =>SPRING EXCEPTION HANDLING
 =>MOCKITO
-=>SPRING BOOT THYMELEAF FILE UPLOAD
+=>SPRING BOOT THYMELEAF FILE STORAGE EXAMPLE

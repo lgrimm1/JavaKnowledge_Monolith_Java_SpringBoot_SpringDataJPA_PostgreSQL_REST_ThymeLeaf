@@ -116,7 +116,7 @@ When using the @ResponseBody annotation on class-level, will mark all controller
 In case the @ResponseBody annotation is used independently on controller methods, the annotation can be before the method signature or before the return value in the signature.
 
 By using the @ControllerAdvise annotation the Spring is instructed to look for instructions how the controller should operate before activating any controller methods.
-Such instruction can be e.g. adding general objects to all models, see @ModelAttribute annotation on method level below.
+Such instruction can be e.g. controller exception handling or adding general objects to all models, see @ModelAttribute annotation on method level below.
 
 Parameters of @Request/Get/Post/Put/Delete/PatchMapping:
     - "/endpoint" (can be used when only this parameter is given)
@@ -254,7 +254,9 @@ Data binding means that Spring parses the incoming data to method arguments mark
 As first step before invoking the method of the endpoint, Spring examines whether the marked argument will receive an object from the frontend. In case of no matching incoming object, Spring tries to initialise a new object by calling proper constructor and passes that object to the argument.
 Please note, in case of Collection or more @ModelAttribute arguments, it is difficult to write working mocking unit test for the controller method. Proper solution is to declare a payload class containing fields for all possible data and receive only that payload in the controller method signature. This payload class needs to have setters next to the constructors and getters in order to let Spring manipulate its instances freely, therefore the payload class is not immutable. However, fields should be private.
 
-Optionally, the method signature can contain a BindingResult argument. This argument will tell if data binding was successful.
+For model&view mode, optionally, the method signature can contain a RedirectAttributes argument with which additional attributes can be added to the Model before redirection.
+For all modes, optionally, the method signature can contain a BindingResult argument. This argument will tell if data binding was successful.
+For all modes, optionally, the method signature can contain a MultipartFile or a MultipartFile[] argument, through them uploaded files can be received, sent by the frontend. Visit the SPRING BOOT THYMELEAF and SPRING BOOT THYMELEAF FILE STORAGE EXAMPLE pages for details.
 
 EXAMPLE FOR DECLARING PAYLOAD CLASS:
 package ...;
@@ -289,12 +291,19 @@ The Model is extending the Map interface where keys are HTML attributes, values 
 The Model object is created by Spring Boot. No legal constructor is available which means objects can be added to these objects but creating new one nor assigning new one to its variable must be prevented.
 As for making the controller method testable, model attributes should be added to the Model within the controller method, the Business layer should provide the attribute data themselves.
 
-An incoming request can be redirected to an other view by using the "redirect:/" text before the returned view name. It is typically used for root queries.
+An incoming request can be redirected to an other view by using the "redirect:/" text before the returned view name. It is typically used for root queries. Also, optionally a RedirectAttributes object can be used for adding additional data to the Model.
+Forwarding is possible as well by using the "forward:/" formula in the returned view name, similarly.
 
 EXAMPLE FOR REDIRECTING A QUERY:
 @GetMapping("/")
 public String root() {
     return "redirect:/index";
+}
+
+@PostMapping("/endpoint")
+public String method(RedirectAttributes redirectAttributes, Model model) {
+    redirectAttributes.addFlashAttribute("attribute_name", attributeValue);
+    return "redirect:/new_target";
 }
 END OF EXAMPLE
 
@@ -596,5 +605,6 @@ Naturally, the API can publish other functions as well next to the CRUD.
 =>SPRING BOOT VALIDATION
 =>SPRING BOOT CONTROLLER TESTS
 =>SPRING BOOT THYMELEAF
+=>SPRING BOOT THYMELEAF FILE STORAGE EXAMPLE
 =>SERIALIZATION
 =>SPRING EXCEPTION HANDLING
