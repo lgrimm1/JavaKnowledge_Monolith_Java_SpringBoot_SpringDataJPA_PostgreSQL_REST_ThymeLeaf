@@ -73,7 +73,7 @@ class ClassNameTest {
     @BeforeAll
     static void setUpOnce() {...}
 
-    @BeforeEarch
+    @BeforeEach
     void setUp() {...}
 
     @Test

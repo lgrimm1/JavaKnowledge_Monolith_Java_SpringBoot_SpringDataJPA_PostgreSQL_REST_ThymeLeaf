@@ -17,7 +17,8 @@ STATEMENTS
 14. TRY-CATCH-FINALLY STATEMENT
 15. TRY-WITH-RESOURCES STATEMENT
 16. ENHANCED TRY-WITH-RESOURCES STATEMENT
-17. CHAINED STATEMENTS
+17. MULTI-CATCH (COLLAPSED) CATCH BLOCK
+18. CHAINED STATEMENTS
 
 =================================================================================
 1. GROUP OF STATEMENTS
@@ -195,9 +196,6 @@ catch (exceptionTypeX exceptionVariableX) {
 }]
 END OF EXAMPLE
 
-More catch branches can be merged into one:
-    - catch (exceptionType1 | exceptionType2 exceptionVariable) {...}
-
 =================================================================================
 13. TRY-FINALLY STATEMENT
 =================================================================================
@@ -239,9 +237,6 @@ END OF EXAMPLE
 
 Less safe try statement for more objects need closing after process: there is a possibility that one of the .close methods will not run if the previous one fails.
 
-More catch branches can be merged into one:
-    - catch (exceptionType1 | exceptionType2 exceptionVariable) {...}
-
 The "finally" block will not apply:
     - after System.exit() method
     - unhandled exception in finally block
@@ -276,9 +271,6 @@ Scanner sci = new Scanner(...)
 FileReader fr = new FileReader(...)
 END OF EXAMPLE
 
-More catch branches can be merged into one:
-    - catch (exceptionType1 | exceptionType2 exceptionVariable) {...}
-
 =================================================================================
 16. ENHANCED TRY-WITH-RESOURCES STATEMENT
 =================================================================================
@@ -292,7 +284,22 @@ try (sc) {...}
 END OF EXAMPLE
 
 =================================================================================
-17. CHAINED STATEMENTS
+17. MULTI-CATCH (COLLAPSED) CATCH BLOCK
+=================================================================================
+Several catch blocks can be collapsed into one called multi-catch block. The original exceptions must not have near or far parent-child relation in the Exception tree.
+
+EXAMPLE FOR MULTI-CATCH BLOCK:
+//original catch blocks:
+catch (ExceptionClassName1 exceptionVariable1) {...}
+catch (ExceptionClassName2 exceptionVariable2) {...}
+catch (ExceptionClassName3 exceptionVariable3) {...}
+
+//collapsed catch block:
+catch (ExceptionClassName1 | ExceptionClassName2 | ExceptionClassName3 exceptionVariable) {...}
+END OF EXAMPLE
+
+=================================================================================
+18. CHAINED STATEMENTS
 =================================================================================
 In case a statement has a return value which will be used for an other method, the statements can be attached into a chain.
 By using this, less explicit variables can be used since the returned values will not be stored one-by-one but of the last statement.

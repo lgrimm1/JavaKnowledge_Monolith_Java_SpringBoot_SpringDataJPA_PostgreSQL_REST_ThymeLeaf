@@ -176,12 +176,12 @@ Similarly, assertEquals(new ArrayList<>(), ...) is preferred over checking empti
 For MockMVC tests, visit the SPRING BOOT CONTROLLER TESTS page.
 
 EXAMPLE FOR TESTING MODELANDVIEW (JUNIT ASSERTIONS):
-ModelAndView modelAndView = ...;
+ModelAndView actualModelAndView = ...;
 
-Assertions.assertTrue(modelAndView.hasView());
-Assertions.assertEquals("view_name", modelAndView.getViewName());
+Assertions.assertTrue(actualModelAndView.hasView());
+Assertions.assertEquals("view_name", actualModelAndView.getViewName());
 
-ModelMap modelMap = modelAndView.getModelMap();
+ModelMap modelMap = actualModelAndView.getModelMap();
 Assertions.assertEquals(numberOfExpectedContainedAttributes, modelMap.size());
 
 //check against expected value (generally)
@@ -205,16 +205,35 @@ Assertions.assertTrue(modelMap.getAttribute("html_array_attribute_name") instanc
 Assertions.assertEquals(new ArrayList<>(), modelMap.getAttribute("html_array_attribute_name"));
 END OF EXAMPLE
 
-EXAMPLE FOR TESTING MODELANDVIEW (MODELANDVIEWASSERT):
-ModelAndView modelAndView = ...;
+EXAMPLE FOR TESTING MODELANDVIEW (MODELANDVIEWASSERT, PER ATTRIBUTE):
+ModelAndView actualModelAndView = ...;
 
-ModelAndViewAssert.assertViewName(modelAndView, "view_name");
+ModelAndViewAssert.assertViewName(actualModelAndView, "view_name");
+//per attribute:
+ModelAndViewAssert.assertModelAttributeAvailable(actualModelAndView, "html_attribute_name");
+ModelAndViewAssert.assertAndReturnModelAttributeOfType(actualModelAndView, "html_attribute_name", Element.class);
+ModelAndViewAssert.assertModelAttributeValue(actualModelAndView, "html_attribute_name", attribute_value);
+END OF EXAMPLE
 
-ModelAndViewAssert.assertModelAttributeValues(modelAndView, expectedModelAndView.getModel()); //or:
+EXAMPLE FOR TESTING MODELANDVIEW (MODELANDVIEWASSERT, PER MODEL):
+ModelAndView expectedModelAndView = ...;
+ModelAndView actualModelAndView = ...;
 
-ModelAndViewAssert.assertModelAttributeAvailable(modelAndView, "html_attribute_name");
-ModelAndViewAssert.assertAndReturnModelAttributeOfType(modelAndView, "html_attribute_name", Element.class);
-ModelAndViewAssert.assertModelAttributeValue(modelAndView, "html_attribute_name", attribute_value);
+ModelAndViewAssert.assertViewName(actualModelAndView, "view_name");
+ModelAndViewAssert.assertModelAttributeValues(actualModelAndView, expectedModelAndView.getModel());
+END OF EXAMPLE
+
+EXAMPLE FOR TESTING MODELANDVIEW (MODELANDVIEWASSERT, PAYLOAD):
+//definition of Payload class
+
+Payload expectedPayload = new Payload(...);
+Map<String, Object> model = new HashMap<>();
+model.put("payload", expectedPayload);
+
+ModelAndView actualModelAndView = ...;
+
+ModelAndViewAssert.assertViewName(actualModelAndView, "view_name");
+ModelAndViewAssert.assertModelAttributeValues(actualModelAndView, model);
 END OF EXAMPLE
 
 =>WEB APPLICATION
