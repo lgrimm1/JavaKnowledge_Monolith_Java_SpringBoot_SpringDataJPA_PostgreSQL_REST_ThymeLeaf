@@ -209,8 +209,8 @@ Under the src/main/resources folder, the next folders should be created:
     - templates (contains template (pre-set page) part of frontend, handled with backend web development)
 
 Spring Boot uses automatism when the web application starts (invoking Main class):
-    - Spring Boot finds all controller classes marked with proper annotation and invokes their constructors
-    - Spring Boot follows the class dependency injection chain from the controllers downwards until the last components (service, repository, entity classes and other beans) are injected
+    - detects the Spring hierarchy (based upon class dependency injections)
+    - creates all Spring components from bottom to up (by calling their constructors; all components will be singletons)
     - finally Spring Boot injects the controller class dependencies into the main application class and starts the application
 
 =================================================================================
