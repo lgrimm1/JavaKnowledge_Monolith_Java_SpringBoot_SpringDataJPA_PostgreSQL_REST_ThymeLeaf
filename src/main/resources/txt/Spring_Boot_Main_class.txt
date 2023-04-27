@@ -59,7 +59,7 @@ import org.springframework.boot.CommandLineRunner;
 @EnableJpaRepositories
 public class ApplicationName implements CommandLineRunner {
 
-	@Resource
+	@Autowired
 	ServiceClassName serviceName;
 
 	public static void main(String[] args) {
