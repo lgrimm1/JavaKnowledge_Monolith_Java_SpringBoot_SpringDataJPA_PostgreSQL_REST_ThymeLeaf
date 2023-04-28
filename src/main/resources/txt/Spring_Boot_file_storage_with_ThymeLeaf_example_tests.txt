@@ -1,0 +1,331 @@
+=================================================================================
+SPRING BOOT FILE STORAGE WITH THYMELEAF EXAMPLE TESTS
+=================================================================================
+1. REPOSITORY
+2. SERVICE
+3. CONTROLLER
+4. APPLICATION
+
+=================================================================================
+1. REPOSITORY
+=================================================================================
+For repository tests visit the SPRING BOOT FILE STORAGE WITH THYMELEAF EXAMPLE REPOSITORY TESTS page.
+
+=================================================================================
+2. SERVICE
+=================================================================================
+For repository tests visit the SPRING BOOT FILE STORAGE WITH THYMELEAF EXAMPLE SERVICE TESTS page.
+
+=================================================================================
+3. CONTROLLER
+=================================================================================
+The two solutions have the very same endpoints, therefore the difference will be marked in the example below.
+
+EXAMPLE FOR CONTROLLER CLASS UNIT TEST:
+import org.junit.jupiter.api.*;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.*;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.core.io.*;
+import org.springframework.http.*;
+import org.springframework.mock.web.*;
+import org.springframework.test.web.servlet.*;
+import org.springframework.web.servlet.*;
+import java.io.*;
+import java.nio.file.*;
+import java.util.*;
+
+//in-folder:
+@WebMvcTest(FileInFolderController.class)
+class FileInFolderControllerTest {
+//in-database:
+@WebMvcTest(FileInDatabaseController.class)
+@AutoConfigureDataJpa
+class FileInDatabaseControllerTest {
+
+	@Autowired
+	private MockMvc mockMvc;
+
+    //in-folder:
+	@MockBean
+	private FileInFolderService service;
+    //in-database:
+	@MockBean
+	private FileInDatabaseService service;
+
+	String filename1, filename2, content1, content2, baseUrl;
+	FileInfo fileInfo1, fileInfo2;
+	Multipart multipartOfFile1, multipartOfFiles1, multipartOfFiles2;
+
+	@BeforeEach
+	void setUp() {
+		baseUrl = "http://localhost";
+		filename1 = "file1.txt";
+		filename2 = "file2.txt";
+		content1 = "content1";
+		content2 = "content2";
+		fileInfo1 = new FileInfo(filename1, baseUrl + "/files/" + filename1);
+		fileInfo2 = new FileInfo(filename2, baseUrl + "/files/" + filename2);
+		multipartOfFile1 = new Multipart("file", filename1, MediaType.TEXT_PLAIN_VALUE, content1.getBytes());
+		multipartOfFiles1 = new Multipart("files", filename1, MediaType.TEXT_PLAIN_VALUE, content1.getBytes());
+		multipartOfFiles2 = new Multipart("files", filename2, MediaType.TEXT_PLAIN_VALUE, content2.getBytes());
+	}
+
+	@Test
+	void newFile() throws Exception {
+		Payload sentPayload = new Payload(
+				null,
+				null,
+				null
+		);
+		ModelAndView modelAndView = new ModelAndView("upload", "payload", sentPayload);
+		when(service.newFile())
+				.thenReturn(modelAndView);
+
+		mockMvc
+				.perform(
+						get("/files/new")
+				)
+				.andExpect(status().isOk())
+				.andDo(print())
+				.andExpect(view().name("upload"))
+				.andExpect(model().size(1))
+				.andExpect(model().attribute("payload", sentPayload));
+	}
+
+	@Test
+	void uploadFile() throws Exception {
+		MockMultipartFile file1 = new MockMultipartFile(
+				"file",
+				filename1,
+				MediaType.TEXT_PLAIN_VALUE,
+				content1.getBytes()
+		);
+		List<FileInfo> fileInfoList = List.of(fileInfo1);
+		Payload sentPayload = new Payload(
+				filename1 + " file has been successfully uploaded.",
+				null,
+				fileInfoList);
+		ModelAndView modelAndView = new ModelAndView("file_list", "payload", sentPayload);
+		when(service.uploadFile(multipartOfFile1, baseUrl))
+				.thenReturn(modelAndView);
+
+		mockMvc.perform(
+						multipart("/files/upload/single")
+								.file(file1)
+				)
+				.andExpect(status().isOk())
+				.andDo(print())
+				.andExpect(view().name("file_list"))
+				.andExpect(model().size(1))
+				.andExpect(model().attribute("payload", sentPayload));
+	}
+
+	@Test
+	void uploadFiles() throws Exception {
+		MockMultipartFile file1 = new MockMultipartFile(
+				"files",
+				filename1,
+				MediaType.TEXT_PLAIN_VALUE,
+				content1.getBytes()
+		);
+		MockMultipartFile file2 = new MockMultipartFile(
+				"files",
+				filename2,
+				MediaType.TEXT_PLAIN_VALUE,
+				content2.getBytes()
+		);
+		List<FileInfo> fileInfoList = List.of(fileInfo1, fileInfo2);
+		List<String> messages = List.of("messages");
+		Payload sentPayload = new Payload(
+				null,
+				messages,
+				fileInfoList);
+		ModelAndView modelAndView = new ModelAndView("file_list", "payload", sentPayload);
+		List<Multipart> multiparts = List.of(multipartOfFiles1, multipartOfFiles2);
+		when(service.uploadFiles(multiparts, baseUrl))
+				.thenReturn(modelAndView);
+
+		mockMvc.perform(
+						multipart("/files/upload/multiple")
+								.file(file1)
+								.file(file2)
+				)
+				.andExpect(status().isOk())
+				.andDo(print())
+				.andExpect(view().name("file_list"))
+				.andExpect(model().size(1))
+				.andExpect(model().attribute("payload", sentPayload));
+	}
+
+	@Test
+	void getListFiles() throws Exception {
+		List<FileInfo> fileInfoList = List.of(fileInfo1, fileInfo2);
+		Payload sentPayload = new Payload(
+				null,
+				null,
+				fileInfoList
+		);
+		ModelAndView modelAndView = new ModelAndView("file_list", "payload", sentPayload);
+		when(service.getFileList(baseUrl))
+				.thenReturn(modelAndView);
+
+		mockMvc
+				.perform(
+						get("/")
+				)
+				.andExpect(status().isOk())
+				.andDo(print())
+				.andExpect(view().name("file_list"))
+				.andExpect(model().size(1))
+				.andExpect(model().attribute("payload", sentPayload));
+
+		mockMvc
+				.perform(
+						get("/files")
+				)
+				.andExpect(status().isOk())
+				.andDo(print())
+				.andExpect(view().name("file_list"))
+				.andExpect(model().size(1))
+				.andExpect(model().attribute("payload", sentPayload));
+	}
+
+	@Test
+	void getFile() throws Exception {
+	    //in-folder:
+		String rootName = "." + File.separator + "init_test100";
+		Path rootPath = Paths.get(rootName);
+		File rootFolder = rootPath.toFile();
+		Assertions.assertEquals(rootPath, Files.createDirectories(rootPath));
+		Path path = rootPath.resolve(filename1);
+		File file = path.toFile();
+		file.delete();
+		Assertions.assertEquals(path, Files.write(path, content1.getBytes()));
+		Resource resource = new UrlResource(path.toUri());
+		ResponseEntity<Resource> sentResponseEntity = ResponseEntity
+				.ok()
+				.header(HttpHeaders.CONTENT_DISPOSITION,
+						"attachment; filename=\"" + filename1 + "\"")
+				.body(resource);
+        //in-database:
+		ResponseEntity<byte[]> sentResponseEntity = ResponseEntity
+				.ok()
+				.header(HttpHeaders.CONTENT_DISPOSITION,
+						"attachment; filename=\"" + filename1 + "\"")
+				.body(content1.getBytes());
+
+		when(service.getFile(filename1))
+				.thenReturn(sentResponseEntity);
+
+		MvcResult result = mockMvc
+				.perform(
+						get("/files/" + filename1)
+								.queryParam("filename", filename1)
+				)
+				.andDo(print())
+				.andExpect(status().isOk())
+				.andReturn();
+		Assertions.assertEquals(content1, result.getResponse().getContentAsString());
+
+		//in-folder:
+		Assertions.assertTrue(file.delete());
+		Assertions.assertTrue(rootFolder.delete());
+	}
+
+	@Test
+	void deleteFile() throws Exception {
+		List<FileInfo> fileInfoList = List.of(fileInfo2);
+		Payload sentPayload = new Payload(
+				filename1 + " file has been deleted.",
+				null,
+				fileInfoList
+		);
+		ModelAndView modelAndView = new ModelAndView("file_list", "payload", sentPayload);
+		when(service.deleteFile(filename1, baseUrl))
+				.thenReturn(modelAndView);
+
+		mockMvc
+				.perform(
+						post("/files/delete/" + filename1)
+								.queryParam("filename", filename1)
+				)
+				.andExpect(status().isOk())
+				.andDo(print())
+				.andExpect(view().name("file_list"))
+				.andExpect(model().size(1))
+				.andExpect(model().attribute("payload", sentPayload));
+	}
+
+	@Test
+	void deleteAllFiles() throws Exception {
+		List<FileInfo> fileInfoList = List.of();
+		Payload sentPayload = new Payload(
+				"2 of 2 file(s) has been deleted.",
+				null,
+				fileInfoList
+		);
+		ModelAndView modelAndView = new ModelAndView("file_list", "payload", sentPayload);
+		when(service.deleteAllFiles(baseUrl))
+				.thenReturn(modelAndView);
+
+		mockMvc
+				.perform(
+						post("/files/empty")
+				)
+				.andExpect(status().isOk())
+				.andDo(print())
+				.andExpect(view().name("file_list"))
+				.andExpect(model().size(1))
+				.andExpect(model().attribute("payload", sentPayload));
+	}
+}
+END OF EXAMPLE
+
+=================================================================================
+4. APPLICATION
+=================================================================================
+EXAMPLE FOR APPLICATION CLASS UNIT TEST (IN-FOLDER):
+import org.junit.jupiter.api.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+
+@SpringBootTest
+class FileStorageApplicationTest {
+
+	@Autowired
+	FileInFolderController fileInFolderController;
+
+	@Test
+	public void contextLoads() throws Exception {
+		Assertions.assertNotNull(fileInFolderController);
+	}
+}
+END OF EXAMPLE
+
+EXAMPLE FOR APPLICATION CLASS UNIT TEST (IN-DATABASE):
+import org.junit.jupiter.api.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+
+@SpringBootTest
+class FileStorageApplicationTest {
+
+	@Autowired
+	FileInDatabaseController fileInDatabaseController;
+
+	@Test
+	public void contextLoads() throws Exception {
+		Assertions.assertNotNull(fileInDatabaseController);
+	}
+}
+END OF EXAMPLE
+
+=>SPRING BOOT FILE STORAGE WITH THYMELEAF EXAMPLE
+=>SPRING BOOT FILE STORAGE WITH THYMELEAF EXAMPLE REPOSITORY TESTS
+=>SPRING BOOT FILE STORAGE WITH THYMELEAF EXAMPLE SERVICE TESTS

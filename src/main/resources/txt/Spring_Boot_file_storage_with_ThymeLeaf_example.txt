@@ -1,0 +1,445 @@
+=================================================================================
+SPRING BOOT FILE STORAGE WITH THYMELEAF EXAMPLE
+=================================================================================
+In order to provide file upload functionality, Spring Boot offers solution for the backend. The frontend is made of ThymeLeaf templates.
+For the frontend part, visit the SPRING BOOT THYMELEAF and SPRING BOOT THYMELEAF EXAMPLES pages first.
+The uploaded files either can be stored in an /upload folder (on the same level with /scr and /target directories of the project) or in the database (Data JPA is needed).
+The examples below represents a solution in object/model&view mode (REST compatible).
+
+The MultipartFile and MultipartFile[] objects have no public constructors therefore best practice is to keep these objects in the controller and bound (converted) data should be passed to the Business layer. In such structure, unit testing becomes possible, otherwise integration testing is suggested only.
+In case the passed MultipartFile is not null, will never be totally empty. The reason is, it contains the HTML attribute name from the template, the original filename and the media type as well, next to the content. The isEmpty() method of MultipartFile checks emptiness of the content part. The transfer object between the controller and the Business layer should carry all of these data together.
+Testing with MultipartFile means utilizing MockMultipartFile. This class needs the minimum servlet started up which means using the class is possible only in mocked controller test environment at minimum.
+
+For tests, visit the SPRING BOOT FILE STORAGE WITH THYMELEAF EXAMPLE TESTS page.
+
+1. DEPENDENCIES, APPLICATION SETTINGS, DATABASE
+2. DATA MODELS
+3. REPOSITORY
+4. SERVICE
+5. CONTROLLER
+6. APPLICATION
+7. THYMELEAF TEMPLATES
+
+=================================================================================
+1. DEPENDENCIES, APPLICATION SETTINGS, DATABASE
+=================================================================================
+For in-folder solution, the next dependencies must be added to pom.xml:
+    - Spring Boot Starter Web
+    - Spring Boot Starter Test
+    - Mockito
+    - Spring Boot Starter ThymeLeaf
+
+For in-database solution, extend the dependencies with:
+    - Spring Boot Starter Data JPA
+    - PostgreSQL (or other database plugin)
+
+For in-folder solution the next parameters should be added to the application.properties file. The unit can be MB or KB. In case the uploaded file size is over the limit, MaxUploadSizeExceededException will be raised.
+
+EXAMPLE FOR APPLICATION.PROPERTIES MINIMUM:
+spring.servlet.multipart.max-file-size=1MB
+spring.servlet.multipart.max-request-size=1MB
+END OF EXAMPLE
+
+For in-database solution, extend the parameters with the next minimum. Furthermore, make sure you created a file_storage database in PostgreSQL (or in other database).
+
+EXAMPLE FOR APPLICATION.PROPERTIES EXTENSION (POSTGRESQL):
+spring.datasource.url = jdbc:postgresql://localhost:5432/file_storage
+spring.datasource.username = postgres
+spring.datasource.password = 1
+
+spring.jpa.properties.hibernate.jdbc.lob.non_contextual_creation = true
+spring.jpa.properties.hibernate.dialect = org.hibernate.dialect.PostgreSQLDialect
+spring.jpa.hibernate.ddl-auto = create-drop
+spring.jpa.show-sql = true
+spring.jpa.properties.hibernate.format_sql = true
+END OF EXAMPLE
+
+Visit the SPRING BOOT page for the know-how.
+
+=================================================================================
+2. DATA MODELS
+=================================================================================
+The Payload class is used for data transfer between backend and frontend (literally a payload).
+The FileInfo class represents file information of one stored file.
+The Multipart class is used as a bound version of a received MultipartFile, which can be passed outside the controller without breaking independent testing.
+The FileInDatabaseEntity class is needed only for in-database solution (entity class). The file content will be stored as String, mapped to a TEXT data type.
+
+EXAMPLE FOR PAYLOAD CLASS:
+import java.util.*;
+
+public class Payload {
+	private String message;
+	private List<String> messages;
+	private List<FileInfo> fileInfos;
+
+	public Payload() {
+	}
+
+	public Payload(String message, List<String> messages, List<FileInfo> fileInfos) {
+		this.message = message;
+		this.messages = messages;
+		this.fileInfos = fileInfos;
+	}
+
+    //getters, setters, equals(), hashCode(), toString()
+}
+END OF EXAMPLE
+
+EXAMPLE FOR FILEINFO CLASS:
+import java.util.*;
+
+public class FileInfo {
+
+	private String name;
+	private String url;
+
+	public FileInfo(String name, String url) {
+		this.name = name;
+		this.url = url;
+	}
+
+    //getters, setters, equals(), hashCode(), toString()
+}
+END OF EXAMPLE
+
+EXAMPLE FOR MULTIPART CLASS:
+import org.springframework.lang.*;
+import java.util.*;
+
+public class Multipart {
+
+	private final String name;
+	private final String originalFilename;
+	private final String contentType;
+	private final byte[] content;
+
+	public Multipart(@NonNull String name,
+					 @NonNull String originalFilename,
+					 @NonNull String contentType,
+					 @NonNull byte[] content) {
+		this.name = name;
+		this.originalFilename = originalFilename;
+		this.contentType = contentType;
+		this.content = content;
+	}
+
+    //getters, setters, equals(), hashCode(), toString()
+}
+END OF EXAMPLE
+
+EXAMPLE FOR ENTITY CLASS:
+import jakarta.persistence.*;
+import java.util.*;
+
+@Entity
+@Table(name = "files")
+public class FileInDatabaseEntity {
+
+	@Id
+	@SequenceGenerator(name = "files_seq", sequenceName = "files_seq", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "files_seq")
+	@Column(name = "id")
+	private long id;
+	@Column(name = "filename", unique = true, nullable = false)
+	String fileName;
+	@Column(name = "content", columnDefinition = "TEXT", nullable = false)
+	String content;
+	@Column(name = "filetype", nullable = false)
+	private String fileType;
+
+	public FileInDatabaseEntity() {
+	}
+
+	public FileInDatabaseEntity(String fileName, String content, String fileType) {
+		this.fileName = fileName;
+		this.content = content;
+		this.fileType = fileType;
+	}
+
+	public FileInDatabaseEntity(long id, String fileName, String content, String fileType) {
+		this.id = id;
+		this.fileName = fileName;
+		this.content = content;
+		this.fileType = fileType;
+	}
+
+    //getters, setters, equals(), hashCode(), toString()
+}
+END OF EXAMPLE
+
+=================================================================================
+3. REPOSITORY
+=================================================================================
+For repository solutions, visit the SPRING BOOT FILE STORAGE WITH THYMELEAF REPOSITORY EXAMPLE page.
+
+=================================================================================
+4. SERVICE
+=================================================================================
+For service solutions, visit the SPRING BOOT FILE STORAGE WITH THYMELEAF SERVICE EXAMPLE page.
+
+=================================================================================
+5. CONTROLLER
+=================================================================================
+The controller handles the possible MaxUploadSizeExceededException. Although the handler could be organized into an independent @ControllerAdvice class, for simplicity, included in the controller.
+The controller binds incoming MultipartFiles to Multipart objects, also detects the base URL via utilizing ServletUriComponentsBuilder. These short methods are part of the Business layer but because they are included in the controller, independent unit tests became possible. Also, the ServletUriComponentsBuilder needs application context which is not available outside the controller.
+The two solutions have the very same endpoints, therefore the difference will be marked in the example below.
+
+EXAMPLE FOR CONTROLLER CLASS:
+import jakarta.servlet.http.*;
+import org.springframework.beans.factory.annotation.*;
+import org.springframework.core.io.*;
+import org.springframework.http.*;
+import org.springframework.ui.*;
+import org.springframework.util.*;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.*;
+import org.springframework.web.servlet.*;
+import org.springframework.web.servlet.support.*;
+import java.util.*;
+import java.util.stream.*;
+
+@RestController
+@ControllerAdvice
+//in-folder:
+public class FileInFolderController {
+//in-database:
+public class FileInDatabaseController {
+
+    //in-folder:
+	private final FileInFolderService service;
+	@Autowired
+	public FileInFolderController(FileInFolderService service) {
+		this.service = service;
+    }
+
+	//in-database:
+	private final FileInDatabaseService service;
+	@Autowired
+	public FileInDatabaseController(FileInDatabaseService service) {
+		this.service = service;
+	}
+
+	@GetMapping("/files/new")
+	public ModelAndView newFile(Model model) {
+		model.asMap().clear();
+		return service.newFile();
+	}
+
+	@PostMapping("/files/upload/single")
+	public ModelAndView uploadFile(@RequestParam("file") MultipartFile file,
+								   HttpServletRequest request,
+								   Model model) {
+		model.asMap().clear();
+		return service.uploadFile(bindMultipartFileToMultipart(file), detectBaseUrl(request));
+	}
+
+	@PostMapping("/files/upload/multiple")
+	public ModelAndView uploadFiles(@RequestParam("files") MultipartFile[] files,
+									HttpServletRequest request,
+									Model model) {
+		model.asMap().clear();
+		return service.uploadFiles(bindMultipartFileArrayToMultipartList(files), detectBaseUrl(request));
+	}
+
+	@GetMapping({"/", "/files"})
+	public ModelAndView getListFiles(HttpServletRequest request, Model model) {
+		model.asMap().clear();
+		return service.getFileList(detectBaseUrl(request));
+	}
+
+    //in-folder:
+	@GetMapping("/files/{filename:.+}")
+	public ResponseEntity<Resource> getFile(@PathVariable("filename") String filename) {
+		return service.getFile(filename);
+	}
+
+	//in-database:
+	@GetMapping("/files/{filename:.+}")
+	public ResponseEntity<byte[]> getFile(@PathVariable("filename") String filename) {
+		return service.getFile(filename);
+	}
+
+	@PostMapping("/files/delete/{filename:.+}")
+	public ModelAndView deleteFile(@PathVariable("filename") String filename,
+								   HttpServletRequest request,
+								   Model model) {
+		model.asMap().clear();
+		return service.deleteFile(filename, detectBaseUrl(request));
+	}
+
+	@PostMapping("/files/empty")
+	public ModelAndView deleteAllFiles(HttpServletRequest request, Model model) {
+		model.asMap().clear();
+		return service.deleteAllFiles(detectBaseUrl(request));
+	}
+
+	@ExceptionHandler(MaxUploadSizeExceededException.class)
+	public ModelAndView handleMaxSizeException(MaxUploadSizeExceededException e,
+											   HttpServletRequest request,
+											   Model model) {
+		model.asMap().clear();
+		return service.handleMaxSizeException(detectBaseUrl(request));
+	}
+
+	private Multipart bindMultipartFileToMultipart(MultipartFile file) {
+		try {
+			return new Multipart(file.getName(),
+					StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename())),
+					Objects.requireNonNull(file.getContentType()),
+					file.getBytes());
+		}
+		catch (Exception e) {
+			return null;
+		}
+	}
+
+	private List<Multipart> bindMultipartFileArrayToMultipartList(MultipartFile[] files) {
+		if (files == null) {
+			return null;
+		}
+		return Arrays.stream(files)
+				.map(this::bindMultipartFileToMultipart)
+				.collect(Collectors.toList());
+	}
+
+	private String detectBaseUrl(HttpServletRequest request) {
+		return ServletUriComponentsBuilder
+				.fromRequestUri(request)
+				.replacePath(null)
+				.build()
+				.toUriString();
+	}
+}
+END OF EXAMPLE
+
+=================================================================================
+6. APPLICATION
+=================================================================================
+The two solutions have practically the same application class except that the in-database solution needs @EnableJpaRepositories annotation.
+
+EXAMPLE FOR APPLICATION CLASS:
+import org.springframework.boot.*;
+import org.springframework.boot.autoconfigure.*;
+import org.springframework.data.jpa.repository.config.*;
+
+@SpringBootApplication
+@EnableJpaRepositories
+public class FileStorageApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(FileStorageApplication.class, args);
+	}
+}
+END OF EXAMPLE
+
+=================================================================================
+7. THYMELEAF TEMPLATES
+=================================================================================
+EXAMPLE FOR FILE STORAGE TEMPLATES:
+<!-- head fragment: -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <title>File Storage Example</title>
+</head>
+
+<!-- header fragment: -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<header>
+    <a th:href="@{/files/new}">Upload File(s)</a>
+    &nbsp;
+    <a th:href="@{/files}">List of Files</a>
+</header>
+
+<!-- upload.html: -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{/fragments/head.html::head}" />
+<body>
+<header th:replace="~{/fragments/header.html::header}" />
+<form th:object="${payload}" method="post" enctype="multipart/form-data">
+    <h2>File Upload</h2>
+    <table>
+        <tr>
+            <th>Upload Type</th>
+            <th>File Selection</th>
+            <th>Action</th>
+        </tr>
+        <tr>
+            <td>Single</td>
+            <td>
+                <input type="file" name="file" />
+            </td>
+            <td>
+                <input type="submit" value="Upload" formaction="/files/upload/single" />
+            </td>
+        </tr>
+        <tr>
+            <td>Multiple</td>
+            <td>
+                <input type="file" name="files" multiple />
+            </td>
+            <td>
+                <input type="submit" value="Upload" formaction="/files/upload/multiple" />
+            </td>
+        </tr>
+    </table>
+</form>
+</body>
+</html>
+
+<!-- file_list.html: -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{/fragments/head.html::head}" />
+<body>
+<header th:replace="~{/fragments/header.html::header}" />
+<form th:object="${payload}">
+    <h2>List of Files</h2>
+    <div th:unless="*{message} == null" th:text="*{message}" />
+    <div th:unless="*{messages} == null" th:each="message : *{messages}">
+        <span th:text="${message}"></span><br>
+    </div>
+    <br>
+    <div th:if="*{fileInfos.size() > 0}" th:text="*{fileInfos.size()} + ' file(s).'" />
+    <div th:unless="*{fileInfos.size() > 0}">No Files.</div>
+    <br>
+    <div>
+        <table>
+            <tr>
+                <th>File Name</th>
+                <th>Link</th>
+                <th>Actions</th>
+            </tr>
+            <tr th:if="*{fileInfos.size() == 0}">
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+            </tr>
+            <tr th:each="file : *{fileInfos}">
+                <td th:text="${file.name}" />
+                <td><a th:href="@{${file.url}}">Download</a></td>
+                <td>
+                    <input type="submit" value="Delete" th:formaction="'/files/delete/' + ${file.name}" formmethod="post" />
+                </td>
+            </tr>
+        </table>
+        <br>
+        <input type="submit" value="Delete All" formaction="/files/empty" formmethod="post" />
+    </div>
+</form>
+</body>
+</html>
+END OF EXAMPLE
+
+=>SPRING BOOT FILE STORAGE WITH THYMELEAF REPOSITORY EXAMPLE
+=>SPRING BOOT FILE STORAGE WITH THYMELEAF SERVICE EXAMPLE
+=>SPRING BOOT FILE STORAGE WITH THYMELEAF EXAMPLE TESTS
+=>SPRING BOOT
+=>SPRING BOOT THYMELEAF
+=>SPRING BOOT THYMELEAF EXAMPLES
+=>SPRING BOOT THYMELEAF TEMPLATE FRAGMENTATION
+=>SPRING APPLICATION PROPERTIES
+=>SPRING BOOT CONTROLLER

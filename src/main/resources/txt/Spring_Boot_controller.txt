@@ -256,7 +256,7 @@ Please note, in case of Collection or more @ModelAttribute arguments, it is diff
 
 For model&view mode, optionally, the method signature can contain a RedirectAttributes argument with which additional attributes can be added to the Model before redirection.
 For all modes, optionally, the method signature can contain a BindingResult argument. This argument will tell if data binding was successful.
-For all modes, optionally, the method signature can contain a MultipartFile or a MultipartFile[] argument, through them uploaded files can be received, sent by the frontend. Visit the SPRING BOOT THYMELEAF and SPRING BOOT THYMELEAF FILE STORAGE EXAMPLE pages for details.
+For all modes, optionally, the method signature can contain a MultipartFile or a MultipartFile[] argument, through them uploaded files can be received, sent by the frontend. Visit the SPRING BOOT THYMELEAF and SPRING BOOT FILE STORAGE WITH THYMELEAF EXAMPLE pages for details.
 
 EXAMPLE FOR DECLARING PAYLOAD CLASS:
 package ...;
@@ -605,6 +605,6 @@ Naturally, the API can publish other functions as well next to the CRUD.
 =>SPRING BOOT VALIDATION
 =>SPRING BOOT CONTROLLER TESTS
 =>SPRING BOOT THYMELEAF
-=>SPRING BOOT THYMELEAF FILE STORAGE EXAMPLE
+=>SPRING BOOT FILE STORAGE WITH THYMELEAF EXAMPLE
 =>SERIALIZATION
 =>SPRING EXCEPTION HANDLING

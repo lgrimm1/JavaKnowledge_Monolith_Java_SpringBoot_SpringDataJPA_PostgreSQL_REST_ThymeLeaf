@@ -1,0 +1,244 @@
+=================================================================================
+SPRING BOOT FILE STORAGE WITH THYMELEAF REPOSITORY EXAMPLE
+=================================================================================
+1. IN-FOLDER REPOSITORY
+2. IN-DATABASE REPOSITORY
+
+=================================================================================
+1. IN-FOLDER REPOSITORY
+=================================================================================
+The entity is a file itself, as it is. That said, the repository must represent all functions needed for managing such storage.
+On psychical level, the storage will be a ./upload folder under the project root, all files will be stored on the same level.
+Filenames must be unique. The storage does not let overwriting files. The find...() methods return filename(s), the get...() method(s) the link(s) representing files.
+
+EXAMPLE FOR IN-FOLDER REPOSITORY CLASS:
+import org.springframework.core.io.*;
+import org.springframework.stereotype.*;
+import org.springframework.util.*;
+import java.io.*;
+import java.nio.file.*;
+import java.util.*;
+import java.util.stream.*;
+
+@Repository
+public class FileInFolderRepository {
+
+	private Path root;
+
+	public boolean init(String repositoryPath, boolean deleteAllFromStorage) {
+		try {
+			this.root = Paths.get(repositoryPath);
+			if (deleteAllFromStorage) {
+				FileSystemUtils.deleteRecursively(root.toFile());
+			}
+			Files.createDirectories(root);
+			return true;
+		}
+		catch (Exception e) {
+			return false;
+		}
+	}
+
+	public Optional<Resource> getByFilename(String filename) {
+		try {
+			Path path = root.resolve(filename);
+			Resource resource = new UrlResource(path.toUri());
+			if (resource.exists() || resource.isReadable()) {
+				return Optional.of(resource);
+			}
+			else {
+				return Optional.empty();
+			}
+		}
+		catch (Exception e) {
+			return Optional.empty();
+		}
+	}
+
+	public Stream<Resource> getAll() {
+		return this.findAll()
+				.map(path -> path.toFile().getName())
+				.map(this::getByFilename)
+				.filter(Optional::isPresent)
+				.map(Optional::get);
+	}
+
+	public Optional<Path> findByFilename(String filename) {
+		try {
+			Path path = this.root.resolve(filename);
+			if (path.toFile().exists() || path.toFile().isFile()) {
+				return Optional.of(root.relativize(path));
+			}
+			return Optional.empty();
+		}
+		catch (Exception e) {
+			return Optional.empty();
+		}
+	}
+
+	public Stream<Path> findAll() {
+		try {
+			return Files
+					.walk(this.root, 1)
+					.filter(path -> !path.equals(this.root))
+					.map(this.root::relativize);
+		}
+		catch (Exception e) {
+			return Stream.empty();
+		}
+	}
+
+	public Optional<String> save(Multipart file) {
+		try {
+			Path path = this.root.resolve(file.getOriginalFilename());
+			Files.copy(new ByteArrayInputStream(file.getContent()), path);
+			return Optional.of(file.getOriginalFilename());
+		}
+		catch (Exception e) {
+			return Optional.empty();
+		}
+	}
+
+	public Stream<String> saveAll(List<Multipart> files) {
+		return files.stream()
+				.map(this::save)
+				.filter(Optional::isPresent)
+				.map(Optional::get);
+	}
+
+	public boolean delete(String filename) {
+		try {
+			Path file = root.resolve(filename);
+			return Files.deleteIfExists(file);
+		}
+		catch (Exception e) {
+			return false;
+		}
+	}
+
+	public long deleteAll() {
+		try {
+			return Files
+					.walk(this.root, 1)
+					.filter(path -> !path.equals(this.root))
+					.map(Path::toFile)
+					.map(File::delete)
+					.filter(success -> success)
+					.count();
+		}
+		catch (Exception e) {
+			return 0;
+		}
+	}
+
+	public long count() {
+		try {
+			return Files
+					.walk(this.root, 1)
+					.filter(path -> !path.equals(this.root))
+					.count();
+		}
+		catch (Exception e) {
+			return -1;
+		}
+	}
+}
+END OF EXAMPLE
+
+=================================================================================
+2. IN-DATABASE REPOSITORY
+=================================================================================
+The solution utilizes the JpaRepository interface. The solution mirrors the in-folder solution and hides the unnecessary functionality. That said, the solution has two levels: an interface with added derived query method and a class with the narrowed functionality.
+Filenames must be unique. The storage does not let overwriting entities. The find...() methods return filename(s), the get...() method(s) the file(s).
+
+EXAMPLE FOR IN-DATABASE REPOSITORY INTERFACE:
+import org.springframework.data.jpa.repository.*;
+import org.springframework.stereotype.*;
+import java.util.*;
+
+@Repository
+public interface FileInDatabaseRepositoryInterface extends JpaRepository<FileInDatabaseEntity, Long> {
+
+	Optional<FileInDatabaseEntity> findByFileName(String filename);
+}
+END OF EXAMPLE
+
+EXAMPLE FOR IN-DATABASE REPOSITORY CLASS:
+import org.springframework.beans.factory.annotation.*;
+import org.springframework.stereotype.*;
+import java.util.*;
+import java.util.stream.*;
+
+@Component
+public class FileInDatabaseRepository {
+
+	private final FileInDatabaseRepositoryInterface repositoryInterface;
+
+	@Autowired
+	public FileInDatabaseRepository(FileInDatabaseRepositoryInterface repositoryInterface) {
+		this.repositoryInterface = repositoryInterface;
+	}
+
+	public Optional<FileInDatabaseEntity> getByFilename(String filename) {
+		return repositoryInterface.findByFileName(filename);
+	}
+
+	public Stream<FileInDatabaseEntity> getAll() {
+		return repositoryInterface.findAll().stream();
+	}
+
+	public Optional<String> findByFilename(String filename) {
+		Optional<FileInDatabaseEntity> entity = repositoryInterface.findByFileName(filename);
+		return entity.map(FileInDatabaseEntity::getFileName);
+	}
+
+	public Stream<String> findAll() {
+		return repositoryInterface.findAll().stream()
+				.map(FileInDatabaseEntity::getFileName);
+	}
+
+	public Optional<String> save(Multipart file) {
+		if (repositoryInterface.findByFileName(file.getOriginalFilename()).isPresent()) {
+			return Optional.empty();
+		}
+		FileInDatabaseEntity entity = this.convertMultipartToEntity(file);
+		return Optional.of(repositoryInterface.save(entity).getFileName());
+	}
+
+	public Stream<String> saveAll(List<Multipart> files) {
+		return files.stream()
+				.map(this::save)
+				.filter(Optional::isPresent)
+				.map(Optional::get);
+	}
+
+	public boolean delete(String filename) {
+		Optional<FileInDatabaseEntity> entity = repositoryInterface.findByFileName(filename);
+		if (entity.isEmpty()) {
+			return false;
+		}
+		repositoryInterface.deleteById(entity.get().getId());
+		return true;
+	}
+
+	public long deleteAll() {
+		return this.findAll()
+				.map(this::delete)
+				.filter(success -> success)
+				.count();
+	}
+
+	public long count() {
+		return repositoryInterface.count();
+	}
+
+	private FileInDatabaseEntity convertMultipartToEntity(Multipart multipart) {
+		return new FileInDatabaseEntity(multipart.getOriginalFilename(),
+				new String(multipart.getContent()),
+				multipart.getContentType());
+	}
+}
+END OF EXAMPLE
+
+=>SPRING BOOT FILE STORAGE WITH THYMELEAF EXAMPLE
+=>SPRING BOOT FILE STORAGE WITH THYMELEAF EXAMPLE REPOSITORY TESTS

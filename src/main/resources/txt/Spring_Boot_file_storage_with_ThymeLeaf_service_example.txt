@@ -1,0 +1,368 @@
+=================================================================================
+SPRING BOOT FILE STORAGE WITH THYMELEAF SERVICE EXAMPLE
+=================================================================================
+1. IN-FOLDER SERVICE
+2. IN-DATABASE SERVICE
+
+=================================================================================
+1. IN-FOLDER SERVICE
+=================================================================================
+EXAMPLE FOR IN-FOLDER SERVICE CLASS:
+import org.springframework.beans.factory.annotation.*;
+import org.springframework.core.io.*;
+import org.springframework.http.*;
+import org.springframework.stereotype.*;
+import org.springframework.web.servlet.*;
+import java.io.*;
+import java.nio.file.*;
+import java.util.*;
+import java.util.stream.*;
+
+@Service
+public class FileInFolderService {
+	private final FileInFolderRepository repository;
+
+	@Autowired
+	public FileInFolderService(FileInFolderRepository repository) {
+		this.repository = repository;
+		if (!repository.init("." + File.separator + "uploads", false)) {
+			throw new RuntimeException("Could not initialize the file storage!");
+		}
+	}
+
+	public ModelAndView newFile() {
+		Payload payload = new Payload(
+				null,
+				null,
+				null);
+		return new ModelAndView("upload", "payload", payload);
+	}
+
+	public ModelAndView uploadFile(Multipart file, String baseUrl) {
+		if (file == null) {
+			Payload payload = new Payload(
+					"No file was given.",
+					null,
+					convertPathStreamToFileInfoList(repository.findAll(), baseUrl)
+			);
+			return new ModelAndView("file_list", "payload", payload);
+		}
+		String message = repository.save(file)
+				.map(filename -> filename + " file has been successfully uploaded.")
+				.orElseGet(() -> "Could not upload the file: " + file.getOriginalFilename());
+		Payload payload = new Payload(
+				message,
+				null,
+				convertPathStreamToFileInfoList(repository.findAll(), baseUrl)
+		);
+		return new ModelAndView("file_list", "payload", payload);
+	}
+
+	public ModelAndView uploadFiles(List<Multipart> files, String baseUrl) {
+		if (files == null || files.size() == 0) {
+			Payload payload = new Payload(
+					null,
+					List.of("No files were given."),
+					convertPathStreamToFileInfoList(repository.findAll(), baseUrl)
+			);
+			return new ModelAndView("file_list", "payload", payload);
+		}
+		files = files.stream()
+				.filter(Objects::nonNull)
+				.collect(Collectors.toList());
+		List<String> saved = repository.saveAll(files).toList();
+		List<String> messages = files.stream()
+				.map(Multipart::getOriginalFilename)
+				.map(filename -> {
+					if (saved.contains(filename)) {
+						return filename + ": [Success]";
+					}
+					else {
+						return filename + ": [Failed]";
+					}
+				})
+				.collect(Collectors.toList());
+		messages.add(0, "Results:");
+		Payload payload = new Payload(
+				null,
+				messages,
+				convertPathStreamToFileInfoList(repository.findAll(), baseUrl)
+		);
+		return new ModelAndView("file_list", "payload", payload);
+	}
+
+	public ModelAndView getFileList(String baseUrl) {
+		Payload payload = new Payload(
+				null,
+				null,
+				convertPathStreamToFileInfoList(repository.findAll(), baseUrl)
+		);
+		return new ModelAndView("file_list", "payload", payload);
+	}
+
+	public ResponseEntity<Resource> getFile(String filename) {
+		if (filename == null || filename.isBlank()) {
+			return ResponseEntity
+					.badRequest()
+					.header(HttpHeaders.CONTENT_DISPOSITION, "")
+					.body(null);
+		}
+		return repository.getByFilename(filename)
+				.map(resource -> ResponseEntity
+						.ok()
+						.header(HttpHeaders.CONTENT_DISPOSITION,
+								"attachment; filename=\"" + resource.getFilename() + "\"")
+						.body(resource))
+				.orElseGet(() -> ResponseEntity
+						.badRequest()
+						.header(HttpHeaders.CONTENT_DISPOSITION, "")
+						.body(null));
+	}
+
+	public ModelAndView deleteFile(String filename, String baseUrl) {
+		if (filename == null || filename.isBlank()) {
+			Payload payload = new Payload(
+					"No file was given.",
+					null,
+					convertPathStreamToFileInfoList(repository.findAll(), baseUrl)
+			);
+			return new ModelAndView("file_list", "payload", payload);
+		}
+		String message;
+		try {
+			boolean existed = repository.delete(filename);
+			if (existed) {
+				message = filename + " file has been deleted.";
+			}
+			else {
+				message = filename + " file does not exist!";
+			}
+		}
+		catch (Exception e) {
+			message = "Could not delete the file: " + filename + ". Error: " + e.getMessage();
+		}
+		Payload payload = new Payload(
+				message,
+				null,
+				convertPathStreamToFileInfoList(repository.findAll(), baseUrl)
+		);
+		return new ModelAndView("file_list", "payload", payload);
+	}
+
+	public ModelAndView deleteAllFiles(String baseUrl) {
+		long count = repository.count();
+		long deleted = repository.deleteAll();
+		Payload payload = new Payload(
+				deleted + " of " + count + " file(s) has been deleted.",
+				null,
+				convertPathStreamToFileInfoList(repository.findAll(), baseUrl)
+		);
+		return new ModelAndView("file_list", "payload", payload);
+	}
+
+	public ModelAndView handleMaxSizeException(String baseUrl) {
+		Payload payload = new Payload(
+				"The selected file (or one of them) is too large!",
+				null,
+				convertPathStreamToFileInfoList(repository.findAll(), baseUrl)
+		);
+		return new ModelAndView("file_list", "payload", payload);
+	}
+
+	private List<FileInfo> convertPathStreamToFileInfoList(Stream<Path> pathStream, String baseUrl) {
+		return pathStream
+				.map(path -> {
+					String filename = path.getFileName().toString();
+					String url = baseUrl + "/files/" + filename;
+					return new FileInfo(filename, url);
+				})
+				.toList();
+	}
+}
+END OF EXAMPLE
+
+=================================================================================
+2. IN-DATABASE SERVICE
+=================================================================================
+EXAMPLE FOR IN-DATABASE SERVICE CLASS:
+import org.springframework.beans.factory.annotation.*;
+import org.springframework.http.*;
+import org.springframework.stereotype.*;
+import org.springframework.web.servlet.*;
+import java.nio.file.*;
+import java.util.*;
+import java.util.stream.*;
+
+@Service
+public class FileInDatabaseService {
+	private final FileInDatabaseRepository repository;
+
+	@Autowired
+	public FileInDatabaseService(FileInDatabaseRepository repository) {
+		this.repository = repository;
+	}
+
+	public ModelAndView newFile() {
+		Payload payload = new Payload(
+				null,
+				null,
+				null);
+		return new ModelAndView("upload", "payload", payload);
+	}
+
+	public ModelAndView uploadFile(Multipart file, String baseUrl) {
+		if (file == null) {
+			Payload payload = new Payload(
+					"No file was given.",
+					null,
+					convertFileNameStreamToFileInfoList(repository.findAll(), baseUrl)
+			);
+			return new ModelAndView("file_list", "payload", payload);
+		}
+		try {
+			Paths.get(file.getOriginalFilename());
+		}
+		catch (Exception e) {
+			Payload payload = new Payload(
+					"Could not upload the file: " + file.getOriginalFilename(),
+					null,
+					convertFileNameStreamToFileInfoList(repository.findAll(), baseUrl)
+			);
+			return new ModelAndView("file_list", "payload", payload);
+		}
+		String message = repository.save(file)
+				.map(filename -> filename + " file has been successfully uploaded.")
+				.orElseGet(() -> "Could not upload the file: " + file.getOriginalFilename());
+		Payload payload = new Payload(
+				message,
+				null,
+				convertFileNameStreamToFileInfoList(repository.findAll(), baseUrl)
+		);
+		return new ModelAndView("file_list", "payload", payload);
+	}
+
+	public ModelAndView uploadFiles(List<Multipart> files, String baseUrl) {
+		if (files == null || files.size() == 0) {
+			Payload payload = new Payload(
+					null,
+					List.of("No files were given."),
+					convertFileNameStreamToFileInfoList(repository.findAll(), baseUrl)
+			);
+			return new ModelAndView("file_list", "payload", payload);
+		}
+		files = files.stream()
+				.filter(Objects::nonNull)
+				.collect(Collectors.toList());
+		List<String> saved = repository.saveAll(files).toList();
+		List<String> messages = files.stream()
+				.map(Multipart::getOriginalFilename)
+				.map(filename -> {
+					if (saved.contains(filename)) {
+						return filename + ": [Success]";
+					}
+					else {
+						return filename + ": [Failed]";
+					}
+				})
+				.collect(Collectors.toList());
+		messages.add(0, "Results:");
+		Payload payload = new Payload(
+				null,
+				messages,
+				convertFileNameStreamToFileInfoList(repository.findAll(), baseUrl)
+		);
+		return new ModelAndView("file_list", "payload", payload);
+	}
+
+	public ModelAndView getFileList(String baseUrl) {
+		Payload payload = new Payload(
+				null,
+				null,
+				convertFileNameStreamToFileInfoList(repository.findAll(), baseUrl)
+		);
+		return new ModelAndView("file_list", "payload", payload);
+	}
+
+	public ResponseEntity<byte[]> getFile(String filename) {
+		if (filename == null || filename.isBlank()) {
+			return ResponseEntity
+					.badRequest()
+					.header(HttpHeaders.CONTENT_DISPOSITION, "")
+					.body(null);
+		}
+		return repository.getByFilename(filename)
+				.map(entity -> ResponseEntity
+						.ok()
+						.header(HttpHeaders.CONTENT_DISPOSITION,
+								"attachment; filename=\"" + entity.getFileName() + "\"")
+						.body(entity.getContent().getBytes()))
+				.orElseGet(() -> ResponseEntity
+						.badRequest()
+						.header(HttpHeaders.CONTENT_DISPOSITION, "")
+						.body(null));
+	}
+
+	public ModelAndView deleteFile(String filename, String baseUrl) {
+		if (filename == null || filename.isBlank()) {
+			Payload payload = new Payload(
+					"No file was given.",
+					null,
+					convertFileNameStreamToFileInfoList(repository.findAll(), baseUrl)
+			);
+			return new ModelAndView("file_list", "payload", payload);
+		}
+		try {
+			Paths.get(filename);
+		}
+		catch (Exception e) {
+			Payload payload = new Payload(
+					"Wrong file was given.",
+					null,
+					convertFileNameStreamToFileInfoList(repository.findAll(), baseUrl)
+			);
+			return new ModelAndView("file_list", "payload", payload);
+		}
+		String message = repository.delete(filename) ?
+				filename + " file has been deleted." :
+				filename + " file does not exist!";
+		Payload payload = new Payload(
+				message,
+				null,
+				convertFileNameStreamToFileInfoList(repository.findAll(), baseUrl)
+		);
+		return new ModelAndView("file_list", "payload", payload);
+	}
+
+	public ModelAndView deleteAllFiles(String baseUrl) {
+		long count = repository.count();
+		long deleted = repository.deleteAll();
+		Payload payload = new Payload(
+				deleted + " of " + count + " file(s) has been deleted.",
+				null,
+				convertFileNameStreamToFileInfoList(repository.findAll(), baseUrl)
+		);
+		return new ModelAndView("file_list", "payload", payload);
+	}
+
+	public ModelAndView handleMaxSizeException(String baseUrl) {
+		Payload payload = new Payload(
+				"The selected file (or one of them) is too large!",
+				null,
+				convertFileNameStreamToFileInfoList(repository.findAll(), baseUrl)
+		);
+		return new ModelAndView("file_list", "payload", payload);
+	}
+
+	private List<FileInfo> convertFileNameStreamToFileInfoList(Stream<String> filenames, String baseUrl) {
+		return filenames
+				.map(filename -> {
+					String url = baseUrl + "/files/" + filename;
+					return new FileInfo(filename, url);
+				})
+				.toList();
+	}
+}
+END OF EXAMPLE
+
+=>SPRING BOOT FILE STORAGE WITH THYMELEAF EXAMPLE
+=>SPRING BOOT FILE STORAGE WITH THYMELEAF EXAMPLE SERVICE TESTS

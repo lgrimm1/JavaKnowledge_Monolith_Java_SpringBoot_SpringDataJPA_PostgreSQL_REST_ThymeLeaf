@@ -249,7 +249,7 @@ For file-type input, it has the ability to receive focus (tabbing), activate for
 The appearing button and the file-list behind it is not modifiable, CSS parameters have no effect.
 Workaround is to wrap the input into a label and give button-like style to it while hiding (visually or totally) the original input, visit the CSS page for style examples. See examples below.
 The accept= parameter of the <input> lets the developer define which files are accepted by the <input>. In case of more types, separate them with comma (without space). File types can be extension or MIME-type or combined.
-The file content is Multipart attached to the submitted data. Can be received by the backend only when the <form> tag carries the enctype="multipart/form-data" parameter.
+The file content is Multipart attached to the submitted data. Can be received by the backend only when the <form> tag carries the enctype="multipart/form-data" parameter and the request is POST.
 
 For all inputs, consider using a br tag after the label and-or after the input.
 Also, inputs will not inherit font properties, must define these on the inputs as well.
@@ -555,7 +555,7 @@ MORE HERE: https://o7planning.org/11659/thymeleaf-form-select-option
 
 =>SPRING BOOT THYMELEAF
 =>SPRING BOOT THYMELEAF TEMPLATE FRAGMENTATION
-=>SPRING BOOT THYMELEAF FILE STORAGE EXAMPLE
+=>SPRING BOOT FILE STORAGE WITH THYMELEAF EXAMPLE
 =>CSS
 =>WEB APPLICATION
 =>SPRING BOOT

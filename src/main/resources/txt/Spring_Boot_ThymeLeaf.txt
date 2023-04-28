@@ -245,7 +245,7 @@ In the template the <form> tag header can contain these parameters:
     - method="post": defines what request the form must send when the user submits
     - novalidate: no input value validation will happen when submitting (validation on server side)
     - id="form_name": unique name of the form with which actions etc. can refer to it
-    - enctype="multipart/form-data": defines that to the submitted post Multipart will be attached, required for file uploading
+    - enctype="multipart/form-data": defines that to the submitted post Multipart will be attached, required for file uploading, works only with POST request
 
 7.2. INPUTS
 ---------------------------------------------------------------------------------
@@ -314,11 +314,12 @@ File:
     - the user= parameter defines that the user-facing camera and/or microphone should be used (used together with capture=)
     - the environment= parameter specifies that the outward-facing camera and/or microphone should be used (if missing, will decide on its own; used together with capture=)
     - returns either a file name array or a text in which the file names are separated by commas
-    - uploaded file content will be attached to the posted data as Multipart, works only when enctype="multipart/form-data" parameter is defined in the <form> tag
+    - uploaded file content will be attached to the posted data as Multipart, works only when enctype="multipart/form-data" parameter is defined in the <form> tag and with POST request method.
     - the name= parameter is required for file uploading (defines a new HTML attribute name, rendered to the Multipart itself)
     - the th:object or :field can be used for the file names and descriptive data but not for the file content
     - at backend side, the receiver endpoint signature must contain a @RequestParam("html_attribute_name") annotation and its marked argument must have MultipartFile (single file) or MultipartFile[] (multiple files) type
-    - for file upload technique, visit the SPRING BOOT THYMELEAF FILE STORAGE EXAMPLE page
+    - the original filename contained by the received Multipart can have illustrious characters within the filename, before using that, clean it with StringUtils.cleanPath() in the backend
+    - for file upload technique, visit the SPRING BOOT FILE STORAGE WITH THYMELEAF EXAMPLE page
 
 Email:
     - the multiple parameter allows the user to enter more than one value
@@ -455,7 +456,7 @@ MORE HERE: https://www.baeldung.com/spring-thymeleaf-error-messages
 
 =>SPRING BOOT THYMELEAF EXAMPLES
 =>SPRING BOOT THYMELEAF TEMPLATE FRAGMENTATION
-=>SPRING BOOT THYMELEAF FILE STORAGE EXAMPLE
+=>SPRING BOOT FILE STORAGE WITH THYMELEAF EXAMPLE
 =>CSS
 =>WEB APPLICATION
 =>SPRING BOOT

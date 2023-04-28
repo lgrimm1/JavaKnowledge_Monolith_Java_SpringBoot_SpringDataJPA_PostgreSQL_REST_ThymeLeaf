@@ -84,7 +84,7 @@ With perform() method the test case is set. Order of the perform steps is import
 Optionally, the MockMVC can be forced to print information about the results of performed action with the print() method. By default, the same information will appear when using Spring Data JPA because Hibernate is verbal.
 Every andExpect() method means an assertion for its argument.
 
-Important, in model&view and object/model&view modes, when the model is not cleared before new objects are added, the size of the outgoing model can be higher with the number of incoming model objects (see the andExpect(model().size(size)) method below). In order to have proper testing, always clear the model in the controller before adding data to it.
+Important, in model&view and object/model&view modes, when the model is not cleared before new objects are added, the size of the outgoing model can be higher with the number of incoming model objects (see the andExpect(model().size(size)) method below). In order to have proper testing, always clear the model with .asMap().clear() method in the controller before adding data to it.
 
 Some expected statuses (look for more under StatusResultMatcher methods below):
     - isOk()
@@ -159,7 +159,7 @@ public void testCaseName() throws Exception {
     //definition of variables containing sent data
 	Payload sentPayload = new Payload(...); //use proper special constructor with sent data
 	ModelAndView modelAndView = new ModelAndView("initial_view_name", "payload", sentPayload);
-	//mocking service, passed data are received variables:
+	//mock service, passed data are received variables:
 	when(service.serviceMethod(...))
 			.thenReturn(modelAndView);
 
@@ -175,6 +175,64 @@ public void testCaseName() throws Exception {
 			.andExpect(model().attribute("payload", sentPayload))
             .andExpect(forwardedUrl("UrlName"))
             .andExpect(redirectedUrl("UrlName"));
+}
+END OF EXAMPLE
+
+When dealing with file upload, the endpoint will receive MultipartFile or MultipartFile[] argument with always a POST request. An incoming MultipartFile is emulated with MockMultipartFile.
+Please note, the name within the MultipartFile must be equal with the incoming HTML attribute and probably the argument name used in the controller method signature.
+
+EXAMPLE FOR A TEST CASE METHOD (SINGLE FILE UPLOAD, POST ON /ENDPOINT, ANY MODES):
+//controller method argument: @RequestParam("file") MultipartFile file
+@Test
+public void testCaseName() throws Exception {
+    //mock MultipartFile:
+	MockMultipartFile file = new MockMultipartFile(
+			"file",
+			filename,
+			MediaType.TEXT_PLAIN_VALUE,
+			content //byte[]
+	);
+    //definition of variables containing sent data
+	//mock service method
+
+	mockMvc
+			.perform(
+					multipart("/endpoint")
+							.file(file)
+			)
+			.andExpect(status().isOk())
+			...;
+}
+END OF EXAMPLE
+
+EXAMPLE FOR A TEST CASE METHOD (MULTIPLE FILE UPLOAD, POST ON /ENDPOINT, ANY MODES):
+//controller method argument: @RequestParam("files") MultipartFile[] files
+@Test
+public void testCaseName() throws Exception {
+    //mock MultipartFiles:
+	MockMultipartFile file1 = new MockMultipartFile(
+			"files",
+			filename1,
+			MediaType.TEXT_PLAIN_VALUE,
+			content1 //byte[]
+	);
+	MockMultipartFile file2 = new MockMultipartFile(
+			"files",
+			filename2,
+			MediaType.TEXT_PLAIN_VALUE,
+			content2 //byte[]
+	);
+    //definition of variables containing sent data
+	//mock service method
+
+	mockMvc
+			.perform(
+					multipart("/endpoint")
+							.file(file1)
+							.file(file2)
+			)
+			.andExpect(status().isOk())
+			...;
 }
 END OF EXAMPLE
 

@@ -1,420 +1,207 @@
 =================================================================================
-PRACTICES
+SPRING PRACTICES
 =================================================================================
-1. INCREASE ARRAY INDEX, JUMP TO FIRST ELEMENT WHEN REACHING LAST
-2. INCREASE ARRAY CAPACITY
-3. INDEXOF WITH STREAM
-4. GIT COMMANDS
-5. MAVEN
-6. RUNTIME COMPLEXITY
-7. CLEARER CODE VIA LAMBDAS
-8. USING RIGHT RETURN VALUES FOR BETTER INTEGRATION
-9. GET APPLICATION PATHS
-10. FAVORING COMPOSITION OVER INHERITANCE
-11. QUALITY SOURCES OF JAVA, FRAMEWORKS AND FRONTEND
+1. CREATE LINK TO FILE UNDER PROJECT
+2. CREATE LINK TO FILE STORED IN DATABASE
+3. DETECT BASE URL TO THE APPLICATION
 
 =================================================================================
-1. INCREASE ARRAY INDEX, JUMP TO FIRST ELEMENT WHEN REACHING LAST
+1. CREATE LINK TO FILE UNDER PROJECT
 =================================================================================
-EXAMPLE FOR LOOP AND RESTARTING THE CYCLE IN AN ARRAY:
-int index = 0;
-int capacity = ...;
+In the example the files are stored under ./upload folder, directly under project root, all files are at the same level.
+The aim is to generate links to the files along with protecting the files themselves. That said, the links will reach the /files/{filename} endpoint where the file information as a Resource will be sent back.
+The download links will be sent back from the /files endpoint along with filenames.
+The /files/{filename} endpoint will also be used for detection of live URL to the server as well.
 
-void push(int newValue) {
-    array[index] = newValue;
-    index = ++index % capacity; //increases until reaches capacity then it jumps back to 0
+The repository.findAll() method returns Stream<Path> with the real storage paths of the files, started from the project root.
+The payload towards the frontend is instance of the FileInfo class with String filename and String url fields.
+The link generator is the convertPathStreamToFileInfoList() method which can be placed into the controller as well as an external @Component class. Testing it is possible only when the application context exists. Although the generator is part of the Business Layer, due to reaching the controller class, independent testing is not possible.
+
+The solution is REST compatible in object/model&view mode. The file_list view will show all filenames with their respective download links or buttons.
+
+EXAMPLE FOR CONTROLLER METHODS:
+@GetMapping("/files/{filename:.+}")
+public ResponseEntity<Resource> getFile(@PathVariable("filename") String filename) {
+	return service.getFile(filename);
+}
+
+@GetMapping("/files")
+public ModelAndView getListFiles(Model model) {
+	model.asMap().clear();
+	return service.getFileList();
+}
+END OF EXAMPLE
+
+EXAMPLE FOR SERVICE METHODS:
+public ResponseEntity<Resource> getFile(String filename) {
+	if (filename == null || filename.isBlank()) {
+		return ResponseEntity
+				.badRequest()
+				.header(HttpHeaders.CONTENT_DISPOSITION, "")
+				.body(null);
+	}
+	return repository.getByFilename(filename)
+			.map(resource -> ResponseEntity
+					.ok()
+					.header(HttpHeaders.CONTENT_DISPOSITION,
+							"attachment; filename=\"" + resource.getFilename() + "\"")
+					.body(resource))
+			.orElseGet(() -> ResponseEntity
+					.badRequest()
+					.header(HttpHeaders.CONTENT_DISPOSITION, "")
+					.body(null));
+}
+
+public ModelAndView getFileList() {
+	return new ModelAndView("file_list", "file_info_list", convertPathStreamToFileInfoList(repository.findAll()));
+}
+END OF EXAMPLE
+
+EXAMPLE FOR LINK GENERATOR METHOD:
+public List<FileInfo> convertPathStreamToFileInfoList(Stream<Path> pathStream) {
+	return pathStream
+			.map(path -> {
+				String filename = path.getFileName().toString();
+				String url = MvcUriComponentsBuilder
+						.fromMethodName(FileInFolderController.class, "getFile", path.getFileName().toString())
+						.build()
+						.toString();
+				return new FileInfo(filename, url);
+			})
+			.collect(Collectors.toList());
 }
 END OF EXAMPLE
 
 =================================================================================
-2. INCREASE ARRAY CAPACITY
+2. CREATE LINK TO FILE STORED IN DATABASE
 =================================================================================
-EXAMPLE FOR MODIFYING ARRAY CAPACITY:
-int capacity = ...;
-int[] array = new int[capacity];
-int index = 0;
+In the example the files are stored in a database.
+The aim is to generate download links to the files. That said, the links will reach the /files/{filename} endpoint where the file as a byte[] will be sent back.
+The download links will be sent back from the /files endpoint along with filenames.
 
-void push(int newValue) {
-    array[index] = newValue;
-    index++;
-    //when reaches the limit, doubles the capacity
-    if (index == array.length) {
-        array = Arrays.copyOf(array, capacity * 2);
-        capacity *= 2;
-    }
+The files are handled with JPA Repository. The file content is stored as TEXT (infinite VARCHAR).
+The repository.findAll() method returns Stream<String> with the stored filenames.
+The payload towards the frontend is instance of the FileInfo class with String filename and String url fields. This can be extended by adding String fileType and long length fields where length is generated via calculating byte[].length within the link generator method.
+The link generator is the convertFileNameStreamToFileInfoList() method which can be placed into the controller as well as an external @Component class. Testing it is possible only when the application context exists.
+
+The solution is REST compatible in object/model&view mode. The file_list view will show all filenames with their respective download links or buttons.
+
+EXAMPLE FOR CONTROLLER METHODS:
+@GetMapping("/files/{filename:.+}")
+public ResponseEntity<byte[]> getFile(@PathVariable("filename") String filename) {
+	return service.getFile(filename);
+}
+
+@GetMapping("/files")
+public ModelAndView getListFiles(Model model) {
+	model.asMap().clear();
+	return service.getFileList();
 }
 END OF EXAMPLE
 
-=================================================================================
-3. INDEXOF WITH STREAM
-=================================================================================
-EXAMPLE FOR FINDING AN ELEMENT VIA STREAM:
-class ClassName {
-    private long id;
-    //fields, constructors, getters
-    public long getId() {
-        return id;
-    }
+EXAMPLE FOR SERVICE METHODS:
+public ResponseEntity<byte[]> getFile(String filename) {
+	if (filename == null || filename.isBlank()) {
+		return ResponseEntity
+				.badRequest()
+				.header(HttpHeaders.CONTENT_DISPOSITION, "")
+				.body(null);
+	}
+	return repository.getByFilename(filename)
+			.map(entity -> ResponseEntity
+					.ok()
+					.header(HttpHeaders.CONTENT_DISPOSITION,
+							"attachment; filename=\"" + entity.getFileName() + "\"")
+					.body(entity.getContent().getBytes()))
+			.orElseGet(() -> ResponseEntity
+					.badRequest()
+					.header(HttpHeaders.CONTENT_DISPOSITION, "")
+					.body(null));
 }
-//for Lists:
-List<ClassName> list = ...;
-...
-int indexOf(long id) {
-	OptionalInt optionalInt = IntStream.range(0, list.size())
-			.filter(n -> list.get(n).getId() == id)
-			.findFirst();
-	return optionalInt.isEmpty() ? -1 : optionalInt.getAsInt();
-}
-//for arrays:
-ClassName[] array = ...;
-...
-int indexOf(long id) {
-	OptionalInt optionalInt = IntStream.range(0, list.size())
-			.filter(n -> array[n].getId() == id)
-			.findFirst();
-	return optionalInt.isEmpty() ? -1 : optionalInt.getAsInt();
+
+public ModelAndView getFileList() {
+	return new ModelAndView("file_list", "file_info_list", convertFileNameStreamToFileInfoList(repository.findAll()));
 }
 END OF EXAMPLE
 
-=================================================================================
-4. GIT COMMANDS
-=================================================================================
-Reposition: a project on the remote git server (e.g. Github).
-Master: the remote summarized code (alive code) on the git server.
-HEAD: the local summarized code.
-Snapshot: a commited local version.
-Branch: all actions are rendered into branches, dividing from the original; a developer works on a branch.
+EXAMPLE FOR LINK GENERATOR METHOD:
+public List<FileInfo> convertFileNameStreamToFileInfoList(Stream<String> filenames) {
+	return filenames
+			.map(filename -> new FileInfo(filename, filenameToUrl(filename)))
+			.collect(Collectors.toList());
+}
 
-||COMMAND|ACTION||
-||git log|shows history of the live branch for commits etc.; for commits shows hash codes as well||
-||git checkout branch_name|makes the given branch alive||
-||git checkout -b branch_name|creates a new one and makes that branch the live branch||
-||git checkout hashcode|reverts to the given snapshot of the live branch; jumps back to the last one for git checkout branch_name||
-||git status|shows infos about the active branch (tracked and untracked files)||
-||git add file_name|marks the file as staged (means marking them for commiting)||
-||git add .|marks all files (.) as staged (means marking them for commiting)||
-||git restore --staged file_name|un-stages the given file, will not be commited||
-||git commit|creates a snapshot on the alive branch||
-||git commit -m "message"|creates a snapshot on the alive branch, renders the message to that snapshot||
-||git push|sends the commited code of actual branch up to server; in case there is not the local active branch on the server yet, suggests a command instead of this||
-||git pull|downloads the snapshots of the live branch which are not found at local from the server||
-||git clone|clones (creates a copy of) a repository||
-
-* is for marking a character, ** is for marking many. ** can mark whole path to a file as well e.g. **a** can mean path/a*.* files. The dot (.) means all files at actual and all its sub-folders.
-
-In case there are pushed snapshots on the server, these will be under the name of the contributor.
-Such snapshots are ideal for having backups of local codes as well.
-
-In order to send a pushed snapshot to the master contributor(s), use the Pull Request function on the server.
-A master contributor of the reposition (owner) will review the changes, if satisfied, will merge the branch with the Master code.
-
-Usual message for work-in-progress snapshots (not for Pull Request): WIP.
-
-For those files which should be included in file tracking, put those into .gitignore.
-
-=================================================================================
-5. MAVEN
-=================================================================================
-A framework for supporting all development cycles.
-
-The standard project path:
-project root (given by user)
-    pom.xml
-    L src
-        L main
-            L java
-                L .java files
-                L package folders
-        L test
-            L java
-                L .java files
-                L package folders
-    L target
-        L .jar files
-        L classes
-            L .class files
-            L package folders
-        L test-classes
-            L .class files
-            L package folders
-
-By default, /scr serves as holder of source code and source files, /target serves as holder of .class files and sources needed by them.
-The /target is also used for storing Java archive files e.g. .jar files.
-The structure is capable of contain not Java files as well.
-
-The pom.xml is an XML file consisting of Maven parameters (summarized as an archetype), placed into the root folder of project.
-Maven creates a central pom upon install into its install folder (e.g. local folder/m2/repository) which consist of all dependencies the developer used after installing Maven.
-Whilst extending the code, Maven will extend the project pom with tags from the central pom file. If not, can be done manually which will be synchronized with the central pom automatically in theory.
-
-The dependency means local or remote path to a library, its name and version number, organized into XML tags. The compiler or builder will download all dependent libraries into the local Maven central and use references to that.
-In a dependency the <scope>test</scope> tag means that the corresponding dependency is for testing only, will not be built into the target. If the tag is missing, the dependency will be used normally.
-If there is a dependency for a library, still it is a need to import that library in the code as well.
-In case of any malfunctions, use mvn clean, then mvn install commands from the terminal.
-In case version upgrade is needed in code, following version upgrade in the dependency (not the package, only the version), modify the version tag only. Be aware to check the code before publishing or deploying.
-
-EXAMPLE FOR INSERTING NEW REMOTE DEPENDENCY IN POM.XML:
-<dependency>
-  <groupId>org.apache.commons</groupId>
-  <artifactId>commons-math3</artifactId>
-  <version>3.6.1</version>
-</dependency>
-END OF EXAMPLE
-
-EXAMPLE FOR IMPORTING DEPENDENCY IN CODE (CONNECTED TO PREVIOUS EXAMPLE):
-import org.apache.commons.math3.util.CombinatoricsUtils;
-...
-int n = ...;
-int f = (int) CombinatoricsUtils.factorial(n);
-END OF EXAMPLE
-
-The development lifecycle is rendered into Maven commands. These commands can be accessed through the IDE but can be different in other IDEs. All IDE should have terminal in which accessing Maven is universalized.
-
-||COMMAND|DESCRIPTION||
-||mvn validate|checks the archetype for existence and consistency||
-||mvn compile|compiles the project, creates .class files in target directory||
-||mvn test|tests the project by executing all test methods||
-||mvn package|creates the package from code files, source files and attached libraries, and places it into the target folder||
-||mvn verify|-||
-||mvn deploy|places the package into remote Maven central or other server||
-||mvn clean|deletes target directories and deletes all dependencies from the local central which are not referred by projects; forces Maven to install referenced dependencies||
-||mvn install|generates package and move it into common directory||
-
-=================================================================================
-6. RUNTIME COMPLEXITY
-=================================================================================
-Marks how many time a method must run in order to finish a task.
-The O letter marks the complexity. The n letter means the amount of input data.
-For defining the complexity, use the scale of need.
-
-O(n) = 1 means a sequential process which must be executed once only, independent of the amount of data.
-
-EXAMPLE FOR O(N) = 1:
-public void push(int key) {
-    if (lastIndex == capacity -1) {
-        array = Arrays.copyOf(array, capacity * 2);
-        capacity *= 2;
-    }
-    lastIndex = (++lastIndex) % capacity;
-    array[lastIndex] = key;
+private String filenameToUrl(String filename) {
+	return ServletUriComponentsBuilder
+			.fromCurrentContextPath()
+			.path("/files/")
+			.path(filename)
+			.toUriString();
 }
 END OF EXAMPLE
 
-O(n) = n means that the numbers of executions depends on the number of data (linear). Typically, processing collections by their elements.
-
-EXAMPLE FOR O(N)= N:
-public long total(int[] array) {
-    long total = 0; //does not count into complexity because for higher length of arrays, it will not change the scale
-    for (int i = 0; i < array.length; i++) {
-        array[i] = Math.pow(array[i], 2);
-    }
-    return total; //does not count into complexity because for higher length of arrays, it will not change the scale
-}
-END OF EXAMPLE
-
-O(n) = n^2 is usually goes for minimum needed complexity of sorting processes. Using iteration or recursion does not matter.
-The less optimized sorting uses to indexes, with element under the low index all other elements will be compared.
-The execution number would be: (n - 1) + (n - 2) + (n - 3) + ... + (n - n-1) = n^2.
-Mathematically proven, the most optimized sorting algorithm needs log(n) executions (O(n) = log(n)). This is called Merge Sort.
-Java Collection.sort() method uses Merge Sort for higher amount of data, simpler algorithms for less data (the Merge Sort needs more data to work efficiently).
-
-=================================================================================
-7. CLEARER CODE VIA LAMBDAS
-=================================================================================
-Best practices are:
-    a. for small function objects, prefer lambdas before anonymous classes
-    b. for method references, use lambda instead
-    c. if needed, for functional interfaces use the pre-defined ones in java.util.function.Function
-    d. when declaring a functional interface, always use the @FunctionalInterface annotation
-    e. in case a lambda would need many statements, organize it into an external (helper) method (short and self-explanatory lambda)
-    f. in lambda, avoid referencing the input variable types, use them only when the compiler asks for it
-    g. avoid braces when have 1 parameter in lambda
-    h. using return statement in statement part of lambda is optional, do not use it
-
-EXAMPLE FOR METHOD REFERENCE:
-ClassName::methodName
-END OF EXAMPLE
-
-EXAMPLE FOR LAMBDA INSTEAD OF METHOD REFERENCE:
-() -> methodName()
-END OF EXAMPLE
-
-EXAMPLE FOR ORGANIZING BLOCK-BODY LAMBDA:
-//instead of this:
-(...) -> {
-    statement1;
-    statement2;
-    }
-//use this:
-private returnValue methodName(...) {
-    statement1;
-    statement2;
-}
-...
-(...) -> methodName(...)
-END OF EXAMPLE
-
-EXAMPLE FOR AVOIDING VARIABLE TYPES IN LAMBDA:
-//instead of this:
-(type1 var1, type2 var2) -> ...
-//use this:
-(var1, var2) -> ...
-END OF EXAMPLE
-
-EXAMPLE FOR USING BRACES WITH LAMBDA:
-() -> statement
-parameter -> statement
-(parameter1, parameter2, ...) -> statement
-END OF EXAMPLE
-
-EXAMPLE FOR AVOIDING RETURN STATEMENT IN LAMBDA:
-//instead of this:
-() -> return methodName()
-//use this:
-() -> methodName()
+EXAMPLE FOR ENTITY FIELDS:
+private long id;
+String fileName;
+String content;
+private String fileType;
 END OF EXAMPLE
 
 =================================================================================
-8. USING RIGHT RETURN VALUES FOR BETTER INTEGRATION
+3. DETECT BASE URL TO THE APPLICATION
 =================================================================================
-When designing a method, the return value represents the purpose of the method.
-Narrowing down the type onto the lower level (e.g. to an int[] or an ArrayList<Integer>) forces the other developer to accept such type when designing his or her own methods.
-It is a good practice to design a return value which can be used in several ways, via several types, so the other developer can have its own options.
-In case an implementation would be the down-narrowed type, always use its interface as a type.
-In many occasions, the pre-defined conversion methods with which a series of data can be created, will offer interface as type from the beginning.
+The URL contains the scheme (e.g. http), the domain name (e.g. domain.com), the port if defined (e.g. :8080), the path to the endpoint (e.g. /endpoint) and the query parameters (e.g. search?title=ABC&author=XYZ).
+The base URL contains only the first three (e.g. http://domain.com:8080). The base URL can be different with every incoming request. The endpoint and after that depend on the application which means they are defined within the Communication layer.
+There can be certain tasks when the actual base URL must be detected. That said, only upon the actual request, the base URL can be determined.
+For detection, the application context is needed which means it can happen from a controller class or a bean (component).
+The alternative solution below does not examine the URL components for their existence (e.g. existence of port number is not obligatory).
 
-EXAMPLE 1 FOR USING INTERFACE AS RETURN TYPE:
-import java.util.List;
-import java.util.stream.Stream;
-import java.util.stream.IntStream;
-...
-public List<Integer> newNumbers() {
-    return IntStream.rangeClosed(1, 10).boxed().toList();
+EXAMPLE FOR DETECTING BASE URL (HTTPSERVLETREQUEST, IN CONTROLLER):
+//endpoint:
+@GetMapping("/endpoint")
+public ModelAndView methodName(HttpServletRequest request, Model model) {
+	model.asMap().clear();
+	return service.methodName(detectBaseUrl(request));
+}
+//detect base URL
+private String detectBaseUrl(HttpServletRequest request) {
+	return ServletUriComponentsBuilder
+			.fromRequestUri(request)
+			.replacePath(null) //trims to base URL
+			.build()
+			.toUriString();
 }
 END OF EXAMPLE
 
-EXAMPLE 2 FOR USING INTERFACE AS RETURN TYPE:
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Stream;
-...
-private static List<Integer> generateCircledPermutations(int number) {
-    List<Integer> permutations = new ArrayList<>();
-    //manipulating the list by passed number
-    return permutations;
+EXAMPLE FOR DETECTING BASE URL (HTTPSERVLETREQUEST, IN CONTROLLER OR IN BEAN):
+//endpoint:
+@GetMapping("/endpoint")
+public ModelAndView methodName(Model model) {
+	model.asMap().clear();
+	return service.methodName(detectBaseUrl());
 }
-//on the caller's side, the caller statement can put the return value into a List, an ArrayList, a LinkedList etc.
-END OF EXAMPLE
-
-=================================================================================
-9. GET APPLICATION PATHS
-=================================================================================
-9.1. APPLICATION PATHS
-9.2. MAVEN TEST RESOURCES PATHS
-
-9.1. APPLICATION PATHS
----------------------------------------------------------------------------------
-The installed application uses the following application root folder:
-String userDir = System.getProperty("user.dir");
-
-The application under IntelliJ (with or without the Maven framework) can use the following application root folders:
-String userDir = System.getProperty("user.dir") + GFileNames.getOSFolderSeparator() + "src";
-String userDir = System.getProperty("user.dir") + GFileNames.getOSFolderSeparator() + "src" + GFileNames.getOSFolderSeparator() + "main";
-String userDir = System.getProperty("user.dir") + GFileNames.getOSFolderSeparator() + "src" + GFileNames.getOSFolderSeparator() + "main" + GFileNames.getOSFolderSeparator() + "java";
-
-Because these folders rarely exist under installed application but the original user dir is not accessible in the development cycle, it is a good practice to check all of them against file existence. Once a file is found, that will point out which folder should be used as application root folder.
-
-EXAMPLE FOR DECLARING ALL POSSIBLE APPLICATION ROOT FOLDERS:
-import java.io.File;
-...
-public static String[] listAppFoldersIntelliJMaven() {
-	String userDir = System.getProperty("user.dir");
-	return new String[]{
-			userDir,
-			userDir + File.separator + "src",
-			userDir + File.separator + "src" + File.separator + "main",
-			userDir + File.separator + "src" + File.separator + "main" + File.separator + "java"
-	};
+//detect base URL
+private String detectBaseUrl() {
+	return ServletUriComponentsBuilder
+			.fromCurrentContextPath()
+			.build()
+			.toUriString();
 }
 END OF EXAMPLE
 
-9.2. MAVEN TEST RESOURCES PATHS
----------------------------------------------------------------------------------
-For test environment, Maven uses the src/test/resources folder to read and write files as default.
-In order to get access to it, can use getAbsolutePath() method of File, or get() method of Path combined with getAbsolutePath().
-In order to access the resources folder under the target folder (which is the target folder of compiler under Maven), use getClassLoader() method of ClassLoader combined with getAbsolutePath().
-
-EXAMPLE 1 FOR GETTING TEST RESOURCES FOLDER:
-import java.io.File;
-..
-String absolutePath = (new File("src" + File.separator + "test" + File.separator + "resources")).getAbsolutePath();
-END OF EXAMPLE
-
-EXAMPLE 2 FOR GETTING TEST RESOURCES FOLDER:
-import java.nio.file.Paths;
-..
-String absolutePath = Paths.get("src","test","resources").toFile().getAbsolutePath();
-END OF EXAMPLE
-
-EXAMPLE FOR GETTING TARGET RESOURCES FOLDER:
-import java.io.File;
-...
-String absolutePath = (new File(getClass().getClassLoader().getResource("example_resource.txt").getFile())).getAbsolutePath();
-END OF EXAMPLE
-
-=================================================================================
-10. FAVORING COMPOSITION OVER INHERITANCE
-=================================================================================
-In OOP, inheritance is used to express that the subclass is a special class of the superclass, in other words presents relationship between the super and the sub.
-Code re-usage means that a code can be a composite of previously created codes in case those codes can be used somewhere else as well.
-Composition means that the code must show the meaning and purpose of the code. The right composition offers better understanding, better test-ability.
-Based upon these three principles, inheritance should not be used for decreasing the amount of written code but not expressing the meaning of inheritance.
-Also, inheritance should not decrease the readability and unity (the composition) of the code.
-The right composition expresses the strategy itself while inheritance hides it.
-
-EXAMPLE FOR WRONG USAGE OF CODE (INHERITANCE BUT NO COMPOSITION):
-class AnnualData {
-    private int year;
-    private int total;
+EXAMPLE FOR DETECTING BASE URL (HTTPSERVLETREQUEST, IN CONTROLLER OR IN BEAN, ALTERNATIVE):
+//endpoint:
+@GetMapping("/endpoint")
+public ModelAndView methodName(HttpServletRequest request, Model model) {
+	model.asMap().clear();
+	return service.methodName(detectBaseUrl(request));
 }
-class MonthData extends AnnualData {
-    private int month;
+//detect base URL
+private String detectBaseUrl(HttpServletRequest request) {
+	return ""
+			+ request.getScheme() + "://"
+			+ request.getServerName()
+			+ ":" + request.getServerPort()
+			+ request.getContextPath();
 }
 END OF EXAMPLE
-
-In the above code the inheritance does not express that the MonthData is a special kind of AnnualData.
-Also, the subclass is fragile, can harm encapsulation, any changes in the super class can break the subclass.
-The correct solution following OOP principles would be the full composition of the second class, and no inheritance.
-However, in case the complexity would grow over the edge, it can be good to out-sourcing the common code into a superclass (interface) like below.
-
-EXAMPLE FOR RIGHT USAGE OF CODE (NO INHERITANCE BUT COMPOSITION):
-class AnnualData {
-    private int year;
-    private int total;
-}
-class MonthData {
-    private int year;
-    private int month;
-    private int total;
-}
-END OF EXAMPLE
-
-EXAMPLE FOR RIGHT USAGE OF CODE (INHERITANCE AND COMPOSITION):
-class StatData {
-    private int total;
-}
-class AnnualData extends StatData {
-    private int year;
-}
-class MonthData extends StatData {
-    private int month;
-}
-END OF EXAMPLE
-
-=================================================================================
-11. QUALITY SOURCES OF JAVA, FRAMEWORKS AND FRONTEND
-=================================================================================
-https://www.baeldung.com
-https://www.bezkoder.com
-https://www.w3schools.com
-https://blog.knoldus.com
-https://html5boilerplate.com
