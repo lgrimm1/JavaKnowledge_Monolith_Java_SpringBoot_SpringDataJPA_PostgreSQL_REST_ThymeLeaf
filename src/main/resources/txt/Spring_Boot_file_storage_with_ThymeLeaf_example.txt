@@ -123,7 +123,7 @@ public class Multipart {
 		this.content = content;
 	}
 
-    //getters, setters, equals(), hashCode(), toString()
+    //getters, equals(), hashCode()
 }
 END OF EXAMPLE
 

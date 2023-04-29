@@ -23,7 +23,7 @@ import java.util.stream.*;
 @Repository
 public class FileInFolderRepository {
 
-	private Path root;
+	private Path storageRootFolder;
 
 	public boolean init(String repositoryPath, boolean deleteAllFromStorage) {
 		try {
@@ -37,6 +37,10 @@ public class FileInFolderRepository {
 		catch (Exception e) {
 			return false;
 		}
+	}
+
+	public Path getStorageRootFolder() {
+		return storageRootFolder;
 	}
 
 	public Optional<Resource> getByFilename(String filename) {

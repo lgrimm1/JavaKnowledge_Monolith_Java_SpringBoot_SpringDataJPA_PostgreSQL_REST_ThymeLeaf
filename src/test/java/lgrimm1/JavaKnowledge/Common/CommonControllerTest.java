@@ -1,10 +1,11 @@
 package lgrimm1.JavaKnowledge.Common;
 
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import lgrimm1.JavaKnowledge.FileStorage.*;
 import lgrimm1.JavaKnowledge.Process.*;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,24 @@ import org.springframework.test.web.servlet.*;
 import org.springframework.web.servlet.*;
 
 import java.util.*;
+import org.junit.jupiter.api.*;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.*;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.core.io.*;
+import org.springframework.http.*;
+import org.springframework.mock.web.*;
+import org.springframework.test.web.servlet.*;
+import org.springframework.web.servlet.*;
+import java.io.*;
+import java.nio.file.*;
+import java.util.*;
+import java.util.stream.*;
 
 @WebMvcTest(CommonController.class)
 @AutoConfigureDataJpa
@@ -25,6 +44,9 @@ class CommonControllerTest {
 
 	@MockBean
 	private CommonService commonService;
+
+	@MockBean
+	private FileStorageService fileStorageService;
 
 	@MockBean
 	private Formulas formulas;
@@ -470,6 +492,36 @@ class CommonControllerTest {
 				titles
 		);
 
+		String filename1 = "file1.txt";
+		String filename2 = "file2.txt";
+		String content1 = "content1";
+		String content2 = "content2";
+		MockMultipartFile file1 = new MockMultipartFile(
+				"files",
+				filename1,
+				MediaType.TEXT_PLAIN_VALUE,
+				content1.getBytes()
+		);
+		MockMultipartFile file2 = new MockMultipartFile(
+				"files",
+				filename2,
+				MediaType.TEXT_PLAIN_VALUE,
+				content2.getBytes()
+		);
+
+		Multipart multipartOfFiles1 = new Multipart("files", filename1, MediaType.TEXT_PLAIN_VALUE, content1.getBytes());
+		Multipart multipartOfFiles2 = new Multipart("files", filename2, MediaType.TEXT_PLAIN_VALUE, content2.getBytes());
+		List<Multipart> multiparts = List.of(multipartOfFiles1, multipartOfFiles2);
+		long[] uploadResults = new long[]{2, 2};
+		when(fileStorageService.uploadFiles(payload, multiparts))
+				.thenReturn(uploadResults);
+
+		Path path1 = Path.of(filename1);
+		Path path2 = Path.of(filename2);
+		Stream<Path> paths = Stream.of(path1, path2);
+		when(fileStorageService.findAll())
+				.thenReturn(paths);
+
 		Boolean confirm2 = false;
 		String message2 = "message text 2";
 		List<String> titles2 = List.of("Title 1", "Title 2", "Title 3", "Title 4");
@@ -484,14 +536,18 @@ class CommonControllerTest {
 				title,
 				titles2
 		);
-
 		ModelAndView modelAndView = new ModelAndView("management", "payload", payload2);
-		when(commonService.importTxt("management", payload))
+		when(commonService.importTxt("management", payload, paths, uploadResults))
 				.thenReturn(modelAndView);
+
+		when(fileStorageService.deleteAllFiles())
+				.thenReturn(new long[]{2, 2});
 
 		mockMvc
 				.perform(
-						post("/import")
+						multipart("/import")
+								.file(file1)
+								.file(file2)
 								.flashAttr("payload", payload)
 				)
 				.andExpect(status().isOk())

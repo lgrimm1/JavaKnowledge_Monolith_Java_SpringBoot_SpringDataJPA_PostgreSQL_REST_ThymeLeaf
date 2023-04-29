@@ -1,5 +1,6 @@
 package lgrimm1.JavaKnowledge.Common;
 
+import lgrimm1.JavaKnowledge.FileStorage.*;
 import lgrimm1.JavaKnowledge.Html.*;
 import lgrimm1.JavaKnowledge.Process.*;
 import lgrimm1.JavaKnowledge.Title.*;
@@ -18,6 +19,7 @@ class CommonServiceGenerateHtmlTest {
 	TitleRepository titleRepository;
 	TxtRepository txtRepository;
 	HtmlRepository htmlRepository;
+	FileStorageRepository fileStorageRepository;
 	Formulas formulas;
 	ProcessRecords processRecords;
 	FileOperations fileOperations;

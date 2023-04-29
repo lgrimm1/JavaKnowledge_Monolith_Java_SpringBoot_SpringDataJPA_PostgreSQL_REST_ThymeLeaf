@@ -10,10 +10,10 @@ import org.springframework.test.web.*;
 import org.springframework.web.servlet.*;
 
 import java.io.*;
+import java.nio.file.*;
 import java.util.*;
 import java.util.stream.*;
-
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
 
 class CommonServiceImportTxtTest {
 
@@ -27,6 +27,13 @@ class CommonServiceImportTxtTest {
 	ProcessPage processPage;
 	HtmlGenerators htmlGenerators;
 	CommonService commonService;
+	String filename2, filename3, filename4;
+	Path path2, path3, path4;
+	Stream<Path> paths;
+	File file2, file3, file4;
+	List<File> uploadedFiles, notImportedFiles;
+	long[] uploadResults;
+	List<String> titlesBeforeUploading, titlesAfterUploading;
 
 	@BeforeEach
 	void setUp() {
@@ -51,236 +58,194 @@ class CommonServiceImportTxtTest {
 				htmlGenerators);
 		when(formulas.getTitleManagement())
 				.thenReturn("MANAGEMENTTITLE");
+		titlesBeforeUploading = List.of("Title 1");
+		titlesAfterUploading = List.of("Title 1", "Title 3");
+		when(processRecords.getAllTitles(titleRepository))
+				.thenReturn(titlesBeforeUploading);
+		filename2 = "file2.txt";
+		filename3 = "file3.txt";
+		filename4 = "file4.txt";
+		path2 = Path.of(filename2);
+		path3 = Path.of(filename3);
+		path4 = Path.of(filename4);
+		paths = Stream.of(path2, path3, path4);
+		file2 = path2.toFile();
+		file3 = path3.toFile();
+		file4 = path4.toFile();
+		uploadedFiles = List.of(file2, file3, file4);
+		notImportedFiles = List.of(file2);
+		uploadResults = new long[]{3, 3};
 	}
 
-/*
-MultipartFile[] tests are needed!
 	@Test
 	void importTxt_NullPayload() {
-		Payload receivedPayload = null;
-
-		List<String> titles = List.of("Title 1", "Title 2");
-		when(processRecords.getAllTitles(titleRepository))
-				.thenReturn(titles);
-
 		Payload expectedPayload = new Payload(
 				formulas.getTitleManagement(),
 				false,
 				null,
 				null,
-				"PLEASE UPLOAD MINIMUM ONE FILE AND CONFIRM SOURCE OVERWRITING.",
+				"PLEASE UPLOAD MINIMUM ONE PROPER FILE AND CONFIRM SOURCE OVERWRITING.",
 				null,
 				null,
 				"",
-				titles
+				titlesBeforeUploading
 		);
 		Map<String, Object> model = new HashMap<>();
 		model.put("payload", expectedPayload);
 
-		ModelAndView modelAndView = commonService.importTxt("management", receivedPayload);
-
-		ModelAndViewAssert.assertViewName(modelAndView, "management");
-		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
-	}
-
-	@Test
-	void importTxt_NullFiles() {
-		Boolean confirm = true;
-		String message = "";
-		List<String> receivedTitles = List.of("Title 1");
-		Payload receivedPayload = new Payload(
-				formulas.getTitleManagement(),
-				confirm,
-				null,
-				null,
-				message,
-				null,
-				null,
-				"",
-				receivedTitles
-		);
-
-		List<String> titles = List.of("Title 1", "Title 2");
-		when(processRecords.getAllTitles(titleRepository))
-				.thenReturn(titles);
-
-		Payload expectedPayload = new Payload(
-				formulas.getTitleManagement(),
-				false,
-				null,
-				null,
-				"PLEASE UPLOAD MINIMUM ONE FILE AND CONFIRM SOURCE OVERWRITING.",
-				null,
-				null,
-				"",
-				titles
-		);
-		Map<String, Object> model = new HashMap<>();
-		model.put("payload", expectedPayload);
-
-		ModelAndView modelAndView = commonService.importTxt("management", receivedPayload);
-
-		ModelAndViewAssert.assertViewName(modelAndView, "management");
-		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
-	}
-
-	@Test
-	void importTxt_BlankFiles() {
-		Boolean confirm = true;
-		String message = "";
-		List<String> receivedTitles = List.of("Title 1");
-		Payload receivedPayload = new Payload(
-				formulas.getTitleManagement(),
-				confirm,
-				null,
-				null,
-				message,
-				null,
-				null,
-				"",
-				receivedTitles
-		);
-
-		List<String> titles = List.of("Title 1", "Title 2");
-		when(processRecords.getAllTitles(titleRepository))
-				.thenReturn(titles);
-
-		Payload expectedPayload = new Payload(
-				formulas.getTitleManagement(),
-				false,
-				null,
-				null,
-				"PLEASE UPLOAD MINIMUM ONE FILE AND CONFIRM SOURCE OVERWRITING.",
-				null,
-				null,
-				"",
-				titles
-		);
-		Map<String, Object> model = new HashMap<>();
-		model.put("payload", expectedPayload);
-
-		ModelAndView modelAndView = commonService.importTxt("management", receivedPayload);
-
+		ModelAndView modelAndView = commonService.importTxt("management", null, paths, uploadResults);
 		ModelAndViewAssert.assertViewName(modelAndView, "management");
 		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
 	}
 
 	@Test
 	void importTxt_NullConfirm() {
-		Boolean confirm = null;
-		String message = "";
-		List<String> receivedTitles = List.of("Title 1");
 		Payload receivedPayload = new Payload(
 				formulas.getTitleManagement(),
-				confirm,
 				null,
-				null,
-				message,
 				null,
 				null,
 				"",
-				receivedTitles
+				null,
+				null,
+				"",
+				titlesBeforeUploading
 		);
-
-		List<String> titles = List.of("Title 1", "Title 2");
-		when(processRecords.getAllTitles(titleRepository))
-				.thenReturn(titles);
 
 		Payload expectedPayload = new Payload(
 				formulas.getTitleManagement(),
 				false,
 				null,
 				null,
-				"PLEASE UPLOAD MINIMUM ONE FILE AND CONFIRM SOURCE OVERWRITING.",
+				"PLEASE UPLOAD MINIMUM ONE PROPER FILE AND CONFIRM SOURCE OVERWRITING.",
 				null,
 				null,
 				"",
-				titles
+				titlesBeforeUploading
 		);
 		Map<String, Object> model = new HashMap<>();
 		model.put("payload", expectedPayload);
 
-		ModelAndView modelAndView = commonService.importTxt("management", receivedPayload);
-
+		ModelAndView modelAndView = commonService.importTxt("management", receivedPayload, paths, uploadResults);
 		ModelAndViewAssert.assertViewName(modelAndView, "management");
 		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
 	}
 
 	@Test
 	void importTxt_NotConfirmed() {
-		Boolean confirm = false;
-		String message = "";
-		List<String> receivedTitles = List.of("Title 1");
 		Payload receivedPayload = new Payload(
 				formulas.getTitleManagement(),
-				confirm,
-				null,
-				null,
-				message,
+				false,
 				null,
 				null,
 				"",
-				receivedTitles
+				null,
+				null,
+				"",
+				titlesBeforeUploading
 		);
-
-		List<String> titles = List.of("Title 1", "Title 2");
-		when(processRecords.getAllTitles(titleRepository))
-				.thenReturn(titles);
 
 		Payload expectedPayload = new Payload(
 				formulas.getTitleManagement(),
 				false,
 				null,
 				null,
-				"PLEASE UPLOAD MINIMUM ONE FILE AND CONFIRM SOURCE OVERWRITING.",
+				"PLEASE UPLOAD MINIMUM ONE PROPER FILE AND CONFIRM SOURCE OVERWRITING.",
 				null,
 				null,
 				"",
-				titles
+				titlesBeforeUploading
 		);
 		Map<String, Object> model = new HashMap<>();
 		model.put("payload", expectedPayload);
 
-		ModelAndView modelAndView = commonService.importTxt("management", receivedPayload);
-
+		ModelAndView modelAndView = commonService.importTxt("management", receivedPayload, paths, uploadResults);
 		ModelAndViewAssert.assertViewName(modelAndView, "management");
 		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
 	}
 
 	@Test
-	void importTxt_Confirmed() {
-		Boolean confirm = true;
-		String message = "";
-		List<String> receivedTitles = List.of("Title 1");
+	void importTxt_NullUploadResults() {
 		Payload receivedPayload = new Payload(
 				formulas.getTitleManagement(),
-				confirm,
-				null,
-				null,
-				message,
+				true,
 				null,
 				null,
 				"",
-				receivedTitles
+				null,
+				null,
+				"",
+				titlesBeforeUploading
 		);
 
-		when(fileOperations.getOSPathSeparator())
-				.thenReturn(";");
+		Payload expectedPayload = new Payload(
+				formulas.getTitleManagement(),
+				false,
+				null,
+				null,
+				"PLEASE UPLOAD MINIMUM ONE PROPER FILE AND CONFIRM SOURCE OVERWRITING.",
+				null,
+				null,
+				"",
+				titlesBeforeUploading
+		);
+		Map<String, Object> model = new HashMap<>();
+		model.put("payload", expectedPayload);
 
-		List<File> allFiles = List.of(
-				new File("title_1"),
-				new File("title_2"),
-				new File("title_3"),
-				new File("title_4"),
-				new File("title_5")
+		ModelAndView modelAndView = commonService.importTxt("management", receivedPayload, paths, null);
+		ModelAndViewAssert.assertViewName(modelAndView, "management");
+		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
+	}
+
+	@Test
+	void importTxt_Confirmed_NoUploadedFiles() {
+		Payload receivedPayload = new Payload(
+				formulas.getTitleManagement(),
+				true,
+				null,
+				null,
+				"",
+				null,
+				null,
+				"",
+				titlesBeforeUploading
 		);
-		List<File> notImportedFiles = List.of(
-				new File("title_1"),
-				new File("title_2"),
-				new File("title_3")
+
+		Payload expectedPayload = new Payload(
+				formulas.getTitleManagement(),
+				false,
+				null,
+				null,
+				"PLEASE UPLOAD MINIMUM ONE PROPER FILE AND CONFIRM SOURCE OVERWRITING.",
+				null,
+				null,
+				"",
+				titlesBeforeUploading
 		);
+		Map<String, Object> model = new HashMap<>();
+		model.put("payload", expectedPayload);
+
+		ModelAndView modelAndView = commonService.importTxt("management", receivedPayload, paths, new long[]{0, 0});
+		ModelAndViewAssert.assertViewName(modelAndView, "management");
+		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
+	}
+
+	@Test
+	void importTxt_Confirmed_ExistingUploadedFiles() {
+		Payload receivedPayload = new Payload(
+				formulas.getTitleManagement(),
+				true,
+				null,
+				null,
+				"",
+				null,
+				null,
+				"",
+				titlesBeforeUploading
+		);
+
 		when(processRecords.importTxtFiles(
-				allFiles,
+				uploadedFiles,
 				titleRepository,
 				txtRepository,
 				htmlRepository,
@@ -289,28 +254,25 @@ MultipartFile[] tests are needed!
 				extractors))
 				.thenReturn(notImportedFiles);
 
-		List<String> titles = List.of("Title 4", "Title 5");
 		when(processRecords.getAllTitles(titleRepository))
-				.thenReturn(titles);
+				.thenReturn(titlesAfterUploading);
 
 		Payload expectedPayload = new Payload(
 				formulas.getTitleManagement(),
 				false,
 				null,
 				null,
-				"3 OF 5 FILES WERE NOT IMPORTED.",
+				"FILE IMPORT RESULTS: 2 IMPORTED, 1 NOT IMPORTED, 3 TOTAL.",
 				null,
 				null,
 				"",
-				titles
+				titlesAfterUploading
 		);
 		Map<String, Object> model = new HashMap<>();
 		model.put("payload", expectedPayload);
 
-		ModelAndView modelAndView = commonService.importTxt("management", receivedPayload);
-
+		ModelAndView modelAndView = commonService.importTxt("management", receivedPayload, paths, uploadResults);
 		ModelAndViewAssert.assertViewName(modelAndView, "management");
 		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
 	}
-*/
 }

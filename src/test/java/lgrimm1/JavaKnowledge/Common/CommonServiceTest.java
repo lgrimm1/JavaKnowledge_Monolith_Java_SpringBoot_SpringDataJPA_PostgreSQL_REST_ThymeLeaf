@@ -1,5 +1,6 @@
 package lgrimm1.JavaKnowledge.Common;
 
+import lgrimm1.JavaKnowledge.FileStorage.*;
 import lgrimm1.JavaKnowledge.Html.*;
 import lgrimm1.JavaKnowledge.Process.*;
 import lgrimm1.JavaKnowledge.Title.*;
@@ -7,17 +8,13 @@ import lgrimm1.JavaKnowledge.Txt.*;
 
 import org.junit.jupiter.api.*;
 import org.mockito.Mockito;
-import org.mockito.*;
 import org.springframework.test.web.*;
-import org.springframework.ui.*;
 import org.springframework.web.servlet.*;
 
 import java.io.*;
 import java.util.*;
-import java.util.stream.*;
 
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 
 class CommonServiceTest {
 
@@ -129,36 +126,4 @@ class CommonServiceTest {
 		ModelAndViewAssert.assertViewName(modelAndView, "source");
 		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
 	}
-
-/*
-	@Test
-	void publishPages() {
-		List<String> titles = List.of("Title 1", "Title 2");
-		when(processRecords.getAllTitles(titleRepository))
-				.thenReturn(titles);
-
-		when(processRecords.publishHtml(titleRepository, htmlRepository, fileOperations))
-				.thenReturn(new long[]{5L, 4L});
-
-		Payload expectedPayload = new Payload(
-				false,
-				null,
-				null,
-				null,
-				"",
-				"5 HTML FILES WERE PRE-DELETED, 4 WERE PUBLISHED.",
-				null,
-				null,
-				null,
-				titles
-		);
-		Map<String, Object> model = new HashMap<>();
-		model.put("payload", expectedPayload);
-
-		ModelAndView modelAndView = commonService.publishPages("management");
-
-		ModelAndViewAssert.assertViewName(modelAndView, "management");
-		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
-	}
-*/
 }

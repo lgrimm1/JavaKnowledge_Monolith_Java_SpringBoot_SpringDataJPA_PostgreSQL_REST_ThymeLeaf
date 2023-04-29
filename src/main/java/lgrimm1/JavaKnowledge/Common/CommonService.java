@@ -1,14 +1,12 @@
 package lgrimm1.JavaKnowledge.Common;
 
+import lgrimm1.JavaKnowledge.FileStorage.*;
 import lgrimm1.JavaKnowledge.Html.*;
 import lgrimm1.JavaKnowledge.Process.*;
 import lgrimm1.JavaKnowledge.Title.*;
 import lgrimm1.JavaKnowledge.Txt.*;
 import org.springframework.beans.factory.annotation.*;
-import org.springframework.lang.*;
 import org.springframework.stereotype.*;
-import org.springframework.ui.*;
-import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.*;
 
 import java.io.*;
@@ -118,7 +116,7 @@ public class CommonService {
 				formulas);
 	}
 
-	public ModelAndView importTxt(String initialView, Payload payload) {
+	public ModelAndView importTxt(String initialView, Payload payload, Stream<Path> paths, long[] uploadResults) {
 		return ManagementService.importTxt(
 				initialView,
 				payload,
@@ -128,7 +126,9 @@ public class CommonService {
 				txtRepository,
 				htmlRepository,
 				formulas,
-				extractors);
+				extractors,
+				paths,
+				uploadResults);
 	}
 
 	public ModelAndView generateHtml(String initialView, Payload payload) {

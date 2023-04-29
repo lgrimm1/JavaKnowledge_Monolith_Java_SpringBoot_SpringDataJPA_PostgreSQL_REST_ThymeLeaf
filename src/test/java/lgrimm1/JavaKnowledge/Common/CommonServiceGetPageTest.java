@@ -1,5 +1,6 @@
 package lgrimm1.JavaKnowledge.Common;
 
+import lgrimm1.JavaKnowledge.FileStorage.*;
 import lgrimm1.JavaKnowledge.Html.*;
 import lgrimm1.JavaKnowledge.Process.*;
 import lgrimm1.JavaKnowledge.Title.*;
@@ -9,9 +10,7 @@ import org.mockito.*;
 import org.springframework.test.web.*;
 import org.springframework.web.servlet.*;
 
-import java.io.*;
 import java.util.*;
-import java.util.stream.*;
 
 import static org.mockito.Mockito.*;
 
@@ -20,6 +19,7 @@ class CommonServiceGetPageTest {
 	TitleRepository titleRepository;
 	TxtRepository txtRepository;
 	HtmlRepository htmlRepository;
+	FileStorageRepository fileStorageRepository;
 	Formulas formulas;
 	ProcessRecords processRecords;
 	FileOperations fileOperations;

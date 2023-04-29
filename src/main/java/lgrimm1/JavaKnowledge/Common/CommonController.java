@@ -1,20 +1,27 @@
 package lgrimm1.JavaKnowledge.Common;
 
+import lgrimm1.JavaKnowledge.FileStorage.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.ui.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.*;
+import org.springframework.util.*;
+import org.springframework.web.multipart.*;
 
 import java.util.*;
+import java.util.stream.*;
 
 @RestController
+@ControllerAdvice
 public class CommonController {
 
 	private final CommonService commonService;
+	private final FileStorageService fileStorageService;
 
 	@Autowired
-	public CommonController(CommonService commonService) {
+	public CommonController(CommonService commonService, FileStorageService fileStorageService) {
 		this.commonService = commonService;
+		this.fileStorageService = fileStorageService;
 	}
 
 	@RequestMapping("*")
@@ -73,10 +80,14 @@ public class CommonController {
 	}
 
 	@PostMapping("/import")
-	public ModelAndView importTxt(@ModelAttribute("payload") Payload payload, Model model) {
+	public ModelAndView importTxt(@RequestParam("files") MultipartFile[] files,
+								  @ModelAttribute("payload") Payload payload,
+								  Model model) {
 		model.asMap().clear();
-		return commonService.importTxt("management", payload);
-//		return commonService.importTxt("management", payload.getFiles(), payload.getConfirm());
+		long[] uploadResults = fileStorageService.uploadFiles(payload, bindMultipartFileArrayToMultipartList(files));
+		ModelAndView finalResults = commonService.importTxt("management", payload, fileStorageService.findAll(), uploadResults);
+		fileStorageService.deleteAllFiles();
+		return finalResults;
 	}
 
 	@PostMapping("/generate")
@@ -104,5 +115,32 @@ public class CommonController {
 				payload.getContent(),
 				payload.getEditExistingPage());
 */
+	}
+
+	@ExceptionHandler(MaxUploadSizeExceededException.class)
+	public ModelAndView handleMaxSizeException(MaxUploadSizeExceededException e, Model model) {
+		model.asMap().clear();
+		return fileStorageService.handleMaxSizeException("management");
+	}
+
+	private Multipart bindMultipartFileToMultipart(MultipartFile file) {
+		try {
+			return new Multipart(file.getName(),
+					StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename())),
+					Objects.requireNonNull(file.getContentType()),
+					file.getBytes());
+		}
+		catch (Exception e) {
+			return null;
+		}
+	}
+
+	private List<Multipart> bindMultipartFileArrayToMultipartList(MultipartFile[] files) {
+		if (files == null) {
+			return null;
+		}
+		return Arrays.stream(files)
+				.map(this::bindMultipartFileToMultipart)
+				.collect(Collectors.toList());
 	}
 }

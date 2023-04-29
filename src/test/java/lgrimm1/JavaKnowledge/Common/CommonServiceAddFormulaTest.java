@@ -1,5 +1,6 @@
 package lgrimm1.JavaKnowledge.Common;
 
+import lgrimm1.JavaKnowledge.FileStorage.*;
 import lgrimm1.JavaKnowledge.Html.*;
 import lgrimm1.JavaKnowledge.Process.*;
 import lgrimm1.JavaKnowledge.Title.*;
@@ -7,7 +8,6 @@ import lgrimm1.JavaKnowledge.Txt.*;
 import org.junit.jupiter.api.*;
 import org.mockito.*;
 import org.springframework.test.web.*;
-import org.springframework.ui.*;
 import org.springframework.web.servlet.*;
 
 import java.util.*;
@@ -19,6 +19,7 @@ class CommonServiceAddFormulaTest {
 	TitleRepository titleRepository;
 	TxtRepository txtRepository;
 	HtmlRepository htmlRepository;
+	FileStorageRepository fileStorageRepository;
 	Formulas formulas;
 	ProcessRecords processRecords;
 	FileOperations fileOperations;

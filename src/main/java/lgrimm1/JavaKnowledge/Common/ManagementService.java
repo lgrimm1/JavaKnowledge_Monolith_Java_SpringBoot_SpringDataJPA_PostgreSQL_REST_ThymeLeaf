@@ -1,5 +1,6 @@
 package lgrimm1.JavaKnowledge.Common;
 
+import lgrimm1.JavaKnowledge.FileStorage.*;
 import lgrimm1.JavaKnowledge.Html.*;
 import lgrimm1.JavaKnowledge.Process.*;
 import lgrimm1.JavaKnowledge.Title.*;
@@ -7,6 +8,7 @@ import lgrimm1.JavaKnowledge.Txt.*;
 import org.springframework.web.servlet.*;
 
 import java.io.*;
+import java.nio.file.*;
 import java.util.*;
 import java.util.stream.*;
 
@@ -16,7 +18,7 @@ import java.util.stream.*;
  * @see #editSourcePage(String, Payload, ProcessRecords, TitleRepository, TxtRepository, Formulas)
  * @see #renameSourcePage(String, Payload, ProcessRecords, TitleRepository, FileOperations, Formulas)
  * @see #deletePages(String, Payload, ProcessRecords, TitleRepository, TxtRepository, HtmlRepository, Formulas)
- * @see #importTxt(String, Payload, ProcessRecords, TitleRepository, FileOperations, TxtRepository, HtmlRepository, Formulas, Extractors)
+ * @see #importTxt(String, Payload, ProcessRecords, TitleRepository, FileOperations, TxtRepository, HtmlRepository, Formulas, Extractors, Stream, long[])
  * @see #generateHtml(String, Payload, ProcessRecords, TitleRepository, TxtRepository, HtmlRepository, Formulas, ProcessPage, Extractors, HtmlGenerators)
  */
 public class ManagementService {
@@ -276,16 +278,21 @@ public class ManagementService {
 										 TxtRepository txtRepository,
 										 HtmlRepository htmlRepository,
 										 Formulas formulas,
-										 Extractors extractors) {
+										 Extractors extractors,
+										 Stream<Path> paths,
+										 long[] uploadResults) {
 		if (payload == null ||
 				payload.getConfirm() == null ||
-				!payload.getConfirm()) {
+				!payload.getConfirm() ||
+				uploadResults == null ||
+				uploadResults.length != 2 ||
+				uploadResults[1] == 0) {
 			Payload payload2 = new Payload(
 					formulas.getTitleManagement(),
 					false,
 					null,
 					null,
-					"PLEASE UPLOAD MINIMUM ONE FILE AND CONFIRM SOURCE OVERWRITING.",
+					"PLEASE UPLOAD MINIMUM ONE PROPER FILE AND CONFIRM SOURCE OVERWRITING.",
 					null,
 					null,
 					"",
@@ -293,35 +300,34 @@ public class ManagementService {
 			);
 			return new ModelAndView(initialView, "payload", payload2);
 		}
-/*
-MultipartFile[] processing!
-		List<File> files = Stream.of(payload.getFiles().split(fileOperations.getOSPathSeparator()))
-				.map(File::new)
+		List<File> uploadedFiles = paths
+				.map(Path::toFile)
 				.toList();
 		List<File> notImportedFiles = processRecords.importTxtFiles(
-				files,
+				uploadedFiles,
 				titleRepository,
 				txtRepository,
 				htmlRepository,
 				fileOperations,
 				formulas,
 				extractors);
-*/
-		List<String> titles = processRecords.getAllTitles(titleRepository);
+		String message = "FILE IMPORT RESULTS: " +
+				(uploadResults[0] - notImportedFiles.size()) +
+				" IMPORTED, " +
+				notImportedFiles.size() +
+				" NOT IMPORTED, " +
+				uploadResults[0] +
+				" TOTAL.";
 		Payload payload2 = new Payload(
 				formulas.getTitleManagement(),
 				false,
 				null,
 				null,
-/*
-results of MultipartFile[] processing!
-				notImportedFiles.size() + " OF " + files.size() + " FILES WERE NOT IMPORTED.",
-*/
-				"", //temporary message, replace it with out-commented part above
+				message,
 				null,
 				null,
 				"",
-				titles
+				processRecords.getAllTitles(titleRepository)
 		);
 		return new ModelAndView(initialView, "payload", payload2);
 	}

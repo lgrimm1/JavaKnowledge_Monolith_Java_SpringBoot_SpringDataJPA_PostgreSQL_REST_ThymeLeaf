@@ -152,8 +152,8 @@ END OF EXAMPLE
 ||server.compression.enabled|sets HTTP response compression, default is false||
 ||server.compression.min-response-size|sets the minimum response size for applying compression, default is 2048 in bytes||
 ||server.compression.mime-types|defines on which response formats the compression will be executed||
-||spring.servlet.multipart.max-file-size|sets the maximum up-loadable file size||
-||spring.servlet.multipart.max-request-size|sets the maximum request size in case of file uploading||
+||spring.servlet.multipart.max-file-size|sets the maximum up-loadable file size, unit can be MB or KB||
+||spring.servlet.multipart.max-request-size|sets the maximum request size in case of file uploading, unit can be MB or KB||
 
 For server.port, the -1 value closes the HTTP ports but the application context will be built-up (can be useful for testing).
 The 0 (zero) port number makes the server to scan for an open port.
