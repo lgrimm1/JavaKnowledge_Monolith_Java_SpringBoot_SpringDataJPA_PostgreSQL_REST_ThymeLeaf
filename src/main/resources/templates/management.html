@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{/fragments/head.html::head}" />
 <body>
-<form action="#" th:object="${payload}" th:action="@{/management}" method="post" novalidate>
+<form action="#" th:object="${payload}" th:action="@{/management}" method="post" enctype="multipart/form-data" novalidate>
     <table th:replace="~{/fragments/banner.html::banner}" />
     <table class="formatter_table">
         <tr>
@@ -37,7 +37,7 @@
                 <fieldset>
                     <legend>&nbsp;Actions on All Sources&nbsp;</legend>
                     <label for="files" title="Press to Select Files" class="custom_file_upload">
-                        <input id="files" type="file" th:field="*{files}" class="submit_half" accept=".txt" multiple />
+                        <input id="files" type="file" name="files" class="submit_half" accept=".txt" multiple />
                         BROWSE FILES...
                     </label>
                     &nbsp;

@@ -1,3 +1,19 @@
+In management view:
+{"payload": {
+    "templateTitle": <String>
+    "confirm": <boolean>,
+    "content": [<String>, ...],
+    "editExistingPage": <boolean>,
+    "files": <String>,
+    "message": <String>,
+    "searchText": <String>,
+    "htmlContent": <String>,
+    "title": <String>,
+    "titles": [<String>, ...]
+},
+"files": <multipart>}
+
+In all other views:
 "payload": {
     "templateTitle": <String>
     "confirm": <boolean>,

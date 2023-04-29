@@ -54,9 +54,9 @@ new title text field
 "Confirm" checkbox
 "Delete Source Page(s)" button              POST /delete        {"titles": [<String>, ...], "confirm": <boolean>}
 "Generate Pages from Sources" button        POST /generate      {"confirm": <boolean>}
-"Import Source Files"                       POST /import        {"files": <String>, "confirm": <boolean>}
+"Import Source Files"                       POST /import        {"payload": {"confirm": <boolean>}, "files": <multipart>}
 "Back" button                               GET /               -
-Total returned fields: {"templateTitle": <String>, "titles": [<String>, ...], "files": <String>, "confirm": <boolean>, "message": <String>, "title": <String>}
+Total returned fields: {"payload": {"templateTitle": <String>, "titles": [<String>, ...], "files": <String>, "confirm": <boolean>, "message": <String>, "title": <String>}, "files": <multipart>}
 
 
 "source"
