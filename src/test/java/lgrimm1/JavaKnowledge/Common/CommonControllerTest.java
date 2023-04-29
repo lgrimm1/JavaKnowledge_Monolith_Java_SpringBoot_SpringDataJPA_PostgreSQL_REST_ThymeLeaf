@@ -38,7 +38,6 @@ class CommonControllerTest {
 				null,
 				null,
 				null,
-				null,
 				searchText,
 				null,
 				null,
@@ -66,7 +65,6 @@ class CommonControllerTest {
 		String searchText = "text";
 		Payload payload2 = new Payload(
 				formulas.getTitleRoot(),
-				null,
 				null,
 				null,
 				null,
@@ -104,7 +102,6 @@ class CommonControllerTest {
 				null,
 				null,
 				null,
-				null,
 				searchText,
 				null,
 				null,
@@ -116,7 +113,6 @@ class CommonControllerTest {
 				.thenReturn("LISTTITLE");
 		Payload payload2 = new Payload(
 				formulas.getTitleList(),
-				null,
 				null,
 				null,
 				null,
@@ -154,7 +150,6 @@ class CommonControllerTest {
 				null,
 				null,
 				null,
-				null,
 				searchText,
 				null,
 				null,
@@ -168,7 +163,6 @@ class CommonControllerTest {
 				.thenReturn("PAGETITLE");
 		Payload payload2 = new Payload(
 				formulas.getTitlePage(),
-				null,
 				null,
 				null,
 				null,
@@ -205,7 +199,6 @@ class CommonControllerTest {
 				null,
 				null,
 				null,
-				null,
 				searchText,
 				null,
 				null,
@@ -213,7 +206,6 @@ class CommonControllerTest {
 		);
 
 		Boolean confirm = false;
-		String files = "";
 		String message = "message text";
 		String title = "";
 		List<String> titles = List.of("Title 1", "Title 2");
@@ -224,7 +216,6 @@ class CommonControllerTest {
 				confirm,
 				null,
 				null,
-				files,
 				message,
 				null,
 				null,
@@ -251,7 +242,6 @@ class CommonControllerTest {
 	@Test
 	void createSourcePage() throws Exception {
 		Boolean confirm = false;
-		String files = "";
 		String message = "message text";
 		String title = "";
 		List<String> titles = List.of("Title 1", "Title 2");
@@ -262,7 +252,6 @@ class CommonControllerTest {
 				confirm,
 				null,
 				null,
-				files,
 				message,
 				null,
 				null,
@@ -281,7 +270,6 @@ class CommonControllerTest {
 				null,
 				content,
 				editExistingPage,
-				null,
 				message2,
 				null,
 				null,
@@ -308,7 +296,6 @@ class CommonControllerTest {
 	@Test
 	void editSourcePage() throws Exception {
 		Boolean confirm = false;
-		String files = "";
 		String message = "message text";
 		String title = "";
 		List<String> titles = List.of("Title 1", "Title 2");
@@ -319,7 +306,6 @@ class CommonControllerTest {
 				confirm,
 				null,
 				null,
-				files,
 				message,
 				null,
 				null,
@@ -338,7 +324,6 @@ class CommonControllerTest {
 				null,
 				content,
 				editExistingPage,
-				null,
 				message2,
 				null,
 				null,
@@ -365,7 +350,6 @@ class CommonControllerTest {
 	@Test
 	void renameSourcePage() throws Exception {
 		Boolean confirm = true;
-		String files = "";
 		String message = "message text";
 		String title = "Title 2";
 		List<String> titles = List.of("Title 1");
@@ -376,7 +360,6 @@ class CommonControllerTest {
 				confirm,
 				null,
 				null,
-				files,
 				message,
 				null,
 				null,
@@ -393,7 +376,6 @@ class CommonControllerTest {
 				confirm2,
 				null,
 				null,
-				"",
 				message2,
 				null,
 				null,
@@ -419,7 +401,6 @@ class CommonControllerTest {
 
 	@Test
 	void deleteSourcePages() throws Exception {
-		String files = "";
 		Boolean confirm = true;
 		String message = "message text";
 		String title = "";
@@ -431,7 +412,6 @@ class CommonControllerTest {
 				confirm,
 				null,
 				null,
-				files,
 				message,
 				null,
 				null,
@@ -447,7 +427,6 @@ class CommonControllerTest {
 				confirm2,
 				null,
 				null,
-				files,
 				message2,
 				null,
 				null,
@@ -474,7 +453,6 @@ class CommonControllerTest {
 	@Test
 	void importTxt() throws Exception {
 		Boolean confirm = true;
-		String files = "file_3;file_4";
 		String message = "message text";
 		String title = "";
 		List<String> titles = List.of("Title 1");
@@ -485,7 +463,6 @@ class CommonControllerTest {
 				confirm,
 				null,
 				null,
-				files,
 				message,
 				null,
 				null,
@@ -501,7 +478,6 @@ class CommonControllerTest {
 				confirm2,
 				null,
 				null,
-				"",
 				message2,
 				null,
 				null,
@@ -528,7 +504,6 @@ class CommonControllerTest {
 	@Test
 	void generateHtml() throws Exception {
 		Boolean confirm = true;
-		String files = "";
 		String message = "message text";
 		String title = "";
 		List<String> titles = List.of("Title 1");
@@ -539,7 +514,6 @@ class CommonControllerTest {
 				confirm,
 				null,
 				null,
-				files,
 				message,
 				null,
 				null,
@@ -555,7 +529,6 @@ class CommonControllerTest {
 				confirm2,
 				null,
 				null,
-				"",
 				message2,
 				null,
 				null,
@@ -592,7 +565,6 @@ class CommonControllerTest {
 				null,
 				content,
 				editExistingPage,
-				null,
 				message,
 				null,
 				null,
@@ -607,7 +579,6 @@ class CommonControllerTest {
 				null,
 				content + formulaName,
 				editExistingPage,
-				null,
 				message2,
 				null,
 				null,
@@ -644,7 +615,6 @@ class CommonControllerTest {
 				null,
 				content,
 				editExistingPage,
-				null,
 				message,
 				null,
 				null,
@@ -658,7 +628,6 @@ class CommonControllerTest {
 				null,
 				content,
 				editExistingPage,
-				null,
 				message2,
 				null,
 				null,

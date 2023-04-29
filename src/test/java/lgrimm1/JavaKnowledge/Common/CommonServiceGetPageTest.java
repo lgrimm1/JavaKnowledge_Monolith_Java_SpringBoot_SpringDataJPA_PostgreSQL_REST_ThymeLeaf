@@ -67,7 +67,6 @@ class CommonServiceGetPageTest {
 				null,
 				null,
 				null,
-				null,
 				"<all titles>",
 				null,
 				null,
@@ -91,7 +90,6 @@ class CommonServiceGetPageTest {
 				null,
 				null,
 				null,
-				null,
 				searchText,
 				null,
 				null,
@@ -104,7 +102,6 @@ class CommonServiceGetPageTest {
 
 		Payload expectedPayload = new Payload(
 				formulas.getTitleList(),
-				null,
 				null,
 				null,
 				null,
@@ -132,7 +129,6 @@ class CommonServiceGetPageTest {
 				null,
 				null,
 				null,
-				null,
 				searchText,
 				null,
 				null,
@@ -145,7 +141,6 @@ class CommonServiceGetPageTest {
 
 		Payload expectedPayload = new Payload(
 				formulas.getTitleList(),
-				null,
 				null,
 				null,
 				null,
@@ -174,7 +169,6 @@ class CommonServiceGetPageTest {
 				null,
 				null,
 				null,
-				null,
 				searchText,
 				null,
 				null,
@@ -187,7 +181,6 @@ class CommonServiceGetPageTest {
 
 		Payload expectedPayload = new Payload(
 				formulas.getTitleList(),
-				null,
 				null,
 				null,
 				null,
@@ -216,7 +209,6 @@ class CommonServiceGetPageTest {
 				null,
 				null,
 				null,
-				null,
 				searchText,
 				null,
 				null,
@@ -229,7 +221,6 @@ class CommonServiceGetPageTest {
 
 		Payload expectedPayload = new Payload(
 				formulas.getTitleList(),
-				null,
 				null,
 				null,
 				null,
@@ -259,7 +250,6 @@ class CommonServiceGetPageTest {
 				null,
 				null,
 				null,
-				null,
 				searchText,
 				null,
 				null,
@@ -275,7 +265,6 @@ class CommonServiceGetPageTest {
 
 		Payload expectedPayload = new Payload(
 				formulas.getTitleList(),
-				null,
 				null,
 				null,
 				null,
@@ -305,7 +294,6 @@ class CommonServiceGetPageTest {
 				null,
 				null,
 				null,
-				null,
 				searchText,
 				null,
 				null,
@@ -329,7 +317,6 @@ class CommonServiceGetPageTest {
 
 		Payload expectedPayload = new Payload(
 				formulas.getTitlePage(),
-				null,
 				null,
 				null,
 				null,

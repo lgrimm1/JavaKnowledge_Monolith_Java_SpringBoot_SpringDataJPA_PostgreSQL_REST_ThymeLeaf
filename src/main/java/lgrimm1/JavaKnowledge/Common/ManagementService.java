@@ -30,7 +30,6 @@ public class ManagementService {
 				null,
 				null,
 				"",
-				"",
 				null,
 				null,
 				"",
@@ -45,7 +44,6 @@ public class ManagementService {
 				null,
 				"",
 				false,
-				null,
 				"",
 				null,
 				null,
@@ -71,7 +69,6 @@ public class ManagementService {
 					false,
 					null,
 					null,
-					"",
 					"PLEASE SELECT EXACTLY ONE TITLE FOR EDITING.",
 					null,
 					null,
@@ -87,7 +84,6 @@ public class ManagementService {
 					false,
 					null,
 					null,
-					"",
 					"PLEASE SELECT EXACTLY ONE TITLE FOR EDITING.",
 					null,
 					null,
@@ -104,7 +100,6 @@ public class ManagementService {
 					false,
 					null,
 					null,
-					"",
 					"PLEASE SELECT EXACTLY ONE TITLE FOR EDITING.",
 					null,
 					null,
@@ -118,7 +113,6 @@ public class ManagementService {
 				null,
 				optionalTxtEntity.get().getContent(),
 				true,
-				null,
 				"",
 				null,
 				null,
@@ -144,7 +138,6 @@ public class ManagementService {
 					false,
 					null,
 					null,
-					"",
 					"PLEASE SELECT EXACTLY ONE EXISTING TITLE AND DEFINE A NEW TITLE.",
 					null,
 					null,
@@ -160,7 +153,6 @@ public class ManagementService {
 					false,
 					null,
 					null,
-					"",
 					"PLEASE SELECT EXACTLY ONE EXISTING TITLE AND DEFINE A NEW TITLE.",
 					null,
 					null,
@@ -176,7 +168,6 @@ public class ManagementService {
 					false,
 					null,
 					null,
-					"",
 					"THE GIVEN NEW TITLE ALREADY EXISTS, PLEASE DEFINE AN OTHER ONE.",
 					null,
 					null,
@@ -195,7 +186,6 @@ public class ManagementService {
 				false,
 				null,
 				null,
-				"",
 				"PAGE HAS BEEN RENAMED.",
 				null,
 				null,
@@ -231,7 +221,6 @@ public class ManagementService {
 					false,
 					null,
 					null,
-					"",
 					message,
 					null,
 					null,
@@ -250,7 +239,6 @@ public class ManagementService {
 					false,
 					null,
 					null,
-					"",
 					"PLEASE SELECT EXISTING TITLES YOU WISH TO DELETE.",
 					null,
 					null,
@@ -271,7 +259,6 @@ public class ManagementService {
 				false,
 				null,
 				null,
-				"",
 				message,
 				null,
 				null,
@@ -291,8 +278,6 @@ public class ManagementService {
 										 Formulas formulas,
 										 Extractors extractors) {
 		if (payload == null ||
-				payload.getFiles() == null ||
-				payload.getFiles().isBlank() ||
 				payload.getConfirm() == null ||
 				!payload.getConfirm()) {
 			Payload payload2 = new Payload(
@@ -300,7 +285,6 @@ public class ManagementService {
 					false,
 					null,
 					null,
-					"",
 					"PLEASE UPLOAD MINIMUM ONE FILE AND CONFIRM SOURCE OVERWRITING.",
 					null,
 					null,
@@ -309,6 +293,8 @@ public class ManagementService {
 			);
 			return new ModelAndView(initialView, "payload", payload2);
 		}
+/*
+MultipartFile[] processing!
 		List<File> files = Stream.of(payload.getFiles().split(fileOperations.getOSPathSeparator()))
 				.map(File::new)
 				.toList();
@@ -320,14 +306,18 @@ public class ManagementService {
 				fileOperations,
 				formulas,
 				extractors);
+*/
 		List<String> titles = processRecords.getAllTitles(titleRepository);
 		Payload payload2 = new Payload(
 				formulas.getTitleManagement(),
 				false,
 				null,
 				null,
-				"",
+/*
+results of MultipartFile[] processing!
 				notImportedFiles.size() + " OF " + files.size() + " FILES WERE NOT IMPORTED.",
+*/
+				"", //temporary message, replace it with out-commented part above
 				null,
 				null,
 				"",
@@ -352,7 +342,6 @@ public class ManagementService {
 					false,
 					null,
 					null,
-					"",
 					"PLEASE CONFIRM GENERATING PAGES.",
 					null,
 					null,
@@ -374,7 +363,6 @@ public class ManagementService {
 				false,
 				null,
 				null,
-				"",
 				messageData[0] + " PAGES IN " + messageData[1] + " SECONDS HAS BEEN PROCESSED.",
 				null,
 				null,

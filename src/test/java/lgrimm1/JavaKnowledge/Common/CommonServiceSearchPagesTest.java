@@ -65,7 +65,6 @@ public class CommonServiceSearchPagesTest {
 				null,
 				null,
 				null,
-				null,
 				"<all titles>",
 				null,
 				null,
@@ -92,7 +91,6 @@ public class CommonServiceSearchPagesTest {
 				null,
 				null,
 				null,
-				null,
 				"<all titles>",
 				null,
 				null,
@@ -103,7 +101,6 @@ public class CommonServiceSearchPagesTest {
 
 		Payload incomingPayload = new Payload(
 				formulas.getTitleRoot(),
-				null,
 				null,
 				null,
 				null,
@@ -131,7 +128,6 @@ public class CommonServiceSearchPagesTest {
 				null,
 				null,
 				null,
-				null,
 				"<all titles>",
 				null,
 				null,
@@ -142,7 +138,6 @@ public class CommonServiceSearchPagesTest {
 
 		Payload incomingPayload = new Payload(
 				formulas.getTitleRoot(),
-				null,
 				null,
 				null,
 				null,
@@ -167,7 +162,6 @@ public class CommonServiceSearchPagesTest {
 				null,
 				null,
 				null,
-				null,
 				searchText,
 				null,
 				null,
@@ -181,7 +175,6 @@ public class CommonServiceSearchPagesTest {
 		List<String> titles = List.of("Title 1", "Title 2");
 		Payload expectedPayload = new Payload(
 				formulas.getTitleList(),
-				null,
 				null,
 				null,
 				null,

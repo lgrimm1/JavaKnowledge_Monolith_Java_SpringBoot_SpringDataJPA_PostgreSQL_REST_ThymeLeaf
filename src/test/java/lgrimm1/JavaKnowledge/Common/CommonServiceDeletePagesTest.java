@@ -63,7 +63,6 @@ class CommonServiceDeletePagesTest {
 				false,
 				null,
 				null,
-				"",
 				"PLEASE SELECT TITLES YOU WISH TO DELETE.",
 				null,
 				null,
@@ -82,7 +81,6 @@ class CommonServiceDeletePagesTest {
 	@Test
 	void deletePages_NullTitles() {
 		Boolean confirm = true;
-		String files = "";
 		String message = "";
 		List<String> titles = null;
 		Payload receivedPayload = new Payload(
@@ -90,7 +88,6 @@ class CommonServiceDeletePagesTest {
 				confirm,
 				null,
 				null,
-				files,
 				message,
 				null,
 				null,
@@ -107,7 +104,6 @@ class CommonServiceDeletePagesTest {
 				false,
 				null,
 				null,
-				"",
 				"PLEASE SELECT TITLES YOU WISH TO DELETE.",
 				null,
 				null,
@@ -126,7 +122,6 @@ class CommonServiceDeletePagesTest {
 	@Test
 	void deletePages_NoTitles() {
 		Boolean confirm = true;
-		String files = "";
 		String message = "";
 		List<String> titles = new ArrayList<>();
 		Payload receivedPayload = new Payload(
@@ -134,7 +129,6 @@ class CommonServiceDeletePagesTest {
 				confirm,
 				null,
 				null,
-				files,
 				message,
 				null,
 				null,
@@ -151,7 +145,6 @@ class CommonServiceDeletePagesTest {
 				false,
 				null,
 				null,
-				"",
 				"PLEASE SELECT TITLES YOU WISH TO DELETE.",
 				null,
 				null,
@@ -170,7 +163,6 @@ class CommonServiceDeletePagesTest {
 	@Test
 	void deletePages_NotConfirmed() {
 		Boolean confirm = false;
-		String files = "";
 		String message = "";
 		List<String> titles = List.of("Title 1");
 		Payload receivedPayload = new Payload(
@@ -178,7 +170,6 @@ class CommonServiceDeletePagesTest {
 				confirm,
 				null,
 				null,
-				files,
 				message,
 				null,
 				null,
@@ -195,7 +186,6 @@ class CommonServiceDeletePagesTest {
 				false,
 				null,
 				null,
-				"",
 				"PLEASE CONFIRM DELETION.",
 				null,
 				null,
@@ -226,14 +216,12 @@ class CommonServiceDeletePagesTest {
 //		requestTitles.addAll(cleanedRequestTitles);
 
 		Boolean confirm = true;
-		String files = "";
 		String message = "";
 		Payload receivedPayload = new Payload(
 				formulas.getTitleManagement(),
 				confirm,
 				null,
 				null,
-				files,
 				message,
 				null,
 				null,
@@ -250,7 +238,6 @@ class CommonServiceDeletePagesTest {
 				false,
 				null,
 				null,
-				"",
 				"PLEASE SELECT EXISTING TITLES YOU WISH TO DELETE.",
 				null,
 				null,
@@ -278,14 +265,12 @@ class CommonServiceDeletePagesTest {
 		requestTitles.addAll(cleanedRequestTitles);
 
 		Boolean confirm = true;
-		String files = "";
 		String message = "";
 		Payload receivedPayload = new Payload(
 				formulas.getTitleManagement(),
 				confirm,
 				null,
 				null,
-				files,
 				message,
 				null,
 				null,
@@ -302,7 +287,6 @@ class CommonServiceDeletePagesTest {
 				false,
 				null,
 				null,
-				"",
 				"1 OF 2 TITLES WERE DELETED.",
 				null,
 				null,

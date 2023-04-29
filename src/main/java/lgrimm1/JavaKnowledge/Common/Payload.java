@@ -8,7 +8,6 @@ public class Payload {
 	public Boolean confirm;
 	public String content;
 	public Boolean editExistingPage;
-	public String files;
 	public String message;
 	public String searchText;
 	public String htmlContent;
@@ -22,7 +21,6 @@ public class Payload {
 				   Boolean confirm,
 				   String content,
 				   Boolean editExistingPage,
-				   String files,
 				   String message,
 				   String searchText,
 				   String htmlContent,
@@ -32,7 +30,6 @@ public class Payload {
 		this.confirm = confirm;
 		this.content = content;
 		this.editExistingPage = editExistingPage;
-		this.files = files;
 		this.message = message;
 		this.searchText = searchText;
 		this.htmlContent = htmlContent;
@@ -70,14 +67,6 @@ public class Payload {
 
 	public void setEditExistingPage(Boolean editExistingPage) {
 		this.editExistingPage = editExistingPage;
-	}
-
-	public String getFiles() {
-		return files;
-	}
-
-	public void setFiles(String files) {
-		this.files = files;
 	}
 
 	public String getMessage() {
@@ -125,12 +114,12 @@ public class Payload {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
 		Payload payload = (Payload) o;
-		return Objects.equals(templateTitle, payload.templateTitle) && Objects.equals(confirm, payload.confirm) && Objects.equals(content, payload.content) && Objects.equals(editExistingPage, payload.editExistingPage) && Objects.equals(files, payload.files) && Objects.equals(message, payload.message) && Objects.equals(searchText, payload.searchText) && Objects.equals(htmlContent, payload.htmlContent) && Objects.equals(title, payload.title) && Objects.equals(titles, payload.titles);
+		return Objects.equals(templateTitle, payload.templateTitle) && Objects.equals(confirm, payload.confirm) && Objects.equals(content, payload.content) && Objects.equals(editExistingPage, payload.editExistingPage) && Objects.equals(message, payload.message) && Objects.equals(searchText, payload.searchText) && Objects.equals(htmlContent, payload.htmlContent) && Objects.equals(title, payload.title) && Objects.equals(titles, payload.titles);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(templateTitle, confirm, content, editExistingPage, files, message, searchText, htmlContent, title, titles);
+		return Objects.hash(templateTitle, confirm, content, editExistingPage, message, searchText, htmlContent, title, titles);
 	}
 
 	@Override
@@ -140,7 +129,6 @@ public class Payload {
 				", confirm=" + confirm +
 				", content='" + content + '\'' +
 				", editExistingPage=" + editExistingPage +
-				", files='" + files + '\'' +
 				", message='" + message + '\'' +
 				", searchText='" + searchText + '\'' +
 				", htmlContent='" + htmlContent + '\'' +

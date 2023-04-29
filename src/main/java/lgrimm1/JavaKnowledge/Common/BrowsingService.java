@@ -26,7 +26,6 @@ public class BrowsingService {
 					null,
 					null,
 					null,
-					null,
 					"<all titles>",
 					null,
 					null,
@@ -43,7 +42,6 @@ public class BrowsingService {
 				.toList();
 		Payload payload2 = new Payload(
 				formulas.getTitleList(),
-				null,
 				null,
 				null,
 				null,
@@ -73,7 +71,6 @@ public class BrowsingService {
 					null,
 					null,
 					null,
-					null,
 					"<all titles>",
 					null,
 					null,
@@ -86,7 +83,6 @@ public class BrowsingService {
 		if (optionalTitleEntity.isEmpty()) {
 			Payload payload2 = new Payload(
 					formulas.getTitleList(),
-					null,
 					null,
 					null,
 					null,
@@ -106,7 +102,6 @@ public class BrowsingService {
 					null,
 					null,
 					null,
-					null,
 					"<all titles>",
 					null,
 					null,
@@ -116,7 +111,6 @@ public class BrowsingService {
 		}
 		Payload payload2 = new Payload(
 				formulas.getTitlePage(),
-				null,
 				null,
 				null,
 				null,

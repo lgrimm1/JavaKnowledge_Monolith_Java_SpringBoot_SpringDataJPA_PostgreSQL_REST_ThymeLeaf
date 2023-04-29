@@ -64,7 +64,6 @@ class CommonServiceGenerateHtmlTest {
 				false,
 				null,
 				null,
-				"",
 				"PLEASE CONFIRM GENERATING PAGES.",
 				null,
 				null,
@@ -83,7 +82,6 @@ class CommonServiceGenerateHtmlTest {
 	@Test
 	void generateHtml_NullConfirm() {
 		List<String> receivedTitles = List.of("Title 1");
-		String files = "";
 		Boolean confirm = null;
 		String message = "message text";
 		Payload receivedPayload = new Payload(
@@ -91,7 +89,6 @@ class CommonServiceGenerateHtmlTest {
 				confirm,
 				null,
 				null,
-				files,
 				message,
 				null,
 				null,
@@ -108,7 +105,6 @@ class CommonServiceGenerateHtmlTest {
 				false,
 				null,
 				null,
-				"",
 				"PLEASE CONFIRM GENERATING PAGES.",
 				null,
 				null,
@@ -127,7 +123,6 @@ class CommonServiceGenerateHtmlTest {
 	@Test
 	void generateHtml_NotConfirmed() {
 		List<String> receivedTitles = List.of("Title 1");
-		String files = "";
 		Boolean confirm = false;
 		String message = "message text";
 		Payload receivedPayload = new Payload(
@@ -135,7 +130,6 @@ class CommonServiceGenerateHtmlTest {
 				confirm,
 				null,
 				null,
-				files,
 				message,
 				null,
 				null,
@@ -152,7 +146,6 @@ class CommonServiceGenerateHtmlTest {
 				false,
 				null,
 				null,
-				"",
 				"PLEASE CONFIRM GENERATING PAGES.",
 				null,
 				null,
@@ -171,7 +164,6 @@ class CommonServiceGenerateHtmlTest {
 	@Test
 	void generateHtml_Confirmed() {
 		List<String> receivedTitles = List.of("Title 1");
-		String files = "";
 		Boolean confirm = true;
 		String message = "message text";
 		Payload receivedPayload = new Payload(
@@ -179,7 +171,6 @@ class CommonServiceGenerateHtmlTest {
 				confirm,
 				null,
 				null,
-				files,
 				message,
 				null,
 				null,
@@ -199,7 +190,6 @@ class CommonServiceGenerateHtmlTest {
 				false,
 				null,
 				null,
-				"",
 				"12 PAGES IN 24 SECONDS HAS BEEN PROCESSED.",
 				null,
 				null,
