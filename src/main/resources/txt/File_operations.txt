@@ -86,7 +86,7 @@ import java.nio.file.Paths;
 import java.nio.file.Files;
 import java.io.IOException;
 ...
-Path path = Paths.get("./uploads"); //the directory will open from project root, on the same level with /scr and /target
+Path path = Paths.get("./upload"); //the directory will open from project root, on the same level with /scr and /target
 try {
     Files.createDirectories(root);
 }

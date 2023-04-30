@@ -45,6 +45,7 @@ class className2 {
     //process className1.variableName
     //invoke className1.methodName()
 }
+END OF EXAMPLE
 
 EXAMPLE FOR ACCESSIBILITY WITH STATIC KEYWORD:
 class className1{
@@ -55,6 +56,7 @@ class className2 {
     //process className1.variableName
     //invoke className1.methodName()
 }
+END OF EXAMPLE
 
 =================================================================================
 3. FINAL
@@ -76,6 +78,7 @@ EXAMPLE FOR FINAL VARIABLES:
 private final int AGE = 3;
 private final String ALPHABET = "abc";
 private final ArrayList<String> PERSONS; //can add/remove/set elements later
+END OF EXAMPLE
 
 3.2. FINAL METHODS
 ---------------------------------------------------------------------------------
@@ -88,6 +91,7 @@ class className1 {
 class className2 extends className1 {
     final returnType methodName(...) {...} //compile-time error
 }
+END OF EXAMPLE
 
 3.3. FINAL CLASSES
 ---------------------------------------------------------------------------------

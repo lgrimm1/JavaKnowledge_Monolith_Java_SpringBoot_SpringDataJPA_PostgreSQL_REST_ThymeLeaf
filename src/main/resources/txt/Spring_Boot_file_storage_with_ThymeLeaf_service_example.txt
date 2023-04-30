@@ -25,7 +25,7 @@ public class FileInFolderService {
 	@Autowired
 	public FileInFolderService(FileInFolderRepository repository) {
 		this.repository = repository;
-		if (!repository.init("." + File.separator + "uploads", false)) {
+		if (!repository.init("." + File.separator + "upload", false)) {
 			throw new RuntimeException("Could not initialize the file storage!");
 		}
 	}

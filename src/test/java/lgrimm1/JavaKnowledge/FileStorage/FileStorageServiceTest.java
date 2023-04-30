@@ -30,7 +30,7 @@ class FileStorageServiceTest {
 	@BeforeEach
 	void setUp() {
 		repository = Mockito.mock(FileStorageRepository.class);
-		when(repository.init("." + File.separator + "uploads", true))
+		when(repository.init("." + File.separator + "upload", true))
 				.thenReturn(true);
 		titleRepository = Mockito.mock(TitleRepository.class);
 		formulas = Mockito.mock(Formulas.class);
@@ -54,7 +54,7 @@ class FileStorageServiceTest {
 
 	@Test
 	void init_Fail() {
-		String root = "." + File.separator + "uploads";
+		String root = "." + File.separator + "upload";
 		when(repository.init(root, false))
 				.thenReturn(false);
 		when(repository.init(root, true))
@@ -66,7 +66,7 @@ class FileStorageServiceTest {
 
 	@Test
 	void init_Success() {
-		String root = "." + File.separator + "uploads";
+		String root = "." + File.separator + "upload";
 		when(repository.init(root, false))
 				.thenReturn(true);
 		when(repository.init(root, true))

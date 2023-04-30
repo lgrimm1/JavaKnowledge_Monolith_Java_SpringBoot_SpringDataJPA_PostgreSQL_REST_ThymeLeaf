@@ -25,7 +25,7 @@ public class FileStorageService {
 		this.titleRepository = titleRepository;
 		this.formulas = formulas;
 		this.processRecords = processRecords;
-		if (!repository.init("." + File.separator + "uploads", true)) {
+		if (!repository.init("." + File.separator + "upload", true)) {
 			throw new RuntimeException("Could not initialize the file storage!");
 		}
 	}

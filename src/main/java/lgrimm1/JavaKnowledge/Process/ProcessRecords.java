@@ -125,7 +125,10 @@ public class ProcessRecords {
 							htmlRepository.deleteById(optionalTitleEntity.get().getHtmlId());
 							titleRepository.deleteById(optionalTitleEntity.get().getId());
 						}
-						TxtEntity txtEntity = txtRepository.save(new TxtEntity(this.listToString(txt.subList(3, txt.size()))));
+						String content = this.listToString(txt.subList(3, txt.size()))
+								.replaceAll("\r\n", "\n")
+								.replaceAll("\r", "\n");
+						TxtEntity txtEntity = txtRepository.save(new TxtEntity(content));
 						HtmlEntity htmlEntity = htmlRepository.save(new HtmlEntity(new ArrayList<>(), new ArrayList<>()));
 						titleRepository.save(new TitleEntity(
 								title,

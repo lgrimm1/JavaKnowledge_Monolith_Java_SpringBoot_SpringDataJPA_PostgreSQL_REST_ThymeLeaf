@@ -72,8 +72,10 @@ public class FileStorageRepository {
 		try {
 			return Files
 					.walk(this.storageRootFolder, 1)
-					.filter(path -> !path.equals(this.storageRootFolder))
+					.filter(path -> !path.equals(this.storageRootFolder));
+/*
 					.map(this.storageRootFolder::relativize);
+*/
 		}
 		catch (Exception e) {
 			return Stream.empty();

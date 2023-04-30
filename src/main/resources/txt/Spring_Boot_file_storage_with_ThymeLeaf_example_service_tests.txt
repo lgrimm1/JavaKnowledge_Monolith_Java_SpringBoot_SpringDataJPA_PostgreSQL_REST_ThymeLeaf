@@ -41,7 +41,7 @@ class FileInDatabaseServiceTest {
 	void setUp() {
         //in-folder:
 		repository = Mockito.mock(FileInFolderRepository.class);
-		when(repository.init("." + File.separator + "uploads", false))
+		when(repository.init("." + File.separator + "upload", false))
 				.thenReturn(true);
 		service = new FileInFolderService(repository);
 		//in-database:
@@ -77,7 +77,7 @@ class FileInDatabaseServiceTest {
     //in-folder method:
 	@Test
 	void init_Fail() {
-		String root = "." + File.separator + "uploads";
+		String root = "." + File.separator + "upload";
 		when(repository.init(root, false))
 				.thenReturn(false);
 		when(repository.init(root, true))
@@ -90,7 +90,7 @@ class FileInDatabaseServiceTest {
     //in-folder method:
 	@Test
 	void init_Success() {
-		String root = "." + File.separator + "uploads";
+		String root = "." + File.separator + "upload";
 		when(repository.init(root, false))
 				.thenReturn(true);
 		when(repository.init(root, true))
