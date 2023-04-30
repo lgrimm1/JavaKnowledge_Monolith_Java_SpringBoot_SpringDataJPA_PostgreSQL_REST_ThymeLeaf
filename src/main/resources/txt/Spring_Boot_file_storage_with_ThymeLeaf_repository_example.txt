@@ -10,6 +10,7 @@ SPRING BOOT FILE STORAGE WITH THYMELEAF REPOSITORY EXAMPLE
 The entity is a file itself, as it is. That said, the repository must represent all functions needed for managing such storage.
 On psychical level, the storage will be a ./upload folder under the project root, all files will be stored on the same level.
 Filenames must be unique. The storage does not let overwriting files. The find...() methods return filename(s), the get...() method(s) the link(s) representing files.
+Please note, in case the stored files should be processed by accessing them e.g. via File class, consider creating a new findAll...() method identical to the original but without relativizing paths, or deleting the correspondent Stream sub-method from findAll() but only when this method is not needed otherwise.
 
 EXAMPLE FOR IN-FOLDER REPOSITORY CLASS:
 import org.springframework.core.io.*;
