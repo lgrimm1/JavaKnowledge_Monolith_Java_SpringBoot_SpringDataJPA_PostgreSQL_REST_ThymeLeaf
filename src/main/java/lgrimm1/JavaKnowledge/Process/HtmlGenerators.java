@@ -161,7 +161,7 @@ public class HtmlGenerators {
 		);
 	}
 
-	public String changeToHtmlCharsInLine(String line, Formulas formulas) {
+	private String changeToHtmlCharsInLine(String line, Formulas formulas) {
 		return line
 				.replaceAll("<", "&lt;")
 				.replaceAll("\t", formulas.getTabInHtml())

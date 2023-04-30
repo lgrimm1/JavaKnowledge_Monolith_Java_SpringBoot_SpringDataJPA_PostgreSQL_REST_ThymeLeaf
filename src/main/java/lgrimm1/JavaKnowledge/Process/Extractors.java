@@ -13,6 +13,7 @@ import java.util.*;
  * @see #extractExample(List, Formulas, int)
  * @see #extractReference(String, Formulas, TitleRepository)
  * @see #extractBulletedList(List, Formulas)
+ * @see #changeToHtmlCharsInLine(String, Formulas)
  */
 @Component
 public class Extractors {
@@ -140,16 +141,27 @@ public class Extractors {
 
 	public List<String> extractBulletedList(List<String> bulletedListText, Formulas formulas) {
 		List<String> bulletedListInHtml = new ArrayList<>();
+		String effectiveLine;
 		bulletedListInHtml.add(formulas.getTabInSpaces() + "<ol>");
 		for (String textLine : bulletedListText) {
 			if (textLine.startsWith(formulas.getBulletWithSpaces())) {
-				bulletedListInHtml.add(formulas.getTabInSpaces() + formulas.getTabInSpaces() + "<li>" + textLine.substring(formulas.getBulletWithSpaces().length()) + "</li>");
+				effectiveLine = changeToHtmlCharsInLine(textLine.substring(formulas.getBulletWithSpaces().length()), formulas);
+				bulletedListInHtml.add(formulas.getTabInSpaces() + formulas.getTabInSpaces() + "<li>" + effectiveLine + "</li>");
 			}
 			else {
-				bulletedListInHtml.add(formulas.getTabInSpaces() + formulas.getTabInSpaces() + "<li>" + textLine.substring(formulas.getBulletWithTab().length()) + "</li>");
+				effectiveLine = changeToHtmlCharsInLine(textLine.substring(formulas.getBulletWithTab().length()), formulas);
+				bulletedListInHtml.add(formulas.getTabInSpaces() + formulas.getTabInSpaces() + "<li>" + effectiveLine + "</li>");
 			}
 		}
 		bulletedListInHtml.add(formulas.getTabInSpaces() + "</ol>");
 		return bulletedListInHtml;
 	}
+
+	private String changeToHtmlCharsInLine(String line, Formulas formulas) {
+		return line
+				.replaceAll("<", "&lt;")
+				.replaceAll("\t", formulas.getTabInHtml())
+				.replaceAll(formulas.getTabInSpaces(), formulas.getTabInHtml());
+	}
+
 }

@@ -11,6 +11,13 @@ import java.nio.file.*;
 import java.util.*;
 import java.util.stream.*;
 
+/**
+ * @see #FileStorageService(FileStorageRepository, TitleRepository, Formulas, ProcessRecords)
+ * @see #uploadFiles(Payload, List)
+ * @see #findAll()
+ * @see #deleteAllFiles()
+ * @see #handleMaxSizeException(String)
+ */
 @Service
 public class FileStorageService {
 

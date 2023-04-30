@@ -207,4 +207,15 @@ class ExtractorsTest {
 
 		Assertions.assertEquals(expectedHtml, extractors.extractBulletedList(originalText, formulas));
 	}
+
+/*
+	@Test
+	void changeToHtmlCharsInLine() {
+		Assertions.assertEquals(
+				"&lt;tag>" + formulas.getTabInHtml() + "text" +
+						formulas.getTabInHtml() + "text>tag2&lt;",
+				extractors.changeToHtmlCharsInLine("<tag>" + formulas.getTabInSpaces() +
+						"text\ttext>tag2<", formulas));
+	}
+*/
 }

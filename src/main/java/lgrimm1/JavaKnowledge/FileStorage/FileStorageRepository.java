@@ -9,6 +9,19 @@ import java.nio.file.*;
 import java.util.*;
 import java.util.stream.*;
 
+/**
+ * @see #init(String, boolean)
+ * @see #getStorageRootFolder()
+ * @see #getByFilename(String)
+ * @see #getAll()
+ * @see #findByFilename(String)
+ * @see #findAll()
+ * @see #save(Multipart)
+ * @see #saveAll(List)
+ * @see #delete(String)
+ * @see #deleteAll()
+ * @see #count()
+ */
 @Repository
 public class FileStorageRepository {
 	private Path storageRootFolder;

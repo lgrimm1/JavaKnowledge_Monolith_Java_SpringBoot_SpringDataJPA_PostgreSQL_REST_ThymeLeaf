@@ -344,15 +344,6 @@ class HtmlGeneratorsTest {
 	}
 
 	@Test
-	void changeToHtmlCharsInLine() {
-		Assertions.assertEquals(
-				"&lt;tag>" + formulas.getTabInHtml() + "text" +
-						formulas.getTabInHtml() + "text>tag2&lt;",
-				htmlGenerators.changeToHtmlCharsInLine("<tag>" + formulas.getTabInSpaces() +
-						"text\ttext>tag2<", formulas));
-	}
-
-	@Test
 	void collectAndReferencingHeaders() {
 		List<String> html = List.of(
 				formulas.getTabInSpaces() + "<p>Text 1</p>",
