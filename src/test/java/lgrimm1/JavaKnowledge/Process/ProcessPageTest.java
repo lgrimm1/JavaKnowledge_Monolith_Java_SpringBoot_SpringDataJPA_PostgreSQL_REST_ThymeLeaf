@@ -24,13 +24,6 @@ class ProcessPageTest {
 				"Line 2 (TXT)"
 		));
 
-/*
-		when(htmlGenerators.changeToHtmlCharsInLine("Line 1 (TXT)", formulas))
-				.thenReturn("Line 1 (TXT, HTML chars)");
-		when(htmlGenerators.changeToHtmlCharsInLine("Line 2 (TXT)", formulas))
-				.thenReturn("Line 2 (TXT, HTML chars)");
-*/
-
 		when(htmlGenerators.generateFirstTags("Title Words", formulas))
 				.thenReturn(new ArrayList<>(List.of(
 						"First tags (HTML)"
@@ -39,7 +32,7 @@ class ProcessPageTest {
 		when(htmlGenerators.generateMainContent(new ArrayList<>(List.of(
 				"Line 1 (TXT)",
 				"Line 2 (TXT)"
-		)), formulas, extractors, titleRepository))
+		)), formulas, extractors))
 				.thenReturn(new MainHtmlContentPayload(
 						new ArrayList<>(List.of(
 								"Main Content (HTML)"

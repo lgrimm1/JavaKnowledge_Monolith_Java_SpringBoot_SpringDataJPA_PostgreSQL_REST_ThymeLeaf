@@ -6,6 +6,7 @@ import lgrimm1.JavaKnowledge.Title.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.*;
 import org.springframework.web.servlet.*;
+
 import java.io.*;
 import java.nio.file.*;
 import java.util.*;
@@ -27,7 +28,10 @@ public class FileStorageService {
 	private final ProcessRecords processRecords;
 
 	@Autowired
-	public FileStorageService(FileStorageRepository repository, TitleRepository titleRepository, Formulas formulas, ProcessRecords processRecords) {
+	public FileStorageService(FileStorageRepository repository,
+							  TitleRepository titleRepository,
+							  Formulas formulas,
+							  ProcessRecords processRecords) {
 		this.repository = repository;
 		this.titleRepository = titleRepository;
 		this.formulas = formulas;
@@ -41,7 +45,11 @@ public class FileStorageService {
 	 * Returns long[] where [0]: original amount of files, [1]: amount of successfully uploaded files.
 	 */
 	public long[] uploadFiles(Payload payload, List<Multipart> files) {
-		if (payload == null || payload.getConfirm() == null || !payload.getConfirm() || files == null || files.size() == 0) {
+		if (payload == null ||
+				payload.getConfirm() == null ||
+				!payload.getConfirm() ||
+				files == null ||
+				files.size() == 0) {
 			return new long[]{0, 0};
 		}
 		files = files.stream()

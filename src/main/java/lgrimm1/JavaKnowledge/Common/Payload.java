@@ -4,7 +4,6 @@ import java.util.*;
 
 public class Payload {
 	public String templateTitle;
-
 	public Boolean confirm;
 	public String content;
 	public Boolean editExistingPage;

@@ -24,7 +24,7 @@ class FileStorageServiceTest {
 	ProcessRecords processRecords;
 	Path path1, path2;
 	Stream<Path> paths, paths2;
-	String filename1, filename2, content1, content2, baseUrl;
+	String filename1, filename2, content1, content2;
 	Multipart file1, file2;
 
 	@BeforeEach

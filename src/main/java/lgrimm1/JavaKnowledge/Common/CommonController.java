@@ -63,7 +63,6 @@ public class CommonController {
 	@PostMapping("/source/edit")
 	public ModelAndView editSourcePage(@ModelAttribute("payload") Payload payload, Model model) {
 		model.asMap().clear();
-//		return commonService.editSourcePage("source", payload.getTitles());
 		return commonService.editSourcePage("source", payload);
 	}
 
@@ -85,7 +84,11 @@ public class CommonController {
 								  Model model) {
 		model.asMap().clear();
 		long[] uploadResults = fileStorageService.uploadFiles(payload, bindMultipartFileArrayToMultipartList(files));
-		ModelAndView finalResults = commonService.importTxt("management", payload, fileStorageService.findAll(), uploadResults);
+		ModelAndView finalResults = commonService.importTxt(
+				"management",
+				payload,
+				fileStorageService.findAll(),
+				uploadResults);
 		fileStorageService.deleteAllFiles();
 		return finalResults;
 	}
@@ -108,13 +111,6 @@ public class CommonController {
 	public ModelAndView savePage(@ModelAttribute("payload") Payload payload, Model model) {
 		model.asMap().clear();
 		return commonService.savePage("source", payload);
-/*
-		return commonService.savePage("source",
-				payload.getTitle(),
-				payload.getFileName(),
-				payload.getContent(),
-				payload.getEditExistingPage());
-*/
 	}
 
 	@ExceptionHandler(MaxUploadSizeExceededException.class)

@@ -1,11 +1,9 @@
 package lgrimm1.JavaKnowledge.Txt;
 
-import lgrimm1.JavaKnowledge.Title.*;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.boot.test.autoconfigure.jdbc.*;
 import org.springframework.boot.test.autoconfigure.orm.jpa.*;
-import org.springframework.transaction.annotation.*;
 
 import java.util.*;
 
@@ -33,16 +31,15 @@ class TxtRepositoryTest {
 
 	@Test
 	void helper_equalsWithoutId() {
-		TxtEntity entity1 = null;
-		TxtEntity entity2 = null;
-		Assertions.assertFalse(this.equalsWithoutId(entity1, entity2));
+		TxtEntity entity1;
+		TxtEntity entity2;
+		Assertions.assertFalse(this.equalsWithoutId(null, null));
 
 		entity1 = new TxtEntity("Line 11\nLine 12\n");
-		Assertions.assertFalse(this.equalsWithoutId(entity1, entity2));
+		Assertions.assertFalse(this.equalsWithoutId(entity1, null));
 
-		entity1 = null;
 		entity2 = new TxtEntity("Line 21\nLine 22\n");
-		Assertions.assertFalse(this.equalsWithoutId(entity1, entity2));
+		Assertions.assertFalse(this.equalsWithoutId(null, entity2));
 
 		entity1 = new TxtEntity("Line 11\nLine 12\n");
 		entity2 = new TxtEntity("Line 21\nLine 22\n");

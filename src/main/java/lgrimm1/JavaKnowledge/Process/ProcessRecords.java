@@ -11,7 +11,6 @@ import java.util.*;
 import java.util.stream.*;
 
 /**
- * Handles database operations.
  * @see #searchBySearchText(String, TitleRepository, TxtRepository)
  * @see #deleteByTitles(List, TitleRepository, TxtRepository, HtmlRepository)
  * @see #getAllTitles(TitleRepository)

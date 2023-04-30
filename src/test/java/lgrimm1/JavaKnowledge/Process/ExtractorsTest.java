@@ -134,31 +134,8 @@ class ExtractorsTest {
 		String line = "REFERENCETitle Text";
 		Assertions.assertEquals(
 				"TABINSPACES" + "<p><i>See: Title Text</i></p>",
-				extractors.extractReference(line, formulas, titleRepository)
+				extractors.extractReference(line, formulas)
 		);
-/*
-		String line = "REFERENCETitle Text";
-
-		when(titleRepository.findByTitle("Title Text"))
-				.thenReturn(Optional.of(new TitleEntity(
-						1L,
-						"Title Text",
-						"title_text",
-						1L,
-						1L
-				)));
-		Assertions.assertEquals(
-				"TABINSPACES" + "<a href=\"title_text.html\">See: Title Text</a></br>",
-				extractors.extractReference(line, formulas, titleRepository)
-		);
-
-		when(titleRepository.findByTitle("Title Text"))
-				.thenReturn(Optional.empty());
-		Assertions.assertEquals(
-				"TABINSPACES" + "See: Title Text</br>",
-				extractors.extractReference(line, formulas, titleRepository)
-		);
-*/
 	}
 
 	@Test
@@ -166,29 +143,8 @@ class ExtractorsTest {
 		String line = "REFERENCETitle TextHEADERSEPARATOR1.2. Header Word";
 		Assertions.assertEquals(
 				"TABINSPACES" + "<p><i>See: Title Text / 1.2. Header Word</i></p>",
-				extractors.extractReference(line, formulas, titleRepository)
+				extractors.extractReference(line, formulas)
 		);
-
-/*
-		when(titleRepository.findByTitle("Title Text"))
-				.thenReturn(Optional.of(new TitleEntity(1L,
-						"Title Text",
-						"title_text",
-						1L,
-						1L
-				)));
-		Assertions.assertEquals(
-				"TABINSPACES" + "<a href=\"title_text.html#1.2. Header Word\">See: Title Text / 1.2. Header Word</a></br>",
-				extractors.extractReference(line, formulas, titleRepository)
-		);
-
-		when(titleRepository.findByTitle("Title Text"))
-				.thenReturn(Optional.empty());
-		Assertions.assertEquals(
-				"TABINSPACES" + "See: Title Text / 1.2. Header Word</br>",
-				extractors.extractReference(line, formulas, titleRepository)
-		);
-*/
 	}
 
 	@Test
@@ -207,15 +163,4 @@ class ExtractorsTest {
 
 		Assertions.assertEquals(expectedHtml, extractors.extractBulletedList(originalText, formulas));
 	}
-
-/*
-	@Test
-	void changeToHtmlCharsInLine() {
-		Assertions.assertEquals(
-				"&lt;tag>" + formulas.getTabInHtml() + "text" +
-						formulas.getTabInHtml() + "text>tag2&lt;",
-				extractors.changeToHtmlCharsInLine("<tag>" + formulas.getTabInSpaces() +
-						"text\ttext>tag2<", formulas));
-	}
-*/
 }

@@ -1,6 +1,5 @@
 package lgrimm1.JavaKnowledge.Common;
 
-import lgrimm1.JavaKnowledge.FileStorage.*;
 import lgrimm1.JavaKnowledge.Html.*;
 import lgrimm1.JavaKnowledge.Process.*;
 import lgrimm1.JavaKnowledge.Title.*;
@@ -9,9 +8,7 @@ import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.*;
 import org.springframework.web.servlet.*;
 
-import java.io.*;
 import java.nio.file.*;
-import java.util.*;
 import java.util.stream.*;
 
 @Service
@@ -166,6 +163,3 @@ public class CommonService {
 				formulas);
 	}
 }
-
-//TODO check all Stream operations for being parallel and its necessity.
-//TODO exportTxt()

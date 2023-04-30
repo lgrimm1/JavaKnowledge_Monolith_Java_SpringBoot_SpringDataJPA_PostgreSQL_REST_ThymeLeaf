@@ -1,13 +1,11 @@
 package lgrimm1.JavaKnowledge.Process;
 
-import lgrimm1.JavaKnowledge.Title.*;
 import org.springframework.stereotype.*;
 
 import java.util.*;
 
 /**
- * Generates elements of HTML pages.
- * @see #generateMainContent(List, Formulas, Extractors, TitleRepository)
+ * @see #generateMainContent(List, Formulas, Extractors)
  * @see #generateFirstTags(String, Formulas)
  * @see #generateLastTags(Formulas)
  * @see #changeToHtmlCharsInLine(String, Formulas)
@@ -22,8 +20,7 @@ public class HtmlGenerators {
 	 */
 	public MainHtmlContentPayload generateMainContent(List<String> text,
 													  Formulas formulas,
-													  Extractors extractors,
-													  TitleRepository titleRepository) {
+													  Extractors extractors) {
 		List<String> html = new ArrayList<>();
 		List<String> titles = new ArrayList<>();
 		int exampleCounter = 0;
@@ -74,7 +71,7 @@ public class HtmlGenerators {
 
 			//reference
 			else if ((text.get(textIndex).startsWith(formulas.getReference()))) {
-				html.add(extractors.extractReference(text.get(textIndex), formulas, titleRepository));
+				html.add(extractors.extractReference(text.get(textIndex), formulas));
 				titles.add(text.get(textIndex).substring(formulas.getReference().length()));
 				textIndex++;
 			}
@@ -85,20 +82,14 @@ public class HtmlGenerators {
 			}
 
 			//bulleted list
-			else if (text.get(textIndex).startsWith(formulas.getBulletWithSpaces()) || text.get(textIndex).startsWith(formulas.getBulletWithTab())) {
+			else if (text.get(textIndex).startsWith(formulas.getBulletWithSpaces()) ||
+					text.get(textIndex).startsWith(formulas.getBulletWithTab())) {
 				int textIndex2 = textIndex + 1;
 				while (textIndex2 < text.size() && (
 						text.get(textIndex2).startsWith(formulas.getBulletWithSpaces()) ||
 								text.get(textIndex2).startsWith(formulas.getBulletWithTab()))) {
 					textIndex2++;
 				}
-/*
-				List<String> textWithHtmlCharacters = new ArrayList<>();
-				for (String bulletedLine : text.subList(textIndex, textIndex2)) {
-						textWithHtmlCharacters.add(changeToHtmlCharsInLine(bulletedLine, formulas));
-				}
-				html.addAll(extractors.extractBulletedList(textWithHtmlCharacters, formulas));
-*/
 				html.addAll(extractors.extractBulletedList(text.subList(textIndex, textIndex2), formulas));
 				textIndex = textIndex2;
 			}
@@ -119,22 +110,7 @@ public class HtmlGenerators {
 	}
 
 	public List<String> generateFirstTags(String title, Formulas formulas) {
-		return new ArrayList<String>(List.of(
-/*
-				"<!DOCTYPE html>",
-				"<html lang=\"en\">",
-				"<head>",
-				formulas.getTabInSpaces() + "<title>" + title + "</title>",
-				formulas.getTabInSpaces() + "<meta charset=\"UTF-8\">",
-				formulas.getTabInSpaces() + "<link rel=\"icon\" type=\"image/x-icon\" th:href=\"@{/images/favicon.ico}\" href=\"/images/favicon.ico\">",
-				formulas.getTabInSpaces() + "<link rel=\"preconnect\" href=\"https://fonts.googleapis.com\">",
-				formulas.getTabInSpaces() + "<link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin>",
-    			formulas.getTabInSpaces() + "<link href=\"https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap\" rel=\"stylesheet\">",
-				formulas.getTabInSpaces() + "<link rel=\"stylesheet\" th:href=\"@{/styles/desktop.css}\" href=\"/styles/desktop.css\">",
-				"</head>",
-				"<body>",
-				formulas.getTabInSpaces() + "<a name=\"top\"></a>",
-*/
+		return new ArrayList<>(List.of(
 				formulas.getTabInSpaces() + "<i>" + formulas.getVersions() + "</i><br>",
 				formulas.getTabInSpaces() + "<h1>" + title + "</h1>"
 		));
@@ -144,20 +120,6 @@ public class HtmlGenerators {
 		return List.of(
 				formulas.getTabInSpaces() + "<br>",
 				formulas.getTabInSpaces() + "<a href=\"#top\"><i>Back to top of page</i></a><br>"
-/*
-				formulas.getTabInSpaces() + "<script>",
-				formulas.generateTabInSpaces(2) + "function content_to_clipboard(element) {",
-				formulas.generateTabInSpaces(3) + "element.select();",
-				formulas.generateTabInSpaces(3) + "document.execCommand('copy');",
-				formulas.generateTabInSpaces(2) + "}",
-				formulas.generateTabInSpaces(2) + "function element_to_full_size(element) {",
-				formulas.generateTabInSpaces(3) + "element.style.height = \"\";",
-				formulas.generateTabInSpaces(3) + "element.style.height = element.scrollHeight + \"px\";",
-				formulas.generateTabInSpaces(2) + "}",
-				formulas.getTabInSpaces() + "</script>"
-				"</body>",
-				"</html>"
-*/
 		);
 	}
 

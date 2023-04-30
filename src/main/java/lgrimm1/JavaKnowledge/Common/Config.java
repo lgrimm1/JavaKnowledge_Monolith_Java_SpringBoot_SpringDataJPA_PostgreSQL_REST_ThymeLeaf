@@ -1,7 +1,6 @@
 package lgrimm1.JavaKnowledge.Common;
 
 import lgrimm1.JavaKnowledge.Html.*;
-import lgrimm1.JavaKnowledge.Process.*;
 import lgrimm1.JavaKnowledge.Title.*;
 import lgrimm1.JavaKnowledge.Txt.*;
 import org.springframework.boot.*;
@@ -15,9 +14,21 @@ public class Config {
 	@Bean
 	CommandLineRunner titleCommandLineRunner(TitleRepository repository) {
 		return args -> {
-			TitleEntity entity1 = new TitleEntity("SPRING THYMELEAF", "spring_thymeleaf", 1L, 1L);
-			TitleEntity entity2 = new TitleEntity("SPRING THYMELEAF EXAMPLES", "spring_thymeleaf_examples", 2L, 2L);
-			TitleEntity entity3 = new TitleEntity("CSS", "css", 3L, 3L);
+			TitleEntity entity1 = new TitleEntity(
+					"SPRING THYMELEAF",
+					"spring_thymeleaf",
+					1L,
+					1L);
+			TitleEntity entity2 = new TitleEntity(
+					"SPRING THYMELEAF EXAMPLES",
+					"spring_thymeleaf_examples",
+					2L,
+					2L);
+			TitleEntity entity3 = new TitleEntity(
+					"CSS",
+					"css",
+					3L,
+					3L);
 			repository.saveAll(List.of(entity1, entity2, entity3));
 		};
 	}

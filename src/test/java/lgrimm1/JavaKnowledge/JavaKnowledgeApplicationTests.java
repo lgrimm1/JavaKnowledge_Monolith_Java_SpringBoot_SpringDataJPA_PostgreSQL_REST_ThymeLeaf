@@ -1,10 +1,9 @@
 package lgrimm1.JavaKnowledge;
 
 import lgrimm1.JavaKnowledge.Common.*;
-import lgrimm1.JavaKnowledge.Html.*;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.*;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.*;
 
 @SpringBootTest
 class JavaKnowledgeApplicationTests {
@@ -20,5 +19,4 @@ class JavaKnowledgeApplicationTests {
 	void contextLoads() {
 		Assertions.assertNotNull(commonController);
 	}
-
 }

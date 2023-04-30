@@ -1,6 +1,5 @@
 package lgrimm1.JavaKnowledge.Common;
 
-import lgrimm1.JavaKnowledge.FileStorage.*;
 import lgrimm1.JavaKnowledge.Html.*;
 import lgrimm1.JavaKnowledge.Process.*;
 import lgrimm1.JavaKnowledge.Title.*;
@@ -19,7 +18,6 @@ class CommonServiceAddFormulaTest {
 	TitleRepository titleRepository;
 	TxtRepository txtRepository;
 	HtmlRepository htmlRepository;
-	FileStorageRepository fileStorageRepository;
 	Formulas formulas;
 	ProcessRecords processRecords;
 	FileOperations fileOperations;
@@ -55,7 +53,6 @@ class CommonServiceAddFormulaTest {
 
 	@Test
 	void addFormula_NullFormulaName() {
-		String formulaName = null;
 		String title = "Title";
 		String originalContent = "Line1\nLine2\n";
 		Boolean editExistingPage = true;
@@ -72,7 +69,7 @@ class CommonServiceAddFormulaTest {
 				null
 		);
 
-		when(formulas.getFormula(formulaName))
+		when(formulas.getFormula(null))
 				.thenReturn(new ArrayList<>());
 
 		List<String> originalContentList = new ArrayList<>();
@@ -98,7 +95,7 @@ class CommonServiceAddFormulaTest {
 		Map<String, Object> model = new HashMap<>();
 		model.put("payload", expectedPayload);
 
-		ModelAndView modelAndView = commonService.addFormula("source", formulaName, receivedPayload);
+		ModelAndView modelAndView = commonService.addFormula("source", null, receivedPayload);
 
 		ModelAndViewAssert.assertViewName(modelAndView, "source");
 		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
@@ -209,12 +206,10 @@ class CommonServiceAddFormulaTest {
 	@Test
 	void addFormula_NullPayload() {
 		String formulaName = "formula name";
-		Payload receivedPayload = null;
 
 		String title = "";
 		String content = "";
 		Boolean editExistingPage = false;
-		String message = "";
 		Payload expectedPayload = new Payload(
 				formulas.getTitleSource(),
 				null,
@@ -229,7 +224,7 @@ class CommonServiceAddFormulaTest {
 		Map<String, Object> model = new HashMap<>();
 		model.put("payload", expectedPayload);
 
-		ModelAndView modelAndView = commonService.addFormula("source", formulaName, receivedPayload);
+		ModelAndView modelAndView = commonService.addFormula("source", formulaName, null);
 
 		ModelAndViewAssert.assertViewName(modelAndView, "source");
 		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
@@ -238,7 +233,6 @@ class CommonServiceAddFormulaTest {
 	@Test
 	void addFormula_NullTitle() {
 		String formulaName = "formula name";
-		String title = null;
 		String originalContent = "Line1\nLine2\n";
 		Boolean editExistingPage = true;
 		String message = "";
@@ -250,7 +244,7 @@ class CommonServiceAddFormulaTest {
 				message,
 				null,
 				null,
-				title,
+				null,
 				null
 		);
 
@@ -355,13 +349,12 @@ class CommonServiceAddFormulaTest {
 	void addFormula_NullContent() {
 		String formulaName = "formula name";
 		String title = "Title";
-		String originalContent = null;
 		Boolean editExistingPage = true;
 		String message = "";
 		Payload receivedPayload = new Payload(
 				formulas.getTitleSource(),
 				null,
-				originalContent,
+				null,
 				editExistingPage,
 				message,
 				null,
@@ -378,19 +371,18 @@ class CommonServiceAddFormulaTest {
 				.thenReturn(formulaList);
 
 		List<String> originalContentList = new ArrayList<>();
-		when(processRecords.stringToList(originalContent))
+		when(processRecords.stringToList(null))
 				.thenReturn(originalContentList);
 
 		List<String> newContentList = new ArrayList<>(originalContentList);
 		newContentList.addAll(formulaList);
-		String newContent = formula;
 		when(processRecords.listToString(newContentList))
-				.thenReturn(newContent);
+				.thenReturn(formula);
 
 		Payload expectedPayload = new Payload(
 				formulas.getTitleSource(),
 				null,
-				newContent,
+				formula,
 				true,
 				"FORMULA WAS APPENDED.",
 				null,

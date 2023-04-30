@@ -1,20 +1,17 @@
 package lgrimm1.JavaKnowledge.Common;
 
-import lgrimm1.JavaKnowledge.FileStorage.*;
 import lgrimm1.JavaKnowledge.Html.*;
 import lgrimm1.JavaKnowledge.Process.*;
 import lgrimm1.JavaKnowledge.Title.*;
 import lgrimm1.JavaKnowledge.Txt.*;
-
 import org.junit.jupiter.api.*;
-import org.mockito.Mockito;
+import org.mockito.*;
 import org.springframework.test.web.*;
 import org.springframework.web.servlet.*;
 
-import java.io.*;
 import java.util.*;
 
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 class CommonServiceTest {
 

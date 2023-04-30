@@ -1,6 +1,5 @@
 package lgrimm1.JavaKnowledge.Common;
 
-import lgrimm1.JavaKnowledge.FileStorage.*;
 import lgrimm1.JavaKnowledge.Html.*;
 import lgrimm1.JavaKnowledge.Process.*;
 import lgrimm1.JavaKnowledge.Title.*;
@@ -19,7 +18,6 @@ class CommonServiceSavePageTest {
 	TitleRepository titleRepository;
 	TxtRepository txtRepository;
 	HtmlRepository htmlRepository;
-	FileStorageRepository fileStorageRepository;
 	Formulas formulas;
 	ProcessRecords processRecords;
 	FileOperations fileOperations;
@@ -81,7 +79,6 @@ class CommonServiceSavePageTest {
 		String content = "Line 1\nLine 2\n";
 		boolean editExistingPage = true;
 		String message = "";
-		String title = null;
 		Payload receivedPayload = new Payload(
 				formulas.getTitleSource(),
 				null,
@@ -90,7 +87,7 @@ class CommonServiceSavePageTest {
 				message,
 				null,
 				null,
-				title,
+				null,
 				null
 		);
 
@@ -154,14 +151,13 @@ class CommonServiceSavePageTest {
 
 	@Test
 	void savePage_Edit_NullContent_NonExistent() {
-		String content = null;
 		boolean editExistingPage = true;
 		String message = "";
 		String title = "Title 1";
 		Payload receivedPayload = new Payload(
 				formulas.getTitleSource(),
 				null,
-				content,
+				null,
 				editExistingPage,
 				message,
 				null,
@@ -344,10 +340,6 @@ class CommonServiceSavePageTest {
 
 		when(titleRepository.findByTitle(title))
 				.thenReturn(Optional.empty());
-/*
-		when(processRecords.listToString(content))
-				.thenReturn(stringContent);
-*/
 		when(txtRepository.save(new TxtEntity(content)))
 				.thenReturn(new TxtEntity(13L, content));
 		when(htmlRepository.save(new HtmlEntity(new ArrayList<>(), new ArrayList<>())))

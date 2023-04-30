@@ -5,7 +5,6 @@ import org.springframework.stereotype.*;
 import java.util.*;
 
 /**
- * Carries constants and formulas.
  * @see #getSuperLine()
  * @see #getSubLine()
  * @see #getTabInSpaces()

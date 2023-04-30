@@ -116,9 +116,6 @@ public class BrowsingService {
 				null,
 				null,
 				null,
-/*
-				optionalTitleEntity.get().getFilename() + ".html",
-*/
 				processRecords.listToString(optionalHtmlEntity.get().getContent()),
 				null,
 				optionalHtmlEntity.get().getTitleReferences()

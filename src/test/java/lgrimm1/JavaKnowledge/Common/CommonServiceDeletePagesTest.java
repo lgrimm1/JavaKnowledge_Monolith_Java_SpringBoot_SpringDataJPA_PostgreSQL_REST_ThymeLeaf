@@ -1,6 +1,5 @@
 package lgrimm1.JavaKnowledge.Common;
 
-import lgrimm1.JavaKnowledge.FileStorage.*;
 import lgrimm1.JavaKnowledge.Html.*;
 import lgrimm1.JavaKnowledge.Process.*;
 import lgrimm1.JavaKnowledge.Title.*;
@@ -19,7 +18,6 @@ class CommonServiceDeletePagesTest {
 	TitleRepository titleRepository;
 	TxtRepository txtRepository;
 	HtmlRepository htmlRepository;
-	FileStorageRepository fileStorageRepository;
 	Formulas formulas;
 	ProcessRecords processRecords;
 	FileOperations fileOperations;
@@ -83,7 +81,6 @@ class CommonServiceDeletePagesTest {
 	void deletePages_NullTitles() {
 		Boolean confirm = true;
 		String message = "";
-		List<String> titles = null;
 		Payload receivedPayload = new Payload(
 				formulas.getTitleManagement(),
 				confirm,
@@ -93,7 +90,7 @@ class CommonServiceDeletePagesTest {
 				null,
 				null,
 				"",
-				titles
+				null
 		);
 
 		List<String> expectedTitles = List.of("Title 1", "Title 2");
@@ -196,7 +193,6 @@ class CommonServiceDeletePagesTest {
 		Map<String, Object> model = new HashMap<>();
 		model.put("payload", expectedPayload);
 
-		List<String> requestTitles = List.of("Title 3", "Title 4");
 		ModelAndView modelAndView = commonService.deletePages("management", receivedPayload);
 
 		ModelAndViewAssert.assertViewName(modelAndView, "management");
@@ -205,16 +201,9 @@ class CommonServiceDeletePagesTest {
 
 	@Test
 	void deletePages_WithNoValidTitles() {
-/*
-		List<String> cleanedRequestTitles = new ArrayList<>();
-		when(processRecords.deleteByTitles(cleanedRequestTitles, titleRepository, txtRepository, htmlRepository))
-				.thenReturn(0L);
-*/
-
 		List<String> requestTitles = new ArrayList<>();
 		requestTitles.add(null);
 		requestTitles.add("  ");
-//		requestTitles.addAll(cleanedRequestTitles);
 
 		Boolean confirm = true;
 		String message = "";

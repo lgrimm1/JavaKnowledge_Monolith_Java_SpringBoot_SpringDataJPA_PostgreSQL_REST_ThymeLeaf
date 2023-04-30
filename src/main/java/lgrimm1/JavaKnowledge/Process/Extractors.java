@@ -1,17 +1,15 @@
 package lgrimm1.JavaKnowledge.Process;
 
-import lgrimm1.JavaKnowledge.Title.*;
 import org.springframework.stereotype.*;
 
 import java.util.*;
 
 /**
- * Extractors of special data.
  * @see #extractTitle(List, Formulas)
  * @see #extractTable(List, Formulas)
  * @see #extractCells(String)
  * @see #extractExample(List, Formulas, int)
- * @see #extractReference(String, Formulas, TitleRepository)
+ * @see #extractReference(String, Formulas)
  * @see #extractBulletedList(List, Formulas)
  * @see #changeToHtmlCharsInLine(String, Formulas)
  */
@@ -93,7 +91,8 @@ public class Extractors {
 		exampleInHtml.add(formulas.generateTabInSpaces(3) + "</td>");
 		exampleInHtml.add(formulas.generateTabInSpaces(3) + "<td style=\"width: 15%\">");
 		exampleInHtml.add(formulas.generateTabInSpaces(4) +
-				"<input type=\"button\" value=\"COPY\" class=\"button_full\" onclick=\"content_to_clipboard('example_" + exampleCounter + "')\" />");
+				"<input type=\"button\" value=\"COPY\" class=\"button_full\" onclick=\"content_to_clipboard('example_" +
+				exampleCounter + "')\" />");
 		exampleInHtml.add(formulas.generateTabInSpaces(3) + "</td>");
 		exampleInHtml.add(formulas.generateTabInSpaces(2) + "</tr>");
 		exampleInHtml.add(formulas.getTabInSpaces() + "</table>");
@@ -105,38 +104,11 @@ public class Extractors {
 	 * Extracts reference components from a line.
 	 * The first header separator separates file reference from name reference inside the file, using it is optional.
 	 */
-	public String extractReference(String line, Formulas formulas, TitleRepository titleRepository) {
+	public String extractReference(String line, Formulas formulas) {
 		line = formulas.getTabInSpaces() + "<p><i>See: " + line.substring(formulas.getReference().length()) + "</i></p>";
 		return line.contains(formulas.getHeaderSeparator()) ?
 				line.replace(formulas.getHeaderSeparator(), " / ") :
 				line;
-/*
-		line = line.substring(formulas.getReference().length());
-		String title;
-		String link;
-		String linkText;
-		int posHeader = line.indexOf(formulas.getHeaderSeparator());
-		if (posHeader == -1) { //only page, no header
-			title = line;
-			Optional<TitleEntity> optionalTitleEntity = titleRepository.findByTitle(title);
-			link = optionalTitleEntity
-					.map(titleEntity -> titleEntity.getFilename() + ".html")
-					.orElse("");
-			linkText = "See: " + title;
-		}
-		else { //page with header
-			title = line.substring(0, posHeader);
-			String header = line.substring(posHeader + formulas.getHeaderSeparator().length());
-			Optional<TitleEntity> optionalTitleEntity = titleRepository.findByTitle(title);
-			link = optionalTitleEntity
-					.map(titleEntity -> titleEntity.getFilename() + ".html#" + header)
-					.orElse("");
-			linkText = "See: " + title + " / " + header;
-		}
-		return link.isEmpty() ?
-				formulas.getTabInSpaces() + linkText + "</br>" :
-				formulas.getTabInSpaces() + "<a href=\"" + link + "\">" + linkText + "</a></br>";
-*/
 	}
 
 	public List<String> extractBulletedList(List<String> bulletedListText, Formulas formulas) {
@@ -145,12 +117,22 @@ public class Extractors {
 		bulletedListInHtml.add(formulas.getTabInSpaces() + "<ol>");
 		for (String textLine : bulletedListText) {
 			if (textLine.startsWith(formulas.getBulletWithSpaces())) {
-				effectiveLine = changeToHtmlCharsInLine(textLine.substring(formulas.getBulletWithSpaces().length()), formulas);
-				bulletedListInHtml.add(formulas.getTabInSpaces() + formulas.getTabInSpaces() + "<li>" + effectiveLine + "</li>");
+				effectiveLine = changeToHtmlCharsInLine(textLine.substring(
+						formulas.getBulletWithSpaces().length()),
+						formulas);
+				bulletedListInHtml.add(formulas.getTabInSpaces() +
+						formulas.getTabInSpaces() +
+						"<li>" + effectiveLine +
+						"</li>");
 			}
 			else {
-				effectiveLine = changeToHtmlCharsInLine(textLine.substring(formulas.getBulletWithTab().length()), formulas);
-				bulletedListInHtml.add(formulas.getTabInSpaces() + formulas.getTabInSpaces() + "<li>" + effectiveLine + "</li>");
+				effectiveLine = changeToHtmlCharsInLine(textLine.substring(
+						formulas.getBulletWithTab().length()),
+						formulas);
+				bulletedListInHtml.add(formulas.getTabInSpaces() +
+						formulas.getTabInSpaces() +
+						"<li>" + effectiveLine +
+						"</li>");
 			}
 		}
 		bulletedListInHtml.add(formulas.getTabInSpaces() + "</ol>");
@@ -163,5 +145,4 @@ public class Extractors {
 				.replaceAll("\t", formulas.getTabInHtml())
 				.replaceAll(formulas.getTabInSpaces(), formulas.getTabInHtml());
 	}
-
 }

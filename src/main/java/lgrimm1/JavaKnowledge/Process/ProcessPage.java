@@ -6,7 +6,6 @@ import org.springframework.stereotype.*;
 import java.util.*;
 
 /**
- * Translates a TXT content to an HTML content, forming a knowledge page.
  * @see #processTxt(List, String, TitleRepository, Formulas, Extractors, HtmlGenerators)
  */
 @Component
@@ -23,13 +22,8 @@ public class ProcessPage {
 											 Formulas formulas,
 											 Extractors extractors,
 											 HtmlGenerators htmlGenerators) {
-/*
-		text = text.stream()
-				.map(line -> htmlGenerators.changeToHtmlCharsInLine(line, formulas))
-				.toList();
-*/
 		List<String> html = htmlGenerators.generateFirstTags(title, formulas);
-		MainHtmlContentPayload payload = htmlGenerators.generateMainContent(text, formulas, extractors, titleRepository);
+		MainHtmlContentPayload payload = htmlGenerators.generateMainContent(text, formulas, extractors);
 		html.addAll(payload.content());
 		html.addAll(htmlGenerators.generateLastTags(formulas));
 		html = htmlGenerators.collectAndReferenceHeaders(html, formulas);

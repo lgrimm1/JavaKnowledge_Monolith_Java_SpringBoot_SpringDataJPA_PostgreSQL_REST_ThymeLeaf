@@ -1,6 +1,5 @@
 package lgrimm1.JavaKnowledge.Common;
 
-import lgrimm1.JavaKnowledge.FileStorage.*;
 import lgrimm1.JavaKnowledge.Html.*;
 import lgrimm1.JavaKnowledge.Process.*;
 import lgrimm1.JavaKnowledge.Title.*;
@@ -18,7 +17,6 @@ class CommonServiceEditSourcePageTest {
 	TitleRepository titleRepository;
 	TxtRepository txtRepository;
 	HtmlRepository htmlRepository;
-	FileStorageRepository fileStorageRepository;
 	Formulas formulas;
 	ProcessRecords processRecords;
 	FileOperations fileOperations;
@@ -350,13 +348,8 @@ class CommonServiceEditSourcePageTest {
 				.thenReturn(Optional.of(new TitleEntity(3L, expectedTitle, expectedFilename, 2L, 4L)));
 
 		String content = "Line 1\nLine 2\n";
-//		List<String> listContent = List.of("Line 1", "Line 2");
 		when(txtRepository.findById(2L))
 				.thenReturn(Optional.of(new TxtEntity(2L, content)));
-/*
-		when(processRecords.stringToList(content))
-				.thenReturn(listContent);
-*/
 
 		Payload expectedPayload = new Payload(
 				formulas.getTitleSource(),

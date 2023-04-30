@@ -4,6 +4,7 @@ import lgrimm1.JavaKnowledge.Common.*;
 import org.springframework.core.io.*;
 import org.springframework.stereotype.*;
 import org.springframework.util.*;
+
 import java.io.*;
 import java.nio.file.*;
 import java.util.*;
@@ -86,9 +87,6 @@ public class FileStorageRepository {
 			return Files
 					.walk(this.storageRootFolder, 1)
 					.filter(path -> !path.equals(this.storageRootFolder));
-/*
-					.map(this.storageRootFolder::relativize);
-*/
 		}
 		catch (Exception e) {
 			return Stream.empty();

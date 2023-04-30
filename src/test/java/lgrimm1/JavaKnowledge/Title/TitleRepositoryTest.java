@@ -1,11 +1,9 @@
 package lgrimm1.JavaKnowledge.Title;
 
-import lgrimm1.JavaKnowledge.Txt.*;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.boot.test.autoconfigure.jdbc.*;
 import org.springframework.boot.test.autoconfigure.orm.jpa.*;
-import org.springframework.transaction.annotation.*;
 
 import java.util.*;
 
@@ -36,16 +34,15 @@ class TitleRepositoryTest {
 
 	@Test
 	void helper_equalsWithoutId() {
-		TitleEntity entity1 = null;
-		TitleEntity entity2 = null;
-		Assertions.assertFalse(this.equalsWithoutId(entity1, entity2));
+		TitleEntity entity1;
+		TitleEntity entity2;
+		Assertions.assertFalse(this.equalsWithoutId(null, null));
 
 		entity1 = new TitleEntity("Title 1", "title_1", 1L, 11L);
-		Assertions.assertFalse(this.equalsWithoutId(entity1, entity2));
+		Assertions.assertFalse(this.equalsWithoutId(entity1, null));
 
-		entity1 = null;
 		entity2 = new TitleEntity("Title 2", "title_2", 2L, 22L);
-		Assertions.assertFalse(this.equalsWithoutId(entity1, entity2));
+		Assertions.assertFalse(this.equalsWithoutId(null, entity2));
 
 		entity1 = new TitleEntity("Title 1", "title_1", 1L, 11L);
 		entity2 = new TitleEntity("Title 2", "title_2", 2L, 22L);

@@ -70,8 +70,8 @@ class HtmlGeneratorsTest {
 		MainHtmlContentPayload actualPayload = htmlGenerators.generateMainContent(
 				txtContent,
 				formulas,
-				extractors,
-				titleRepository);
+				extractors
+		);
 		Assertions.assertEquals(expectedHtml, actualPayload.content());
 		Assertions.assertTrue(actualPayload.titles().isEmpty());
 	}
@@ -93,8 +93,8 @@ class HtmlGeneratorsTest {
 		MainHtmlContentPayload actualPayload = htmlGenerators.generateMainContent(
 				txtContent,
 				formulas,
-				extractors,
-				titleRepository);
+				extractors
+		);
 		Assertions.assertEquals(expectedHtml, actualPayload.content());
 		Assertions.assertTrue(actualPayload.titles().isEmpty());
 	}
@@ -123,8 +123,8 @@ class HtmlGeneratorsTest {
 		MainHtmlContentPayload actualPayload = htmlGenerators.generateMainContent(
 				txtContent,
 				formulas,
-				extractors,
-				titleRepository);
+				extractors
+		);
 		Assertions.assertEquals(expectedHtml, actualPayload.content());
 		Assertions.assertTrue(actualPayload.titles().isEmpty());
 	}
@@ -152,8 +152,8 @@ class HtmlGeneratorsTest {
 		MainHtmlContentPayload actualPayload = htmlGenerators.generateMainContent(
 				txtContent,
 				formulas,
-				extractors,
-				titleRepository);
+				extractors
+		);
 		Assertions.assertEquals(expectedHtml, actualPayload.content());
 		Assertions.assertTrue(actualPayload.titles().isEmpty());
 	}
@@ -180,8 +180,8 @@ class HtmlGeneratorsTest {
 		MainHtmlContentPayload actualPayload = htmlGenerators.generateMainContent(
 				txtContent,
 				formulas,
-				extractors,
-				titleRepository);
+				extractors
+		);
 		Assertions.assertEquals(expectedHtml, actualPayload.content());
 		Assertions.assertTrue(actualPayload.titles().isEmpty());
 	}
@@ -193,9 +193,9 @@ class HtmlGeneratorsTest {
 				"REFERENCETitle Word 2;1.2. Header header"
 		);
 
-		when(extractors.extractReference("REFERENCETitle Word 1", formulas, titleRepository))
+		when(extractors.extractReference("REFERENCETitle Word 1", formulas))
 				.thenReturn("Existing reference 1");
-		when(extractors.extractReference("REFERENCETitle Word 2;1.2. Header header", formulas, titleRepository))
+		when(extractors.extractReference("REFERENCETitle Word 2;1.2. Header header", formulas))
 				.thenReturn("Existing reference 2");
 
 		List<String> expectedHtml = List.of(
@@ -210,8 +210,8 @@ class HtmlGeneratorsTest {
 		MainHtmlContentPayload actualPayload = htmlGenerators.generateMainContent(
 				txtContent,
 				formulas,
-				extractors,
-				titleRepository);
+				extractors
+		);
 		Assertions.assertEquals(expectedHtml, actualPayload.content());
 		Assertions.assertEquals(expectedTitles, actualPayload.titles());
 	}
@@ -227,8 +227,8 @@ class HtmlGeneratorsTest {
 		MainHtmlContentPayload actualPayload = htmlGenerators.generateMainContent(
 				txtContent,
 				formulas,
-				extractors,
-				titleRepository);
+				extractors
+		);
 		Assertions.assertEquals(expectedHtml, actualPayload.content());
 		Assertions.assertTrue(actualPayload.titles().isEmpty());
 	}
@@ -240,13 +240,6 @@ class HtmlGeneratorsTest {
 				"\t- List item 2",
 				"TABINSPACES- List item 3"
 		);
-/*
-		List<String> txtContentWithHtmlSpaces = List.of(
-				"TABINHTML- List item 1",
-				"TABINHTML- List item 2",
-				"TABINHTML- List item 3"
-		);
-*/
 		when(extractors.extractBulletedList(txtContent, formulas))
 				.thenReturn(List.of(
 						"List"
@@ -258,8 +251,8 @@ class HtmlGeneratorsTest {
 		MainHtmlContentPayload actualPayload = htmlGenerators.generateMainContent(
 				txtContent,
 				formulas,
-				extractors,
-				titleRepository);
+				extractors
+		);
 		Assertions.assertEquals(expectedHtml, actualPayload.content());
 		Assertions.assertTrue(actualPayload.titles().isEmpty());
 	}
@@ -289,8 +282,8 @@ class HtmlGeneratorsTest {
 		MainHtmlContentPayload actualPayload = htmlGenerators.generateMainContent(
 				txtContent,
 				formulas,
-				extractors,
-				titleRepository);
+				extractors
+		);
 		Assertions.assertEquals(expectedHtml, actualPayload.content());
 		Assertions.assertTrue(actualPayload.titles().isEmpty());
 	}
@@ -299,21 +292,6 @@ class HtmlGeneratorsTest {
 	void generateFirstTags() {
 		String title = "TITLE TITLE";
 		List<String> neededFirstTags = List.of(
-/*
-				"<!DOCTYPE html>",
-				"<html lang=\"en\">",
-				"<head>",
-				"TABINSPACES" + "<title>" + title + "</title>",
-				"TABINSPACES" + "<meta charset=\"UTF-8\">",
-				"TABINSPACES" + "<link rel=\"icon\" type=\"image/x-icon\" th:href=\"@{/images/favicon.ico}\" href=\"/images/favicon.ico\">",
-				"TABINSPACES" + "<link rel=\"preconnect\" href=\"https://fonts.googleapis.com\">",
-				"TABINSPACES" + "<link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin>",
-				"TABINSPACES" + "<link href=\"https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap\" rel=\"stylesheet\">",
-				"TABINSPACES" + "<link rel=\"stylesheet\" th:href=\"@{/styles/desktop.css}\" href=\"/styles/desktop.css\">",
-				"</head>",
-				"<body>",
-				"TABINSPACES" + "<a name=\"top\"></a>",
-*/
 				"TABINSPACES" + "<i>VERSIONS" + "</i><br>",
 				"TABINSPACES" + "<h1>" + title + "</h1>"
 		);
@@ -325,20 +303,6 @@ class HtmlGeneratorsTest {
 		List<String> neededLastTags = List.of(
 				"TABINSPACES" + "<br>",
 				"TABINSPACES" + "<a href=\"#top\"><i>Back to top of page</i></a><br>"
-/*
-				"TABINSPACES" + "<script>",
-				"TABINSPACES" + "TABINSPACES" + "function content_to_clipboard(element) {",
-				"TABINSPACES" + "TABINSPACES" + "TABINSPACES" + "element.select();",
-				"TABINSPACES" + "TABINSPACES" + "TABINSPACES" + "document.execCommand('copy');",
-				"TABINSPACES" + "TABINSPACES" + "}",
-				"TABINSPACES" + "TABINSPACES" + "function element_to_full_size(element) {",
-				"TABINSPACES" + "TABINSPACES" + "TABINSPACES" + "element.style.height = \"\";",
-				"TABINSPACES" + "TABINSPACES" + "TABINSPACES" + "element.style.height = element.scrollHeight + \"px\";",
-				"TABINSPACES" + "TABINSPACES" + "}",
-				"TABINSPACES" + "</script>",
-				"</body>",
-				"</html>"
-*/
 		);
 		Assertions.assertEquals(neededLastTags, htmlGenerators.generateLastTags(formulas));
 	}

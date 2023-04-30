@@ -1,6 +1,5 @@
 package lgrimm1.JavaKnowledge.Common;
 
-import lgrimm1.JavaKnowledge.FileStorage.*;
 import lgrimm1.JavaKnowledge.Html.*;
 import lgrimm1.JavaKnowledge.Process.*;
 import lgrimm1.JavaKnowledge.Title.*;
@@ -18,7 +17,6 @@ class CommonServiceRenameSourcePageTest {
 	TitleRepository titleRepository;
 	TxtRepository txtRepository;
 	HtmlRepository htmlRepository;
-	FileStorageRepository fileStorageRepository;
 	Formulas formulas;
 	ProcessRecords processRecords;
 	FileOperations fileOperations;
@@ -294,11 +292,6 @@ class CommonServiceRenameSourcePageTest {
 				receivedTitles
 		);
 
-/*
-		when(titleRepository.findByTitle(receivedTitles.get(0)))
-				.thenReturn(Optional.of(new TitleEntity(3L, "Title 3", "title_3", 2L, 4L)));
-*/
-
 		List<String> titles = List.of("Title 1", "Title 2");
 		when(processRecords.getAllTitles(titleRepository))
 				.thenReturn(titles);
@@ -338,11 +331,6 @@ class CommonServiceRenameSourcePageTest {
 				"  ",
 				receivedTitles
 		);
-
-/*
-		when(titleRepository.findByTitle(receivedTitles.get(0)))
-				.thenReturn(Optional.of(new TitleEntity(3L, "Title 3", "title_3", 2L, 4L)));
-*/
 
 		List<String> titles = List.of("Title 1", "Title 2");
 		when(processRecords.getAllTitles(titleRepository))

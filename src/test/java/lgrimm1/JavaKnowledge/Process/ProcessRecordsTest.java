@@ -6,7 +6,6 @@ import lgrimm1.JavaKnowledge.Txt.*;
 import org.junit.jupiter.api.*;
 import org.mockito.*;
 
-import java.io.*;
 import java.util.*;
 
 import static org.mockito.Mockito.*;
