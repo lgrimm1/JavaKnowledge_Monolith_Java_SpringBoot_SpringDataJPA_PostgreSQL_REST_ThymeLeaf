@@ -37,8 +37,8 @@
                 <fieldset>
                     <legend>&nbsp;Actions on All Sources&nbsp;</legend>
                     <label for="files" title="Press to Select Files" class="custom_file_upload">
-                        <input id="files" type="file" name="files" class="submit_half" accept=".txt" multiple />
-                        BROWSE FILES...
+                        <input id="files" type="file" name="files" class="submit_half" accept=".txt" multiple onchange="changeFilesCaption(this);" />
+                        <span id="files_caption">BROWSE FILES...</span>
                     </label>
                     &nbsp;
                     <label for="confirm" title="Check for Confirmation of Wanted Action">Confirm Action: </label>
@@ -55,5 +55,10 @@
     </table>
     <br>
 </form>
+<script>
+    function changeFilesCaption(element) {
+        document.getElementById("files_caption").innerHTML = element.files.length + ' FILE(S)';
+    };
+</script>
 </body>
 </html>
