@@ -27,7 +27,7 @@
             </td>
             <td style="width: 35%">
                 <fieldset>
-                    <legend>&nbsp;Actions on a Source&nbsp;</legend>
+                    <legend>&nbsp;Actions on Single Source&nbsp;</legend>
                     <input type="submit" value="NEW SOURCE PAGE" title="Press to Begin a New Page" class="submit_half" formaction="/source/new" formmethod="post" />
                     <input type="submit" value="EDIT SOURCE PAGE" title="Press to Continue the Selected Page" class="submit_half" formaction="/source/edit" formmethod="post" /><br>
                     <input type="text" th:field="*{title}" placeholder="Enter a new title..." >
@@ -35,7 +35,7 @@
                 </fieldset>
                 <br>
                 <fieldset>
-                    <legend>&nbsp;Actions on All Sources&nbsp;</legend>
+                    <legend>&nbsp;Actions on Multiple Sources&nbsp;</legend>
                     <label for="files" title="Press to Select Files" class="custom_file_upload">
                         <input id="files" type="file" name="files" class="submit_half" accept=".txt" multiple onchange="changeFilesCaption(this);" />
                         <span id="files_caption">BROWSE FILES...</span>
