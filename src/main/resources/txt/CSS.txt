@@ -321,11 +321,11 @@ END OF EXAMPLE
 =================================================================================
 The file-type input style is handled by the specific browser, and presently it is not possible to change that style.
 The file input has the ability to receive focus (tabbing), activate for key press while on focus, opening selection dialog, storing file selection, receive files via drag&drop, showing names of selected files, also lets screen readers to detect it.
-Workaround is to wrap the input into a label and give button-like style to it while hiding (visually or totally) the original input, visit the SPRING BOOT THYMELEAF EXAMPLES page for HTML code examples.
+Workaround is to wrap the input into a label and give button-like style to it while hiding (visually or totally) the original input, visit the SPRING BOOT THYMELEAF EXAMPLES page for HTML code and Javascript examples.
 Total hiding blocks all functionalities except opening the dialog and storing file selection.
 Please note, every solution has pros and cons, choose one based upon the actual task.
 
-EXAMPLE FOR FILE-TYPE INPUT (THYMELEAF):
+EXAMPLE FOR FILE-TYPE INPUT:
 /* hide input totally */
 .label_of_custom_file_input {
     display: inline-block;
