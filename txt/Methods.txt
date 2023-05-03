@@ -155,7 +155,7 @@ In a dynamic (non-static) class it is allowed to declare static methods, these m
 In a class there usually are public methods which can be reached by other classes, and helper methods which calculate inner results for public methods. That said, a helper method is private, and helps to organize the method system and the execution flow better.
 
 EXAMPLE FOR HELPER METHOD:
-class className {
+class ClassName {
     //private fields
 
     private returnType1 helperMethod(...) {...}

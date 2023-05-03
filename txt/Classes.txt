@@ -33,7 +33,7 @@ CLASSES
 =================================================================================
 1. DECLARATION
 =================================================================================
-[access modifiers] class className {
+[access modifiers] class ClassName {
 	//fields
 	//methods
 }
@@ -41,6 +41,8 @@ CLASSES
 Fields: variable declarations.
 Methods: functions with or without passed parameters, with or without return value.
 In a class the execution pointer moves from top to bottom.
+
+Naming convention is that all words within a class name must be started with upper-cased letter, and no special characters nor underscores (_) should be used.
 
 =================================================================================
 2. MAIN (ROOT) CLASS
@@ -60,15 +62,15 @@ With the "this" keyword it is possible to:
 In static or interface content the "this" keyword must not be used.
 
 EXAMPLE FOR THE "THIS" KEYWORD:
-class className {
+class ClassName {
     private int a;
     private int b;
 
-    public className() {
+    public ClassName() {
         this.a = ...; //refers to field
     }
 
-    public className(int n) {
+    public ClassName(int n) {
         this(); //refers to constructor without parameters
         this.b = n; //refers to field
     }
@@ -92,7 +94,7 @@ In cases there is no constructor, the Java invokes a default constructor instead
 There can be more constructors implemented in a class.
 
 Invoking a constructor along with declaring a variable:
-className variableName = new className(...);
+ClassName variableName = new ClassName(...);
 
 EXAMPLE FOR INITIALIZING AN OBJECT:
 Integer a = 2; // for wrapper classes (String is partly excluded) the constructor calling is hidden
@@ -102,9 +104,9 @@ Scanner c = new Scanner(new File(...)); //explicit constructor calling with an e
 The constructor method has to have the same name then its owner class has, and there is no return value (nor void).
 There can be overloaded versions of the constructor as well (with different method signatures).
 
-class className {
+class ClassName {
     //fields
-    public className(...) {...} //constructor
+    public ClassName(...) {...} //constructor
     //other methods
 }
 
@@ -113,12 +115,12 @@ The "this" keyword refers to the class, the "this()" method name refers to the c
 In case the "this()" is called, the caller statement must be the first one in the caller constructor.
 
 EXAMPLE FOR CALLING THIS():
-class className {
+class ClassName {
     //fields
-    public className() { //constructor without arguments
+    public ClassName() { //constructor without arguments
         //basic initialization
     }
-    public className() { //constructor as setter method or specific object creation
+    public ClassName() { //constructor as setter method or specific object creation
         this(); //invokes the basic constructor
         ... //unique statements
     }
@@ -132,10 +134,10 @@ In case the constructor is private in a class, the solution is called singleton 
 It is a common practice for a class, that fields are not accessible from outside the class, instead it is better to introduce getter/setter methods, and instead of setter methods, introduce proper constructors. This technique will protect the field as the constructor/setter methods will let value giving through data check.
 
 EXAMPLE FOR GETTER/SETTER METHODS:
-class className{
+class ClassName{
     private fieldType fieldName; //field
 
-    public className(fieldType fieldName) { //constructor merged with setter
+    public ClassName(fieldType fieldName) { //constructor merged with setter
         if (condition) {
             this.fieldName = fieldName;
         }
@@ -364,28 +366,28 @@ Enum classes can implement interfaces since there is no restriction in Java for 
 
 10.1. USED AS ENUMERATION TYPE
 ---------------------------------------------------------------------------------
-enum enumName {
+enum EnumName {
     CONSTANTNAME1, ..., CONSTANTNAMEX
 }
 class Main {
     ...
-    enumName variableName1 = enumName.CONSTANTNAME1;
-    enumName variableName2 = enumName.CONSTANTNAMEX;
+    EnumName variableName1 = EnumName.CONSTANTNAME1;
+    EnumName variableName2 = EnumName.CONSTANTNAMEX;
     ...
-    if (variableName == enumName.CONSTANTNAME1) {...}
+    if (variableName == EnumName.CONSTANTNAME1) {...}
 }
 
 Every constant has an inner integer identifier, starting with 0, following the defined constant names.
 These values can be accessed by using the constant names. This makes the code more readable, verbal.
-The compiler creates an object for every constant under the enumName class so the access is enumName.CONTANTNAME1 etc.
+The compiler creates an object for every constant under the EnumName class so the access is EnumName.CONTANTNAME1 etc.
 For the enum class, the compiler creates methods automatically for all sub-objects:
 
 int n = variableName1.ordinal(); //the inner index number of variableName1
 n = variableName1.compareTo(variableName2); //returns variableName1.ordinal() - variableName2.ordinal(), distance of constants in indexes
 String s = variableName1.toString(); //CONSTANTNAME1 between quote marks like "CONSTANTNAME1"
 s = variableName1.name(); ////CONSTANTNAME1 between quote marks like "CONSTANTNAME1"
-variableName1 = enumName.valueOf(constantNameAsString); //enumName.CONSTANTNAME1
-enumName[] variableNames = enumName.values(); //CONSTANTNAMEs in order
+variableName1 = EnumName.valueOf(constantNameAsString); //EnumName.CONSTANTNAME1
+EnumName[] variableNames = EnumName.values(); //CONSTANTNAMEs in order
 
 10.2. USED AS ENUMERATION CLASS
 ---------------------------------------------------------------------------------
@@ -415,10 +417,10 @@ For creating constant-value pairs (value can be String but in special cases any 
 By using it, the enumeration will be more verbal.
 In case pairs are needed, although it is a matter of taste, this version is preferred to enumeration class since all pairs can be seen together.
 
-enum enumName {
+enum EnumName {
     CONSTANT1(valueString1), CONSTANT2(valueString2), ...; //pairs
     private final String value; //value container
-    private enumName(String value) { //hidden constructor, can be private or protected
+    private EnumName(String value) { //hidden constructor, can be private or protected
         this.value = value;
     }
     public String getValue() { //getter
@@ -427,7 +429,7 @@ enum enumName {
 }
 class Main {
     ...
-    enumName variableName = enumName.CONSTANT1; //calls the hidden constructor based upon CONSTANT1-valueString1 pair
+    EnumName variableName = EnumName.CONSTANT1; //calls the hidden constructor based upon CONSTANT1-valueString1 pair
     String s = variableName.getValue(); //valueString1
 }
 
@@ -449,7 +451,7 @@ Of course, the automatically created methods will be created for this usage of e
 These methods (except the .name() method) can be overridden.
 Because for all constants will be an object created, must take it into consideration.
 
-enum enumName {
+enum EnumName {
     CONSTANT1 {
         public String toString() {
             return stringValue1;
@@ -471,11 +473,11 @@ By using generics class, the type structure can be designed once, in its instanc
 Collection subclasses use generics at declaration.
 
 EXAMPLE FOR DECLARING GENERICS CLASS:
-class genericClassName<T> { //a class represents T type
+class GenericClassName<T> { //a class represents T type
     //field declaration
     private T data;
     //constructor declaration
-    public genericClassName(T data) { //parameter of T type
+    public GenericClassName(T data) { //parameter of T type
         this.data = data;
     }
     //getter
@@ -487,17 +489,17 @@ class genericClassName<T> { //a class represents T type
 EXAMPLE FOR CREATING INSTANCES OF GENERICS CLASS (DESIGNED IN PREVIOUS EXAMPLE):
 //Integer instance
 int a = 5;
-genericClassName<Integer> genericVariable1 = new genericClassName<>(a); //autoboxing int to Integer, or use with a literal directly
+GenericClassName<Integer> genericVariable1 = new GenericClassName<>(a); //autoboxing int to Integer, or use with a literal directly
 //Double instance
 double b = 5.2;
-genericClassName<Double> genericVariable2 = new genericClassName<>(b); //autoboxing double to Double, or use with a literal directly
+GenericClassName<Double> genericVariable2 = new GenericClassName<>(b); //autoboxing double to Double, or use with a literal directly
 //String instance
 String c = "abc";
-genericClassName<String> genericVariable3 = new genericClassName<>(c); //or use with a literal directly
+GenericClassName<String> genericVariable3 = new GenericClassName<>(c); //or use with a literal directly
 //ArrayList instance 1
 ArrayList<Character> cal = new ArrayList<>();
-genericClassName<ArrayList<Character>> genericVariable4 = new genericClassName<>(cal); //or use with a constructor directly:
-genericClassName<ArrayList<Character>> genericVariable4 = new genericClassName<>(new ArrayList<>());
+GenericClassName<ArrayList<Character>> genericVariable4 = new GenericClassName<>(cal); //or use with a constructor directly:
+GenericClassName<ArrayList<Character>> genericVariable4 = new GenericClassName<>(new ArrayList<>());
 
 EXAMPLE FOR DECLARING A COLLECTION SUBCLASS:
 ArrayList<String> sal = new ArrayList<>(); //derived from ArrayList<T>
@@ -506,7 +508,7 @@ By using <T>, any types except primitive types can be accepted. Narrowing is pos
 Such T is called bounded type.
 
 EXAMPLE FOR DECLARING GENERICS CLASS OF NUMBERS:
-class genericClassName<T extends Number> {...} //a class represents T as subtype of Number
+class GenericClassName<T extends Number> {...} //a class represents T as subtype of Number
 
 Advantages of using generics:
     a. code re-usability
