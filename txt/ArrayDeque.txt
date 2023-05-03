@@ -5,7 +5,7 @@ Implements Queue and Deque.
 Ideal for stack structure.
 All methods of the implemented interfaces are usable.
 
-The methods:
+EXAMPLE FOR ARRAYDEQUE METHODS:
 java.util.ArrayDeque;
 ...
 ArrayDeque<elementType> ad = new ArrayDeque<>();
@@ -39,8 +39,9 @@ size = ad.size(); //number of elements
 a = ad.toArray(); //converts to array
 adclone = ad.clone(); //creates a copy
 ad.clear(); //removes all elements
+END OF EXAMPLE
 
-Iterating:
+EXAMPLE FOR ARRAYDEQUE ITERATING:
 java.util.ArrayDeque;
 import java.util.Iterator;
 ...
@@ -59,8 +60,9 @@ while (diter.hasNext()) {
     element = diter.next();
     //processing element
 }
+END OF EXAMPLE
 
-Using ArrayDeque as a stack (LIFO):
+EXAMPLE FOR USING ARRAYDEQUE AS A STACK (LIFO):
 java.util.ArrayDeque;
 ...
 ArrayDeque<elementType> ad = new ArrayDeque<>();
@@ -69,6 +71,7 @@ elementType element;
 ad.push(element); //adds element to the end of the stack
 element = ad.peek(); //returns the last element
 element = ad.pop(); //returns and removes the last element
+END OF EXAMPLE
 
 Differences between ArrayDeque and LinkedList:
     a. Both implements Deque

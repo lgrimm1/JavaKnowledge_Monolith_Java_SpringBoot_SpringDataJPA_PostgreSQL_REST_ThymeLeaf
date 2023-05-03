@@ -4,12 +4,14 @@ ARRAYBLOCKINGQUEUE
 Implements BlockingQueue.
 Blocking queue implementation using an array.
 
+EXAMPLE FOR ARRAYBLOCKINGQUEUE:
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ArrayBlockingQueue;
 ...
 int capacity = ...;
 ArrayBlockingQueue<elementType> abq = new ArrayBlockingQueue<>(); //or:
 ArrayBlockingQueue<elementType> abq = new ArrayBlockingQueue<>(capacity);
+END OF EXAMPLE
 
 All methods from BlockingQueue is accessible.
 
