@@ -8,17 +8,12 @@ import java.nio.file.*;
 import java.util.*;
 
 /**
- * Handles file-level operations.<p>
  * @see #writeFile(File, List)
  * @see #readFile(File)
  * @see #createNonExistentDirectory(File)
  * @see #getExtension(File)
- * @see #getOSFileSeparator()
- * @see #getOSPathSeparator()
  * @see #deleteAllFilesInFolder(File, String)
  * @see #generateFilename(String, TitleRepository)
- * @see #getResourcesPath()
- * @see #getStaticPath()
  */
 @Component
 public class FileOperations {
@@ -75,13 +70,17 @@ public class FileOperations {
 		return (p == -1) ? "" : name.substring(p);
 	}
 
+/*
 	public String getOSFileSeparator() {
 		return File.separator;
 	}
+*/
 
+/*
 	public String getOSPathSeparator() {
 		return File.pathSeparator;
 	}
+*/
 
 	/**
 	 * Returns the number of successfully deleted files.
@@ -136,16 +135,4 @@ public class FileOperations {
 		}
 		return fileName + "_" + number;
 	}
-
-	public String getResourcesPath() {
-		return System.getProperty("user.dir") + getOSFileSeparator() +
-				"src" + getOSFileSeparator() +
-				"main" + getOSFileSeparator() +
-				"resources";
-	}
-
-	public String getStaticPath() {
-		return getResourcesPath() + getOSFileSeparator() + "static";
-	}
-
 }

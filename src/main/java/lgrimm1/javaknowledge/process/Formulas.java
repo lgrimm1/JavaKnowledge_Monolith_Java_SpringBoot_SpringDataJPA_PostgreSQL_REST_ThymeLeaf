@@ -194,5 +194,4 @@ public class Formulas {
 	private String generateRepeatedPattern(String pattern, int numberOfRepeating) {
 		return new String(new char[numberOfRepeating]).replace("\0", pattern);
 	}
-
 }
