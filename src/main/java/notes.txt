@@ -6,7 +6,7 @@ No CommonService hub, all services into @Components, instead of passing componen
 Solve out-of-the-box testability for unprepared postgres database
 
 Commit:
-Deleted CommonService, connected services directly to controller; ModelAndView is kept in controller, all services return Payload or throw exception. Model.txt was corrected.
+
 
 Need:
 Modified tests for matching controller and service changes.
