@@ -1,6 +1,7 @@
 package lgrimm1.javaknowledge.common;
 
 import lgrimm1.javaknowledge.filestorage.*;
+import lgrimm1.javaknowledge.process.Formulas;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.ui.*;
 import org.springframework.web.bind.annotation.*;
@@ -11,71 +12,130 @@ import org.springframework.web.multipart.*;
 import java.util.*;
 import java.util.stream.*;
 
+/**
+ * @see #getFallback(Model)
+ * @see #getRoot(Model)
+ * @see #searchPages(Payload, Model)
+ * @see #getPage(Payload, Model)
+ * @see #managePages(Model)
+ * @see #createSourcePage(Model)
+ * @see #editSourcePage(Payload, Model)
+ * @see #renameSourcePage(Payload, Model)
+ * @see #deleteSourcePages(Payload, Model)
+ * @see #importTxt(MultipartFile[], Payload, Model)
+ * @see #generateHtml(Payload, Model)
+ * @see #addFormula(String, Payload, Model)
+ * @see #savePage(Payload, Model)
+ * @see #handleMaxSizeException(MaxUploadSizeExceededException, Model)
+ * @see #bindMultipartFileToMultipart(MultipartFile)
+ * @see #bindMultipartFileArrayToMultipartList(MultipartFile[])
+ */
 @RestController
 @ControllerAdvice
 public class CommonController {
 
-	private final CommonService commonService;
+	private final BrowsingService browsingService;
+	private final EditingService editingService;
+	private final ManagementService managementService;
 	private final FileStorageService fileStorageService;
+	private final Formulas formulas;
 
 	@Autowired
-	public CommonController(CommonService commonService, FileStorageService fileStorageService) {
-		this.commonService = commonService;
+	public CommonController(BrowsingService browsingService,
+							EditingService editingService,
+							ManagementService managementService,
+							FileStorageService fileStorageService,
+							Formulas formulas) {
+		this.browsingService = browsingService;
+		this.editingService = editingService;
+		this.managementService = managementService;
 		this.fileStorageService = fileStorageService;
+		this.formulas = formulas;
 	}
 
 	@RequestMapping("*")
 	public ModelAndView getFallback(Model model) {
 		model.asMap().clear();
-		return commonService.getRoot("root");
+		return new ModelAndView("root", "payload", browsingService.getRoot());
 	}
 
 	@GetMapping("/")
 	public ModelAndView getRoot(Model model) {
 		model.asMap().clear();
-		return commonService.getRoot("root");
+		return new ModelAndView("root", "payload", browsingService.getRoot());
 	}
 
 	@PostMapping("/search")
 	public ModelAndView searchPages(@ModelAttribute("payload") Payload payload, Model model) {
 		model.asMap().clear();
-		return commonService.searchPages("list", payload);
+		try {
+			return new ModelAndView("list", "payload", browsingService.searchPages(payload));
+		}
+		catch (Exception e) {
+			return new ModelAndView("root", "payload", browsingService.getRoot());
+		}
 	}
 
 	@PostMapping("/page")
 	public ModelAndView getPage(@ModelAttribute("payload") Payload payload, Model model) {
 		model.asMap().clear();
-		return commonService.getPage("page", payload);
+		try {
+			return new ModelAndView("page", "payload", browsingService.getPage(payload));
+		}
+		catch (Exception e) {
+			return new ModelAndView("root", "payload", browsingService.getRoot());
+		}
 	}
 
 	@PostMapping("/management")
 	public ModelAndView managePages(Model model) {
 		model.asMap().clear();
-		return commonService.managePages("management");
+		return new ModelAndView("management", "payload", managementService.managePages());
 	}
 
 	@PostMapping("/source/new")
 	public ModelAndView createSourcePage(Model model) {
 		model.asMap().clear();
-		return commonService.createSourcePage("source");
+		return new ModelAndView("source", "payload", managementService.createSourcePage());
 	}
 
 	@PostMapping("/source/edit")
 	public ModelAndView editSourcePage(@ModelAttribute("payload") Payload payload, Model model) {
 		model.asMap().clear();
-		return commonService.editSourcePage("source", payload);
+		try {
+			return new ModelAndView("source", "payload", managementService.editSourcePage(payload));
+		}
+		catch (Exception e) {
+			Payload payload2 = managementService.managePages();
+			payload2.setMessage(e.getMessage());
+			return new ModelAndView("management", "payload", payload2);
+		}
 	}
 
 	@PostMapping("/rename")
 	public ModelAndView renameSourcePage(@ModelAttribute("payload") Payload payload, Model model) {
 		model.asMap().clear();
-		return commonService.renameSourcePage("management", payload);
+		try {
+			return new ModelAndView("management", "payload", managementService.renameSourcePage(payload));
+		}
+		catch (Exception e) {
+			Payload payload2 = managementService.managePages();
+			payload2.setMessage(e.getMessage());
+			return new ModelAndView("management", "payload", payload2);
+		}
 	}
 
 	@PostMapping("/delete")
 	public ModelAndView deleteSourcePages(@ModelAttribute("payload") Payload payload, Model model) {
 		model.asMap().clear();
-		return commonService.deletePages("management", payload);
+		try {
+			return new ModelAndView("management", "payload", managementService.deletePages(payload));
+		}
+		catch (Exception e) {
+			Payload payload2 = managementService.managePages();
+			payload2.setMessage(e.getMessage());
+			return new ModelAndView("management", "payload", payload2);
+		}
 	}
 
 	@PostMapping("/import")
@@ -84,19 +144,29 @@ public class CommonController {
 								  Model model) {
 		model.asMap().clear();
 		long[] uploadResults = fileStorageService.uploadFiles(payload, bindMultipartFileArrayToMultipartList(files));
-		ModelAndView finalResults = commonService.importTxt(
-				"management",
-				payload,
-				fileStorageService.findAll(),
-				uploadResults);
+		Payload payload2;
+		try {
+			payload2 = managementService.importTxt(payload, fileStorageService.findAll(), uploadResults);
+		}
+		catch (Exception e) {
+			payload2 = managementService.managePages();
+			payload2.setMessage(e.getMessage());
+		}
 		fileStorageService.deleteAllFiles();
-		return finalResults;
+		return new ModelAndView("management", "payload", payload2);
 	}
 
 	@PostMapping("/generate")
 	public ModelAndView generateHtml(@ModelAttribute("payload") Payload payload, Model model) {
 		model.asMap().clear();
-		return commonService.generateHtml("management", payload);
+		try {
+			return new ModelAndView("management", "payload", managementService.generateHtml(payload));
+		}
+		catch (Exception e) {
+			Payload payload2 = managementService.managePages();
+			payload2.setMessage(e.getMessage());
+			return new ModelAndView("management", "payload", payload2);
+		}
 	}
 
 	@PostMapping("/add/{formulaName}")
@@ -104,13 +174,30 @@ public class CommonController {
 								   @ModelAttribute("payload") Payload payload,
 								   Model model) {
 		model.asMap().clear();
-		return commonService.addFormula("source", formulaName, payload);
+		try {
+			return new ModelAndView("source", "payload", editingService.addFormula(formulaName, payload));
+		}
+		catch (Exception e) {
+			Payload payload2 = managementService.managePages();
+			payload2.setMessage(e.getMessage());
+			return new ModelAndView("management", "payload", payload2);
+		}
 	}
 
 	@PostMapping("/save")
 	public ModelAndView savePage(@ModelAttribute("payload") Payload payload, Model model) {
 		model.asMap().clear();
-		return commonService.savePage("source", payload);
+		try {
+			Payload payload2 = editingService.savePage(payload);
+			return payload2.getTemplateTitle().equalsIgnoreCase(formulas.getTitleSource()) ?
+					new ModelAndView("source", "payload", payload2) :
+					new ModelAndView("management", "payload", payload2);
+		}
+		catch (Exception e) {
+			Payload payload2 = managementService.managePages();
+			payload2.setMessage(e.getMessage());
+			return new ModelAndView("management", "payload", payload2);
+		}
 	}
 
 	@ExceptionHandler(MaxUploadSizeExceededException.class)

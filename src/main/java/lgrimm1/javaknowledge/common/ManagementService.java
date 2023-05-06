@@ -4,7 +4,8 @@ import lgrimm1.javaknowledge.html.*;
 import lgrimm1.javaknowledge.process.*;
 import lgrimm1.javaknowledge.title.*;
 import lgrimm1.javaknowledge.txt.*;
-import org.springframework.web.servlet.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.io.*;
 import java.nio.file.*;
@@ -12,20 +13,50 @@ import java.util.*;
 import java.util.stream.*;
 
 /**
- * @see #managePages(String, ProcessRecords, TitleRepository, Formulas)
- * @see #createSourcePage(String, Formulas)
- * @see #editSourcePage(String, Payload, ProcessRecords, TitleRepository, TxtRepository, Formulas)
- * @see #renameSourcePage(String, Payload, ProcessRecords, TitleRepository, FileOperations, Formulas)
- * @see #deletePages(String, Payload, ProcessRecords, TitleRepository, TxtRepository, HtmlRepository, Formulas)
- * @see #importTxt(String, Payload, ProcessRecords, TitleRepository, FileOperations, TxtRepository, HtmlRepository, Formulas, Extractors, Stream, long[])
- * @see #generateHtml(String, Payload, ProcessRecords, TitleRepository, TxtRepository, HtmlRepository, Formulas, ProcessPage, Extractors, HtmlGenerators)
+ * @see #managePages()
+ * @see #createSourcePage()
+ * @see #editSourcePage(Payload)
+ * @see #renameSourcePage(Payload)
+ * @see #deletePages(Payload)
+ * @see #importTxt(Payload, Stream, long[])
+ * @see #generateHtml(Payload)
  */
+@Service
 public class ManagementService {
-	public static ModelAndView managePages(String initialView,
-										   ProcessRecords processRecords,
-										   TitleRepository titleRepository,
-										   Formulas formulas) {
-		Payload payload = new Payload(
+
+	private final TitleRepository titleRepository;
+	private final TxtRepository txtRepository;
+	private final HtmlRepository htmlRepository;
+	private final ProcessRecords processRecords;
+	private final ProcessPage processPage;
+	private final FileOperations fileOperations;
+	private final HtmlGenerators htmlGenerators;
+	private final Extractors extractors;
+	private final Formulas formulas;
+
+	@Autowired
+	public ManagementService(TitleRepository titleRepository,
+							 TxtRepository txtRepository,
+							 HtmlRepository htmlRepository,
+							 ProcessRecords processRecords,
+							 ProcessPage processPage,
+							 FileOperations fileOperations,
+							 HtmlGenerators htmlGenerators,
+							 Extractors extractors,
+							 Formulas formulas) {
+		this.titleRepository = titleRepository;
+		this.txtRepository = txtRepository;
+		this.htmlRepository = htmlRepository;
+		this.processRecords = processRecords;
+		this.processPage = processPage;
+		this.fileOperations = fileOperations;
+		this.htmlGenerators = htmlGenerators;
+		this.extractors = extractors;
+		this.formulas = formulas;
+	}
+
+	public Payload managePages() {
+		return new Payload(
 				formulas.getTitleManagement(),
 				false,
 				null,
@@ -36,11 +67,10 @@ public class ManagementService {
 				"",
 				processRecords.getAllTitles(titleRepository)
 		);
-		return new ModelAndView(initialView, "payload", payload);
 	}
 
-	public static ModelAndView createSourcePage(String initialView, Formulas formulas) {
-		Payload payload = new Payload(
+	public Payload createSourcePage() {
+		return new Payload(
 				formulas.getTitleSource(),
 				null,
 				"",
@@ -51,65 +81,26 @@ public class ManagementService {
 				"",
 				null
 		);
-		return new ModelAndView(initialView, "payload", payload);
 	}
 
-	public static ModelAndView editSourcePage(String initialView,
-											  Payload payload,
-											  ProcessRecords processRecords,
-											  TitleRepository titleRepository,
-											  TxtRepository txtRepository,
-											  Formulas formulas) {
+	public Payload editSourcePage(Payload payload) {
 		if (payload == null ||
 				payload.getTitles() == null ||
 				payload.getTitles().size() != 1 ||
 				payload.getTitles().get(0) == null ||
 				payload.getTitles().get(0).isBlank()) {
-			Payload payload2 = new Payload(
-					formulas.getTitleManagement(),
-					false,
-					null,
-					null,
-					"PLEASE SELECT EXACTLY ONE TITLE FOR EDITING.",
-					null,
-					null,
-					"",
-					processRecords.getAllTitles(titleRepository)
-			);
-			return new ModelAndView("management", "payload", payload2);
+			throw new RuntimeException("PLEASE SELECT EXACTLY ONE TITLE FOR EDITING.");
 		}
 		Optional<TitleEntity> optionalTitleEntity = titleRepository.findByTitle(payload.getTitles().get(0));
 		if (optionalTitleEntity.isEmpty()) {
-			Payload payload2 = new Payload(
-					formulas.getTitleManagement(),
-					false,
-					null,
-					null,
-					"PLEASE SELECT EXACTLY ONE TITLE FOR EDITING.",
-					null,
-					null,
-					"",
-					processRecords.getAllTitles(titleRepository)
-			);
-			return new ModelAndView("management", "payload", payload2);
+			throw new RuntimeException("PLEASE SELECT EXACTLY ONE TITLE FOR EDITING.");
 		}
 		long txtId = optionalTitleEntity.get().getTxtId();
 		Optional<TxtEntity> optionalTxtEntity = txtRepository.findById(txtId);
 		if (optionalTxtEntity.isEmpty()) {
-			Payload payload2 = new Payload(
-					formulas.getTitleManagement(),
-					false,
-					null,
-					null,
-					"PLEASE SELECT EXACTLY ONE TITLE FOR EDITING.",
-					null,
-					null,
-					"",
-					processRecords.getAllTitles(titleRepository)
-			);
-			return new ModelAndView("management", "payload", payload2);
+			throw new RuntimeException("PLEASE SELECT EXACTLY ONE TITLE FOR EDITING.");
 		}
-		Payload payload2 = new Payload(
+		return new Payload(
 				formulas.getTitleSource(),
 				null,
 				optionalTxtEntity.get().getContent(),
@@ -120,69 +111,30 @@ public class ManagementService {
 				optionalTitleEntity.get().getTitle(),
 				null
 		);
-		return new ModelAndView(initialView, "payload", payload2);
 	}
 
-	public static ModelAndView renameSourcePage(String initialView,
-												Payload payload,
-												ProcessRecords processRecords,
-												TitleRepository titleRepository,
-												FileOperations fileOperations,
-												Formulas formulas) {
+	public Payload renameSourcePage(Payload payload) {
 		if (payload == null ||
 				payload.getTitles() == null ||
 				payload.getTitles().size() != 1 ||
 				payload.getTitle() == null ||
 				payload.getTitle().isBlank()) {
-			Payload payload2 = new Payload(
-					formulas.getTitleManagement(),
-					false,
-					null,
-					null,
-					"PLEASE SELECT EXACTLY ONE EXISTING TITLE AND DEFINE A NEW TITLE.",
-					null,
-					null,
-					"",
-					processRecords.getAllTitles(titleRepository)
-			);
-			return new ModelAndView(initialView, "payload", payload2);
+			throw new RuntimeException("PLEASE SELECT EXACTLY ONE EXISTING TITLE AND DEFINE A NEW TITLE.");
 		}
 		Optional<TitleEntity> originalTitleEntity = titleRepository.findByTitle(payload.getTitles().get(0));
 		if (originalTitleEntity.isEmpty()) {
-			Payload payload2 = new Payload(
-					formulas.getTitleManagement(),
-					false,
-					null,
-					null,
-					"PLEASE SELECT EXACTLY ONE EXISTING TITLE AND DEFINE A NEW TITLE.",
-					null,
-					null,
-					"",
-					processRecords.getAllTitles(titleRepository)
-			);
-			return new ModelAndView(initialView, "payload", payload2);
+			throw new RuntimeException("PLEASE SELECT EXACTLY ONE EXISTING TITLE AND DEFINE A NEW TITLE.");
 		}
 		Optional<TitleEntity> newTitleEntity = titleRepository.findByTitle(payload.getTitle());
 		if (newTitleEntity.isPresent()) {
-			Payload payload2 = new Payload(
-					formulas.getTitleManagement(),
-					false,
-					null,
-					null,
-					"THE GIVEN NEW TITLE ALREADY EXISTS, PLEASE DEFINE AN OTHER ONE.",
-					null,
-					null,
-					"",
-					processRecords.getAllTitles(titleRepository)
-			);
-			return new ModelAndView(initialView, "payload", payload2);
+			throw new RuntimeException("THE GIVEN NEW TITLE ALREADY EXISTS, PLEASE DEFINE AN OTHER ONE.");
 		}
 		String fileName = fileOperations.generateFilename(payload.getTitle(), titleRepository);
 		long txtId = originalTitleEntity.get().getTxtId();
 		long htmlId = originalTitleEntity.get().getHtmlId();
 		titleRepository.deleteById(originalTitleEntity.get().getId());
 		titleRepository.save(new TitleEntity(payload.getTitle(), fileName, txtId, htmlId));
-		Payload payload2 = new Payload(
+		return new Payload(
 				formulas.getTitleManagement(),
 				false,
 				null,
@@ -193,60 +145,22 @@ public class ManagementService {
 				"",
 				processRecords.getAllTitles(titleRepository)
 		);
-		return new ModelAndView(initialView, "payload", payload2);
 	}
 
-	public static ModelAndView deletePages(String initialView,
-										   Payload payload,
-										   ProcessRecords processRecords,
-										   TitleRepository titleRepository,
-										   TxtRepository txtRepository,
-										   HtmlRepository htmlRepository,
-										   Formulas formulas) {
+	public Payload deletePages(Payload payload) {
 		if (payload == null ||
 				payload.getTitles() == null ||
 				payload.getTitles().size() == 0 ||
 				payload.getConfirm() == null ||
 				!payload.getConfirm()) {
-			String message;
-			if (payload == null) {
-				message = "PLEASE SELECT TITLES YOU WISH TO DELETE.";
-			}
-			else {
-				message = (payload.getConfirm() == null || !payload.getConfirm()) ?
-						"PLEASE CONFIRM DELETION." :
-						"PLEASE SELECT TITLES YOU WISH TO DELETE.";
-			}
-			Payload payload2 = new Payload(
-					formulas.getTitleManagement(),
-					false,
-					null,
-					null,
-					message,
-					null,
-					null,
-					"",
-					processRecords.getAllTitles(titleRepository)
-			);
-			return new ModelAndView(initialView, "payload", payload2);
+			throw new RuntimeException("PLEASE SELECT TITLES YOU WISH TO DELETE AND CONFIRM DELETION.");
 		}
 		List<String> titles = payload.getTitles();
 		titles = titles.stream()
 				.filter(title -> title != null && !title.isBlank())
 				.toList();
 		if (titles.isEmpty()) {
-			Payload payload2 = new Payload(
-					formulas.getTitleManagement(),
-					false,
-					null,
-					null,
-					"PLEASE SELECT EXISTING TITLES YOU WISH TO DELETE.",
-					null,
-					null,
-					"",
-					processRecords.getAllTitles(titleRepository)
-			);
-			return new ModelAndView(initialView, "payload", payload2);
+			throw new RuntimeException("PLEASE SELECT TITLES YOU WISH TO DELETE AND CONFIRM DELETION.");
 		}
 		long numberOfGivenTitles = titles.size();
 		String message = processRecords.deleteByTitles(
@@ -255,7 +169,7 @@ public class ManagementService {
 				txtRepository,
 				htmlRepository) +
 				" OF " + numberOfGivenTitles + " TITLES WERE DELETED.";
-		Payload payload2 = new Payload(
+		return new Payload(
 				formulas.getTitleManagement(),
 				false,
 				null,
@@ -266,18 +180,9 @@ public class ManagementService {
 				"",
 				processRecords.getAllTitles(titleRepository)
 		);
-		return new ModelAndView(initialView, "payload", payload2);
 	}
 
-	public static ModelAndView importTxt(String initialView,
-										 Payload payload,
-										 ProcessRecords processRecords,
-										 TitleRepository titleRepository,
-										 FileOperations fileOperations,
-										 TxtRepository txtRepository,
-										 HtmlRepository htmlRepository,
-										 Formulas formulas,
-										 Extractors extractors,
+	public Payload importTxt(Payload payload,
 										 Stream<Path> paths,
 										 long[] uploadResults) {
 		if (payload == null ||
@@ -286,18 +191,7 @@ public class ManagementService {
 				uploadResults == null ||
 				uploadResults.length != 2 ||
 				uploadResults[1] == 0) {
-			Payload payload2 = new Payload(
-					formulas.getTitleManagement(),
-					false,
-					null,
-					null,
-					"PLEASE UPLOAD MINIMUM ONE PROPER FILE AND CONFIRM SOURCE OVERWRITING.",
-					null,
-					null,
-					"",
-					processRecords.getAllTitles(titleRepository)
-			);
-			return new ModelAndView(initialView, "payload", payload2);
+			throw new RuntimeException("PLEASE UPLOAD MINIMUM ONE PROPER FILE AND CONFIRM SOURCE OVERWRITING.");
 		}
 		List<File> uploadedFiles = paths
 				.map(Path::toFile)
@@ -317,7 +211,7 @@ public class ManagementService {
 				" NOT IMPORTED, " +
 				uploadResults[0] +
 				" TOTAL.";
-		Payload payload2 = new Payload(
+		return new Payload(
 				formulas.getTitleManagement(),
 				false,
 				null,
@@ -328,32 +222,11 @@ public class ManagementService {
 				"",
 				processRecords.getAllTitles(titleRepository)
 		);
-		return new ModelAndView(initialView, "payload", payload2);
 	}
 
-	public static ModelAndView generateHtml(String initialView,
-									Payload payload,
-									ProcessRecords processRecords,
-									TitleRepository titleRepository,
-									TxtRepository txtRepository,
-									HtmlRepository htmlRepository,
-									Formulas formulas,
-									ProcessPage processPage,
-									Extractors extractors,
-									HtmlGenerators htmlGenerators) {
+	public Payload generateHtml(Payload payload) {
 		if (payload == null || payload.getConfirm() == null || !payload.getConfirm()) {
-			Payload payload2 = new Payload(
-					formulas.getTitleManagement(),
-					false,
-					null,
-					null,
-					"PLEASE CONFIRM GENERATING PAGES.",
-					null,
-					null,
-					"",
-					processRecords.getAllTitles(titleRepository)
-			);
-			return new ModelAndView(initialView, "payload", payload2);
+			throw new RuntimeException("PLEASE CONFIRM GENERATING PAGES.");
 		}
 		long[] messageData = processRecords.generate(
 				titleRepository,
@@ -363,7 +236,7 @@ public class ManagementService {
 				processPage,
 				extractors,
 				htmlGenerators);
-		Payload payload2 = new Payload(
+		return new Payload(
 				formulas.getTitleManagement(),
 				false,
 				null,
@@ -374,6 +247,5 @@ public class ManagementService {
 				"",
 				processRecords.getAllTitles(titleRepository)
 		);
-		return new ModelAndView(initialView, "payload", payload2);
 	}
 }

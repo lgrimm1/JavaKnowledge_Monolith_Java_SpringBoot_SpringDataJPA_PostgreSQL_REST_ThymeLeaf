@@ -1,36 +1,53 @@
 package lgrimm1.javaknowledge.common;
 
-import lgrimm1.javaknowledge.html.*;
-import lgrimm1.javaknowledge.process.*;
-import lgrimm1.javaknowledge.title.*;
-import lgrimm1.javaknowledge.txt.*;
-import org.springframework.web.servlet.*;
+import lgrimm1.javaknowledge.html.HtmlEntity;
+import lgrimm1.javaknowledge.html.HtmlRepository;
+import lgrimm1.javaknowledge.process.FileOperations;
+import lgrimm1.javaknowledge.process.Formulas;
+import lgrimm1.javaknowledge.process.ProcessRecords;
+import lgrimm1.javaknowledge.title.TitleEntity;
+import lgrimm1.javaknowledge.title.TitleRepository;
+import lgrimm1.javaknowledge.txt.TxtEntity;
+import lgrimm1.javaknowledge.txt.TxtRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 /**
- * @see #addFormula(String, String, Payload, ProcessRecords, Formulas)
- * @see #savePage(String, Payload, TitleRepository, TxtRepository, HtmlRepository, FileOperations, ProcessRecords, Formulas)
+ * @see #addFormula(String, Payload)
+ * @see #savePage(Payload)
  */
+@Service
 public class EditingService {
-	public static ModelAndView addFormula(String initialView,
-										  String formulaName,
-										  Payload payload,
-										  ProcessRecords processRecords,
-										  Formulas formulas) {
-		if (payload == null) {
-			Payload payload2 = new Payload(
-					formulas.getTitleSource(),
-					null,
-					"",
-					false,
-					"THERE WAS A COMMUNICATION ERROR BETWEEN THE BROWSER AND THE SERVER.",
-					null,
-					null,
-					"",
-					null
-			);
-			return new ModelAndView(initialView, "payload", payload2);
+
+	private final TitleRepository titleRepository;
+	private final TxtRepository txtRepository;
+	private final HtmlRepository htmlRepository;
+	private final FileOperations fileOperations;
+	private final ProcessRecords processRecords;
+	private final Formulas formulas;
+
+	@Autowired
+	public EditingService(TitleRepository titleRepository,
+						  TxtRepository txtRepository,
+						  HtmlRepository htmlRepository,
+						  FileOperations fileOperations,
+						  ProcessRecords processRecords,
+						  Formulas formulas) {
+		this.titleRepository = titleRepository;
+		this.txtRepository = txtRepository;
+		this.htmlRepository = htmlRepository;
+		this.fileOperations = fileOperations;
+		this.processRecords = processRecords;
+		this.formulas = formulas;
+	}
+
+	public Payload addFormula(String formulaName, Payload payload) {
+		if (payload == null || formulaName == null) {
+			throw new RuntimeException("THERE WAS A COMMUNICATION ERROR BETWEEN THE BROWSER AND THE SERVER.");
 		}
 		String title = payload.getTitle();
 		if (title == null || title.isBlank()) {
@@ -51,7 +68,7 @@ public class EditingService {
 			contentList.addAll(formula);
 			message = "FORMULA WAS APPENDED.";
 		}
-		Payload payload2 = new Payload(
+		return new Payload(
 				formulas.getTitleSource(),
 				null,
 				processRecords.listToString(contentList),
@@ -62,30 +79,11 @@ public class EditingService {
 				title,
 				null
 		);
-		return new ModelAndView(initialView, "payload", payload2);
 	}
 
-	public static ModelAndView savePage(String initialView,
-										Payload payload,
-										TitleRepository titleRepository,
-										TxtRepository txtRepository,
-										HtmlRepository htmlRepository,
-										FileOperations fileOperations,
-										ProcessRecords processRecords,
-										Formulas formulas) {
+	public Payload savePage(Payload payload) {
 		if (payload == null) {
-			Payload payload2 = new Payload(
-					formulas.getTitleSource(),
-					null,
-					"",
-					false,
-					"THERE WAS A COMMUNICATION ERROR BETWEEN THE BROWSER AND THE SERVER.",
-					null,
-					null,
-					"",
-					null
-			);
-			return new ModelAndView(initialView, "payload", payload2);
+			throw new RuntimeException("THERE WAS A COMMUNICATION ERROR BETWEEN THE BROWSER AND THE SERVER.");
 		}
 		String title = payload.getTitle();
 		String content = payload.getContent();
@@ -97,7 +95,7 @@ public class EditingService {
 			editExistingPage = false;
 		}
 		if (title == null || title.isBlank()) {
-			Payload payload2 = new Payload(
+			return new Payload(
 					formulas.getTitleSource(),
 					null,
 					content,
@@ -108,7 +106,6 @@ public class EditingService {
 					"",
 					null
 			);
-			return new ModelAndView(initialView, "payload", payload2);
 		}
 		String message;
 		Optional<TitleEntity> optionalTitleEntity = titleRepository.findByTitle(title);
@@ -132,7 +129,7 @@ public class EditingService {
 						htmlEntity.getId()));
 				message = "SOURCE PAGE HAS BEEN OVERWRITTEN.";
 			}
-			Payload payload2 = new Payload(
+			return new Payload(
 					formulas.getTitleSource(),
 					null,
 					content,
@@ -143,12 +140,11 @@ public class EditingService {
 					title,
 					null
 			);
-			return new ModelAndView(initialView, "payload", payload2);
 		}
 		else { //editExistingPage == false
 			if (optionalTitleEntity.isPresent()) {
 				message = "THERE IS AN EXISTING PAGE WITH THIS TITLE.";
-				Payload payload2 = new Payload(
+				return new Payload(
 						formulas.getTitleSource(),
 						null,
 						content,
@@ -159,7 +155,6 @@ public class EditingService {
 						title,
 						null
 				);
-				return new ModelAndView(initialView, "payload", payload2);
 			}
 			else {
 				content = content
@@ -174,8 +169,8 @@ public class EditingService {
 						htmlEntity.getId()));
 				message = "SOURCE PAGE HAS BEEN SAVED.";
 			}
-			Payload payload2 = new Payload(
-					formulas.getTitleSource(),
+			return new Payload(
+					formulas.getTitleManagement(),
 					false,
 					null,
 					null,
@@ -185,7 +180,6 @@ public class EditingService {
 					"",
 					processRecords.getAllTitles(titleRepository)
 			);
-			return new ModelAndView("management", "payload", payload2);
 		}
 	}
 }

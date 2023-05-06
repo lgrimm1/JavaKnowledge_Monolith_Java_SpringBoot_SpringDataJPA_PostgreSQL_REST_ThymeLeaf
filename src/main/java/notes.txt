@@ -1,6 +1,12 @@
+Issues:
 All entities into one table
 Save modifies the record (no deletion-creation)
-Controller creates ModelAndView, with service layer with Payload it communicates
 If Service unable to create proper Payload caused by wrong input data, throw Exception
 No CommonService hub, all services into @Components, instead of passing components, directly @Autowired them (e.g. Formulas)
 Solve out-of-the-box testability for unprepared postgres database
+
+Commit:
+Deleted CommonService, connected services directly to controller; ModelAndView is kept in controller, all services return Payload or throw exception. Model.txt was corrected.
+
+Need:
+Modified tests for matching controller and service changes.

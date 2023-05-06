@@ -13,7 +13,7 @@ import java.util.*;
 
 import static org.mockito.Mockito.*;
 
-class CommonServiceAddFormulaTest {
+class EditingServiceAddFormulaTest {
 
 	TitleRepository titleRepository;
 	TxtRepository txtRepository;
@@ -24,7 +24,7 @@ class CommonServiceAddFormulaTest {
 	Extractors extractors;
 	ProcessPage processPage;
 	HtmlGenerators htmlGenerators;
-	CommonService commonService;
+	EditingService editingService;
 
 	@BeforeEach
 	void setUp() {
@@ -37,16 +37,9 @@ class CommonServiceAddFormulaTest {
 		extractors = Mockito.mock(Extractors.class);
 		processPage = Mockito.mock(ProcessPage.class);
 		htmlGenerators = Mockito.mock(HtmlGenerators.class);
-		commonService = new CommonService(
-				titleRepository,
-				txtRepository,
-				htmlRepository,
-				formulas,
-				processRecords,
-				fileOperations,
-				extractors,
-				processPage,
-				htmlGenerators);
+		editingService = new EditingService(
+				titleRepository, txtRepository, htmlRepository, fileOperations, processRecords,
+				formulas);
 		when(formulas.getTitleSource())
 				.thenReturn("SOURCETITLE");
 	}
@@ -95,7 +88,7 @@ class CommonServiceAddFormulaTest {
 		Map<String, Object> model = new HashMap<>();
 		model.put("payload", expectedPayload);
 
-		ModelAndView modelAndView = commonService.addFormula("source", null, receivedPayload);
+		ModelAndView modelAndView = editingService.addFormula("source", null, receivedPayload);
 
 		ModelAndViewAssert.assertViewName(modelAndView, "source");
 		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
@@ -146,7 +139,7 @@ class CommonServiceAddFormulaTest {
 		Map<String, Object> model = new HashMap<>();
 		model.put("payload", expectedPayload);
 
-		ModelAndView modelAndView = commonService.addFormula("source", formulaName, receivedPayload);
+		ModelAndView modelAndView = editingService.addFormula("source", formulaName, receivedPayload);
 
 		ModelAndViewAssert.assertViewName(modelAndView, "source");
 		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
@@ -197,7 +190,7 @@ class CommonServiceAddFormulaTest {
 		Map<String, Object> model = new HashMap<>();
 		model.put("payload", expectedPayload);
 
-		ModelAndView modelAndView = commonService.addFormula("source", formulaName, receivedPayload);
+		ModelAndView modelAndView = editingService.addFormula("source", formulaName, receivedPayload);
 
 		ModelAndViewAssert.assertViewName(modelAndView, "source");
 		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
@@ -224,7 +217,7 @@ class CommonServiceAddFormulaTest {
 		Map<String, Object> model = new HashMap<>();
 		model.put("payload", expectedPayload);
 
-		ModelAndView modelAndView = commonService.addFormula("source", formulaName, null);
+		ModelAndView modelAndView = editingService.addFormula("source", formulaName, null);
 
 		ModelAndViewAssert.assertViewName(modelAndView, "source");
 		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
@@ -281,7 +274,7 @@ class CommonServiceAddFormulaTest {
 		Map<String, Object> model = new HashMap<>();
 		model.put("payload", expectedPayload);
 
-		ModelAndView modelAndView = commonService.addFormula("source", formulaName, receivedPayload);
+		ModelAndView modelAndView = editingService.addFormula("source", formulaName, receivedPayload);
 
 		ModelAndViewAssert.assertViewName(modelAndView, "source");
 		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
@@ -339,7 +332,7 @@ class CommonServiceAddFormulaTest {
 		Map<String, Object> model = new HashMap<>();
 		model.put("payload", expectedPayload);
 
-		ModelAndView modelAndView = commonService.addFormula("source", formulaName, receivedPayload);
+		ModelAndView modelAndView = editingService.addFormula("source", formulaName, receivedPayload);
 
 		ModelAndViewAssert.assertViewName(modelAndView, "source");
 		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
@@ -393,7 +386,7 @@ class CommonServiceAddFormulaTest {
 		Map<String, Object> model = new HashMap<>();
 		model.put("payload", expectedPayload);
 
-		ModelAndView modelAndView = commonService.addFormula("source", formulaName, receivedPayload);
+		ModelAndView modelAndView = editingService.addFormula("source", formulaName, receivedPayload);
 
 		ModelAndViewAssert.assertViewName(modelAndView, "source");
 		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
@@ -451,7 +444,7 @@ class CommonServiceAddFormulaTest {
 		Map<String, Object> model = new HashMap<>();
 		model.put("payload", expectedPayload);
 
-		ModelAndView modelAndView = commonService.addFormula("source", formulaName, receivedPayload);
+		ModelAndView modelAndView = editingService.addFormula("source", formulaName, receivedPayload);
 
 		ModelAndViewAssert.assertViewName(modelAndView, "source");
 		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
@@ -509,7 +502,7 @@ class CommonServiceAddFormulaTest {
 		Map<String, Object> model = new HashMap<>();
 		model.put("payload", expectedPayload);
 
-		ModelAndView modelAndView = commonService.addFormula("source", formulaName, receivedPayload);
+		ModelAndView modelAndView = editingService.addFormula("source", formulaName, receivedPayload);
 
 		ModelAndViewAssert.assertViewName(modelAndView, "source");
 		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
