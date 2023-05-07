@@ -6,7 +6,7 @@ No CommonService hub, all services into @Components, instead of passing componen
 Solve out-of-the-box testability for unprepared postgres database
 
 Commit:
-
+Modified browsing, editing and management service tests, deleted unnecessary test classes, renamed correspondent classes.
 
 Need:
 Modified tests for matching controller and service changes.

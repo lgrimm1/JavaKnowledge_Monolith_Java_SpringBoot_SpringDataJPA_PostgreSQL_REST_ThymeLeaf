@@ -6,16 +6,15 @@ import lgrimm1.javaknowledge.title.*;
 import lgrimm1.javaknowledge.txt.*;
 import org.junit.jupiter.api.*;
 import org.mockito.*;
-import org.springframework.test.web.*;
-import org.springframework.web.servlet.*;
 
 import java.io.*;
 import java.nio.file.*;
 import java.util.*;
 import java.util.stream.*;
-import static org.mockito.Mockito.when;
 
-class CommonServiceImportTxtTest {
+import static org.mockito.Mockito.*;
+
+class ManagementServiceImportTxtTest {
 
 	TitleRepository titleRepository;
 	TxtRepository txtRepository;
@@ -26,7 +25,7 @@ class CommonServiceImportTxtTest {
 	Extractors extractors;
 	ProcessPage processPage;
 	HtmlGenerators htmlGenerators;
-	CommonService commonService;
+	ManagementService managementService;
 	String filename2, filename3, filename4;
 	Path path2, path3, path4;
 	Stream<Path> paths;
@@ -46,18 +45,21 @@ class CommonServiceImportTxtTest {
 		extractors = Mockito.mock(Extractors.class);
 		processPage = Mockito.mock(ProcessPage.class);
 		htmlGenerators = Mockito.mock(HtmlGenerators.class);
-		commonService = new CommonService(
+		managementService = new ManagementService(
 				titleRepository,
 				txtRepository,
 				htmlRepository,
-				formulas,
 				processRecords,
-				fileOperations,
-				extractors,
 				processPage,
-				htmlGenerators);
+				fileOperations,
+				htmlGenerators,
+				extractors,
+				formulas
+		);
 		when(formulas.getTitleManagement())
 				.thenReturn("MANAGEMENTTITLE");
+		when(formulas.getTitleSource())
+				.thenReturn("SOURCETITLE");
 		titlesBeforeUploading = List.of("Title 1");
 		titlesAfterUploading = List.of("Title 1", "Title 3");
 		when(processRecords.getAllTitles(titleRepository))
@@ -79,29 +81,16 @@ class CommonServiceImportTxtTest {
 
 	@Test
 	void importTxt_NullPayload() {
-		Payload expectedPayload = new Payload(
-				formulas.getTitleManagement(),
-				false,
-				null,
-				null,
-				"PLEASE UPLOAD MINIMUM ONE PROPER FILE AND CONFIRM SOURCE OVERWRITING.",
-				null,
-				null,
-				"",
-				titlesBeforeUploading
-		);
-		Map<String, Object> model = new HashMap<>();
-		model.put("payload", expectedPayload);
-
-		ModelAndView modelAndView = commonService.importTxt("management", null, paths, uploadResults);
-		ModelAndViewAssert.assertViewName(modelAndView, "management");
-		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
+		Exception e = Assertions.assertThrows(Exception.class,
+				() -> managementService.importTxt(null, paths, uploadResults));
+		Assertions.assertEquals("PLEASE UPLOAD MINIMUM ONE PROPER FILE AND CONFIRM SOURCE OVERWRITING.",
+				e.getMessage());
 	}
 
 	@Test
 	void importTxt_NullConfirm() {
 		Payload receivedPayload = new Payload(
-				formulas.getTitleManagement(),
+				"templateTitle",
 				null,
 				null,
 				null,
@@ -111,30 +100,16 @@ class CommonServiceImportTxtTest {
 				"",
 				titlesBeforeUploading
 		);
-
-		Payload expectedPayload = new Payload(
-				formulas.getTitleManagement(),
-				false,
-				null,
-				null,
-				"PLEASE UPLOAD MINIMUM ONE PROPER FILE AND CONFIRM SOURCE OVERWRITING.",
-				null,
-				null,
-				"",
-				titlesBeforeUploading
-		);
-		Map<String, Object> model = new HashMap<>();
-		model.put("payload", expectedPayload);
-
-		ModelAndView modelAndView = commonService.importTxt("management", receivedPayload, paths, uploadResults);
-		ModelAndViewAssert.assertViewName(modelAndView, "management");
-		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
+		Exception e = Assertions.assertThrows(Exception.class,
+				() -> managementService.importTxt(receivedPayload, paths, uploadResults));
+		Assertions.assertEquals("PLEASE UPLOAD MINIMUM ONE PROPER FILE AND CONFIRM SOURCE OVERWRITING.",
+				e.getMessage());
 	}
 
 	@Test
 	void importTxt_NotConfirmed() {
 		Payload receivedPayload = new Payload(
-				formulas.getTitleManagement(),
+				"templateTitle",
 				false,
 				null,
 				null,
@@ -144,30 +119,16 @@ class CommonServiceImportTxtTest {
 				"",
 				titlesBeforeUploading
 		);
-
-		Payload expectedPayload = new Payload(
-				formulas.getTitleManagement(),
-				false,
-				null,
-				null,
-				"PLEASE UPLOAD MINIMUM ONE PROPER FILE AND CONFIRM SOURCE OVERWRITING.",
-				null,
-				null,
-				"",
-				titlesBeforeUploading
-		);
-		Map<String, Object> model = new HashMap<>();
-		model.put("payload", expectedPayload);
-
-		ModelAndView modelAndView = commonService.importTxt("management", receivedPayload, paths, uploadResults);
-		ModelAndViewAssert.assertViewName(modelAndView, "management");
-		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
+		Exception e = Assertions.assertThrows(Exception.class,
+				() -> managementService.importTxt(receivedPayload, paths, uploadResults));
+		Assertions.assertEquals("PLEASE UPLOAD MINIMUM ONE PROPER FILE AND CONFIRM SOURCE OVERWRITING.",
+				e.getMessage());
 	}
 
 	@Test
 	void importTxt_NullUploadResults() {
 		Payload receivedPayload = new Payload(
-				formulas.getTitleManagement(),
+				"templateTitle",
 				true,
 				null,
 				null,
@@ -177,30 +138,36 @@ class CommonServiceImportTxtTest {
 				"",
 				titlesBeforeUploading
 		);
+		Exception e = Assertions.assertThrows(Exception.class,
+				() -> managementService.importTxt(receivedPayload, paths, null));
+		Assertions.assertEquals("PLEASE UPLOAD MINIMUM ONE PROPER FILE AND CONFIRM SOURCE OVERWRITING.",
+				e.getMessage());
+	}
 
-		Payload expectedPayload = new Payload(
-				formulas.getTitleManagement(),
-				false,
+	@Test
+	void importTxt_WrongUploadResults() {
+		Payload receivedPayload = new Payload(
+				"templateTitle",
+				true,
 				null,
 				null,
-				"PLEASE UPLOAD MINIMUM ONE PROPER FILE AND CONFIRM SOURCE OVERWRITING.",
+				"",
 				null,
 				null,
 				"",
 				titlesBeforeUploading
 		);
-		Map<String, Object> model = new HashMap<>();
-		model.put("payload", expectedPayload);
-
-		ModelAndView modelAndView = commonService.importTxt("management", receivedPayload, paths, null);
-		ModelAndViewAssert.assertViewName(modelAndView, "management");
-		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
+		uploadResults = new long[]{1L, 2L, 3L};
+		Exception e = Assertions.assertThrows(Exception.class,
+				() -> managementService.importTxt(receivedPayload, paths, uploadResults));
+		Assertions.assertEquals("PLEASE UPLOAD MINIMUM ONE PROPER FILE AND CONFIRM SOURCE OVERWRITING.",
+				e.getMessage());
 	}
 
 	@Test
 	void importTxt_Confirmed_NoUploadedFiles() {
 		Payload receivedPayload = new Payload(
-				formulas.getTitleManagement(),
+				"templateTitle",
 				true,
 				null,
 				null,
@@ -210,30 +177,17 @@ class CommonServiceImportTxtTest {
 				"",
 				titlesBeforeUploading
 		);
-
-		Payload expectedPayload = new Payload(
-				formulas.getTitleManagement(),
-				false,
-				null,
-				null,
-				"PLEASE UPLOAD MINIMUM ONE PROPER FILE AND CONFIRM SOURCE OVERWRITING.",
-				null,
-				null,
-				"",
-				titlesBeforeUploading
-		);
-		Map<String, Object> model = new HashMap<>();
-		model.put("payload", expectedPayload);
-
-		ModelAndView modelAndView = commonService.importTxt("management", receivedPayload, paths, new long[]{0, 0});
-		ModelAndViewAssert.assertViewName(modelAndView, "management");
-		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
+		uploadResults = new long[]{1L, 0};
+		Exception e = Assertions.assertThrows(Exception.class,
+				() -> managementService.importTxt(receivedPayload, paths, uploadResults));
+		Assertions.assertEquals("PLEASE UPLOAD MINIMUM ONE PROPER FILE AND CONFIRM SOURCE OVERWRITING.",
+				e.getMessage());
 	}
 
 	@Test
 	void importTxt_Confirmed_ExistingUploadedFiles() {
 		Payload receivedPayload = new Payload(
-				formulas.getTitleManagement(),
+				"templateTitle",
 				true,
 				null,
 				null,
@@ -268,11 +222,6 @@ class CommonServiceImportTxtTest {
 				"",
 				titlesAfterUploading
 		);
-		Map<String, Object> model = new HashMap<>();
-		model.put("payload", expectedPayload);
-
-		ModelAndView modelAndView = commonService.importTxt("management", receivedPayload, paths, uploadResults);
-		ModelAndViewAssert.assertViewName(modelAndView, "management");
-		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
+		Assertions.assertEquals(expectedPayload, managementService.importTxt(receivedPayload, paths, uploadResults));
 	}
 }

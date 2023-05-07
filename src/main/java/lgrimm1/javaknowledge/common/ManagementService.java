@@ -182,9 +182,7 @@ public class ManagementService {
 		);
 	}
 
-	public Payload importTxt(Payload payload,
-										 Stream<Path> paths,
-										 long[] uploadResults) {
+	public Payload importTxt(Payload payload, Stream<Path> paths, long[] uploadResults) {
 		if (payload == null ||
 				payload.getConfirm() == null ||
 				!payload.getConfirm() ||

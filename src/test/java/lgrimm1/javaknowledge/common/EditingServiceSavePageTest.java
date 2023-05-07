@@ -6,14 +6,12 @@ import lgrimm1.javaknowledge.title.*;
 import lgrimm1.javaknowledge.txt.*;
 import org.junit.jupiter.api.*;
 import org.mockito.*;
-import org.springframework.test.web.*;
-import org.springframework.web.servlet.*;
 
 import java.util.*;
 
 import static org.mockito.Mockito.*;
 
-class CommonServiceSavePageTest {
+class EditingServiceSavePageTest {
 
 	TitleRepository titleRepository;
 	TxtRepository txtRepository;
@@ -21,10 +19,7 @@ class CommonServiceSavePageTest {
 	Formulas formulas;
 	ProcessRecords processRecords;
 	FileOperations fileOperations;
-	Extractors extractors;
-	ProcessPage processPage;
-	HtmlGenerators htmlGenerators;
-	CommonService commonService;
+	EditingService editingService;
 
 	@BeforeEach
 	void setUp() {
@@ -34,44 +29,28 @@ class CommonServiceSavePageTest {
 		formulas = Mockito.mock(Formulas.class);
 		processRecords = Mockito.mock(ProcessRecords.class);
 		fileOperations = Mockito.mock(FileOperations.class);
-		extractors = Mockito.mock(Extractors.class);
-		processPage = Mockito.mock(ProcessPage.class);
-		htmlGenerators = Mockito.mock(HtmlGenerators.class);
-		commonService = new CommonService(
+		editingService = new EditingService(
 				titleRepository,
 				txtRepository,
 				htmlRepository,
-				formulas,
-				processRecords,
 				fileOperations,
+				processRecords,
+				formulas);
+/*
 				extractors,
 				processPage,
 				htmlGenerators);
+*/
 		when(formulas.getTitleSource())
 				.thenReturn("SOURCETITLE");
+		when(formulas.getTitleManagement())
+				.thenReturn("MANAGEMENTTITLE");
 	}
 
 	@Test
 	void savePage_NullPayload() {
-		Payload expectedPayload = new Payload(
-				formulas.getTitleSource(),
-				null,
-				"",
-				false,
-				"THERE WAS A COMMUNICATION ERROR BETWEEN THE BROWSER AND THE SERVER.",
-				null,
-				null,
-				"",
-				null
-		);
-
-		Map<String, Object> model = new HashMap<>();
-		model.put("payload", expectedPayload);
-
-		ModelAndView modelAndView = commonService.savePage("source", null);
-
-		ModelAndViewAssert.assertViewName(modelAndView, "source");
-		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
+		Exception e = Assertions.assertThrows(Exception.class, () -> editingService.savePage(null));
+		Assertions.assertEquals("THERE WAS A COMMUNICATION ERROR BETWEEN THE BROWSER AND THE SERVER.", e.getMessage());
 	}
 
 	@Test
@@ -102,13 +81,7 @@ class CommonServiceSavePageTest {
 				"",
 				null
 		);
-		Map<String, Object> model = new HashMap<>();
-		model.put("payload", expectedPayload);
-
-		ModelAndView modelAndView = commonService.savePage("source", receivedPayload);
-
-		ModelAndViewAssert.assertViewName(modelAndView, "source");
-		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
+		Assertions.assertEquals(expectedPayload, editingService.savePage(receivedPayload));
 	}
 
 	@Test
@@ -140,13 +113,7 @@ class CommonServiceSavePageTest {
 				"",
 				null
 		);
-		Map<String, Object> model = new HashMap<>();
-		model.put("payload", expectedPayload);
-
-		ModelAndView modelAndView = commonService.savePage("source", receivedPayload);
-
-		ModelAndViewAssert.assertViewName(modelAndView, "source");
-		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
+		Assertions.assertEquals(expectedPayload, editingService.savePage(receivedPayload));
 	}
 
 	@Test
@@ -180,13 +147,7 @@ class CommonServiceSavePageTest {
 				title,
 				null
 		);
-		Map<String, Object> model = new HashMap<>();
-		model.put("payload", expectedPayload);
-
-		ModelAndView modelAndView = commonService.savePage("source", receivedPayload);
-
-		ModelAndViewAssert.assertViewName(modelAndView, "source");
-		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
+		Assertions.assertEquals(expectedPayload, editingService.savePage(receivedPayload));
 	}
 
 	@Test
@@ -221,13 +182,7 @@ class CommonServiceSavePageTest {
 				title,
 				null
 		);
-		Map<String, Object> model = new HashMap<>();
-		model.put("payload", expectedPayload);
-
-		ModelAndView modelAndView = commonService.savePage("source", receivedPayload);
-
-		ModelAndViewAssert.assertViewName(modelAndView, "source");
-		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
+		Assertions.assertEquals(expectedPayload, editingService.savePage(receivedPayload));
 	}
 
 	@Test
@@ -270,13 +225,7 @@ class CommonServiceSavePageTest {
 				title,
 				null
 		);
-		Map<String, Object> model = new HashMap<>();
-		model.put("payload", expectedPayload);
-
-		ModelAndView modelAndView = commonService.savePage("source", receivedPayload);
-
-		ModelAndViewAssert.assertViewName(modelAndView, "source");
-		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
+		Assertions.assertEquals(expectedPayload, editingService.savePage(receivedPayload));
 	}
 
 	@Test
@@ -311,13 +260,7 @@ class CommonServiceSavePageTest {
 				title,
 				null
 		);
-		Map<String, Object> model = new HashMap<>();
-		model.put("payload", expectedPayload);
-
-		ModelAndView modelAndView = commonService.savePage("source", receivedPayload);
-
-		ModelAndViewAssert.assertViewName(modelAndView, "source");
-		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
+		Assertions.assertEquals(expectedPayload, editingService.savePage(receivedPayload));
 	}
 
 	@Test
@@ -353,7 +296,7 @@ class CommonServiceSavePageTest {
 				.thenReturn(titles);
 
 		Payload expectedPayload = new Payload(
-				formulas.getTitleSource(),
+				formulas.getTitleManagement(),
 				false,
 				null,
 				null,
@@ -363,13 +306,7 @@ class CommonServiceSavePageTest {
 				"",
 				titles
 		);
-		Map<String, Object> model = new HashMap<>();
-		model.put("payload", expectedPayload);
-
-		ModelAndView modelAndView = commonService.savePage("source", receivedPayload);
-
-		ModelAndViewAssert.assertViewName(modelAndView, "management");
-		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
+		Assertions.assertEquals(expectedPayload, editingService.savePage(receivedPayload));
 	}
 
 	@Test
@@ -404,12 +341,6 @@ class CommonServiceSavePageTest {
 				title,
 				null
 		);
-		Map<String, Object> model = new HashMap<>();
-		model.put("payload", expectedPayload);
-
-		ModelAndView modelAndView = commonService.savePage("source", receivedPayload);
-
-		ModelAndViewAssert.assertViewName(modelAndView, "source");
-		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
+		Assertions.assertEquals(expectedPayload, editingService.savePage(receivedPayload));
 	}
 }

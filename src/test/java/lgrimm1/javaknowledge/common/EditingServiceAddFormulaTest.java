@@ -6,8 +6,6 @@ import lgrimm1.javaknowledge.title.*;
 import lgrimm1.javaknowledge.txt.*;
 import org.junit.jupiter.api.*;
 import org.mockito.*;
-import org.springframework.test.web.*;
-import org.springframework.web.servlet.*;
 
 import java.util.*;
 
@@ -45,196 +43,80 @@ class EditingServiceAddFormulaTest {
 	}
 
 	@Test
-	void addFormula_NullFormulaName() {
-		String title = "Title";
-		String originalContent = "Line1\nLine2\n";
-		Boolean editExistingPage = true;
-		String message = "";
+	void addFormula_WrongArguments_NullArguments() {
 		Payload receivedPayload = new Payload(
-				formulas.getTitleSource(),
+				"templateTitle",
 				null,
-				originalContent,
-				editExistingPage,
-				message,
-				null,
-				null,
-				title,
-				null
-		);
-
-		when(formulas.getFormula(null))
-				.thenReturn(new ArrayList<>());
-
-		List<String> originalContentList = new ArrayList<>();
-		originalContentList.add("Line 1");
-		originalContentList.add("Line 2");
-		when(processRecords.stringToList(originalContent))
-				.thenReturn(originalContentList);
-
-		when(processRecords.listToString(originalContentList))
-				.thenReturn(originalContent);
-
-		Payload expectedPayload = new Payload(
-				formulas.getTitleSource(),
-				null,
-				originalContent,
+				"content",
 				true,
-				"WRONG FORMULA NAME WAS ASKED.",
+				"",
 				null,
-				null,
-				title,
+				"content",
+				"title",
 				null
 		);
-		Map<String, Object> model = new HashMap<>();
-		model.put("payload", expectedPayload);
-
-		ModelAndView modelAndView = editingService.addFormula("source", null, receivedPayload);
-
-		ModelAndViewAssert.assertViewName(modelAndView, "source");
-		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
+		Exception e = Assertions.assertThrows(Exception.class,
+				() -> editingService.addFormula(null, receivedPayload));
+		Assertions.assertEquals("THERE WAS A COMMUNICATION ERROR BETWEEN THE BROWSER AND THE SERVER.",
+				e.getMessage());
+		e = Assertions.assertThrows(Exception.class,
+				() -> editingService.addFormula("formula", null));
+		Assertions.assertEquals("THERE WAS A COMMUNICATION ERROR BETWEEN THE BROWSER AND THE SERVER.",
+				e.getMessage());
 	}
 
 	@Test
-	void addFormula_BlankFormulaName() {
-		String formulaName = "  ";
+	void addFormula_WrongArguments_InvalidFormulaName() {
+		String formulaName = "formula name";
 		String title = "Title";
-		String originalContent = "Line1\nLine2\n";
+		String originalContentString = "Line1\nLine2\n";
+		List<String> originalContentList = new ArrayList<>();
+		originalContentList.add("Line 1");
+		originalContentList.add("Line 2");
 		Boolean editExistingPage = true;
-		String message = "";
 		Payload receivedPayload = new Payload(
-				formulas.getTitleSource(),
+				"templateTitle",
 				null,
-				originalContent,
+				originalContentString,
 				editExistingPage,
-				message,
+				"",
 				null,
 				null,
 				title,
 				null
 		);
-
 		when(formulas.getFormula(formulaName))
 				.thenReturn(new ArrayList<>());
-
-		List<String> originalContentList = new ArrayList<>();
-		originalContentList.add("Line 1");
-		originalContentList.add("Line 2");
-		when(processRecords.stringToList(originalContent))
+		when(processRecords.stringToList(originalContentString))
 				.thenReturn(originalContentList);
-
 		when(processRecords.listToString(originalContentList))
-				.thenReturn(originalContent);
-
+				.thenReturn(originalContentString);
 		Payload expectedPayload = new Payload(
 				formulas.getTitleSource(),
 				null,
-				originalContent,
-				true,
+				originalContentString,
+				editExistingPage,
 				"WRONG FORMULA NAME WAS ASKED.",
 				null,
 				null,
 				title,
 				null
 		);
-		Map<String, Object> model = new HashMap<>();
-		model.put("payload", expectedPayload);
 
-		ModelAndView modelAndView = editingService.addFormula("source", formulaName, receivedPayload);
-
-		ModelAndViewAssert.assertViewName(modelAndView, "source");
-		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
+		Assertions.assertEquals(expectedPayload, editingService.addFormula(formulaName, receivedPayload));
 	}
 
 	@Test
-	void addFormula_InvalidFormulaName() {
-		String formulaName = "formula name";
-		String title = "Title";
-		String originalContent = "Line1\nLine2\n";
-		Boolean editExistingPage = true;
-		String message = "";
-		Payload receivedPayload = new Payload(
-				formulas.getTitleSource(),
-				null,
-				originalContent,
-				editExistingPage,
-				message,
-				null,
-				null,
-				title,
-				null
-		);
-
-		when(formulas.getFormula(formulaName))
-				.thenReturn(new ArrayList<>());
-
-		List<String> originalContentList = new ArrayList<>();
-		originalContentList.add("Line 1");
-		originalContentList.add("Line 2");
-		when(processRecords.stringToList(originalContent))
-				.thenReturn(originalContentList);
-
-		when(processRecords.listToString(originalContentList))
-				.thenReturn(originalContent);
-
-		Payload expectedPayload = new Payload(
-				formulas.getTitleSource(),
-				null,
-				originalContent,
-				true,
-				"WRONG FORMULA NAME WAS ASKED.",
-				null,
-				null,
-				title,
-				null
-		);
-		Map<String, Object> model = new HashMap<>();
-		model.put("payload", expectedPayload);
-
-		ModelAndView modelAndView = editingService.addFormula("source", formulaName, receivedPayload);
-
-		ModelAndViewAssert.assertViewName(modelAndView, "source");
-		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
-	}
-
-	@Test
-	void addFormula_NullPayload() {
-		String formulaName = "formula name";
-
-		String title = "";
-		String content = "";
-		Boolean editExistingPage = false;
-		Payload expectedPayload = new Payload(
-				formulas.getTitleSource(),
-				null,
-				content,
-				editExistingPage,
-				"THERE WAS A COMMUNICATION ERROR BETWEEN THE BROWSER AND THE SERVER.",
-				null,
-				null,
-				title,
-				null
-		);
-		Map<String, Object> model = new HashMap<>();
-		model.put("payload", expectedPayload);
-
-		ModelAndView modelAndView = editingService.addFormula("source", formulaName, null);
-
-		ModelAndViewAssert.assertViewName(modelAndView, "source");
-		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
-	}
-
-	@Test
-	void addFormula_NullTitle() {
+	void addFormula_RightArguments_NullTitle() {
 		String formulaName = "formula name";
 		String originalContent = "Line1\nLine2\n";
 		Boolean editExistingPage = true;
-		String message = "";
 		Payload receivedPayload = new Payload(
-				formulas.getTitleSource(),
+				"templateTitle",
 				null,
 				originalContent,
 				editExistingPage,
-				message,
+				"",
 				null,
 				null,
 				null,
@@ -264,38 +146,30 @@ class EditingServiceAddFormulaTest {
 				formulas.getTitleSource(),
 				null,
 				newContent,
-				true,
+				editExistingPage,
 				"FORMULA WAS APPENDED.",
 				null,
 				null,
 				"",
 				null
 		);
-		Map<String, Object> model = new HashMap<>();
-		model.put("payload", expectedPayload);
-
-		ModelAndView modelAndView = editingService.addFormula("source", formulaName, receivedPayload);
-
-		ModelAndViewAssert.assertViewName(modelAndView, "source");
-		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
+		Assertions.assertEquals(expectedPayload, editingService.addFormula(formulaName, receivedPayload));
 	}
 
 	@Test
-	void addFormula_BlankTitle() {
+	void addFormula_RightArguments_BlankTitle() {
 		String formulaName = "formula name";
-		String title = "  ";
 		String originalContent = "Line1\nLine2\n";
 		Boolean editExistingPage = true;
-		String message = "";
 		Payload receivedPayload = new Payload(
-				formulas.getTitleSource(),
+				"templateTitle",
 				null,
 				originalContent,
 				editExistingPage,
-				message,
+				"",
 				null,
 				null,
-				title,
+				"  ",
 				null
 		);
 
@@ -322,34 +196,27 @@ class EditingServiceAddFormulaTest {
 				formulas.getTitleSource(),
 				null,
 				newContent,
-				true,
+				editExistingPage,
 				"FORMULA WAS APPENDED.",
 				null,
 				null,
 				"",
 				null
 		);
-		Map<String, Object> model = new HashMap<>();
-		model.put("payload", expectedPayload);
-
-		ModelAndView modelAndView = editingService.addFormula("source", formulaName, receivedPayload);
-
-		ModelAndViewAssert.assertViewName(modelAndView, "source");
-		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
+		Assertions.assertEquals(expectedPayload, editingService.addFormula(formulaName, receivedPayload));
 	}
 
 	@Test
-	void addFormula_NullContent() {
+	void addFormula_RightArguments_NullContent() {
 		String formulaName = "formula name";
 		String title = "Title";
 		Boolean editExistingPage = true;
-		String message = "";
 		Payload receivedPayload = new Payload(
-				formulas.getTitleSource(),
+				"templateTitle",
 				null,
 				null,
 				editExistingPage,
-				message,
+				"",
 				null,
 				null,
 				title,
@@ -376,35 +243,27 @@ class EditingServiceAddFormulaTest {
 				formulas.getTitleSource(),
 				null,
 				formula,
-				true,
+				editExistingPage,
 				"FORMULA WAS APPENDED.",
 				null,
 				null,
 				title,
 				null
 		);
-		Map<String, Object> model = new HashMap<>();
-		model.put("payload", expectedPayload);
-
-		ModelAndView modelAndView = editingService.addFormula("source", formulaName, receivedPayload);
-
-		ModelAndViewAssert.assertViewName(modelAndView, "source");
-		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
+		Assertions.assertEquals(expectedPayload, editingService.addFormula(formulaName, receivedPayload));
 	}
 
 	@Test
-	void addFormula_NullEditExistingPage() {
+	void addFormula_RightArguments_NullEditExistingPage() {
 		String formulaName = "formula name";
 		String title = "Title";
 		String originalContent = "Line1\nLine2\n";
-		Boolean editExistingPage = null;
-		String message = "";
 		Payload receivedPayload = new Payload(
-				formulas.getTitleSource(),
+				"templateTitle",
 				null,
 				originalContent,
-				editExistingPage,
-				message,
+				null,
+				"",
 				null,
 				null,
 				title,
@@ -441,30 +300,23 @@ class EditingServiceAddFormulaTest {
 				title,
 				null
 		);
-		Map<String, Object> model = new HashMap<>();
-		model.put("payload", expectedPayload);
-
-		ModelAndView modelAndView = editingService.addFormula("source", formulaName, receivedPayload);
-
-		ModelAndViewAssert.assertViewName(modelAndView, "source");
-		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
+		Assertions.assertEquals(expectedPayload, editingService.addFormula(formulaName, receivedPayload));
 	}
 
 	@Test
-	void addFormula_AllValidValues() {
+	void addFormula_RightArguments_AllValidValues() {
 		String formulaName = "formula name";
 		String title = "Title";
 		String originalContent = "Line1\nLine2\n";
 		Boolean editExistingPage = true;
-		String message = "";
 		Payload receivedPayload = new Payload(
-				formulas.getTitleSource(),
+				"templateTitle",
 				null,
 				originalContent,
 				editExistingPage,
-				message,
+				"",
 				null,
-				null,
+				originalContent,
 				title,
 				null
 		);
@@ -492,19 +344,13 @@ class EditingServiceAddFormulaTest {
 				formulas.getTitleSource(),
 				null,
 				newContent,
-				true,
+				editExistingPage,
 				"FORMULA WAS APPENDED.",
 				null,
 				null,
 				title,
 				null
 		);
-		Map<String, Object> model = new HashMap<>();
-		model.put("payload", expectedPayload);
-
-		ModelAndView modelAndView = editingService.addFormula("source", formulaName, receivedPayload);
-
-		ModelAndViewAssert.assertViewName(modelAndView, "source");
-		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
+		Assertions.assertEquals(expectedPayload, editingService.addFormula(formulaName, receivedPayload));
 	}
 }
