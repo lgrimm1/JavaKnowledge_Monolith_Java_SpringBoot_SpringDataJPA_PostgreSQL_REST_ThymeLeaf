@@ -1,6 +1,6 @@
 package lgrimm1.javaknowledge.filestorage;
 
-import lgrimm1.javaknowledge.common.*;
+import lgrimm1.javaknowledge.datamodels.*;
 import lgrimm1.javaknowledge.process.*;
 import lgrimm1.javaknowledge.title.*;
 import org.junit.jupiter.api.*;

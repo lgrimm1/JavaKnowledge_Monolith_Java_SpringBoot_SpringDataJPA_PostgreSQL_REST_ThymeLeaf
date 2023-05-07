@@ -1,6 +1,6 @@
 package lgrimm1.javaknowledge.filestorage;
 
-import lgrimm1.javaknowledge.common.*;
+import lgrimm1.javaknowledge.datamodels.*;
 import org.springframework.core.io.*;
 import org.springframework.stereotype.*;
 import org.springframework.util.*;

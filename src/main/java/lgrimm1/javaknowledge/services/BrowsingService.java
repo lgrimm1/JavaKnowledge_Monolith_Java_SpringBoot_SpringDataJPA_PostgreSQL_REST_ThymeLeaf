@@ -1,5 +1,6 @@
-package lgrimm1.javaknowledge.common;
+package lgrimm1.javaknowledge.services;
 
+import lgrimm1.javaknowledge.datamodels.*;
 import lgrimm1.javaknowledge.html.HtmlEntity;
 import lgrimm1.javaknowledge.html.HtmlRepository;
 import lgrimm1.javaknowledge.process.Formulas;

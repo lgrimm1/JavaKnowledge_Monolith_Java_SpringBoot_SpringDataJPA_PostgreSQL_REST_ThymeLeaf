@@ -1,5 +1,6 @@
-package lgrimm1.javaknowledge.common;
+package lgrimm1.javaknowledge.services;
 
+import lgrimm1.javaknowledge.datamodels.*;
 import lgrimm1.javaknowledge.html.*;
 import lgrimm1.javaknowledge.process.*;
 import lgrimm1.javaknowledge.title.*;

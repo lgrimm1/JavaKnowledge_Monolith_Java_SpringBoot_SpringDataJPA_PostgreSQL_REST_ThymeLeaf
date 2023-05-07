@@ -1,7 +1,9 @@
-package lgrimm1.javaknowledge.common;
+package lgrimm1.javaknowledge.controller;
 
+import lgrimm1.javaknowledge.datamodels.*;
 import lgrimm1.javaknowledge.filestorage.*;
 import lgrimm1.javaknowledge.process.Formulas;
+import lgrimm1.javaknowledge.services.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.ui.*;
 import org.springframework.web.bind.annotation.*;
@@ -32,7 +34,7 @@ import java.util.stream.*;
  */
 @RestController
 @ControllerAdvice
-public class CommonController {
+public class Controller {
 
 	private final BrowsingService browsingService;
 	private final EditingService editingService;
@@ -41,11 +43,11 @@ public class CommonController {
 	private final Formulas formulas;
 
 	@Autowired
-	public CommonController(BrowsingService browsingService,
-							EditingService editingService,
-							ManagementService managementService,
-							FileStorageService fileStorageService,
-							Formulas formulas) {
+	public Controller(BrowsingService browsingService,
+					  EditingService editingService,
+					  ManagementService managementService,
+					  FileStorageService fileStorageService,
+					  Formulas formulas) {
 		this.browsingService = browsingService;
 		this.editingService = editingService;
 		this.managementService = managementService;

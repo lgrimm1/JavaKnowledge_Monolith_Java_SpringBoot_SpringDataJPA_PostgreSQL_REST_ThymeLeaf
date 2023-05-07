@@ -1,4 +1,4 @@
-package lgrimm1.javaknowledge.common;
+package lgrimm1.javaknowledge.datamodels;
 
 import java.util.*;
 

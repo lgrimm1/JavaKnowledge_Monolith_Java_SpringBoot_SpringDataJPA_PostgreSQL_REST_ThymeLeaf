@@ -1,33 +1,13 @@
-package lgrimm1.javaknowledge.common;
+package lgrimm1.javaknowledge.controller;
 
-import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-import lgrimm1.javaknowledge.filestorage.*;
-import lgrimm1.javaknowledge.process.*;
-import org.junit.jupiter.api.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.*;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.web.servlet.*;
-import org.springframework.web.servlet.*;
 
-import java.util.*;
-
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-
-import org.springframework.http.*;
-import org.springframework.mock.web.*;
-
-import java.nio.file.*;
-import java.util.stream.*;
-
-@WebMvcTest(CommonController.class)
+@WebMvcTest(Controller.class)
 @AutoConfigureDataJpa
-class CommonControllerTest {
+class ControllerTest {
 
 /*
 	@Autowired

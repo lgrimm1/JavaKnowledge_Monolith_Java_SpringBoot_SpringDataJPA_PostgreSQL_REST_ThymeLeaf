@@ -1,4 +1,4 @@
-package lgrimm1.javaknowledge.common;
+package lgrimm1.javaknowledge.datamodels;
 
 import org.springframework.lang.*;
 import java.util.*;

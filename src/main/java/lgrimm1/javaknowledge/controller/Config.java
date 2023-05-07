@@ -1,4 +1,4 @@
-package lgrimm1.javaknowledge.common;
+package lgrimm1.javaknowledge.controller;
 
 import lgrimm1.javaknowledge.html.*;
 import lgrimm1.javaknowledge.title.*;
