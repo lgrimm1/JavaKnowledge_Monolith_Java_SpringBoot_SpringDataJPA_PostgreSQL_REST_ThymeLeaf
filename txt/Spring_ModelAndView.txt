@@ -32,6 +32,38 @@ The model contains objects sent by the frontend when entering into the endpoint.
 =================================================================================
 In order to form an API, thin controller is needed. That said, the controller is separated from the Business layer. Thin controller means thin endpoints along.
 In order to receive data from a view, use a custom payload class which will contain all possible data from the view.
+Generating outgoing model is part of the Communication layer. The data connection between the controller and the service should be established via passing payload object or more attributes extracted from the model.
+
+A Payload class as data model can be very handful when more attributes are sent or received by the controller.
+In case the Business layer indicates failure, best practice is to raise an Exception within. The controller will receive it and call other service method to generate an alternative Payload. In case of more possible outcomes for failure, pass the exception message or the Exception object itself to the handler as well.
+
+EXAMPLE FOR A POSSIBLE PAYLOAD CLASS DEFINITION:
+class Payload {
+    //private fields
+    //default constructor
+    //full constructor
+    //getters, setters, hashCode(), equals(), toString()
+}
+END OF EXAMPLE
+
+EXAMPLE FOR SERVICE METHOD:
+public Payload serviceMethod(Payload payload) {
+    if (payload == null || ...) {
+        throw new RuntimeException("message");
+    }
+    //process payload
+    Payload payload2 = new Payload(...);
+    return payload2;
+}
+
+public Payload serviceMethodForException(Payload payload, String exceptionMessage) { //or:
+public Payload serviceMethodForException(Payload payload, Exception e) {
+    //process payload and exceptionMessage, or:
+    //process payload and exception by checking its class of the latter with instanceof
+    Payload payload2 = new Payload(...);
+    return payload2;
+}
+END OF EXAMPLE
 
 2.1. NO-REST ENDPOINT
 2.2. REST ENDPOINT
@@ -47,25 +79,22 @@ public String controllerMethod(@ModelAttribute Payload payload, BindingResult bi
     if (bindingResult.hasErrors()) {
         //return an error view and objects
     }
-	ModelAndView modelAndView = serviceObject.serviceMethod("initial_view_name", invoking_getters_of_payload);
-	model.addAllAttributes(modelAndView.getModel());
-	return modelAndView.getViewName();
+    Payload payload2;
+    String view;
+    try {
+	    payload2 = serviceObject.serviceMethod(payload);
+	    view = ...;
+	}
+	catch (Exception e) {
+	    payload2 = serviceObject.serviceMethodForException(payload, e.getMessage());
+	    view = ...;
+	}
+	model.addAllAttribute("payload", payload2);
+	return view;
 }
 END OF EXAMPLE
 
 The Model part of ModelAndView object contains objects, organized into a Map<String, Object> type where the keys are HTML attribute names, the values are the corresponding objects of any class. In order to access a value, casting will be necessary in the Business layer.
-On Business layer side, the correspondent service method will be invoked which returns a ModelAndView object filled with elements of the payload and the name of the view.
-
-EXAMPLE FOR SERVICE METHOD (MODEL&VIEW MODE):
-public ModelAndView serviceMethod(String initialView, received_variables_from_payload) {
-    //process
-    ModelAndView modelAndView = new ModelAndView(initialView); //if needed
-	modelAndView.setViewName("final_view_name"); //if needed
-    modelAndView.addObject("html_attribute_1", variableOrObjectOrLiteral1);
-    ... //add other objects
-    return modelAndView;
-}
-END OF EXAMPLE
 
 2.2. REST ENDPOINT
 ---------------------------------------------------------------------------------
@@ -78,23 +107,21 @@ public ModelAndView controllerMethod(@ModelAttribute Payload payload, BindingRes
     if (bindingResult.hasErrors()) {
         //return a new ModelAndView object with error view and objects
     }
-	return serviceObject.serviceMethod("initial_view_name", invoking_getters_of_payload);
+    Payload payload2;
+    String view;
+    try {
+	    payload2 = serviceObject.serviceMethod(payload);
+	    view = ...;
+	}
+	catch (Exception e) {
+	    payload2 = serviceObject.serviceMethodForException(payload, e.getMessage());
+	    view = ...;
+	}
+	return new ModelAndView(view, "payload", payload2);
 }
 END OF EXAMPLE
 
 The Model part of ModelAndView object contains objects, organized into a Map<String, Object> type where the keys are HTML attribute names, the values are the corresponding objects of any class. In order to access a value, casting will be necessary in the Business layer.
-On Business layer side, the correspondent service method will be invoked which returns a ModelAndView object filled with elements of the payload and the name of the view.
-
-EXAMPLE FOR SERVICE METHOD (OBJECT/MODEL&VIEW MODE):
-public ModelAndView serviceMethod(String initialView, received_variables_from_payload) {
-    //process
-    ModelAndView modelAndView = new ModelAndView(initialView); //if needed
-	modelAndView.setViewName("final_view_name"); //if needed
-    modelAndView.addObject("html_attribute_1", variableOrObjectOrLiteral1);
-    ... //add other objects
-    return modelAndView;
-}
-END OF EXAMPLE
 
 =================================================================================
 3. CONSTRUCTORS

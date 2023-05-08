@@ -325,36 +325,7 @@ class Controller {
 }
 END OF EXAMPLE
 
-EXAMPLE FOR CONTROLLER AND SERVICE METHODS (MODEL&VIEW MODE, PAYLOAD):
-public String controllerMethod(@ModelAttribute Payload payload, BindingResult bindingResult, Model model) { //using BindingResult is optional
-    model.asMap().clear();
-    //optional part:
-    if (bindingResult.hasErrors()) {
-        ModelAndView modelAndView = service.serviceErrorMethod("error_view_name");
-        return modelAndView.getViewName();
-    }
-	ModelAndView modelAndView = service.serviceMethod("initial_view_name", payload); //or:
-	ModelAndView modelAndView = service.serviceMethod(payload);
-	model.addAllAttributes(modelAndView.getModel());
-	return modelAndView.getViewName();
-}
-...
-public ModelAndView serviceMethod(String initialView, Payload payload) { //or:
-public ModelAndView serviceMethod(Payload payload) {
-    //process
-	ModelAndView modelAndView = new ModelAndView(initialView); //or:
-	ModelAndView modelAndView = new ModelAndView("view_name");
-	modelAndView.addObject("html_attribute_name", attributeValue); //repeated as needed
-	return modelAndView;
-}
-public ModelAndView serviceErrorMethod(String errorViewName) {
-    //process
-    ModelAndView modelAndView = new ModelAndView(errorViewName);
-    //add elements to modelAndView
-	return modelAndView;
-}
-END OF EXAMPLE
-
+For controller and service method examples on model&view mode, visit the SPRING MODELANDVIEW page.
 See SPRING BOOT REQUESTS page for code examples.
 
 =================================================================================
@@ -438,34 +409,7 @@ class Controller {
 }
 END OF EXAMPLE
 
-EXAMPLE FOR CONTROLLER AND SERVICE METHODS (OBJECT/MODEL&VIEW MODE, PAYLOAD):
-@ResponseBody
-public ModelAndView controllerMethod(@ModelAttribute Payload payload, BindingResult bindingResult, Model model) { //using BindingResult is optional
-    model.asMap().clear();
-    //optional part:
-    if (bindingResult.hasErrors()) {
-        //return a new ModelAndView object with error view and attributes
-    }
-	return service.serviceMethod("initial_view_name", payload); //or:
-	return service.serviceMethod(payload);
-}
-...
-public ModelAndView serviceMethod(String initialView, Payload payload) { //or:
-public ModelAndView serviceMethod(Payload payload) {
-    //process
-	ModelAndView modelAndView = new ModelAndView(initialView); //or:
-	ModelAndView modelAndView = new ModelAndView("view_name");
-	modelAndView.addObject("html_attribute_name", attributeValue); //repeated as needed
-	return modelAndView;
-}
-public ModelAndView serviceErrorMethod() {
-    //process
-    ModelAndView modelAndView = new ModelAndView("error_view_name");
-    //add elements to modelAndView
-	return modelAndView;
-}
-END OF EXAMPLE
-
+For controller and service method examples on object/model&view mode, visit the SPRING MODELANDVIEW page.
 See the SPRING MODELANDVIEW page for further details, and the SPRING BOOT REQUESTS page for code examples.
 
 =================================================================================

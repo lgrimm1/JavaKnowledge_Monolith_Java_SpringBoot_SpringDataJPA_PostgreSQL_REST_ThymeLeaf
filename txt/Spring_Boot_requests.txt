@@ -67,7 +67,7 @@ In case of name parameter only, using "..." is satisfying.
 In case of required = false or not defined, and the parameter is not defined in the GET query, the method argument will receive null.
 In case the default value is defined and there is no value in the query for that, the method argument will receive the default value.
 
-EXAMPLE FOR CONTROLLER METHOD (GET REQUEST WITH QUERY, OBJECT OR OBJECT/MODEL&VIEW MODE):
+EXAMPLE FOR CONTROLLER METHOD (GET REQUEST WITH QUERY, OBJECT MODE):
 class ResponseClassName {...} //somewhere in Business layer
 ...
 @GetMapping("/endpointName")
@@ -77,7 +77,8 @@ public ResponseClassName controllerMethod(
             @RequestParam("parameter_name2") passedObjectType2 passedObjectName2,
             ...
             ) {
-    return serviceName.serviceMethod(passedObjectName1, passedObjectName2, ...);
+    //process passedObjectNameX
+    return ...;
 }
 END OF EXAMPLE
 
@@ -90,10 +91,27 @@ public String controllerMethod(
             Model model
             ) {
     model.asMap().clear();
-	ModelAndView modelAndView = service.serviceMethod("initial_view_name", passedObjectName1, passedObjectName2, ...); //or:
-	ModelAndView modelAndView = service.serviceMethod(passedObjectName1, passedObjectName2, ...);
-	model.addAllAttributes(modelAndView.getModel());
-	return modelAndView.getViewName();
+    //process passedObjectNameX
+    model.addAttribute("parameter_nameX", newObjectX);
+    ...
+	return viewName;
+}
+END OF EXAMPLE
+
+EXAMPLE FOR CONTROLLER METHOD (GET REQUEST WITH QUERY, OBJECT/MODEL&VIEW MODE, PAYLOAD):
+class Payload {...} //somewhere among data models
+...
+@GetMapping("/endpointName")
+@ResponseBody
+public ModelAndView controllerMethod(
+            @RequestParam("parameter_name1") passedObjectType1 passedObjectName1,
+            @RequestParam("parameter_name2") passedObjectType2 passedObjectName2,
+            ...,
+            Model model
+            ) {
+    model.asMap().clear();
+    //process passedObjectNameX, invoke new Payload(...) for newObjectX
+	return new ModelAndView(viewName, "payload", payload);
 }
 END OF EXAMPLE
 
@@ -123,22 +141,21 @@ About POST, PUT, DELETE, OPTIONS, PATCH, HEAD requests in controller class:
 Please note, in model&view and object/model&view modes, testability declares the number of @ModelAttribute arguments. When using MockMVC for testing, only one @ModelAttribute argument is advised. In case the model contains more data, such argument can be a custom payload class (fields are the data).
 
 EXAMPLE FOR CONTROLLER METHOD (POST, PUT, PATCH OR DELETE REQUEST, OBJECTS AS REQUEST BODY, OBJECT MODE):
-class RequestClassName {...} //somewhere in Business layer
-class ResponseClassName {...} //somewhere in Business layer
-...
 @PostMapping("/endpointName") //or:
 @PutMapping("/endpointName") //or:
 @PatchMapping("/endpointName") //or:
 @DeleteMapping("/endpointName")
 @ResponseBody
-public ResponseClassName methodName(@RequestBody RequestClassName requestObjectName) {
-    return serviceName.serviceMethod(requestObjectName);
+public ResponseClassName methodName(
+        @RequestBody RequestClassName1 requestObjectName1,
+        @RequestBody RequestClassName2 requestObjectName2,
+        ...
+        ) {
+    return serviceName.serviceMethod(requestObjectName1, ...);
 }
 END OF EXAMPLE
 
 EXAMPLE FOR CONTROLLER METHOD (POST, PUT, PATCH, OR DELETE REQUEST, MAP AS REQUEST BODY, OBJECT MODE):
-class ResponseClassName {...} //somewhere in Business layer
-...
 @PostMapping("/endpointName") //or:
 @PutMapping("/endpointName") //or:
 @PatchMapping("/endpointName") //or:
@@ -150,19 +167,38 @@ public ResponseClassName methodName(@RequestBody final Map<String, String> reque
 }
 END OF EXAMPLE
 
-EXAMPLE FOR CONTROLLER METHOD (POST, PUT, PATCH, OR DELETE REQUEST, MODEL ATTRIBUTE AS REQUEST BODY, MODEL&VIEW MODE):
+EXAMPLE FOR CONTROLLER METHOD (POST, PUT, PATCH, OR DELETE REQUEST, MODEL ATTRIBUTE AS REQUEST BODY, MODEL&VIEW MODE, PAYLOAD):
+class Payload {...} //somewhere among data models
+...
 @PostMapping("/endpointName") //or:
 @PutMapping("/endpointName") //or:
 @PatchMapping("/endpointName") //or:
 @DeleteMapping("/endpointName")
 public String methodName(
-        @ModelAttribute("parameter_name1") passedObjectType passedObjectName,
+        @ModelAttribute("payload") Payload payload,
         Model model) {
     model.asMap().clear();
-	ModelAndView modelAndView = service.serviceMethod("initial_view_name", passedObjectName); //or:
-	ModelAndView modelAndView = service.serviceMethod(passedObjectName);
-	model.addAllAttributes(modelAndView.getModel());
-	return modelAndView.getViewName();
+    //process payload
+    model.addAttribute("parameter_nameX", newObjectX);
+    ...
+	return viewName;
+}
+END OF EXAMPLE
+
+EXAMPLE FOR CONTROLLER METHOD (POST, PUT, PATCH, OR DELETE REQUEST, MODEL ATTRIBUTE AS REQUEST BODY, OBJECT/MODEL&VIEW MODE, PAYLOAD):
+class Payload {...} //somewhere among data models
+...
+@PostMapping("/endpointName") //or:
+@PutMapping("/endpointName") //or:
+@PatchMapping("/endpointName") //or:
+@DeleteMapping("/endpointName")
+@ResponseBody
+public ModelAndView methodName(
+        @ModelAttribute("payload") Payload payload,
+        Model model) {
+    model.asMap().clear();
+    //process payload
+    return new ModelAndView(viewName, "payload", newPayload);
 }
 END OF EXAMPLE
 

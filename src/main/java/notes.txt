@@ -4,7 +4,8 @@ Save modifies the record (no deletion-creation)
 Solve out-of-the-box testability for unprepared postgres database
 
 Commit:
-
+ThymeLeaf: corrected adding dependency sections. Mockito: added doNothing() formula and general solution example. Controller mocked tests: added @WebMvcTest cases, modified object/model&view example for best practice. ModelAndView: reviewed based upon best practice. Controller: connected examples to ModelAndView page. Spring Boot requests: corrected for best practice on ModelAndView-like modes.
+Controller: tests; test class was split by service class connection.
 
 Need:
 Modified tests for matching controller and service changes.

@@ -26,7 +26,8 @@ Above the pages, frontend scripts can form an other layer with which data manipu
 2. SETTING UP
 =================================================================================
 In order to address ThymeLeaf, the following tags should be inserted into pom.xml.
-After these modifications, type "mvn compile" to make Maven to find and install all what needed.
+After modifying the pom.xml, in IntelliJ IDEA, right-click on the pom.xml and select the Maven/Reload Project menu item.
+Alternative way is to type "mvn compile" to make Maven to find and install all what is needed.
 
 Spring Boot ThymeLeaf has two main versions:
     - optimized for working with Spring

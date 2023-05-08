@@ -22,16 +22,20 @@ In order to address Mockito, the following tags should be inserted into pom.xml.
 After modifying the pom.xml, in IntelliJ IDEA, right-click on the pom.xml and select the Maven/Reload Project menu item.
 Alternative way is to type "mvn compile" to make Maven to find and install all what is needed.
 
-If there is not, create a block under the properties block:
+EXAMPLE FOR ADDING MOCKITO DEPENDENCY:
+<!-- if there is not, create a block under the properties block: -->
     <dependencies>
     </dependencies>
 
-Then inside, add the next (it is possible to define version tag with all dependencies, in case no version tag, the best compatible version will be used by Maven):
+<!-- inside, add the next dependencies: -->
+<!-- (it is possible to define version tag with all dependencies) -->
+<!-- (in case of no version tag, the best compatible version read from the parent tag, will be used by Maven) -->
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
             <scope>test</scope>
         </dependency>
+END OF EXAMPLE
 
 =================================================================================
 3. MOCKING
@@ -43,14 +47,77 @@ Some formulas for emulating methods (setting up behaviors):
     - when(mockedVariable.methodWithReturnValue()).thenReturn(value);
     - when(mockedVariable.methodWithReturnValue()).thenThrow(exception);
     - doThrow(exception).when(mockedVariable).methodWithoutReturnValue();
+    - doNothing().when(mockedVariable).methodWithoutReturnValue();
 The thenReturn() method can not receive mocked class in its argument.
 
 Practically, any class can be mocked.
 
-EXAMPLE 1 FOR MOCKING:
+EXAMPLE FOR MOCKING (GENERAL SOLUTION):
 import org.mockito.Mockito;
 import org.mockito.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
+...
+class ClassName {
+
+    returnType methodWithReturnValueNoArgument() {
+        ...
+        if (...) {
+            throw new RuntimeException("Some message.");
+        }
+        ...
+        return ...;
+    }
+
+    returnType methodWithReturnValueWithArgument(argumentType argument) {
+        if (...) {
+            throw new RuntimeException("Some message.");
+        }
+        ...
+        return ...;
+    }
+
+    void methodNoReturnValueNoArgument() {
+        ...
+        if (...) {
+            throw new RuntimeException("Some message.");
+        }
+        ...
+    }
+
+    void methodNoReturnValueWithArgument(argumentType argument) {
+        if (...) {
+            throw new RuntimeException("Some message.");
+        }
+        ...
+    }
+}
+
+ClassName var = Mockito.mock(ClassName.class);
+when(var.methodWithReturnValueNoArgument())
+        .thenReturn(returnValue);
+when(var.methodWithReturnValueNoArgument())
+        .doThrow(new RuntimeException("Some message."));
+
+when(var.methodWithReturnValueWithArgument(argument))
+        .thenReturn(returnValue);
+when(var.methodWithReturnValueWithArgument(argument))
+        .doThrow(new RuntimeException("Some message."));
+
+doThrow(new RuntimeException("Some message."))
+        .when(var).methodNoReturnValueNoArgument();
+doNothing()
+        .when(var).methodNoReturnValueNoArgument();
+
+doThrow(new RuntimeException("Some message."))
+        .when(var).methodNoReturnValueWithArgument(argument);
+doNothing()
+        .when(var).methodNoReturnValueWithArgument(argument);
+END OF EXAMPLE
+
+EXAMPLE FOR MOCKING (FILE 1):
+import org.mockito.Mockito;
+import org.mockito.*;
+import static org.mockito.Mockito.*;
 ...
 File testfolder = Mockito.mock(File.class); //testfolder will have File as type but will be kept in memory
 //behavior settings: how the mocked variable will act for certain actions
@@ -67,10 +134,10 @@ Mockito.verify(testfolder, Mockito.times(3)).getName(); //checks getName() of te
 Mockito.verify(testfolder, Mockito.never()).getPath(); //checks getName() of testfolder was never used from declaration until this point
 END OF EXAMPLE
 
-EXAMPLE 2 FOR MOCKING:
+EXAMPLE FOR MOCKING (FILE 2):
 import org.mockito.Mockito;
 import org.mockito.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 ...
 File testfolder = Mockito.mock(File.class);
 when(testfolder.isFile()).thenReturn(false);

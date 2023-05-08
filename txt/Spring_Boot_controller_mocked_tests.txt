@@ -33,10 +33,14 @@ When no JPA is involved with the test class, this annotation is not needed.
 
 In case if using JUnit4, the class-level @RunWith(SpringRunner.class) annotation is needed additionally.
 
+In case one controller class should be tested, use the @WebMvcTest(ControllerClassName.class) annotation on class level.
+In case more controller classes should be tested by the same test class, use the @WebMvcTest({ControllerClassName1.class, ControllerClassName2.class}) annotation on class level.
+In case all controller classes should be tested in the same test class, use the @WebMvcTest annotation on class level.
+
 EXAMPLE FOR CONTROLLER TEST CLASS (MOCKMVC, MOCKITO, JPA):
 package packageName;
 
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -152,16 +156,39 @@ END OF EXAMPLE
 
 EXAMPLE FOR A TEST CASE METHOD (POST ON /ENDPOINT, OBJECT/MODEL&VIEW MODE, EXPECTED HTTP200 SUCCESS CODE):
 @Test
-public void testCaseName() throws Exception {
+public void testCaseNameForSuccess() throws Exception {
     //definition of variables containing received data
 	Payload receivedPayload = new Payload(...); //use proper special constructor with received data
-
     //definition of variables containing sent data
 	Payload sentPayload = new Payload(...); //use proper special constructor with sent data
-	ModelAndView modelAndView = new ModelAndView("initial_view_name", "payload", sentPayload);
 	//mock service, passed data are received variables:
-	when(service.serviceMethod(...))
-			.thenReturn(modelAndView);
+	when(service.serviceMethod(receivedPayload))
+			.thenReturn(sentPayload);
+
+	mockMvc
+			.perform(
+					post("/endpoint")
+							.flashAttr("payload", receivedPayload)
+			)
+			.andExpect(status().isOk())
+			.andDo(print())
+			.andExpect(view().name("view_name"))
+			.andExpect(model().size(1))
+			.andExpect(model().attribute("payload", sentPayload))
+            .andExpect(forwardedUrl("UrlName"))
+            .andExpect(redirectedUrl("UrlName"));
+}
+
+@Test
+public void testCaseNameForFailure() throws Exception {
+    //definition of variables containing received data
+	Payload receivedPayload = new Payload(...); //use proper special constructor with received data
+    //definition of variables containing sent data
+	Payload sentPayload = new Payload(...); //use proper special constructor with sent data
+	//mock service, passed data are received variables:
+	when(service.serviceMethod(receivedPayload))
+			.thenThrow(new RuntimeException("message"));
+	//follow exception branch introduced in controller method
 
 	mockMvc
 			.perform(
