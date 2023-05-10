@@ -41,12 +41,13 @@ END OF EXAMPLE
 =================================================================================
 2.1. ABOUT SPRING DATA JPA
 2.2. DEFAULT INTERFACE
-2.3. DERIVED QUERY METHODS
-2.4. CUSTOM QUERY METHODS
-2.5. QUERIES WITH DYNAMIC SORTING
-2.6. QUERIES WITH DYNAMIC PAGINATION
-2.7. QUERY EXAMPLES
-2.8. SPECIALS
+2.3. METHODOLOGY OF SAVING AND MODIFYING
+2.4. DERIVED QUERY METHODS
+2.5. CUSTOM QUERY METHODS
+2.6. QUERIES WITH DYNAMIC SORTING
+2.7. QUERIES WITH DYNAMIC PAGINATION
+2.8. QUERY EXAMPLES
+2.9. SPECIALS
 
 2.1. ABOUT SPRING DATA JPA
 ---------------------------------------------------------------------------------
@@ -111,7 +112,8 @@ These methods are satisfying basic needs of handling database data, mainly satis
 ||findById(id)|returns an Optional of entity by ID||
 ||findAllById(iterableOfIds)|returns a List of entities found by IDs||
 ||findAll()|returns a List of all entities||
-||save(entity)|adds the passed entity to the repository||
+||save(entity)|adds the passed entity to the repository, or modifies an existing one||
+||saveAll(iterableOfEntities>)|adds the passed entities to the repository, modifies existing ones||
 ||flush()|writes all entities to the storage, which were kept in repository for buffering||
 ||count|returns the number of entities stored in the repository||
 ||delete(entity)|finds and deletes the passed entity from the repository||
@@ -120,7 +122,73 @@ These methods are satisfying basic needs of handling database data, mainly satis
 ||deleteAllById(iterableOfIds)|finds and deletes entities by their IDs of the passed Iterable||
 ||deleteAll|empties the repository||
 
-2.3. DERIVED QUERY METHODS
+2.3. METHODOLOGY OF SAVING AND MODIFYING
+---------------------------------------------------------------------------------
+The Spring Data JPA offers the same two default methods for both functions. The separator behind saving and modifying an entity is the existence of an entity by its ID. Visit the SPRING BOOT ENTITY page for ID definition and constructors of an entity.
+The methodology for saving is as follows:
+    - create a new entity without defining its ID
+    - save it
+    - will return the saved entity with its ID
+
+The methodology for modifying is as follows:
+    - load the original entity (will contain its original ID)
+    - modify its field values by calling proper setters
+    - in case of modified entity, Spring Data JPA will call it dirty
+    - dirty entities will be saved automatically by Spring Data JPA at next flushing procedure
+    - in case of using Spring Data, save it manually (for better compatibility and safety, always call save() or saveAll())
+    - will return the saved entity with its ID
+
+Because the existence of ID is the procedure separator, when the ID is not found in the table, will save the entity as new.
+As for every repository actions, using the flush() method is optional, use it when data upgrade must be immediate on database side.
+
+EXAMPLE FOR SAVING AN ENTITY:
+//the repository is named repo
+EntityClass entity = new EntityClass(...); //constructor without entity ID
+EntityClass savedEntity = repo.save(entity);
+//savedEntity contains given field values plus the ID in the table
+END OF EXAMPLE
+
+EXAMPLE FOR SAVING ENTITIES:
+//the repository is named repo
+List<EntityClass> entities = new ArrayList<>();
+entities.add(new EntityClass(...)); //constructor without entity ID
+entities.add(new EntityClass(...)); //constructor without entity ID
+...
+repo.saveAll(entities);
+END OF EXAMPLE
+
+EXAMPLE FOR MODIFYING AN ENTITY (EXCEPTION IF NO PREVIOUS ELEMENT):
+//the repository is named repo
+long id = ...; //the ID of the element in the table we would like to modify
+Optional<EntityClass> entity = repo.findById(id); //the ID field will contain ID of the element as well
+if (entity.isEmpty()) {
+    throw new RuntimeException("Element does not exist, unable to modify.");
+}
+//call setters of entity for setting new values on the entity
+EntityClass savedEntity = repo.save(entity); //modifies the element defined by its ID
+END OF EXAMPLE
+
+EXAMPLE FOR MODIFYING AN ENTITY (SAVE NEW IF NON-EXISTENT):
+//the repository is named repo
+EntityClass entity = new EntityClass(...); //constructor with probable ID
+EntityClass savedEntity = repo.save(entity); //modifies the element defined by its ID, or if ID non-existent, saves as new element on the given ID
+END OF EXAMPLE
+
+EXAMPLE FOR MODIFYING ENTITIES (COLLECT IDS OF NON-EXISTENT):
+//the repository is named repo
+List<Long> ids = ...; //the IDs of elements in the table we would like to modify
+List<EntityClass> entities = repo.findAllById(ids); //will contain only the found entities, the ID field per entity will contain ID of the given element as well
+List<Long> foundIds = entities.stream()
+        .map(EntityClass::getId)
+        .toList();
+List<Long> notFoundIds = ids.stream()
+        .filter(id -> !foundIds.contains(id))
+        .toList();
+//call setters of elements of entities for setting new values on the given entity
+repo.saveAll(entities); //modifies the elements defined by their IDs
+END OF EXAMPLE
+
+2.4. DERIVED QUERY METHODS
 ---------------------------------------------------------------------------------
 The default interface is for saving data and finding-managing data by the ID (CRUD functions).
 In case of other or overridden methods are needed, can be coded on repository level.
@@ -228,7 +296,7 @@ Return types can be:
 
 MORE HERE: https://www.baeldung.com/spring-data-jpa-query
 
-2.4. CUSTOM QUERY METHODS
+2.5. CUSTOM QUERY METHODS
 ---------------------------------------------------------------------------------
 The @Query method-level annotation is used for a query method:
     - for increasing readability of name of a derived query method (usage is optional, see earlier)
@@ -268,7 +336,7 @@ The table from the data should be queried is marked with FROM keyword in SQL. Th
 The native SQL contains the CONCAT() function which concatenates its arguments into one text (e.g. "CONCAT('%', ?1,'%')").
 In order to match value case-insensitively, the column value and the method parameter should be modified with UPPER() or LOWER() function (e.g. "UPPER(e.title) LIKE UPPER(?1%)").
 
-2.5. QUERIES WITH DYNAMIC SORTING
+2.6. QUERIES WITH DYNAMIC SORTING
 ---------------------------------------------------------------------------------
 Method arguments can overwrite the query expression, this is called dynamic sorting, paging etc. Meaning, the expression is invoked but after that, the query method will invoke the dynamic operation on the results before passing the results to its caller side.
 When using dynamic modification, avoid using similar expression part in the query (would take more operation time, result can be unpredicted).
@@ -307,7 +375,7 @@ The List of entities can be queried by invoking:
     - List<EntityClass> = repositoryName.queryMethodName([other parameters, ]sort);
     - List<EntityClass> = repositoryName.queryMethodName([other parameters, ]Sort.by(...));
 
-2.6. QUERIES WITH DYNAMIC PAGINATION
+2.7. QUERIES WITH DYNAMIC PAGINATION
 ---------------------------------------------------------------------------------
 Dynamic pagination means that the query presents only one part of the whole set of results, and with paging command will present the next package in order. By using it the data traffic between the database and the backend becomes reduced, the operation becomes faster.
 With pagination, sorting and filtering is possible as well.
@@ -376,17 +444,18 @@ The List of entities of a page can be extracted by invoking:
 ||previousOrFirstPageable()|returns the previous Pageable or the first if the actual is the first||
 ||previousPageable()|returns the previous Pageable||
 
-2.7. QUERY EXAMPLES
+2.8. QUERY EXAMPLES
 ---------------------------------------------------------------------------------
 Visit the SPRING BOOT REPOSITORY QUERY EXAMPLES page for derived, custom and dynamic query examples.
 
-2.8. SPECIALS
+2.9. SPECIALS
 ---------------------------------------------------------------------------------
 For EntityManager, SQL LIKE on PostgreSQL text array column, named queries and query rewriter, visit the SPRING BOOT REPOSITORY SPECIALS page.
 
 MORE HERE: Using Advanced LIKE Expressions, https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#jpa.query-methods
 
 =>SPRING BOOT
+=>SPRING BOOT ENTITY
 =>POSTGRESQL
 =>SPRING BOOT REPOSITORY QUERY EXAMPLES
 =>SPRING BOOT REPOSITORY SPECIALS

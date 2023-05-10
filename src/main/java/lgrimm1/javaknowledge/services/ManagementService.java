@@ -126,15 +126,22 @@ public class ManagementService {
 		if (originalTitleEntity.isEmpty()) {
 			throw new RuntimeException("PLEASE SELECT EXACTLY ONE EXISTING TITLE AND DEFINE A NEW TITLE.");
 		}
-		Optional<TitleEntity> newTitleEntity = titleRepository.findByTitle(payload.getTitle());
-		if (newTitleEntity.isPresent()) {
+		Optional<TitleEntity> possibleTitleEntity = titleRepository.findByTitle(payload.getTitle());
+		if (possibleTitleEntity.isPresent()) {
 			throw new RuntimeException("THE GIVEN NEW TITLE ALREADY EXISTS, PLEASE DEFINE AN OTHER ONE.");
 		}
+		TitleEntity entity = originalTitleEntity.get();
+		entity.setTitle(payload.getTitle());
+		entity.setFilename(fileOperations.generateFilename(payload.getTitle(), titleRepository));
+		titleRepository.save(entity);
+
+/*
 		String fileName = fileOperations.generateFilename(payload.getTitle(), titleRepository);
 		long txtId = originalTitleEntity.get().getTxtId();
 		long htmlId = originalTitleEntity.get().getHtmlId();
 		titleRepository.deleteById(originalTitleEntity.get().getId());
 		titleRepository.save(new TitleEntity(payload.getTitle(), fileName, txtId, htmlId));
+*/
 		return new Payload(
 				formulas.getTitleManagement(),
 				false,

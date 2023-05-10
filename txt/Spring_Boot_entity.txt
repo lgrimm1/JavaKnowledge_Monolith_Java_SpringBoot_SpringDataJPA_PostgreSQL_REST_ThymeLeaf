@@ -308,6 +308,7 @@ MORE HERE: https://www.baeldung.com/jpa-many-to-many
 MORE HERE: https://stackoverflow.com/questions/32427921/jpa-entity-must-be-unit-tested-and-how
 
 =>SPRING BOOT
+=>SPRING BOOT REPOSITORY
 =>SPRING APPLICATION PROPERTIES
 =>SPRING BOOT VALIDATION
 =>SERIALIZATION

@@ -243,8 +243,12 @@ class ManagementServiceRenameSourcePageTest {
 		when(fileOperations.generateFilename("Title 3", titleRepository))
 				.thenReturn("title_3");
 
+/*
 		when(titleRepository.save(new TitleEntity("Title 3", "title_3", 2L, 4L)))
 				.thenReturn(new TitleEntity(5L, "Title 3", "title_3", 2L, 4L));
+*/
+		when(titleRepository.save(new TitleEntity(3L, "Title 3", "title_3", 2L, 4L)))
+				.thenReturn(new TitleEntity(3L, "Title 3", "title_3", 2L, 4L));
 
 		List<String> titles = List.of("Title 1", "Title 3");
 		when(processRecords.getAllTitles(titleRepository))
