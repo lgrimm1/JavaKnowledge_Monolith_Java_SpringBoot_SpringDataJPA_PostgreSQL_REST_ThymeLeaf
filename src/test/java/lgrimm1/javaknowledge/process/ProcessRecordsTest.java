@@ -33,10 +33,35 @@ class ProcessRecordsTest {
 	}
 
 	@Test
-	void searchBySearchText() {
+	void searchBySearchText_NullArgument() {
 		Assertions.assertTrue(processRecords.searchBySearchText(null, titleRepository, txtRepository).isEmpty());
-		Assertions.assertTrue(processRecords.searchBySearchText("  ", titleRepository, txtRepository).isEmpty());
+	}
 
+	@Test
+	void searchBySearchText_BlankArgument() {
+		when(titleRepository.findAll())
+				.thenReturn(List.of(
+						new TitleEntity(
+								1L,
+								"Title 1",
+								"title_1",
+								3L,
+								4L
+						),
+						new TitleEntity(
+								2L,
+								"Title 2",
+								"title_2",
+								6L,
+								7L
+						)
+				));
+		Set<String> titles = Set.of("Title 1", "Title 2");
+		Assertions.assertEquals(titles, processRecords.searchBySearchText("  ", titleRepository, txtRepository));
+	}
+
+	@Test
+	void searchBySearchText_GivenArgument() {
 		when(titleRepository.findByTitleContainingAllIgnoreCase("Word1"))
 				.thenReturn(List.of(
 						new TitleEntity(

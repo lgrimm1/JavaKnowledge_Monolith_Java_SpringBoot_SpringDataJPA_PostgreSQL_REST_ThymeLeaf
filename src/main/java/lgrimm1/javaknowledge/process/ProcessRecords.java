@@ -25,8 +25,13 @@ public class ProcessRecords {
 	public Set<String> searchBySearchText(String searchText,
 										  TitleRepository titleRepository,
 										  TxtRepository txtRepository) {
-		if (searchText == null || searchText.isBlank()) {
+		if (searchText == null) {
 			return new HashSet<>();
+		}
+		if (searchText.isBlank()) {
+			return titleRepository.findAll().stream()
+					.map(TitleEntity::getTitle)
+					.collect(Collectors.toSet());
 		}
 		searchText = searchText.trim();
 		Set<String> titles = new HashSet<>();

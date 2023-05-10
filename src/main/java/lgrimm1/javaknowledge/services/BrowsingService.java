@@ -77,7 +77,7 @@ public class BrowsingService {
 				null,
 				null,
 				null,
-				payload.getSearchText(),
+				payload.getSearchText().trim(),
 				null,
 				null,
 				titles

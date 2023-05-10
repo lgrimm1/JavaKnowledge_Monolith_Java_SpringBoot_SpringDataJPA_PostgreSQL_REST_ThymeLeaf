@@ -91,7 +91,8 @@ class BrowsingServiceTest {
 
 	@Test
 	void searchPages_RightPayload() {
-		String searchText = "Word2 Word1";
+		String searchText = "  Word2 Word1  ";
+		String trimmedSearchText = "Word2 Word1";
 		Payload receivedPayload = new Payload(
 				formulas.getTitleRoot(),
 				null,
@@ -105,7 +106,7 @@ class BrowsingServiceTest {
 		);
 
 		Set<String> titlesSet = Set.of("Title 2", "Title 1");
-		when(processRecords.searchBySearchText(searchText, titleRepository, txtRepository))
+		when(processRecords.searchBySearchText(trimmedSearchText, titleRepository, txtRepository))
 				.thenReturn(titlesSet);
 		List<String> titles = List.of("Title 1", "Title 2");
 		Payload expectedPayload = new Payload(
@@ -114,7 +115,7 @@ class BrowsingServiceTest {
 				null,
 				null,
 				null,
-				searchText,
+				trimmedSearchText,
 				null,
 				null,
 				titles
