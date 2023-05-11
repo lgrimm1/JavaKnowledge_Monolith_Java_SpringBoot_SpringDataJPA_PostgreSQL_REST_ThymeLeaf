@@ -1,8 +1,8 @@
 package lgrimm1.javaknowledge.filestorage;
 
+import lgrimm1.javaknowledge.databasestorage.*;
 import lgrimm1.javaknowledge.datamodels.*;
 import lgrimm1.javaknowledge.process.*;
-import lgrimm1.javaknowledge.title.*;
 import org.junit.jupiter.api.*;
 
 import org.mockito.*;
@@ -19,7 +19,7 @@ class FileStorageServiceTest {
 
 	FileStorageRepository repository;
 	FileStorageService service;
-	TitleRepository titleRepository;
+	DatabaseStorageService databaseStorageService;
 	Formulas formulas;
 	ProcessRecords processRecords;
 	Path path1, path2;
@@ -32,11 +32,11 @@ class FileStorageServiceTest {
 		repository = Mockito.mock(FileStorageRepository.class);
 		when(repository.init("." + File.separator + "upload", true))
 				.thenReturn(true);
-		titleRepository = Mockito.mock(TitleRepository.class);
+		databaseStorageService = Mockito.mock(DatabaseStorageService.class);
 		formulas = Mockito.mock(Formulas.class);
 		formulas = Mockito.mock(Formulas.class);
 		processRecords = Mockito.mock(ProcessRecords.class);
-		service = new FileStorageService(repository, titleRepository, formulas, processRecords);
+		service = new FileStorageService(repository, databaseStorageService, formulas, processRecords);
 
 		filename1 = "file1.txt";
 		filename2 = "file2.txt";
@@ -60,7 +60,7 @@ class FileStorageServiceTest {
 		when(repository.init(root, true))
 				.thenReturn(false);
 
-		Exception e = Assertions.assertThrows(Exception.class, () -> new FileStorageService(repository, titleRepository, formulas, processRecords));
+		Exception e = Assertions.assertThrows(Exception.class, () -> new FileStorageService(repository, databaseStorageService, formulas, processRecords));
 		Assertions.assertEquals("Could not initialize the file storage!", e.getMessage());
 	}
 
@@ -72,7 +72,7 @@ class FileStorageServiceTest {
 		when(repository.init(root, true))
 				.thenReturn(true);
 
-		service = Assertions.assertDoesNotThrow(() -> new FileStorageService(repository, titleRepository, formulas, processRecords));
+		service = Assertions.assertDoesNotThrow(() -> new FileStorageService(repository, databaseStorageService, formulas, processRecords));
 		Assertions.assertNotNull(service);
 	}
 
@@ -189,7 +189,7 @@ class FileStorageServiceTest {
 	@Test
 	void handleMaxSizeException() {
 		List<String> titles = List.of("Title 1", "Title 2");
-		when(processRecords.getAllTitles(titleRepository))
+		when(databaseStorageService.findAllTitles())
 				.thenReturn(titles);
 		Payload expectedPayload = new Payload(
 				formulas.getTitleManagement(),

@@ -1,10 +1,8 @@
 package lgrimm1.javaknowledge.services;
 
+import lgrimm1.javaknowledge.databasestorage.*;
 import lgrimm1.javaknowledge.datamodels.*;
-import lgrimm1.javaknowledge.html.*;
 import lgrimm1.javaknowledge.process.*;
-import lgrimm1.javaknowledge.title.*;
-import lgrimm1.javaknowledge.txt.*;
 import org.junit.jupiter.api.*;
 import org.mockito.*;
 
@@ -13,9 +11,12 @@ import java.util.*;
 import static org.mockito.Mockito.*;
 
 class ManagementServiceRenameSourcePageTest {
+/*
 	TitleRepository titleRepository;
 	TxtRepository txtRepository;
 	HtmlRepository htmlRepository;
+*/
+	DatabaseStorageService databaseStorageService;
 	Formulas formulas;
 	ProcessRecords processRecords;
 	FileOperations fileOperations;
@@ -26,9 +27,11 @@ class ManagementServiceRenameSourcePageTest {
 
 	@BeforeEach
 	void setUp() {
+/*
 		titleRepository = Mockito.mock(TitleRepository.class);
 		txtRepository = Mockito.mock(TxtRepository.class);
 		htmlRepository = Mockito.mock(HtmlRepository.class);
+*/
 		formulas = Mockito.mock(Formulas.class);
 		processRecords = Mockito.mock(ProcessRecords.class);
 		fileOperations = Mockito.mock(FileOperations.class);
@@ -36,10 +39,12 @@ class ManagementServiceRenameSourcePageTest {
 		processPage = Mockito.mock(ProcessPage.class);
 		htmlGenerators = Mockito.mock(HtmlGenerators.class);
 		managementService = new ManagementService(
+/*
 				titleRepository,
 				txtRepository,
 				htmlRepository,
-				processRecords,
+*/
+				databaseStorageService, processRecords,
 				processPage,
 				fileOperations,
 				htmlGenerators,
@@ -143,7 +148,7 @@ class ManagementServiceRenameSourcePageTest {
 				"Title 4",
 				receivedTitles
 		);
-		when(titleRepository.findByTitle("Title 3"))
+		when(databaseStorageService.findTitleByTitle("Title 3"))
 				.thenReturn(Optional.empty());
 		Exception e = Assertions.assertThrows(Exception.class,
 				() -> managementService.renameSourcePage(receivedPayload));
@@ -208,9 +213,9 @@ class ManagementServiceRenameSourcePageTest {
 				"Title 2",
 				receivedTitles
 		);
-		when(titleRepository.findByTitle(receivedTitles.get(0)))
+		when(databaseStorageService.findTitleByTitle(receivedTitles.get(0)))
 				.thenReturn(Optional.of(new TitleEntity(3L, "Title 1", "title_1", 2L, 4L)));
-		when(titleRepository.findByTitle("Title 2"))
+		when(databaseStorageService.findTitleByTitle("Title 2"))
 				.thenReturn(Optional.of(new TitleEntity(3L, "Title 2", "title_2", 2L, 4L)));
 		Exception e = Assertions.assertThrows(Exception.class,
 				() -> managementService.renameSourcePage(receivedPayload));
@@ -234,24 +239,26 @@ class ManagementServiceRenameSourcePageTest {
 				receivedTitles
 		);
 
-		when(titleRepository.findByTitle(receivedTitles.get(0)))
+		when(databaseStorageService.findTitleByTitle(receivedTitles.get(0)))
 				.thenReturn(Optional.of(new TitleEntity(3L, "Title 2", "title_2", 2L, 4L)));
 
-		when(titleRepository.findByTitle("Title 3"))
+		when(databaseStorageService.findTitleByTitle("Title 3"))
 				.thenReturn(Optional.empty());
 
+/*
 		when(fileOperations.generateFilename("Title 3", titleRepository))
 				.thenReturn("title_3");
+*/
 
 /*
 		when(titleRepository.save(new TitleEntity("Title 3", "title_3", 2L, 4L)))
 				.thenReturn(new TitleEntity(5L, "Title 3", "title_3", 2L, 4L));
 */
-		when(titleRepository.save(new TitleEntity(3L, "Title 3", "title_3", 2L, 4L)))
+		when(databaseStorageService.saveTitle(new TitleEntity(3L, "Title 3", "title_3", 2L, 4L)))
 				.thenReturn(new TitleEntity(3L, "Title 3", "title_3", 2L, 4L));
 
 		List<String> titles = List.of("Title 1", "Title 3");
-		when(processRecords.getAllTitles(titleRepository))
+		when(databaseStorageService.findAllTitles())
 				.thenReturn(titles);
 
 		Payload expectedPayload = new Payload(

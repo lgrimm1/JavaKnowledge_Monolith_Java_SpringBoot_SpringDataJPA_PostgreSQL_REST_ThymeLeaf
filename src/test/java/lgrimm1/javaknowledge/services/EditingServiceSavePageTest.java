@@ -1,10 +1,8 @@
 package lgrimm1.javaknowledge.services;
 
+import lgrimm1.javaknowledge.databasestorage.*;
 import lgrimm1.javaknowledge.datamodels.*;
-import lgrimm1.javaknowledge.html.*;
 import lgrimm1.javaknowledge.process.*;
-import lgrimm1.javaknowledge.title.*;
-import lgrimm1.javaknowledge.txt.*;
 import org.junit.jupiter.api.*;
 import org.mockito.*;
 
@@ -14,27 +12,42 @@ import static org.mockito.Mockito.*;
 
 class EditingServiceSavePageTest {
 
+/*
 	TitleRepository titleRepository;
 	TxtRepository txtRepository;
 	HtmlRepository htmlRepository;
+*/
+	DatabaseStorageService databaseStorageService;
 	Formulas formulas;
 	ProcessRecords processRecords;
+/*
 	FileOperations fileOperations;
+*/
 	EditingService editingService;
 
 	@BeforeEach
 	void setUp() {
+/*
 		titleRepository = Mockito.mock(TitleRepository.class);
 		txtRepository = Mockito.mock(TxtRepository.class);
 		htmlRepository = Mockito.mock(HtmlRepository.class);
+*/
+		databaseStorageService = Mockito.mock(DatabaseStorageService.class);
 		formulas = Mockito.mock(Formulas.class);
 		processRecords = Mockito.mock(ProcessRecords.class);
+/*
 		fileOperations = Mockito.mock(FileOperations.class);
+*/
 		editingService = new EditingService(
+/*
 				titleRepository,
 				txtRepository,
 				htmlRepository,
+*/
+				databaseStorageService,
+/*
 				fileOperations,
+*/
 				processRecords,
 				formulas);
 /*
@@ -134,7 +147,7 @@ class EditingServiceSavePageTest {
 				null
 		);
 
-		when(titleRepository.findByTitle(title))
+		when(databaseStorageService.findTitleByTitle(title))
 				.thenReturn(Optional.empty());
 
 		Payload expectedPayload = new Payload(
@@ -169,7 +182,7 @@ class EditingServiceSavePageTest {
 				null
 		);
 
-		when(titleRepository.findByTitle(title))
+		when(databaseStorageService.findTitleByTitle(title))
 				.thenReturn(Optional.empty());
 
 		Payload expectedPayload = new Payload(
@@ -204,8 +217,13 @@ class EditingServiceSavePageTest {
 				null
 		);
 
-		when(titleRepository.findByTitle(title))
+		when(databaseStorageService.findTitleByTitle(title))
 				.thenReturn(Optional.of(new TitleEntity(2L, "Title 1", "title_1", 3L, 4L)));
+		when(databaseStorageService.findTxtById(3L))
+				.thenReturn(Optional.of(new TxtEntity(3L, "original content")));
+		when(databaseStorageService.saveTxt(new TxtEntity(3L, content)))
+				.thenReturn(new TxtEntity(3L, content));
+/*
 		when(txtRepository.save(new TxtEntity(content)))
 				.thenReturn(new TxtEntity(13L, content));
 		when(htmlRepository.save(new HtmlEntity(new ArrayList<>(), new ArrayList<>())))
@@ -214,6 +232,7 @@ class EditingServiceSavePageTest {
 				.thenReturn("title_1");
 		when(titleRepository.save(new TitleEntity(title, "title_1", 13L, 14L)))
 				.thenReturn(new TitleEntity(12L, title, "title_1", 13L, 14L));
+*/
 
 		Payload expectedPayload = new Payload(
 				formulas.getTitleSource(),
@@ -247,7 +266,7 @@ class EditingServiceSavePageTest {
 				null
 		);
 
-		when(titleRepository.findByTitle(title))
+		when(databaseStorageService.findTitleByTitle(title))
 				.thenReturn(Optional.of(new TitleEntity(2L, "Title 1", "title_1", 3L, 4L)));
 
 		Payload expectedPayload = new Payload(
@@ -282,8 +301,14 @@ class EditingServiceSavePageTest {
 				null
 		);
 
-		when(titleRepository.findByTitle(title))
+		when(databaseStorageService.findTitleByTitle(title))
 				.thenReturn(Optional.empty());
+		when(databaseStorageService.saveHtml(new HtmlEntity(new ArrayList<>(), new ArrayList<>())))
+				.thenReturn(new HtmlEntity(3L, new ArrayList<>(), new ArrayList<>()));
+		when(databaseStorageService.saveTxt(new TxtEntity(content)))
+				.thenReturn(new TxtEntity(4L, content));
+
+/*
 		when(txtRepository.save(new TxtEntity(content)))
 				.thenReturn(new TxtEntity(13L, content));
 		when(htmlRepository.save(new HtmlEntity(new ArrayList<>(), new ArrayList<>())))
@@ -292,10 +317,14 @@ class EditingServiceSavePageTest {
 				.thenReturn("title_1");
 		when(titleRepository.save(new TitleEntity(title, "title_1", 13L, 14L)))
 				.thenReturn(new TitleEntity(12L, title, "title_1", 13L, 14L));
+*/
 		List<String> titles = List.of("Title 1", "Title 2");
+/*
 		when(processRecords.getAllTitles(titleRepository))
 				.thenReturn(titles);
-
+*/
+		when(databaseStorageService.findAllTitles())
+				.thenReturn(titles);
 		Payload expectedPayload = new Payload(
 				formulas.getTitleManagement(),
 				false,
@@ -328,7 +357,7 @@ class EditingServiceSavePageTest {
 				null
 		);
 
-		when(titleRepository.findByTitle(title))
+		when(databaseStorageService.findTitleByTitle(title))
 				.thenReturn(Optional.of(new TitleEntity(2L, title, "title_1", 3L, 4L)));
 
 		Payload expectedPayload = new Payload(

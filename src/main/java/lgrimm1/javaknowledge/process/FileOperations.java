@@ -1,6 +1,6 @@
 package lgrimm1.javaknowledge.process;
 
-import lgrimm1.javaknowledge.title.*;
+import lgrimm1.javaknowledge.databasestorage.*;
 import org.springframework.stereotype.*;
 
 import java.io.*;

@@ -1,13 +1,9 @@
 package lgrimm1.javaknowledge.services;
 
+import lgrimm1.javaknowledge.databasestorage.*;
 import lgrimm1.javaknowledge.datamodels.*;
-import lgrimm1.javaknowledge.html.HtmlEntity;
-import lgrimm1.javaknowledge.html.HtmlRepository;
 import lgrimm1.javaknowledge.process.Formulas;
 import lgrimm1.javaknowledge.process.ProcessRecords;
-import lgrimm1.javaknowledge.title.TitleEntity;
-import lgrimm1.javaknowledge.title.TitleRepository;
-import lgrimm1.javaknowledge.txt.TxtRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,21 +17,30 @@ import java.util.Optional;
  */
 @Service
 public class BrowsingService {
+/*
 	private final TitleRepository titleRepository;
 	private final TxtRepository txtRepository;
 	private final HtmlRepository htmlRepository;
+*/
+	private final DatabaseStorageService databaseStorageService;
 	private final ProcessRecords processRecords;
 	private final Formulas formulas;
 
 	@Autowired
+/*
 	public BrowsingService(TitleRepository titleRepository,
 						   TxtRepository txtRepository,
 						   HtmlRepository htmlRepository,
-						   ProcessRecords processRecords,
+						   DatabaseStorageService databaseStorageService, ProcessRecords processRecords,
 						   Formulas formulas) {
 		this.titleRepository = titleRepository;
 		this.txtRepository = txtRepository;
 		this.htmlRepository = htmlRepository;
+*/
+	public BrowsingService(DatabaseStorageService databaseStorageService,
+						   ProcessRecords processRecords,
+						   Formulas formulas) {
+		this.databaseStorageService = databaseStorageService;
 		this.processRecords = processRecords;
 		this.formulas = formulas;
 	}
@@ -64,6 +69,7 @@ public class BrowsingService {
 		if (payload == null || payload.getSearchText() == null) {
 			throw new RuntimeException("THERE WAS A COMMUNICATION ERROR BETWEEN THE BROWSER AND THE SERVER.");
 		}
+/*
 		List<String> titles = processRecords.searchBySearchText(
 						payload.getSearchText().trim(),
 						titleRepository,
@@ -71,6 +77,7 @@ public class BrowsingService {
 				.stream()
 				.sorted()
 				.toList();
+*/
 		return new Payload(
 				formulas.getTitleList(),
 				null,
@@ -80,7 +87,7 @@ public class BrowsingService {
 				payload.getSearchText().trim(),
 				null,
 				null,
-				titles
+				databaseStorageService.findTitlesBySearchText(payload.getSearchText().trim())
 		);
 	}
 
@@ -93,11 +100,14 @@ public class BrowsingService {
 			throw new RuntimeException("THERE WAS A COMMUNICATION ERROR BETWEEN THE BROWSER AND THE SERVER.");
 		}
 		List<String> titles = payload.getTitles();
+		Optional<TitleEntity> optionalTitleEntity = databaseStorageService.findTitleByTitle(titles.get(0));
+/*
 		Optional<TitleEntity> optionalTitleEntity = titleRepository.findByTitle(titles.get(0));
+*/
 		if (optionalTitleEntity.isEmpty()) {
 			throw new RuntimeException("THERE WAS A COMMUNICATION ERROR BETWEEN THE BROWSER AND THE SERVER.");
 		}
-		Optional<HtmlEntity> optionalHtmlEntity = htmlRepository.findById(optionalTitleEntity.get().getHtmlId());
+		Optional<HtmlEntity> optionalHtmlEntity = databaseStorageService.findHtmlById(optionalTitleEntity.get().getHtmlId());
 		if (optionalHtmlEntity.isEmpty()) {
 			throw new RuntimeException("THERE WAS A COMMUNICATION ERROR BETWEEN THE BROWSER AND THE SERVER.");
 		}

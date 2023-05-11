@@ -1,8 +1,6 @@
 package lgrimm1.javaknowledge.controller;
 
-import lgrimm1.javaknowledge.html.*;
-import lgrimm1.javaknowledge.title.*;
-import lgrimm1.javaknowledge.txt.*;
+import lgrimm1.javaknowledge.databasestorage.*;
 import org.springframework.boot.*;
 import org.springframework.context.annotation.*;
 

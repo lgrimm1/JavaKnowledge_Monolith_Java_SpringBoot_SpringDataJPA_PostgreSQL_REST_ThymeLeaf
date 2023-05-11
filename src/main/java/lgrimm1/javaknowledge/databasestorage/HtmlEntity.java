@@ -1,4 +1,4 @@
-package lgrimm1.javaknowledge.html;
+package lgrimm1.javaknowledge.databasestorage;
 
 import jakarta.persistence.*;
 

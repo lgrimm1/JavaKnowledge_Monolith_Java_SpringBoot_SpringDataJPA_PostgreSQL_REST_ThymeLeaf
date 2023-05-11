@@ -1,10 +1,8 @@
 package lgrimm1.javaknowledge.services;
 
+import lgrimm1.javaknowledge.databasestorage.*;
 import lgrimm1.javaknowledge.datamodels.*;
-import lgrimm1.javaknowledge.html.*;
 import lgrimm1.javaknowledge.process.*;
-import lgrimm1.javaknowledge.title.*;
-import lgrimm1.javaknowledge.txt.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,9 +23,12 @@ import java.util.stream.*;
 @Service
 public class ManagementService {
 
+/*
 	private final TitleRepository titleRepository;
 	private final TxtRepository txtRepository;
 	private final HtmlRepository htmlRepository;
+*/
+	private final DatabaseStorageService databaseStorageService;
 	private final ProcessRecords processRecords;
 	private final ProcessPage processPage;
 	private final FileOperations fileOperations;
@@ -36,18 +37,18 @@ public class ManagementService {
 	private final Formulas formulas;
 
 	@Autowired
-	public ManagementService(TitleRepository titleRepository,
-							 TxtRepository txtRepository,
-							 HtmlRepository htmlRepository,
-							 ProcessRecords processRecords,
+	public ManagementService(DatabaseStorageService databaseStorageService, ProcessRecords processRecords,
 							 ProcessPage processPage,
 							 FileOperations fileOperations,
 							 HtmlGenerators htmlGenerators,
 							 Extractors extractors,
 							 Formulas formulas) {
+		this.databaseStorageService = databaseStorageService;
+/*
 		this.titleRepository = titleRepository;
 		this.txtRepository = txtRepository;
 		this.htmlRepository = htmlRepository;
+*/
 		this.processRecords = processRecords;
 		this.processPage = processPage;
 		this.fileOperations = fileOperations;
@@ -66,7 +67,7 @@ public class ManagementService {
 				null,
 				null,
 				"",
-				processRecords.getAllTitles(titleRepository)
+				databaseStorageService.findAllTitles()
 		);
 	}
 
@@ -92,12 +93,12 @@ public class ManagementService {
 				payload.getTitles().get(0).isBlank()) {
 			throw new RuntimeException("PLEASE SELECT EXACTLY ONE TITLE FOR EDITING.");
 		}
-		Optional<TitleEntity> optionalTitleEntity = titleRepository.findByTitle(payload.getTitles().get(0));
+		Optional<TitleEntity> optionalTitleEntity = databaseStorageService.findTitleByTitle(payload.getTitles().get(0));
 		if (optionalTitleEntity.isEmpty()) {
 			throw new RuntimeException("PLEASE SELECT EXACTLY ONE TITLE FOR EDITING.");
 		}
 		long txtId = optionalTitleEntity.get().getTxtId();
-		Optional<TxtEntity> optionalTxtEntity = txtRepository.findById(txtId);
+		Optional<TxtEntity> optionalTxtEntity = databaseStorageService.findTxtById(txtId);
 		if (optionalTxtEntity.isEmpty()) {
 			throw new RuntimeException("PLEASE SELECT EXACTLY ONE TITLE FOR EDITING.");
 		}
@@ -122,18 +123,20 @@ public class ManagementService {
 				payload.getTitle().isBlank()) {
 			throw new RuntimeException("PLEASE SELECT EXACTLY ONE EXISTING TITLE AND DEFINE A NEW TITLE.");
 		}
-		Optional<TitleEntity> originalTitleEntity = titleRepository.findByTitle(payload.getTitles().get(0));
+		Optional<TitleEntity> originalTitleEntity = databaseStorageService.findTitleByTitle(payload.getTitles().get(0));
 		if (originalTitleEntity.isEmpty()) {
 			throw new RuntimeException("PLEASE SELECT EXACTLY ONE EXISTING TITLE AND DEFINE A NEW TITLE.");
 		}
-		Optional<TitleEntity> possibleTitleEntity = titleRepository.findByTitle(payload.getTitle());
+		Optional<TitleEntity> possibleTitleEntity = databaseStorageService.findTitleByTitle(payload.getTitle());
 		if (possibleTitleEntity.isPresent()) {
 			throw new RuntimeException("THE GIVEN NEW TITLE ALREADY EXISTS, PLEASE DEFINE AN OTHER ONE.");
 		}
 		TitleEntity entity = originalTitleEntity.get();
 		entity.setTitle(payload.getTitle());
+/*
 		entity.setFilename(fileOperations.generateFilename(payload.getTitle(), titleRepository));
-		titleRepository.save(entity);
+*/
+		databaseStorageService.saveTitle(entity);
 		return new Payload(
 				formulas.getTitleManagement(),
 				false,
@@ -143,7 +146,7 @@ public class ManagementService {
 				null,
 				null,
 				"",
-				processRecords.getAllTitles(titleRepository)
+				databaseStorageService.findAllTitles()
 		);
 	}
 
@@ -163,11 +166,7 @@ public class ManagementService {
 			throw new RuntimeException("PLEASE SELECT TITLES YOU WISH TO DELETE AND CONFIRM DELETION.");
 		}
 		long numberOfGivenTitles = titles.size();
-		String message = processRecords.deleteByTitles(
-				titles,
-				titleRepository,
-				txtRepository,
-				htmlRepository) +
+		String message = databaseStorageService.deleteByTitles(titles) +
 				" OF " + numberOfGivenTitles + " TITLES WERE DELETED.";
 		return new Payload(
 				formulas.getTitleManagement(),
@@ -178,7 +177,7 @@ public class ManagementService {
 				null,
 				null,
 				"",
-				processRecords.getAllTitles(titleRepository)
+				databaseStorageService.findAllTitles()
 		);
 	}
 

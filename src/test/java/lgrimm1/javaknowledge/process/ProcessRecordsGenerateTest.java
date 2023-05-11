@@ -1,8 +1,6 @@
 package lgrimm1.javaknowledge.process;
 
-import lgrimm1.javaknowledge.html.*;
-import lgrimm1.javaknowledge.title.*;
-import lgrimm1.javaknowledge.txt.*;
+import lgrimm1.javaknowledge.databasestorage.*;
 import org.junit.jupiter.api.*;
 import org.mockito.*;
 
@@ -12,7 +10,7 @@ import static org.mockito.Mockito.*;
 
 class ProcessRecordsGenerateTest {
 
-	ProcessRecords processRecords = new ProcessRecords();
+	ProcessRecords processRecords;
 	TitleRepository titleRepository;
 	TxtRepository txtRepository;
 	HtmlRepository htmlRepository;
@@ -32,6 +30,7 @@ class ProcessRecordsGenerateTest {
 		extractors = Mockito.mock(Extractors.class);
 		processPage = Mockito.mock(ProcessPage.class);
 		htmlGenerators = Mockito.mock(HtmlGenerators.class);
+		processRecords = new ProcessRecords(databaseStorageService, fileOperations, extractors, formulas);
 	}
 
 	@Test

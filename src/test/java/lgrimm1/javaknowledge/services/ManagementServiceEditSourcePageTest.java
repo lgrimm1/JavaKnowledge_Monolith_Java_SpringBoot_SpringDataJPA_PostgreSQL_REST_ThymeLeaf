@@ -1,10 +1,8 @@
 package lgrimm1.javaknowledge.services;
 
+import lgrimm1.javaknowledge.databasestorage.*;
 import lgrimm1.javaknowledge.datamodels.*;
-import lgrimm1.javaknowledge.html.*;
 import lgrimm1.javaknowledge.process.*;
-import lgrimm1.javaknowledge.title.*;
-import lgrimm1.javaknowledge.txt.*;
 import org.junit.jupiter.api.*;
 import org.mockito.*;
 
@@ -13,9 +11,12 @@ import java.util.*;
 import static org.mockito.Mockito.*;
 
 class ManagementServiceEditSourcePageTest {
+/*
 	TitleRepository titleRepository;
 	TxtRepository txtRepository;
 	HtmlRepository htmlRepository;
+*/
+	DatabaseStorageService databaseStorageService;
 	Formulas formulas;
 	ProcessRecords processRecords;
 	FileOperations fileOperations;
@@ -26,9 +27,12 @@ class ManagementServiceEditSourcePageTest {
 
 	@BeforeEach
 	void setUp() {
+/*
 		titleRepository = Mockito.mock(TitleRepository.class);
 		txtRepository = Mockito.mock(TxtRepository.class);
 		htmlRepository = Mockito.mock(HtmlRepository.class);
+*/
+		databaseStorageService = Mockito.mock(DatabaseStorageService.class);
 		formulas = Mockito.mock(Formulas.class);
 		processRecords = Mockito.mock(ProcessRecords.class);
 		fileOperations = Mockito.mock(FileOperations.class);
@@ -36,10 +40,12 @@ class ManagementServiceEditSourcePageTest {
 		processPage = Mockito.mock(ProcessPage.class);
 		htmlGenerators = Mockito.mock(HtmlGenerators.class);
 		managementService = new ManagementService(
+/*
 				titleRepository,
 				txtRepository,
 				htmlRepository,
-				processRecords,
+*/
+				databaseStorageService, processRecords,
 				processPage,
 				fileOperations,
 				htmlGenerators,
@@ -147,7 +153,7 @@ class ManagementServiceEditSourcePageTest {
 				receivedTitles
 		);
 		List<String> requestTitles = List.of("Title 3");
-		when(titleRepository.findByTitle(requestTitles.get(0)))
+		when(databaseStorageService.findTitleByTitle(requestTitles.get(0)))
 				.thenReturn(Optional.empty());
 		Exception e = Assertions.assertThrows(Exception.class, () -> managementService.editSourcePage(receivedPayload));
 		Assertions.assertEquals("PLEASE SELECT EXACTLY ONE TITLE FOR EDITING.", e.getMessage());
@@ -168,9 +174,9 @@ class ManagementServiceEditSourcePageTest {
 				"",
 				receivedTitles
 		);
-		when(titleRepository.findByTitle(receivedTitles.get(0)))
+		when(databaseStorageService.findTitleByTitle(receivedTitles.get(0)))
 				.thenReturn(Optional.of(new TitleEntity(3L, "Title 3", "title_3", 2L, 4L)));
-		when(txtRepository.findById(2L))
+		when(databaseStorageService.findTxtById(2L))
 				.thenReturn(Optional.empty());
 		Exception e = Assertions.assertThrows(Exception.class, () -> managementService.editSourcePage(receivedPayload));
 		Assertions.assertEquals("PLEASE SELECT EXACTLY ONE TITLE FOR EDITING.", e.getMessage());
@@ -195,11 +201,11 @@ class ManagementServiceEditSourcePageTest {
 		String expectedTitle = receivedTitles.get(0);
 		String expectedFilename = "title_3";
 		List<String> expectedTitles = List.of(expectedTitle);
-		when(titleRepository.findByTitle(expectedTitles.get(0)))
+		when(databaseStorageService.findTitleByTitle(expectedTitles.get(0)))
 				.thenReturn(Optional.of(new TitleEntity(3L, expectedTitle, expectedFilename, 2L, 4L)));
 
 		String content = "Line 1\nLine 2\n";
-		when(txtRepository.findById(2L))
+		when(databaseStorageService.findTxtById(2L))
 				.thenReturn(Optional.of(new TxtEntity(2L, content)));
 
 		Payload expectedPayload = new Payload(

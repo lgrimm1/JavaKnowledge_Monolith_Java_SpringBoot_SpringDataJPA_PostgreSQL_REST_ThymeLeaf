@@ -1,10 +1,8 @@
 package lgrimm1.javaknowledge.services;
 
+import lgrimm1.javaknowledge.databasestorage.*;
 import lgrimm1.javaknowledge.datamodels.*;
-import lgrimm1.javaknowledge.html.*;
 import lgrimm1.javaknowledge.process.*;
-import lgrimm1.javaknowledge.title.*;
-import lgrimm1.javaknowledge.txt.*;
 import org.junit.jupiter.api.*;
 import org.mockito.*;
 
@@ -14,9 +12,12 @@ import static org.mockito.Mockito.*;
 
 class ManagementServiceDeletePagesTest {
 
+/*
 	TitleRepository titleRepository;
 	TxtRepository txtRepository;
 	HtmlRepository htmlRepository;
+*/
+	DatabaseStorageService databaseStorageService;
 	Formulas formulas;
 	ProcessRecords processRecords;
 	FileOperations fileOperations;
@@ -27,9 +28,12 @@ class ManagementServiceDeletePagesTest {
 
 	@BeforeEach
 	void setUp() {
+/*
 		titleRepository = Mockito.mock(TitleRepository.class);
 		txtRepository = Mockito.mock(TxtRepository.class);
 		htmlRepository = Mockito.mock(HtmlRepository.class);
+*/
+		databaseStorageService = Mockito.mock(DatabaseStorageService.class);
 		formulas = Mockito.mock(Formulas.class);
 		processRecords = Mockito.mock(ProcessRecords.class);
 		fileOperations = Mockito.mock(FileOperations.class);
@@ -37,10 +41,12 @@ class ManagementServiceDeletePagesTest {
 		processPage = Mockito.mock(ProcessPage.class);
 		htmlGenerators = Mockito.mock(HtmlGenerators.class);
 		managementService = new ManagementService(
+/*
 				titleRepository,
 				txtRepository,
 				htmlRepository,
-				processRecords,
+*/
+				databaseStorageService, processRecords,
 				processPage,
 				fileOperations,
 				htmlGenerators,
@@ -153,7 +159,7 @@ class ManagementServiceDeletePagesTest {
 	@Test
 	void deletePages_WithValidTitles() {
 		List<String> cleanedRequestTitles = List.of("Title 3", "Title 4");
-		when(processRecords.deleteByTitles(cleanedRequestTitles, titleRepository, txtRepository, htmlRepository))
+		when(databaseStorageService.deleteByTitles(cleanedRequestTitles))
 				.thenReturn(1L);
 
 		List<String> requestTitles = new ArrayList<>();
@@ -174,7 +180,7 @@ class ManagementServiceDeletePagesTest {
 		);
 
 		List<String> restOfTitles = List.of("Title 1", "Title 2");
-		when(processRecords.getAllTitles(titleRepository))
+		when(databaseStorageService.findAllTitles())
 				.thenReturn(restOfTitles);
 
 		Payload expectedPayload = new Payload(

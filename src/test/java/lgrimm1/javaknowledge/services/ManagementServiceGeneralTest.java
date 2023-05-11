@@ -1,10 +1,8 @@
 package lgrimm1.javaknowledge.services;
 
+import lgrimm1.javaknowledge.databasestorage.*;
 import lgrimm1.javaknowledge.datamodels.*;
-import lgrimm1.javaknowledge.html.*;
 import lgrimm1.javaknowledge.process.*;
-import lgrimm1.javaknowledge.title.*;
-import lgrimm1.javaknowledge.txt.*;
 import org.junit.jupiter.api.*;
 import org.mockito.*;
 
@@ -14,9 +12,12 @@ import static org.mockito.Mockito.*;
 
 class ManagementServiceGeneralTest {
 
+/*
 	TitleRepository titleRepository;
 	TxtRepository txtRepository;
 	HtmlRepository htmlRepository;
+*/
+	DatabaseStorageService databaseStorageService;
 	Formulas formulas;
 	ProcessRecords processRecords;
 	FileOperations fileOperations;
@@ -27,9 +28,12 @@ class ManagementServiceGeneralTest {
 
 	@BeforeEach
 	void setUp() {
+/*
 		titleRepository = Mockito.mock(TitleRepository.class);
 		txtRepository = Mockito.mock(TxtRepository.class);
 		htmlRepository = Mockito.mock(HtmlRepository.class);
+*/
+		databaseStorageService = Mockito.mock(DatabaseStorageService.class);
 		formulas = Mockito.mock(Formulas.class);
 		processRecords = Mockito.mock(ProcessRecords.class);
 		fileOperations = Mockito.mock(FileOperations.class);
@@ -37,10 +41,12 @@ class ManagementServiceGeneralTest {
 		processPage = Mockito.mock(ProcessPage.class);
 		htmlGenerators = Mockito.mock(HtmlGenerators.class);
 		managementService = new ManagementService(
+/*
 				titleRepository,
 				txtRepository,
 				htmlRepository,
-				processRecords,
+*/
+				databaseStorageService, processRecords,
 				processPage,
 				fileOperations,
 				htmlGenerators,
@@ -56,7 +62,11 @@ class ManagementServiceGeneralTest {
 	@Test
 	void managePages() {
 		List<String> titles = List.of("Title 1", "Title 2");
+/*
 		when(processRecords.getAllTitles(titleRepository))
+				.thenReturn(titles);
+*/
+		when(databaseStorageService.findAllTitles())
 				.thenReturn(titles);
 
 		Payload expectedPayload = new Payload(

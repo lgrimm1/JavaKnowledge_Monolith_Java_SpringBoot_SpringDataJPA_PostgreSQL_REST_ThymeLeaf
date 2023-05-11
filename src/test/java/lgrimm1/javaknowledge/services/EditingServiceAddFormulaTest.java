@@ -1,10 +1,8 @@
 package lgrimm1.javaknowledge.services;
 
+import lgrimm1.javaknowledge.databasestorage.*;
 import lgrimm1.javaknowledge.datamodels.*;
-import lgrimm1.javaknowledge.html.*;
 import lgrimm1.javaknowledge.process.*;
-import lgrimm1.javaknowledge.title.*;
-import lgrimm1.javaknowledge.txt.*;
 import org.junit.jupiter.api.*;
 import org.mockito.*;
 
@@ -14,9 +12,12 @@ import static org.mockito.Mockito.*;
 
 class EditingServiceAddFormulaTest {
 
+	DatabaseStorageService databaseStorageService;
+/*
 	TitleRepository titleRepository;
 	TxtRepository txtRepository;
 	HtmlRepository htmlRepository;
+*/
 	Formulas formulas;
 	ProcessRecords processRecords;
 	FileOperations fileOperations;
@@ -27,17 +28,28 @@ class EditingServiceAddFormulaTest {
 
 	@BeforeEach
 	void setUp() {
+/*
 		titleRepository = Mockito.mock(TitleRepository.class);
 		txtRepository = Mockito.mock(TxtRepository.class);
 		htmlRepository = Mockito.mock(HtmlRepository.class);
+*/
+		databaseStorageService = Mockito.mock(DatabaseStorageService.class);
 		formulas = Mockito.mock(Formulas.class);
 		processRecords = Mockito.mock(ProcessRecords.class);
+/*
 		fileOperations = Mockito.mock(FileOperations.class);
+*/
 		extractors = Mockito.mock(Extractors.class);
 		processPage = Mockito.mock(ProcessPage.class);
 		htmlGenerators = Mockito.mock(HtmlGenerators.class);
+/*
 		editingService = new EditingService(
-				titleRepository, txtRepository, htmlRepository, fileOperations, processRecords,
+				titleRepository, txtRepository, htmlRepository, databaseStorageService, fileOperations, processRecords,
+				formulas);
+*/
+		editingService = new EditingService(
+				databaseStorageService,
+				processRecords,
 				formulas);
 		when(formulas.getTitleSource())
 				.thenReturn("SOURCETITLE");

@@ -1,8 +1,6 @@
 package lgrimm1.javaknowledge.process;
 
-import lgrimm1.javaknowledge.html.*;
-import lgrimm1.javaknowledge.title.*;
-import lgrimm1.javaknowledge.txt.*;
+import lgrimm1.javaknowledge.databasestorage.*;
 import org.junit.jupiter.api.*;
 import org.mockito.*;
 
@@ -13,7 +11,7 @@ import static org.mockito.Mockito.*;
 
 class ProcessRecordsImportTxtFilesTest {
 
-	ProcessRecords processRecords = new ProcessRecords();
+	ProcessRecords processRecords = new ProcessRecords(databaseStorageService, fileOperations, extractors, formulas);
 	TitleRepository titleRepository;
 	TxtRepository txtRepository;
 	HtmlRepository htmlRepository;

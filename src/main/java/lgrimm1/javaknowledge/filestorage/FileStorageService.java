@@ -1,8 +1,8 @@
 package lgrimm1.javaknowledge.filestorage;
 
+import lgrimm1.javaknowledge.databasestorage.*;
 import lgrimm1.javaknowledge.datamodels.*;
 import lgrimm1.javaknowledge.process.*;
-import lgrimm1.javaknowledge.title.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.*;
 import org.springframework.web.servlet.*;
@@ -13,7 +13,6 @@ import java.util.*;
 import java.util.stream.*;
 
 /**
- * @see #FileStorageService(FileStorageRepository, TitleRepository, Formulas, ProcessRecords)
  * @see #uploadFiles(Payload, List)
  * @see #findAll()
  * @see #deleteAllFiles()
@@ -23,17 +22,17 @@ import java.util.stream.*;
 public class FileStorageService {
 
 	private final FileStorageRepository repository;
-	private final TitleRepository titleRepository;
+	private final DatabaseStorageService databaseStorageService;
 	private final Formulas formulas;
 	private final ProcessRecords processRecords;
 
 	@Autowired
 	public FileStorageService(FileStorageRepository repository,
-							  TitleRepository titleRepository,
+							  DatabaseStorageService databaseStorageService,
 							  Formulas formulas,
 							  ProcessRecords processRecords) {
 		this.repository = repository;
-		this.titleRepository = titleRepository;
+		this.databaseStorageService = databaseStorageService;
 		this.formulas = formulas;
 		this.processRecords = processRecords;
 		if (!repository.init("." + File.separator + "upload", true)) {
@@ -81,7 +80,7 @@ public class FileStorageService {
 				null,
 				null,
 				"",
-				processRecords.getAllTitles(titleRepository)
+				databaseStorageService.findAllTitles()
 		);
 		return new ModelAndView(initialView, "payload", payload);
 	}

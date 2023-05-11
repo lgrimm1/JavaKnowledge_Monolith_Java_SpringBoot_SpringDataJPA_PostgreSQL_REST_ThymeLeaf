@@ -1,10 +1,8 @@
 package lgrimm1.javaknowledge.services;
 
+import lgrimm1.javaknowledge.databasestorage.*;
 import lgrimm1.javaknowledge.datamodels.*;
-import lgrimm1.javaknowledge.html.*;
 import lgrimm1.javaknowledge.process.*;
-import lgrimm1.javaknowledge.title.*;
-import lgrimm1.javaknowledge.txt.*;
 import org.junit.jupiter.api.*;
 import org.mockito.*;
 
@@ -17,9 +15,12 @@ import static org.mockito.Mockito.*;
 
 class ManagementServiceImportTxtTest {
 
+/*
 	TitleRepository titleRepository;
 	TxtRepository txtRepository;
 	HtmlRepository htmlRepository;
+*/
+	DatabaseStorageService databaseStorageService;
 	Formulas formulas;
 	ProcessRecords processRecords;
 	FileOperations fileOperations;
@@ -37,9 +38,12 @@ class ManagementServiceImportTxtTest {
 
 	@BeforeEach
 	void setUp() {
+/*
 		titleRepository = Mockito.mock(TitleRepository.class);
 		txtRepository = Mockito.mock(TxtRepository.class);
 		htmlRepository = Mockito.mock(HtmlRepository.class);
+*/
+		databaseStorageService = Mockito.mock(DatabaseStorageService.class);
 		formulas = Mockito.mock(Formulas.class);
 		processRecords = Mockito.mock(ProcessRecords.class);
 		fileOperations = Mockito.mock(FileOperations.class);
@@ -47,10 +51,12 @@ class ManagementServiceImportTxtTest {
 		processPage = Mockito.mock(ProcessPage.class);
 		htmlGenerators = Mockito.mock(HtmlGenerators.class);
 		managementService = new ManagementService(
+/*
 				titleRepository,
 				txtRepository,
 				htmlRepository,
-				processRecords,
+*/
+				databaseStorageService, processRecords,
 				processPage,
 				fileOperations,
 				htmlGenerators,
@@ -63,7 +69,7 @@ class ManagementServiceImportTxtTest {
 				.thenReturn("SOURCETITLE");
 		titlesBeforeUploading = List.of("Title 1");
 		titlesAfterUploading = List.of("Title 1", "Title 3");
-		when(processRecords.getAllTitles(titleRepository))
+		when(databaseStorageService.findAllTitles())
 				.thenReturn(titlesBeforeUploading);
 		filename2 = "file2.txt";
 		filename3 = "file3.txt";

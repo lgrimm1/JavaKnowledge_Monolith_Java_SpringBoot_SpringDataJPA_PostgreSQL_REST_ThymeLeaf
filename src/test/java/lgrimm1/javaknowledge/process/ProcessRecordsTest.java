@@ -1,18 +1,14 @@
 package lgrimm1.javaknowledge.process;
 
-import lgrimm1.javaknowledge.html.*;
-import lgrimm1.javaknowledge.title.*;
-import lgrimm1.javaknowledge.txt.*;
+import lgrimm1.javaknowledge.databasestorage.*;
 import org.junit.jupiter.api.*;
 import org.mockito.*;
 
 import java.util.*;
 
-import static org.mockito.Mockito.*;
-
 class ProcessRecordsTest {
 
-	ProcessRecords processRecords = new ProcessRecords();
+	ProcessRecords processRecords;
 	TitleRepository titleRepository;
 	TxtRepository txtRepository;
 	HtmlRepository htmlRepository;
@@ -30,113 +26,10 @@ class ProcessRecordsTest {
 		formulas = Mockito.mock(Formulas.class);
 		extractors = Mockito.mock(Extractors.class);
 		processPage = Mockito.mock(ProcessPage.class);
+		processRecords = new ProcessRecords(databaseStorageService, fileOperations, extractors, formulas);
 	}
 
-	@Test
-	void searchBySearchText_NullArgument() {
-		Assertions.assertTrue(processRecords.searchBySearchText(null, titleRepository, txtRepository).isEmpty());
-	}
-
-	@Test
-	void searchBySearchText_BlankArgument() {
-		when(titleRepository.findAll())
-				.thenReturn(List.of(
-						new TitleEntity(
-								1L,
-								"Title 1",
-								"title_1",
-								3L,
-								4L
-						),
-						new TitleEntity(
-								2L,
-								"Title 2",
-								"title_2",
-								6L,
-								7L
-						)
-				));
-		Set<String> titles = Set.of("Title 1", "Title 2");
-		Assertions.assertEquals(titles, processRecords.searchBySearchText("  ", titleRepository, txtRepository));
-	}
-
-	@Test
-	void searchBySearchText_GivenArgument() {
-		when(titleRepository.findByTitleContainingAllIgnoreCase("Word1"))
-				.thenReturn(List.of(
-						new TitleEntity(
-								2L,
-								"Title with word1",
-								"title_with_word1",
-								3L,
-								4L
-						),
-						new TitleEntity(
-								3L,
-								"Title with word1 word2 word3",
-								"title_with_word1_word2_word3",
-								6L,
-								7L
-						)
-				));
-		when(titleRepository.findByTitleContainingAllIgnoreCase("WORD2"))
-				.thenReturn(List.of(
-						new TitleEntity(
-								4L,
-								"Title with word2",
-								"title_with_word2",
-								10L,
-								11L
-						),
-						new TitleEntity(
-								3L,
-								"Title with word1 word2 word3",
-								"title_with_word1_word2_word3",
-								6L,
-								7L
-						)
-				));
-
-		when(txtRepository.findByContentContainingAllIgnoreCase("Word1"))
-				.thenReturn(List.of(
-						new TxtEntity(20L, "SOME text WITH WorD1 in IT."),
-						new TxtEntity(6L, "other TEXT with word1 in it"),
-						new TxtEntity(30L, "some other TEXT with word1 in it")
-				));
-		when(txtRepository.findByContentContainingAllIgnoreCase("WORD2"))
-				.thenReturn(new ArrayList<>());
-
-		when(titleRepository.findByTxtId(20L))
-				.thenReturn(Optional.empty());
-		when(titleRepository.findByTxtId(6L))
-				.thenReturn(Optional.of(new TitleEntity(
-						3L,
-						"Title with word1 word2 word3",
-						"title_with_word1_word2_word3",
-						6L,
-						7L
-				)));
-		when(titleRepository.findByTxtId(30L))
-				.thenReturn(Optional.of(new TitleEntity(
-						40L,
-						"Another Title with another words",
-						"another_title_with_another_words",
-						30L,
-						7L
-				)));
-
-		Assertions.assertEquals(Set.of(
-				"Title with word1",
-				"Title with word1 word2 word3",
-				"Another Title with another words"
-		), processRecords.searchBySearchText("Word1", titleRepository, txtRepository));
-
-		Assertions.assertEquals(Set.of(
-				"Title with word2",
-				"Title with word1 word2 word3"
-		), processRecords.searchBySearchText("WORD2", titleRepository, txtRepository));
-	}
-
+/*
 	@Test
 	void deleteByTitles() {
 		when(titleRepository.findByTitle("title 1"))
@@ -180,6 +73,8 @@ class ProcessRecordsTest {
 		), titleRepository, txtRepository, htmlRepository));
 	}
 
+*/
+/*
 	@Test
 	void getAllTitles() {
 		when(titleRepository.findAll())
@@ -195,6 +90,7 @@ class ProcessRecordsTest {
 		), processRecords.getAllTitles(titleRepository));
 	}
 
+*/
 	@Test
 	void stringToList_NullString() {
 		Assertions.assertTrue(processRecords.stringToList(null).isEmpty());

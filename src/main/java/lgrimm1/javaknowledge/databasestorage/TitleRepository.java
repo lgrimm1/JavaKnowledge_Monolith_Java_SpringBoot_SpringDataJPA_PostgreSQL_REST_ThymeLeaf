@@ -1,4 +1,4 @@
-package lgrimm1.javaknowledge.title;
+package lgrimm1.javaknowledge.databasestorage;
 
 import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.*;

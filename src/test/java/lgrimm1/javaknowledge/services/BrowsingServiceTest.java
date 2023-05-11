@@ -1,10 +1,8 @@
 package lgrimm1.javaknowledge.services;
 
+import lgrimm1.javaknowledge.databasestorage.*;
 import lgrimm1.javaknowledge.datamodels.*;
-import lgrimm1.javaknowledge.html.*;
 import lgrimm1.javaknowledge.process.*;
-import lgrimm1.javaknowledge.title.*;
-import lgrimm1.javaknowledge.txt.*;
 import org.junit.jupiter.api.*;
 import org.mockito.*;
 
@@ -14,24 +12,33 @@ import static org.mockito.Mockito.*;
 
 class BrowsingServiceTest {
 
+	DatabaseStorageService databaseStorageService;
+/*
 	TitleRepository titleRepository;
 	TxtRepository txtRepository;
 	HtmlRepository htmlRepository;
+*/
 	Formulas formulas;
 	ProcessRecords processRecords;
 	BrowsingService browsingService;
 
 	@BeforeEach
 	void setUp() {
+		databaseStorageService = Mockito.mock(DatabaseStorageService.class);
+/*
 		titleRepository = Mockito.mock(TitleRepository.class);
 		txtRepository = Mockito.mock(TxtRepository.class);
 		htmlRepository = Mockito.mock(HtmlRepository.class);
+*/
 		formulas = Mockito.mock(Formulas.class);
 		processRecords = Mockito.mock(ProcessRecords.class);
 		browsingService = new BrowsingService(
+/*
 				titleRepository,
 				txtRepository,
 				htmlRepository,
+*/
+				databaseStorageService,
 				processRecords,
 				formulas);
 		when(formulas.getTitleRoot())
@@ -105,10 +112,10 @@ class BrowsingServiceTest {
 				null
 		);
 
-		Set<String> titlesSet = Set.of("Title 2", "Title 1");
-		when(processRecords.searchBySearchText(trimmedSearchText, titleRepository, txtRepository))
-				.thenReturn(titlesSet);
+//		Set<String> titlesSet = Set.of("Title 2", "Title 1");
 		List<String> titles = List.of("Title 1", "Title 2");
+		when(databaseStorageService.findTitlesBySearchText(searchText))
+				.thenReturn(titles);
 		Payload expectedPayload = new Payload(
 				formulas.getTitleList(),
 				null,
@@ -236,7 +243,7 @@ class BrowsingServiceTest {
 				null,
 				List.of(title)
 		);
-		when(titleRepository.findByTitle(title))
+		when(databaseStorageService.findTitleByTitle(title))
 				.thenReturn(Optional.empty());
 		Exception e = Assertions.assertThrows(Exception.class, () -> browsingService.getPage(receivedPayload));
 		Assertions.assertEquals("THERE WAS A COMMUNICATION ERROR BETWEEN THE BROWSER AND THE SERVER.",
@@ -257,9 +264,9 @@ class BrowsingServiceTest {
 				null,
 				List.of(title)
 		);
-		when(titleRepository.findByTitle(title))
+		when(databaseStorageService.findTitleByTitle(title))
 				.thenReturn(Optional.of(new TitleEntity(1L, "Title 3", "title_3", 1L, 1L)));
-		when(htmlRepository.findById(1L))
+		when(databaseStorageService.findHtmlById(1L))
 				.thenReturn(Optional.empty());
 		Exception e = Assertions.assertThrows(Exception.class, () -> browsingService.getPage(receivedPayload));
 		Assertions.assertEquals("THERE WAS A COMMUNICATION ERROR BETWEEN THE BROWSER AND THE SERVER.",
@@ -283,9 +290,9 @@ class BrowsingServiceTest {
 				null,
 				List.of(title)
 		);
-		when(titleRepository.findByTitle(title))
+		when(databaseStorageService.findTitleByTitle(title))
 				.thenReturn(Optional.of(new TitleEntity(1L, "Title 3", "title_3", 1L, 1L)));
-		when(htmlRepository.findById(1L))
+		when(databaseStorageService.findHtmlById(1L))
 				.thenReturn(Optional.of(new HtmlEntity(1L, contentList, titleReferences)));
 		when(processRecords.listToString(contentList))
 				.thenReturn(contentString);
