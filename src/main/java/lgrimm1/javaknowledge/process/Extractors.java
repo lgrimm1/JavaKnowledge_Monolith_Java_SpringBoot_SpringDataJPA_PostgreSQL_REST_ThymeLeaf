@@ -1,25 +1,33 @@
 package lgrimm1.javaknowledge.process;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.*;
 
 import java.util.*;
 
 /**
- * @see #extractTitle(List, Formulas)
- * @see #extractTable(List, Formulas)
+ * @see #extractTitle(List)
+ * @see #extractTable(List)
  * @see #extractCells(String)
- * @see #extractExample(List, Formulas, int)
- * @see #extractReference(String, Formulas)
- * @see #extractBulletedList(List, Formulas)
- * @see #changeToHtmlCharsInLine(String, Formulas)
+ * @see #extractExample(List, int)
+ * @see #extractReference(String)
+ * @see #extractBulletedList(List)
+ * @see #changeToHtmlCharsInLine(String)
  */
 @Component
 public class Extractors {
 
+	private final Formulas formulas;
+
+	@Autowired
+	public Extractors(Formulas formulas) {
+		this.formulas = formulas;
+	}
+
 	/**
 	 * Returns empty string if title is not valid.
 	 */
-	public String extractTitle(List<String> txt, Formulas formulas) {
+	public String extractTitle(List<String> txt) {
 		if (txt != null &&
 				txt.size() > 2 &&
 				txt.get(0).contains(formulas.getSuperLine()) &&
@@ -33,7 +41,7 @@ public class Extractors {
 	/**
 	 * Extracts table components.
 	 */
-	public List<String> extractTable(List<String> tableText, Formulas formulas) {
+	public List<String> extractTable(List<String> tableText) {
 		List<String> tableInHtml = new ArrayList<>();
 		tableInHtml.add(formulas.getTabInSpaces() + "<table class=\"table\">");
 		for (int i = 0; i < tableText.size(); i++) {
@@ -76,7 +84,7 @@ public class Extractors {
 	 * By definition, the content is an example if starts with EXAMPLE FOR text, optionally ends with END OF EXAMPLE text.
 	 * In case no ending text until the end of the content, every line after the starting one will be rendered into the example.
 	 */
-	public List<String> extractExample(List<String> exampleText, Formulas formulas, int exampleCounter) {
+	public List<String> extractExample(List<String> exampleText, int exampleCounter) {
 		List<String> exampleInHtml = new ArrayList<>();
 		exampleInHtml.add(formulas.getTabInSpaces() + "<h4>" + exampleText.get(0) + "</h4>");
 		exampleInHtml.add(formulas.getTabInSpaces() + "<table class=\"formatter_table\">");
@@ -104,22 +112,21 @@ public class Extractors {
 	 * Extracts reference components from a line.
 	 * The first header separator separates file reference from name reference inside the file, using it is optional.
 	 */
-	public String extractReference(String line, Formulas formulas) {
+	public String extractReference(String line) {
 		line = formulas.getTabInSpaces() + "<p><i>See: " + line.substring(formulas.getReference().length()) + "</i></p>";
 		return line.contains(formulas.getHeaderSeparator()) ?
 				line.replace(formulas.getHeaderSeparator(), " / ") :
 				line;
 	}
 
-	public List<String> extractBulletedList(List<String> bulletedListText, Formulas formulas) {
+	public List<String> extractBulletedList(List<String> bulletedListText) {
 		List<String> bulletedListInHtml = new ArrayList<>();
 		String effectiveLine;
 		bulletedListInHtml.add(formulas.getTabInSpaces() + "<ol>");
 		for (String textLine : bulletedListText) {
 			if (textLine.startsWith(formulas.getBulletWithSpaces())) {
 				effectiveLine = changeToHtmlCharsInLine(textLine.substring(
-						formulas.getBulletWithSpaces().length()),
-						formulas);
+						formulas.getBulletWithSpaces().length()));
 				bulletedListInHtml.add(formulas.getTabInSpaces() +
 						formulas.getTabInSpaces() +
 						"<li>" + effectiveLine +
@@ -127,8 +134,7 @@ public class Extractors {
 			}
 			else {
 				effectiveLine = changeToHtmlCharsInLine(textLine.substring(
-						formulas.getBulletWithTab().length()),
-						formulas);
+						formulas.getBulletWithTab().length()));
 				bulletedListInHtml.add(formulas.getTabInSpaces() +
 						formulas.getTabInSpaces() +
 						"<li>" + effectiveLine +
@@ -139,7 +145,7 @@ public class Extractors {
 		return bulletedListInHtml;
 	}
 
-	private String changeToHtmlCharsInLine(String line, Formulas formulas) {
+	private String changeToHtmlCharsInLine(String line) {
 		return line
 				.replaceAll("<", "&lt;")
 				.replaceAll("\t", formulas.getTabInHtml())

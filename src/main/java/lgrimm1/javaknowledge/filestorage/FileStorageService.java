@@ -80,7 +80,7 @@ public class FileStorageService {
 				null,
 				null,
 				"",
-				databaseStorageService.findAllTitles()
+				databaseStorageService.getAllTitles()
 		);
 		return new ModelAndView(initialView, "payload", payload);
 	}

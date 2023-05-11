@@ -189,7 +189,7 @@ class FileStorageServiceTest {
 	@Test
 	void handleMaxSizeException() {
 		List<String> titles = List.of("Title 1", "Title 2");
-		when(databaseStorageService.findAllTitles())
+		when(databaseStorageService.getAllTitles())
 				.thenReturn(titles);
 		Payload expectedPayload = new Payload(
 				formulas.getTitleManagement(),

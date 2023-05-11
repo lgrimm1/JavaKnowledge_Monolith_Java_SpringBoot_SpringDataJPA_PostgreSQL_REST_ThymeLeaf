@@ -69,7 +69,7 @@ class ManagementServiceImportTxtTest {
 				.thenReturn("SOURCETITLE");
 		titlesBeforeUploading = List.of("Title 1");
 		titlesAfterUploading = List.of("Title 1", "Title 3");
-		when(databaseStorageService.findAllTitles())
+		when(databaseStorageService.getAllTitles())
 				.thenReturn(titlesBeforeUploading);
 		filename2 = "file2.txt";
 		filename3 = "file3.txt";
@@ -206,6 +206,10 @@ class ManagementServiceImportTxtTest {
 		);
 
 		when(processRecords.importTxtFiles(
+				uploadedFiles))
+				.thenReturn(notImportedFiles);
+/*
+		when(processRecords.importTxtFiles(
 				uploadedFiles,
 				titleRepository,
 				txtRepository,
@@ -214,8 +218,9 @@ class ManagementServiceImportTxtTest {
 				formulas,
 				extractors))
 				.thenReturn(notImportedFiles);
+*/
 
-		when(processRecords.getAllTitles(titleRepository))
+		when(databaseStorageService.getAllTitles())
 				.thenReturn(titlesAfterUploading);
 
 		Payload expectedPayload = new Payload(

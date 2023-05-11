@@ -323,7 +323,7 @@ class EditingServiceSavePageTest {
 		when(processRecords.getAllTitles(titleRepository))
 				.thenReturn(titles);
 */
-		when(databaseStorageService.findAllTitles())
+		when(databaseStorageService.getAllTitles())
 				.thenReturn(titles);
 		Payload expectedPayload = new Payload(
 				formulas.getTitleManagement(),

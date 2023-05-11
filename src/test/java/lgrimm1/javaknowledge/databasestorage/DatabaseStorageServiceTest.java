@@ -35,6 +35,20 @@ class DatabaseStorageServiceTest {
 
 	@Test
 	void findAllTitles() {
+		TitleEntity titleEntity1 = new TitleEntity(2L, "title 2", "title_2", 2L, 2L);
+		TitleEntity titleEntity2 = new TitleEntity(1L, "title 1", "title_1", 1L, 1L);
+		TitleEntity titleEntity3 = new TitleEntity(3L, "title 3", "title_3", 3L, 3L);
+		List<TitleEntity> titles = new ArrayList<>();
+		titles.add(titleEntity1);
+		titles.add(titleEntity2);
+		titles.add(titleEntity3);
+		when(titleRepository.findAll())
+				.thenReturn(titles);
+		Assertions.assertEquals(titles, databaseStorageService.findAllTitles());
+	}
+
+	@Test
+	void getAllTitles() {
 		when(titleRepository.findAll())
 				.thenReturn(List.of(
 						new TitleEntity(2L, "title 2", "title_2", 2L, 2L),
@@ -45,7 +59,7 @@ class DatabaseStorageServiceTest {
 				"title 1",
 				"title 2",
 				"title 3"
-		), databaseStorageService.findAllTitles());
+		), databaseStorageService.getAllTitles());
 	}
 
 	@Test

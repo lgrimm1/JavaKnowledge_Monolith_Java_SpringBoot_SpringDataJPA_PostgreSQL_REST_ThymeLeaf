@@ -1,6 +1,7 @@
 package lgrimm1.javaknowledge.process;
 
 import lgrimm1.javaknowledge.databasestorage.*;
+import lgrimm1.javaknowledge.datamodels.HtmlContentAndReferences;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.*;
 
@@ -10,8 +11,8 @@ import java.util.*;
 import java.util.stream.*;
 
 /**
- * @see #importTxtFiles(List, TitleRepository, TxtRepository, HtmlRepository, FileOperations, Formulas, Extractors)
- * @see #generate(TitleRepository, TxtRepository, HtmlRepository, Formulas, ProcessPage, Extractors, HtmlGenerators)
+ * @see #importTxtFiles(List)
+ * @see #generate()
  * @see #stringToList(String)
  * @see #listToString(List)
  */
@@ -21,14 +22,14 @@ public class ProcessRecords {
 	private final DatabaseStorageService databaseStorageService;
 	private final FileOperations fileOperations;
 	private final Extractors extractors;
-	private final Formulas formulas;
+	private final ProcessPage processPage;
 
 	@Autowired
-	public ProcessRecords(DatabaseStorageService databaseStorageService, FileOperations fileOperations, Extractors extractors, Formulas formulas) {
+	public ProcessRecords(DatabaseStorageService databaseStorageService, FileOperations fileOperations, Extractors extractors, ProcessPage processPage) {
 		this.databaseStorageService = databaseStorageService;
 		this.fileOperations = fileOperations;
 		this.extractors = extractors;
-		this.formulas = formulas;
+		this.processPage = processPage;
 	}
 
 /*
@@ -55,7 +56,7 @@ public class ProcessRecords {
 					notImportedFiles.add(file);
 				}
 				else {
-					String title = extractors.extractTitle(txt, formulas);
+					String title = extractors.extractTitle(txt);
 					if (title.isEmpty()) {
 						notImportedFiles.add(file);
 					}
@@ -63,20 +64,29 @@ public class ProcessRecords {
 						String content = this.listToString(txt.subList(3, txt.size()))
 								.replaceAll("\r\n", "\n")
 								.replaceAll("\r", "\n");
-						TitleEntity titleEntity;
-						TxtEntity txtEntity;
 						Optional<TitleEntity> optionalTitleEntity = databaseStorageService.findTitleByTitle(title);
 						if (optionalTitleEntity.isPresent()) {
-							titleEntity = optionalTitleEntity.get();
+							TitleEntity titleEntity = optionalTitleEntity.get();
+							boolean titleEntityModified = false;
 							Optional<TxtEntity> optionalTxtEntity = databaseStorageService.findTxtById(titleEntity.getTxtId());
 							if (optionalTxtEntity.isPresent()) {
-								txtEntity = optionalTxtEntity.get();
+								TxtEntity txtEntity = optionalTxtEntity.get();
 								txtEntity.setContent(content);
 								databaseStorageService.saveTxt(txtEntity);
 							}
 							else {
 								long txtId = databaseStorageService.saveTxt(new TxtEntity(content)).getId();
 								titleEntity.setTxtId(txtId);
+								titleEntityModified = true;
+							}
+							Optional<HtmlEntity> optionalHtmlEntity = databaseStorageService.findHtmlById(titleEntity.getHtmlId());
+							if (optionalHtmlEntity.isEmpty()) {
+								long htmlId = databaseStorageService.saveHtml(new HtmlEntity(new ArrayList<>(), new ArrayList<>())).getId();
+								titleEntity.setHtmlId(htmlId);
+								titleEntityModified = true;
+							}
+							if (titleEntityModified) {
+								databaseStorageService.saveTitle(titleEntity);
 							}
 /*
 							txtRepository.deleteById(optionalTitleEntity.get().getTxtId());
@@ -84,6 +94,15 @@ public class ProcessRecords {
 							titleRepository.deleteById(optionalTitleEntity.get().getId());
 */
 						}
+						else { //optionalTitleEntity.isEmpty()
+							databaseStorageService.saveTitle(new TitleEntity(
+									title,
+									"",
+									databaseStorageService.saveTxt(new TxtEntity(content)).getId(),
+									databaseStorageService.saveHtml(new HtmlEntity(new ArrayList<>(), new ArrayList<>())).getId()
+							));
+						}
+/*
 						TxtEntity txtEntity = txtRepository.save(new TxtEntity(content));
 						HtmlEntity htmlEntity = htmlRepository.save(new HtmlEntity(new ArrayList<>(), new ArrayList<>()));
 						titleRepository.save(new TitleEntity(
@@ -91,6 +110,7 @@ public class ProcessRecords {
 								fileOperations.generateFilename(title, titleRepository),
 								txtEntity.getId(),
 								htmlEntity.getId()));
+*/
 					}
 				}
 			}
@@ -101,41 +121,35 @@ public class ProcessRecords {
 	/**
 	 * Returns long[] where 0th element is number of records, 1st element is needed time in seconds.
 	 */
-	public long[] generate(TitleRepository titleRepository,
-						   TxtRepository txtRepository,
-						   HtmlRepository htmlRepository,
-						   Formulas formulas,
-						   ProcessPage processPage,
-						   Extractors extractors,
-						   HtmlGenerators htmlGenerators) {
+	public long[] generate() {
 		LocalTime startTime = LocalTime.now();
-		List<TitleEntity> titleEntities = titleRepository.findAll();
+		List<TitleEntity> titleEntities = databaseStorageService.findAllTitles();
 		for (TitleEntity titleEntity : titleEntities) {
-			Optional<TxtEntity> optionalTxtEntity = txtRepository.findById(titleEntity.getTxtId());
+			Optional<TxtEntity> optionalTxtEntity = databaseStorageService.findTxtById(titleEntity.getTxtId());
 			if (optionalTxtEntity.isPresent()) {
 				String title = titleEntity.getTitle();
+/*
 				String filename = titleEntity.getFilename();
 				long txtId = optionalTxtEntity.get().getId();
-				MainHtmlContentPayload payload = processPage.processTxt(
+*/
+				HtmlContentAndReferences payload = processPage.processTxt(
 						this.stringToList(optionalTxtEntity.get().getContent()),
-						title,
-						titleRepository,
-						formulas,
-						extractors,
-						htmlGenerators);
+						title
+				);
 				HtmlEntity htmlEntity;
-				Optional<HtmlEntity> optionalHtmlEntity = htmlRepository.findById(titleEntity.getHtmlId());
+				Optional<HtmlEntity> optionalHtmlEntity = databaseStorageService.findHtmlById(titleEntity.getHtmlId());
 				if (optionalHtmlEntity.isPresent()) {
 					htmlEntity = optionalHtmlEntity.get();
 					htmlEntity.setContent(payload.content());
 					htmlEntity.setTitleReferences(payload.titles());
-					htmlRepository.save(htmlEntity);
+					databaseStorageService.saveHtml(htmlEntity);
 				}
 				else {
 					titleEntity.setHtmlId(
-							htmlRepository.save(new HtmlEntity(payload.content(), payload.titles())).getId()
+							databaseStorageService.saveHtml(new HtmlEntity(payload.content(), payload.titles()))
+									.getId()
 					);
-					titleRepository.save(titleEntity);
+					databaseStorageService.saveTitle(titleEntity);
 				}
 /*
 				htmlRepository.deleteById(titleEntity.getHtmlId());

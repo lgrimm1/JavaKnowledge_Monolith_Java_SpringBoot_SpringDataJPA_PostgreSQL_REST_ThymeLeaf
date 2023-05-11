@@ -1,19 +1,24 @@
 package lgrimm1.javaknowledge.process;
 
-import lgrimm1.javaknowledge.databasestorage.*;
-import org.junit.jupiter.api.*;
-import org.mockito.*;
+import lgrimm1.javaknowledge.datamodels.HtmlContentAndReferences;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
 
 class HtmlGeneratorsTest {
 
 	Extractors extractors;
 	Formulas formulas;
+/*
 	TitleRepository titleRepository;
-	HtmlGenerators htmlGenerators = new HtmlGenerators();
+*/
+	HtmlGenerators htmlGenerators;
 
 	@BeforeEach
 	void setUp() {
@@ -49,7 +54,10 @@ class HtmlGeneratorsTest {
 				.thenReturn("TABINSPACES- ");
 		when(formulas.getBulletWithTab())
 				.thenReturn("\t- ");
+		htmlGenerators = new HtmlGenerators(extractors, formulas);
+/*
 		titleRepository = Mockito.mock(TitleRepository.class);
+*/
 	}
 
 	@Test
@@ -67,11 +75,7 @@ class HtmlGeneratorsTest {
 				"TABINSPACES" + "<h2>" + header1 + "</h2>"
 		);
 
-		MainHtmlContentPayload actualPayload = htmlGenerators.generateMainContent(
-				txtContent,
-				formulas,
-				extractors
-		);
+		HtmlContentAndReferences actualPayload = htmlGenerators.generateMainContent(txtContent);
 		Assertions.assertEquals(expectedHtml, actualPayload.content());
 		Assertions.assertTrue(actualPayload.titles().isEmpty());
 	}
@@ -90,11 +94,7 @@ class HtmlGeneratorsTest {
 				"TABINSPACES" + "<h3>" + header2 + "</h3>"
 		);
 
-		MainHtmlContentPayload actualPayload = htmlGenerators.generateMainContent(
-				txtContent,
-				formulas,
-				extractors
-		);
+		HtmlContentAndReferences actualPayload = htmlGenerators.generateMainContent(txtContent);
 		Assertions.assertEquals(expectedHtml, actualPayload.content());
 		Assertions.assertTrue(actualPayload.titles().isEmpty());
 	}
@@ -111,7 +111,7 @@ class HtmlGeneratorsTest {
 				"TABLESTARTHeader 1|Header 2|Header 3TABLESTART",
 				"TABLESTARTCell 11|Cell 12|Cell 13TABLESTART",
 				"TABLESTARTCell 21|Cell 22|Cell 23TABLESTART"
-		), formulas))
+		)))
 				.thenReturn(List.of(
 						"HTML table"
 				));
@@ -120,11 +120,7 @@ class HtmlGeneratorsTest {
 				"HTML table"
 		);
 
-		MainHtmlContentPayload actualPayload = htmlGenerators.generateMainContent(
-				txtContent,
-				formulas,
-				extractors
-		);
+		HtmlContentAndReferences actualPayload = htmlGenerators.generateMainContent(txtContent);
 		Assertions.assertEquals(expectedHtml, actualPayload.content());
 		Assertions.assertTrue(actualPayload.titles().isEmpty());
 	}
@@ -146,14 +142,10 @@ class HtmlGeneratorsTest {
 		);
 
 		int exampleCounter = 1;
-		when(extractors.extractExample(txtContent, formulas, exampleCounter))
+		when(extractors.extractExample(txtContent, exampleCounter))
 				.thenReturn(expectedHtml);
 
-		MainHtmlContentPayload actualPayload = htmlGenerators.generateMainContent(
-				txtContent,
-				formulas,
-				extractors
-		);
+		HtmlContentAndReferences actualPayload = htmlGenerators.generateMainContent(txtContent);
 		Assertions.assertEquals(expectedHtml, actualPayload.content());
 		Assertions.assertTrue(actualPayload.titles().isEmpty());
 	}
@@ -174,14 +166,10 @@ class HtmlGeneratorsTest {
 		);
 
 		int exampleCounter = 1;
-		when(extractors.extractExample(txtContent.subList(0, 3), formulas, exampleCounter))
+		when(extractors.extractExample(txtContent.subList(0, 3), exampleCounter))
 				.thenReturn(expectedHtml);
 
-		MainHtmlContentPayload actualPayload = htmlGenerators.generateMainContent(
-				txtContent,
-				formulas,
-				extractors
-		);
+		HtmlContentAndReferences actualPayload = htmlGenerators.generateMainContent(txtContent);
 		Assertions.assertEquals(expectedHtml, actualPayload.content());
 		Assertions.assertTrue(actualPayload.titles().isEmpty());
 	}
@@ -193,9 +181,9 @@ class HtmlGeneratorsTest {
 				"REFERENCETitle Word 2;1.2. Header header"
 		);
 
-		when(extractors.extractReference("REFERENCETitle Word 1", formulas))
+		when(extractors.extractReference("REFERENCETitle Word 1"))
 				.thenReturn("Existing reference 1");
-		when(extractors.extractReference("REFERENCETitle Word 2;1.2. Header header", formulas))
+		when(extractors.extractReference("REFERENCETitle Word 2;1.2. Header header"))
 				.thenReturn("Existing reference 2");
 
 		List<String> expectedHtml = List.of(
@@ -207,11 +195,7 @@ class HtmlGeneratorsTest {
 				"Title Word 2;1.2. Header header"
 		);
 
-		MainHtmlContentPayload actualPayload = htmlGenerators.generateMainContent(
-				txtContent,
-				formulas,
-				extractors
-		);
+		HtmlContentAndReferences actualPayload = htmlGenerators.generateMainContent(txtContent);
 		Assertions.assertEquals(expectedHtml, actualPayload.content());
 		Assertions.assertEquals(expectedTitles, actualPayload.titles());
 	}
@@ -224,11 +208,7 @@ class HtmlGeneratorsTest {
 
 		List<String> expectedHtml = new ArrayList<>();
 
-		MainHtmlContentPayload actualPayload = htmlGenerators.generateMainContent(
-				txtContent,
-				formulas,
-				extractors
-		);
+		HtmlContentAndReferences actualPayload = htmlGenerators.generateMainContent(txtContent);
 		Assertions.assertEquals(expectedHtml, actualPayload.content());
 		Assertions.assertTrue(actualPayload.titles().isEmpty());
 	}
@@ -240,7 +220,7 @@ class HtmlGeneratorsTest {
 				"\t- List item 2",
 				"TABINSPACES- List item 3"
 		);
-		when(extractors.extractBulletedList(txtContent, formulas))
+		when(extractors.extractBulletedList(txtContent))
 				.thenReturn(List.of(
 						"List"
 				));
@@ -248,11 +228,7 @@ class HtmlGeneratorsTest {
 				"List"
 		);
 
-		MainHtmlContentPayload actualPayload = htmlGenerators.generateMainContent(
-				txtContent,
-				formulas,
-				extractors
-		);
+		HtmlContentAndReferences actualPayload = htmlGenerators.generateMainContent(txtContent);
 		Assertions.assertEquals(expectedHtml, actualPayload.content());
 		Assertions.assertTrue(actualPayload.titles().isEmpty());
 	}
@@ -279,11 +255,7 @@ class HtmlGeneratorsTest {
 				"TABINSPACES" + "<br>"
 		);
 
-		MainHtmlContentPayload actualPayload = htmlGenerators.generateMainContent(
-				txtContent,
-				formulas,
-				extractors
-		);
+		HtmlContentAndReferences actualPayload = htmlGenerators.generateMainContent(txtContent);
 		Assertions.assertEquals(expectedHtml, actualPayload.content());
 		Assertions.assertTrue(actualPayload.titles().isEmpty());
 	}
@@ -295,7 +267,7 @@ class HtmlGeneratorsTest {
 				"TABINSPACES" + "<i>VERSIONS" + "</i><br>",
 				"TABINSPACES" + "<h1>" + title + "</h1>"
 		);
-		Assertions.assertEquals(neededFirstTags, htmlGenerators.generateFirstTags(title, formulas));
+		Assertions.assertEquals(neededFirstTags, htmlGenerators.generateFirstTags(title));
 	}
 
 	@Test
@@ -304,7 +276,7 @@ class HtmlGeneratorsTest {
 				"TABINSPACES" + "<br>",
 				"TABINSPACES" + "<a href=\"#top\"><i>Back to top of page</i></a><br>"
 		);
-		Assertions.assertEquals(neededLastTags, htmlGenerators.generateLastTags(formulas));
+		Assertions.assertEquals(neededLastTags, htmlGenerators.generateLastTags());
 	}
 
 	@Test
@@ -333,7 +305,7 @@ class HtmlGeneratorsTest {
 				formulas.getTabInSpaces() + "<h3>Header 2</h3>",
 				formulas.getTabInSpaces() + "<p>Text 4</p>"
 		);
-		Assertions.assertEquals(needed, htmlGenerators.collectAndReferenceHeaders(html, formulas));
+		Assertions.assertEquals(needed, htmlGenerators.collectAndReferenceHeaders(html));
 	}
 
 }

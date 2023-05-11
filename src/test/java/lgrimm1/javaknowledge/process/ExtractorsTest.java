@@ -1,18 +1,19 @@
 package lgrimm1.javaknowledge.process;
 
-import lgrimm1.javaknowledge.databasestorage.*;
-import org.junit.jupiter.api.*;
-import org.mockito.*;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.mockito.Mockito.when;
 
 class ExtractorsTest {
 
-	Extractors extractors = new Extractors();
-	TitleRepository titleRepository;
 	Formulas formulas;
+	Extractors extractors;
 
 	@BeforeEach
 	void setUp() {
@@ -43,13 +44,13 @@ class ExtractorsTest {
 				.thenReturn("TABLESTART");
 		when(formulas.getReference())
 				.thenReturn("REFERENCE");
-		titleRepository = Mockito.mock(TitleRepository.class);
+		extractors = new Extractors(formulas);
 	}
 
 	@Test
 	void extractTitle_EmptyText() {
 		List<String> originalText = new ArrayList<>();
-		Assertions.assertTrue(extractors.extractTitle(originalText, formulas).isEmpty());
+		Assertions.assertTrue(extractors.extractTitle(originalText).isEmpty());
 	}
 
 	@Test
@@ -59,7 +60,7 @@ class ExtractorsTest {
 				"",
 				"xyz"
 		);
-		Assertions.assertTrue(extractors.extractTitle(originalText, formulas).isEmpty());
+		Assertions.assertTrue(extractors.extractTitle(originalText).isEmpty());
 	}
 
 	@Test
@@ -69,7 +70,7 @@ class ExtractorsTest {
 				"Title Text",
 				"SUPERLINE"
 		);
-		Assertions.assertEquals("Title Text".toUpperCase(), extractors.extractTitle(originalText, formulas));
+		Assertions.assertEquals("Title Text".toUpperCase(), extractors.extractTitle(originalText));
 	}
 
 	@Test
@@ -98,7 +99,7 @@ class ExtractorsTest {
 				"TABINSPACES" + "TABINSPACES" + "</tr>",
 				"TABINSPACES" + "</table>"
 		);
-		Assertions.assertIterableEquals(expectedHtml, extractors.extractTable(originalText, formulas));
+		Assertions.assertIterableEquals(expectedHtml, extractors.extractTable(originalText));
 	}
 
 	@Test
@@ -126,7 +127,7 @@ class ExtractorsTest {
 		expectedHtml.add("TABINSPACES" + "TABINSPACES" + "</tr>");
 		expectedHtml.add("TABINSPACES" + "</table>");
 
-		Assertions.assertEquals(expectedHtml, extractors.extractExample(originalText, formulas, exampleCounter));
+		Assertions.assertEquals(expectedHtml, extractors.extractExample(originalText, exampleCounter));
 	}
 
 	@Test
@@ -134,7 +135,7 @@ class ExtractorsTest {
 		String line = "REFERENCETitle Text";
 		Assertions.assertEquals(
 				"TABINSPACES" + "<p><i>See: Title Text</i></p>",
-				extractors.extractReference(line, formulas)
+				extractors.extractReference(line)
 		);
 	}
 
@@ -143,7 +144,7 @@ class ExtractorsTest {
 		String line = "REFERENCETitle TextHEADERSEPARATOR1.2. Header Word";
 		Assertions.assertEquals(
 				"TABINSPACES" + "<p><i>See: Title Text / 1.2. Header Word</i></p>",
-				extractors.extractReference(line, formulas)
+				extractors.extractReference(line)
 		);
 	}
 
@@ -161,6 +162,6 @@ class ExtractorsTest {
 		expectedHtml.add("TABINSPACES" + "TABINSPACES" + "<li>List item 3</li>");
 		expectedHtml.add("TABINSPACES" + "</ol>");
 
-		Assertions.assertEquals(expectedHtml, extractors.extractBulletedList(originalText, formulas));
+		Assertions.assertEquals(expectedHtml, extractors.extractBulletedList(originalText));
 	}
 }

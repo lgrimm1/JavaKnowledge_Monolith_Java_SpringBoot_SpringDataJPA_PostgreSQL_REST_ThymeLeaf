@@ -47,10 +47,6 @@ class ManagementServiceDeletePagesTest {
 				htmlRepository,
 */
 				databaseStorageService, processRecords,
-				processPage,
-				fileOperations,
-				htmlGenerators,
-				extractors,
 				formulas
 		);
 		when(formulas.getTitleManagement())
@@ -180,7 +176,7 @@ class ManagementServiceDeletePagesTest {
 		);
 
 		List<String> restOfTitles = List.of("Title 1", "Title 2");
-		when(databaseStorageService.findAllTitles())
+		when(databaseStorageService.getAllTitles())
 				.thenReturn(restOfTitles);
 
 		Payload expectedPayload = new Payload(

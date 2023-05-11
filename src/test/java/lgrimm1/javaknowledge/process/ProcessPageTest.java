@@ -1,10 +1,12 @@
 package lgrimm1.javaknowledge.process;
 
-import lgrimm1.javaknowledge.databasestorage.*;
-import org.junit.jupiter.api.*;
-import org.mockito.*;
+import lgrimm1.javaknowledge.datamodels.HtmlContentAndReferences;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.mockito.Mockito.when;
 
@@ -12,19 +14,15 @@ class ProcessPageTest {
 
 	@Test
 	void processTxt() {
-		ProcessPage processPage = new ProcessPage();
-
-		Extractors extractors = Mockito.mock(Extractors.class);
-		Formulas formulas = Mockito.mock(Formulas.class);
-		TitleRepository titleRepository = Mockito.mock(TitleRepository.class);
 		HtmlGenerators htmlGenerators = Mockito.mock(HtmlGenerators.class);
+		ProcessPage processPage = new ProcessPage(htmlGenerators);
 
 		List<String> txtContent = new ArrayList<>(List.of(
 				"Line 1 (TXT)",
 				"Line 2 (TXT)"
 		));
 
-		when(htmlGenerators.generateFirstTags("Title Words", formulas))
+		when(htmlGenerators.generateFirstTags("Title Words"))
 				.thenReturn(new ArrayList<>(List.of(
 						"First tags (HTML)"
 				)));
@@ -32,14 +30,14 @@ class ProcessPageTest {
 		when(htmlGenerators.generateMainContent(new ArrayList<>(List.of(
 				"Line 1 (TXT)",
 				"Line 2 (TXT)"
-		)), formulas, extractors))
-				.thenReturn(new MainHtmlContentPayload(
+		))))
+				.thenReturn(new HtmlContentAndReferences(
 						new ArrayList<>(List.of(
 								"Main Content (HTML)"
 						)), new ArrayList<>()
 				));
 
-		when(htmlGenerators.generateLastTags(formulas))
+		when(htmlGenerators.generateLastTags())
 				.thenReturn(new ArrayList<>(List.of(
 						"Last tags (HTML)"
 				)));
@@ -48,7 +46,7 @@ class ProcessPageTest {
 				"First tags (HTML)",
 				"Main Content (HTML)",
 				"Last tags (HTML)"
-		)), formulas))
+		))))
 				.thenReturn(new ArrayList<>(List.of(
 						"Final HTML"
 				)));
@@ -57,14 +55,9 @@ class ProcessPageTest {
 				"Final HTML"
 		));
 
-		MainHtmlContentPayload payload = processPage.processTxt(
+		HtmlContentAndReferences payload = processPage.processTxt(
 				txtContent,
-				"Title Words",
-				titleRepository,
-				formulas,
-				extractors,
-				htmlGenerators
-		);
+				"Title Words");
 
 		Assertions.assertEquals(
 				expectedHtml,

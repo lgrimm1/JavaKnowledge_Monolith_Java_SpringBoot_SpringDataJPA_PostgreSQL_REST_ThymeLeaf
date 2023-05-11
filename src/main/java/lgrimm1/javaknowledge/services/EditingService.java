@@ -2,7 +2,6 @@ package lgrimm1.javaknowledge.services;
 
 import lgrimm1.javaknowledge.databasestorage.*;
 import lgrimm1.javaknowledge.datamodels.*;
-import lgrimm1.javaknowledge.process.FileOperations;
 import lgrimm1.javaknowledge.process.Formulas;
 import lgrimm1.javaknowledge.process.ProcessRecords;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -218,7 +217,7 @@ public class EditingService {
 					null,
 					null,
 					"",
-					databaseStorageService.findAllTitles()
+					databaseStorageService.getAllTitles()
 			);
 		}
 	}

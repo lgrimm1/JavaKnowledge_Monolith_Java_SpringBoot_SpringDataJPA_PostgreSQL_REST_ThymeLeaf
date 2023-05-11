@@ -1,13 +1,14 @@
 package lgrimm1.javaknowledge.process;
 
-import lgrimm1.javaknowledge.databasestorage.*;
-import org.junit.jupiter.api.*;
-import org.junit.jupiter.api.io.*;
-import org.mockito.*;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
+import org.mockito.Mockito;
 
-import java.io.*;
-import java.nio.file.*;
-import java.util.*;
+import java.io.File;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.mockito.Mockito.when;
 
@@ -220,56 +221,5 @@ class FileOperationsTest {
 				fileOperations.deleteAllFilesInFolder(sourceFolderNotEmptyDirectory, ".HTML"));
 		Assertions.assertEquals(1,
 				fileOperations.deleteAllFilesInFolder(sourceFolderNotEmptyDirectory, ".xyz"));
-	}
-
-	@Test
-	void generateFilename_NullFileName() {
-		TitleRepository titleRepository = Mockito.mock(TitleRepository.class);
-		Assertions.assertTrue(fileOperations.generateFilename(null, titleRepository).isEmpty());
-	}
-
-	@Test
-	void generateFilename_BlankFileName() {
-		TitleRepository titleRepository = Mockito.mock(TitleRepository.class);
-		Assertions.assertTrue(fileOperations.generateFilename("  ", titleRepository).isEmpty());
-	}
-
-	@Test
-	void generateFilename_ExistingFileNameForFirst() {
-		TitleRepository titleRepository = Mockito.mock(TitleRepository.class);
-		when(titleRepository.findByFilename("abc_def_ghi_jkl_mno_pqr_stu"))
-				.thenReturn(Optional.of(new TitleEntity(
-						3L,
-						"Abc\tdef.gHi:jkl,mno;     pqr stu",
-						"abc_def_ghi_jkl_mno_pqr_stu",
-						4L,
-						4L)));
-		when(titleRepository.findByFilename("abc_def_ghi_jkl_mno_pqr_stu_1"))
-				.thenReturn(Optional.empty());
-		Assertions.assertEquals("abc_def_ghi_jkl_mno_pqr_stu_1",
-				fileOperations.generateFilename("Abc\tdef.gHi:jkl,mno;     pqr stu", titleRepository));
-	}
-
-	@Test
-	void generateFilename_ExistingFileNameForSecond() {
-		TitleRepository titleRepository = Mockito.mock(TitleRepository.class);
-		when(titleRepository.findByFilename("abc_def_ghi_jkl_mno_pqr_stu"))
-				.thenReturn(Optional.of(new TitleEntity(
-						3L,
-						"Abc\tdef.gHi:jkl,mno;     pqr stu",
-						"abc_def_ghi_jkl_mno_pqr_stu",
-						4L,
-						4L)));
-		when(titleRepository.findByFilename("abc_def_ghi_jkl_mno_pqr_stu_1"))
-				.thenReturn(Optional.of(new TitleEntity(
-						4L,
-						"Abc\tdef.gHi:jkl,mno;     pqr stu",
-						"abc_def_ghi_jkl_mno_pqr_stu_1",
-						5L,
-						5L)));
-		when(titleRepository.findByFilename("abc_def_ghi_jkl_mno_pqr_stu_2"))
-				.thenReturn(Optional.empty());
-		Assertions.assertEquals("abc_def_ghi_jkl_mno_pqr_stu_2",
-				fileOperations.generateFilename("Abc\tdef.gHi:jkl,mno;     pqr stu", titleRepository));
 	}
 }

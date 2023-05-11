@@ -9,6 +9,7 @@ import java.util.stream.*;
 /**
  * @see #findTitleByTitle(String)
  * @see #findAllTitles()
+ * @see #getAllTitles()
  * @see #saveTitle(TitleEntity)
  * @see #findTxtById(long)
  * @see #saveTxt(TxtEntity)
@@ -31,17 +32,15 @@ public class DatabaseStorageService {
 		this.htmlRepository = htmlRepository;
 	}
 
-/*
-	public Optional<TitleEntity> findTitleById(long id) {
-		return titleRepository.findById(id);
-	}
-*/
-
 	public Optional<TitleEntity> findTitleByTitle(String title) {
 		return titleRepository.findByTitle(title);
 	}
 
-	public List<String> findAllTitles() {
+	public List<TitleEntity> findAllTitles() {
+		return titleRepository.findAll();
+	}
+
+	public List<String> getAllTitles() {
 		return titleRepository.findAll().stream()
 				.map(TitleEntity::getTitle)
 				.sorted()

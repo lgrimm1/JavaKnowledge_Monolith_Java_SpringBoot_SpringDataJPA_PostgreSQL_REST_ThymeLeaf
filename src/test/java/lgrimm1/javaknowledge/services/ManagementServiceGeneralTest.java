@@ -66,7 +66,7 @@ class ManagementServiceGeneralTest {
 		when(processRecords.getAllTitles(titleRepository))
 				.thenReturn(titles);
 */
-		when(databaseStorageService.findAllTitles())
+		when(databaseStorageService.getAllTitles())
 				.thenReturn(titles);
 
 		Payload expectedPayload = new Payload(
@@ -157,10 +157,10 @@ class ManagementServiceGeneralTest {
 		);
 
 		List<String> titles = List.of("Title 1", "Title 2");
-		when(processRecords.getAllTitles(titleRepository))
+		when(databaseStorageService.getAllTitles())
 				.thenReturn(titles);
 
-		when(processRecords.generate(titleRepository, txtRepository, htmlRepository, formulas, processPage, extractors, htmlGenerators))
+		when(processRecords.generate())
 				.thenReturn(new long[]{12, 24});
 
 		Payload expectedPayload = new Payload(

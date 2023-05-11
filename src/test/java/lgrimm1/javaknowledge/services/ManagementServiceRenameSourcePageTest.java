@@ -258,7 +258,7 @@ class ManagementServiceRenameSourcePageTest {
 				.thenReturn(new TitleEntity(3L, "Title 3", "title_3", 2L, 4L));
 
 		List<String> titles = List.of("Title 1", "Title 3");
-		when(databaseStorageService.findAllTitles())
+		when(databaseStorageService.getAllTitles())
 				.thenReturn(titles);
 
 		Payload expectedPayload = new Payload(

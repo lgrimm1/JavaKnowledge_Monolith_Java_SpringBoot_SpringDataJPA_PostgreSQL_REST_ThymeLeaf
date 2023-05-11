@@ -30,18 +30,16 @@ public class ManagementService {
 */
 	private final DatabaseStorageService databaseStorageService;
 	private final ProcessRecords processRecords;
-	private final ProcessPage processPage;
-	private final FileOperations fileOperations;
-	private final HtmlGenerators htmlGenerators;
-	private final Extractors extractors;
 	private final Formulas formulas;
 
 	@Autowired
 	public ManagementService(DatabaseStorageService databaseStorageService, ProcessRecords processRecords,
+/*
 							 ProcessPage processPage,
 							 FileOperations fileOperations,
 							 HtmlGenerators htmlGenerators,
 							 Extractors extractors,
+*/
 							 Formulas formulas) {
 		this.databaseStorageService = databaseStorageService;
 /*
@@ -50,10 +48,12 @@ public class ManagementService {
 		this.htmlRepository = htmlRepository;
 */
 		this.processRecords = processRecords;
+/*
 		this.processPage = processPage;
 		this.fileOperations = fileOperations;
 		this.htmlGenerators = htmlGenerators;
 		this.extractors = extractors;
+*/
 		this.formulas = formulas;
 	}
 
@@ -67,7 +67,7 @@ public class ManagementService {
 				null,
 				null,
 				"",
-				databaseStorageService.findAllTitles()
+				databaseStorageService.getAllTitles()
 		);
 	}
 
@@ -146,7 +146,7 @@ public class ManagementService {
 				null,
 				null,
 				"",
-				databaseStorageService.findAllTitles()
+				databaseStorageService.getAllTitles()
 		);
 	}
 
@@ -177,7 +177,7 @@ public class ManagementService {
 				null,
 				null,
 				"",
-				databaseStorageService.findAllTitles()
+				databaseStorageService.getAllTitles()
 		);
 	}
 
@@ -194,6 +194,9 @@ public class ManagementService {
 				.map(Path::toFile)
 				.toList();
 		List<File> notImportedFiles = processRecords.importTxtFiles(
+				uploadedFiles);
+/*
+		List<File> notImportedFiles = processRecords.importTxtFiles(
 				uploadedFiles,
 				titleRepository,
 				txtRepository,
@@ -201,6 +204,7 @@ public class ManagementService {
 				fileOperations,
 				formulas,
 				extractors);
+*/
 		String message = "FILE IMPORT RESULTS: " +
 				(uploadResults[0] - notImportedFiles.size()) +
 				" IMPORTED, " +
@@ -217,7 +221,7 @@ public class ManagementService {
 				null,
 				null,
 				"",
-				processRecords.getAllTitles(titleRepository)
+				databaseStorageService.getAllTitles()
 		);
 	}
 
@@ -225,14 +229,7 @@ public class ManagementService {
 		if (payload == null || payload.getConfirm() == null || !payload.getConfirm()) {
 			throw new RuntimeException("PLEASE CONFIRM GENERATING PAGES.");
 		}
-		long[] messageData = processRecords.generate(
-				titleRepository,
-				txtRepository,
-				htmlRepository,
-				formulas,
-				processPage,
-				extractors,
-				htmlGenerators);
+		long[] messageData = processRecords.generate();
 		return new Payload(
 				formulas.getTitleManagement(),
 				false,
@@ -242,7 +239,7 @@ public class ManagementService {
 				null,
 				null,
 				"",
-				processRecords.getAllTitles(titleRepository)
+				databaseStorageService.getAllTitles()
 		);
 	}
 }

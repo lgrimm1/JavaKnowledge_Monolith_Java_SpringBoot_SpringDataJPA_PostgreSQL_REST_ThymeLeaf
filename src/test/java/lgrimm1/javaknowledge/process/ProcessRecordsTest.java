@@ -9,24 +9,17 @@ import java.util.*;
 class ProcessRecordsTest {
 
 	ProcessRecords processRecords;
-	TitleRepository titleRepository;
-	TxtRepository txtRepository;
-	HtmlRepository htmlRepository;
 	FileOperations fileOperations;
-	Formulas formulas;
 	Extractors extractors;
 	ProcessPage processPage;
+	DatabaseStorageService databaseStorageService;
 
 	@BeforeEach
 	void setUp() {
-		titleRepository = Mockito.mock(TitleRepository.class);
-		txtRepository = Mockito.mock(TxtRepository.class);
-		htmlRepository = Mockito.mock(HtmlRepository.class);
 		fileOperations = Mockito.mock(FileOperations.class);
-		formulas = Mockito.mock(Formulas.class);
 		extractors = Mockito.mock(Extractors.class);
 		processPage = Mockito.mock(ProcessPage.class);
-		processRecords = new ProcessRecords(databaseStorageService, fileOperations, extractors, formulas);
+		processRecords = new ProcessRecords(databaseStorageService, fileOperations, extractors, processPage);
 	}
 
 /*

@@ -1,26 +1,33 @@
 package lgrimm1.javaknowledge.process;
 
+import lgrimm1.javaknowledge.datamodels.HtmlContentAndReferences;
 import org.springframework.stereotype.*;
 
 import java.util.*;
 
 /**
- * @see #generateMainContent(List, Formulas, Extractors)
- * @see #generateFirstTags(String, Formulas)
- * @see #generateLastTags(Formulas)
- * @see #changeToHtmlCharsInLine(String, Formulas)
- * @see #collectAndReferenceHeaders(List, Formulas)
+ * @see #generateMainContent(List)
+ * @see #generateFirstTags(String)
+ * @see #generateLastTags()
+ * @see #changeToHtmlCharsInLine(String)
+ * @see #collectAndReferenceHeaders(List)
  */
 @Component
 public class HtmlGenerators {
+
+	private final Extractors extractors;
+	private final Formulas formulas;
+
+	public HtmlGenerators(Extractors extractors, Formulas formulas) {
+		this.extractors = extractors;
+		this.formulas = formulas;
+	}
 
 	/**
 	 * Generates main html page content, also list of titles as page references.
 	 * Both Lists of String are wrapped into a record.
 	 */
-	public MainHtmlContentPayload generateMainContent(List<String> text,
-													  Formulas formulas,
-													  Extractors extractors) {
+	public HtmlContentAndReferences generateMainContent(List<String> text) {
 		List<String> html = new ArrayList<>();
 		List<String> titles = new ArrayList<>();
 		int exampleCounter = 0;
@@ -54,7 +61,7 @@ public class HtmlGenerators {
 						(text.get(textIndex2).startsWith(formulas.getTableStart()))) {
 					textIndex2++;
 				}
-				html.addAll(extractors.extractTable(text.subList(textIndex, textIndex2), formulas));
+				html.addAll(extractors.extractTable(text.subList(textIndex, textIndex2)));
 				textIndex = textIndex2;
 			}
 
@@ -65,13 +72,13 @@ public class HtmlGenerators {
 					textIndex2++;
 				}
 				exampleCounter++;
-				html.addAll(extractors.extractExample(text.subList(textIndex, textIndex2), formulas, exampleCounter));
+				html.addAll(extractors.extractExample(text.subList(textIndex, textIndex2), exampleCounter));
 				textIndex = textIndex2 + 1;
 			}
 
 			//reference
 			else if ((text.get(textIndex).startsWith(formulas.getReference()))) {
-				html.add(extractors.extractReference(text.get(textIndex), formulas));
+				html.add(extractors.extractReference(text.get(textIndex)));
 				titles.add(text.get(textIndex).substring(formulas.getReference().length()));
 				textIndex++;
 			}
@@ -90,13 +97,13 @@ public class HtmlGenerators {
 								text.get(textIndex2).startsWith(formulas.getBulletWithTab()))) {
 					textIndex2++;
 				}
-				html.addAll(extractors.extractBulletedList(text.subList(textIndex, textIndex2), formulas));
+				html.addAll(extractors.extractBulletedList(text.subList(textIndex, textIndex2)));
 				textIndex = textIndex2;
 			}
 
 			//normal text
 			else {
-				line = changeToHtmlCharsInLine(text.get(textIndex), formulas).trim();
+				line = changeToHtmlCharsInLine(text.get(textIndex)).trim();
 				if (line.isEmpty()) {
 					html.add(formulas.getTabInSpaces() + "<br>");
 				}
@@ -106,31 +113,31 @@ public class HtmlGenerators {
 				textIndex++;
 			}
 		}
-		return new MainHtmlContentPayload(html, titles);
+		return new HtmlContentAndReferences(html, titles);
 	}
 
-	public List<String> generateFirstTags(String title, Formulas formulas) {
+	public List<String> generateFirstTags(String title) {
 		return new ArrayList<>(List.of(
 				formulas.getTabInSpaces() + "<i>" + formulas.getVersions() + "</i><br>",
 				formulas.getTabInSpaces() + "<h1>" + title + "</h1>"
 		));
 	}
 
-	public List<String> generateLastTags(Formulas formulas) {
+	public List<String> generateLastTags() {
 		return List.of(
 				formulas.getTabInSpaces() + "<br>",
 				formulas.getTabInSpaces() + "<a href=\"#top\"><i>Back to top of page</i></a><br>"
 		);
 	}
 
-	private String changeToHtmlCharsInLine(String line, Formulas formulas) {
+	private String changeToHtmlCharsInLine(String line) {
 		return line
 				.replaceAll("<", "&lt;")
 				.replaceAll("\t", formulas.getTabInHtml())
 				.replaceAll(formulas.getTabInSpaces(), formulas.getTabInHtml());
 	}
 
-	public List<String> collectAndReferenceHeaders(List<String> html, Formulas formulas) {
+	public List<String> collectAndReferenceHeaders(List<String> html) {
 		List<String> headers = html.stream()
 				.filter(line -> line.contains("<h2>") || line.contains("<h3>"))
 				.map(line -> line.substring(line.indexOf(">") + 1, line.lastIndexOf("<")))
