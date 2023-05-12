@@ -54,7 +54,7 @@ public class FileStorageService {
 		return new long[]{files.size(), repository.saveAll(files).count()};
 	}
 
-	public Stream<Path> findAll() {
+	public List<Path> findAll() {
 		return repository.findAll();
 	}
 

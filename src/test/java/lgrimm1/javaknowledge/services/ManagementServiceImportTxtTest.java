@@ -1,17 +1,19 @@
 package lgrimm1.javaknowledge.services;
 
-import lgrimm1.javaknowledge.databasestorage.*;
-import lgrimm1.javaknowledge.datamodels.*;
-import lgrimm1.javaknowledge.process.*;
-import org.junit.jupiter.api.*;
-import org.mockito.*;
+import lgrimm1.javaknowledge.databasestorage.DatabaseStorageService;
+import lgrimm1.javaknowledge.datamodels.Payload;
+import lgrimm1.javaknowledge.process.Formulas;
+import lgrimm1.javaknowledge.process.ProcessRecords;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
-import java.io.*;
-import java.nio.file.*;
-import java.util.*;
-import java.util.stream.*;
+import java.io.File;
+import java.nio.file.Path;
+import java.util.List;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
 
 class ManagementServiceImportTxtTest {
 
@@ -21,7 +23,7 @@ class ManagementServiceImportTxtTest {
 	ManagementService managementService;
 	String filename2, filename3, filename4;
 	Path path2, path3, path4;
-	Stream<Path> paths;
+	List<Path> paths;
 	File file2, file3, file4;
 	List<File> uploadedFiles, notImportedFiles;
 	long[] uploadResults;
@@ -51,7 +53,7 @@ class ManagementServiceImportTxtTest {
 		path2 = Path.of(filename2);
 		path3 = Path.of(filename3);
 		path4 = Path.of(filename4);
-		paths = Stream.of(path2, path3, path4);
+		paths = List.of(path2, path3, path4);
 		file2 = path2.toFile();
 		file3 = path3.toFile();
 		file4 = path4.toFile();

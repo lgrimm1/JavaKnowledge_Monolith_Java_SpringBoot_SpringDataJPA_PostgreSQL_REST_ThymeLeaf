@@ -61,12 +61,13 @@ public class FileStorageRepository {
 		}
 	}
 
-	public Stream<Resource> getAll() {
-		return this.findAll()
+	public List<Resource> getAll() {
+		return this.findAll().stream()
 				.map(path -> path.toFile().getName())
 				.map(this::getByFilename)
 				.filter(Optional::isPresent)
-				.map(Optional::get);
+				.map(Optional::get)
+				.toList();
 	}
 
 	public Optional<Path> findByFilename(String filename) {
@@ -82,13 +83,14 @@ public class FileStorageRepository {
 		}
 	}
 
-	public Stream<Path> findAll() {
+	public List<Path> findAll() {
 		try (Stream<Path> walk = Files.walk(this.storageRootFolder, 1)) {
 			return walk
-					.filter(path -> !path.equals(this.storageRootFolder));
+					.filter(path -> !path.equals(this.storageRootFolder))
+					.toList();
 		}
 		catch (Exception e) {
-			return Stream.empty();
+			return new ArrayList<>();
 		}
 	}
 

@@ -46,12 +46,12 @@ class FileStorageRepositoryTest {
 
 		Assertions.assertTrue(repository.init(root, false));
 		Assertions.assertTrue(rootFolder.exists());
-		Assertions.assertEquals(0, rootFolder.listFiles().length);
+		Assertions.assertEquals(0, Objects.requireNonNull(rootFolder.listFiles()).length);
 		Assertions.assertTrue(rootFolder.delete());
 
 		Assertions.assertTrue(repository.init(root, true));
 		Assertions.assertTrue(rootFolder.exists());
-		Assertions.assertEquals(0, rootFolder.listFiles().length);
+		Assertions.assertEquals(0, Objects.requireNonNull(rootFolder.listFiles()).length);
 		Assertions.assertTrue(rootFolder.delete());
 	}
 
@@ -68,11 +68,11 @@ class FileStorageRepositoryTest {
 
 		Assertions.assertTrue(repository.init(root, false));
 		Assertions.assertTrue(rootFolder.exists());
-		Assertions.assertEquals(0, rootFolder.listFiles().length);
+		Assertions.assertEquals(0, Objects.requireNonNull(rootFolder.listFiles()).length);
 
 		Assertions.assertTrue(repository.init(root, true));
 		Assertions.assertTrue(rootFolder.exists());
-		Assertions.assertEquals(0, rootFolder.listFiles().length);
+		Assertions.assertEquals(0, Objects.requireNonNull(rootFolder.listFiles()).length);
 		Assertions.assertTrue(rootFolder.delete());
 	}
 
@@ -98,7 +98,7 @@ class FileStorageRepositoryTest {
 
 		Assertions.assertTrue(repository.init(root, true));
 		Assertions.assertTrue(rootFolder.exists());
-		Assertions.assertEquals(0, rootFolder.listFiles().length);
+		Assertions.assertEquals(0, Objects.requireNonNull(rootFolder.listFiles()).length);
 		Assertions.assertTrue(deleteAllFromDirectory(rootFolder));
 		Assertions.assertTrue(rootFolder.delete());
 	}
@@ -159,7 +159,7 @@ class FileStorageRepositoryTest {
 		File file2 = new File(root + File.separator + filename2);
 		Assertions.assertDoesNotThrow(file2::createNewFile);
 
-		List<Resource> resources = repository.getAll().toList();
+		List<Resource> resources = repository.getAll();
 		Assertions.assertEquals(2, resources.size());
 		Assertions.assertEquals(file1.getName(), resources.get(0).getFilename());
 		Assertions.assertEquals(file2.getName(), resources.get(1).getFilename());
@@ -224,7 +224,7 @@ class FileStorageRepositoryTest {
 		File file2 = new File(root + File.separator + filename2);
 		Assertions.assertDoesNotThrow(file2::createNewFile);
 
-		List<Path> paths = repository.findAll().toList();
+		List<Path> paths = repository.findAll();
 		Assertions.assertEquals(2, paths.size());
 		Assertions.assertEquals(filename1, paths.get(0).toFile().getName());
 		Assertions.assertEquals(filename2, paths.get(1).toFile().getName());
@@ -242,7 +242,7 @@ class FileStorageRepositoryTest {
 		Multipart file = new Multipart("file", filename, MediaType.TEXT_PLAIN_VALUE, content.getBytes());
 
 		Assertions.assertTrue(repository.save(file).isEmpty());
-		List<Path> paths = repository.findAll().toList();
+		List<Path> paths = repository.findAll();
 		Assertions.assertEquals(0, paths.size());
 		Assertions.assertTrue(rootFolder.delete());
 	}
@@ -261,7 +261,7 @@ class FileStorageRepositoryTest {
 		Assertions.assertDoesNotThrow(file2::createNewFile);
 
 		Assertions.assertTrue(repository.save(file).isEmpty());
-		List<Path> paths = repository.findAll().toList();
+		List<Path> paths = repository.findAll();
 		Assertions.assertEquals(2, paths.size());
 		Assertions.assertEquals(filename1, paths.get(0).toFile().getName());
 		Assertions.assertEquals(filename2, paths.get(1).toFile().getName());
@@ -285,7 +285,7 @@ class FileStorageRepositoryTest {
 		Optional<String> savedFilename = repository.save(file);
 		Assertions.assertTrue(savedFilename.isPresent());
 		Assertions.assertEquals(filename3, savedFilename.get());
-		List<Path> paths = repository.findAll().toList();
+		List<Path> paths = repository.findAll();
 		Assertions.assertEquals(3, paths.size());
 		Assertions.assertEquals(filename1, paths.get(0).toFile().getName());
 		Assertions.assertEquals(filename2, paths.get(1).toFile().getName());
@@ -309,7 +309,7 @@ class FileStorageRepositoryTest {
 		Assertions.assertEquals(2, savedFilenames.size());
 		Assertions.assertEquals(filename1, savedFilenames.get(0));
 		Assertions.assertEquals(filename2, savedFilenames.get(1));
-		List<Path> paths = repository.findAll().toList();
+		List<Path> paths = repository.findAll();
 		Assertions.assertEquals(2, paths.size());
 		Assertions.assertEquals(filename1, paths.get(0).toFile().getName());
 		Assertions.assertEquals(filename2, paths.get(1).toFile().getName());
@@ -328,7 +328,7 @@ class FileStorageRepositoryTest {
 		Assertions.assertDoesNotThrow(file2::createNewFile);
 
 		Assertions.assertFalse(repository.delete("file1\ntxt"));
-		List<Path> paths = repository.findAll().toList();
+		List<Path> paths = repository.findAll();
 		Assertions.assertEquals(2, paths.size());
 		Assertions.assertEquals(filename1, paths.get(0).toFile().getName());
 		Assertions.assertEquals(filename2, paths.get(1).toFile().getName());
@@ -347,7 +347,7 @@ class FileStorageRepositoryTest {
 		Assertions.assertDoesNotThrow(file2::createNewFile);
 
 		Assertions.assertFalse(repository.delete("file3.txt"));
-		List<Path> paths = repository.findAll().toList();
+		List<Path> paths = repository.findAll();
 		Assertions.assertEquals(2, paths.size());
 		Assertions.assertEquals(filename1, paths.get(0).toFile().getName());
 		Assertions.assertEquals(filename2, paths.get(1).toFile().getName());
@@ -366,7 +366,7 @@ class FileStorageRepositoryTest {
 		Assertions.assertDoesNotThrow(file2::createNewFile);
 
 		Assertions.assertTrue(repository.delete(filename2));
-		List<Path> paths = repository.findAll().toList();
+		List<Path> paths = repository.findAll();
 		Assertions.assertEquals(1, paths.size());
 		Assertions.assertEquals(filename1, paths.get(0).toFile().getName());
 		Assertions.assertTrue(deleteAllFromDirectory(rootFolder));
@@ -384,7 +384,7 @@ class FileStorageRepositoryTest {
 		Assertions.assertDoesNotThrow(file2::createNewFile);
 
 		Assertions.assertEquals(2, repository.deleteAll());
-		List<Path> paths = repository.findAll().toList();
+		List<Path> paths = repository.findAll();
 		Assertions.assertEquals(0, paths.size());
 		Assertions.assertTrue(rootFolder.delete());
 	}

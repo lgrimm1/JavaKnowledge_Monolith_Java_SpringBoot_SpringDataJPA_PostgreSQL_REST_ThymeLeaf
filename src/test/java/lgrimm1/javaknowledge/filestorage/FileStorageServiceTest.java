@@ -22,7 +22,7 @@ class FileStorageServiceTest {
 	DatabaseStorageService databaseStorageService;
 	Formulas formulas;
 	Path path1, path2;
-	Stream<Path> paths, paths2;
+	List<Path> paths, paths2;
 	String filename1, filename2, content1, content2;
 	Multipart file1, file2;
 
@@ -44,8 +44,8 @@ class FileStorageServiceTest {
 		file2 = new Multipart("file", filename2, MediaType.TEXT_PLAIN_VALUE, content2.getBytes());
 		path1 = new File(filename1).toPath();
 		path2 = new File(filename2).toPath();
-		paths = Stream.of(path1, path2);
-		paths2 = Stream.of(path1, path2);
+		paths = List.of(path1, path2);
+		paths2 = List.of(path1, path2);
 		when(repository.findAll())
 				.thenReturn(paths);
 	}
@@ -171,10 +171,10 @@ class FileStorageServiceTest {
 
 	@Test
 	void findAll() {
-		List<Path> expected = paths2.toList();
+		List<Path> expected = paths2;
 		when(repository.findAll())
 				.thenReturn(paths);
-		Assertions.assertEquals(expected, service.findAll().toList());
+		Assertions.assertEquals(expected, service.findAll());
 	}
 
 	@Test
@@ -183,7 +183,7 @@ class FileStorageServiceTest {
 				.thenReturn(2L);
 		when(repository.deleteAll())
 				.thenReturn(1L);
-		paths = Stream.of(path1);
+		paths = List.of(path1);
 		Assertions.assertArrayEquals(new long[]{2,1}, service.deleteAllFiles());
 	}
 

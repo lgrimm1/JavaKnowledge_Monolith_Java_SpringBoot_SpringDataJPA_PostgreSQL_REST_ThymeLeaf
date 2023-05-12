@@ -19,7 +19,6 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.nio.file.Path;
 import java.util.List;
-import java.util.stream.Stream;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
@@ -254,7 +253,7 @@ class ControllerManagementTest {
 
 		Path path1 = Path.of(filename1);
 		Path path2 = Path.of(filename2);
-		Stream<Path> paths = Stream.of(path1, path2);
+		List<Path> paths = List.of(path1, path2);
 		when(fileStorageService.findAll())
 				.thenReturn(paths);
 
@@ -316,7 +315,7 @@ class ControllerManagementTest {
 
 		Path path1 = Path.of(filename1);
 		Path path2 = Path.of(filename2);
-		Stream<Path> paths = Stream.of(path1, path2);
+		List<Path> paths = List.of(path1, path2);
 		when(fileStorageService.findAll())
 				.thenReturn(paths);
 

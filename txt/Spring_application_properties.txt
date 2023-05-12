@@ -8,29 +8,29 @@ SPRING APPLICATION PROPERTIES
 =================================================================================
 1. GENERALLY
 =================================================================================
-All the Spring environmental settings can be defined in one or several external files. Such an external file contains a full setting-package set for a purpose, and only one such file can be active at a time.
-An external settings file can be in two different format:
-    - application.properties
-    - Yaml
+All the Spring environmental settings can be defined in one or several external files. Such an external file contains a full setting-package set for a purpose, and only one such file can be active at a time. With other words, this file contains configuration and environment-specific settings of the application, mainly for Hibernate (part of Spring Data JPA core).
 
-Under the src/main/resources folder, one of the next files should be created:
-    - application.properties
-    - application.yml
-This file contains configuration and environment-specific settings of the application, mainly for Hibernate (part of Spring Data JPA core).
+The validity of such settings depends on where the specific setting file is placed in the project hierarchy:
+    - general settings: under the src/main/resources folder
+    - test settings: under the src/test/resources folder
 
-The Yaml format separates the hierarchy into different lines. That said, the two formats are equivalent.
+The settings file can be written in two different formats:
+    - properties (file name: application.properties)
+    - Yaml (file name: application.yml)
+The two formats are equivalent.
 
-EXAMPLE FOR SETTINGS FORMATS:
-application.properties:
+EXAMPLE FOR SETTINGS FORMATS (PROPERTIES):
 level1.level2.level3=value
+END OF EXAMPLE
 
-Yaml:
+EXAMPLE FOR SETTINGS FORMATS (YAML):
 level1:
     level2:
         level3: "value"
 END OF EXAMPLE
 
 When a setting has default value and the needed value would follow that default, presenting of the setting line is optional.
+Commenting is done by using the # character which marks that everything after it is a comment.
 
 =================================================================================
 2. DATABASE PARAMETERS

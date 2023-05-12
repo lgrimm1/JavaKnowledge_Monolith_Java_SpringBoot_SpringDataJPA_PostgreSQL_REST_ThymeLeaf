@@ -1,15 +1,18 @@
 package lgrimm1.javaknowledge.services;
 
-import lgrimm1.javaknowledge.databasestorage.*;
-import lgrimm1.javaknowledge.datamodels.*;
-import lgrimm1.javaknowledge.process.*;
+import lgrimm1.javaknowledge.databasestorage.DatabaseStorageService;
+import lgrimm1.javaknowledge.databasestorage.TitleEntity;
+import lgrimm1.javaknowledge.databasestorage.TxtEntity;
+import lgrimm1.javaknowledge.datamodels.Payload;
+import lgrimm1.javaknowledge.process.Formulas;
+import lgrimm1.javaknowledge.process.ProcessRecords;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.*;
-import java.nio.file.*;
-import java.util.*;
-import java.util.stream.*;
+import java.io.File;
+import java.nio.file.Path;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * @see #managePages()
@@ -17,7 +20,7 @@ import java.util.stream.*;
  * @see #editSourcePage(Payload)
  * @see #renameSourcePage(Payload)
  * @see #deletePages(Payload)
- * @see #importTxt(Payload, Stream, long[])
+ * @see #importTxt(Payload, List, long[])
  * @see #generateHtml(Payload)
  */
 @Service
@@ -160,7 +163,7 @@ private final DatabaseStorageService databaseStorageService;
 		);
 	}
 
-	public Payload importTxt(Payload payload, Stream<Path> paths, long[] uploadResults) {
+	public Payload importTxt(Payload payload, List<Path> paths, long[] uploadResults) {
 		if (payload == null ||
 				payload.getConfirm() == null ||
 				!payload.getConfirm() ||
@@ -169,7 +172,7 @@ private final DatabaseStorageService databaseStorageService;
 				uploadResults[1] == 0) {
 			throw new RuntimeException("PLEASE UPLOAD MINIMUM ONE PROPER FILE AND CONFIRM SOURCE OVERWRITING.");
 		}
-		List<File> uploadedFiles = paths
+		List<File> uploadedFiles = paths.stream()
 				.map(Path::toFile)
 				.toList();
 		List<File> notImportedFiles = processRecords.importTxtFiles(
