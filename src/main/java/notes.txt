@@ -1,11 +1,5 @@
 Issues:
-Save modifies the record (no deletion-creation)
-Process classes: autowired instead of passed.
-All entities into one table
 Solve out-of-the-box testability for unprepared postgres database
 
 Commit:
 
-
-Need:
-FileStorageRepository: wrapped Files.walk into try-with-resources formula.

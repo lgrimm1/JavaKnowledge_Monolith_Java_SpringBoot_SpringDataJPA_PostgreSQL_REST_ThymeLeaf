@@ -83,9 +83,8 @@ public class FileStorageRepository {
 	}
 
 	public Stream<Path> findAll() {
-		try {
-			return Files
-					.walk(this.storageRootFolder, 1)
+		try (Stream<Path> walk = Files.walk(this.storageRootFolder, 1)) {
+			return walk
 					.filter(path -> !path.equals(this.storageRootFolder));
 		}
 		catch (Exception e) {
@@ -122,9 +121,8 @@ public class FileStorageRepository {
 	}
 
 	public long deleteAll() {
-		try {
-			return Files
-					.walk(this.storageRootFolder, 1)
+		try (Stream<Path> walk = Files.walk(this.storageRootFolder, 1)) {
+			return walk
 					.filter(path -> !path.equals(this.storageRootFolder))
 					.map(Path::toFile)
 					.map(File::delete)
@@ -137,9 +135,8 @@ public class FileStorageRepository {
 	}
 
 	public long count() {
-		try {
-			return Files
-					.walk(this.storageRootFolder, 1)
+		try (Stream<Path> walk = Files.walk(this.storageRootFolder, 1)) {
+			return walk
 					.filter(path -> !path.equals(this.storageRootFolder))
 					.count();
 		}

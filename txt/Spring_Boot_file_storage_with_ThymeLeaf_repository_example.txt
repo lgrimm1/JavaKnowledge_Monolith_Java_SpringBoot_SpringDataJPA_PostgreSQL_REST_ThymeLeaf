@@ -82,9 +82,8 @@ public class FileInFolderRepository {
 	}
 
 	public Stream<Path> findAll() {
-		try {
-			return Files
-					.walk(this.root, 1)
+		try (Stream<Path> walk = Files.walk(this.root, 1)) {
+			return walk
 					.filter(path -> !path.equals(this.root))
 					.map(this.root::relativize);
 		}
@@ -122,9 +121,8 @@ public class FileInFolderRepository {
 	}
 
 	public long deleteAll() {
-		try {
-			return Files
-					.walk(this.root, 1)
+		try (Stream<Path> walk = Files.walk(this.root, 1)) {
+			return walk
 					.filter(path -> !path.equals(this.root))
 					.map(Path::toFile)
 					.map(File::delete)
@@ -137,9 +135,8 @@ public class FileInFolderRepository {
 	}
 
 	public long count() {
-		try {
-			return Files
-					.walk(this.root, 1)
+		try (Stream<Path> walk = Files.walk(this.root, 1)) {
+			return walk
 					.filter(path -> !path.equals(this.root))
 					.count();
 		}
