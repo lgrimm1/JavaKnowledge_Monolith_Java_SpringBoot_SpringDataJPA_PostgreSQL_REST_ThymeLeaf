@@ -11,50 +11,25 @@ import java.util.*;
 import static org.mockito.Mockito.*;
 
 class ManagementServiceRenameSourcePageTest {
-/*
-	TitleRepository titleRepository;
-	TxtRepository txtRepository;
-	HtmlRepository htmlRepository;
-*/
-	DatabaseStorageService databaseStorageService;
+DatabaseStorageService databaseStorageService;
 	Formulas formulas;
 	ProcessRecords processRecords;
-	FileOperations fileOperations;
-	Extractors extractors;
-	ProcessPage processPage;
-	HtmlGenerators htmlGenerators;
 	ManagementService managementService;
 
 	@BeforeEach
 	void setUp() {
-/*
-		titleRepository = Mockito.mock(TitleRepository.class);
-		txtRepository = Mockito.mock(TxtRepository.class);
-		htmlRepository = Mockito.mock(HtmlRepository.class);
-*/
 		formulas = Mockito.mock(Formulas.class);
 		processRecords = Mockito.mock(ProcessRecords.class);
-		fileOperations = Mockito.mock(FileOperations.class);
-		extractors = Mockito.mock(Extractors.class);
-		processPage = Mockito.mock(ProcessPage.class);
-		htmlGenerators = Mockito.mock(HtmlGenerators.class);
+		databaseStorageService = Mockito.mock(DatabaseStorageService.class);
 		managementService = new ManagementService(
-/*
-				titleRepository,
-				txtRepository,
-				htmlRepository,
-*/
-				databaseStorageService, processRecords,
-				processPage,
-				fileOperations,
-				htmlGenerators,
-				extractors,
+				databaseStorageService,
+				processRecords,
 				formulas
 		);
 		when(formulas.getTitleManagement())
-				.thenReturn("MANAGEMENTTITLE");
+				.thenReturn("ManagementTitle");
 		when(formulas.getTitleSource())
-				.thenReturn("SOURCETITLE");
+				.thenReturn("SourceTitle");
 	}
 
 	@Test
@@ -245,15 +220,6 @@ class ManagementServiceRenameSourcePageTest {
 		when(databaseStorageService.findTitleByTitle("Title 3"))
 				.thenReturn(Optional.empty());
 
-/*
-		when(fileOperations.generateFilename("Title 3", titleRepository))
-				.thenReturn("title_3");
-*/
-
-/*
-		when(titleRepository.save(new TitleEntity("Title 3", "title_3", 2L, 4L)))
-				.thenReturn(new TitleEntity(5L, "Title 3", "title_3", 2L, 4L));
-*/
 		when(databaseStorageService.saveTitle(new TitleEntity(3L, "Title 3", "title_3", 2L, 4L)))
 				.thenReturn(new TitleEntity(3L, "Title 3", "title_3", 2L, 4L));
 

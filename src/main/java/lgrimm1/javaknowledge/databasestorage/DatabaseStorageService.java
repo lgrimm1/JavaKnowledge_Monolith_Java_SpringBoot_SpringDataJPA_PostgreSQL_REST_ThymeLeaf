@@ -26,7 +26,9 @@ public class DatabaseStorageService {
 	private final HtmlRepository htmlRepository;
 
 	@Autowired
-	public DatabaseStorageService(TitleRepository titleRepository, TxtRepository txtRepository, HtmlRepository htmlRepository) {
+	public DatabaseStorageService(TitleRepository titleRepository,
+								  TxtRepository txtRepository,
+								  HtmlRepository htmlRepository) {
 		this.titleRepository = titleRepository;
 		this.txtRepository = txtRepository;
 		this.htmlRepository = htmlRepository;

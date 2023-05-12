@@ -113,12 +113,29 @@ public class Payload {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
 		Payload payload = (Payload) o;
-		return Objects.equals(templateTitle, payload.templateTitle) && Objects.equals(confirm, payload.confirm) && Objects.equals(content, payload.content) && Objects.equals(editExistingPage, payload.editExistingPage) && Objects.equals(message, payload.message) && Objects.equals(searchText, payload.searchText) && Objects.equals(htmlContent, payload.htmlContent) && Objects.equals(title, payload.title) && Objects.equals(titles, payload.titles);
+		return Objects.equals(templateTitle, payload.templateTitle) &&
+				Objects.equals(confirm, payload.confirm) &&
+				Objects.equals(content, payload.content) &&
+				Objects.equals(editExistingPage, payload.editExistingPage) &&
+				Objects.equals(message, payload.message) &&
+				Objects.equals(searchText, payload.searchText) &&
+				Objects.equals(htmlContent, payload.htmlContent) &&
+				Objects.equals(title, payload.title) &&
+				Objects.equals(titles, payload.titles);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(templateTitle, confirm, content, editExistingPage, message, searchText, htmlContent, title, titles);
+		return Objects.hash(
+				templateTitle,
+				confirm,
+				content,
+				editExistingPage,
+				message,
+				searchText,
+				htmlContent,
+				title,
+				titles);
 	}
 
 	@Override

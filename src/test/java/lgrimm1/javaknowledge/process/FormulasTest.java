@@ -35,7 +35,8 @@ class FormulasTest {
 
 	@Test
 	void getVersions() {
-		Assertions.assertEquals("Up to Java 17, Spring Boot 3 (Hibernate 6), JUnit 5, PostgreSQL 11, HTML 5, CSS 3.",
+		Assertions.assertEquals(
+				"Up to Java 17, Spring Boot 3 (Hibernate 6), JUnit 5, PostgreSQL 11, HTML 5, CSS 3.",
 				formulas.getVersions());
 	}
 

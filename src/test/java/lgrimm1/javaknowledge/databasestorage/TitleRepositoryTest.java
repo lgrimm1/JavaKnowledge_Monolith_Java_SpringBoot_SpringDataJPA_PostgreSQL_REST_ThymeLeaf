@@ -1,12 +1,14 @@
 package lgrimm1.javaknowledge.databasestorage;
 
-import lgrimm1.javaknowledge.databasestorage.*;
-import org.junit.jupiter.api.*;
-import org.springframework.beans.factory.annotation.*;
-import org.springframework.boot.test.autoconfigure.jdbc.*;
-import org.springframework.boot.test.autoconfigure.orm.jpa.*;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -111,21 +113,6 @@ class TitleRepositoryTest {
 		Assertions.assertTrue(equalsWithoutId(expectedTitleEntity1, list.get(0)));
 		Assertions.assertTrue(equalsWithoutId(expectedTitleEntity2, list.get(1)));
 		Assertions.assertTrue(equalsWithoutId(expectedTitleEntity3, list.get(2)));
-	}
-
-	@Test
-	void findByFilename_NoSuccess() {
-		Optional<TitleEntity> optionalTitleEntity = titleRepository.findByFilename("abc");
-		Assertions.assertTrue(optionalTitleEntity.isEmpty());
-	}
-
-	@Test
-	void findByFilename_Success() {
-		TitleEntity expectedTitleEntity = new TitleEntity("Title 2", "title_2", 2L, 2L);
-
-		Optional<TitleEntity> optionalTitleEntity = titleRepository.findByFilename("title_2");
-		Assertions.assertTrue(optionalTitleEntity.isPresent());
-		Assertions.assertTrue(equalsWithoutId(expectedTitleEntity, optionalTitleEntity.get()));
 	}
 
 	@Test

@@ -247,9 +247,9 @@ class ControllerManagementTest {
 				MediaType.TEXT_PLAIN_VALUE,
 				content2.getBytes()
 		);
-		List<Multipart> multiparts = List.of(multipartOfFiles1, multipartOfFiles2);
+		List<Multipart> multipartList = List.of(multipartOfFiles1, multipartOfFiles2);
 		long[] uploadResults = new long[]{2, 2};
-		when(fileStorageService.uploadFiles(payload, multiparts))
+		when(fileStorageService.uploadFiles(payload, multipartList))
 				.thenReturn(uploadResults);
 
 		Path path1 = Path.of(filename1);
@@ -309,9 +309,9 @@ class ControllerManagementTest {
 				MediaType.TEXT_PLAIN_VALUE,
 				content2.getBytes()
 		);
-		List<Multipart> multiparts = List.of(multipartOfFiles1, multipartOfFiles2);
+		List<Multipart> multipartList = List.of(multipartOfFiles1, multipartOfFiles2);
 		long[] uploadResults = new long[]{2, 2};
-		when(fileStorageService.uploadFiles(payload, multiparts))
+		when(fileStorageService.uploadFiles(payload, multipartList))
 				.thenReturn(uploadResults);
 
 		Path path1 = Path.of(filename1);

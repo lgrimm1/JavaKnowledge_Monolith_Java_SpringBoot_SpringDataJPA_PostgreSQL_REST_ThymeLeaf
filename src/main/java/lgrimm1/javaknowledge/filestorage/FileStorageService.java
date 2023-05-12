@@ -24,17 +24,14 @@ public class FileStorageService {
 	private final FileStorageRepository repository;
 	private final DatabaseStorageService databaseStorageService;
 	private final Formulas formulas;
-	private final ProcessRecords processRecords;
 
 	@Autowired
 	public FileStorageService(FileStorageRepository repository,
 							  DatabaseStorageService databaseStorageService,
-							  Formulas formulas,
-							  ProcessRecords processRecords) {
+							  Formulas formulas) {
 		this.repository = repository;
 		this.databaseStorageService = databaseStorageService;
 		this.formulas = formulas;
-		this.processRecords = processRecords;
 		if (!repository.init("." + File.separator + "upload", true)) {
 			throw new RuntimeException("Could not initialize the file storage!");
 		}

@@ -25,21 +25,15 @@ public class ProcessRecords {
 	private final ProcessPage processPage;
 
 	@Autowired
-	public ProcessRecords(DatabaseStorageService databaseStorageService, FileOperations fileOperations, Extractors extractors, ProcessPage processPage) {
+	public ProcessRecords(DatabaseStorageService databaseStorageService,
+						  FileOperations fileOperations,
+						  Extractors extractors,
+						  ProcessPage processPage) {
 		this.databaseStorageService = databaseStorageService;
 		this.fileOperations = fileOperations;
 		this.extractors = extractors;
 		this.processPage = processPage;
 	}
-
-/*
-	public List<String> getAllTitles(TitleRepository titleRepository) {
-		return titleRepository.findAll().stream()
-				.map(TitleEntity::getTitle)
-				.sorted()
-				.toList();
-	}
-*/
 
 	/**
 	 * Returns List of not-imported files.
@@ -60,7 +54,7 @@ public class ProcessRecords {
 					if (title.isEmpty()) {
 						notImportedFiles.add(file);
 					}
-					else {
+					else { //exists, file, readable, not-empty, existing title
 						String content = this.listToString(txt.subList(3, txt.size()))
 								.replaceAll("\r\n", "\n")
 								.replaceAll("\r", "\n");
@@ -68,7 +62,8 @@ public class ProcessRecords {
 						if (optionalTitleEntity.isPresent()) {
 							TitleEntity titleEntity = optionalTitleEntity.get();
 							boolean titleEntityModified = false;
-							Optional<TxtEntity> optionalTxtEntity = databaseStorageService.findTxtById(titleEntity.getTxtId());
+							Optional<TxtEntity> optionalTxtEntity =
+									databaseStorageService.findTxtById(titleEntity.getTxtId());
 							if (optionalTxtEntity.isPresent()) {
 								TxtEntity txtEntity = optionalTxtEntity.get();
 								txtEntity.setContent(content);
@@ -79,38 +74,29 @@ public class ProcessRecords {
 								titleEntity.setTxtId(txtId);
 								titleEntityModified = true;
 							}
-							Optional<HtmlEntity> optionalHtmlEntity = databaseStorageService.findHtmlById(titleEntity.getHtmlId());
+							Optional<HtmlEntity> optionalHtmlEntity =
+									databaseStorageService.findHtmlById(titleEntity.getHtmlId());
 							if (optionalHtmlEntity.isEmpty()) {
-								long htmlId = databaseStorageService.saveHtml(new HtmlEntity(new ArrayList<>(), new ArrayList<>())).getId();
+								long htmlId = databaseStorageService.saveHtml(new HtmlEntity(
+										new ArrayList<>(),
+										new ArrayList<>())).getId();
 								titleEntity.setHtmlId(htmlId);
 								titleEntityModified = true;
 							}
 							if (titleEntityModified) {
 								databaseStorageService.saveTitle(titleEntity);
 							}
-/*
-							txtRepository.deleteById(optionalTitleEntity.get().getTxtId());
-							htmlRepository.deleteById(optionalTitleEntity.get().getHtmlId());
-							titleRepository.deleteById(optionalTitleEntity.get().getId());
-*/
 						}
 						else { //optionalTitleEntity.isEmpty()
 							databaseStorageService.saveTitle(new TitleEntity(
 									title,
 									"",
 									databaseStorageService.saveTxt(new TxtEntity(content)).getId(),
-									databaseStorageService.saveHtml(new HtmlEntity(new ArrayList<>(), new ArrayList<>())).getId()
+									databaseStorageService.saveHtml(new HtmlEntity(
+											new ArrayList<>(),
+											new ArrayList<>())).getId()
 							));
 						}
-/*
-						TxtEntity txtEntity = txtRepository.save(new TxtEntity(content));
-						HtmlEntity htmlEntity = htmlRepository.save(new HtmlEntity(new ArrayList<>(), new ArrayList<>()));
-						titleRepository.save(new TitleEntity(
-								title,
-								fileOperations.generateFilename(title, titleRepository),
-								txtEntity.getId(),
-								htmlEntity.getId()));
-*/
 					}
 				}
 			}
@@ -119,7 +105,7 @@ public class ProcessRecords {
 	}
 
 	/**
-	 * Returns long[] where 0th element is number of records, 1st element is needed time in seconds.
+	 * Returns long[] where 0th element is number of found title records, 1st element is needed time in seconds.
 	 */
 	public long[] generate() {
 		LocalTime startTime = LocalTime.now();
@@ -128,10 +114,6 @@ public class ProcessRecords {
 			Optional<TxtEntity> optionalTxtEntity = databaseStorageService.findTxtById(titleEntity.getTxtId());
 			if (optionalTxtEntity.isPresent()) {
 				String title = titleEntity.getTitle();
-/*
-				String filename = titleEntity.getFilename();
-				long txtId = optionalTxtEntity.get().getId();
-*/
 				HtmlContentAndReferences payload = processPage.processTxt(
 						this.stringToList(optionalTxtEntity.get().getContent()),
 						title
@@ -151,12 +133,6 @@ public class ProcessRecords {
 					);
 					databaseStorageService.saveTitle(titleEntity);
 				}
-/*
-				htmlRepository.deleteById(titleEntity.getHtmlId());
-				long htmlId = htmlRepository.save(new HtmlEntity(payload.content(), payload.titles())).getId();
-				titleRepository.deleteById(titleEntity.getId());
-				titleRepository.save(new TitleEntity(title, filename, txtId, htmlId));
-*/
 			}
 		}
 		return new long[]{

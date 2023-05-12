@@ -118,7 +118,10 @@ public class Controller {
 	public ModelAndView renameSourcePage(@ModelAttribute("payload") Payload payload, Model model) {
 		model.asMap().clear();
 		try {
-			return new ModelAndView("management", "payload", managementService.renameSourcePage(payload));
+			return new ModelAndView(
+					"management",
+					"payload",
+					managementService.renameSourcePage(payload));
 		}
 		catch (Exception e) {
 			Payload payload2 = managementService.managePages();
@@ -177,7 +180,10 @@ public class Controller {
 								   Model model) {
 		model.asMap().clear();
 		try {
-			return new ModelAndView("source", "payload", editingService.addFormula(formulaName, payload));
+			return new ModelAndView(
+					"source",
+					"payload",
+					editingService.addFormula(formulaName, payload));
 		}
 		catch (Exception e) {
 			Payload payload2 = managementService.managePages();

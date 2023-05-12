@@ -15,18 +15,9 @@ import static org.mockito.Mockito.*;
 
 class ManagementServiceImportTxtTest {
 
-/*
-	TitleRepository titleRepository;
-	TxtRepository txtRepository;
-	HtmlRepository htmlRepository;
-*/
 	DatabaseStorageService databaseStorageService;
 	Formulas formulas;
 	ProcessRecords processRecords;
-	FileOperations fileOperations;
-	Extractors extractors;
-	ProcessPage processPage;
-	HtmlGenerators htmlGenerators;
 	ManagementService managementService;
 	String filename2, filename3, filename4;
 	Path path2, path3, path4;
@@ -38,35 +29,18 @@ class ManagementServiceImportTxtTest {
 
 	@BeforeEach
 	void setUp() {
-/*
-		titleRepository = Mockito.mock(TitleRepository.class);
-		txtRepository = Mockito.mock(TxtRepository.class);
-		htmlRepository = Mockito.mock(HtmlRepository.class);
-*/
 		databaseStorageService = Mockito.mock(DatabaseStorageService.class);
 		formulas = Mockito.mock(Formulas.class);
 		processRecords = Mockito.mock(ProcessRecords.class);
-		fileOperations = Mockito.mock(FileOperations.class);
-		extractors = Mockito.mock(Extractors.class);
-		processPage = Mockito.mock(ProcessPage.class);
-		htmlGenerators = Mockito.mock(HtmlGenerators.class);
 		managementService = new ManagementService(
-/*
-				titleRepository,
-				txtRepository,
-				htmlRepository,
-*/
-				databaseStorageService, processRecords,
-				processPage,
-				fileOperations,
-				htmlGenerators,
-				extractors,
+				databaseStorageService,
+				processRecords,
 				formulas
 		);
 		when(formulas.getTitleManagement())
-				.thenReturn("MANAGEMENTTITLE");
+				.thenReturn("ManagementTitle");
 		when(formulas.getTitleSource())
-				.thenReturn("SOURCETITLE");
+				.thenReturn("SourceTitle");
 		titlesBeforeUploading = List.of("Title 1");
 		titlesAfterUploading = List.of("Title 1", "Title 3");
 		when(databaseStorageService.getAllTitles())
@@ -204,25 +178,11 @@ class ManagementServiceImportTxtTest {
 				"",
 				titlesBeforeUploading
 		);
-
 		when(processRecords.importTxtFiles(
 				uploadedFiles))
 				.thenReturn(notImportedFiles);
-/*
-		when(processRecords.importTxtFiles(
-				uploadedFiles,
-				titleRepository,
-				txtRepository,
-				htmlRepository,
-				fileOperations,
-				formulas,
-				extractors))
-				.thenReturn(notImportedFiles);
-*/
-
 		when(databaseStorageService.getAllTitles())
 				.thenReturn(titlesAfterUploading);
-
 		Payload expectedPayload = new Payload(
 				formulas.getTitleManagement(),
 				false,

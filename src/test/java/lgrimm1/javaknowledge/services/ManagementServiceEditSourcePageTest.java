@@ -11,51 +11,24 @@ import java.util.*;
 import static org.mockito.Mockito.*;
 
 class ManagementServiceEditSourcePageTest {
-/*
-	TitleRepository titleRepository;
-	TxtRepository txtRepository;
-	HtmlRepository htmlRepository;
-*/
-	DatabaseStorageService databaseStorageService;
+DatabaseStorageService databaseStorageService;
 	Formulas formulas;
 	ProcessRecords processRecords;
-	FileOperations fileOperations;
-	Extractors extractors;
-	ProcessPage processPage;
-	HtmlGenerators htmlGenerators;
 	ManagementService managementService;
 
 	@BeforeEach
 	void setUp() {
-/*
-		titleRepository = Mockito.mock(TitleRepository.class);
-		txtRepository = Mockito.mock(TxtRepository.class);
-		htmlRepository = Mockito.mock(HtmlRepository.class);
-*/
 		databaseStorageService = Mockito.mock(DatabaseStorageService.class);
 		formulas = Mockito.mock(Formulas.class);
 		processRecords = Mockito.mock(ProcessRecords.class);
-		fileOperations = Mockito.mock(FileOperations.class);
-		extractors = Mockito.mock(Extractors.class);
-		processPage = Mockito.mock(ProcessPage.class);
-		htmlGenerators = Mockito.mock(HtmlGenerators.class);
 		managementService = new ManagementService(
-/*
-				titleRepository,
-				txtRepository,
-				htmlRepository,
-*/
 				databaseStorageService, processRecords,
-				processPage,
-				fileOperations,
-				htmlGenerators,
-				extractors,
 				formulas
 		);
 		when(formulas.getTitleManagement())
-				.thenReturn("MANAGEMENTTITLE");
+				.thenReturn("ManagementTitle");
 		when(formulas.getTitleSource())
-				.thenReturn("SOURCETITLE");
+				.thenReturn("SourceTitle");
 	}
 
 	@Test

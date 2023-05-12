@@ -21,7 +21,6 @@ class FileStorageServiceTest {
 	FileStorageService service;
 	DatabaseStorageService databaseStorageService;
 	Formulas formulas;
-	ProcessRecords processRecords;
 	Path path1, path2;
 	Stream<Path> paths, paths2;
 	String filename1, filename2, content1, content2;
@@ -35,8 +34,7 @@ class FileStorageServiceTest {
 		databaseStorageService = Mockito.mock(DatabaseStorageService.class);
 		formulas = Mockito.mock(Formulas.class);
 		formulas = Mockito.mock(Formulas.class);
-		processRecords = Mockito.mock(ProcessRecords.class);
-		service = new FileStorageService(repository, databaseStorageService, formulas, processRecords);
+		service = new FileStorageService(repository, databaseStorageService, formulas);
 
 		filename1 = "file1.txt";
 		filename2 = "file2.txt";
@@ -60,7 +58,8 @@ class FileStorageServiceTest {
 		when(repository.init(root, true))
 				.thenReturn(false);
 
-		Exception e = Assertions.assertThrows(Exception.class, () -> new FileStorageService(repository, databaseStorageService, formulas, processRecords));
+		Exception e = Assertions.assertThrows(Exception.class,
+				() -> new FileStorageService(repository, databaseStorageService, formulas));
 		Assertions.assertEquals("Could not initialize the file storage!", e.getMessage());
 	}
 
@@ -72,7 +71,9 @@ class FileStorageServiceTest {
 		when(repository.init(root, true))
 				.thenReturn(true);
 
-		service = Assertions.assertDoesNotThrow(() -> new FileStorageService(repository, databaseStorageService, formulas, processRecords));
+		service = Assertions.assertDoesNotThrow(
+				() -> new FileStorageService(repository, databaseStorageService, formulas)
+		);
 		Assertions.assertNotNull(service);
 	}
 

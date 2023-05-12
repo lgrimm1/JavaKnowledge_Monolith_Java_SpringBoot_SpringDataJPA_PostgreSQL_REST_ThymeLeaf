@@ -13,11 +13,6 @@ import static org.mockito.Mockito.*;
 class BrowsingServiceTest {
 
 	DatabaseStorageService databaseStorageService;
-/*
-	TitleRepository titleRepository;
-	TxtRepository txtRepository;
-	HtmlRepository htmlRepository;
-*/
 	Formulas formulas;
 	ProcessRecords processRecords;
 	BrowsingService browsingService;
@@ -25,28 +20,18 @@ class BrowsingServiceTest {
 	@BeforeEach
 	void setUp() {
 		databaseStorageService = Mockito.mock(DatabaseStorageService.class);
-/*
-		titleRepository = Mockito.mock(TitleRepository.class);
-		txtRepository = Mockito.mock(TxtRepository.class);
-		htmlRepository = Mockito.mock(HtmlRepository.class);
-*/
 		formulas = Mockito.mock(Formulas.class);
 		processRecords = Mockito.mock(ProcessRecords.class);
 		browsingService = new BrowsingService(
-/*
-				titleRepository,
-				txtRepository,
-				htmlRepository,
-*/
 				databaseStorageService,
 				processRecords,
 				formulas);
 		when(formulas.getTitleRoot())
-				.thenReturn("ROOTTITLE");
+				.thenReturn("RootTitle");
 		when(formulas.getTitleManagement())
-				.thenReturn("MANAGEMENTTITLE");
+				.thenReturn("ManagementTitle");
 		when(formulas.getTitleSource())
-				.thenReturn("SOURCETITLE");
+				.thenReturn("SourceTitle");
 	}
 
 	@Test
@@ -64,14 +49,6 @@ class BrowsingServiceTest {
 		);
 
 		Assertions.assertEquals(expectedPayload, browsingService.getRoot());
-/*
-		Map<String, Object> model = new HashMap<>();
-		model.put("payload", expectedPayload);
-
-		ModelAndView modelAndView = browsingService.getRoot("root");
-		ModelAndViewAssert.assertViewName(modelAndView, "root");
-		ModelAndViewAssert.assertModelAttributeValues(modelAndView, model);
-*/
 	}
 
 	@Test
@@ -99,6 +76,7 @@ class BrowsingServiceTest {
 	@Test
 	void searchPages_RightPayload() {
 		String searchText = "  Word2 Word1  ";
+		String correctedSearchText = "Word2 Word1";
 		String trimmedSearchText = "Word2 Word1";
 		Payload receivedPayload = new Payload(
 				formulas.getTitleRoot(),
@@ -114,7 +92,7 @@ class BrowsingServiceTest {
 
 //		Set<String> titlesSet = Set.of("Title 2", "Title 1");
 		List<String> titles = List.of("Title 1", "Title 2");
-		when(databaseStorageService.findTitlesBySearchText(searchText))
+		when(databaseStorageService.findTitlesBySearchText(correctedSearchText))
 				.thenReturn(titles);
 		Payload expectedPayload = new Payload(
 				formulas.getTitleList(),

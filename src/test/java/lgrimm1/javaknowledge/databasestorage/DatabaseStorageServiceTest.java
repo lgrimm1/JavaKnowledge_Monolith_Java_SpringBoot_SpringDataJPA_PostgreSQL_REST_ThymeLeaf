@@ -231,8 +231,8 @@ class DatabaseStorageServiceTest {
 		), databaseStorageService.findTitlesBySearchText("Word1"));
 
 		Assertions.assertEquals(List.of(
-				"Title with word2",
-				"Title with word1 word2 word3"
+				"Title with word1 word2 word3",
+				"Title with word2"
 		), databaseStorageService.findTitlesBySearchText("WORD2"));
 	}
 

@@ -18,45 +18,15 @@ import java.util.Optional;
 @Service
 public class EditingService {
 
-/*
-	private final TitleRepository titleRepository;
-	private final TxtRepository txtRepository;
-	private final HtmlRepository htmlRepository;
-*/
-	private final DatabaseStorageService databaseStorageService;
-/*
-	private final FileOperations fileOperations;
-*/
+private final DatabaseStorageService databaseStorageService;
 	private final ProcessRecords processRecords;
 	private final Formulas formulas;
 
 	@Autowired
-/*
-	public EditingService(TitleRepository titleRepository,
-						  TxtRepository txtRepository,
-						  HtmlRepository htmlRepository,
-						  DatabaseStorageService databaseStorageService,
-						  FileOperations fileOperations,
-						  ProcessRecords processRecords,
-						  Formulas formulas) {
-		this.databaseStorageService = databaseStorageService;
-		this.titleRepository = titleRepository;
-		this.txtRepository = txtRepository;
-		this.htmlRepository = htmlRepository;
-		this.fileOperations = fileOperations;
-		this.processRecords = processRecords;
-		this.formulas = formulas;
-*/
 	public EditingService(DatabaseStorageService databaseStorageService,
 						  ProcessRecords processRecords,
 						  Formulas formulas) {
 		this.databaseStorageService = databaseStorageService;
-/*
-		this.titleRepository = titleRepository;
-		this.txtRepository = txtRepository;
-		this.htmlRepository = htmlRepository;
-		this.fileOperations = fileOperations;
-*/
 		this.processRecords = processRecords;
 		this.formulas = formulas;
 	}
@@ -133,7 +103,8 @@ public class EditingService {
 				content = content
 						.replaceAll("\r\n", "\n")
 						.replaceAll("\r", "\n");
-				Optional<TxtEntity> optionalTxtEntity = databaseStorageService.findTxtById(optionalTitleEntity.get().getTxtId());
+				Optional<TxtEntity> optionalTxtEntity =
+						databaseStorageService.findTxtById(optionalTitleEntity.get().getTxtId());
 				if (optionalTxtEntity.isPresent()) {
 					TxtEntity txtEntity = optionalTxtEntity.get();
 					txtEntity.setContent(content);
@@ -145,18 +116,6 @@ public class EditingService {
 					titleEntity.setTxtId(txtId);
 					databaseStorageService.saveTitle(titleEntity);
 				}
-/*
-				txtRepository.deleteById(optionalTitleEntity.get().getTxtId());
-				htmlRepository.deleteById(optionalTitleEntity.get().getHtmlId());
-				titleRepository.deleteById(optionalTitleEntity.get().getId());
-				HtmlEntity htmlEntity = htmlRepository.save(new HtmlEntity(new ArrayList<>(), new ArrayList<>()));
-				TxtEntity txtEntity = txtRepository.save(new TxtEntity(content));
-				titleRepository.save(new TitleEntity(
-						title,
-						fileOperations.generateFilename(title, titleRepository),
-						txtEntity.getId(),
-						htmlEntity.getId()));
-*/
 				message = "SOURCE PAGE HAS BEEN OVERWRITTEN.";
 			}
 			return new Payload(
@@ -190,22 +149,15 @@ public class EditingService {
 				content = content
 						.replaceAll("\r\n", "\n")
 						.replaceAll("\r", "\n");
-				long htmlId = databaseStorageService.saveHtml(new HtmlEntity(new ArrayList<>(), new ArrayList<>())).getId();
+				long htmlId = databaseStorageService.saveHtml(new HtmlEntity(
+						new ArrayList<>(),
+						new ArrayList<>())).getId();
 				long txtId = databaseStorageService.saveTxt(new TxtEntity(content)).getId();
 				databaseStorageService.saveTitle(new TitleEntity(
 						title,
 						"",
 						txtId,
 						htmlId));
-/*
-				HtmlEntity htmlEntity = htmlRepository.save(new HtmlEntity(new ArrayList<>(), new ArrayList<>()));
-				TxtEntity txtEntity = txtRepository.save(new TxtEntity(content));
-				titleRepository.save(new TitleEntity(
-						title,
-						fileOperations.generateFilename(title, titleRepository),
-						txtEntity.getId(),
-						htmlEntity.getId()));
-*/
 				message = "SOURCE PAGE HAS BEEN SAVED.";
 			}
 			return new Payload(

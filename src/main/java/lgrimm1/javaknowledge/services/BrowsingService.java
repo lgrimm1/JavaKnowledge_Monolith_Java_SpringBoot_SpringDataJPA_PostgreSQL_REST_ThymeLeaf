@@ -17,26 +17,11 @@ import java.util.Optional;
  */
 @Service
 public class BrowsingService {
-/*
-	private final TitleRepository titleRepository;
-	private final TxtRepository txtRepository;
-	private final HtmlRepository htmlRepository;
-*/
-	private final DatabaseStorageService databaseStorageService;
+private final DatabaseStorageService databaseStorageService;
 	private final ProcessRecords processRecords;
 	private final Formulas formulas;
 
 	@Autowired
-/*
-	public BrowsingService(TitleRepository titleRepository,
-						   TxtRepository txtRepository,
-						   HtmlRepository htmlRepository,
-						   DatabaseStorageService databaseStorageService, ProcessRecords processRecords,
-						   Formulas formulas) {
-		this.titleRepository = titleRepository;
-		this.txtRepository = txtRepository;
-		this.htmlRepository = htmlRepository;
-*/
 	public BrowsingService(DatabaseStorageService databaseStorageService,
 						   ProcessRecords processRecords,
 						   Formulas formulas) {
@@ -69,15 +54,6 @@ public class BrowsingService {
 		if (payload == null || payload.getSearchText() == null) {
 			throw new RuntimeException("THERE WAS A COMMUNICATION ERROR BETWEEN THE BROWSER AND THE SERVER.");
 		}
-/*
-		List<String> titles = processRecords.searchBySearchText(
-						payload.getSearchText().trim(),
-						titleRepository,
-						txtRepository)
-				.stream()
-				.sorted()
-				.toList();
-*/
 		return new Payload(
 				formulas.getTitleList(),
 				null,
@@ -101,13 +77,11 @@ public class BrowsingService {
 		}
 		List<String> titles = payload.getTitles();
 		Optional<TitleEntity> optionalTitleEntity = databaseStorageService.findTitleByTitle(titles.get(0));
-/*
-		Optional<TitleEntity> optionalTitleEntity = titleRepository.findByTitle(titles.get(0));
-*/
 		if (optionalTitleEntity.isEmpty()) {
 			throw new RuntimeException("THERE WAS A COMMUNICATION ERROR BETWEEN THE BROWSER AND THE SERVER.");
 		}
-		Optional<HtmlEntity> optionalHtmlEntity = databaseStorageService.findHtmlById(optionalTitleEntity.get().getHtmlId());
+		Optional<HtmlEntity> optionalHtmlEntity =
+				databaseStorageService.findHtmlById(optionalTitleEntity.get().getHtmlId());
 		if (optionalHtmlEntity.isEmpty()) {
 			throw new RuntimeException("THERE WAS A COMMUNICATION ERROR BETWEEN THE BROWSER AND THE SERVER.");
 		}

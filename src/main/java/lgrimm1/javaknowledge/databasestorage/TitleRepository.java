@@ -12,7 +12,5 @@ public interface TitleRepository extends JpaRepository<TitleEntity, Long> {
 
 	List<TitleEntity> findByTitleContainingAllIgnoreCase(String titlePart);
 
-	Optional<TitleEntity> findByFilename(String filename);
-
 	Optional<TitleEntity> findByTxtId(long txtId);
 }

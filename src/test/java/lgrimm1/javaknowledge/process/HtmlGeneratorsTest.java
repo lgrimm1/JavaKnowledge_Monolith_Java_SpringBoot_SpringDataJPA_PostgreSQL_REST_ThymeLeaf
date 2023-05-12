@@ -15,9 +15,6 @@ class HtmlGeneratorsTest {
 
 	Extractors extractors;
 	Formulas formulas;
-/*
-	TitleRepository titleRepository;
-*/
 	HtmlGenerators htmlGenerators;
 
 	@BeforeEach
@@ -25,33 +22,33 @@ class HtmlGeneratorsTest {
 		extractors = Mockito.mock(Extractors.class);
 		formulas = Mockito.mock(Formulas.class);
 		when(formulas.getSuperLine())
-				.thenReturn("SUPERLINE");
+				.thenReturn("SuperLine");
 		when(formulas.getSubLine())
-				.thenReturn("SUBLINE");
+				.thenReturn("SubLine");
 		when(formulas.getTabInSpaces())
-				.thenReturn("TABINSPACES");
+				.thenReturn("TabInSpaces");
 		when(formulas.getTabInHtml())
-				.thenReturn("TABINHTML");
+				.thenReturn("TabInHtml");
 		when(formulas.getVersions())
-				.thenReturn("VERSIONS");
+				.thenReturn("Versions");
 		when(formulas.generateTabInSpaces(2))
-				.thenReturn("TABINSPACESTABINSPACES");
+				.thenReturn("TabInSpacesTabInSpaces");
 		when(formulas.generateTabInSpaces(3))
-				.thenReturn("TABINSPACESTABINSPACESTABINSPACES");
+				.thenReturn("TabInSpacesTabInSpacesTabInSpaces");
 		when(formulas.generateTabInSpaces(4))
-				.thenReturn("TABINSPACESTABINSPACESTABINSPACESTABINSPACES");
+				.thenReturn("TabInSpacesTabInSpacesTabInSpacesTabInSpaces");
 		when(formulas.getMore())
-				.thenReturn("MORE");
+				.thenReturn("More");
 		when(formulas.getTableStart())
-				.thenReturn("TABLESTART");
+				.thenReturn("TableStart");
 		when(formulas.getExampleStart())
-				.thenReturn("EXAMPLESTART");
+				.thenReturn("ExampleStart");
 		when(formulas.getExampleEnd())
-				.thenReturn("EXAMPLEEND");
+				.thenReturn("ExampleEnd");
 		when(formulas.getReference())
-				.thenReturn("REFERENCE");
+				.thenReturn("Reference");
 		when(formulas.getBulletWithSpaces())
-				.thenReturn("TABINSPACES- ");
+				.thenReturn("TabInSpaces- ");
 		when(formulas.getBulletWithTab())
 				.thenReturn("\t- ");
 		htmlGenerators = new HtmlGenerators(extractors, formulas);
@@ -64,15 +61,15 @@ class HtmlGeneratorsTest {
 	void generateMainContent_Header1() {
 		String header1 = "1. Header 1 text";
 		List<String> txtContent = List.of(
-				"SUPERLINE",
+				"SuperLine",
 				header1,
-				"SUPERLINE"
+				"SuperLine"
 		);
 
 		List<String> expectedHtml = List.of(
-				"TABINSPACES" + "<a href=\"#top\"><i>Back to top of page</i></a><br>",
-				"TABINSPACES" + "<a name=\"" + header1 + "\"></a>",
-				"TABINSPACES" + "<h2>" + header1 + "</h2>"
+				"TabInSpaces" + "<a href=\"#top\"><i>Back to top of page</i></a><br>",
+				"TabInSpaces" + "<a name=\"" + header1 + "\"></a>",
+				"TabInSpaces" + "<h2>" + header1 + "</h2>"
 		);
 
 		HtmlContentAndReferences actualPayload = htmlGenerators.generateMainContent(txtContent);
@@ -85,13 +82,13 @@ class HtmlGeneratorsTest {
 		String header2 = "1.2. Header 2 text";
 		List<String> txtContent = List.of(
 				header2,
-				"SUBLINE"
+				"SubLine"
 		);
 
 		List<String> expectedHtml = List.of(
-				"TABINSPACES" + "<a href=\"#top\"><i>Back to top of page</i></a><br>",
-				"TABINSPACES" + "<a name=\"" + header2 + "\"></a>",
-				"TABINSPACES" + "<h3>" + header2 + "</h3>"
+				"TabInSpaces" + "<a href=\"#top\"><i>Back to top of page</i></a><br>",
+				"TabInSpaces" + "<a name=\"" + header2 + "\"></a>",
+				"TabInSpaces" + "<h3>" + header2 + "</h3>"
 		);
 
 		HtmlContentAndReferences actualPayload = htmlGenerators.generateMainContent(txtContent);
@@ -102,15 +99,15 @@ class HtmlGeneratorsTest {
 	@Test
 	void generateMainContent_Table() {
 		List<String> txtContent = List.of(
-				"TABLESTARTHeader 1|Header 2|Header 3TABLESTART",
-				"TABLESTARTCell 11|Cell 12|Cell 13TABLESTART",
-				"TABLESTARTCell 21|Cell 22|Cell 23TABLESTART"
+				"TableStartHeader 1|Header 2|Header 3TableStart",
+				"TableStartCell 11|Cell 12|Cell 13TableStart",
+				"TableStartCell 21|Cell 22|Cell 23TableStart"
 		);
 
 		when(extractors.extractTable(List.of(
-				"TABLESTARTHeader 1|Header 2|Header 3TABLESTART",
-				"TABLESTARTCell 11|Cell 12|Cell 13TABLESTART",
-				"TABLESTARTCell 21|Cell 22|Cell 23TABLESTART"
+				"TableStartHeader 1|Header 2|Header 3TableStart",
+				"TableStartCell 11|Cell 12|Cell 13TableStart",
+				"TableStartCell 21|Cell 22|Cell 23TableStart"
 		)))
 				.thenReturn(List.of(
 						"HTML table"
@@ -128,7 +125,7 @@ class HtmlGeneratorsTest {
 	@Test
 	void generateMainContent_ExampleWithoutClosingText() {
 		List<String> txtContent = List.of(
-				"EXAMPLESTART",
+				"ExampleStart",
 				"first row",
 				"  second row",
 				"some other rows"
@@ -153,10 +150,10 @@ class HtmlGeneratorsTest {
 	@Test
 	void generateMainContent_ExampleWithClosingText() {
 		List<String> txtContent = List.of(
-				"EXAMPLESTART",
+				"ExampleStart",
 				"first row",
 				"  second row",
-				"EXAMPLEEND"
+				"ExampleEnd"
 		);
 
 		List<String> expectedHtml = List.of(
@@ -177,13 +174,13 @@ class HtmlGeneratorsTest {
 	@Test
 	void generateMainContent_InternalReference() {
 		List<String> txtContent = List.of(
-				"REFERENCETitle Word 1",
-				"REFERENCETitle Word 2;1.2. Header header"
+				"ReferenceTitle Word 1",
+				"ReferenceTitle Word 2;1.2. Header header"
 		);
 
-		when(extractors.extractReference("REFERENCETitle Word 1"))
+		when(extractors.extractReference("ReferenceTitle Word 1"))
 				.thenReturn("Existing reference 1");
-		when(extractors.extractReference("REFERENCETitle Word 2;1.2. Header header"))
+		when(extractors.extractReference("ReferenceTitle Word 2;1.2. Header header"))
 				.thenReturn("Existing reference 2");
 
 		List<String> expectedHtml = List.of(
@@ -203,7 +200,7 @@ class HtmlGeneratorsTest {
 	@Test
 	void generateMainContent_ExternalReference() {
 		List<String> txtContent = List.of(
-				"MOREexternal reference text"
+				"MoreExternal reference text"
 		);
 
 		List<String> expectedHtml = new ArrayList<>();
@@ -216,9 +213,9 @@ class HtmlGeneratorsTest {
 	@Test
 	void generateMainContent_BulletedList() {
 		List<String> txtContent = List.of(
-				"TABINSPACES- List item 1",
+				"TabInSpaces- List item 1",
 				"\t- List item 2",
-				"TABINSPACES- List item 3"
+				"TabInSpaces- List item 3"
 		);
 		when(extractors.extractBulletedList(txtContent))
 				.thenReturn(List.of(
@@ -237,22 +234,22 @@ class HtmlGeneratorsTest {
 	void generateMainContent_NormalText() {
 		List<String> txtContent = List.of(
 				"Line 1",
-				"TABINSPACES" + "Line 2",
-				"TABINSPACES" + "  Line 3",
+				"TabInSpaces" + "Line 2",
+				"TabInSpaces" + "  Line 3",
 				"  Line 4",
-				"\t<tag>" + "TABINSPACES",
+				"\t<tag>" + "TabInSpaces",
 				"  ",
 				""
 		);
 
 		List<String> expectedHtml = List.of(
-				"TABINSPACES" + "<p>" + "Line 1</p>",
-				"TABINSPACES" + "<p>" + "TABINHTML" + "Line 2</p>",
-				"TABINSPACES" + "<p>" + "TABINHTML" + "  Line 3</p>",
-				"TABINSPACES" + "<p>" + "Line 4</p>",
-				"TABINSPACES" + "<p>" + "TABINHTML" + "&lt;tag>" + "TABINHTML</p>",
-				"TABINSPACES" + "<br>",
-				"TABINSPACES" + "<br>"
+				"TabInSpaces" + "<p>" + "Line 1</p>",
+				"TabInSpaces" + "<p>" + "TabInHtml" + "Line 2</p>",
+				"TabInSpaces" + "<p>" + "TabInHtml" + "  Line 3</p>",
+				"TabInSpaces" + "<p>" + "Line 4</p>",
+				"TabInSpaces" + "<p>" + "TabInHtml" + "&lt;tag>" + "TabInHtml</p>",
+				"TabInSpaces" + "<br>",
+				"TabInSpaces" + "<br>"
 		);
 
 		HtmlContentAndReferences actualPayload = htmlGenerators.generateMainContent(txtContent);
@@ -264,8 +261,8 @@ class HtmlGeneratorsTest {
 	void generateFirstTags() {
 		String title = "TITLE TITLE";
 		List<String> neededFirstTags = List.of(
-				"TABINSPACES" + "<i>VERSIONS" + "</i><br>",
-				"TABINSPACES" + "<h1>" + title + "</h1>"
+				"TabInSpaces" + "<i>Versions" + "</i><br>",
+				"TabInSpaces" + "<h1>" + title + "</h1>"
 		);
 		Assertions.assertEquals(neededFirstTags, htmlGenerators.generateFirstTags(title));
 	}
@@ -273,8 +270,8 @@ class HtmlGeneratorsTest {
 	@Test
 	void generateLastTags() {
 		List<String> neededLastTags = List.of(
-				"TABINSPACES" + "<br>",
-				"TABINSPACES" + "<a href=\"#top\"><i>Back to top of page</i></a><br>"
+				"TabInSpaces" + "<br>",
+				"TabInSpaces" + "<a href=\"#top\"><i>Back to top of page</i></a><br>"
 		);
 		Assertions.assertEquals(neededLastTags, htmlGenerators.generateLastTags());
 	}

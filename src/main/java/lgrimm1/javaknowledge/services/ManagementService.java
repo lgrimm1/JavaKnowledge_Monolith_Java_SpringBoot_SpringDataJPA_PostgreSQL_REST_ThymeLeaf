@@ -23,37 +23,16 @@ import java.util.stream.*;
 @Service
 public class ManagementService {
 
-/*
-	private final TitleRepository titleRepository;
-	private final TxtRepository txtRepository;
-	private final HtmlRepository htmlRepository;
-*/
-	private final DatabaseStorageService databaseStorageService;
+private final DatabaseStorageService databaseStorageService;
 	private final ProcessRecords processRecords;
 	private final Formulas formulas;
 
 	@Autowired
-	public ManagementService(DatabaseStorageService databaseStorageService, ProcessRecords processRecords,
-/*
-							 ProcessPage processPage,
-							 FileOperations fileOperations,
-							 HtmlGenerators htmlGenerators,
-							 Extractors extractors,
-*/
+	public ManagementService(DatabaseStorageService databaseStorageService,
+							 ProcessRecords processRecords,
 							 Formulas formulas) {
 		this.databaseStorageService = databaseStorageService;
-/*
-		this.titleRepository = titleRepository;
-		this.txtRepository = txtRepository;
-		this.htmlRepository = htmlRepository;
-*/
 		this.processRecords = processRecords;
-/*
-		this.processPage = processPage;
-		this.fileOperations = fileOperations;
-		this.htmlGenerators = htmlGenerators;
-		this.extractors = extractors;
-*/
 		this.formulas = formulas;
 	}
 
@@ -195,16 +174,6 @@ public class ManagementService {
 				.toList();
 		List<File> notImportedFiles = processRecords.importTxtFiles(
 				uploadedFiles);
-/*
-		List<File> notImportedFiles = processRecords.importTxtFiles(
-				uploadedFiles,
-				titleRepository,
-				txtRepository,
-				htmlRepository,
-				fileOperations,
-				formulas,
-				extractors);
-*/
 		String message = "FILE IMPORT RESULTS: " +
 				(uploadResults[0] - notImportedFiles.size()) +
 				" IMPORTED, " +
