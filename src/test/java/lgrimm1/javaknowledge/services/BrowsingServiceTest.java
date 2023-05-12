@@ -243,7 +243,7 @@ class BrowsingServiceTest {
 				List.of(title)
 		);
 		when(databaseStorageService.findTitleByTitle(title))
-				.thenReturn(Optional.of(new TitleEntity(1L, "Title 3", "title_3", 1L, 1L)));
+				.thenReturn(Optional.of(new TitleEntity(1L, "Title 3", 1L, 1L)));
 		when(databaseStorageService.findHtmlById(1L))
 				.thenReturn(Optional.empty());
 		Exception e = Assertions.assertThrows(Exception.class, () -> browsingService.getPage(receivedPayload));
@@ -269,7 +269,7 @@ class BrowsingServiceTest {
 				List.of(title)
 		);
 		when(databaseStorageService.findTitleByTitle(title))
-				.thenReturn(Optional.of(new TitleEntity(1L, "Title 3", "title_3", 1L, 1L)));
+				.thenReturn(Optional.of(new TitleEntity(1L, "Title 3", 1L, 1L)));
 		when(databaseStorageService.findHtmlById(1L))
 				.thenReturn(Optional.of(new HtmlEntity(1L, contentList, titleReferences)));
 		when(processRecords.listToString(contentList))

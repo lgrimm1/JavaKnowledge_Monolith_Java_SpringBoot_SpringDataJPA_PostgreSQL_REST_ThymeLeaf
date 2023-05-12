@@ -190,7 +190,7 @@ class EditingServiceSavePageTest {
 		);
 
 		when(databaseStorageService.findTitleByTitle(title))
-				.thenReturn(Optional.of(new TitleEntity(2L, "Title 1", "title_1", 3L, 4L)));
+				.thenReturn(Optional.of(new TitleEntity(2L, "Title 1", 3L, 4L)));
 		when(databaseStorageService.findTxtById(3L))
 				.thenReturn(Optional.of(new TxtEntity(3L, "original content")));
 		when(databaseStorageService.saveTxt(new TxtEntity(3L, content)))
@@ -229,7 +229,7 @@ class EditingServiceSavePageTest {
 		);
 
 		when(databaseStorageService.findTitleByTitle(title))
-				.thenReturn(Optional.of(new TitleEntity(2L, "Title 1", "title_1", 3L, 4L)));
+				.thenReturn(Optional.of(new TitleEntity(2L, "Title 1", 3L, 4L)));
 
 		Payload expectedPayload = new Payload(
 				formulas.getTitleSource(),
@@ -305,7 +305,7 @@ class EditingServiceSavePageTest {
 		);
 
 		when(databaseStorageService.findTitleByTitle(title))
-				.thenReturn(Optional.of(new TitleEntity(2L, title, "title_1", 3L, 4L)));
+				.thenReturn(Optional.of(new TitleEntity(2L, title, 3L, 4L)));
 
 		Payload expectedPayload = new Payload(
 				formulas.getTitleSource(),

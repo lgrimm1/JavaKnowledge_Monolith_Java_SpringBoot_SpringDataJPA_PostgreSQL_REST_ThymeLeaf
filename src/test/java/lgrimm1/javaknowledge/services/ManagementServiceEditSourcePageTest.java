@@ -148,7 +148,7 @@ DatabaseStorageService databaseStorageService;
 				receivedTitles
 		);
 		when(databaseStorageService.findTitleByTitle(receivedTitles.get(0)))
-				.thenReturn(Optional.of(new TitleEntity(3L, "Title 3", "title_3", 2L, 4L)));
+				.thenReturn(Optional.of(new TitleEntity(3L, "Title 3", 2L, 4L)));
 		when(databaseStorageService.findTxtById(2L))
 				.thenReturn(Optional.empty());
 		Exception e = Assertions.assertThrows(Exception.class, () -> managementService.editSourcePage(receivedPayload));
@@ -172,10 +172,9 @@ DatabaseStorageService databaseStorageService;
 		);
 
 		String expectedTitle = receivedTitles.get(0);
-		String expectedFilename = "title_3";
 		List<String> expectedTitles = List.of(expectedTitle);
 		when(databaseStorageService.findTitleByTitle(expectedTitles.get(0)))
-				.thenReturn(Optional.of(new TitleEntity(3L, expectedTitle, expectedFilename, 2L, 4L)));
+				.thenReturn(Optional.of(new TitleEntity(3L, expectedTitle, 2L, 4L)));
 
 		String content = "Line 1\nLine 2\n";
 		when(databaseStorageService.findTxtById(2L))

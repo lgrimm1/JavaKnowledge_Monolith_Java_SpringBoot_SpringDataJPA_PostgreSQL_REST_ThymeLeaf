@@ -15,8 +15,6 @@ public class TitleEntity {
 	long id;
 	@Column(name = "title", nullable = false, unique = true)
 	String title;
-	@Column(name = "filename", nullable = false, unique = true)
-	String filename;
 	@Column(name = "txt_id", nullable = false, unique = true)
 	long txtId;
 	@Column(name = "html_id", nullable = false, unique = true)
@@ -25,17 +23,15 @@ public class TitleEntity {
 	public TitleEntity() {
 	}
 
-	public TitleEntity(String title, String filename, long txtId, long htmlId) {
+	public TitleEntity(String title, long txtId, long htmlId) {
 		this.title = title;
-		this.filename = filename;
 		this.txtId = txtId;
 		this.htmlId = htmlId;
 	}
 
-	public TitleEntity(long id, String title, String filename, long txtId, long htmlId) {
+	public TitleEntity(long id, String title, long txtId, long htmlId) {
 		this.id = id;
 		this.title = title;
-		this.filename = filename;
 		this.txtId = txtId;
 		this.htmlId = htmlId;
 	}
@@ -54,14 +50,6 @@ public class TitleEntity {
 
 	public void setTitle(String title) {
 		this.title = title;
-	}
-
-	public String getFilename() {
-		return filename;
-	}
-
-	public void setFilename(String filename) {
-		this.filename = filename;
 	}
 
 	public long getTxtId() {
@@ -88,13 +76,12 @@ public class TitleEntity {
 		return id == that.id &&
 				txtId == that.txtId &&
 				htmlId == that.htmlId &&
-				title.equals(that.title) &&
-				filename.equals(that.filename);
+				title.equals(that.title);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, title, filename, txtId, htmlId);
+		return Objects.hash(id, title, txtId, htmlId);
 	}
 
 	@Override
@@ -102,7 +89,6 @@ public class TitleEntity {
 		return "TitleEntity{" +
 				"id=" + id +
 				", title='" + title + '\'' +
-				", filename='" + filename + '\'' +
 				", txtId=" + txtId +
 				", htmlId=" + htmlId +
 				'}';

@@ -50,9 +50,9 @@ class ProcessRecordsGenerateTest {
 				List.of("original html content 3"),
 				List.of("original html references 3"));
 		HtmlEntity givenHtmlEntity3 = new HtmlEntity(333L, htmlContentList3, new ArrayList<>());
-		TitleEntity originalTitleEntity1 = new TitleEntity(1L, title1, "", 11L, 111L);
-		TitleEntity originalTitleEntity2 = new TitleEntity(2L, title2, "", 22L, 222L);
-		TitleEntity originalTitleEntity3 = new TitleEntity(3L, title3, "", 33L, 333L);
+		TitleEntity originalTitleEntity1 = new TitleEntity(1L, title1, 11L, 111L);
+		TitleEntity originalTitleEntity2 = new TitleEntity(2L, title2, 22L, 222L);
+		TitleEntity originalTitleEntity3 = new TitleEntity(3L, title3, 33L, 333L);
 
 		when(databaseStorageService.findAllTitles())
 				.thenReturn(List.of(

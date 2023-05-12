@@ -90,7 +90,6 @@ public class ProcessRecords {
 						else { //optionalTitleEntity.isEmpty()
 							databaseStorageService.saveTitle(new TitleEntity(
 									title,
-									"",
 									databaseStorageService.saveTxt(new TxtEntity(content)).getId(),
 									databaseStorageService.saveHtml(new HtmlEntity(
 											new ArrayList<>(),

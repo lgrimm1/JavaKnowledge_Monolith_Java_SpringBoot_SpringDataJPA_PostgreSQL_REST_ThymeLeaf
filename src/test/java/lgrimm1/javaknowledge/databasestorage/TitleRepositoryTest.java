@@ -22,16 +22,15 @@ class TitleRepositoryTest {
 			return false;
 		}
 		return entity1.getTitle().equals(entity2.getTitle()) &&
-				entity1.getFilename().equals(entity2.getFilename()) &&
 				entity1.getTxtId() == entity2.getTxtId() &&
 				entity1.getHtmlId() == entity2.getHtmlId();
 	}
 
 	@BeforeEach
 	void setUp() {
-		TitleEntity entity1 = new TitleEntity(1L, "Title 1", "title_1", 1L, 1L);
-		TitleEntity entity2 = new TitleEntity(2L, "Title 2", "title_2", 2L, 2L);
-		TitleEntity entity3 = new TitleEntity(3L, "Title 3", "title_3", 3L, 3L);
+		TitleEntity entity1 = new TitleEntity(1L, "Title 1", 1L, 1L);
+		TitleEntity entity2 = new TitleEntity(2L, "Title 2", 2L, 2L);
+		TitleEntity entity3 = new TitleEntity(3L, "Title 3", 3L, 3L);
 		titleRepository.saveAll(List.of(entity1, entity2, entity3));
 	}
 
@@ -41,34 +40,34 @@ class TitleRepositoryTest {
 		TitleEntity entity2;
 		Assertions.assertFalse(this.equalsWithoutId(null, null));
 
-		entity1 = new TitleEntity("Title 1", "title_1", 1L, 11L);
+		entity1 = new TitleEntity("Title 1", 1L, 11L);
 		Assertions.assertFalse(this.equalsWithoutId(entity1, null));
 
-		entity2 = new TitleEntity("Title 2", "title_2", 2L, 22L);
+		entity2 = new TitleEntity("Title 2", 2L, 22L);
 		Assertions.assertFalse(this.equalsWithoutId(null, entity2));
 
-		entity1 = new TitleEntity("Title 1", "title_1", 1L, 11L);
-		entity2 = new TitleEntity("Title 2", "title_2", 2L, 22L);
+		entity1 = new TitleEntity("Title 1", 1L, 11L);
+		entity2 = new TitleEntity("Title 2", 2L, 22L);
 		Assertions.assertFalse(this.equalsWithoutId(entity1, entity2));
 
-		entity1 = new TitleEntity("Title 1", "title_1", 1L, 11L);
-		entity2 = new TitleEntity("Title 1", "title_2", 2L, 22L);
+		entity1 = new TitleEntity("Title 1", 1L, 11L);
+		entity2 = new TitleEntity("Title 1", 2L, 22L);
 		Assertions.assertFalse(this.equalsWithoutId(entity1, entity2));
 
-		entity1 = new TitleEntity("Title 1", "title_1", 1L, 11L);
-		entity2 = new TitleEntity("Title 2", "title_1", 2L, 22L);
+		entity1 = new TitleEntity("Title 1", 1L, 11L);
+		entity2 = new TitleEntity("Title 2", 2L, 22L);
 		Assertions.assertFalse(this.equalsWithoutId(entity1, entity2));
 
-		entity1 = new TitleEntity("Title 1", "title_1", 1L, 11L);
-		entity2 = new TitleEntity("Title 2", "title_2", 1L, 22L);
+		entity1 = new TitleEntity("Title 1", 1L, 11L);
+		entity2 = new TitleEntity("Title 2", 1L, 22L);
 		Assertions.assertFalse(this.equalsWithoutId(entity1, entity2));
 
-		entity1 = new TitleEntity("Title 1", "title_1", 1L, 11L);
-		entity2 = new TitleEntity("Title 2", "title_2", 2L, 11L);
+		entity1 = new TitleEntity("Title 1", 1L, 11L);
+		entity2 = new TitleEntity("Title 2", 2L, 11L);
 		Assertions.assertFalse(this.equalsWithoutId(entity1, entity2));
 
-		entity1 = new TitleEntity("Title 1", "title_1", 1L, 11L);
-		entity2 = new TitleEntity("Title 1", "title_1", 1L, 11L);
+		entity1 = new TitleEntity("Title 1", 1L, 11L);
+		entity2 = new TitleEntity("Title 1", 1L, 11L);
 		Assertions.assertTrue(this.equalsWithoutId(entity1, entity2));
 	}
 
@@ -80,7 +79,7 @@ class TitleRepositoryTest {
 
 	@Test
 	void findByTitle_Success() {
-		TitleEntity expectedTitleEntity = new TitleEntity("Title 2", "title_2", 2L, 2L);
+		TitleEntity expectedTitleEntity = new TitleEntity("Title 2", 2L, 2L);
 
 		Optional<TitleEntity> optionalTitleEntity = titleRepository.findByTitle("Title 2");
 		Assertions.assertTrue(optionalTitleEntity.isPresent());
@@ -95,7 +94,7 @@ class TitleRepositoryTest {
 
 	@Test
 	void findByTitleContainingAllIgnoreCase_OneReturned() {
-		TitleEntity expectedTitleEntity = new TitleEntity("Title 3", "title_3", 3L, 3L);
+		TitleEntity expectedTitleEntity = new TitleEntity("Title 3", 3L, 3L);
 
 		List<TitleEntity> list = titleRepository.findByTitleContainingAllIgnoreCase("3");
 		Assertions.assertEquals(1, list.size());
@@ -104,9 +103,9 @@ class TitleRepositoryTest {
 
 	@Test
 	void findByTitleContainingAllIgnoreCase_MoreReturned() {
-		TitleEntity expectedTitleEntity1 = new TitleEntity("Title 1", "title_1", 1L, 1L);
-		TitleEntity expectedTitleEntity2 = new TitleEntity("Title 2", "title_2", 2L, 2L);
-		TitleEntity expectedTitleEntity3 = new TitleEntity("Title 3", "title_3", 3L, 3L);
+		TitleEntity expectedTitleEntity1 = new TitleEntity("Title 1", 1L, 1L);
+		TitleEntity expectedTitleEntity2 = new TitleEntity("Title 2", 2L, 2L);
+		TitleEntity expectedTitleEntity3 = new TitleEntity("Title 3", 3L, 3L);
 
 		List<TitleEntity> list = titleRepository.findByTitleContainingAllIgnoreCase("LE");
 		Assertions.assertEquals(3, list.size());
@@ -117,7 +116,7 @@ class TitleRepositoryTest {
 
 	@Test
 	void findByTxtId_Success() {
-		TitleEntity expectedTitleEntity = new TitleEntity("Title 2", "title_2", 2L, 2L);
+		TitleEntity expectedTitleEntity = new TitleEntity("Title 2", 2L, 2L);
 
 		Optional<TitleEntity> optionalTitleEntity = titleRepository.findByTxtId(2L);
 		Assertions.assertTrue(optionalTitleEntity.isPresent());

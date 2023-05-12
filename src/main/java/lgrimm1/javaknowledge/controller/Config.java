@@ -14,18 +14,15 @@ public class Config {
 		return args -> {
 			TitleEntity entity1 = new TitleEntity(
 					"SPRING THYMELEAF",
-					"spring_thymeleaf",
-					1L,
+                    1L,
 					1L);
 			TitleEntity entity2 = new TitleEntity(
 					"SPRING THYMELEAF EXAMPLES",
-					"spring_thymeleaf_examples",
-					2L,
+                    2L,
 					2L);
 			TitleEntity entity3 = new TitleEntity(
 					"CSS",
-					"css",
-					3L,
+                    3L,
 					3L);
 			repository.saveAll(List.of(entity1, entity2, entity3));
 		};

@@ -189,9 +189,9 @@ DatabaseStorageService databaseStorageService;
 				receivedTitles
 		);
 		when(databaseStorageService.findTitleByTitle(receivedTitles.get(0)))
-				.thenReturn(Optional.of(new TitleEntity(3L, "Title 1", "title_1", 2L, 4L)));
+				.thenReturn(Optional.of(new TitleEntity(3L, "Title 1", 2L, 4L)));
 		when(databaseStorageService.findTitleByTitle("Title 2"))
-				.thenReturn(Optional.of(new TitleEntity(3L, "Title 2", "title_2", 2L, 4L)));
+				.thenReturn(Optional.of(new TitleEntity(3L, "Title 2", 2L, 4L)));
 		Exception e = Assertions.assertThrows(Exception.class,
 				() -> managementService.renameSourcePage(receivedPayload));
 		Assertions.assertEquals("THE GIVEN NEW TITLE ALREADY EXISTS, PLEASE DEFINE AN OTHER ONE.",
@@ -215,13 +215,13 @@ DatabaseStorageService databaseStorageService;
 		);
 
 		when(databaseStorageService.findTitleByTitle(receivedTitles.get(0)))
-				.thenReturn(Optional.of(new TitleEntity(3L, "Title 2", "title_2", 2L, 4L)));
+				.thenReturn(Optional.of(new TitleEntity(3L, "Title 2", 2L, 4L)));
 
 		when(databaseStorageService.findTitleByTitle("Title 3"))
 				.thenReturn(Optional.empty());
 
-		when(databaseStorageService.saveTitle(new TitleEntity(3L, "Title 3", "title_3", 2L, 4L)))
-				.thenReturn(new TitleEntity(3L, "Title 3", "title_3", 2L, 4L));
+		when(databaseStorageService.saveTitle(new TitleEntity(3L, "Title 3", 2L, 4L)))
+				.thenReturn(new TitleEntity(3L, "Title 3", 2L, 4L));
 
 		List<String> titles = List.of("Title 1", "Title 3");
 		when(databaseStorageService.getAllTitles())

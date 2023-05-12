@@ -8,6 +8,4 @@ Commit:
 
 
 Need:
-Formulas: checked for not needed fields.
-TitleEntity: deleted unnecessary filename field.
 FileStorageRepository: wrapped Files.walk into try-with-resources formula.

@@ -95,7 +95,7 @@ class ProcessRecordsImportTxtFilesTest {
 				3L,
 				List.of("original html content"),
 				List.of("original references"));
-		TitleEntity originalTitleEntity = new TitleEntity(1L, title, "", 2L, 3L);
+		TitleEntity originalTitleEntity = new TitleEntity(1L, title, 2L, 3L);
 
 		when(fileOperations.readFile(txtFile))
 				.thenReturn(txtFileContent);
@@ -136,8 +136,8 @@ class ProcessRecordsImportTxtFilesTest {
 		TxtEntity savedTxtEntity = new TxtEntity(2L, txtColumnContent);
 		HtmlEntity givenHtmlEntity = new HtmlEntity(new ArrayList<>(), new ArrayList<>());
 		HtmlEntity savedHtmlEntity = new HtmlEntity(5L, new ArrayList<>(), new ArrayList<>());
-		TitleEntity originalTitleEntity = new TitleEntity(1L, title, "", 2L, 3L);
-		TitleEntity givenTitleEntity = new TitleEntity(1L, title, "", 2L, 5L);
+		TitleEntity originalTitleEntity = new TitleEntity(1L, title, 2L, 3L);
+		TitleEntity givenTitleEntity = new TitleEntity(1L, title, 2L, 5L);
 
 		when(fileOperations.readFile(txtFile))
 				.thenReturn(txtFileContent);
@@ -181,8 +181,8 @@ class ProcessRecordsImportTxtFilesTest {
 				3L,
 				List.of("original html content"),
 				List.of("original references"));
-		TitleEntity originalTitleEntity = new TitleEntity(1L, title, "", 2L, 3L);
-		TitleEntity givenTitleEntity = new TitleEntity(1L, title, "", 4L, 3L);
+		TitleEntity originalTitleEntity = new TitleEntity(1L, title, 2L, 3L);
+		TitleEntity givenTitleEntity = new TitleEntity(1L, title, 4L, 3L);
 
 		when(fileOperations.readFile(txtFile))
 				.thenReturn(txtFileContent);
@@ -222,7 +222,7 @@ class ProcessRecordsImportTxtFilesTest {
 		TxtEntity savedTxtEntity = new TxtEntity(2L, txtColumnContent);
 		HtmlEntity givenHtmlEntity = new HtmlEntity(new ArrayList<>(), new ArrayList<>());
 		HtmlEntity savedHtmlEntity = new HtmlEntity(3L, new ArrayList<>(), new ArrayList<>());
-		TitleEntity givenTitleEntity = new TitleEntity(title, "", 2L, 3L);
+		TitleEntity givenTitleEntity = new TitleEntity(title, 2L, 3L);
 
 		when(fileOperations.readFile(txtFile))
 				.thenReturn(txtFileContent);

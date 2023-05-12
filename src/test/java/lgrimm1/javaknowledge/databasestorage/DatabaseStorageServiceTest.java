@@ -25,7 +25,7 @@ class DatabaseStorageServiceTest {
 	@Test
 	void findTitleByTitle() {
 		String title = "Title 1";
-		TitleEntity expectedTitleEntity = new TitleEntity(1L, title, "title_1", 1L, 1L);
+		TitleEntity expectedTitleEntity = new TitleEntity(1L, title, 1L, 1L);
 		when(titleRepository.findByTitle(title))
 				.thenReturn(Optional.of(expectedTitleEntity));
 		Optional<TitleEntity> resultedTitleEntity = databaseStorageService.findTitleByTitle(title);
@@ -35,9 +35,9 @@ class DatabaseStorageServiceTest {
 
 	@Test
 	void findAllTitles() {
-		TitleEntity titleEntity1 = new TitleEntity(2L, "title 2", "title_2", 2L, 2L);
-		TitleEntity titleEntity2 = new TitleEntity(1L, "title 1", "title_1", 1L, 1L);
-		TitleEntity titleEntity3 = new TitleEntity(3L, "title 3", "title_3", 3L, 3L);
+		TitleEntity titleEntity1 = new TitleEntity(2L, "title 2", 2L, 2L);
+		TitleEntity titleEntity2 = new TitleEntity(1L, "title 1", 1L, 1L);
+		TitleEntity titleEntity3 = new TitleEntity(3L, "title 3", 3L, 3L);
 		List<TitleEntity> titles = new ArrayList<>();
 		titles.add(titleEntity1);
 		titles.add(titleEntity2);
@@ -51,9 +51,9 @@ class DatabaseStorageServiceTest {
 	void getAllTitles() {
 		when(titleRepository.findAll())
 				.thenReturn(List.of(
-						new TitleEntity(2L, "title 2", "title_2", 2L, 2L),
-						new TitleEntity(1L, "title 1", "title_1", 1L, 1L),
-						new TitleEntity(3L, "title 3", "title_3", 3L, 3L)
+						new TitleEntity(2L, "title 2", 2L, 2L),
+						new TitleEntity(1L, "title 1", 1L, 1L),
+						new TitleEntity(3L, "title 3", 3L, 3L)
 				));
 		Assertions.assertEquals(List.of(
 				"title 1",
@@ -64,14 +64,14 @@ class DatabaseStorageServiceTest {
 
 	@Test
 	void saveTitle() {
-		TitleEntity givenTitleEntity = new TitleEntity("Title", "title", 2L, 3L);
-		TitleEntity savedTitleEntity = new TitleEntity(2L, "Title", "title", 2L, 3L);
+		TitleEntity givenTitleEntity = new TitleEntity("Title", 2L, 3L);
+		TitleEntity savedTitleEntity = new TitleEntity(2L, "Title", 2L, 3L);
 		when(databaseStorageService.saveTitle(givenTitleEntity))
 				.thenReturn(savedTitleEntity);
 		Assertions.assertEquals(savedTitleEntity, databaseStorageService.saveTitle(givenTitleEntity));
 
-		givenTitleEntity = new TitleEntity(4L, "Title", "title", 2L, 3L);
-		savedTitleEntity = new TitleEntity(4L, "Title", "title", 2L, 3L);
+		givenTitleEntity = new TitleEntity(4L, "Title", 2L, 3L);
+		savedTitleEntity = new TitleEntity(4L, "Title", 2L, 3L);
 		when(databaseStorageService.saveTitle(givenTitleEntity))
 				.thenReturn(savedTitleEntity);
 		Assertions.assertEquals(savedTitleEntity, databaseStorageService.saveTitle(givenTitleEntity));
@@ -143,14 +143,12 @@ class DatabaseStorageServiceTest {
 						new TitleEntity(
 								2L,
 								title2,
-								"title_2",
 								6L,
 								7L
 						),
 						new TitleEntity(
 								1L,
 								title1,
-								"title_1",
 								3L,
 								4L
 						)
@@ -166,14 +164,12 @@ class DatabaseStorageServiceTest {
 						new TitleEntity(
 								3L,
 								"Title with word1 word2 word3",
-								"title_with_word1_word2_word3",
 								6L,
 								7L
 						),
 						new TitleEntity(
 								2L,
 								"Title with word1",
-								"title_with_word1",
 								3L,
 								4L
 						)
@@ -183,14 +179,12 @@ class DatabaseStorageServiceTest {
 						new TitleEntity(
 								4L,
 								"Title with word2",
-								"title_with_word2",
 								10L,
 								11L
 						),
 						new TitleEntity(
 								3L,
 								"Title with word1 word2 word3",
-								"title_with_word1_word2_word3",
 								6L,
 								7L
 						)
@@ -211,7 +205,6 @@ class DatabaseStorageServiceTest {
 				.thenReturn(Optional.of(new TitleEntity(
 						3L,
 						"Title with word1 word2 word3",
-						"title_with_word1_word2_word3",
 						6L,
 						7L
 				)));
@@ -219,7 +212,6 @@ class DatabaseStorageServiceTest {
 				.thenReturn(Optional.of(new TitleEntity(
 						40L,
 						"Another Title with another words",
-						"another_title_with_another_words",
 						30L,
 						7L
 				)));
@@ -242,7 +234,6 @@ class DatabaseStorageServiceTest {
 				.thenReturn(Optional.of(new TitleEntity(
 						1L,
 						"title 1",
-						"title_1",
 						11L,
 						21L
 				)));
@@ -250,7 +241,6 @@ class DatabaseStorageServiceTest {
 				.thenReturn(Optional.of(new TitleEntity(
 						2L,
 						"title 2",
-						"title_2",
 						12L,
 						22L
 				)));

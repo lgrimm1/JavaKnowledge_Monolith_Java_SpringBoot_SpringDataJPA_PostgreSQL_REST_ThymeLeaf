@@ -155,7 +155,6 @@ private final DatabaseStorageService databaseStorageService;
 				long txtId = databaseStorageService.saveTxt(new TxtEntity(content)).getId();
 				databaseStorageService.saveTitle(new TitleEntity(
 						title,
-						"",
 						txtId,
 						htmlId));
 				message = "SOURCE PAGE HAS BEEN SAVED.";
