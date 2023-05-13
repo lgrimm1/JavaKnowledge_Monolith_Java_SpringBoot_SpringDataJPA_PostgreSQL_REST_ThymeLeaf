@@ -211,7 +211,8 @@ public class Controller {
 	@ExceptionHandler(MaxUploadSizeExceededException.class)
 	public ModelAndView handleMaxSizeException(MaxUploadSizeExceededException e, Model model) {
 		model.asMap().clear();
-		return fileStorageService.handleMaxSizeException("management");
+		Payload payload = fileStorageService.handleMaxSizeException();
+		return new ModelAndView("management", "payload", payload);
 	}
 
 	private Multipart bindMultipartFileToMultipart(MultipartFile file) {

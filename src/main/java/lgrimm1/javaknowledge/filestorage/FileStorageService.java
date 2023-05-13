@@ -1,22 +1,23 @@
 package lgrimm1.javaknowledge.filestorage;
 
-import lgrimm1.javaknowledge.databasestorage.*;
-import lgrimm1.javaknowledge.datamodels.*;
-import lgrimm1.javaknowledge.process.*;
-import org.springframework.beans.factory.annotation.*;
-import org.springframework.stereotype.*;
-import org.springframework.web.servlet.*;
+import lgrimm1.javaknowledge.databasestorage.DatabaseStorageService;
+import lgrimm1.javaknowledge.datamodels.Multipart;
+import lgrimm1.javaknowledge.datamodels.Payload;
+import lgrimm1.javaknowledge.process.Formulas;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-import java.io.*;
-import java.nio.file.*;
-import java.util.*;
-import java.util.stream.*;
+import java.io.File;
+import java.nio.file.Path;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * @see #uploadFiles(Payload, List)
  * @see #findAll()
  * @see #deleteAllFiles()
- * @see #handleMaxSizeException(String)
+ * @see #handleMaxSizeException()
  */
 @Service
 public class FileStorageService {
@@ -67,8 +68,8 @@ public class FileStorageService {
 		return new long[]{count, deleted};
 	}
 
-	public ModelAndView handleMaxSizeException(String initialView) {
-		Payload payload = new Payload(
+	public Payload handleMaxSizeException() {
+		return new Payload(
 				formulas.getTitleManagement(),
 				false,
 				null,
@@ -79,6 +80,5 @@ public class FileStorageService {
 				"",
 				databaseStorageService.getAllTitles()
 		);
-		return new ModelAndView(initialView, "payload", payload);
 	}
 }

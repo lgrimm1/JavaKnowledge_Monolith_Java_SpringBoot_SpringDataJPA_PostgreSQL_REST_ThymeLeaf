@@ -1,18 +1,21 @@
 package lgrimm1.javaknowledge.filestorage;
 
-import lgrimm1.javaknowledge.databasestorage.*;
-import lgrimm1.javaknowledge.datamodels.*;
-import lgrimm1.javaknowledge.process.*;
-import org.junit.jupiter.api.*;
+import lgrimm1.javaknowledge.databasestorage.DatabaseStorageService;
+import lgrimm1.javaknowledge.datamodels.Multipart;
+import lgrimm1.javaknowledge.datamodels.Payload;
+import lgrimm1.javaknowledge.process.Formulas;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+import org.springframework.http.MediaType;
 
-import org.mockito.*;
-import org.springframework.http.*;
-import org.springframework.test.web.*;
-import org.springframework.web.servlet.*;
-import java.io.*;
-import java.nio.file.*;
-import java.util.*;
-import java.util.stream.*;
+import java.io.File;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Stream;
+
 import static org.mockito.Mockito.when;
 
 class FileStorageServiceTest {
@@ -203,11 +206,6 @@ class FileStorageServiceTest {
 				"",
 				titles
 		);
-		Map<String, Object> model = new HashMap<>();
-		model.put("payload", expectedPayload);
-
-		ModelAndView actualModelAndView = service.handleMaxSizeException("management");
-		ModelAndViewAssert.assertViewName(actualModelAndView, "management");
-		ModelAndViewAssert.assertModelAttributeValues(actualModelAndView, model);
+		Assertions.assertEquals(expectedPayload, service.handleMaxSizeException());
 	}
 }
