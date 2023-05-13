@@ -22,7 +22,7 @@ class FileInFolderServiceTest {
 	FileInFolderRepository repository;
 	FileInFolderService service;
 	Path path1, path2;
-	Stream<Path> paths;
+	List<Path> paths;
 
 //in-database:
 class FileInDatabaseServiceTest {
@@ -62,7 +62,7 @@ class FileInDatabaseServiceTest {
 		//in-folder:
 		path1 = new File(filename1).toPath();
 		path2 = new File(filename2).toPath();
-		paths = Stream.of(path1, path2);
+		paths = List.of(path1, path2);
 		when(repository.findAll())
 				.thenReturn(paths);
 
@@ -107,12 +107,7 @@ class FileInDatabaseServiceTest {
 				null,
 				null
 		);
-		Map<String, Object> model = new HashMap<>();
-		model.put("payload", expectedPayload);
-
-		ModelAndView actualModelAndView = service.newFile();
-		ModelAndViewAssert.assertViewName(actualModelAndView, "upload");
-		ModelAndViewAssert.assertModelAttributeValues(actualModelAndView, model);
+		Assertions.assertEquals(expectedPayload, service.newFile());
 	}
 
 	@Test
@@ -122,12 +117,7 @@ class FileInDatabaseServiceTest {
 				null,
 				fileInfoList
 		);
-		Map<String, Object> model = new HashMap<>();
-		model.put("payload", expectedPayload);
-
-		ModelAndView actualModelAndView = service.uploadFile(null, baseUrl);
-		ModelAndViewAssert.assertViewName(actualModelAndView, "file_list");
-		ModelAndViewAssert.assertModelAttributeValues(actualModelAndView, model);
+		Assertions.assertEquals(expectedPayload, service.uploadFile(null, baseUrl));
 	}
 
 	@Test
@@ -145,12 +135,7 @@ class FileInDatabaseServiceTest {
 				null,
 				fileInfoList
 		);
-		Map<String, Object> model = new HashMap<>();
-		model.put("payload", expectedPayload);
-
-		ModelAndView actualModelAndView = service.uploadFile(file3, baseUrl);
-		ModelAndViewAssert.assertViewName(actualModelAndView, "file_list");
-		ModelAndViewAssert.assertModelAttributeValues(actualModelAndView, model);
+		Assertions.assertEquals(expectedPayload, service.uploadFile(file3, baseUrl));
 	}
 
 	@Test
@@ -162,12 +147,7 @@ class FileInDatabaseServiceTest {
 				null,
 				fileInfoList
 		);
-		Map<String, Object> model = new HashMap<>();
-		model.put("payload", expectedPayload);
-
-		ModelAndView actualModelAndView = service.uploadFile(file1, baseUrl);
-		ModelAndViewAssert.assertViewName(actualModelAndView, "file_list");
-		ModelAndViewAssert.assertModelAttributeValues(actualModelAndView, model);
+		Assertions.assertEquals(expectedPayload, service.uploadFile(file1, baseUrl));
 	}
 
 	@Test
@@ -179,12 +159,7 @@ class FileInDatabaseServiceTest {
 				null,
 				fileInfoList
 		);
-		Map<String, Object> model = new HashMap<>();
-		model.put("payload", expectedPayload);
-
-		ModelAndView actualModelAndView = service.uploadFile(file1, baseUrl);
-		ModelAndViewAssert.assertViewName(actualModelAndView, "file_list");
-		ModelAndViewAssert.assertModelAttributeValues(actualModelAndView, model);
+		Assertions.assertEquals(expectedPayload, service.uploadFile(file1, baseUrl));
 	}
 
 	@Test
@@ -194,12 +169,7 @@ class FileInDatabaseServiceTest {
 				List.of("No files were given."),
 				fileInfoList
 		);
-		Map<String, Object> model = new HashMap<>();
-		model.put("payload", expectedPayload);
-
-		ModelAndView actualModelAndView = service.uploadFiles(null, baseUrl);
-		ModelAndViewAssert.assertViewName(actualModelAndView, "file_list");
-		ModelAndViewAssert.assertModelAttributeValues(actualModelAndView, model);
+		Assertions.assertEquals(expectedPayload, service.uploadFiles(null, baseUrl));
 	}
 
 	@Test
@@ -209,12 +179,7 @@ class FileInDatabaseServiceTest {
 				List.of("No files were given."),
 				fileInfoList
 		);
-		Map<String, Object> model = new HashMap<>();
-		model.put("payload", expectedPayload);
-
-		ModelAndView actualModelAndView = service.uploadFiles(new ArrayList<>(), baseUrl);
-		ModelAndViewAssert.assertViewName(actualModelAndView, "file_list");
-		ModelAndViewAssert.assertModelAttributeValues(actualModelAndView, model);
+		Assertions.assertEquals(expectedPayload, service.uploadFiles(new ArrayList<>(), baseUrl));
 	}
 
 	@Test
@@ -238,12 +203,7 @@ class FileInDatabaseServiceTest {
 				List.of("Results:", filename1 + ": [Success]", filename2 + ": [Success]"),
 				fileInfoList
 		);
-		Map<String, Object> model = new HashMap<>();
-		model.put("payload", expectedPayload);
-
-		ModelAndView actualModelAndView = service.uploadFiles(filesWithNull, baseUrl);
-		ModelAndViewAssert.assertViewName(actualModelAndView, "file_list");
-		ModelAndViewAssert.assertModelAttributeValues(actualModelAndView, model);
+		Assertions.assertEquals(expectedPayload, service.uploadFiles(filesWithNull, baseUrl));
 	}
 
 	@Test
@@ -253,123 +213,41 @@ class FileInDatabaseServiceTest {
 				null,
 				fileInfoList
 		);
-		Map<String, Object> model = new HashMap<>();
-		model.put("payload", expectedPayload);
-
-		ModelAndView actualModelAndView = service.getFileList(baseUrl);
-		ModelAndViewAssert.assertViewName(actualModelAndView, "file_list");
-		ModelAndViewAssert.assertModelAttributeValues(actualModelAndView, model);
+		Assertions.assertEquals(expectedPayload, service.getFileList(baseUrl));
 	}
 
-    //in-folder method:
 	@Test
 	void getFile_NullFilename() {
-		ResponseEntity<Resource> expectedResponseEntity = ResponseEntity
-				.badRequest()
-				.header(HttpHeaders.CONTENT_DISPOSITION, "")
-				.body(null);
-
-		Assertions.assertEquals(expectedResponseEntity, service.getFile(null));
+		Assertions.assertNull(service.getFile(null));
 	}
 
-    //in-folder method:
 	@Test
 	void getFile_BlankFilename() {
-		ResponseEntity<Resource> expectedResponseEntity = ResponseEntity
-				.badRequest()
-				.header(HttpHeaders.CONTENT_DISPOSITION, "")
-				.body(null);
-
-		Assertions.assertEquals(expectedResponseEntity, service.getFile("  "));
+		Assertions.assertNull(service.getFile("  "));
 	}
 
-    //in-folder method:
 	@Test
 	void getFile_WrongFilename() {
 		String filename3 = "file\ntxt";
 		when(repository.getByFilename(filename3))
 				.thenReturn(Optional.empty());
-		ResponseEntity<Resource> expectedResponseEntity = ResponseEntity
-				.badRequest()
-				.header(HttpHeaders.CONTENT_DISPOSITION, "")
-				.body(null);
-
-		Assertions.assertEquals(expectedResponseEntity, service.getFile(filename3));
+		Assertions.assertNull(service.getFile(filename3));
 	}
 
-    //in-folder method:
 	@Test
 	void getFile_NoSuchFile() {
 		when(repository.getByFilename(filename1))
 				.thenReturn(Optional.empty());
-		ResponseEntity<Resource> expectedResponseEntity = ResponseEntity
-				.badRequest()
-				.header(HttpHeaders.CONTENT_DISPOSITION, "")
-				.body(null);
-
-		Assertions.assertEquals(expectedResponseEntity, service.getFile(filename1));
+		Assertions.assertNull(service.getFile(filename1));
 	}
 
     //in-folder method:
 	@Test
 	void getFile_ExistingFile() throws MalformedURLException {
-		Resource resource = new UrlResource(path1.toUri());
+		Resource expectedResource = new UrlResource(path1.toUri());
 		when(repository.getByFilename(filename1))
-				.thenReturn(Optional.of(resource));
-		ResponseEntity<Resource> expectedResponseEntity = ResponseEntity
-				.ok()
-				.header(HttpHeaders.CONTENT_DISPOSITION,
-						"attachment; filename=\"" + resource.getFilename() + "\"")
-				.body(resource);
-
-		Assertions.assertEquals(expectedResponseEntity, service.getFile(filename1));
-	}
-
-    //in-database method:
-	@Test
-	void getFile_NullFilename() {
-		ResponseEntity<byte[]> expectedResponseEntity = ResponseEntity
-				.badRequest()
-				.header(HttpHeaders.CONTENT_DISPOSITION, "")
-				.body(null);
-
-		Assertions.assertEquals(expectedResponseEntity, service.getFile(null));
-	}
-
-    //in-database method:
-	@Test
-	void getFile_BlankFilename() {
-		ResponseEntity<byte[]> expectedResponseEntity = ResponseEntity
-				.badRequest()
-				.header(HttpHeaders.CONTENT_DISPOSITION, "")
-				.body(null);
-
-		Assertions.assertEquals(expectedResponseEntity, service.getFile("  "));
-	}
-
-    //in-database method:
-	@Test
-	void getFile_WrongFilename() {
-		String filename3 = "file\ntxt";
-		ResponseEntity<byte[]> expectedResponseEntity = ResponseEntity
-				.badRequest()
-				.header(HttpHeaders.CONTENT_DISPOSITION, "")
-				.body(null);
-
-		Assertions.assertEquals(expectedResponseEntity, service.getFile(filename3));
-	}
-
-    //in-database method:
-	@Test
-	void getFile_NoSuchFile() {
-		when(repository.getByFilename(filename1))
-				.thenReturn(Optional.empty());
-		ResponseEntity<byte[]> expectedResponseEntity = ResponseEntity
-				.badRequest()
-				.header(HttpHeaders.CONTENT_DISPOSITION, "")
-				.body(null);
-
-		Assertions.assertEquals(expectedResponseEntity, service.getFile(filename1));
+				.thenReturn(Optional.of(expectedResource));
+		Assertions.assertEquals(expectedResource, service.getFile(filename1));
 	}
 
     //in-database method:
@@ -377,13 +255,7 @@ class FileInDatabaseServiceTest {
 	void getFile_ExistingFile() {
 		when(repository.getByFilename(filename1))
 				.thenReturn(Optional.of(entity1));
-		ResponseEntity<byte[]> expectedResponseEntity = ResponseEntity
-				.ok()
-				.header(HttpHeaders.CONTENT_DISPOSITION,
-						"attachment; filename=\"" + filename1 + "\"")
-				.body(content1.getBytes());
-
-		Assertions.assertEquals(expectedResponseEntity, service.getFile(filename1));
+		Assertions.assertEquals(entity1, service.getFile(filename1));
 	}
 
 	@Test
@@ -393,12 +265,7 @@ class FileInDatabaseServiceTest {
 				null,
 				fileInfoList
 		);
-		Map<String, Object> model = new HashMap<>();
-		model.put("payload", expectedPayload);
-
-		ModelAndView actualModelAndView = service.deleteFile(null, baseUrl);
-		ModelAndViewAssert.assertViewName(actualModelAndView, "file_list");
-		ModelAndViewAssert.assertModelAttributeValues(actualModelAndView, model);
+		Assertions.assertEquals(expectedPayload, service.deleteFile(null, baseUrl));
 	}
 
 	@Test
@@ -408,19 +275,13 @@ class FileInDatabaseServiceTest {
 				null,
 				fileInfoList
 		);
-		Map<String, Object> model = new HashMap<>();
-		model.put("payload", expectedPayload);
-
-		ModelAndView actualModelAndView = service.deleteFile("  ", baseUrl);
-		ModelAndViewAssert.assertViewName(actualModelAndView, "file_list");
-		ModelAndViewAssert.assertModelAttributeValues(actualModelAndView, model);
+		Assertions.assertEquals(expectedPayload, service.deleteFile("  ", baseUrl));
 	}
 
+    //in-folder:
 	@Test
 	void deleteFile_WrongFilename() {
 		String filename3 = "file\ntxt";
-
-		//in-folder:
 		when(repository.delete(filename3))
 				.thenReturn(false);
 		Payload expectedPayload = new Payload(
@@ -428,19 +289,19 @@ class FileInDatabaseServiceTest {
 				null,
 				fileInfoList
 		);
-		//in-database:
+		Assertions.assertEquals(expectedPayload, service.deleteFile(filename3, baseUrl));
+    }
+
+    //in-database:
+	@Test
+	void deleteFile_WrongFilename() {
+		String filename3 = "file3\ntxt";
 		Payload expectedPayload = new Payload(
 				"Wrong file was given.",
 				null,
 				fileInfoList
 		);
-
-		Map<String, Object> model = new HashMap<>();
-		model.put("payload", expectedPayload);
-
-		ModelAndView actualModelAndView = service.deleteFile(filename3, baseUrl);
-		ModelAndViewAssert.assertViewName(actualModelAndView, "file_list");
-		ModelAndViewAssert.assertModelAttributeValues(actualModelAndView, model);
+		Assertions.assertEquals(expectedPayload, service.deleteFile(filename3, baseUrl));
 	}
 
 	@Test
@@ -452,12 +313,7 @@ class FileInDatabaseServiceTest {
 				null,
 				fileInfoList
 		);
-		Map<String, Object> model = new HashMap<>();
-		model.put("payload", expectedPayload);
-
-		ModelAndView actualModelAndView = service.deleteFile(filename1, baseUrl);
-		ModelAndViewAssert.assertViewName(actualModelAndView, "file_list");
-		ModelAndViewAssert.assertModelAttributeValues(actualModelAndView, model);
+		Assertions.assertEquals(expectedPayload, service.deleteFile(filename1, baseUrl));
 	}
 
 	@Test
@@ -469,12 +325,7 @@ class FileInDatabaseServiceTest {
 				null,
 				fileInfoList
 		);
-		Map<String, Object> model = new HashMap<>();
-		model.put("payload", expectedPayload);
-
-		ModelAndView actualModelAndView = service.deleteFile(filename1, baseUrl);
-		ModelAndViewAssert.assertViewName(actualModelAndView, "file_list");
-		ModelAndViewAssert.assertModelAttributeValues(actualModelAndView, model);
+		Assertions.assertEquals(expectedPayload, service.deleteFile(filename1, baseUrl));
 	}
 
 	@Test
@@ -485,7 +336,7 @@ class FileInDatabaseServiceTest {
 				.thenReturn(1L);
 
         //in-folder:
-		paths = Stream.of(path1);
+		paths = List.of(path1);
 		when(repository.findAll())
 				.thenReturn(paths);
 		//in-database:
@@ -499,12 +350,7 @@ class FileInDatabaseServiceTest {
 				null,
 				fileInfoList
 		);
-		Map<String, Object> model = new HashMap<>();
-		model.put("payload", expectedPayload);
-
-		ModelAndView actualModelAndView = service.deleteAllFiles(baseUrl);
-		ModelAndViewAssert.assertViewName(actualModelAndView, "file_list");
-		ModelAndViewAssert.assertModelAttributeValues(actualModelAndView, model);
+		Assertions.assertEquals(expectedPayload, service.deleteAllFiles(baseUrl));
 	}
 
 	@Test
@@ -514,12 +360,7 @@ class FileInDatabaseServiceTest {
 				null,
 				fileInfoList
 		);
-		Map<String, Object> model = new HashMap<>();
-		model.put("payload", expectedPayload);
-
-		ModelAndView actualModelAndView = service.handleMaxSizeException(baseUrl);
-		ModelAndViewAssert.assertViewName(actualModelAndView, "file_list");
-		ModelAndViewAssert.assertModelAttributeValues(actualModelAndView, model);
+		Assertions.assertEquals(expectedPayload, service.handleMaxSizeException(baseUrl));
 	}
 }
 END OF EXAMPLE

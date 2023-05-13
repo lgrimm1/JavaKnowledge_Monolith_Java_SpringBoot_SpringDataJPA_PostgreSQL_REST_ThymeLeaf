@@ -24,7 +24,7 @@ import java.util.stream.*;
 @Repository
 public class FileInFolderRepository {
 
-	private Path storageRootFolder;
+	private Path root;
 
 	public boolean init(String repositoryPath, boolean deleteAllFromStorage) {
 		try {
@@ -38,10 +38,6 @@ public class FileInFolderRepository {
 		catch (Exception e) {
 			return false;
 		}
-	}
-
-	public Path getStorageRootFolder() {
-		return storageRootFolder;
 	}
 
 	public Optional<Resource> getByFilename(String filename) {
@@ -60,12 +56,20 @@ public class FileInFolderRepository {
 		}
 	}
 
-	public Stream<Resource> getAll() {
-		return this.findAll()
-				.map(path -> path.toFile().getName())
-				.map(this::getByFilename)
-				.filter(Optional::isPresent)
-				.map(Optional::get);
+	public List<Resource> getAll() {
+		try (Stream<Path> walk = Files.walk(this.root, 1)) {
+			return walk
+					.filter(path -> !path.equals(this.root))
+					.map(this.root::relativize)
+					.map(path -> path.toFile().getName())
+					.map(this::getByFilename)
+					.filter(Optional::isPresent)
+					.map(Optional::get)
+					.toList();
+		}
+		catch (Exception e) {
+			return new ArrayList<>();
+		}
 	}
 
 	public Optional<Path> findByFilename(String filename) {
@@ -81,14 +85,15 @@ public class FileInFolderRepository {
 		}
 	}
 
-	public Stream<Path> findAll() {
+	public List<Path> findAll() {
 		try (Stream<Path> walk = Files.walk(this.root, 1)) {
 			return walk
 					.filter(path -> !path.equals(this.root))
-					.map(this.root::relativize);
+					.map(this.root::relativize)
+					.toList();
 		}
 		catch (Exception e) {
-			return Stream.empty();
+			return new ArrayList<>();
 		}
 	}
 

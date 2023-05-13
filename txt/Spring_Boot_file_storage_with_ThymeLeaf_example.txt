@@ -222,7 +222,7 @@ public class FileInDatabaseController {
 	@GetMapping("/files/new")
 	public ModelAndView newFile(Model model) {
 		model.asMap().clear();
-		return service.newFile();
+		return new ModelAndView("upload", "payload", service.newFile());
 	}
 
 	@PostMapping("/files/upload/single")
@@ -230,7 +230,8 @@ public class FileInDatabaseController {
 								   HttpServletRequest request,
 								   Model model) {
 		model.asMap().clear();
-		return service.uploadFile(bindMultipartFileToMultipart(file), detectBaseUrl(request));
+		Payload payload = service.uploadFile(bindMultipartFileToMultipart(file), detectBaseUrl(request));
+		return new ModelAndView("file_list", "payload", payload);
 	}
 
 	@PostMapping("/files/upload/multiple")
@@ -238,25 +239,47 @@ public class FileInDatabaseController {
 									HttpServletRequest request,
 									Model model) {
 		model.asMap().clear();
-		return service.uploadFiles(bindMultipartFileArrayToMultipartList(files), detectBaseUrl(request));
+		Payload payload = service.uploadFiles(bindMultipartFileArrayToMultipartList(files), detectBaseUrl(request));
+		return new ModelAndView("file_list", "payload", payload);
 	}
 
 	@GetMapping({"/", "/files"})
 	public ModelAndView getListFiles(HttpServletRequest request, Model model) {
 		model.asMap().clear();
-		return service.getFileList(detectBaseUrl(request));
+		Payload payload = service.getFileList(detectBaseUrl(request));
+		return new ModelAndView("file_list", "payload", payload);
 	}
 
     //in-folder:
 	@GetMapping("/files/{filename:.+}")
 	public ResponseEntity<Resource> getFile(@PathVariable("filename") String filename) {
-		return service.getFile(filename);
+		Resource resource = service.getFile(filename);
+		return resource == null ?
+				ResponseEntity
+						.badRequest()
+						.header(HttpHeaders.CONTENT_DISPOSITION, "")
+						.body(null) :
+				ResponseEntity
+						.ok()
+						.header(HttpHeaders.CONTENT_DISPOSITION,
+								"attachment; filename=\"" + resource.getFilename() + "\"")
+						.body(resource);
 	}
 
 	//in-database:
 	@GetMapping("/files/{filename:.+}")
 	public ResponseEntity<byte[]> getFile(@PathVariable("filename") String filename) {
-		return service.getFile(filename);
+		FileInDatabaseEntity entity = service.getFile(filename);
+		return entity == null ?
+				ResponseEntity
+						.badRequest()
+						.header(HttpHeaders.CONTENT_DISPOSITION, "")
+						.body(null) :
+				ResponseEntity
+						.ok()
+						.header(HttpHeaders.CONTENT_DISPOSITION,
+								"attachment; filename=\"" + entity.getFileName() + "\"")
+						.body(entity.getContent().getBytes());
 	}
 
 	@PostMapping("/files/delete/{filename:.+}")
@@ -264,13 +287,15 @@ public class FileInDatabaseController {
 								   HttpServletRequest request,
 								   Model model) {
 		model.asMap().clear();
-		return service.deleteFile(filename, detectBaseUrl(request));
+		Payload payload = service.deleteFile(filename, detectBaseUrl(request));
+		return new ModelAndView("file_list", "payload", payload);
 	}
 
 	@PostMapping("/files/empty")
 	public ModelAndView deleteAllFiles(HttpServletRequest request, Model model) {
 		model.asMap().clear();
-		return service.deleteAllFiles(detectBaseUrl(request));
+		Payload payload = service.deleteAllFiles(detectBaseUrl(request));
+		return new ModelAndView("file_list", "payload", payload);
 	}
 
 	@ExceptionHandler(MaxUploadSizeExceededException.class)
@@ -278,7 +303,8 @@ public class FileInDatabaseController {
 											   HttpServletRequest request,
 											   Model model) {
 		model.asMap().clear();
-		return service.handleMaxSizeException(detectBaseUrl(request));
+		Payload payload = service.handleMaxSizeException(detectBaseUrl(request));
+		return new ModelAndView("file_list", "payload", payload);
 	}
 
 	private Multipart bindMultipartFileToMultipart(MultipartFile file) {

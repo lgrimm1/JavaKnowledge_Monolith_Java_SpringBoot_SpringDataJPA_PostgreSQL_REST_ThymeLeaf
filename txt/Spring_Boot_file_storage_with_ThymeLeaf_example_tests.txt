@@ -23,10 +23,6 @@ The two solutions have the very same endpoints, therefore the difference will be
 
 EXAMPLE FOR CONTROLLER CLASS UNIT TEST:
 import org.junit.jupiter.api.*;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.*;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -39,6 +35,10 @@ import org.springframework.web.servlet.*;
 import java.io.*;
 import java.nio.file.*;
 import java.util.*;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 //in-folder:
 @WebMvcTest(FileInFolderController.class)
@@ -83,9 +83,8 @@ class FileInDatabaseControllerTest {
 				null,
 				null
 		);
-		ModelAndView modelAndView = new ModelAndView("upload", "payload", sentPayload);
 		when(service.newFile())
-				.thenReturn(modelAndView);
+				.thenReturn(sentPayload);
 
 		mockMvc
 				.perform(
@@ -111,9 +110,8 @@ class FileInDatabaseControllerTest {
 				filename1 + " file has been successfully uploaded.",
 				null,
 				fileInfoList);
-		ModelAndView modelAndView = new ModelAndView("file_list", "payload", sentPayload);
 		when(service.uploadFile(multipartOfFile1, baseUrl))
-				.thenReturn(modelAndView);
+				.thenReturn(sentPayload);
 
 		mockMvc.perform(
 						multipart("/files/upload/single")
@@ -146,10 +144,9 @@ class FileInDatabaseControllerTest {
 				null,
 				messages,
 				fileInfoList);
-		ModelAndView modelAndView = new ModelAndView("file_list", "payload", sentPayload);
 		List<Multipart> multiparts = List.of(multipartOfFiles1, multipartOfFiles2);
 		when(service.uploadFiles(multiparts, baseUrl))
-				.thenReturn(modelAndView);
+				.thenReturn(sentPayload);
 
 		mockMvc.perform(
 						multipart("/files/upload/multiple")
@@ -171,9 +168,8 @@ class FileInDatabaseControllerTest {
 				null,
 				fileInfoList
 		);
-		ModelAndView modelAndView = new ModelAndView("file_list", "payload", sentPayload);
 		when(service.getFileList(baseUrl))
-				.thenReturn(modelAndView);
+				.thenReturn(sentPayload);
 
 		mockMvc
 				.perform(
@@ -208,20 +204,12 @@ class FileInDatabaseControllerTest {
 		file.delete();
 		Assertions.assertEquals(path, Files.write(path, content1.getBytes()));
 		Resource resource = new UrlResource(path.toUri());
-		ResponseEntity<Resource> sentResponseEntity = ResponseEntity
-				.ok()
-				.header(HttpHeaders.CONTENT_DISPOSITION,
-						"attachment; filename=\"" + filename1 + "\"")
-				.body(resource);
-        //in-database:
-		ResponseEntity<byte[]> sentResponseEntity = ResponseEntity
-				.ok()
-				.header(HttpHeaders.CONTENT_DISPOSITION,
-						"attachment; filename=\"" + filename1 + "\"")
-				.body(content1.getBytes());
-
 		when(service.getFile(filename1))
-				.thenReturn(sentResponseEntity);
+				.thenReturn(resource);
+        //in-database:
+		FileInDatabaseEntity sentEntity = new FileInDatabaseEntity(1L, filename1, content1, "");
+		when(service.getFile(filename1))
+				.thenReturn(sentEntity);
 
 		MvcResult result = mockMvc
 				.perform(
@@ -246,9 +234,8 @@ class FileInDatabaseControllerTest {
 				null,
 				fileInfoList
 		);
-		ModelAndView modelAndView = new ModelAndView("file_list", "payload", sentPayload);
 		when(service.deleteFile(filename1, baseUrl))
-				.thenReturn(modelAndView);
+				.thenReturn(sentPayload);
 
 		mockMvc
 				.perform(
@@ -270,9 +257,8 @@ class FileInDatabaseControllerTest {
 				null,
 				fileInfoList
 		);
-		ModelAndView modelAndView = new ModelAndView("file_list", "payload", sentPayload);
 		when(service.deleteAllFiles(baseUrl))
-				.thenReturn(modelAndView);
+				.thenReturn(sentPayload);
 
 		mockMvc
 				.perform(
