@@ -1,7 +1,7 @@
 =================================================================================
 POSTGRESQL
 =================================================================================
-The PostgreSQL (or postgres) is a relational database system.
+The PostgreSQL (or postgres) is a relational database system. Free, popular, powerful.
 Database names, column names, index names etc. should be lowercase.
 
 1. SETTING UP

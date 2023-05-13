@@ -11,22 +11,43 @@ SPRING APPLICATION PROPERTIES
 All the Spring environmental settings can be defined in one or several external files. Such an external file contains a full setting-package set for a purpose, and only one such file can be active at a time. With other words, this file contains configuration and environment-specific settings of the application, mainly for Hibernate (part of Spring Data JPA core).
 
 The validity of such settings depends on where the specific setting file is placed in the project hierarchy:
-    - general settings: under the src/main/resources folder
-    - test settings: under the src/test/resources folder
+    - development settings: under the src/main/resources folder (application.*)
+    - test settings: under the src/test/resources folder (application.*)
+    - production settings: under the src/main/resources folder (application-production.*)
+In case production settings are missing, development settings will be used.
 
 The settings file can be written in two different formats:
-    - properties (file name: application.properties)
-    - Yaml (file name: application.yml)
+    - properties (file name: application.properties or application-production.properties)
+    - Yaml (file name: application.yml or application-production.yml)
 The two formats are equivalent.
 
-EXAMPLE FOR SETTINGS FORMATS (PROPERTIES):
+EXAMPLE FOR SETTINGS FORMATS (GENERALLY, PROPERTIES):
 level1.level2.level3=value
 END OF EXAMPLE
 
-EXAMPLE FOR SETTINGS FORMATS (YAML):
+EXAMPLE FOR SETTINGS FORMATS (GENERALLY, YAML):
 level1:
     level2:
         level3: "value"
+END OF EXAMPLE
+
+EXAMPLE FOR SETTINGS FORMATS (PROPERTIES):
+spring.datasource.url = jdbc:h2:mem:testdb
+spring.datasource.driverClassName = org.h2.Driver
+spring.datasource.username = sa
+spring.datasource.password = password
+spring.jpa.database-platform = org.hibernate.dialect.H2Dialect
+END OF EXAMPLE
+
+EXAMPLE FOR SETTINGS FORMATS (YAML):
+spring:
+    datasource:
+        url: jdbc:h2:mem:mydb
+        driverClassName: org.h2.Driver
+        username: sa
+        password: password
+    jpa:
+        database-platform: org.hibernate.dialect.H2Dialect
 END OF EXAMPLE
 
 When a setting has default value and the needed value would follow that default, presenting of the setting line is optional.
@@ -47,16 +68,23 @@ Commenting is done by using the # character which marks that everything after it
 ||spring.jpa.hibernate.ddl-auto|how Hibernate should initialize the database during development phase||
 ||spring.jpa.show-sql|sets visibility of executed SQL commands on console||
 ||spring.jpa.properties.hibernate.format_sql|sets formatting on printed SQL commands on console, optional||
+||spring.jpa.defer-datasource-initialization|the true value forces Hibernate to initialize first, then the database initialization files can be loaded||
+||spring.sql.init.mode|the never value disables loading database initialization files||
+||spring.sql.init.data-locations|defines files which contains SQL commands for database initialization (JDBC support)||
+||spring.jpa.properties.hibernate.hbm2ddl.import_files|defines files which contains SQL commands for database initialization (Hibernate support)||
 
 ||H2 PARAMETERS|DESCRIPTION||
-||spring.h2.console.enabled|Spring starts H2 Database administration tool at http://localhost:8080 with /h2-console endpoint (path) by default||
+||spring.h2.console.enabled|TRUE starts the H2 Database administration tool at http://localhost:8080 with /h2-console endpoint (path) when enabled||
 ||spring.h2.console.path|modifies the default endpoint (path) of the H2 Database administration tool||
+||spring.h2.console.settings.trace|FALSE disables trace outputs||
+||spring.h2.console.settings.web-allow-others|FALSE disables remote access||
 
 ||LOGGING PARAMETERS|DESCRIPTION||
 ||logging.level.org.hibernate.SQL|for DEBUG value prints SQL debug information on console, optional||
 ||logging.level.org.hibernate.type.descriptor.sql|for TRACE value prints SQL debug information on console for prepared statements, optional||
 
 The database communicates through a port defined at installation. The default ports are:
+    - H2: same with application port (8080 by default)
     - mySQL: 3306
     - PostgreSQL: 5432
     - Oracle: 1521
@@ -64,8 +92,12 @@ The database communicates through a port defined at installation. The default po
 
 The database login data (username and password) can be default which comes from the database installation or can be unique which was pre-prepared in the database.
 Default usernames:
+    - H2: sa
     - mySQL: root
     - PostgreSQL: postgres
+Default password:
+    - H2: (none or password)
+For H2, the given login parameters will modify the default login data with which the database will be created.
 
 The spring.jpa.hibernate.ddl-auto parameter is needed only in development phase. It can have the next values:
     - create-only (creates the database)
@@ -81,11 +113,31 @@ In production time, use none or validate (latter prevents malfunction in case th
 When the existing database structure should be changed, use update (on live database must look for possible data loss).
 In case there is a Configuration bean with CommandLineRunner which adds prepared records for development, will be added with create, create-only etc., but must not and will not do it in production mode (e.g. validation), will cause exception.
 
+For SQL data locations, the next value variations can be used:
+    - filename (will be searched in the src/main/resources or src/test/resources folder)
+    - filename1,filename2,... (several files)
+    - /path/filename (different folder)
+    - (same for several files)
+    - ...*... (marks common part)
+The location can either be set via Hibernate (spring.jpa.properties.hibernate.hbm2ddl.import_files) and JDBC (spring.sql.init.data-locations) support. Do not use both supports at the same time.
+In Spring Boot 2.5.0 and before, for JDBC support, use spring.datasource.data property instead.
+
+EXAMPLE FOR SQL DATA LOCATION SETTINGS:
+spring.sql.init.data-locations = import_active_users.sql,import_inactive_users.sql #or:
+spring.jpa.properties.hibernate.hbm2ddl.import_files = import_active_users.sql,import_inactive_users.sql
+
+spring.sql.init.data-locations=import_*_users.sql #or:
+spring.jpa.properties.hibernate.hbm2ddl.import_files=import_*_users.sql
+END OF EXAMPLE
+
+For H2 datasource url, the next possible values can be assigned:
+    - jdbc:h2:mem:[databaseName] (in-memory storage, name is optional)
+    - jdbc:h2:file:[/path/databaseName] (in-file storage, path starts from project root, name and path are optional, keeps data on restart)
+
 EXAMPLE FOR CONNECTION DATA (APPLICATION.PROPERTIES FILE, H2):
 spring.datasource.driverClassName = org.h2.Driver
-spring.datasource.url = jdbc:h2:mem:databaseName #in-memory database, or:
-spring.datasource.url = jdbc:h2:file:[path/databaseName] #disk-based database
-spring.datasource.username =
+spring.datasource.url = jdbc:h2:mem:databaseName
+spring.datasource.username = sa
 spring.datasource.password =
 
 spring.jpa.properties.hibernate.dialect = org.hibernate.dialect.H2Dialect
@@ -93,7 +145,7 @@ spring.jpa.hibernate.ddl-auto = create-drop
 spring.jpa.show-sql = true
 spring.jpa.properties.hibernate.format_sql = true
 
-spring.h2.console.enabled = true #default path: /h2-console
+spring.h2.console.enabled = true #default is none on default path /h2-console
 spring.h2.console.path = /h2-ui
 END OF EXAMPLE
 
@@ -189,6 +241,8 @@ MORE HERE: https://docs.spring.io/spring-boot/docs/current/reference/html/howto.
 
 =>SPRING BOOT
 =>POSTGRESQL
+=>H2
 =>SPRING BOOT REPOSITORY
 =>SPRING BOOT ENTITY
 =>SPRING BOOT FILE STORAGE WITH THYMELEAF EXAMPLE
+=>SPRING BOOT CONFIGURATION

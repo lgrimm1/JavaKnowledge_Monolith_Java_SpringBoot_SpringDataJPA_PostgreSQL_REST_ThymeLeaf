@@ -1,11 +1,22 @@
 =================================================================================
 SPRING BOOT CONFIGURATION
 =================================================================================
+After building up the Spring hierarchy or after launched the application, pre-configuration is possible.
+
+1. CONFIGURATION CLASS
+2. DATA.SQL FILE
+
+=================================================================================
+1. CONFIGURATION CLASS
+=================================================================================
 This class is used to create pre-configuration of the Spring Boot application for development purposes.
 Useful when need e.g. records in the database at startup.
 
 The application classes are rendered into graph hierarchy by their package and class dependency injections. The configuration class applies on the package its defined and below in the hierarchy.
 Create a configuration class per graph branch if needed.
+For an application branch, place the class in the appropriate folder under the /src/main/java folder.
+For the whole application, place the class next to the main controller class.
+For a test branch, place the class in the appropriate folder under the /src/test/java folder.
 
 The configuration is made of beans. These beans will be injected when Spring arrives at the point when builds the hierarchy or when using the bean makes sense.
 
@@ -33,4 +44,26 @@ public class Config {
 }
 END OF EXAMPLE
 
-=>SPRING BOOT ENTITY
+=================================================================================
+2. DATA.SQL FILE
+=================================================================================
+Such file is used for initializing of a database. The file contains basic SQL scripts.
+The file will be automatically loaded.
+
+Place a data.sql file in the src/main/resources folder for the application.
+Place a data.sql file in the src/test/resources folder for the test.
+
+EXAMPLE FOR DATA.SQL:
+INSERT INTO countries (id, name) VALUES (1, 'USA');
+INSERT INTO countries (id, name) VALUES (2, 'France');
+INSERT INTO countries (id, name) VALUES (3, 'Brazil');
+INSERT INTO countries (id, name) VALUES (4, 'Italy');
+INSERT INTO countries (id, name) VALUES (5, 'Canada');
+END OF EXAMPLE
+
+The accepted .sql filename and-or its location can be changed via utilizing the proper application properties settings. Also, several files can be defined as well. Disabling the loading procedure is possible as well.
+The SQL files are loaded before the Hibernate initialization. With this, script-based initialization with other database migration tools such as Flyway and Liquibase becomes possible. It is possible to set Hibernate to initialize first.
+Visit the SPRING APPLICATION PROPERTIES page for details.
+
+=>SPRING BOOT
+=>SPRING APPLICATION PROPERTIES

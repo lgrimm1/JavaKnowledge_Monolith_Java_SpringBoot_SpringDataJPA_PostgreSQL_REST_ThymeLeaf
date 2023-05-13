@@ -22,8 +22,9 @@ Optionally, further boiler-coding time can be spared when instead of manual chec
 6. REPOSITORY
 7. SERVICE CLASS
 8. CONTROLLER CLASS
-9. JSON AND XML CONVERSION
-10. START AND STOP WEB APPLICATION
+9. CONFIGURATION
+10. JSON AND XML CONVERSION
+11. START AND STOP WEB APPLICATION
 
 =================================================================================
 1. SETTING UP
@@ -244,7 +245,11 @@ Visit the SPRING BOOT SERVICE page for description.
 Visit the SPRING BOOT CONTROLLER page for description.
 
 =================================================================================
-9. JSON AND XML CONVERSION
+9. CONFIGURATION
+=================================================================================
+
+=================================================================================
+10. JSON AND XML CONVERSION
 =================================================================================
 XML or JSON conversion happens when the application is RESTful.
 Both data types are series of characters therefore given values in it are practically texts.
@@ -259,7 +264,7 @@ The JSON or XML fields must match exactly with the object fields by name and typ
 The class name or the object variable name can be different at backend and frontend.
 
 =================================================================================
-10. START AND STOP WEB APPLICATION
+11. START AND STOP WEB APPLICATION
 =================================================================================
 To start the web application, use Maven in console:
     - mvn spring-boot:run
@@ -290,10 +295,12 @@ MORE HERE: https://www.digitalocean.com/community/tutorials/spring-configuration
 =>SPRING BOOT REPOSITORY
 =>SPRING BOOT SERVICE
 =>SPRING BOOT CONTROLLER
-=>SPRING BOOT REQUESTSs
+=>SPRING BOOT REQUESTS
+=>SPRING BOOT CONFIGURATION
 =>SERIALIZATION
 =>SPRING BOOT TESTS
 =>POSTGRESQL
+=>H2
 =>SPRING BOOT VALIDATION
 =>SPRING EXCEPTION HANDLING
 =>MOCKITO
