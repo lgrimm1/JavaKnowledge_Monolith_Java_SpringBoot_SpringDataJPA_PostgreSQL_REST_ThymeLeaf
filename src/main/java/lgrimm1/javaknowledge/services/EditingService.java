@@ -1,13 +1,15 @@
 package lgrimm1.javaknowledge.services;
 
-import lgrimm1.javaknowledge.databasestorage.*;
-import lgrimm1.javaknowledge.datamodels.*;
+import lgrimm1.javaknowledge.databasestorage.DatabaseStorageService;
+import lgrimm1.javaknowledge.databasestorage.HtmlEntity;
+import lgrimm1.javaknowledge.databasestorage.TitleEntity;
+import lgrimm1.javaknowledge.databasestorage.TxtEntity;
+import lgrimm1.javaknowledge.datamodels.Payload;
 import lgrimm1.javaknowledge.process.Formulas;
 import lgrimm1.javaknowledge.process.ProcessRecords;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -149,9 +151,7 @@ private final DatabaseStorageService databaseStorageService;
 				content = content
 						.replaceAll("\r\n", "\n")
 						.replaceAll("\r", "\n");
-				long htmlId = databaseStorageService.saveHtml(new HtmlEntity(
-						new ArrayList<>(),
-						new ArrayList<>())).getId();
+				long htmlId = databaseStorageService.saveHtml(new HtmlEntity("", "")).getId();
 				long txtId = databaseStorageService.saveTxt(new TxtEntity(content)).getId();
 				databaseStorageService.saveTitle(new TitleEntity(
 						title,

@@ -265,8 +265,8 @@ class EditingServiceSavePageTest {
 
 		when(databaseStorageService.findTitleByTitle(title))
 				.thenReturn(Optional.empty());
-		when(databaseStorageService.saveHtml(new HtmlEntity(new ArrayList<>(), new ArrayList<>())))
-				.thenReturn(new HtmlEntity(3L, new ArrayList<>(), new ArrayList<>()));
+		when(databaseStorageService.saveHtml(new HtmlEntity("", "")))
+				.thenReturn(new HtmlEntity(3L, "", ""));
 		when(databaseStorageService.saveTxt(new TxtEntity(content)))
 				.thenReturn(new TxtEntity(4L, content));
 

@@ -106,7 +106,7 @@ class DatabaseStorageServiceTest {
 	@Test
 	void findHtmlById() {
 		long id = 2L;
-		HtmlEntity expectedHtmlEntity = new HtmlEntity(2L, List.of("content"), List.of("Title reference 1"));
+		HtmlEntity expectedHtmlEntity = new HtmlEntity(2L, "content", "Title reference 1");
 		when(htmlRepository.findById(id))
 				.thenReturn(Optional.of(expectedHtmlEntity));
 		Optional<HtmlEntity> resultedHtmlEntity = databaseStorageService.findHtmlById(id);
@@ -116,14 +116,14 @@ class DatabaseStorageServiceTest {
 
 	@Test
 	void saveHtml() {
-		HtmlEntity givenHtmlEntity = new HtmlEntity(List.of("html content"), List.of("html reference"));
-		HtmlEntity savedHtmlEntity = new HtmlEntity(2L, List.of("html content"), List.of("html reference"));
+		HtmlEntity givenHtmlEntity = new HtmlEntity("html content", "html reference");
+		HtmlEntity savedHtmlEntity = new HtmlEntity(2L, "html content", "html reference");
 		when(databaseStorageService.saveHtml(givenHtmlEntity))
 				.thenReturn(savedHtmlEntity);
 		Assertions.assertEquals(savedHtmlEntity, databaseStorageService.saveHtml(givenHtmlEntity));
 
-		givenHtmlEntity = new HtmlEntity(3L, List.of("html content"), List.of("html reference"));
-		savedHtmlEntity = new HtmlEntity(3L, List.of("html content"), List.of("html reference"));
+		givenHtmlEntity = new HtmlEntity(3L, "html content", "html reference");
+		savedHtmlEntity = new HtmlEntity(3L, "html content", "html reference");
 		when(databaseStorageService.saveHtml(givenHtmlEntity))
 				.thenReturn(savedHtmlEntity);
 		Assertions.assertEquals(savedHtmlEntity, databaseStorageService.saveHtml(givenHtmlEntity));

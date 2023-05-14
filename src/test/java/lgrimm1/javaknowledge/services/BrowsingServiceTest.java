@@ -254,9 +254,9 @@ class BrowsingServiceTest {
 	@Test
 	void getPage_RightPayload() {
 		String title = "Title 3";
-		List<String> contentList = List.of("content");
 		String contentString = "content\n";
-		List<String> titleReferences = List.of("Title 2");
+		List<String> titleReferencesList = List.of("Title 2");
+		String titleReferencesString = "Title 2\n";
 		Payload receivedPayload = new Payload(
 				"templateTitle",
 				null,
@@ -271,9 +271,9 @@ class BrowsingServiceTest {
 		when(databaseStorageService.findTitleByTitle(title))
 				.thenReturn(Optional.of(new TitleEntity(1L, "Title 3", 1L, 1L)));
 		when(databaseStorageService.findHtmlById(1L))
-				.thenReturn(Optional.of(new HtmlEntity(1L, contentList, titleReferences)));
-		when(processRecords.listToString(contentList))
-				.thenReturn(contentString);
+				.thenReturn(Optional.of(new HtmlEntity(1L, contentString, titleReferencesString)));
+		when(processRecords.stringToList(titleReferencesString))
+				.thenReturn(titleReferencesList);
 		Payload expectedPayload = new Payload(
 				formulas.getTitlePage(),
 				null,
@@ -283,7 +283,7 @@ class BrowsingServiceTest {
 				null,
 				contentString,
 				null,
-				titleReferences
+				titleReferencesList
 		);
 		Assertions.assertEquals(expectedPayload, browsingService.getPage(receivedPayload));
 	}

@@ -4,4 +4,4 @@ Solve out-of-the-box testability for unprepared postgres database
 Commit:
 HtmlEntity, EditingService, ProcessRecords, BrowsingService, ProcessPage, Config: translated HTML fields from List<String> to String (TEXT[] to TEXT).
 
-Extended Web fonts TXT with different cased Lorem Ipsum.
+

@@ -13,20 +13,20 @@ public class HtmlEntity {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_html")
 	@Column(name = "id")
 	long id;
-	@Column(name = "content", nullable = false, columnDefinition = "TEXT[]")
-	List<String> content;
-	@Column(name = "title_references", nullable = false)
-	List<String> titleReferences;
+	@Column(name = "content", nullable = false, columnDefinition = "TEXT")
+	String content;
+	@Column(name = "title_references", nullable = false, columnDefinition = "TEXT")
+	String titleReferences;
 
 	public HtmlEntity() {
 	}
 
-	public HtmlEntity(List<String> content, List<String> titleReferences) {
+	public HtmlEntity(String content, String titleReferences) {
 		this.content = content;
 		this.titleReferences = titleReferences;
 	}
 
-	public HtmlEntity(long id, List<String> content, List<String> titleReferences) {
+	public HtmlEntity(long id, String content, String titleReferences) {
 		this.id = id;
 		this.content = content;
 		this.titleReferences = titleReferences;
@@ -40,19 +40,19 @@ public class HtmlEntity {
 		this.id = id;
 	}
 
-	public List<String> getContent() {
+	public String getContent() {
 		return content;
 	}
 
-	public void setContent(List<String> content) {
+	public void setContent(String content) {
 		this.content = content;
 	}
 
-	public List<String> getTitleReferences() {
+	public String getTitleReferences() {
 		return titleReferences;
 	}
 
-	public void setTitleReferences(List<String> titleReferences) {
+	public void setTitleReferences(String titleReferences) {
 		this.titleReferences = titleReferences;
 	}
 
@@ -61,7 +61,9 @@ public class HtmlEntity {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
 		HtmlEntity that = (HtmlEntity) o;
-		return id == that.id && content.equals(that.content) && titleReferences.equals(that.titleReferences);
+		return id == that.id &&
+				Objects.equals(content, that.content) &&
+				Objects.equals(titleReferences, that.titleReferences);
 	}
 
 	@Override
@@ -73,8 +75,8 @@ public class HtmlEntity {
 	public String toString() {
 		return "HtmlEntity{" +
 				"id=" + id +
-				", content=" + content +
-				", titleReferences=" + titleReferences +
+				", content='" + content + '\'' +
+				", titleReferences='" + titleReferences + '\'' +
 				'}';
 	}
 }

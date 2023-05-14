@@ -92,9 +92,9 @@ private final DatabaseStorageService databaseStorageService;
 				null,
 				null,
 				null,
-				processRecords.listToString(optionalHtmlEntity.get().getContent()),
+				optionalHtmlEntity.get().getContent(),
 				null,
-				optionalHtmlEntity.get().getTitleReferences()
+				processRecords.stringToList(optionalHtmlEntity.get().getTitleReferences())
 		);
 	}
 }

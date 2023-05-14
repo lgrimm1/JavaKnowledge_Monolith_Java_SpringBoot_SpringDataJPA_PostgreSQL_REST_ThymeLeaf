@@ -93,8 +93,8 @@ class ProcessRecordsImportTxtFilesTest {
 		TxtEntity savedTxtEntity = new TxtEntity(2L, txtColumnContent);
 		HtmlEntity originalHtmlEntity = new HtmlEntity(
 				3L,
-				List.of("original html content"),
-				List.of("original references"));
+				"original html content",
+				"original references");
 		TitleEntity originalTitleEntity = new TitleEntity(1L, title, 2L, 3L);
 
 		when(fileOperations.readFile(txtFile))
@@ -134,8 +134,8 @@ class ProcessRecordsImportTxtFilesTest {
 		TxtEntity originalTxtEntity = new TxtEntity(2L, "original txt content");
 		TxtEntity givenTxtEntity = new TxtEntity(2L, txtColumnContent);
 		TxtEntity savedTxtEntity = new TxtEntity(2L, txtColumnContent);
-		HtmlEntity givenHtmlEntity = new HtmlEntity(new ArrayList<>(), new ArrayList<>());
-		HtmlEntity savedHtmlEntity = new HtmlEntity(5L, new ArrayList<>(), new ArrayList<>());
+		HtmlEntity givenHtmlEntity = new HtmlEntity("", "");
+		HtmlEntity savedHtmlEntity = new HtmlEntity(5L, "", "");
 		TitleEntity originalTitleEntity = new TitleEntity(1L, title, 2L, 3L);
 		TitleEntity givenTitleEntity = new TitleEntity(1L, title, 2L, 5L);
 
@@ -179,8 +179,8 @@ class ProcessRecordsImportTxtFilesTest {
 		TxtEntity savedTxtEntity = new TxtEntity(4L, txtColumnContent);
 		HtmlEntity originalHtmlEntity = new HtmlEntity(
 				3L,
-				List.of("original html content"),
-				List.of("original references"));
+				"original html content",
+				"original references");
 		TitleEntity originalTitleEntity = new TitleEntity(1L, title, 2L, 3L);
 		TitleEntity givenTitleEntity = new TitleEntity(1L, title, 4L, 3L);
 
@@ -220,8 +220,8 @@ class ProcessRecordsImportTxtFilesTest {
 		String txtColumnContent = "Line 4\n";
 		TxtEntity givenTxtEntity = new TxtEntity(txtColumnContent);
 		TxtEntity savedTxtEntity = new TxtEntity(2L, txtColumnContent);
-		HtmlEntity givenHtmlEntity = new HtmlEntity(new ArrayList<>(), new ArrayList<>());
-		HtmlEntity savedHtmlEntity = new HtmlEntity(3L, new ArrayList<>(), new ArrayList<>());
+		HtmlEntity givenHtmlEntity = new HtmlEntity("", "");
+		HtmlEntity savedHtmlEntity = new HtmlEntity(3L, "", "");
 		TitleEntity givenTitleEntity = new TitleEntity(title, 2L, 3L);
 
 		when(fileOperations.readFile(txtFile))

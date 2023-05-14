@@ -24,10 +24,10 @@ public class ProcessPage {
 	 */
 	public HtmlContentAndReferences processTxt(List<String> text, String title) {
 		List<String> html = htmlGenerators.generateFirstTags(title);
-		HtmlContentAndReferences payload = htmlGenerators.generateMainContent(text);
-		html.addAll(payload.content());
+		HtmlContentAndReferences contentAndReferences = htmlGenerators.generateMainContent(text);
+		html.addAll(contentAndReferences.content());
 		html.addAll(htmlGenerators.generateLastTags());
 		html = htmlGenerators.collectAndReferenceHeaders(html);
-		return new HtmlContentAndReferences(html, payload.titles());
+		return new HtmlContentAndReferences(html, contentAndReferences.titles());
 	}
 }

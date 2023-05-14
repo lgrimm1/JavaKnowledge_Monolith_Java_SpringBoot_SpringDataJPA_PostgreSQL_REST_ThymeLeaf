@@ -77,9 +77,9 @@ public class ProcessRecords {
 							Optional<HtmlEntity> optionalHtmlEntity =
 									databaseStorageService.findHtmlById(titleEntity.getHtmlId());
 							if (optionalHtmlEntity.isEmpty()) {
-								long htmlId = databaseStorageService.saveHtml(new HtmlEntity(
-										new ArrayList<>(),
-										new ArrayList<>())).getId();
+								long htmlId =
+										databaseStorageService.saveHtml(new HtmlEntity("", ""))
+												.getId();
 								titleEntity.setHtmlId(htmlId);
 								titleEntityModified = true;
 							}
@@ -91,9 +91,7 @@ public class ProcessRecords {
 							databaseStorageService.saveTitle(new TitleEntity(
 									title,
 									databaseStorageService.saveTxt(new TxtEntity(content)).getId(),
-									databaseStorageService.saveHtml(new HtmlEntity(
-											new ArrayList<>(),
-											new ArrayList<>())).getId()
+									databaseStorageService.saveHtml(new HtmlEntity("", "")).getId()
 							));
 						}
 					}
@@ -113,7 +111,7 @@ public class ProcessRecords {
 			Optional<TxtEntity> optionalTxtEntity = databaseStorageService.findTxtById(titleEntity.getTxtId());
 			if (optionalTxtEntity.isPresent()) {
 				String title = titleEntity.getTitle();
-				HtmlContentAndReferences payload = processPage.processTxt(
+				HtmlContentAndReferences contentAndReferences = processPage.processTxt(
 						this.stringToList(optionalTxtEntity.get().getContent()),
 						title
 				);
@@ -121,13 +119,13 @@ public class ProcessRecords {
 				Optional<HtmlEntity> optionalHtmlEntity = databaseStorageService.findHtmlById(titleEntity.getHtmlId());
 				if (optionalHtmlEntity.isPresent()) {
 					htmlEntity = optionalHtmlEntity.get();
-					htmlEntity.setContent(payload.content());
-					htmlEntity.setTitleReferences(payload.titles());
+					htmlEntity.setContent(this.listToString(contentAndReferences.content()));
+					htmlEntity.setTitleReferences(this.listToString(contentAndReferences.titles()));
 					databaseStorageService.saveHtml(htmlEntity);
 				}
 				else {
 					titleEntity.setHtmlId(
-							databaseStorageService.saveHtml(new HtmlEntity(payload.content(), payload.titles()))
+							databaseStorageService.saveHtml(new HtmlEntity(this.listToString(contentAndReferences.content()), this.listToString(contentAndReferences.titles())))
 									.getId()
 					);
 					databaseStorageService.saveTitle(titleEntity);
