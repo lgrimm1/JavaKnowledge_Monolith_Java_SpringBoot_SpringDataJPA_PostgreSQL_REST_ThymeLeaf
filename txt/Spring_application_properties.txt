@@ -96,7 +96,7 @@ Default usernames:
     - mySQL: root
     - PostgreSQL: postgres
 Default password:
-    - H2: (none or password)
+    - H2: (none)
 For H2, the given login parameters will modify the default login data with which the database will be created.
 
 The spring.jpa.hibernate.ddl-auto parameter is needed only in development phase. It can have the next values:

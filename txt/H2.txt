@@ -4,7 +4,7 @@ H2
 The H2 is an in-memory relational database system.
 Database names, column names, index names etc. should be lowercase.
 Typically, H2 is used when no psychical database is available or fitting for the task or for the purpose of testing when no specific database connection parameters should be set.
-H2 accepts all generally used key types. Due to one of its main purpose (testing independently of actual psychical databases), recognizes most of the possible column data types.
+H2 accepts all generally used key types and column types. Due to one of its main purpose (testing independently of actual psychical databases), recognizes most of the possible column data types. Be aware of using database-specific (exotic) column types e.g. TEXT[] (specific for PostgreSQL).
 Please note, unless set to have file-based storage, H2 will be re-launched with data loss along with application re-loading.
 H2 uses the same port as the application (8080 by default).
 
@@ -27,6 +27,7 @@ The console is built-in, can be reached after the current application is started
 In order to access the console, type the next URL into a browser:
     - http://localhost:8080/h2-console
 The console uses the root of the application URL plus the /h2-console endpoint.
+In some cases the /h2 endpoint is used, try this first when /h2-console does not work.
 The starting page asks connection parameters set in the backend connection parameters.
 Work parameters of the console are set via these parameters as well.
 
