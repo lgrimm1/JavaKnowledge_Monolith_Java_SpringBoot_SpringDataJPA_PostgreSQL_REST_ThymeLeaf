@@ -1,9 +1,25 @@
 =================================================================================
 LITERALS
 =================================================================================
-Literals are constants but no variables.
-For further use we render them to variables or pass them to methods.
-Logical: true or false
+
+1. LITERALS GENERALLY
+2. TEXT BLOCK
+
+=================================================================================
+1. LITERALS GENERALLY
+=================================================================================
+Literals are constants but no variables. They can be called primitive values as well. Such literal can be rendered to a variable which must be capable of carrying the type of the value.
+Beside rendering to variables, a literal can be passed to methods as well. At the receiver part a variable will receive the value.
+
+A literal type can be:
+    - logical
+    - whole number
+    - floating-point number
+    - character
+    - string
+
+Logical:
+    - true or false
 
 Whole number:
 	- 12 //normal decimal
@@ -18,15 +34,126 @@ Floating-point number:
 
 Character:
 	- 'a' //normal character
-	- \b or \n or \t or \\ or \" //escape character, in order: backspace, new line, TAB, backslash, quotation mark
+	- \b or \r or \n or \t or \\ or \" //escape character, in order: backspace, carriage-return, new line, TAB, backslash, quotation mark
 
-String: "a" or "abc\nd12n" //with an escape character for demonstration
+String:
+    - "a" or "abc\nd12n" //here, with an escape character
+    - "\n" for Linux line breaks, "\r\n" for Windows line breaks
+    - """...""" //text block, see later
 
-Automated literal conversion:
-    - data with different type will be converted at value giving.
+In some cases a literal type can be converted to an other, usually from a narrower type to a wider one.
+When a type is rendered to a variable of different type but conversion is possible, Java will proceed with automated literal conversion.
+Similarly, when two literals with different types are put into a common equation (e.g. incrementing or adding), if possible, Java will convert one of the literals which will allow Java to proceed.
+
+EXAMPLE FOR AUTOMATED LITERAL CONVERSION:
     - int ascii;
     - ascii = 'a'; //value will be 97
     - "Number is " + ascii //right, ascii will be converted to String for concatenation
+END OF EXAMPLE
+
+=================================================================================
+2. TEXT BLOCK
+=================================================================================
+When dealing with long strings or strings with multiple lines, from Java 15, text blocks can be used for achieving the needed simplicity and readability.
+A text block starts with """ (three quotation marks), the first character of the text starts in the next line.
+The text block ends with the same three signs (""") right after the last character of the text block.
+New line character (\n) will be inserted following the natural text flow. In case instead of \n the \r\n line break is needed, use the \r escaped character at the visible line end.
+In case no \n character is needed at actual line end in the resulted string but for better readability line break is needed in the text block, use the escape (\) character at the virtual end of the line.
+Inside the text block, no escape character is needed for single or double quotation marks (" and ""). That said, it is ideal to use it for native JSON data, SQL commands etc. For three quotation marks, escape the first one only (\""").
+
+EXAMPLE FOR TEXT BLOCKS:
+//single-line text block:
+"""
+text in the line"""
+//resulted string:
+"text in the line"
+
+//multi-line text block with \n:
+"""
+text in the 1st line
+text in the 2nd line"""
+//resulted string:
+"text in the 1st line\ntext in the 2nd line"
+
+//multi-line text block with \r\n:
+"""
+text in the 1st line\r
+text in the 2nd line"""
+//resulted string:
+"text in the 1st line\r\ntext in the 2nd line"
+
+//single-line text block with virtual line break:
+"""
+word1 word2 \
+word3"""
+//resulted string:
+"word1 word2 word3"
+
+//JSON with text block (quotation mark without escaping):
+"""
+{
+"attribute1": true,
+"attribute2": "value2",
+"attribute3": ""
+}"""
+//resulted string:
+"{\"attribute1\": true,\"attribute2\": \"value2\",\"attribute3\": \"\"}"
+
+//SQL with text block (quotation mark without escaping):
+"""
+SELECT * FROM TABLE t WHERE t.column = "value"
+"""
+//resulted string:
+"SELECT * FROM TABLE t WHERE t.column = \"value\"\n"
+END OF EXAMPLE
+
+The text block indentation comes from the structure of the code where every character which is before the first quotation mark horizontally, will be deleted. Empty lines does not need any characters to keep indentation.
+
+EXAMPLE FOR TEXT BLOCK INDENTATION:
+//text block:
+var s = """
+         <html>
+
+             <head>
+             </head>
+             <body>
+                 <span>text</span>
+             </body>
+         </html>""";
+//equals with:
+var s = "<html>\n" +
+        "\n" +
+        "    <head>\n" +
+        "    </head>\n" +
+        "    <body>\n" +
+        "        <span>text</span>\n" +
+        "    </body>\n" +
+        "</html>";
+END OF EXAMPLE
+
+Trailing spaces will be ignored at line ends by default with two exceptions:
+    - when the line ends with escape character (\), a space before the escape character will be preserved
+    - when the line ends with escaped space "\s" character (special marker for text blocks)
+
+EXAMPLE FOR TRAILING SPACES IN TEXT BLOCK:
+//text block, spaces are marked with . here:
+"""
+text1....
+text2....\
+text3....\s"""
+//resulted text:
+"text1\ntext2 \ntext3....."
+END OF EXAMPLE
+
+Finally, Java allows to use a formatter method on text blocks in the same way as on string literals, namely, can a %s marker used which the called method will replace with a passed value.
+
+EXAMPLE FOR FORMATTER METHOD ON TEXT BLOCK:
+String base = """
+text1 text2 %s text3
+text4""";
+String var1 = base.formatted("value1"); //var1 == "text1 text2 value1 text3\ntext4"
+String var2 = base.formatted("value2"); //var2 == "text1 text2 value2 text3\ntext4"
+END OF EXAMPLE
 
 =>VARIABLES
 =>PRIMITIVE DATA TYPES
