@@ -107,36 +107,53 @@ SELECT * FROM TABLE t WHERE t.column = "value"
 "SELECT * FROM TABLE t WHERE t.column = \"value\"\n"
 END OF EXAMPLE
 
-The text block indentation comes from the structure of the code where every character which is before the first quotation mark horizontally, will be deleted. Empty lines does not need any characters to keep indentation.
+The text block indentation comes from the structure of the code. For every line of the text block, the empty spaces before the first character will be trimmed unless those spaces are after the code indent plus one indent. Exceptions are blank lines which contain only spaces and will be trimmed to zero length (empty lines).
 
-EXAMPLE FOR TEXT BLOCK INDENTATION:
-//text block:
-var s = """
-         <html>
+EXAMPLE FOR TEXT BLOCK INDENTATION (DOTS MARK SPACES):
+String s1 = """
+....<html>
 
-             <head>
-             </head>
-             <body>
-                 <span>text</span>
-             </body>
-         </html>""";
-//equals with:
-var s = "<html>\n" +
+........<head>
+........</head>
+........<body>
+............<span>text</span>
+........</body>
+....</html>""";
+String s2 = "<html>\n" +
         "\n" +
-        "    <head>\n" +
-        "    </head>\n" +
-        "    <body>\n" +
-        "        <span>text</span>\n" +
-        "    </body>\n" +
+        "....<head>\n" +
+        "....</head>\n" +
+        "....<body>\n" +
+        "........<span>text</span>\n" +
+        "....</body>\n" +
         "</html>";
+boolean equals = s1.equals(s2); //true
+
+String s3 = """
+abc
+""";
+String s4 = """
+....abc
+""";
+b = s3.equals(s4); //true
+
+String s5 = """
+........abc
+""";
+b = s3.equals(s5); //false
+
+String s6 = """
+................
+""";
+b = s6.isEmpty(); //true
 END OF EXAMPLE
 
 Trailing spaces will be ignored at line ends by default with two exceptions:
     - when the line ends with escape character (\), a space before the escape character will be preserved
     - when the line ends with escaped space "\s" character (special marker for text blocks)
 
-EXAMPLE FOR TRAILING SPACES IN TEXT BLOCK:
-//text block, spaces are marked with . here:
+EXAMPLE FOR TRAILING SPACES IN TEXT BLOCK (DOTS MARK SPACES):
+//text block:
 """
 text1....
 text2....\
@@ -145,7 +162,7 @@ text3....\s"""
 "text1\ntext2 \ntext3....."
 END OF EXAMPLE
 
-Finally, Java allows to use a formatter method on text blocks in the same way as on string literals, namely, can a %s marker used which the called method will replace with a passed value.
+Finally, Java allows to use a formatter method on text blocks in the same way as on string literals, namely, a %s marker can be used which the called method will replace with a passed value.
 
 EXAMPLE FOR FORMATTER METHOD ON TEXT BLOCK:
 String base = """
