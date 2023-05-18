@@ -18,7 +18,7 @@ By default, after every test Spring rolls back the database (transaction managem
 Please note, although the rollback is a default function of JPA test, Hibernate communicates with the database. That said, new records will be deleted etc., but the record IDs will increment with every added records continuously. In case comparing entities is necessary, avoid comparing IDs.
 Alternatively, define an equalsWithoutId() helper method within the test class which compares two entities by fields except IDs.
 
-Except for H2, the database needs configuration, use @AutoConfigureTestDatabase for this purpose.
+Except for H2, in case the production database is used for tests, it needs configuration, use @AutoConfigureTestDatabase for this purpose.
 
 The TestEntityManager is the test version of the EntityManager, optionally can be used for testing if the test strategy needs it. When using, first it must be injected with @Autowired.
 In case it is necessary to use TestEntityManager outside of @DataJpaTest instances, add class-level @AutoConfigureTestEntityManager annotation to that class.

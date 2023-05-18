@@ -125,7 +125,29 @@ As normally, under the src/test/java/<package> folder, the tests will be created
 Repository classes can be tested out with normal unit tests.
 Proper tests should cover the functionality (e.g. searching, adding, deleting, modifying data) of the repository as it represents the Storage layer of the web application.
 
+Please note, although the testing should involve the actual database touched by the development as well (such testing would include integration test as well between the repository and the database), the database must exist in the database provider (e.g. PostgreSQL) beforehand. That said, when the project is downloaded to a clear storage without installing or setting up database, the tests will fail out-of-the-box. Solution is that for tests, an in-memory H2 database should be used which is independent on local settings. The solution includes creating or modifying application.properties file under the test/resources folder, also adding H2 dependency to the pom.xml Maven file.
+
+EXAMPLE FOR EXTENDING POM.XML WITH H2 DATABASE:
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+END OF EXAMPLE
+
+EXAMPLE FOR APPLICATION.PROPERTIES UNDER TEST/RESOURCES FOLDER:
+spring.datasource.url = jdbc:h2:mem:java_knowledge
+spring.datasource.username = sa
+spring.datasource.password =
+
+spring.jpa.properties.hibernate.dialect = org.hibernate.dialect.H2Dialect
+spring.jpa.hibernate.ddl-auto = create-drop
+spring.jpa.show-sql = true
+spring.jpa.properties.hibernate.format_sql = true
+END OF EXAMPLE
+
 For Spring Data JPA repository tests, visit the SPRING DATA JPA TESTS page.
+For H2 information, visit the H2 and the SPRING APPLICATION PROPERTIES pages.
 
 =================================================================================
 5. SERVICE CLASS TESTS
@@ -260,3 +282,5 @@ MORE HERE: https://www.javatips.net/api/org.springframework.test.web.modelandvie
 =>SPRING MODELANDVIEW;5. TESTING
 =>SPRING BOOT VALIDATION
 =>SPRING DATA JPA TESTS
+=>H2
+=>SPRING APPLICATION PROPERTIES
