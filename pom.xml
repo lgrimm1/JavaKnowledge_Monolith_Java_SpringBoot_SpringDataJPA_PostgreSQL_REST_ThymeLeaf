@@ -8,7 +8,7 @@
 		<version>3.0.2</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>lgrimm1</groupId>
+	<groupId>lgrimm</groupId>
 	<artifactId>JavaKnowledge</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>JavaKnowledge</name>
