@@ -32,15 +32,16 @@ For in-folder solution, the next dependencies must be added to pom.xml:
 For in-database solution, extend the dependencies with:
     - Spring Boot Starter Data JPA
     - PostgreSQL (or other database plugin)
+    - H2
 
-For in-folder solution the next parameters should be added to the application.properties file. The unit can be MB or KB. In case the uploaded file size is over the limit, MaxUploadSizeExceededException will be raised.
+For in-folder solution the next parameters should be added to the src/main/resources/application.properties file. The unit can be MB or KB. In case the uploaded file size is over the limit, MaxUploadSizeExceededException will be raised.
 
 EXAMPLE FOR APPLICATION.PROPERTIES MINIMUM:
 spring.servlet.multipart.max-file-size=1MB
 spring.servlet.multipart.max-request-size=1MB
 END OF EXAMPLE
 
-For in-database solution, extend the parameters with the next minimum. Furthermore, make sure you created a file_storage database in PostgreSQL (or in other database).
+For in-database solution, extend the parameters with the next minimum. Furthermore, make sure you created an empty file_storage database in PostgreSQL (or in other database).
 
 EXAMPLE FOR APPLICATION.PROPERTIES EXTENSION (POSTGRESQL):
 spring.datasource.url = jdbc:postgresql://localhost:5432/file_storage
@@ -54,7 +55,23 @@ spring.jpa.show-sql = true
 spring.jpa.properties.hibernate.format_sql = true
 END OF EXAMPLE
 
-Visit the SPRING BOOT page for the know-how.
+For in-database tests, H2 is used as database. The next parameters should be added to the test/resources/application.properties file.
+
+EXAMPLE FOR APPLICATION.PROPERTIES MINIMUM FOR TESTS:
+spring.servlet.multipart.max-file-size=1MB
+spring.servlet.multipart.max-request-size=1MB
+
+spring.datasource.url = jdbc:h2:mem:java_knowledge
+spring.datasource.username = sa
+spring.datasource.password =
+
+spring.jpa.properties.hibernate.dialect = org.hibernate.dialect.H2Dialect
+spring.jpa.hibernate.ddl-auto = create-drop
+spring.jpa.show-sql = true
+spring.jpa.properties.hibernate.format_sql = true
+END OF EXAMPLE
+
+Visit the SPRING BOOT and SPRING APPLICATION PROPERTIES pages for the know-how.
 
 =================================================================================
 2. DATA MODELS
@@ -225,6 +242,12 @@ public class FileInDatabaseController {
 		return new ModelAndView("upload", "payload", service.newFile());
 	}
 
+    @GetMapping("/files/new/custom")
+    public ModelAndView customNewFile(Model model) {
+        model.asMap().clear();
+        return new ModelAndView("upload_custom", "payload", service.newFile());
+    }
+
 	@PostMapping("/files/upload/single")
 	public ModelAndView uploadFile(@RequestParam("file") MultipartFile file,
 								   HttpServletRequest request,
@@ -362,21 +385,22 @@ END OF EXAMPLE
 7. THYMELEAF TEMPLATES
 =================================================================================
 EXAMPLE FOR FILE STORAGE TEMPLATES:
-<!-- head fragment: -->
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-  <title>File Storage Example</title>
+  <title>In-folder File Storage</title>
 </head>
 
 <!-- header fragment: -->
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <header>
-    <a th:href="@{/files/new}">Upload File(s)</a>
-    &nbsp;
-    <a th:href="@{/files}">List of Files</a>
+  <a th:href="@{/files/new}">Upload File(s)</a>
+  &nbsp;
+  <a th:href="@{/files/new/custom}">Upload File(s) (Customized)</a>
+  &nbsp;
+  <a th:href="@{/files}">List of Files</a>
 </header>
 
 <!-- upload.html: -->
@@ -386,33 +410,72 @@ EXAMPLE FOR FILE STORAGE TEMPLATES:
 <body>
 <header th:replace="~{/fragments/header.html::header}" />
 <form th:object="${payload}" method="post" enctype="multipart/form-data">
-    <h2>File Upload</h2>
-    <table>
-        <tr>
-            <th>Upload Type</th>
-            <th>File Selection</th>
-            <th>Action</th>
-        </tr>
-        <tr>
-            <td>Single</td>
-            <td>
-                <input type="file" name="file" />
-            </td>
-            <td>
-                <input type="submit" value="Upload" formaction="/files/upload/single" />
-            </td>
-        </tr>
-        <tr>
-            <td>Multiple</td>
-            <td>
-                <input type="file" name="files" multiple />
-            </td>
-            <td>
-                <input type="submit" value="Upload" formaction="/files/upload/multiple" />
-            </td>
-        </tr>
-    </table>
+  <h2>File Upload</h2>
+  <table>
+    <tr>
+      <th>Upload Type</th>
+      <th>File Selection</th>
+      <th>Action</th>
+    </tr>
+    <tr>
+      <td>Single</td>
+      <td><input type="file" name="file" /></td>
+      <td><input type="submit" value="Upload" formaction="/files/upload/single" /></td>
+    </tr>
+    <tr>
+      <td>Multiple</td>
+      <td><input type="file" name="files" multiple /></td>
+      <td><input type="submit" value="Upload" formaction="/files/upload/multiple" /></td>
+    </tr>
+  </table>
 </form>
+</body>
+</html>
+
+<!-- upload_custom.html: -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{/fragments/head.html::head}" />
+<body>
+<header th:replace="~{/fragments/header.html::header}" />
+<form th:object="${payload}" method="post" enctype="multipart/form-data">
+  <h2>Custom File Upload</h2>
+  <table>
+    <tr>
+      <th>Upload Type</th>
+      <th>File Selection</th>
+      <th>Action</th>
+    </tr>
+    <tr>
+      <td>Single</td>
+      <td>
+        <label for="file" id="fileLabel" title="Browse file..." style="display: inline-block; border: 1px solid; line-height: 25px; cursor: pointer;">
+          <input id="file" type="file" name="file" style="position: absolute; left: -99999rem;" onchange="changeFileCaption(this);" />
+          <span id="file_caption">Browse file...</span>
+        </label>
+      </td>
+      <td><input type="submit" value="Upload" formaction="/files/upload/single" /></td>
+    </tr>
+    <tr>
+      <td>Multiple</td>
+      <td>
+        <label for="files" title="Browse files..." style="display: inline-block; border: 1px solid; line-height: 25px; cursor: pointer;">
+          <input id="files" type="file" name="files" style="position: absolute; left: -99999rem;" multiple onchange="changeFilesCaption(this);" />
+          <span id="files_caption">Browse files...</span>
+        </label>
+      </td>
+      <td><input type="submit" value="Upload" formaction="/files/upload/multiple" /></td>
+    </tr>
+  </table>
+</form>
+<script>
+  function changeFileCaption(element) {
+      document.getElementById("file_caption").innerHTML = element.files.item(0).name;
+  };
+  function changeFilesCaption(element) {
+      document.getElementById("files_caption").innerHTML = element.files.length + ' file(s) were selected';
+  };
+</script>
 </body>
 </html>
 
