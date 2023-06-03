@@ -10,7 +10,7 @@ The Spring Validation is mainly used for rendering a condition system on the ent
 Advantage is that there is a wide variety of conditions available, and it is very fast to apply the conditions themselves.
 Disadvantage is that the conditions set on a field become static and there is no flexibility e.g. if the possible maximum value is set on a number field, the maximum can not be changed.
 
-Validation method(s) in service class for the entity below that class provides flexibility since the validation can be parametrized.
+Validation method(s) in service class for the entity provides flexibility since the validation can be parametrized.
 Disadvantage is the need of coding.
 
 =>SPRING BOOT VALIDATION

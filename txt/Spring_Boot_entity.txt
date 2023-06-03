@@ -132,6 +132,7 @@ The relation between class fields and table fields are marked with field-level a
 ||@Transient|will not match with column, will be calculated with constructor or with other code segments e.g. in service class||
 ||@Temporal|for older Spring JPA, marks that the date or time field will contain temporal data||
 ||@Enumerated|marks that the field contains enum||
+||@Lob|large object||
 
 The @Id annotation marks that the field matches with the table column with primary key values.
 Using the @Column annotation is still needed.
@@ -175,6 +176,17 @@ The @Enumerated annotation can have the next parameters:
 In case the order of possible enum values can change in time, use String version in order to prevent necessary database processing.
 
 If needed, transient fields can be connected to table columns as well, by using @Column annotation.
+
+The @Lob annotation marks that the field will contain LOB (Large OBject) with variable length. It has two variants, defined with columnDefinition parameter of @Column annotation:
+    - CLOB: character LOB
+    - BLOB: binary LOB
+Using @Lob annotation means that the data which is probable a file, must be converted to and back the matching array field (byte[] or char[]) of the entity. Upon persist and retrieval Hibernate will map that field to a BLOB or a CLOB table column. The database must support BLOB and-or CLOB.
+
+EXAMPLE FOR LOB DEFINITION:
+@Lob
+@Column(name = "photo", columnDefinition="BLOB")
+private byte[] photo;
+END OF EXAMPLE
 
 2.3. METHODS
 ---------------------------------------------------------------------------------
@@ -302,10 +314,8 @@ Spring Boot pairs column types and entity fields automatically.
 In case Spring Data JPA is used but without Spring Boot, must properly map the columns and the fields together.
 Visit the SPRING DATA JPA MAPPING ARRAY COLUMNS page for details.
 
-MORE HERE: https://www.baeldung.com/hibernate-lob
 MORE HERE: https://www.baeldung.com/hibernate-one-to-many
 MORE HERE: https://www.baeldung.com/jpa-many-to-many
-MORE HERE: https://stackoverflow.com/questions/32427921/jpa-entity-must-be-unit-tested-and-how
 
 =>SPRING BOOT
 =>SPRING BOOT REPOSITORY

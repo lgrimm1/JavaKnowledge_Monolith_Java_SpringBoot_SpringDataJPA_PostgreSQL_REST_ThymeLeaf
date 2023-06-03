@@ -419,8 +419,8 @@ https://www.w3schools.com
 https://blog.knoldus.com
 https://html5boilerplate.com
 
-MORE HERE: https://www.youtube.com/watch?v=dxn5DsMWhGY
+MORE HERE: IntelliJ IDEA Beginner Tutorial | How to create Maven Project, https://www.youtube.com/watch?v=dxn5DsMWhGY
 MORE HERE: https://www.jetbrains.com/help/idea/maven-support.html
-MORE HERE: https://www.youtube.com/watch?v=pt3uB0sd5kY
-MORE HERE: https://www.youtube.com/watch?v=Xatr8AZLOsE
+MORE HERE: Working With Maven in IntelliJ IDEA, https://www.youtube.com/watch?v=pt3uB0sd5kY
+MORE HERE: Maven Tutorial - Crash Course, https://www.youtube.com/watch?v=Xatr8AZLOsE
 MORE HERE: https://programiz.pro/learn/master-java?utm_source=right-floating-block&utm_campaign=programiz&utm_medium=referral

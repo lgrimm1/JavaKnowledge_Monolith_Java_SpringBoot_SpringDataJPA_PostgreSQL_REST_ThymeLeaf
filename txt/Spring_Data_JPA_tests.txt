@@ -64,7 +64,7 @@ class TitleRepositoryTest {
 
 	@BeforeEach
 	void setUp() {
-        //set up database records for every tests
+        //set up database records for every test
 	}
 
 	@Test
