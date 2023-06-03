@@ -24,7 +24,7 @@ The thinnest controller represents the API to the web application:
     - the @Controller annotation in a class marks that the class is a controller, normal API.
     - the @RestController annotation in a class marks that the class is a controller, REST API.
 
-The normal API uses Spring MVC framework which is based upon views. That said, the return value (the response body) represents a view (the targeted part of the frontend) and a collection of objects (forms a model which is read by the frontend). When a controller (or a controller method) operates with such data, it operates in model&view mode (or pure view mode).
+The normal API uses Spring MVC (Model-View-Controller) framework which is based upon views. That said, the return value (the response body) represents a view (the targeted part of the frontend) and a collection of objects (forms a model which is read by the frontend). When a controller (or a controller method) operates with such data, it operates in model&view mode (or pure view mode).
 The RESTful API uses Spring MVC REST framework which is based upon objects. That said, the controller returns the object or value as it is, usually packed into a JSON or XML format. When a controller (or a controller method) operates with such data, it operates in called object mode.
 Views can be handled along with complying the REST standard as well, for this the controller returns a ModelAndView object. When operating under such conditions, the mode falls under the object criteria (therefore this mode is usually called object/model&view mode).
 
@@ -293,6 +293,8 @@ As for making the controller method testable, model attributes should be added t
 
 An incoming request can be redirected to an other view by using the "redirect:/" text before the returned view name. It is typically used for root queries. Also, optionally a RedirectAttributes object can be used for adding additional data to the Model.
 Forwarding is possible as well by using the "forward:/" formula in the returned view name, similarly.
+
+When using a Controller class in model&view mode, Spring utilizes Spring MVC (MVC stands for Model-View-Controller). This system provides double-layered Communication layer. The lower layer is the controller class itself with controller methods. The upper layer is called the servlet, it handles the communication itself: binds incoming data to argument data for the methods, and binds outgoing data from the prepared models from the controller methods.
 
 EXAMPLE FOR REDIRECTING A QUERY:
 @GetMapping("/")
