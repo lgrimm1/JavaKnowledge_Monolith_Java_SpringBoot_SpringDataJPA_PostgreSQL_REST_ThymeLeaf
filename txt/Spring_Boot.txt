@@ -284,6 +284,8 @@ MORE HERE: Spring Data JPA tutorial, https://www.youtube.com/watch?v=8SGI_XS5OPw
 MORE HERE: https://spring.io/guides/tutorials/rest/
 MORE HERE: https://www.digitalocean.com/community/tutorials/spring-configuration-annotation
 MORE HERE: https://www.digitalocean.com/community/tutorials/spring-configuration-annotation
+MORE HERE: https://www.youtube.com/watch?v=zZoboXqsCNw
+MORE HERE: https://www.geeksforgeeks.org/how-to-create-a-rest-api-using-java-spring-boot/
 
 =>WEB APPLICATION
 =>SPRING BOOT THYMELEAF
