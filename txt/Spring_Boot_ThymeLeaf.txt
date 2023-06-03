@@ -9,6 +9,7 @@ SPRING BOOT THYMELEAF
 6. THYMELEAF TEMPLATE FRAGMENTATION
 7. THYMELEAF TEMPLATE FORMS
 8. EXAMPLES
+9. TEMPLATE HOT SWAP
 
 =================================================================================
 1. GENERALLY
@@ -16,11 +17,10 @@ SPRING BOOT THYMELEAF
 The Spring Boot ThymeLeaf is part of the Spring framework which enables using automated templates of frontend for backend communication in model&view or object/model&view mode.
 A template is an JSON/HTML/XML/etc. page into which the answer is injected via defining HTML variables and e.g. Javascript codes.
 
-On frontend side, different file formats can be used, e.g. HTML or PHP.
-The frontend communicates with the backend through the Communication layer of the backend.
-Basically, the frontend sends requests to the backend on which the backend sends answers like a normal website would do.
-The answers are data which can be rendered into HTML, PHP etc. pages.
-Above the pages, frontend scripts can form an other layer with which data manipulation, visual elements etc. can be managed, also the data sent back to the server.
+All the templates are loaded when the application builds up. From this, when a request arrives and the Controller generates a model as an output, the servlet as the second controller generates a static page in memory using the marked template and sends that static page to the requester.
+
+The templates which part of the frontend, can have different file formats e.g. HTML or PHP.
+The templates can refer to external frontend files as well as internal scripts etc.
 
 =================================================================================
 2. SETTING UP
@@ -29,9 +29,9 @@ In order to address ThymeLeaf, the following tags should be inserted into pom.xm
 After modifying the pom.xml, in IntelliJ IDEA, right-click on the pom.xml and select the Maven/Reload Project menu item.
 Alternative way is to type "mvn compile" to make Maven to find and install all what is needed.
 
-Spring Boot ThymeLeaf has two main versions:
-    - optimized for working with Spring
-    - optimized for working with Spring Boot
+ThymeLeaf has two main versions:
+    - optimized for working with Spring (Spring ThymeLeaf)
+    - optimized for working with Spring Boot (Spring Boot ThymeLeaf)
 
 Spring Boot ThymeLeaf is an extension of Spring Boot. Therefore, before adding the dependency, make sure that all Spring Boot dependencies already are added.
 
@@ -449,12 +449,61 @@ In case at backend only \n character would be preferred, upon receiving data, re
 =================================================================================
 Visit the SPRING BOOT THYMELEAF EXAMPLES page for examples.
 
+=================================================================================
+9. TEMPLATE HOT SWAP
+=================================================================================
+The templates are loaded upon building the application and in case there is any changes in a template file, the change will not appear in the live output.
+However, caching of the templates can be managed. That said, the servlet will read the needed template before creating the virtual static page in-memory.
+
+Please note, take these into consideration:
+    - generating the server answer will be slower
+    - however hot swap is set on server side, the browser still needs page reload or no changes will appear due to web page caching on browser side
+    - the prefix and file parameters will not work inside an archive (JAR, WAR)
+    - does not fit for deployed systems, it is applicable only in development cycle (better modify application-development.properties or application-development.yaml files, instead of the general settings)
+
+Visit the SPRING APPLICATION PROPERTIES page for settings.
+
+Alternatively, follow the next steps:
+    - add DevTools dependency to the project (disables all caching by default)
+    - add a non-existent external script reference to the template which should be hot-swapped
+    - make some settings to IntelliJ
+See below examples for the alternative how-to.
+
+EXAMPLE FOR ADDING DEPENDENCY TO PROJECT (ALTERNATIVE STEPS):
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-devtools</artifactId>
+    <version>${spring.version}</version>
+    <optional>true</optional>
+    <scope>runtime</scope>
+</dependency>
+END OF EXAMPLE
+
+EXAMPLE FOR ADDING EXTERNAL SCRIPT REFERENCE TO TEMPLATE (ALTERNATIVE STEPS):
+<script src="http://localhost:35729/livereload.js"></script>
+END OF EXAMPLE
+
+EXAMPLE FOR INTELLIJ SETTINGS (ALTERNATIVE STEPS):
+compiler.document.save.trigger.delay: 100
+compiler.automake.postpone.when.idle.less.than: 2000
+compiler.automake.trigger.delay: 50
+compiler.document.save.enabled: yes
+compiler.automake.allow.when.app.running: yes
+
+In menu:
+Build, Execution, Deployment - Compiler
+    Automatically show first error in editor: checked
+    Display notification on build completion: checked
+    Build project automatically: checked
+END OF EXAMPLE
+
 MORE HERE: https://www.baeldung.com/spring-thymeleaf-3-expressions
 MORE HERE: https://www.javatpoint.com/spring-boot-thymeleaf-view
 MORE HERE: https://stackoverflow.com/questions/28325708/thymeleaf-how-to-pass-html-to-the-div
 MORE HERE: https://www.baeldung.com/spring-boot-crud-thymeleaf
 MORE HERE: https://www.baeldung.com/spring-thymeleaf-error-messages
 
+=>SPRING APPLICATION PROPERTIES
 =>SPRING BOOT THYMELEAF EXAMPLES
 =>SPRING BOOT THYMELEAF TEMPLATE FRAGMENTATION
 =>SPRING BOOT FILE STORAGE WITH THYMELEAF EXAMPLE

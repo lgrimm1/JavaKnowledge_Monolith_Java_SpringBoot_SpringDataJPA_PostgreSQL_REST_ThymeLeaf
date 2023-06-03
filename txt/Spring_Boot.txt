@@ -247,6 +247,7 @@ Visit the SPRING BOOT CONTROLLER page for description.
 =================================================================================
 9. CONFIGURATION
 =================================================================================
+Visit the SPRING APPLICATION PROPERTIES page for details.
 
 =================================================================================
 10. JSON AND XML CONVERSION
@@ -282,7 +283,6 @@ At start, Spring Boot will create an instance from the controller, through class
 MORE HERE: Spring Boot tutorial, 1:17:00, https://www.youtube.com/watch?v=9SGDpanrc8U
 MORE HERE: Spring Data JPA tutorial, https://www.youtube.com/watch?v=8SGI_XS5OPw
 MORE HERE: https://spring.io/guides/tutorials/rest/
-MORE HERE: https://www.digitalocean.com/community/tutorials/spring-configuration-annotation
 MORE HERE: https://www.digitalocean.com/community/tutorials/spring-configuration-annotation
 MORE HERE: https://www.youtube.com/watch?v=zZoboXqsCNw
 MORE HERE: https://www.geeksforgeeks.org/how-to-create-a-rest-api-using-java-spring-boot/
