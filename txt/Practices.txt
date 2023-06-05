@@ -5,13 +5,12 @@ PRACTICES
 2. INCREASE ARRAY CAPACITY
 3. INDEXOF WITH STREAM
 4. GIT COMMANDS
-5. MAVEN
-6. RUNTIME COMPLEXITY
-7. CLEARER CODE VIA LAMBDAS
-8. USING RIGHT RETURN VALUES FOR BETTER INTEGRATION
-9. GET APPLICATION PATHS
-10. FAVORING COMPOSITION OVER INHERITANCE
-11. QUALITY SOURCES OF JAVA, FRAMEWORKS AND FRONTEND
+5. RUNTIME COMPLEXITY
+6. CLEARER CODE VIA LAMBDAS
+7. USING RIGHT RETURN VALUES FOR BETTER INTEGRATION
+8. GET APPLICATION PATHS
+9. FAVORING COMPOSITION OVER INHERITANCE
+10. QUALITY SOURCES OF JAVA, FRAMEWORKS AND FRONTEND
 
 =================================================================================
 1. INCREASE ARRAY INDEX, JUMP TO FIRST ELEMENT WHEN REACHING LAST
@@ -113,74 +112,7 @@ Usual message for work-in-progress snapshots (not for Pull Request): WIP.
 For those files which should be included in file tracking, put those into .gitignore.
 
 =================================================================================
-5. MAVEN
-=================================================================================
-A framework for supporting all development cycles.
-
-The standard project path:
-project root (given by user)
-    pom.xml
-    L src
-        L main
-            L java
-                L .java files
-                L package folders
-        L test
-            L java
-                L .java files
-                L package folders
-    L target
-        L .jar files
-        L classes
-            L .class files
-            L package folders
-        L test-classes
-            L .class files
-            L package folders
-
-By default, /scr serves as holder of source code and source files, /target serves as holder of .class files and sources needed by them.
-The /target is also used for storing Java archive files e.g. .jar files.
-The structure is capable of contain not Java files as well.
-
-The pom.xml is an XML file consisting of Maven parameters (summarized as an archetype), placed into the root folder of project.
-Maven creates a central pom upon install into its install folder (e.g. local folder/m2/repository) which consist of all dependencies the developer used after installing Maven.
-Whilst extending the code, Maven will extend the project pom with tags from the central pom file. If not, can be done manually which will be synchronized with the central pom automatically in theory.
-
-The dependency means local or remote path to a library, its name and version number, organized into XML tags. The compiler or builder will download all dependent libraries into the local Maven central and use references to that.
-In a dependency the <scope>test</scope> tag means that the corresponding dependency is for testing only, will not be built into the target. If the tag is missing, the dependency will be used normally.
-If there is a dependency for a library, still it is a need to import that library in the code as well.
-In case of any malfunctions, use mvn clean, then mvn install commands from the terminal.
-In case version upgrade is needed in code, following version upgrade in the dependency (not the package, only the version), modify the version tag only. Be aware to check the code before publishing or deploying.
-
-EXAMPLE FOR INSERTING NEW REMOTE DEPENDENCY IN POM.XML:
-<dependency>
-  <groupId>org.apache.commons</groupId>
-  <artifactId>commons-math3</artifactId>
-  <version>3.6.1</version>
-</dependency>
-END OF EXAMPLE
-
-EXAMPLE FOR IMPORTING DEPENDENCY IN CODE (CONNECTED TO PREVIOUS EXAMPLE):
-import org.apache.commons.math3.util.CombinatoricsUtils;
-...
-int n = ...;
-int f = (int) CombinatoricsUtils.factorial(n);
-END OF EXAMPLE
-
-The development lifecycle is rendered into Maven commands. These commands can be accessed through the IDE but can be different in other IDEs. All IDE should have terminal in which accessing Maven is universalized.
-
-||COMMAND|DESCRIPTION||
-||mvn validate|checks the archetype for existence and consistency||
-||mvn compile|compiles the project, creates .class files in target directory||
-||mvn test|tests the project by executing all test methods||
-||mvn package|creates the package from code files, source files and attached libraries, and places it into the target folder||
-||mvn verify|-||
-||mvn deploy|places the package into remote Maven central or other server||
-||mvn clean|deletes target directories and deletes all dependencies from the local central which are not referred by projects; forces Maven to install referenced dependencies||
-||mvn install|generates package and move it into common directory||
-
-=================================================================================
-6. RUNTIME COMPLEXITY
+5. RUNTIME COMPLEXITY
 =================================================================================
 Marks how many time a method must run in order to finish a task.
 The O letter marks the complexity. The n letter means the amount of input data.
@@ -218,7 +150,7 @@ Mathematically proven, the most optimized sorting algorithm needs log(n) executi
 Java Collection.sort() method uses Merge Sort for higher amount of data, simpler algorithms for less data (the Merge Sort needs more data to work efficiently).
 
 =================================================================================
-7. CLEARER CODE VIA LAMBDAS
+6. CLEARER CODE VIA LAMBDAS
 =================================================================================
 Best practices are:
     a. for small function objects, prefer lambdas before anonymous classes
@@ -274,7 +206,7 @@ EXAMPLE FOR AVOIDING RETURN STATEMENT IN LAMBDA:
 END OF EXAMPLE
 
 =================================================================================
-8. USING RIGHT RETURN VALUES FOR BETTER INTEGRATION
+7. USING RIGHT RETURN VALUES FOR BETTER INTEGRATION
 =================================================================================
 When designing a method, the return value represents the purpose of the method.
 Narrowing down the type onto the lower level (e.g. to an int[] or an ArrayList<Integer>) forces the other developer to accept such type when designing his or her own methods.
@@ -306,27 +238,36 @@ private static List<Integer> generateCircledPermutations(int number) {
 END OF EXAMPLE
 
 =================================================================================
-9. GET APPLICATION PATHS
+8. GET APPLICATION PATHS
 =================================================================================
-9.1. APPLICATION PATHS
-9.2. MAVEN TEST RESOURCES PATHS
+8.1. APPLICATION PATHS
+8.2. MAVEN TEST RESOURCES PATHS
 
-9.1. APPLICATION PATHS
+8.1. APPLICATION PATHS
 ---------------------------------------------------------------------------------
-The installed application uses the following application root folder:
-String userDir = System.getProperty("user.dir");
+The installed application has an application root folder from which all sub-folders is created. The sub-folder structure depends on whether a build system is used for development, and if used, depends on the used build system (Maven, Gradle etc.).
 
-The application under IntelliJ (with or without the Maven framework) can use the following application root folders:
-String userDir = System.getProperty("user.dir") + GFileNames.getOSFolderSeparator() + "src";
-String userDir = System.getProperty("user.dir") + GFileNames.getOSFolderSeparator() + "src" + GFileNames.getOSFolderSeparator() + "main";
-String userDir = System.getProperty("user.dir") + GFileNames.getOSFolderSeparator() + "src" + GFileNames.getOSFolderSeparator() + "main" + GFileNames.getOSFolderSeparator() + "java";
+EXAMPLE FOR GETTING APPLICATION ROOT FOLDER:
+String projectRoot = "."; //or:
+String projectRoot = System.getProperty("user.dir");
+Path projectRootPath = Paths.get("."); //or:
+Path projectRootPath = Path.get(System.getProperty("user.dir"));
+END OF EXAMPLE
+
+The installed application will not contain source folders (e.g. /scr folders under Maven). That said, different folders will be accessed by default in development and in production cycle.
+The application under IntelliJ IDEA (with or without Maven) can use the following folders for keeping the .java source files:
+    - /src
+    - /src/main
+    - /src/main/java
+When accessing these folders, use File.separator instead of / character for platform independence.
 
 Because these folders rarely exist under installed application but the original user dir is not accessible in the development cycle, it is a good practice to check all of them against file existence. Once a file is found, that will point out which folder should be used as application root folder.
+Also, it is possible to create numerous unique folders directly under the project root. These folders will be available in the development cycle. With application initialization, always check these folders for existence and if needed, create them before usage.
 
 EXAMPLE FOR DECLARING ALL POSSIBLE APPLICATION ROOT FOLDERS:
 import java.io.File;
 ...
-public static String[] listAppFoldersIntelliJMaven() {
+public static String[] listSourceFoldersIntelliJMaven() {
 	String userDir = System.getProperty("user.dir");
 	return new String[]{
 			userDir,
@@ -337,10 +278,10 @@ public static String[] listAppFoldersIntelliJMaven() {
 }
 END OF EXAMPLE
 
-9.2. MAVEN TEST RESOURCES PATHS
+8.2. MAVEN TEST RESOURCES PATHS
 ---------------------------------------------------------------------------------
 For test environment, Maven uses the src/test/resources folder to read and write files as default.
-In order to get access to it, can use getAbsolutePath() method of File, or get() method of Path combined with getAbsolutePath().
+In order to get access to it, use getAbsolutePath() method of File, or get() method of Paths combined with getAbsolutePath().
 In order to access the resources folder under the target folder (which is the target folder of compiler under Maven), use getClassLoader() method of ClassLoader combined with getAbsolutePath().
 
 EXAMPLE 1 FOR GETTING TEST RESOURCES FOLDER:
@@ -362,7 +303,7 @@ String absolutePath = (new File(getClass().getClassLoader().getResource("example
 END OF EXAMPLE
 
 =================================================================================
-10. FAVORING COMPOSITION OVER INHERITANCE
+9. FAVORING COMPOSITION OVER INHERITANCE
 =================================================================================
 In OOP, inheritance is used to express that the subclass is a special class of the superclass, in other words presents relationship between the super and the sub.
 Code re-usage means that a code can be a composite of previously created codes in case those codes can be used somewhere else as well.
@@ -411,7 +352,7 @@ class MonthData extends StatData {
 END OF EXAMPLE
 
 =================================================================================
-11. QUALITY SOURCES OF JAVA, FRAMEWORKS AND FRONTEND
+10. QUALITY SOURCES OF JAVA, FRAMEWORKS AND FRONTEND
 =================================================================================
 https://www.baeldung.com
 https://www.bezkoder.com
@@ -424,3 +365,5 @@ MORE HERE: https://www.jetbrains.com/help/idea/maven-support.html
 MORE HERE: Working With Maven in IntelliJ IDEA, https://www.youtube.com/watch?v=pt3uB0sd5kY
 MORE HERE: Maven Tutorial - Crash Course, https://www.youtube.com/watch?v=Xatr8AZLOsE
 MORE HERE: https://programiz.pro/learn/master-java?utm_source=right-floating-block&utm_campaign=programiz&utm_medium=referral
+
+=>MAVEN

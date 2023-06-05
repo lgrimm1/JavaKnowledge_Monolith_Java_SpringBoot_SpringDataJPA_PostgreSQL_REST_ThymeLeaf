@@ -1,0 +1,151 @@
+=================================================================================
+MAVEN
+=================================================================================
+Maven is a build framework for supporting all development cycles, similar to other build systems e.g. Gradle.
+When added to a project, Maven organizes the project components into a standard directory system.
+Visit the PRACTICES page for accessing folders under Maven.
+
+1. DIRECTORY STRUCTURE
+2. DEPENDENCIES AND POM.XML
+3. DEVELOPMENT LIFECYCLE
+
+=================================================================================
+1. DIRECTORY STRUCTURE
+=================================================================================
+EXAMPLE FOR MAVEN DIRECTORY SYSTEM:
+project root directory
+    pom.xml
+    L src
+        L main
+            L java
+                L companywebsiteregionaldomain
+                    L companywebsitename
+                        L projectname
+                            L package1
+                                L subpackage11
+                                    L JavaSourceFiles
+                                L subpackage12
+                                    L JavaSourceFiles
+                                L ...
+                                L subpackage1n
+                                    L JavaSourceFiles
+                            L package2
+                                L subpackage21
+                                    L JavaSourceFiles
+                                L subpackage22
+                                    L JavaSourceFiles
+                                L ...
+                                L subpackage2n
+                                    L JavaSourceFiles
+                            L ...
+                            L packagem
+                                L subpackagem1
+                                    L JavaSourceFiles
+                                L subpackagem2
+                                    L JavaSourceFiles
+                                L ...
+                                L subpackagemn
+                                    L JavaSourceFiles
+                            L ApplicationSourceFile
+            L resources
+                L static 
+                L templates
+                L otherresourcefolders
+                L application.properties
+                L application-development.properties
+                L application-production.properties
+        L test
+            L java
+                L companywebsiteregionaldomain
+                    L companywebsitename
+                        L projectname
+                            L package1
+                                L subpackage11
+                                    L JavaTestSourceFiles
+                                L subpackage12
+                                    L JavaTestSourceFiles
+                                L ...
+                                L subpackage1n
+                                    L JavaTestSourceFiles
+                            L package2
+                                L subpackage21
+                                    L JavaTestSourceFiles
+                                L subpackage22
+                                    L JavaTestSourceFiles
+                                L ...
+                                L subpackage2n
+                                    L JavaTestSourceFiles
+                            L ...
+                            L packagem
+                                L subpackagem1
+                                    L JavaTestSourceFiles
+                                L subpackagem2
+                                    L JavaTestSourceFiles
+                                L ...
+                                L subpackagemn
+                                    L JavaTestSourceFiles
+                            L ApplicationTestSourceFile
+            L resources
+                L othertestresourcefolders
+                L application.properties
+    L target
+        L .jar files
+        L classes
+            L .class files
+            L package folders
+        L test-classes
+            L .class files
+            L package folders
+END OF EXAMPLE
+
+By default, /scr serves as holder of source code and source files.
+The /test folder mirrors the structure of the /main directory. The .java source files under the /test folder are for testing purposes.
+The /target serves as holder of .class files and sources needed by them, also used for storing Java archives like .jar or .war files.
+The structure is capable of containing no-Java files and unique directories as well.
+
+Please note, no-Java files and folders should be placed outside the /src structure since they are no-Java files.
+
+=================================================================================
+2. DEPENDENCIES AND POM.XML
+=================================================================================
+The pom.xml is an XML file consisting of Maven parameters (summarized as an archetype).
+Maven creates a central pom upon install into its install folder (e.g. local folder/m2/repository) which consist of all dependencies the developer used after installing Maven.
+Whilst extending the code, Maven will extend the project pom with tags from the central pom file. If not, can be done manually which will be synchronized with the central pom automatically in theory.
+
+The dependency means local or remote path to a library, its name and version number, organized into XML tags. The compiler or builder will download all dependent libraries into the local Maven central and use references to that.
+In a dependency the <scope>test</scope> tag means that the corresponding dependency is for testing only, will not be built into the target. If the tag is missing, the dependency will be used normally.
+If there is a dependency for a library, still it is a need to import that library in the code as well.
+In case of any malfunctions, use mvn clean, then mvn install commands from the terminal.
+In case version upgrade is needed in code, following version upgrade in the dependency (not the package, only the version), modify the version tag only. Be aware to check the code before publishing or deploying.
+
+EXAMPLE FOR INSERTING NEW REMOTE DEPENDENCY IN POM.XML:
+<dependency>
+  <groupId>org.apache.commons</groupId>
+  <artifactId>commons-math3</artifactId>
+  <version>3.6.1</version>
+</dependency>
+END OF EXAMPLE
+
+EXAMPLE FOR IMPORTING DEPENDENCY IN CODE:
+import org.apache.commons.math3.util.CombinatoricsUtils;
+...
+int n = ...;
+int f = (int) CombinatoricsUtils.factorial(n);
+END OF EXAMPLE
+
+=================================================================================
+3. DEVELOPMENT LIFECYCLE
+=================================================================================
+The development lifecycle is rendered into Maven commands. These commands can be accessed through the IDE but can be different in other IDEs. All IDE should have terminal in which accessing Maven is universalized.
+
+||COMMAND|DESCRIPTION||
+||mvn validate|checks the archetype for existence and consistency||
+||mvn compile|compiles the project, creates .class files in target directory||
+||mvn test|tests the project by executing all test methods||
+||mvn package|creates the package from code files, source files and attached libraries, and places it into the target folder||
+||mvn verify|-||
+||mvn deploy|places the package into remote Maven central or other server||
+||mvn clean|deletes target directories and deletes all dependencies from the local central which are not referred by projects; forces Maven to install referenced dependencies||
+||mvn install|generates package and move it into common directory||
+
+=>PRACTICES
