@@ -10,7 +10,8 @@ PRACTICES
 7. USING RIGHT RETURN VALUES FOR BETTER INTEGRATION
 8. GET APPLICATION PATHS
 9. FAVORING COMPOSITION OVER INHERITANCE
-10. QUALITY SOURCES OF JAVA, FRAMEWORKS AND FRONTEND
+10. PRINCIPLES OF SOFTWARE ENGINEERING
+11. QUALITY SOURCES OF JAVA, FRAMEWORKS AND FRONTEND
 
 =================================================================================
 1. INCREASE ARRAY INDEX, JUMP TO FIRST ELEMENT WHEN REACHING LAST
@@ -352,7 +353,28 @@ class MonthData extends StatData {
 END OF EXAMPLE
 
 =================================================================================
-10. QUALITY SOURCES OF JAVA, FRAMEWORKS AND FRONTEND
+10. PRINCIPLES OF SOFTWARE ENGINEERING
+=================================================================================
+Software engineering is a systematic and procedural approach to software development. It usually consists of collecting and documenting requirements from the users, designing and outlining the platform structure, coding or application development, user and developer testing, as well as after launch operations and maintenance support.
+There are some basic principles governing good software engineering:
+    - KISS
+    - DRY
+    - SOLID
+
+The KISS (Keep It Simple, Stupid) principle: all software or application design and deployment should be done as simple as possible, with the least complexities and clear to understand development procedures. This principle ensures that the source code is made easy to debug (whenever required) and future maintenance by any other operations and maintenance software engineer becomes easier. Usually it is advised to keep only one method for one use case, in order to comply with the KISS principle.
+
+The DRY (Don't Repeat Yourself or Duplication Is Evil) principle: every software engineer should aim to reduce repetition of information or methods within their work in order to avoid redundancy. Therefore, it's recommended to segregate the entire system of consideration into fragments. Dividing the code into smaller segments can help manage the code and use a single segment at any point, by calling, whenever required.
+
+The SOLID principles:
+    - S (Single responsibility) principle: every module should be designed to carry out just its responsibility over a single part of the functionality provided by the software
+    - O (Open-closed) principle: any part of the software should be available and easily extended for further features, but should not be modified
+    - L (Liskov substitution) principle: objects within a program can be replaced with instances of their sub-category types without changing the accuracy of that specific program
+    - I (Interface segregation) principle: it is best to avoid adding new functionalities or methods to an existing interface. Rather it is recommended to incorporate a new interface and permit the classes to implement different interfaces based on the need
+    - D (Dependency inversion) principle: we should always use a design pattern known as dependency inversion pattern, which is usually resolved by the use of dependency injection
+Any software backend code that proceeds with the recommendations of the S.O.L.I.D. principles are much easier to be shared with collaborators, scaled up to meet volume, modified based on user requirements, tested for stress or usability, and managed and troubleshooted without any issues.
+
+=================================================================================
+11. QUALITY SOURCES OF JAVA, FRAMEWORKS AND FRONTEND
 =================================================================================
 https://www.baeldung.com
 https://www.bezkoder.com

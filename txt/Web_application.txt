@@ -152,10 +152,10 @@ For purpose, in case the API handles the tasks below, is called CRUD API:
 5. API ARCHITECTURES
 =================================================================================
 Data transfer between backend and other backend or backend and frontend is regulated by web protocols:
-    - HTTP
-    - SMTP
-    - FTP
-    - TCP
+    - HTTP (Hyper Text Transfer Protocol)
+    - SMTP (Simple Mail Transfer Protocol)
+    - FTP (File Transfer Protocol)
+    - TCP (Transmission Control Protocol)
 
 The used API architectural style (data format) depends on:
     - which web protocol is used in communication
@@ -231,15 +231,6 @@ Comparison of API architectural styles follows.
 =================================================================================
 6. REST
 =================================================================================
-With using a controller as a web API, both the response modes are available:
-    - view
-    - object
-
-With using a controller as a REST API, only one response mode is available:
-    - object
-
-The answer is packed into a data package called payload. The payload is practically an object created by the developer directly (object mode) or handled by Spring (view mode).
-
 A RESTful architecture should be aligned with the following six constraints:
     - uniform interface
     - client-server decoupling
