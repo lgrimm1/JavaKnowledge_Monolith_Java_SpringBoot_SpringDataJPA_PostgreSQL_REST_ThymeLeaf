@@ -358,12 +358,12 @@ END OF EXAMPLE
 Software engineering is a systematic and procedural approach to software development. It usually consists of collecting and documenting requirements from the users, designing and outlining the platform structure, coding or application development, user and developer testing, as well as after launch operations and maintenance support.
 There are some basic principles governing good software engineering:
     - KISS
-    - DRY
+    - DRY (or DIE)
     - SOLID
 
 The KISS (Keep It Simple, Stupid) principle: all software or application design and deployment should be done as simple as possible, with the least complexities and clear to understand development procedures. This principle ensures that the source code is made easy to debug (whenever required) and future maintenance by any other operations and maintenance software engineer becomes easier. Usually it is advised to keep only one method for one use case, in order to comply with the KISS principle.
 
-The DRY (Don't Repeat Yourself or Duplication Is Evil) principle: every software engineer should aim to reduce repetition of information or methods within their work in order to avoid redundancy. Therefore, it's recommended to segregate the entire system of consideration into fragments. Dividing the code into smaller segments can help manage the code and use a single segment at any point, by calling, whenever required.
+The DRY or DIE (Don't Repeat Yourself or Duplication Is Evil) principle: every software engineer should aim to reduce repetition of information or methods within their work in order to avoid redundancy. Therefore, it's recommended to segregate the entire system of consideration into fragments. Dividing the code into smaller segments can help manage the code and use a single segment at any point, by calling, whenever required.
 
 The SOLID principles:
     - S (Single responsibility) principle: every module should be designed to carry out just its responsibility over a single part of the functionality provided by the software
@@ -389,3 +389,5 @@ MORE HERE: Maven Tutorial - Crash Course, https://www.youtube.com/watch?v=Xatr8A
 MORE HERE: https://programiz.pro/learn/master-java?utm_source=right-floating-block&utm_campaign=programiz&utm_medium=referral
 
 =>MAVEN
+
+MORE HERE: design patterns, https://www.tutorialspoint.com/design_pattern/design_pattern_overview.htm
