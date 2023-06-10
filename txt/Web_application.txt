@@ -2,28 +2,76 @@
 WEB APPLICATION
 =================================================================================
 1. FRONTEND-BACKEND STRUCTURE, WORK CONCEPT
-2. REQUESTS AND RESPONSES
-3. JSON COMMUNICATION FILE
-4. CURL
-5. API
+2. APPLICATION ARCHITECTURES, CONTAINERS
+3. BACKEND
+4. API
+5. API ARCHITECTURES
+6. REST
+7. JSON COMMUNICATION FILE
+8. CURL
 
 =================================================================================
 1. FRONTEND-BACKEND STRUCTURE, WORK CONCEPT
 =================================================================================
-The web application structure is built up from the next levels:
+An application is web-based when partially or in-whole the application utilizes some parts of the web. Such application can have traditional desktop GUI but can use an internet browser for such function. The computing part of the application can run on PC, laptop or mobil devices but can be delegated to servers as well. Similarly, data management part can be planted on devices but also on a server. The server can be a dedicated one or in the cloud, managed by the company or the cloud provider.
+
+As a general model, a web application stands on the next pillars:
+    - data management
+    - business (computing) logic
+    - interface towards other applications or a GUI
+    - interface towards users (GUI)
+
+The web application contains three main parts:
+    - data storage (usually SQL or noSQL database)
+    - backend (data management, business logic, interface)
+    - frontend (GUI)
+
+In case a web application only provides service towards other applications, the frontend part is optional or non-existent.
+
+Traditionally, the web application structure is built up from the next levels:
     - thin client: a frontend application usually written in JavaScript
-    - internet browser: runs the thin application, handles communication (e.g. HTTP, HTTPS, FTP) and security protocols
+    - internet browser: runs the thin application, handles communication (HTTP, HTTPS, FTP, TCP, SMTP etc.) and security protocols
     - thick server: a backend application written e.g. in Java on server side
 
-The backend application is built up from the next layers:
-    - Communication
-    - Business
-    - Storage (Repository, Data Access)
+=================================================================================
+2. APPLICATION ARCHITECTURES, CONTAINERS
+=================================================================================
+There are three main types of architectures:
+    - monolithic
+    - service-oriented
+    - microservices
+
+Under monolithic design, traditional approach is followed, all the functions and services within an application are locked together, operating as a single unit. When the application is added to or improved upon in any way, the architecture grows more complex. This makes it more difficult to optimize any singular function within the application without taking the entire application apart. This also means that if one process within the application needs to be scaled, the entire application must be scaled as well.
+The service-oriented design (SOA - Service-Oriented Architecture) breaks large, complex applications into smaller components that are easier to work with, an enterprise-wide approach to architecture.
+The microservices design is evolved from SOA, an implementation strategy within application development teams. A microservice is a small application with or without frontend but below that is independent and whole, usually covers one specific (core) function. This allows development teams to build and update new components to meet changing business needs without disrupting the application as a whole. That said, adding new function will not increase application complexity, the development itself will be faster, rendering development resources and keeping development parallel become easier.
+
+Although microservices architecture seems to be moderner that monolithic, before starting a project considerations must be made. There are pros and cons for both.
+Cons for microservices:
+    - scaling: first step before development is to identify possible dependencies between services and possible triggers which can break backward compatibility; furthermore the complexity of microservices can become overwhelming for human resources, would need utilizing automation
+    - logging: centralized logs are needed or can have negative effect on scaling
+    - monitoring: centralized view of the system is needed in order to pinpoint sources of problems
+    - debugging: from an IDE it is impossible for the whole application with hundreds of services
+    - connectivity: considering service discovery, whether centralized or integrated, is necessary
+    - it is harder to keep the main design patterns throughout the whole application due to having parallel teams on development
+
+Microservices can communicate with each other and with frontend by their APIs, see later.
+
+A container is a unit of software in which application code is packaged alongside all the files necessary to make it run. This makes it easy to move the contained application between environments while retaining full functionality.
+By utilizing container techniques (Docker, Kubernetes) it is possible to change application parts (microservices) along keeping the rest of the application intact. That said, it is perfect for management, scaling and deployment.
+Also, using such technique means that on server or cloud side, the application is operated from these containers, instead of managing all members one-by-one.
+
+=================================================================================
+3. BACKEND
+=================================================================================
+The backend is built up from the next layers:
+    - Storage (or Repository or Data Access)
+    - Business (or Business Logic or Computing)
+    - Communication (or Interface)
 
 The Communication layer is made of controllers, and connects the frontend with backend. It handles requests and if necessary, does authentication as well.
 The Business layer does the processing. That said, upon any request handled by the Communication level the data check already will happen in the Business layer.
-The Storage layer (also called by Repository layer or Data Access layer) handles all processes connected to data storage like databases, clouds and files.
-The layers are formed due to the need to separate tasks: in case the database is changed, only the Storage level should be modified.
+The Storage layer (also called by Repository layer or Data Access layer) handles all processes connected to data storage like solo databases, cloud-based databases and files.
+The layers are formed due to the need to separate tasks. That said, all tasks connected to communication, must be contained by the Communication layer and so on. In such building when there is a change in a layer, the change will not have effect on other layers.
 
 The Communication layer is built up from the next components:
     - dispatcher servlet
@@ -31,14 +79,14 @@ The Communication layer is built up from the next components:
     - controller
 
 The dispatcher servlet receives the requests from the outside, converts it to readable information and forwards them to the inner processing parts, later receives view from the inner processing parts and sends them to the outside. Usually maintained by a framework like Spring Boot.
-Mapping means the information is divided by request type and endpoint.
+Mapping means the information is directed by request type and endpoint to the proper direction.
 The controller contains backend methods which receive the mapped incoming requests, start processing them, have the results and send those to the framework.
 
 The data is received with a request or sent with a response.
 The transferred data package is called payload.
 The controller can serve payloads in two main modes:
     - view: the response will navigate a web page or a template along with model data
-    - object: the response contains data without navigation, following data transfer standards (e.g. REST)
+    - object: the response contains data without navigation, following data transfer standards (e.g. REST, SOAP, GraphQL, RPC)
 
 Generally, at backend for different tasks different threads are launched.
 The main() method starts these threads then should go to wait.
@@ -47,6 +95,7 @@ Such threads are organized into classes, these classes are called controllers.
 In a controller several endpoints can be defined. These endpoints are unique, practically methods which handle endpoints coming in via requests. Overloading such methods with keeping the same endpoint is not allowed, in such case use different endpoint.
 Of course, in a controller there can be fields to keep data, furthermore helper methods to increase modularity and language structure.
 Best practice is to keep the controller as thin as it can be so for data checks and processing the flow should be forwarded to the Business layer where the processor and helper methods are.
+It is also best practice to keep all communication processes within the controller which means e.g. any conversion processes needed to create outgoing data from generated data must be held in the controller.
 In case the project is organized around different packages where a package contains its element and storage classes, it is best practice to put all correspondent classes like controllers, services into that package. In this case modularity appears in packages as well. Adding, removing or modifying package will not have effect on other packages.
 In case the application would contain only one such package, it can be organized by keeping element classes in a package, the classes representing the three web app layers in a separate one.
 In case the class system is complex, there can be sub-packages under the present ones for both solutions.
@@ -71,10 +120,142 @@ Building a whole web application needs much complexity in code.
 For simplification, using the Spring Boot framework is advised.
 
 =================================================================================
-2. REQUESTS AND RESPONSES
+4. API
 =================================================================================
+The API means Application Programming Interface.
+Creating an API from an application means that the application will have open points where other applications can connect and use the original application as a black box.
+That said, a backend API means collection of endpoints provided by the backend to which any frontends can connect by sending requests to provided endpoints.
+Following best practices, backend development of Communication layer manifested as a thin Controller class provides the API of a backend web application.
+
+Web APIs are used for providing computing and/or backend support for several customized applications, even from other companies.
+
+In order to use a web API, protocols must be defined.
+A protocol contains that for what exact request what exact answer the other part will provide.
+A protocol is created by defining an endpoint and providing request and response formulas (e.g. JSON, XML, see later) along.
+
+For API, it is important that the interface must show that it is an API and which version of it is published.
+That happens with naming the endpoints correctly.
+
+EXAMPLE FOR API ENDPOINT NAMINGS:
+/api/v1/file-load
+/api/v5.2/get/12
+/api/v3/window?size=12&type="fastseal"
+END OF EXAMPLE
+
+For purpose, in case the API handles the tasks below, is called CRUD API:
+    - Create
+    - Retrieve
+    - Update
+    - Delete
+
+=================================================================================
+5. API ARCHITECTURES
+=================================================================================
+Data transfer between backend and other backend or backend and frontend is regulated by web protocols:
+    - HTTP
+    - SMTP
+    - FTP
+    - TCP
+
+The used API architectural style (data format) depends on:
+    - which web protocol is used in communication
+    - what is the purpose of the application
+    - how much complexity the application can bear
+    - how much time is available for development
+    - how old is the application
+
+API architectural styles in order of appearance:
+    - CORBA (1991)
+    - RDA (1993)
+    - XML-RPC (1998)
+    - SOAP (Simple Object Access Protocol, 1999)
+    - REST (REpresentational State Transfer, 2000)
+    - JSON-RPC (2005)
+    - ODATA (2007)
+    - GraphQL (Graph Query Language, 2015)
+    - gRPC (RPC: Remote Procedure Call, 2016)
+
+The SOAP makes a strict system, format is XML. Not flexible for its format but flexible in its modules, e.g. when security data should be added, the proper module should be inserted only. The conversion from SOAP to objects (parsing) can need a lot of processing from the backend and effort from developers. Some programming languages have dedicated methods for parsing.
+SOAP pros:
+    - security (supports WS-Security and allows for encryption of messages; it meets enterprise-level transaction quality and is often used in CRM software, payments gateways, and fintech solutions)
+    - stateful operations (SOAP APIs are stateless by default, yet stateful is also an option, making it convenient for bank transfers or flight bookings where a chain of operations has to be made)
+    - compliance (supports Atomicity, Consistency, Isolation, and Durability (ACID), an enterprise-grade transaction quality, this makes it appealing for exchanging sensitive information in enterprises)
+    - built-in retry logic (in case of a failed communication, SOAP's response will showcase the error information so that the failure can be understood and fixed easily)
+SOAP cons:
+    - limited data format support (only supports the wordy XML structure for its requests and responses)
+    - lengthy processing (can only transfer messages as heavyweight XML files, it will take more time to process a request and transfer a response)
+    - inflexible (own rules and security measures which limits the freedom of the developer during programming)
+    - high learning curve (harder to code, needs good understanding of all the restrictive rules and protocols that are involved)
+
+REST pros:
+    - cacheability (allows for caching of data on the HTTP level, thus, eliminating the need for constant client-server interaction, which boosts performance and scalability, this makes REST a great option for IoT-based projects)
+    - supports multiple formats (allowing for storage and data exchange to be carried out via various formats is one of the biggest advantages of REST, that's what makes it one of the top choices when developing public APIs)
+    - ubiquitous (the popularity and maturity of REST make it quite widespread, many developers are familiar with it and can easily work on a project that requires it)
+    - intuitive (since REST is built upon the semantics of HTTP, it's great for public-facing interfaces that need to be intuitive for the end-user)
+REST cons:
+    - ambiguity (REST can be interpreted in different ways,  there isn't a single correct way to build a REST API, practically-speaking, this can create challenges for developers)
+    - lower security (since REST doesn't impose any security protocols, it is generally considered less safe than other web APIs; of course, the connection can be made more secure by setting up communications through HTTPS; however, that is still an extra task that developers have to think about)
+    - stateless architecture (REST's third architectural constraint requires statelessness, meaning that each API call has to be independent of previous calls, Naturally, this might be an issue if a web service needs a chain of interconnected messages)
+See REST later.
+
+GraphQL is an open-source query language for APIs that was internally developed by Facebook and subsequently released to the public. It allows clients to request any specific data that is needed, which enables the return of predictable results.
+GraphQL pros:
+    - better performance (thanks to GraphQL's ability to specify exactly the scope of data required in every instance, there’s no excess data exchange between the server and the client, this leads to better app performance and is one of the top advantages of GraphQL over REST)
+    - no versioning (as APIs evolve, keeping the old version while transitioning to a new one can be a hassle, GraphQL avoids this problem by deprecating APIs on a field level, allowing old ones to be removed from the schema without impacting existing queries)
+    - detailed error descriptions (if an error occurs while a GraphQL query is being processed, the backend will deliver a comprehensive error message, naturally, this speeds up any issue resolutions)
+    - API documentation (GraphQL auto-generates documentation on any API changes, allowing developers to spend less time keeping track of updates)
+GraphQL cons:
+    - complex caching (since each GraphQL query is unique (or almost unique), data caching becomes a major challenge; to solve this problem, developers need to implement additional mechanisms, perhaps this is one of the most serious disadvantages due to which GraphQL has not yet conquered the world)
+    - steep learning curve (in comparison with REST, GraphQL is more niche and might require more time for developers to grasp)
+    - crashing potential (if too many nested fields are requested simultaneously through GraphQL, a system can overload and the server may crash)
+
+GRPC is an open-source RPC framework that was created by Google, can run in any environment, and be implemented in a variety of languages. GRPC is contract-based and uses the Protocol Buffers binary data format. It requires both the client and the server in data exchange to have access to the same schema definition. Based on the HTTP/2 protocol.
+GRPC pros:
+    - code generation (native code generation for client/server apps from Protobuf definitions to various programming languages, it helps reduce development time in applications with a variety of services)
+    - heightened performance (binary formats of data exchange tend to be more compact than text-based ones, thus, gRPC can outperform REST and GraphQL due to its binary format requirement)
+    - good security (gRPC requires HTTP/2 and TLS/SSL, it provides decent levels of security by default)
+
+GRPC cons:
+    - limited browser support (gRPC relies on HTTP/2, and that makes it impossible to call a gRPC service from a web browser directly, instead, a proxy is needed, which can come with its own limitations)
+    - unreadable format for humans (the data is compressed to a binary format, Protobuf files become unreadable for people, hence, extra tools are needed to analyze payloads or perform debugging)
+    - lack of maturity (finding skilled developers with an extensive portfolio can be more of a challenge, however, the slower adoption might just be a result of the technology's novelty and will wear off in the coming years)
+
+Comparison of API architectural styles follows.
+
+||STYLE|MAIN PURPOSE|FORMAT|STATE-|LEARNING CURVE|COMMUNITY|USAGE||
+||SOAP|enveloped message structure|XML|-full, -less|difficult|small|payment gateways, identity management, CRM, financial and telecommunication services, legacy system support||
+||REST|compliance with six architectural constrains|XML, JSON, HTML, CSV, plain text|-less|easy, large, public APIs, simple resource-driven apps||
+||GraphQL|schema and type system|JSON|-less|medium|growing|mobile APIs, complex systems, microservices||
+||gRPC|local procedure call|JSON, XML, Protobuf, Thrift, FlatBuffers|-less|easy|large|command- and action-oriented APIs, high-performance communication in massive microservices system||
+
+=================================================================================
+6. REST
+=================================================================================
+With using a controller as a web API, both the response modes are available:
+    - view
+    - object
+
+With using a controller as a REST API, only one response mode is available:
+    - object
+
+The answer is packed into a data package called payload. The payload is practically an object created by the developer directly (object mode) or handled by Spring (view mode).
+
+A RESTful architecture should be aligned with the following six constraints:
+    - uniform interface
+    - client-server decoupling
+    - stateless
+    - cacheable data
+    - layered system architecture
+    - code-on-demand (optional)
+
+Coming from the constraints, in case of REST API, the application will be a RESTful application, will fulfill the next conditions:
+    - will communicate with a package which contains not just data in transfer format like JSON but header with metadata, authorization, uniform resource identifier (URI), caching, cookies etc.
+    - the package must be managed through HTTP
+    - the package must be stateless (does not contain client-specific information)
+    - the package must not contain information about the path the package goes through (servers and other network elements)
+
 The communication is built-up from requests which go from the client to the server, as an answer the server may send data back.
-A request contains an URI (Uniform Resource Identifier) which points exactly to a specific target (endpoint, see later) and optionally can carry a query (see later).
+A request contains a URI (Uniform Resource Identifier) which points exactly to a specific target (endpoint, see later) and optionally can carry a query (see later).
 
 Request types can be:
     - GET: asks data from the server in form of a query (retrieve)
@@ -104,6 +285,7 @@ A request has the next formula:
     - path (/endpoint[?parameter=value[&parameter2=value]...])
 The endpoint defines a group under which the different request types are checked at backend.
 In case there is no endpoint or under it no request type is defined in the web application, the backend will not send answer to the frontend.
+Best practice for endpoints is that queries should be used in case of possible more dependent elements in the answer.
 
 EXAMPLE FOR A REQUEST:
 https://www.wind.com
@@ -116,12 +298,18 @@ https://www.wind.com/category/3/800/65
 https://www.wind.com/category/3?level=800&db=65
 END OF EXAMPLE
 
-Best practice for endpoints is that queries should be used in case of possible more dependent elements in the answer.
+The typical manifestation of a REST CRUD API can be seen below.
 
-The answer is packed into a data package called payload. The payload is practically an object created by the developer directly (object mode) or handled by Spring (model&view mode).
+||API FUNCTION|REQUEST TYPE|ENDPOINT|REQUEST BODY|RESPONSE BODY|HTTP SUCCESS CODE||
+||create|POST|api/v1/elementName|all fields (ID is excluded)|all fields (ID is included)|200||
+||retrieve one|GET|api/v1/elementName?id=idNumber|-|all fields (ID is included)|200||
+||retrieve all|GET|api/v1/elementNames or api/v1/allElementName|all elements in array, per element all fields (ID is included)|200||
+||full update|PUT|api/v1/elementName|all fields (ID is included)|all fields (modified version; ID is included)|200||
+||partial update|PATCH|api/v1/elementName/idNumber|only the fields which need to be updated (ID can not be given)|all fields (modified version; ID is included)|200||
+||delete|DELETE|api/v1/elementName/idNumber|-|-|204 (No Content)||
 
 =================================================================================
-3. JSON COMMUNICATION FILE
+7. JSON COMMUNICATION FILE
 =================================================================================
 The possible (accepted) requests formulas must be defined in order to limit the communication possibilities and introduced standards between the frontend and the backend.
 In case the controller methods are working in object mode, such rules are usually defined in JSON communication file.
@@ -214,7 +402,7 @@ END OF EXAMPLE
 The serialization and deserialization processes which convert data to and from JSON are language-dependent but the JSON itself is platform-independent, must work under the same rules whatever servers and frontends communicate with each other.
 
 =================================================================================
-4. CURL
+8. CURL
 =================================================================================
 The cURL is a PowerShell command line app for sending requests.
 Ideal tool for integration test of an application.
@@ -298,58 +486,6 @@ put.json:
 command line:
 curl -X PUT --upload-file "put_example.json" "https://server/endpoint"
 END OF EXAMPLE
-
-=================================================================================
-5. API
-=================================================================================
-The API means Application Programming Interface.
-Creating an API from an application means that the application will have open points where other applications can connect and use the original application as a black box.
-That said, a backend API means collection of endpoints provided by the backend to which any frontends can connect by sending requests to provided endpoints.
-Following best practices, backend development of Communication layer manifested as a thin Controller class provides the API of a backend web application.
-
-Web APIs are used for providing computing and/or backend support for several customized applications, even from other companies.
-
-In order to use a web API, protocols must be defined.
-A protocol contains that for what exact request what exact answer the other part will provide.
-A protocol is created by defining an endpoint and providing request and response formulas (e.g. JSON) along.
-
-For API, it is important that the interface must show that it is an API and which version of it is published.
-That happens with naming the endpoints correctly.
-
-EXAMPLE FOR API ENDPOINT NAMINGS:
-/api/v1/file-load
-/api/v5.2/get/12
-/api/v3/window?size=12&type="fastseal"
-END OF EXAMPLE
-
-For purpose, in case the API handles the tasks below, is called CRUD API:
-    - Create
-    - Retrieve
-    - Update
-    - Delete
-
-For communication, in case the API follows the REST (REpresentational State Transfer) standard, the application will be a RESTful application, and will fulfill the next conditions:
-    - will communicate with a package which contains not just data in transfer format like JSON but header with metadata, authorization, uniform resource identifier (URI), caching, cookies etc.
-    - the package must be managed through HTTP
-    - the package must be stateless (does not contain client-specific information)
-    - the package must not contain information about the path the package goes through (servers and other network elements)
-
-With using a controller as a web API, both the response modes are available:
-    - view
-    - object
-
-With using a controller as a REST API, only one response mode is available:
-    - object
-
-The typical manifestation of a REST CRUD API can be seen below.
-
-||API FUNCTION|REQUEST TYPE|ENDPOINT|REQUEST BODY|RESPONSE BODY|HTTP SUCCESS CODE||
-||create|POST|api/v1/elementName|all fields (ID is excluded)|all fields (ID is included)|200||
-||retrieve one|GET|api/v1/elementName?id=idNumber|-|all fields (ID is included)|200||
-||retrieve all|GET|api/v1/elementNames or api/v1/allElementName|all elements in array, per element all fields (ID is included)|200||
-||full update|PUT|api/v1/elementName|all fields (ID is included)|all fields (modified version; ID is included)|200||
-||partial update|PATCH|api/v1/elementName/idNumber|only the fields which need to be updated (ID can not be given)|all fields (modified version; ID is included)|200||
-||delete|DELETE|api/v1/elementName/idNumber|-|-|204 (No Content)||
 
 =>SPRING BOOT
 =>SPRING BOOT THYMELEAF
