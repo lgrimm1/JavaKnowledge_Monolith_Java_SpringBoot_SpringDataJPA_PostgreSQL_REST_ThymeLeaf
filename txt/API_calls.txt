@@ -1,0 +1,92 @@
+=================================================================================
+API CALLS
+=================================================================================
+It is possible to call an external API by a web application.
+This technique is useful for any applications following monolith but essential for applications following hexagonal and microservices designs.
+The server which publishes the public API will get a request and returns a text which is usually an unformatted JSON.
+In order to process the JSON process the received String or use a JSON parser before processing.
+
+EXAMPLE FOR API CALL:
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.Scanner;
+...
+//requestString: e.g. "https://www.metaweather.com/api/location/search/?query=London"
+public String request(String requestString) {
+	try {
+		//set request data to the external API
+		URL url = new URL(requestString);
+		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+		conn.setRequestMethod("GET");
+
+		//make request to the API
+		conn.connect();
+
+		//check API response code
+		int responseCode = conn.getResponseCode();
+		if (responseCode >= 200 && responseCode <= 299) {
+			throw new RuntimeException("HttpResponseCode: " + responseCode);
+		}
+
+		//collect and return results
+		StringBuilder stringBuilder = new StringBuilder();
+		Scanner scanner = new Scanner(url.openStream());
+		while (scanner.hasNext()) {
+			stringBuilder.append(scanner.nextLine());
+		}
+		scanner.close();
+		return stringBuilder.toString();
+	}
+	catch (Exception e) {
+		throw new RuntimeException(e.getMessage());
+	}
+}
+END OF EXAMPLE
+
+EXAMPLE FOR API CALL:
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.Scanner;
+...
+try {
+    //set request data to the external API
+    URL url = new URL("request string"); //e.g. "https://www.metaweather.com/api/location/search/?query=London"
+    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+    conn.setRequestMethod("GET");
+
+    //make request to the API
+    conn.connect();
+
+    //check API response code
+    int responseCode = conn.getResponseCode();
+    if (responseCode >= 200 && responseCode <= 299) {
+        throw new RuntimeException("HttpResponseCode: " + responseCode);
+    }
+
+    //collect results
+    StringBuilder informationString = new StringBuilder();
+    Scanner scanner = new Scanner(url.openStream());
+    while (scanner.hasNext()) {
+        informationString.append(scanner.nextLine());
+    }
+    scanner.close();
+
+    //process informationString.toString() as a JSON text without formatting, or:
+    JSONParser parse = new JSONParser();
+    JSONArray dataObject = (JSONArray) parse.parse(String.valueOf(informationString));
+
+    int jsonArraySize = (JSONObject) dataObject.size();
+
+    int objectIndex = 2; //or other number
+    JSONObject data = (JSONObject) dataObject.get(objectIndex);
+    String dataString = data.get("variable_name");
+}
+catch (Exception e) {
+    throw new RuntimeException(e.getMessage());
+}
+END OF EXAMPLE
+
+=>WEB APPLICATION

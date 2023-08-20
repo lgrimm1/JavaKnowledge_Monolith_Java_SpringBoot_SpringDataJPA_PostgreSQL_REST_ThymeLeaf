@@ -1,0 +1,36 @@
+=================================================================================
+JSON PARSE
+=================================================================================
+A JSON String received from an server can be parsed to a Map which is easy to process by attribute names.
+Parsing is very useful when the original String is huge.
+
+First, add a dependency to the pom.xml.
+
+EXAMPLE FOR API CALL DEPENDENCY:
+        <dependency>
+            <groupId>com.googlecode.json-simple</groupId>
+            <artifactId>json-simple</artifactId>
+            <version>1.1.1</version>
+        </dependency>
+END OF EXAMPLE
+
+EXAMPLE FOR GETTING AN ATTRIBUTE FROM A JSON STRING BY ITS INDEX:
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+...
+public String getJSONAttribute(String jsonString, int attributeIndex) {
+	try {
+		JSONParser parser = new JSONParser();
+		JSONArray jsonArray = (JSONArray) parser.parse(jsonString);
+		JSONObject jsonObject = (JSONObject) jsonArray.get(attributeIndex);
+		return (String) jsonObject.get("variable_name"); //careful if the returned String is a JSON object itself
+	}
+	catch (Exception e) {
+		throw new RuntimeException(e.getMessage());
+	}
+}
+END OF EXAMPLE
+
+Please note that a JSON can contain hierarchic data which means under an attribute name there can be an object which is described as with a JSON segment as well.
+Processing with recursive technique can be advised.
