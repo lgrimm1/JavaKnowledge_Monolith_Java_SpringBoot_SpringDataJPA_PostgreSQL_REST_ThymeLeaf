@@ -11,7 +11,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Scanner;
 ...
-//requestString: e.g. "https://www.metaweather.com/api/location/search/?query=London"
+//requestString: e.g. "https://www.metaweather.com/api/location/search/?query=London" or "https://www.metaweather.com/api/location/44418"
 public String request(String requestString) {
 	try {
 		//set request data to the external API
