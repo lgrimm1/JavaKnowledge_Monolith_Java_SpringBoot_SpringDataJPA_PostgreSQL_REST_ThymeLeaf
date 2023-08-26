@@ -8,7 +8,7 @@ WEB APPLICATION
 5. REST
 6. JSON COMMUNICATION FILE
 7. CURL
-8. APPLICATION ARCHITECTURES, CONTAINERS
+8. CONTAINERS
 
 =================================================================================
 1. FRONTEND-BACKEND STRUCTURE, WORK CONCEPT
@@ -453,39 +453,8 @@ curl -X PUT --upload-file "put_example.json" "https://server/endpoint"
 END OF EXAMPLE
 
 =================================================================================
-8. APPLICATION ARCHITECTURES, CONTAINERS
+8. CONTAINERS
 =================================================================================
-There are two main types of software architectures:
-    - monolithic design
-    - service-oriented design.
-
-Under monolithic design, traditional approach is followed, all the functions and services within an application are locked together, operating as a single unit. When the application is added to or improved upon in any way, the architecture grows more complex. This makes it more difficult to optimize any singular function within the application without taking the entire application apart. This also means that if one process within the application needs to be scaled, the entire application must be scaled as well.
-The service-oriented design (SOA - Service-Oriented Architecture) breaks large, complex applications into smaller components that are easier to work with, an enterprise-wide approach to architecture.
-
-When an application follows the SOA, its design can be:
-    - hexagonal
-    - microservices
-
-The hexagonal design organizes the out-sourced services into six which are manifestations of the six main parts of a web application.
-The microservices design is evolved from SOA as well, the next step after the hexagonal, it is an implementation strategy within application development teams. A microservice is a small application with or without frontend but below that is independent and whole, usually covers one specific (core) function. This allows development teams to build and update new components to meet changing business needs without disrupting the unity of the application. That said, adding new function will not increase application complexity, the development itself will be faster, rendering development resources and keeping development parallel become easier.
-Evolution of the software architectures starts with monolithic and points to microservices. However, although microservices architecture seems to be moderner that monolithic and hexagonal, hexagonal than monolithic, before starting a project considerations must be made. There are pros and cons for them.
-
-Pros for microservices against monolith:
-    - independence: developing a new service is independent and can be done in any appropriate language and under any build system
-    - parallel: a service development team can work parallel with other teams
-    - fast: a service is practically small which increases development speed and cleaner code
-Cons for microservices against monolith:
-    - scaling: first step before development is to identify possible dependencies between services and possible triggers which can break backward compatibility; furthermore the complexity of microservices can become overwhelming for human resources, would need utilizing automation
-    - logging: centralized logs are needed or can have negative effect on scaling
-    - monitoring: centralized view of the system is needed in order to pinpoint sources of problems
-    - debugging: from an IDE it is impossible for the whole application with hundreds of services
-    - connectivity: considering service discovery, whether centralized or integrated, is necessary
-    - it is harder to keep the main design patterns throughout the whole application due to having parallel teams on development
-
-The hexagonal design is somewhere between the monolith and microservices architecture.
-
-Services can communicate with each other via their APIs, see the API CALLS page.
-
 A container is a unit of software in which application code is packaged alongside all the files necessary to make it run. This makes it easy to move the contained application between environments while retaining full functionality.
 By utilizing container techniques (Docker, Kubernetes) it is possible to change application parts (microservices) along keeping the rest of the application intact. That said, it is perfect for management, scaling and deployment.
 Also, using such technique means that on server or cloud side, the application is operated from these containers, instead of managing all members one-by-one.
@@ -498,3 +467,4 @@ Also, using such technique means that on server or cloud side, the application i
 =>SPRING BOOT TESTS
 =>API CALLS
 =>JSON PARSE
+=>APPLICATION ARCHITECTURES

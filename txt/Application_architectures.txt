@@ -1,0 +1,105 @@
+=================================================================================
+APPLICATION ARCHITECTURES
+=================================================================================
+1. GENERALLY
+2. MONOLITH AND MULTI-LAYERED ARCHITECTURE
+3. HEXAGONAL ARCHITECTURE
+4. MICROSERVICES ARCHITECTURE
+
+=================================================================================
+1. GENERALLY
+=================================================================================
+The software architecture means in what main structure the application must follow.
+This structure has effect on the code structure as well: how the code is organized into classes, modules, functions etc.
+The followed architecture is decided when the design phase starts, before coding. Changing this design afterward is hard and can need a lot of resources, however, in case the change has effect on every main aspects and purpose of an application, could become necessary.
+
+There are two main types of software architectures:
+    - monolithic design
+    - service-oriented design (SOA - Service-Oriented Architecture).
+
+Under SOA, the large, complex applications are broken into smaller components that are easier to work with. It is an enterprise-wide approach to architecture.
+When an application follows the SOA, the design can be:
+    - hexagonal
+    - microservices
+
+=================================================================================
+2. MONOLITH AND MULTI-LAYERED ARCHITECTURE
+=================================================================================
+Under monolithic design, traditional object-oriented approach is followed, all the functions and services within an application are locked together, operating as a single unit. Code optimization is at maximum (or should), memory parts, code parts, modules are used for many purposes.
+When such application is added to or improved upon in any way, the structure grows more complex. This makes it more difficult to optimize any singular function within the application without taking the entire application apart. This also means that if one process within the application needs to be scaled, the entire application must be scaled as well.
+A complex software made in this design has usually one main developer or developer team which masters the code. Changing in the work force can result blocking the software for further evolution.
+
+The monolith structure has evolved into a multi-layered structure where basic parts are separated:
+    - business logic (or service) layer
+    - persistence (or data) layer
+    - communication layer
+
+Present monolith web applications are designed in the latter system which enables:
+    - independent (parallel) development
+    - independent testing
+    - changeability of layers until a certain deepness
+
+This structure does not support:
+    - scaling (when a layer is scaled up, same must go on all layers)
+    - layers changeability (layers are not changeable in any deepness, e.g. a total code-change can have effect on other layers as well)
+
+Additionally, level of code-infection between layers can be kept low to zero by developers but the needed zero is not guarantied by design.
+
+Forming a software in such design is natively backed by several development frameworks like Spring.
+
+=================================================================================
+3. HEXAGONAL ARCHITECTURE
+=================================================================================
+The hexagonal (ports and adapters) design was invented as an answer for problems with monolith design.
+The name came from its common drawn presentation where the application core is a symmetric hexagon in the middle and the sides are ports (adapters) toward application parts, organized into groups.
+Following the latter, the software is made of lightly connected parts:
+    - Business events group (Test script adapter, UI)
+    - Administration group (Logging adapter, Admin CLI)
+    - Notification group (SMS adapter, email adapter)
+    - Persistence group (DB adapter, File adapter)
+
+The connection is made via adapters or ports, practically via APIs which guaranties communication on standardized level.
+
+This structure enables:
+    - independent development
+    - independent testing
+    - full changeability of parts
+    - independent scaling of parts
+    - preventing code-infection of the parts
+
+The hexagonal design leaves two adapter groups empty as a reserve for other adapters if necessary.
+
+The application parts can communicate with each other via their APIs, see the API CALLS page.
+
+=================================================================================
+4. MICROSERVICES ARCHITECTURE
+=================================================================================
+The microservices design is the latest step in app structure evolution. From a certain perspective, it was developed from the hexagonal architecture.
+
+A microservice is a small application with or without frontend, it is independent and whole, usually covers one specific (core) function. This allows development teams to build and update new components to meet changing business needs without disrupting the unity of the application. That said, adding new function will not increase application complexity, the development itself will be faster, rendering development resources and keeping development parallel become easier.
+This structure enables:
+    - independent development
+    - independent testing
+    - full changeability of parts
+    - independent scaling of parts
+    - preventing code-infection of the parts
+    - faster development
+    - smaller application complexity in code (higher complexity for the whole application)
+
+Evolution of the software architectures starts with monolithic and points to microservices. However, although microservices architecture seems to be moderner that monolithic and hexagonal, hexagonal than monolithic, before starting a project considerations must be made. There are pros and cons for them.
+
+Pros for microservices against monolith:
+    - independence: developing a new service is independent and can be done in any appropriate language and under any build system
+    - parallel: a service development team can work parallel with other teams
+    - fast: a service is practically small which increases development speed and cleaner code
+Cons for microservices against monolith:
+    - scaling: first step before development is to identify possible dependencies between services and possible triggers which can break backward compatibility; furthermore the complexity of microservices can become overwhelming for human resources, would need utilizing automation
+    - logging: centralized logs are needed or can have negative effect on scaling
+    - monitoring: centralized view of the system is needed in order to pinpoint sources of problems
+    - debugging: from an IDE it is impossible for the whole application with hundreds of services
+    - connectivity: considering service discovery, whether centralized or integrated, is necessary
+    - it is harder to keep the main design patterns throughout the whole application due to having parallel teams on development
+
+Services can communicate with each other via their APIs, see the API CALLS page.
+
+=>WEB APPLICATION

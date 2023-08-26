@@ -284,7 +284,6 @@ MORE HERE: Spring Boot tutorial, 1:17:00, https://www.youtube.com/watch?v=9SGDpa
 MORE HERE: Spring Data JPA tutorial, https://www.youtube.com/watch?v=8SGI_XS5OPw
 MORE HERE: https://spring.io/guides/tutorials/rest/
 MORE HERE: https://www.digitalocean.com/community/tutorials/spring-configuration-annotation
-MORE HERE: How to connect to an API using Java, https://www.youtube.com/watch?v=zZoboXqsCNw
 MORE HERE: https://www.geeksforgeeks.org/how-to-create-a-rest-api-using-java-spring-boot/
 
 =>WEB APPLICATION

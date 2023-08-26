@@ -34,3 +34,5 @@ END OF EXAMPLE
 
 Please note that a JSON can contain hierarchic data which means under an attribute name there can be an object which is described as with a JSON segment as well.
 Processing with recursive technique can be advised.
+
+=>WEB APPLICATION
