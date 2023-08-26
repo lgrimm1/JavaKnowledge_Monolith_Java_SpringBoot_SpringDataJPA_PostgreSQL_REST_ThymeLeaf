@@ -42,6 +42,7 @@ Present monolith web applications are designed in the latter system which enable
 This structure does not support:
     - scaling (when a layer is scaled up, same must go on all layers)
     - layers changeability (layers are not changeable in any deepness, e.g. a total code-change can have effect on other layers as well)
+    - usage of different languages (except calling of external script interpreters)
 
 Additionally, level of code-infection between layers can be kept low to zero by developers but the needed zero is not guarantied by design.
 
@@ -85,6 +86,7 @@ This structure enables:
     - preventing code-infection of the parts
     - faster development
     - smaller application complexity in code (higher complexity for the whole application)
+    - usage of different languages (one language per service)
 
 Evolution of the software architectures starts with monolithic and points to microservices. However, although microservices architecture seems to be moderner that monolithic and hexagonal, hexagonal than monolithic, before starting a project considerations must be made. There are pros and cons for them.
 
