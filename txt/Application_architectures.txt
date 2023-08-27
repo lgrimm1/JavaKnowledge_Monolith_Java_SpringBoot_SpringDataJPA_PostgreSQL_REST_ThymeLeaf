@@ -111,8 +111,8 @@ Cons for microservices against monolith:
 
 Services can communicate with each other via their APIs, see the API CALLS page.
 
-In versioning systems like GitHub, one microservises application can be presented by:
-    - one repository (every microservise is under a subfolder)
-    - many repositories (every microservise is under separate repository)
+In versioning systems like GitHub, one microservices application can be presented by:
+    - one repository (every microservice is under a subfolder)
+    - many repositories (every microservice is under separate repository)
 
 =>WEB APPLICATION
