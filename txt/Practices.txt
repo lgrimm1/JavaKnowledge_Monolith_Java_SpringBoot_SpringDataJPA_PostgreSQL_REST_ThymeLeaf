@@ -110,7 +110,7 @@ A master contributor of the reposition (owner) will review the changes, if satis
 
 Usual message for work-in-progress snapshots (not for Pull Request): WIP.
 
-For those files which should be included in file tracking, put those into .gitignore.
+For those files which should not be included in file tracking, put those into .gitignore.
 
 =================================================================================
 5. RUNTIME COMPLEXITY
