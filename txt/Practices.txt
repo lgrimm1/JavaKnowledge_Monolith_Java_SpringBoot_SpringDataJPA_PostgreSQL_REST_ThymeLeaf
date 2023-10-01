@@ -119,6 +119,14 @@ Usual message for work-in-progress snapshots (not for Pull Request): WIP.
 
 For those files which should not be included in file tracking, put those into .gitignore.
 
+EXAMPLE FOR ADDING A FILE TO LOCAL AND REMOTE REPOSITORIES:
+git init
+git add <filename>
+git commit -m "commit message"
+git remote add origin <link to remote repository>
+git push origin <branch name>
+END OF EXAMPLE
+
 =================================================================================
 5. RUNTIME COMPLEXITY
 =================================================================================
