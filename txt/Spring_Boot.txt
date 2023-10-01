@@ -151,6 +151,31 @@ Visit the SPRING APPLICATION PROPERTIES page for details.
 
 1.4. PRE-SETTINGS
 ---------------------------------------------------------------------------------
+Once the project is on the local drive, following the next steps can be advised:
+    - add new lines to .gitignore file
+    - add README.md file to project (on same level with pom.xml file)
+    - open the project in an IDE if needed (e.g. IntelliJ IDEA)
+    - publish the project on a versioning site (e.g. GitHub, GitBucket) as a repository
+    - make settings to the remote repository on the appropriate site
+
+EXAMPLE FOR ADDING NEW LINES TO .GITIGNORE:
+.mvn/
+mvnw
+mvnw.cmd
+END OF EXAMPLE
+
+EXAMPLE FOR README.MD FILE:
+# Book registry and management (Hexagonal, Java, Spring Boot, Spring Data JPA, Spring Validation, PostgreSQL, REST, ThymeLeaf)
+<p>View-based Spring Boot web application for representing and managing physical and electronic books and their authors.</p>
+<p>Next to its main purpose, this project has been made in order to demonstrate coding capabilities of the owner (backend web development).</p>
+<p>Structure: hexagonal</p>
+<p>Language: Java 17</p>
+<p>Libraries: Java Core, Spring Boot 3, Spring Data JPA, Spring Validation, PostgreSQL, H2, MockMVC, Mockito, JUnit 5, ThymeLeaf</p>
+<p>Build system: Maven</p>
+<p>IDE: IntelliJ IDEA</p>
+<p>Demonstrated knowledge: Clean Code, Best Practices, Test-driven Development, Unit Test, REST, Model&View, Streams, Backend Web Development, Templates, HTML, CSS</p>
+END OF EXAMPLE
+
 While the database is not connected, the application will fail to start.
 Therefore, during development it is advised to rem-out the JPA dependency.
 Please remember to make it alive when development of the Storage layer starts.
