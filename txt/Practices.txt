@@ -79,11 +79,14 @@ END OF EXAMPLE
 =================================================================================
 4. GIT COMMANDS
 =================================================================================
-Reposition: a project on the remote git server (e.g. Github).
+Repository: a project on the remote git server (e.g. Github, GitBucket).
 Master: the remote summarized code (alive code) on the git server.
 HEAD: the local summarized code.
-Snapshot: a commited local version.
+Snapshot: a committed local version.
 Branch: all actions are rendered into branches, dividing from the original; a developer works on a branch.
+
+For codes, the code exists in remote repository, in local repository (e.g. under .git folder) and in local code.
+If these are identical, the project is synchronized.
 
 ||COMMAND|ACTION||
 ||git log|shows history of the live branch for commits etc.; for commits shows hash codes as well||
@@ -91,19 +94,23 @@ Branch: all actions are rendered into branches, dividing from the original; a de
 ||git checkout -b branch_name|creates a new one and makes that branch the live branch||
 ||git checkout hashcode|reverts to the given snapshot of the live branch; jumps back to the last one for git checkout branch_name||
 ||git status|shows infos about the active branch (tracked and untracked files)||
-||git add file_name|marks the file as staged (means marking them for commiting)||
-||git add .|marks all files (.) as staged (means marking them for commiting)||
-||git restore --staged file_name|un-stages the given file, will not be commited||
+||git add file_name|marks the file as staged (means marking them for committing)||
+||git add .|marks all files (.) as staged (means marking them for committing)||
+||git restore --staged file_name|un-stages the given file, will not be committed||
 ||git commit|creates a snapshot on the alive branch||
 ||git commit -m "message"|creates a snapshot on the alive branch, renders the message to that snapshot||
-||git push|sends the commited code of actual branch up to server; in case there is not the local active branch on the server yet, suggests a command instead of this||
-||git pull|downloads the snapshots of the live branch which are not found at local from the server||
+||git push|sends the committed code of actual branch up to server; in case there is not the local active branch on the server yet, suggests a command instead of this||
+||git pull|downloads the snapshots of the live branch which are not found at local from the server, therefore updates the local repository and code with the remote one (synchronizes), identical with fetch + merge||
+||git fetch|downloads the snapshots of the live branch which are not found at local from the server, therefore changes will appear in code but it will not update the local repository||
+||git merge|updates the local repository with the local code; after fetch the project will be synchronized with the remote repository||
 ||git clone|clones (creates a copy of) a repository||
 
 * is for marking a character, ** is for marking many. ** can mark whole path to a file as well e.g. **a** can mean path/a*.* files. The dot (.) means all files at actual and all its sub-folders.
 
 In case there are pushed snapshots on the server, these will be under the name of the contributor.
 Such snapshots are ideal for having backups of local codes as well.
+
+Fetching is ideal for reviewing codes without merging the checked code with local repository. For this, change the actual branch as needed. When finished, change the actual branch to the one in which you work and use pull for synchronizing.
 
 In order to send a pushed snapshot to the master contributor(s), use the Pull Request function on the server.
 A master contributor of the reposition (owner) will review the changes, if satisfied, will merge the branch with the Master code.
@@ -148,7 +155,7 @@ O(n) = n^2 is usually goes for minimum needed complexity of sorting processes. U
 The less optimized sorting uses to indexes, with element under the low index all other elements will be compared.
 The execution number would be: (n - 1) + (n - 2) + (n - 3) + ... + (n - n-1) = n^2.
 Mathematically proven, the most optimized sorting algorithm needs log(n) executions (O(n) = log(n)). This is called Merge Sort.
-Java Collection.sort() method uses Merge Sort for higher amount of data, simpler algorithms for less data (the Merge Sort needs more data to work efficiently).
+Java Collection.sort() method uses Merge Sort for higher amount of data, simpler algorithms for fewer data (the Merge Sort needs more data to work efficiently).
 
 =================================================================================
 6. CLEARER CODE VIA LAMBDAS
