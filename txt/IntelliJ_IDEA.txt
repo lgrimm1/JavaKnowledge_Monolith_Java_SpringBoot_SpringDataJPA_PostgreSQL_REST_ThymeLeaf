@@ -115,6 +115,7 @@ INTELLIJ IDEA
 ||SHF F6|rename everywhere||
 ||CTR ALT V|extract local variable from selection (creates a new local variable then changes all occurrences in selected code)||
 ||CTR ALT M|extract method from selection (created a new method then changes all occurrences in selected code)||
+||CTRL SHF F7|show all exits from method (place caret on one exit first, e.g. on a return statement)||
 ||CTR ALT L|reformat all/selected line||
 ||CTR ALT SHF L|reformat options||
 ||Code & Refactor menus|all possibilities||
