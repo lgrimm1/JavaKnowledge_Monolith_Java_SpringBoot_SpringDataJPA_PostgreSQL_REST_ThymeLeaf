@@ -113,16 +113,27 @@ Maven creates a central pom upon install into its install folder (e.g. local fol
 Whilst extending the code, Maven will extend the project pom with tags from the central pom file. If not, can be done manually which will be synchronized with the central pom automatically in theory.
 
 The dependency means local or remote path to a library, its name and version number, organized into XML tags. The compiler or builder will download all dependent libraries into the local Maven central and use references to that.
-In a dependency the <scope>test</scope> tag means that the corresponding dependency is for testing only, will not be built into the target. If the tag is missing, the dependency will be used normally.
+
+The scope of the dependency marks whether the dependency will be used for all or just for testing purposes. Use the <scope> tag to define this within a <dependency> tag. Using this tag is optional, default value (in case it is not defined explicitly) is runtime. In case of test scope, the corresponding dependency will not be built into the target.
 If there is a dependency for a library, still it is a need to import that library in the code as well.
 In case of any malfunctions, use mvn clean, then mvn install commands from the terminal.
 In case version upgrade is needed in code, following version upgrade in the dependency (not the package, only the version), modify the version tag only. Be aware to check the code before publishing or deploying.
 
 EXAMPLE FOR INSERTING NEW REMOTE DEPENDENCY IN POM.XML:
+<!-- for all purposes -->
 <dependency>
   <groupId>org.apache.commons</groupId>
   <artifactId>commons-math3</artifactId>
   <version>3.6.1</version>
+  <scope>runtime</scope>
+</dependency>
+
+<!-- for testing purposes only -->
+<dependency>
+  <groupId>org.apache.commons</groupId>
+  <artifactId>commons-math3</artifactId>
+  <version>3.6.1</version>
+  <scope>test</scope>
 </dependency>
 END OF EXAMPLE
 

@@ -22,7 +22,7 @@ In case production settings are missing, development settings will be used.
 The settings file can be written in two different formats. The two formats are equivalent.
 
 ||FILE FORMAT|EXTENSION||
-|properties|.properties||
+||properties|.properties||
 ||Yaml|.yml||
 
 EXAMPLE FOR SETTINGS FORMATS (GENERALLY, PROPERTIES):
@@ -214,7 +214,7 @@ END OF EXAMPLE
 ||spring.thymeleaf.mode|type of generated static pages||
 ||spring.thymeleaf.encoding|encoding of generated static pages||
 ||spring.thymeleaf.prefix|directory of templates within project hierarchy (default is file:src/main/resources/templates/)||
-||spring.resources.static-locations||directory of static pages within project hierarchy (default is file:src/main/resources/static/)||
+||spring.resources.static-locations|directory of static pages within project hierarchy (default is file:src/main/resources/static/)||
 ||spring.resources.cache.period|period of caching of resources||
 ||spring.thymeleaf.cache|enables or disables template caching (default is true)||
 

@@ -129,7 +129,7 @@ The relation between class fields and table fields are marked with field-level a
 ||@SequenceGenerator|marks the ID generator parameters||
 ||@GeneratedValue|marks ID generator type||
 ||@Column|defines the corresponding column properties||
-||@Transient|will not match with column, will be calculated with constructor or with other code segments e.g. in service class||
+||@Transient|will not match with column, will be calculated with constructor or with other code segments e.g. getter-setter or in service class||
 ||@Temporal|for older Spring JPA, marks that the date or time field will contain temporal data||
 ||@Enumerated|marks that the field contains enum||
 ||@Lob|large object||
@@ -161,6 +161,11 @@ The @Column annotation can have the next parameters:
 In database tables, every cell value can be null unless marked differently. That said, every type when transferred or set directly to and in database, can be null in the database so marking the column for nullability is preferred even in case of primitive type in entity.
 In case the @Column annotation is not used on a field, that field will be matched with table column by the field name, and will apply default values of all parameters of the virtually non-existent annotation.
 Please note, Spring will map VARCHAR(256) to any String field in case columnDefinition is not given. Visit the POSTGRESQL page for details on character types.
+
+A @Transient field is not a persistence field, that said, it is not recorded and maintained by the storage. These fields are for handling structured data which can not or should not be found in the storage (e.g. special data or a List which is not matchable with database column types under all databases).
+A transient field can be used as a generated value for getting this specific data, but of course it is possible to set persistence fields through transient fields as well.
+A typical solution for storing array or List data without forcing the database to store these.
+Spring will access the database records by using the persistence fields. Through the repository, the backend will access the transient fields. In case setting the persistence fields does not require separated calculating, use the normal constructors and setters, and create getters for transient fields. If creating the persistence fields requires separated codes, create setters for the transient fields which will set the persistence fields upon calling them. See the example below.
 
 The @Temporal annotation has a TemporalType parameter e.g. TemporalType.DATE.
 The newer JPA supports the next field types (no need for annotation):
@@ -260,7 +265,7 @@ public class EntityClassName {
 }
 END OF EXAMPLE
 
-EXAMPLE FOR CALCULATED ENTITY FIELD (TRANSIENT):
+EXAMPLE FOR CALCULATED ENTITY FIELD (TRANSIENT, ONLY FOR GENERATING VALUE FROM PERSISTENCE FIELDS):
 package PackageName;
 
 import jakarta.persistence.*;
@@ -302,6 +307,61 @@ public class EntityClassName {
 
     public void setAge(int age) {
         this.age = age;
+    }
+
+    //equals(), hashCode(), toString() methods for all fields
+}
+END OF EXAMPLE
+
+EXAMPLE FOR CALCULATED ENTITY FIELD (TRANSIENT, FOR GETTING DATA FROM AND SETTING PERSISTENCE FIELDS):
+package PackageName;
+
+import jakarta.persistence.*;
+import java.util.*;
+
+@Entity
+@Table(name = "database_table_name")
+public class EntityClassName {
+
+	@Id
+	@SequenceGenerator(name = "sequence_name", sequenceName = "sequence_name", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequence_name")
+	@Column(name = "id_column_name_in_database_table")
+	private long id;
+
+	@Column(name = "surname", ...)
+	private String surname;
+
+	@Column(name = "firstname", ...)
+	private String firstname;
+
+	@Transient
+	private String names;
+
+	public EntityClassName() {
+	}
+
+	public EntityClassName(String surname, String firstname) {
+	    this.surname = surname;
+	    this.firstname = firstname;
+	}
+
+	public EntityClassName(long id, String surname, String firstname) {
+	    this.id = id;
+	    this.surname = surname;
+	    this.firstname = firstname;
+	}
+
+    //getters-setters for id, surname and firstname fields
+
+    public String getNames() {
+        return surname + ", " + firstname;
+    }
+
+    public void setNames(String names) {
+        int sepPos = names.indexOf(", ");
+        surname = names.substring(0, sepPos);
+        firstname = names.substring(sepPos + 2);
     }
 
     //equals(), hashCode(), toString() methods for all fields
