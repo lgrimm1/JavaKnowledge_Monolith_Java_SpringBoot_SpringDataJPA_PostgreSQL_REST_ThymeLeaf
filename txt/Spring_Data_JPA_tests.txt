@@ -55,7 +55,7 @@ import java.util.*;
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class TitleRepositoryTest {
 
-    //optional
+	//optional
 	@Autowired
 	private TestEntityManager testEntityManager;
 
