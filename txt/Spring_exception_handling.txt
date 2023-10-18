@@ -64,7 +64,7 @@ The workaround is not suited for all development situations e.g. when the contro
 EXAMPLE FOR EXCEPTION HANDLER METHOD (NO-REST):
 @ExceptionHandler({IOException.class[, ...]})
 public void handleException() {...}
-END OF EXCEPTION
+END OF EXAMPLE
 
 EXAMPLE FOR EXCEPTION HANDLER METHOD (REST, OBJECT MODE):
 @ExceptionHandler({IOException.class[, ...]})
@@ -72,7 +72,7 @@ public ResponseEntity<String> handleException(IOException ex) {
     //prepare ResponseEntity responseEntity
     return responseEntity;
 }
-END OF EXCEPTION
+END OF EXAMPLE
 
 =================================================================================
 3. HANDLER EXCEPTION RESOLVER
@@ -110,7 +110,7 @@ EXAMPLE FOR RESPONSE STATUS EXCEPTION RESOLVER (METHOD, NO-REST):
 @ResponseStatus(value = HttpStatus.NOT_FOUND) //or:
 @ResponseStatus(HttpStatus.BAD_REQUEST, reason = reasonText)
 public void onIllegalArgumentException(RuntimeException exception) {...}
-END OF EXCEPTION
+END OF EXAMPLE
 
 EXAMPLE FOR RESPONSE STATUS EXCEPTION RESOLVER (METHOD, REST):
 @ResponseStatus(value = HttpStatus.NOT_FOUND) //or:
@@ -119,7 +119,7 @@ public ResponseEntity<String> onIllegalArgumentException(RuntimeException except
     //prepare ResponseEntity responseEntity
     return responseEntity;
 }
-END OF EXCEPTION
+END OF EXAMPLE
 
 EXAMPLE FOR RESPONSE STATUS EXCEPTION RESOLVER (CLASS, NO-REST):
 @ResponseStatus(value = HttpStatus.NOT_FOUND) //or:
@@ -138,7 +138,7 @@ public class MyResourceNotFoundException extends RuntimeException {
         super(cause);
     }
 }
-END OF EXCEPTION
+END OF EXAMPLE
 
 3.3. CUSTOM HANDLER EXCEPTION RESOLVER
 ---------------------------------------------------------------------------------
@@ -172,7 +172,7 @@ public class RestResponseStatusExceptionResolver extends AbstractHandlerExceptio
         return new ModelAndView(); //or create a new instance and then fill it with the body content
     }
 }
-END OF EXCEPTION
+END OF EXAMPLE
 
 =================================================================================
 4. CONTROLLER ADVISE
@@ -194,7 +194,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
         return handleExceptionInternal(ex, bodyOfResponse, new HttpHeaders(), HttpStatus.CONFLICT, request);
     }
 }
-END OF EXCEPTION
+END OF EXAMPLE
 
 =================================================================================
 5. RESPONSE STATUS EXCEPTION
@@ -217,7 +217,7 @@ public Foo findById(@PathVariable("id") Long id, HttpServletResponse response) {
          throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Foo Not Found", exc);
     }
 }
-END OF EXCEPTION
+END OF EXAMPLE
 
 =================================================================================
 6. THE DEFAULT ERROR PAGE
@@ -239,7 +239,7 @@ EXAMPLE FOR CUSTOMIZING WEB.XML:
 <error-page>
     <location>/error</location>
 </error-page>
-END OF EXCEPTION
+END OF EXAMPLE
 
 EXAMPLE FOR A CONTROLLER HANDLING THE CUSTOM ERROR PAGE:
 @Controller
@@ -254,7 +254,7 @@ public class ErrorController {
         return map;
     }
 }
-END OF EXCEPTION
+END OF EXAMPLE
 
 6.2. SPRING BOOT ERROR PAGE
 ---------------------------------------------------------------------------------
@@ -269,7 +269,7 @@ EXAMPLE FOR JSON ERROR ANSWER:
     "message": "Error processing the request!",
     "path": "/my-endpoint-with-exceptions"
 }
-END OF EXCEPTION
+END OF EXAMPLE
 
 In order to customize the error page, should create ErrorAttributes and ErrorController beans, and inject these beans into whatever controller we want to.
 
@@ -288,7 +288,7 @@ public class MyCustomErrorAttributes extends DefaultErrorAttributes {
         return errorAttributes;
     }
 }
-END OF EXCEPTION
+END OF EXAMPLE
 
 EXAMPLE FOR ERRORCONTROLLER BEAN:
 @Component
@@ -303,7 +303,7 @@ public class MyErrorController extends BasicErrorController {
     //...
     }
 }
-END OF EXCEPTION
+END OF EXAMPLE
 
 =>SPRING BOOT
 =>SPRING BOOT CONTROLLER
