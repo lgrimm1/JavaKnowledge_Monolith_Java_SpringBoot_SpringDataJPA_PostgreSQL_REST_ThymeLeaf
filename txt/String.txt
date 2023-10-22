@@ -5,7 +5,7 @@ STRING
 2. COMPARING STRINGS
 3. PARSE FROM STRING, CONVERT TO STRING
 4. STRING FORMATTING
-5. STRING-CHAR[]-ARRAYLIST<CHARACTER> CONVERSIONS
+5. STRING-CHAR[]-CHARACTER ARRAYLIST CONVERSIONS
 6. STRING METHODS
 
 =================================================================================
@@ -133,14 +133,14 @@ Total is: -3,564.99\n
 END OF EXAMPLE
 
 =================================================================================
-5. STRING-CHAR[]-ARRAYLIST<CHARACTER> CONVERSIONS
+5. STRING-CHAR[]-CHARACTER ARRAYLIST CONVERSIONS
 =================================================================================
 5.1. STRING TO CHAR[]
 5.2. CHAR[] TO STRING
-5.3. CHAR[] TO ARRAYLIST<CHARACTER>
-5.4. ARRAYLIST<CHARACTER> TO CHAR[]
-5.5. STRING TO ARRAYLIST<CHARACTER>
-5.6. ARRAYLIST<CHARACTER> TO STRING
+5.3. CHAR[] TO CHARACTER ARRAYLIST
+5.4. CHARACTER ARRAYLIST TO CHAR[]
+5.5. STRING TO CHARACTER ARRAYLIST
+5.6. CHARACTER ARRAYLIST TO STRING
 
 5.1. STRING TO CHAR[]
 ---------------------------------------------------------------------------------
@@ -162,7 +162,7 @@ for (char c : charArray) {
 String s3 = sb.toString();
 END OF EXAMPLE
 
-5.3. CHAR[] TO ARRAYLIST<CHARACTER>
+5.3. CHAR[] TO CHARACTER ARRAYLIST
 ---------------------------------------------------------------------------------
 EXAMPLE FOR CHAR ARRAY TO CHARACTER ARRAYLIST:
 char[] ca = new char[]{...};
@@ -172,7 +172,7 @@ for (char c : ca) {
 }
 END OF EXAMPLE
 
-5.4. ARRAYLIST<CHARACTER> TO CHAR[]
+5.4. CHARACTER ARRAYLIST TO CHAR[]
 ---------------------------------------------------------------------------------
 EXAMPLE FOR CHARACTER ARRAYLIST TO CHAR ARRAY:
 ArrayList<Character> = new ArrayList<>();
@@ -183,7 +183,7 @@ for (int index = 0, length = cal.size(); index < length; ++index) {
 }
 END OF EXAMPLE
 
-5.5. STRING TO ARRAYLIST<CHARACTER>
+5.5. STRING TO CHARACTER ARRAYLIST
 ---------------------------------------------------------------------------------
 EXAMPLE FOR STRING TO CHARACTER ARRAYLIST:
 String s = ...;
@@ -197,7 +197,7 @@ for (char c : s) {
 }
 END OF EXAMPLE
 
-5.6. ARRAYLIST<CHARACTER> TO STRING
+5.6. CHARACTER ARRAYLIST TO STRING
 ---------------------------------------------------------------------------------
 EXAMPLE FOR CHARACTER ARRAYLIST TO STRING:
 StringBuilder sb = new StringBuilder(cal.size());

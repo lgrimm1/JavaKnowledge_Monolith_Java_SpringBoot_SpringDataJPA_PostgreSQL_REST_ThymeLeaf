@@ -11,18 +11,6 @@ ARRAY
 8. CONVERT TO HASHSET AND BACK
 9. COMPLEX ELEMENT TYPE
 
-=>VARIABLES
-=>PRIMITIVE DATA TYPES
-=>OBJECTS
-=>ITERATION
-=>ARRAYLIST
-=>COMPARATOR
-=>COLLECTION
-=>STRINGBUILDER
-=>HASHSET
-=>STREAM
-=>MATRIX
-
 =================================================================================
 1. ARRAY DIMENSIONS, TYPES, ITERATING
 =================================================================================
@@ -433,3 +421,15 @@ class Main {
     }
 }
 END OF EXAMPLE
+
+=>VARIABLES
+=>PRIMITIVE DATA TYPES
+=>OBJECTS
+=>ITERATION
+=>ARRAYLIST
+=>COMPARATOR
+=>COLLECTION
+=>STRINGBUILDER
+=>HASHSET
+=>STREAM
+=>MATRIX
