@@ -79,7 +79,7 @@ public class ControllerClassName {
 }
 END OF EXAMPLE
 
-In case something is sent to the console by invoking System.out.println(), the text will appear on the console of the web application, among Spring messages. Because the console carries a bunch or logs for every request, it is advised to insert a well visible line into.
+In case something is sent to the console by invoking System.out.println(), the text will appear on the console of the web application, among Spring messages. Because the console carries a bunch of logs for every request, it is advised to insert a well visible line into.
 A controller class contains request handler methods, and can contain subclasses, fields and other methods. Best practice is to keep a controller as thin as it is possible which means any helpers, variables should be declared in the Business layer, in its service class (see earlier).
 Controller methods must be public so the Spring Boot can call them.
 
@@ -244,6 +244,7 @@ The whole controller can be marked with @ResponseBody annotation on class-level.
 For both techniques, in case the content type is not defined, uses standard coding.
 As for incoming requests in object mode, an endpoint can receive JSON data only in the defined (or default) format. For different content types, different endpoints must be created. In case no format is defined, the Spring Boot will use the best appropriate format.
 In older Spring versions, in controller, the method signature elements and the return type must be object types (wrapper types are included). Newer versions can accept literally every serializable type.
+Please note, in case the method signature contains custom class (e.g. a payload), that class must have default constructor (no arguments) and all setters of its fields (mutability), or Spring will be unable to bind the incoming data, which results missing the endpoint and the server sends HTTP404 (page not found) back to the caller.
 
 In object/model&view mode, there can be a Model object in the method signature however it is not obligatory, the return value will be a ModelAndView object.
 For incoming data, arguments are needed, marked with @ModelAttribute annotation, just like in model&view mode.
