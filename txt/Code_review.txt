@@ -1,0 +1,67 @@
+=================================================================================
+CODE REVIEW
+=================================================================================
+A code review is an important step in development cycle.
+When a code part is created (by the code author), an assigned fellow developer (code reviewer) takes a look on the code and analyse it, finally gives opinion on the code source.
+Based upon this, the code author is encouraged to make changes in the code as well as make it compatible with other code parts made within the same developer group.
+
+A good review does not concentrate only on errors and possible mistakes but shows good points and thinking as well in order to make balance and keep motivation.
+Leave ego at door. Use an open mind.
+
+A code review should go through these points:
+    - design (should follow the overall design, must make sense and be readable)
+    - functionality (should cover the needed functions; proper testing should cover this)
+    - complexity (should prevent too much complexity in lines or in functions, also over-engineering; must keep easy readability over integrated functions)
+    - tests (unit, integration or end-to-end tests are needed, exception when the developer handles an emergency)
+    - naming (should present what the named thing is or does, but short enough to keep easy readability)
+    - comments (should be clear and in English; should the only necessary ones exist, describe why the code exists but prevent presenting what it does; should be before the code to prevent accidental deleting)
+    - style (should follow the given style guidelines)
+    - consistency (should follow the style guidelines so the code will keep consistency)
+    - documentation (should be updated together with the code if that is updated; includes READMEs, g3doc pages and others; if the code is deprecated, the documentation can be deleted)
+    - every line (if needed, should check the code line-by-line for clarification)
+    - exceptions (should all possible exceptions be handled or be sent to caller; should prevent empty catch blocks; minimum is logging when raised)
+    - context (in some cases, should check how the reviewed code fits to the container code)
+    - good points
+
+Some possible points:
+    - usually, using thread-safe classes are preferred
+    - using multithreaded solutions is preferred only if the code intends to cover multithreaded tasks
+    - embedded iterations should be kept until the second layer whilst the next layers should be organized into separated modules or functions
+    - using the right class for the right purpose is preferred (e.g. Map vs. List)
+    - using a class which has wider functionality than needed is not preferred
+    - using generics for a purpose where non-generics is enough, is not preferred (e.g. List vs. ArrayList)
+    - null cases should be handled too
+    - general variable names and iteration variable names should not be mixed
+
+Over-engineering appears when the number of coded functionality is bigger than the task needs.
+Commenting is different from documentation. A documentation of classes, modules or functions expresses the purpose, how they should be used, and how they behave.
+In case the developer wants to improve the given style guideline, can make a comment at the corresponding line, optionally starting with "Nit:".
+
+The right review marks problematic parts with questions. Also, gives a hint to the code author like 'Let us talk about the code you submitted, I may have some ideas how to improve the code' which emits positivity and motivation instead of negativity and pushing the fellow developer towards other mistakes.
+
+A common approach contains three phases:
+    - first pass-through
+    - second pass-through
+    - in-depth analysis
+    - decision
+
+During the first pass, the reviewer should read the description in order to get the context. Goes through the code changes, checks tests (anything sticks out? all cases are tested?).
+
+During the second pass, the reviewer should check the changes themselves. Does the code follow Best Practices (names, language features)? Are unit tests correct (cases, right mocking)?
+In case everything works but some improvements can be embedded, the reviewer should remark that the comments are only suggestions.
+In case of any doubt during the review (does the code do what it should), the reviewer should ask about business needs and requirements before giving suggestions.
+Complements should be given for good codes or solutions.
+
+The in-depth pass is needed when reviewing complicated changes. During this phase, the next should be done and analysed:
+    - pull down changes to see what happened
+    - test changes manually
+    - set breakpoints
+    - is the code easy to follow?
+    - ask questions where and what and why
+
+Decision phase: if no major problems come out, approve it with suggestions (no big deals, not urgent to do more). In case of major issues, request changes.
+
+=>WEB APPLICATION
+=>APPLICATION ARCHITECTURES
+=>PRACTICES
+=>MAVEN
