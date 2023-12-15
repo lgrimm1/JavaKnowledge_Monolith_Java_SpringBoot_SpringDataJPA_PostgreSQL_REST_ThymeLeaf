@@ -11,6 +11,8 @@ All methods of InputStream are implemented and available. Specific methods are b
 ||getChannel()|returns the object of FileChannel associated with the input stream||
 ||getFD()|returns the file descriptor associated with the input stream||
 
+In case the file contains Unicode characters, those characters in byte will be grater or equal with 0x80.
+
 EXAMPLE FOR USAGE:
 import java.io.FileInputStream;
 import java.io.File;
@@ -29,6 +31,20 @@ try {
     fis.close();
 }
 catch (Exception e) {...}
+END OF EXAMPLE
+
+EXAMPLE TO HANDLE UNICODE SEPARATELY:
+...
+FileInputStream fis;
+int data;
+...
+data = fis.read();
+if (data < 0x80) {
+    //process not-unicode
+} else {
+    //process unicode
+}
+...
 END OF EXAMPLE
 
 =>STREAM
