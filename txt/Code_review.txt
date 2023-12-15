@@ -34,8 +34,9 @@ Some possible points:
     - general variable names and iteration variable names should not be mixed
 
 Over-engineering appears when the number of coded functionality is bigger than the task needs.
+Every developer is on a unique level. They have to understand and edit codes of each others. Do not write clever but readable code.
 Commenting is different from documentation. A documentation of classes, modules or functions expresses the purpose, how they should be used, and how they behave.
-In case the developer wants to improve the given style guideline, can make a comment at the corresponding line, optionally starting with "Nit:".
+In case the code author wants to improve the given style guideline, can make a comment at the corresponding line, optionally starting with "Nit:".
 
 The right review marks problematic parts with questions. Also, gives a hint to the code author like 'Let us talk about the code you submitted, I may have some ideas how to improve the code' which emits positivity and motivation instead of negativity and pushing the fellow developer towards other mistakes.
 
@@ -60,6 +61,259 @@ The in-depth pass is needed when reviewing complicated changes. During this phas
     - ask questions where and what and why
 
 Decision phase: if no major problems come out, approve it with suggestions (no big deals, not urgent to do more). In case of major issues, request changes.
+
+EXAMPLE FOR NAMING:
+public int converter(ArrayList<Integer> Ns) {
+    int n;
+    for (int i = 0; i < Ns.size(); ++i) {
+        n += Ns.get(i)
+    }
+    return n;
+}
+
+/*
+Does the function name describe what the function does? For example, I would use 'summarizeNumbers'.
+Is the argument name verbal? Does it follow naming conventions? E.g. i would use 'numbers'.
+From maths approach, 'n' as a name would be correct. Still, Is it verbal enough? I suggest to use 'number' or 'numbersElement' instead.
+Is the head of the iteration optimized for higher list sizes? Now it calculates the limit condition in every cycle. I would put the calculation into the initialization part of the head: 'for (int i = 0, size = numbers.size(); i < size; ++i)'.
+Will the returned value always fit into integer? I recommend to change the return type to long.
+*/
+END OF EXAMPLE
+
+EXAMPLE FOR MUTABILITY VS. IMMUTABILITY:
+class AttributeContainer {
+    public String name;
+    public int age;
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public String getAttributes() {
+        return name + String.valueOf(age);
+    }
+}
+
+//after checking the context where this class is used, the fields are obviously set once before getting data out of it,
+//The tests are good for this class. Is using mutable object reasonable? Why do we need mutable class definition here? I would refactor the class by introducing a public constructor which receives the 2 attributes and sets the fields a prior, then would delete the setters; fields would be private final.
+END OF EXAMPLE
+
+EXAMPLE FOR GENERATING SERIES OF IMMUTABLE OBJECTS VS. TEMPORARY MUTABLE OBJECT 1:
+public String mergeTexts(List<String> texts) {
+    String finalText;
+    for (String text : texts) {
+        finalText += text;
+    }
+    return finalText;
+}
+
+/*
+Is this code optimized for having higher number of texts as input? A String is immutable. That means, merging 2 Strings together is processed as creating a new String object and filling it with the contents of the 2 Strings. Creating a new object is time and resource consuming. I would recommend using StringBuilder instead:
+public String mergeTexts(List<String> texts) {
+    StringBuilder stringBuilder = new StringBuilder();
+    for (String text : texts) {
+        stringBuilder.append(text);
+    }
+    return stringBuilder.toString();
+}
+*/
+END OF EXAMPLE
+
+EXAMPLE FOR GENERATING SERIES OF IMMUTABLE OBJECTS VS. TEMPORARY MUTABLE OBJECT 2:
+public String sqlQuery(User user) {
+    String sql = "INSERT INTO USERS (name, email, address) VALUES (";
+    sql += "'" + user.getName() + "', ";
+    sql += "'" + user.getEmail() + "', ";
+    sql += "'" + user.getAddress() + "'";
+    sql += ")";
+    return sql;
+}
+
+/*
+Is this code optimized for calling it a higher number of times, even parallel? A String is immutable. That means, merging 2 Strings together is processed as creating a new String object and filling it with the contents of the 2 Strings. Creating new objects is resource consuming. I would recommend using StringBuilder instead:
+public String sqlQuery(User user) {
+    StringBuilder sbSql = new StringBuilder("INSERT INTO USERS (name, email, address) VALUES (")
+            .append("'").append(user.getName()).append("', ")
+            .append("'").append(user.getEmail()).append("', ")
+            .append("'").append(user.getAddress()).append("'")
+            .append(")");
+    return sbSql.toString();
+}
+*/
+END OF EXAMPLE
+
+EXAMPLE FOR NOT HANDLED EXCEPTIONS:
+public void closeResources() {
+    FileInputStream inputStream = null;
+    try {
+        File file = new File(tmp.txt);
+        inputStream = new FileInputStream(file);
+    } catch (FileNotFoundException e) {
+    }
+    //process file
+}
+
+/*
+It is fine as it is, however, there is no need to explicitly render null to a new object since it will become null by itself.
+Is the File object used anywhere except for giving it to FileInputStream constructor? I would give the object directly to the constructor.
+Is the method safe for handling opening exceptions?
+Is it safe for closing the resource?
+I would handle the possible creation exception in the empty catch by logging the error.
+Also, I would introduce a condition before starting the process, and would close the resource in another try-catch statement.
+public void closeResources() {
+    FileInputStream inputStream;
+    Logger logger = new Logger("file");
+
+    try {
+        inputStream = new FileInputStream(new File(tmp.txt));
+    } catch (FileNotFoundException e) {
+        logger.error("Error: file not found", e);
+    }
+
+    if (inputStream != null) {
+        //process file
+        try {
+            inputStream.close();
+        } catch (IOException e) {
+            logger.error("Error while closing I/O stream", e);
+        }
+    }
+}
+*/
+END OF EXAMPLE
+
+EXAMPLE FOR EXPENSIVE CODE:
+private List<Integer> searchIndexes(List<Integer> sourceList, int number) {
+    List<Integer> foundIndexes = new ArrayList<>();
+    for (int index = 0, size = sourceList.size(); index < size; ++i) {
+        if (number == sourceList.get(index)) {
+            foundIndexes.add(index);
+        }
+    }
+    return foundIndexes;
+}
+public List<Integer> processNumbers() {
+    private int number1, number2;
+    private List<Integer> source;
+
+    //fill sources with data
+    //define numbers to search for
+
+    List<Integer> indexes = new ArrayList<>();
+    indexes.addAll(searchIndexes(source, number1));
+    indexes.addAll(searchIndexes(source, number2));
+
+    return indexes;
+}
+
+/*
+Is running the same function twice too expensive?
+My suggestion is that should run the search function only once, and pass both numbers to it even as separated attributes, or as an array or List which would give the function more flexibility:
+private List<Integer> searchIndexes(List<Integer> sourceList, int[] numbers) {
+    List<Integer> foundIndexes = new ArrayList<>();
+    for (int index = 0, size = sourceList.size(); index < size; ++i) {
+        for (int number : numbers) {
+            if (number == sourceList.get(index)) {
+                foundIndexes.add(index);
+            }
+        }
+    }
+    return foundIndexes;
+}
+public List<Integer> processNumbers() {
+    private int number1, number2;
+    private List<Integer> source;
+
+    //fill sources with data
+    //define numbers to search for
+
+    return searchIndexes(source, new int[]{number1, number2});
+}
+*/
+END OF EXAMPLE
+
+EXAMPLE FOR TOO MUCH EMBEDDED ITERATIONS:
+public long processData(List<List<List<Integer>>> data) {
+    long result;
+
+    int dataSize = data.size();
+    for (List<List<Integer>> firstLevel : data) {
+        if (firstLevel == null) {
+            result += dataSize * result;
+        } else {
+
+            int firstLevelSize = firstLevel.size();
+            for (List<Integer> secondLevel : firstLevel) {
+                if (secondLevel == null) {
+                    result += firstLevelSize * result;
+                } else {
+
+                    int secondLevelSize = secondLevel.size();
+                    for (Integer thirdLevel : secondLevel) {
+                        if (thirdLevel == null) {
+                            result += secondLevelSize * result;
+                        } else {
+                            result += thirdLevel;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+/*
+Is the method readable by first sight? In my opinion, refactoring the inner iterations into helper methods would increase it significantly:
+private long processDataOnThirdLevel(List<Integer> secondLevelData, long result) {
+    int secondLevelSize = secondLevelData.size();
+    long newResult = result;
+
+    for (Integer thirdLevel : secondLevelData) {
+        if (thirdLevel == null) {
+            newResult += secondLevelSize * newResult;
+        } else {
+            newResult += thirdLevel;
+        }
+    }
+
+    return newResult;
+}
+
+private long processDataOnSecondLevel(List<List<Integer>> firstLevelData, long result) {
+    int firstLevelSize = firstLevelData.size();
+    long newResult = result;
+
+    for (List<Integer> secondLevel : firstLevelData) {
+        if (secondLevel == null) {
+            newResult += firstLevelSize * newResult;
+        } else {
+            newResult = processDataOnThirdLevel(secondLevel, newResult);
+        }
+    }
+
+    return newResult;
+}
+
+public long processData(List<List<List<Integer>>> data) {
+    long result;
+
+    int dataSize = data.size();
+    for (List<List<Integer>> firstLevel : data) {
+        if (firstLevel == null) {
+            result += dataSize * result;
+        } else {
+            result = processDataOnSecondLevel(firstLevel, result);
+        }
+    }
+
+    return result;
+}
+*/
+END OF EXAMPLE
 
 =>WEB APPLICATION
 =>APPLICATION ARCHITECTURES
