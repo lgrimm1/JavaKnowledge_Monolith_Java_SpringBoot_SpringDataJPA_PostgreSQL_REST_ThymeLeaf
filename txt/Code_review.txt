@@ -1,6 +1,13 @@
 =================================================================================
 CODE REVIEW
 =================================================================================
+1. GENERALLY
+2. REVIEW PHASES
+3. EXAMPLES
+
+=================================================================================
+1. GENERALLY
+=================================================================================
 A code review is an important step in development cycle.
 When a code part is created (by the code author), an assigned fellow developer (code reviewer) takes a look on the code and analyse it, finally gives opinion on the code source.
 Based upon this, the code author is encouraged to make changes in the code as well as make it compatible with other code parts made within the same developer group.
@@ -24,14 +31,16 @@ A code review should go through these points:
     - good points
 
 Some possible points:
-    - usually, using thread-safe classes are preferred
+    - usually, using thread-safe classes are preferred (immutability)
+    - one class for one purpose (e.g. IO can be separated to Input and Output if one of them sticks out from the original class)
     - using multithreaded solutions is preferred only if the code intends to cover multithreaded tasks
     - embedded iterations should be kept until the second layer whilst the next layers should be organized into separated modules or functions
     - using the right class for the right purpose is preferred (e.g. Map vs. List)
     - using a class which has wider functionality than needed is not preferred
-    - using generics for a purpose where non-generics is enough, is not preferred (e.g. List vs. ArrayList)
+    - using generics for a purpose where non-generics is enough (too general code), is not preferred (e.g. List vs. ArrayList)
     - null cases should be handled too
     - general variable names and iteration variable names should not be mixed
+    - globally used values should be organized into a separate class (in order to prevent duplications)
 
 Over-engineering appears when the number of coded functionality is bigger than the task needs.
 Every developer is on a unique level. They have to understand and edit codes of each others. Do not write clever but readable code.
@@ -40,6 +49,9 @@ In case the code author wants to improve the given style guideline, can make a c
 
 The right review marks problematic parts with questions. Also, gives a hint to the code author like 'Let us talk about the code you submitted, I may have some ideas how to improve the code' which emits positivity and motivation instead of negativity and pushing the fellow developer towards other mistakes.
 
+=================================================================================
+2. REVIEW PHASES
+=================================================================================
 A common approach contains three phases:
     - first pass-through
     - second pass-through
@@ -61,6 +73,100 @@ The in-depth pass is needed when reviewing complicated changes. During this phas
     - ask questions where and what and why
 
 Decision phase: if no major problems come out, approve it with suggestions (no big deals, not urgent to do more). In case of major issues, request changes.
+
+=================================================================================
+3. EXAMPLES
+=================================================================================
+EXAMPLE FOR NO-THREAD-SAFE CLASS:
+class User {
+    private String name;
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+}
+
+/*
+Is necessary to keep the class mutable? In this case, is it a proper way to create a not thread-safe class? I would introduce a public constructor with a name argument in its signature and set the field with that, also would delete the setter method.
+*/
+END OF EXAMPLE
+
+EXAMPLE FOR TOO MUCH PURPOSES IN ONE CLASS:
+class FileHandler {
+    private File file;
+
+    public FileHandler(File file) {
+        this.file = file;
+    }
+
+    public String getContent() {
+        try {
+            FileInputStream inputStream = new FileInputStream(file);
+            StringBuilder sb = new StringBuilder();
+            int data;
+            while ((data = inputStream.read()) > 0) {
+                sb.append((char) data);
+            }
+            inputStream.close();
+        } catch (IOException e) {
+            //process exception
+        }
+        return sb.toString();
+    }
+
+    public void saveContent(String content) {
+        try {
+            FileOutputStream outputStream = new FileOutputStream(file);
+            for (int i = 0, length = content.length(); i < length; ++i) {
+                outputStream.write(content.charAt(i));
+            }
+            outputStream.close();
+        } catch (IOException e) {
+            //process exception
+        }
+    }
+}
+
+/*
+Is it sure that for input or output but not together, never will be changes in time? I would split the class into two by the direction of data flow (input, output).
+*/
+END OF EXAMPLE
+
+EXAMPLE FOR DUPLICATED CONSTANTS:
+class BasicData {
+    private final String SEPARATOR = "-";
+    //fields
+    public processor(...) {...}
+    }
+}
+class ExtendedData {
+    private final String SEPARATOR = "-";
+    //fields
+    public processor(...) {...}
+    }
+}
+
+/*
+Had you prevented duplications and possible changing errors? I would create a separate class or interface with the constant value and use that class with these:
+class Constants {
+    private final String SEPARATOR = "-";
+}
+class BasicData extends Constants {
+    //fields
+    public processor(...) {...}
+    }
+}
+class ExtendedData extends Constants {
+    //fields
+    public processor(...) {...}
+    }
+}
+*/
+END OF EXAMPLE
 
 EXAMPLE FOR NAMING:
 public int converter(ArrayList<Integer> Ns) {
@@ -146,7 +252,7 @@ public String sqlQuery(User user) {
 */
 END OF EXAMPLE
 
-EXAMPLE FOR NOT HANDLED EXCEPTIONS:
+EXAMPLE FOR NOT HANDLED EXCEPTIONS 1:
 public void closeResources() {
     FileInputStream inputStream = null;
     try {
@@ -180,6 +286,36 @@ public void closeResources() {
             inputStream.close();
         } catch (IOException e) {
             logger.error("Error while closing I/O stream", e);
+        }
+    }
+}
+*/
+END OF EXAMPLE
+
+EXAMPLE FOR NOT HANDLED EXCEPTIONS 2:
+public void closeResources() throws IOException {
+    FileInputStream inputStream = new FileInputStream(new File(tmp.txt));
+    //process file
+    inputStream.close();
+}
+
+/*
+Is it safe to send the exception to the caller? There is possibility that if not the same developer codes the caller, one or more exceptions will be missed. I would handle the exceptions within.
+public void closeResources() {
+    FileInputStream inputStream;
+
+    try {
+        inputStream = new FileInputStream(new File(tmp.txt));
+    } catch (FileNotFoundException e) {
+        //process e
+    }
+
+    if (inputStream != null) {
+        //process file
+        try {
+            inputStream.close();
+        } catch (IOException e) {
+            //process e
         }
     }
 }
