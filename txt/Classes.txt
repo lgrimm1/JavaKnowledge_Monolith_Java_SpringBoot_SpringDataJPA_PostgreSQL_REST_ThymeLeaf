@@ -16,20 +16,6 @@ CLASSES
 13. CLASS ORGANIZING
 14. CLASS DEPENDENCY INJECTION
 
-=>ACCESS MODIFIERS
-=>VARIABLES
-=>METHODS
-=>INHERITANCE
-=>ENUMMAP
-=>PRIMITIVE DATA TYPES
-=>COLLECTION
-=>ARRAY
-=>SERIALIZATION
-=>MOCKITO
-=>GARBAGE COLLECTOR
-=>RECORD
-=>REFLECTION
-
 =================================================================================
 1. DECLARATION
 =================================================================================
@@ -751,3 +737,17 @@ class Main {
     Class2 variable2 = new Class2(Class1.getInstance(...));
 }
 END OF EXAMPLE
+
+=>ACCESS MODIFIERS
+=>VARIABLES
+=>METHODS
+=>INHERITANCE
+=>ENUMMAP
+=>PRIMITIVE DATA TYPES
+=>COLLECTION
+=>ARRAY
+=>SERIALIZATION
+=>MOCKITO
+=>GARBAGE COLLECTOR
+=>RECORD
+=>REFLECTION
