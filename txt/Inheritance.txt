@@ -242,7 +242,7 @@ END OF EXAMPLE
 An abstract class with abstract methods only is called interface.
 Because its is a type of abstract class, no object can be created from it.
 Other classes must implement it.
-Keyword for implementation is implement.
+Keyword for implementation is implements.
 More than one interfaces can be implemented by a class.
 Interface can be inherited as well. It is allowed to inherit more than one interfaces (extends keyword).
 All interface methods are public by default.
