@@ -116,4 +116,4 @@ In versioning systems like GitHub, one microservices application can be presente
     - many repositories (every microservice is under separate repository)
 
 =>WEB APPLICATION
-=>CODE REVIEW
+=>AGILE DEVELOPMENT

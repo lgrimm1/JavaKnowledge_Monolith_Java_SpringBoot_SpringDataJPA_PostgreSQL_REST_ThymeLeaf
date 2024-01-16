@@ -451,7 +451,4 @@ public long processData(List<List<List<Integer>>> data) {
 */
 END OF EXAMPLE
 
-=>WEB APPLICATION
-=>APPLICATION ARCHITECTURES
-=>PRACTICES
-=>MAVEN
+=>AGILE DEVELOPMENT

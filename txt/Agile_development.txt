@@ -1,0 +1,54 @@
+=================================================================================
+AGILE DEVELOPMENT
+=================================================================================
+Agile software development methods are:
+    - Scrum: manages stories, tasks and workflows for a Scrum team; for teams which delivers work on a regular schedule
+    - Kanban: monitors work in a continuous flow for agile teams; suits teams who control work volume from a backlog
+    - Bug tracking: manages a list of development tasks and bugs; great for teams who do not need a board
+The most used method is the Scrum.
+
+A Scrum agile method can be divided into the next phases:
+    - functionality
+    - planning
+    - implementation
+    - testing
+    - review
+In any phase a problem occurs which can not be solved within the actual phase, a step-back is executed.
+
+Issue (task, bug, story): essentially an element within a workflow. Issues can be:
+    - epic: abstract view of what we are creating for the client in the agile workflow
+    - story: what is required to archieve the epic (a feature); there can be more stories in an epic
+    - task: a story can be satisfied by finishing tasks; there can be more tasks in a story
+    - bug: an error found during executing a task
+
+Issues can be created beforehand (project structure). Later, when a workflow is created, any existing issues can be added to it.
+An issue has a score number. This number shows importance of that issue.
+
+Sprint: a software development workflow. During a sprint the agile team concentrates on given issues only, the aim is to satisfy these issues. Once it happens, another sprint can be started. Because given issues are handled explicitly, the development gains speed.
+A sprint has:
+    - start date
+    - duration (1-4 weeks optimally)
+    - sprint goal
+    - the issues rendered to it
+
+After starting a sprint, status of a contained issue can be:
+    - to-do or planned
+    - in progress
+    - done or completed
+When all tasks within a story are completed, the story becomes completed as well.
+When all contained stories are completed, the sprint ends.
+
+Scrum roles: hierarchy of employees working on a software development project and how they function to achieve agile development:
+    - product owner: responsible for the entire project (epic); its function is the management, it has contact with the customer (client) and knows what the customer wants)
+    - Scrum master: the middle man who connects and manages the flow of information between the product owner and the development team; the master is signed to a story
+    - Scrum team: employees who are hands on an complating tasks; a team member is signed to a task
+
+Wide-spread agile management software is the Jira. Under it the product owner or the SCRUM master can invite developers, create teams from them, create issues, sprints, assign issues to sprints, assign teams to stories, developer to tasks, follow statuses and so on.
+Jira can be used not just for managing software development but project management, task tracking, process control, recruitment etc.
+For further examples, under project management, design, sales, legal, operations etc. teams can be managed.
+
+=>WEB APPLICATION
+=>APPLICATION ARCHITECTURES
+=>PRACTICES
+=>MAVEN
+=>CODE REVIEW

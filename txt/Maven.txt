@@ -160,4 +160,4 @@ The development lifecycle is rendered into Maven commands. These commands can be
 ||mvn install|generates package and move it into common directory||
 
 =>PRACTICES
-=>CODE REVIEW
+=>AGILE DEVELOPMENT
