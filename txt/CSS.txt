@@ -286,6 +286,8 @@ For marked side in the property name (e.g. border-left-width), there must be pro
 ||width|50%|dynamically set|sets the width of the element inside padding; values: length number; the div block shows a horizontal scroll bar when the browser window smaller than the set width, in such case use max-width instead||
 ||height|50%|auto|sets the height of the element inside padding; values: auto, initial (default HTML value), inherit (from container element), length number||
 ||max-width|50%|none|sets the maximum value the width property can get; values: none (no maximum), length number; if smaller then the width value, that will be ignored||
+||position|fixed|static|sets how the tag is positioned within the flow; used together with top, bottom, left, right properties; values: static (default, the block is placed into the page as its tag placed into the HTML code), relative (the new position is calculated from the static position), fixed  (the new position is calculated from the viewport), absolute (the new position is calculated from the position of its ancestor element), sticky (the new position is calculated from the scroll position: works as relative while it reaches viewport limits, then works as fixed; does not available in Internet Explorer, needs extra property in Safari)||
+||x|20px|-|x can be top, bottom, left, right; defines distance for positioning an element, used together with its position property||
 
 Every HTML element follows the box model. From inside to outside, the content is wrapped around with the padding, which is wrapped around with the border, which is wrapped around with the margins. This system forms rectangles (boxes) around the most inner part (content). The total size of element is interpreted as added values of margin, border width, padding and content size horizontally and vertically. These data define how much space an element occupies.
 Margin collapse: total vertical distance of two elements is theoretically the bottom margin of the first element and the top margin of the second element added, however in some cases only the higher margin value will be used by the browser.
@@ -314,6 +316,28 @@ p.p2 {margin: 20px 10px 12px;}
 <!-- total margin will be the higher margin (50px) instead of 58px -->
 <!-- theoretical top margin of p2 is set to 20px -->
 <p class="p2">...</p>
+END OF EXAMPLE
+
+EXAMPLE FOR POSITIONING:
+/* element stays at top-left corner while normal content scrolls under it */
+div {
+    position: fixed;
+    left: 0;
+    top: 0;
+}
+
+/* element moved with 20px to the right, relatively from its position within its ancestor */
+p {
+    position: relative;
+    left: 20px;
+}
+
+/* element follows the scroll until reaches the top or the bottom of the viewport, then stays there */
+div.sticky {
+  position: -webkit-sticky; /* Safari */
+  position: sticky;
+  top: 0;
+}
 END OF EXAMPLE
 
 =================================================================================

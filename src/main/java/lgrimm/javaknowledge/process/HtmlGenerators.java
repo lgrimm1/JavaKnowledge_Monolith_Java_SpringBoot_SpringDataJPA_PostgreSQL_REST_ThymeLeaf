@@ -39,7 +39,7 @@ public class HtmlGenerators {
 					(text.size() > textIndex + 2) &&
 					(text.get(textIndex + 2).equals(formulas.getSuperLine()))) {
 				html.add(formulas.getTabInSpaces() + "<a href=\"#top\"><i>Back to top of page</i></a><br>");
-				html.add(formulas.getTabInSpaces() + "<a name=\"" + text.get(textIndex + 1) + "\"></a>");
+				html.add(formulas.getTabInSpaces() + "<a id=\"" + text.get(textIndex + 1) + "\"></a>");
 				html.add(formulas.getTabInSpaces() + "<h2>" + text.get(textIndex + 1) + "</h2>");
 				textIndex += 3;
 			}
@@ -48,7 +48,7 @@ public class HtmlGenerators {
 			else if ((text.size() > textIndex + 1) &&
 					(text.get(textIndex + 1).equals(formulas.getSubLine()))) {
 				html.add(formulas.getTabInSpaces() + "<a href=\"#top\"><i>Back to top of page</i></a><br>");
-				html.add(formulas.getTabInSpaces() + "<a name=\"" + text.get(textIndex) + "\"></a>");
+				html.add(formulas.getTabInSpaces() + "<a id=\"" + text.get(textIndex) + "\"></a>");
 				html.add(formulas.getTabInSpaces() + "<h3>" + text.get(textIndex) + "</h3>");
 				textIndex += 2;
 			}
