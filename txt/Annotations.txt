@@ -106,3 +106,4 @@ class Main {
     @CustomAnno(value = "A")
     public void method1(){...}
 }
+END OF EXAMPLE

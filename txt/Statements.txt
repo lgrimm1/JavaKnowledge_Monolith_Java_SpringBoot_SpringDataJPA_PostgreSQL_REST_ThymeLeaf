@@ -301,26 +301,31 @@ END OF EXAMPLE
 =================================================================================
 18. CHAINED STATEMENTS
 =================================================================================
-In case a statement has a return value which will be used for an other method, the statements can be attached into a chain.
+In case a statement returns an object which method we want to use, the statements can be attached into a chain.
 By using this, less explicit variables can be used since the returned values will not be stored one-by-one but of the last statement.
 The code will be more readable, and less variables will be stored.
 
-Formula 1 for chained statements (variable holds the class; no return value for the last statement):
-    - variable.method1().method2().method3();
+EXAMPLE FOR CHAINED STATEMENTS (FORMULA 1):
+//variable1 holds the original class
+//no return value for the last statement
+variable1.method1().method2().method3();
+END OF EXAMPLE
 
-Formula 2 for chained statements (variable holds the first class, return value for the last statement):
-    - variable2 = variable.method1().method2().method3();
+EXAMPLE FOR CHAINED STATEMENTS (FORMULA 2):
+//variable1 holds the original class
+//return value for the last statement stored in variable2
+variable2 = variable1.method1().method2().method3();
+END OF EXAMPLE
 
-Formula 3 for chained statements (variable holds the first class; no return value for the last statement):
-    - variable.method1().method2().method3();
-
-Formula 4 for chained statements (variable holds the first class; return value for the last statement):
-    - variable2 = variable.method1().method2().method3();
+EXAMPLE FOR CHAINED STATEMENTS (FORMULA 3):
+//variable1 holds the original class which will be modified in the process
+variable1.method1().method2().method3();
+END OF EXAMPLE
 
 These methods will be executed in their respected order.
 Every method will result data the next method will work on. That said, new memory will be allocated with all statement.
 
-EXAMPLE FOR CHAINED STATEMENTS 1:
+EXAMPLE FOR CHAINED STATEMENTS (NO RETURNED VALUE):
 ArrayList<String> sal = new ArrayList<>();
 ...
 sal.stream()
@@ -330,14 +335,14 @@ sal.stream()
     .forEach((p) -> System.out.println(p)); //no returned value
 END OF EXAMPLE
 
-EXAMPLE FOR CHAINED STATEMENTS 2:
+EXAMPLE FOR CHAINED STATEMENTS 2 (RETURNED VALUE):
 String s = ...;
 String s2 = s
     .toUpperCase() //returns String
     .substring(0, 4); //returns String
 END OF EXAMPLE
 
-EXAMPLE FOR CHAINED STATEMENTS 3:
+EXAMPLE FOR CHAINED STATEMENTS 3 (PROCESS MODIFIES CONTENTS OF ORIGINAL OBJECT):
 String[] sa = new String[]{...};
 StringBuilder sb = new StringBuilder();
 for (String s : sa) {
@@ -357,7 +362,7 @@ for (String s : sa) {
 }
 END OF EXAMPLE
 
-EXAMPLE FOR CHAINED STATEMENTS 4:
+EXAMPLE FOR CHAINED STATEMENTS 4 (RETURNED VALUE):
 ArrayList<Character> cal = new ArrayList<>();
 cal.add('A');
 cal.add('b');

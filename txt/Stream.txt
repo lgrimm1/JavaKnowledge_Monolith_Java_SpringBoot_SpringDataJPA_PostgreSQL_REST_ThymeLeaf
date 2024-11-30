@@ -124,7 +124,7 @@ Double average = list.stream().reduce(0, Integer::sum) / (double) list.size();
 //or: convert it into IntStream and use its methods
 END OF EXAMPLE
 
-EXAMPLE 1 FOR CHAINED OPERATIONS WITH STREAMS:
+EXAMPLE FOR CHAINED OPERATIONS WITH STREAMS 1:
 import java.util.ArrayList;
 ...
 ArrayList<String> sal = new ArrayList<>();
@@ -136,7 +136,7 @@ sal.stream() //convert to Stream<String>
     .forEach((p) -> System.out.println(p)); //iterate, write on console
 END OF EXAMPLE
 
-EXAMPLE 2 FOR CHAINED OPERATIONS WITH STREAMS:
+EXAMPLE FOR CHAINED OPERATIONS WITH STREAMS 2:
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;

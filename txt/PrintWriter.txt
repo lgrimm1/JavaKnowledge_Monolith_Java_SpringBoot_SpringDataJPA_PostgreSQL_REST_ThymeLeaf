@@ -12,14 +12,14 @@ Uses default character set but other encoding (e.g. UTF8 or UTF16) can be used a
 The written data can be formatted. The methodology follows the String formatting.
 
 Constructors:
-    a. use other writer (e.g. a previously declared FileWriter)
-    b. use other output stream (e.g. a previously declared FileOutputStream)
-    c. use an output file name
+    - use other writer (e.g. a previously declared FileWriter)
+    - use other output stream (e.g. a previously declared FileOutputStream)
+    - use an output file name
 
 Constructor parameters:
-    a. (writer or output stream)
-    b. (writer or output stream, boolean autoFlush)
-    c. (writer or output stream, boolean autoFlush, Charset charset)
+    - (writer or output stream)
+    - (writer or output stream, boolean autoFlush)
+    - (writer or output stream, boolean autoFlush, Charset charset)
 
 ||METHOD|DESCRIPTION||
 ||print()|sends the data to the writer||

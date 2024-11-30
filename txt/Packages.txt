@@ -13,8 +13,8 @@ From a package methods, classes, sub-package or the whole package can be importe
 After importing, the data in package can be used.
 
 Naming of elements can be the same in case they are in different packages.
-	a. built-in (e.g. java.lang, java.io)
-	b. user-defined
+	- built-in (e.g. java.lang, java.io)
+	- user-defined
 
 Organizing into folders will follow the package structure:
 package_name (0th level)
@@ -25,8 +25,8 @@ package_name (0th level)
 		L classes and interfaces (2nd level)
 
 In classes and interfaces the 1st line must contain the package name, following the above structure:
-	a. on 1st level: package package_name;
-	b. on 2nd level: package package_name.sub_package_name;
+	- on 1st level: package package_name;
+	- on 2nd level: package package_name.sub_package_name;
 
 After the package identifier, imports and the class header line come.
 The class name will be the java file name as usual.

@@ -10,10 +10,10 @@ After closing the stream, any method will raise exception.
 The FileWriter implements the AutoClosable interface, the try-with-resources statement can be used to ensure proper closing.
 
 Constructor parameters:
-    a. (String fileName): links the FileWriter to file based upon its file name, default character coding
-    b. (String fileName, Charset charset): same as previous but charset character coding
-    c. (File file): links the FileWriter to file based upon its file object, default character coding
-    d. (File file, Charset charset): same as previous but charset character coding
+    - (String fileName): links the FileWriter to file based upon its file name, default character coding
+    - (String fileName, Charset charset): same as previous but charset character coding
+    - (File file): links the FileWriter to file based upon its file object, default character coding
+    - (File file, Charset charset): same as previous but charset character coding
 
 The defined character coding will be forced during accessing the destination stream.
 Available methods are below.

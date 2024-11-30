@@ -21,15 +21,15 @@ Dynamic 1D array of objects of the same type.
 The 1st element has the 0th index.
 
 Differences between ArrayList and LinkedList:
-    a. ArrayList implements List, LinkedList implements List, Queue and Deque
-    b. ArrayList stores a simple value, LinkedList stores the element, previous and next addresses
-    c. ArrayList provides a resizeable array, LinkedList provides a doubly-linked list
-    d. For inserting element, ArrayList shifts all elements after, LinkedList modifies prev and next fields in the surrounding nodes
-    e. To access data, in ArrayList elements can be accessed randomly, in LinkedList sequentially
+    - ArrayList implements List, LinkedList implements List, Queue and Deque
+    - ArrayList stores a simple value, LinkedList stores the element, previous and next addresses
+    - ArrayList provides a resizeable array, LinkedList provides a doubly-linked list
+    - For inserting element, ArrayList shifts all elements after, LinkedList modifies prev and next fields in the surrounding nodes
+    - To access data, in ArrayList elements can be accessed randomly, in LinkedList sequentially
 
 Differences between Vector and ArrayList:
-    a. in case a thread opens the Vector for writing, the Vector will be blocked for other threads, for them throws an exception (ArrayList is safe for multi-tread access)
-    b. ArrayList uses Collection.synchronizedList() to synchronize accessing methods (Vector blocks instead)
+    - in case a thread opens the Vector for writing, the Vector will be blocked for other threads, for them throws an exception (ArrayList is safe for multi-tread access)
+    - ArrayList uses Collection.synchronizedList() to synchronize accessing methods (Vector blocks instead)
 Based upon these, usage of ArrayList is preferred for thread-safety, and it is more efficient.
 
 EXAMPLE FOR MAKING SYNCHRONIZED (THREAD-SAFE) ARRAYLIST:

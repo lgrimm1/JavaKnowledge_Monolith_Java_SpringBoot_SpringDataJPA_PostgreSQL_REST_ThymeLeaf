@@ -16,14 +16,14 @@ Be aware that @BeforeEach and @AfterEach methods will not be launched before and
 Because this test variant changes the tests invoked by JUnit, the variant is called dynamic test.
 
 The return value of the test factory method must be one of these:
-    a. Iterable<DynamicTest>
-    b. Collection<DynamicTest>
-    c. Stream<DynamicTest>
+    - Iterable<DynamicTest>
+    - Collection<DynamicTest>
+    - Stream<DynamicTest>
 
 The test input data and their respective expected result should be defined as rows (elements) in a 2D array (matrix) or Collection (e.g. List) or Iterable.
 The elements (in the below example entries) should be mapped into a Callable of which the return value has two components:
-    a. a String of description of actual test case (e.g. a + b = c with actual input and expected data)
-    b. an Assertion with the actual data
+    - a String of description of actual test case (e.g. a + b = c with actual input and expected data)
+    - an Assertion with the actual data
 
 EXAMPLE FOR DYNAMIC TESTS (TEST FACTORY, STREAM):
 import static org.junit.jupiter.api.DynamicTest.dynamicTest;

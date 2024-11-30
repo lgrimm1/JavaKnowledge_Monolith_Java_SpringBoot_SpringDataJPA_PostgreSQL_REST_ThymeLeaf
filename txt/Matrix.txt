@@ -9,9 +9,9 @@ Transposing a matrix means geometrically mirroring (or rotating) cell values on 
 Reversing rows in a matrix means for each row the order of elements are to reversed (e.g. 1, 3, 2 becomes 2, 3, 1, no sorting).
 
 Rotating a matrix means several processes in a chain. For rotating, the matrix has to be squared due to using a process which works on a square matrix:
-    a. rotate clockwise (+90 degrees): transpose, then reverse rows
-    b. rotate counter-clockwise (-90 degrees): reverse rows then transpose
-    c. rotate by 180 degrees: rotate twice in clockwise (or counter-clockwise) direction
+    - rotate clockwise (+90 degrees): transpose, then reverse rows
+    - rotate counter-clockwise (-90 degrees): reverse rows then transpose
+    - rotate by 180 degrees: rotate twice in clockwise (or counter-clockwise) direction
 
 EXAMPLE FOR CHECKING SQUARED:
 import java.util.ArrayList;

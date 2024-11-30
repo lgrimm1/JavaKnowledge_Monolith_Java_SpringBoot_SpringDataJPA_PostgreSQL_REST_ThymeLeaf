@@ -25,10 +25,10 @@ The IntelliJ IDEA IDE - when creating a new projects - asks which test framework
 JUnit extends the functionality of Java core assertions. Furthermore, works together with IntelliJ IDEA perfectly. That said, a method marked with @Test annotation will be handled as a test method and in case the IDE or Maven wants to run tests, will invoke these marked methods.
 
 Naming conventions of test classes:
-    a. Test*
-    b. *Test
-    c. *Tests
-    d. *TestCase
+    - Test*
+    - *Test
+    - *Tests
+    - *TestCase
 By following these conventions, Maven and the IDE will identify test methods and make jumping to-from live and test codes possible.
 
 When Maven or IntelliJ IDEA executes tests, invoking happens parallel by launching the methods on different threads.
@@ -89,6 +89,7 @@ class ClassNameTest {
     @AfterAll
     static void tearDownOnce() {...}
 }
+END OF EXAMPLE
 
 =================================================================================
 3. ASSERTIONS
@@ -101,8 +102,8 @@ For 1-parameter methods, the parameter is the actual value or its container.
 All methods can have an additional parameter which contains a message String to be sent to the output in case of fail. If this parameter is missing, default text will be sent.
 
 There are two main directions in how many Assertions a test method could contain:
-    a. one (a test method is created for every checked values)
-    b. many (a test method is created for testing a code scope or a strategy)
+    - one (a test method is created for every checked values)
+    - many (a test method is created for testing a code scope or a strategy)
 In case of Test-Driven Development or when the followed testing strategy needs it, a test method represents a test case. In such, if in the test the developer wants to check all critical points (and separate them from each other), will use several Assertions.
 
 ||Assertions method|Description||
@@ -146,10 +147,10 @@ The assertIterableEquals() deeply compares (element number, element order, eleme
 
 The assertLinesMatch() is a specialized version of Assertion methods. Tests a List of Strings or a Stream of Strings against the expected.
 The test follows the element order and uses three rules at all lines-pairs:
-    a. if expected.equals(actual) then the assertion passes for that line-pair, or
-    b. if expected.matches(actual) then the assertion passes for that line-pair, or
-    c. if expected line is a fast-forward marker then passes, or
-    d. fails
+    - if expected.equals(actual) then the assertion passes for that line-pair, or
+    - if expected.matches(actual) then the assertion passes for that line-pair, or
+    - if expected line is a fast-forward marker then passes, or
+    - fails
 The assertion as whole passes when for all line-pairs it passes.
 A fast-forward marker line starts with ">>" and ends with ">>" and contains at least four characters (e.g. ">>>>", ">> something message >>").
 
@@ -330,11 +331,11 @@ For dynamic (test factory) and parameterized JUnit test variants, see the DYNAMI
 =================================================================================
 A test method can have nested (inner) test classes.
 Such classes:
-    a. must be marked with @Nested annotation
-    b. can have @BeforeEach and @AfterEach methods
-    c. can not have @BeforeAll and @AfterAll methods (since these optional methods already were invoked with the outer class)
-    d. must not be static
-    e. can have several test methods as a normal class would have
+    - must be marked with @Nested annotation
+    - can have @BeforeEach and @AfterEach methods
+    - can not have @BeforeAll and @AfterAll methods (since these optional methods already were invoked with the outer class)
+    - must not be static
+    - can have several test methods as a normal class would have
 
 There is no limit in the hierarchic depth of nested test classes.
 

@@ -74,10 +74,10 @@ element = ad.pop(); //returns and removes the last element
 END OF EXAMPLE
 
 Differences between ArrayDeque and LinkedList:
-    a. Both implements Deque
-    b. LinkedList supports null elements, ArrayDeque does not
-    c. LinkedList nodes contain data plus addresses of next and prev therefore needs more memory than ArrayDeque
-    d. ArrayDeque is faster than LinkedList
+    - Both implements Deque
+    - LinkedList supports null elements, ArrayDeque does not
+    - LinkedList nodes contain data plus addresses of next and prev therefore needs more memory than ArrayDeque
+    - ArrayDeque is faster than LinkedList
 
 =>QUEUE
 =>DEQUE

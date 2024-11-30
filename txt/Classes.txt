@@ -41,9 +41,9 @@ The contents of the root class must be static.
 3. "THIS" KEYWORD
 =================================================================================
 With the "this" keyword it is possible to:
-    a. access a constructor within the class
-    b. access a field within the class
-    c. access a method within the class
+    - access a constructor within the class
+    - access a field within the class
+    - access a method within the class
 
 In static or interface content the "this" keyword must not be used.
 
@@ -71,6 +71,7 @@ class ClassName {
         this.b = ...; //process field
     }
 }
+END OF EXAMPLE
 
 =================================================================================
 4. CONSTRUCTORS
@@ -95,6 +96,7 @@ class ClassName {
     public ClassName(...) {...} //constructor
     //other methods
 }
+END OF EXAMPLE
 
 Because the execution flow begins at the top, the constructors have to be the first methods in the class.
 The "this" keyword refers to the class, the "this()" method name refers to the constructors where the argument list will tell which constructor should be called internally.
@@ -111,6 +113,7 @@ class ClassName {
         ... //unique statements
     }
 }
+END OF EXAMPLE
 
 In case the constructor is private in a class, the solution is called singleton class.
 
@@ -146,6 +149,7 @@ class ClassName{
         return this.fieldName;
     }
 }
+END OF EXAMPLE
 
 =================================================================================
 6. IMMUTABILITY
@@ -176,11 +180,12 @@ class ClassName {
         return field2;
     }
 }
+END OF EXAMPLE
 
 In order to make an immutable object universal for examining equality, accessing and converting to String, additional methods should be added to its class:
-    a. equals()
-    b. hashCode()
-    c. toString()
+    - equals()
+    - hashCode()
+    - toString()
 These methods are inherited from Object class therefore overriding is necessary.
 
 EXAMPLE FOR AN UNIVERSAL IMMUTABLE CLASS:
@@ -222,6 +227,7 @@ class ClassName {
 				'}';
 	}
 }
+END OF EXAMPLE
 
 Naturally, immutable classes can have other methods as well but only if those methods will not modify the data stored.
 In case there are no other methods except what are needed in an universal immutable class, in order to prevent boilerplate coding, from higher versions of Java records can be used.
@@ -299,6 +305,7 @@ class P2 {
         p1.methodName(); //invokes the overridden method
     }
 }
+END OF EXAMPLE
 
 EXAMPLE FOR IMPLEMENTING:
 interface P1 {
@@ -312,6 +319,7 @@ class P2 {
     };
     p1.methodName(); //invokes the implemented method
 }
+END OF EXAMPLE
 
 =================================================================================
 9. SINGLETON CLASSES
@@ -335,6 +343,7 @@ class Main {
     SC sco = SC.getInstance(...); //will create a new object
     sco = SC.getInstance(...); //returns the same object
 }
+END OF EXAMPLE
 
 =================================================================================
 10. ENUMERATION CLASSES
@@ -396,6 +405,7 @@ class Main {
     Size pizza = Size.LARGE;
     String ps = pizza.getSize(); //"large"
 }
+END OF EXAMPLE
 
 10.3. ENUMERATION CONSTRUCTOR
 ---------------------------------------------------------------------------------
@@ -430,6 +440,7 @@ public enum Priority {
 		return this.value;
 	}
 }
+END OF EXAMPLE
 
 10.4. ENUMERATION STRINGS
 ---------------------------------------------------------------------------------
@@ -471,6 +482,7 @@ class GenericClassName<T> { //a class represents T type
         return this.data;
     }
 }
+END OF EXAMPLE
 
 EXAMPLE FOR CREATING INSTANCES OF GENERICS CLASS (DESIGNED IN PREVIOUS EXAMPLE):
 //Integer instance
@@ -486,20 +498,23 @@ GenericClassName<String> genericVariable3 = new GenericClassName<>(c); //or use 
 ArrayList<Character> cal = new ArrayList<>();
 GenericClassName<ArrayList<Character>> genericVariable4 = new GenericClassName<>(cal); //or use with a constructor directly:
 GenericClassName<ArrayList<Character>> genericVariable4 = new GenericClassName<>(new ArrayList<>());
+END OF EXAMPLE
 
 EXAMPLE FOR DECLARING A COLLECTION SUBCLASS:
 ArrayList<String> sal = new ArrayList<>(); //derived from ArrayList<T>
+END OF EXAMPLE
 
 By using <T>, any types except primitive types can be accepted. Narrowing is possible by using <T extends typeClass> where typeClass can be e.g. Number for numbers or any custom types so T can be only a subtype of typeClass.
 Such T is called bounded type.
 
 EXAMPLE FOR DECLARING GENERICS CLASS OF NUMBERS:
 class GenericClassName<T extends Number> {...} //a class represents T as subtype of Number
+END OF EXAMPLE
 
 Advantages of using generics:
-    a. code re-usability
-    b. compile-time type checking
-    c. used with Collections (e.g. ArrayList<String> creates a String-based instance of ArrayList<T>)
+    - code re-usability
+    - compile-time type checking
+    - used with Collections (e.g. ArrayList<String> creates a String-based instance of ArrayList<T>)
 
 =================================================================================
 12. MULTI-TYPE VARIABLES
@@ -555,6 +570,7 @@ class ClassName {
         return custom;
     }
 }
+END OF EXAMPLE
 
 EXAMPLE FOR USING MULTI-TYPE ELEMENTS (ELEMENT TYPE IS DECLARED IN PREVIOUS EXAMPLE):
 //declare container
@@ -587,6 +603,7 @@ for (ClassName element : cal) {
         3 -> ...; //process element.get3()
     }
 }
+END OF EXAMPLE
 
 Through accessing the contained collections and arrays, because the getter gives the reference back, it is possible to access their elements, and in case of Collection, adding and removing their elements as well.
 
@@ -608,9 +625,9 @@ END OF EXAMPLE
 13. CLASS ORGANIZING
 =================================================================================
 Java lets the developers declare classes:
-    a. in different files
-    b. in the same file, above each other
-    c. nested, a class declared inside a class
+    - in different files
+    - in the same file, above each other
+    - nested, a class declared inside a class
 
 Although Java lets it, it is advised to organize all classes into different files. Best practice is to keep everything simple so if needed, the classes can be organized into a multi-level package system under the root class.
 Following best practices for inheritance is also important.
@@ -657,15 +674,15 @@ END OF EXAMPLE
 
 In the above examples with every instance of Class2 a new instance of Class1 will be nested.
 These two solutions above are not comfortable:
-    a. it is not possible to create independent unit test for Class1 and Class2 since the instantiating of Class1 happens along with instantiating Class2
-    b. in case Class1 has been changed, class tests of Class2 must be revisited
-    c. in case instantiating of Class1 is not possible due to any problems, tests of Class2 will break
-    d. the caller class (e.g. Main) will instantiate only Class2
+    - it is not possible to create independent unit test for Class1 and Class2 since the instantiating of Class1 happens along with instantiating Class2
+    - in case Class1 has been changed, class tests of Class2 must be revisited
+    - in case instantiating of Class1 is not possible due to any problems, tests of Class2 will break
+    - the caller class (e.g. Main) will instantiate only Class2
 
 The best practice in such cases is the class dependency injection:
-    a. writing independent unit tests for every injected classes becomes possible
-    b. testing the container class becomes possible by mocking the injected classes
-    c. the caller class (e.g. Main) will instantiate all classes
+    - writing independent unit tests for every injected classes becomes possible
+    - testing the container class becomes possible by mocking the injected classes
+    - the caller class (e.g. Main) will instantiate all classes
 
 EXAMPLE FOR CLASS DEPENDENCY INJECTION:
 class Class1 {

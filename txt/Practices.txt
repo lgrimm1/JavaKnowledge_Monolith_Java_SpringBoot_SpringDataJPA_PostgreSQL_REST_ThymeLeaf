@@ -169,14 +169,14 @@ Java Collection.sort() method uses Merge Sort for higher amount of data, simpler
 6. CLEARER CODE VIA LAMBDAS
 =================================================================================
 Best practices are:
-    a. for small function objects, prefer lambdas before anonymous classes
-    b. for method references, use lambda instead
-    c. if needed, for functional interfaces use the pre-defined ones in java.util.function.Function
-    d. when declaring a functional interface, always use the @FunctionalInterface annotation
-    e. in case a lambda would need many statements, organize it into an external (helper) method (short and self-explanatory lambda)
-    f. in lambda, avoid referencing the input variable types, use them only when the compiler asks for it
-    g. avoid braces when have 1 parameter in lambda
-    h. using return statement in statement part of lambda is optional, do not use it
+    - for small function objects, prefer lambdas before anonymous classes
+    - for method references, use lambda instead
+    - if needed, for functional interfaces use the pre-defined ones in java.util.function.Function
+    - when declaring a functional interface, always use the @FunctionalInterface annotation
+    - in case a lambda would need many statements, organize it into an external (helper) method (short and self-explanatory lambda)
+    - in lambda, avoid referencing the input variable types, use them only when the compiler asks for it
+    - avoid braces when have 1 parameter in lambda
+    - using return statement in statement part of lambda is optional, do not use it
 
 EXAMPLE FOR METHOD REFERENCE:
 ClassName::methodName

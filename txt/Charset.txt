@@ -36,6 +36,7 @@ EXAMPLE FOR CREATING A CHARSET:
 import java.nio.charset.Charset;
 ...
 Charset cs = new Charset(String canonicalName, String[] aliases);
+END OF EXAMPLE
 
 ||METHOD|DESCRIPTION||
 ||name()|returns the canonical name||

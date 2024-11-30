@@ -6,9 +6,9 @@ All keys are unique, no duplications.
 Each key is associated to a single value.
 
 The Map contains of 3 sets:
-    a. set of keys
-    b. set of values
-    c. set of key-value associations (mapping)
+    - set of keys
+    - set of values
+    - set of key-value associations (mapping)
 
 Implementing classes: HashMap, EnumMap, LinkedHashMap, WeakHashMap, TreeMap.
 Extending interfaces: SortedMap, NavigableMap, ConcurrentMap.

@@ -9,10 +9,10 @@ After closing the stream, any method will raise exception.
 The FileReader implements the AutoClosable interface, the try-with-resources statement can be used to ensure proper closing.
 
 Constructor parameters:
-    a. (String fileName): links the FileReader to file based upon its file name, default character coding
-    b. (String fileName, Charset charset): same as previous but charset character coding
-    c. (File file): links the FileReader to file based upon its file object, default character coding
-    d. (File file, Charset charset): same as previous but charset character coding
+    - (String fileName): links the FileReader to file based upon its file name, default character coding
+    - (String fileName, Charset charset): same as previous but charset character coding
+    - (File file): links the FileReader to file based upon its file object, default character coding
+    - (File file, Charset charset): same as previous but charset character coding
 
 The defined character coding will be forced during accessing the source stream.
 Available methods are below.
@@ -37,6 +37,7 @@ try {
     fileReader.close(); //close the input stream (release the source)
 }
 catch (Exception e) {...} //in case the source was not accessible or the bridge was not built over the stream
+END OF EXAMPLE
 
 EXAMPLE FOR USAGE WITH TRY-WITH-RESOURCES:
 import java.io.FileReader;
@@ -46,6 +47,7 @@ try (FileReader fileReader = new FileReader(fileName)) {
     fileReader.read(characterArray); //read the source into array
 }
 catch (Exception e) {...} //in case the source was not accessible
+END OF EXAMPLE
 
 EXAMPLE FOR USING CHARACTER CODINGS:
 ...
@@ -53,6 +55,7 @@ FileReader fileReader1 = new FileReader(fileName1); //will use canonical naming 
 FileReader fileReader2 = new FileReader(fileName2, Charset.forName("UTF8")); //will use the given naming
 String s = fileReader1.getEncoding(); //"Cp1252"
 s = fileReader2.getEncoding(); //"UTF8"
+END OF EXAMPLE
 
 =>STREAM
 =>READER

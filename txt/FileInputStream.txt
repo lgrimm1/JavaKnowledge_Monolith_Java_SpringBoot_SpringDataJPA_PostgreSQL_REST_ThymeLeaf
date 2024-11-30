@@ -33,7 +33,7 @@ try {
 catch (Exception e) {...}
 END OF EXAMPLE
 
-EXAMPLE TO HANDLE UNICODE SEPARATELY:
+EXAMPLE FOR HANDLE UNICODE SEPARATELY:
 ...
 FileInputStream fis;
 int data;

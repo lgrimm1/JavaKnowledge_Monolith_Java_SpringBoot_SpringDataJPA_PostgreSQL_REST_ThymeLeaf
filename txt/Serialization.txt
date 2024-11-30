@@ -116,6 +116,7 @@ import com.fasterxml.jackson.databind.*;
 boolean isSerializable(Class class) {
     return new ObjectMapper().canSerialize(class);
 }
+END OF EXAMPLE
 
 EXAMPLE FOR CHECKING SERIALIZATION CAPABILITY (OBJECT):
 import com.fasterxml.jackson.databind.*;

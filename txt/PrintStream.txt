@@ -9,13 +9,13 @@ Data will be written in a default character encoding but UTF8 or Unicode can be 
 The default output (console) is System.in which is a PrintStream.
 
 Auto flushing can be used for the next cases:
-    a. a new-line (\n) character is written into the data
-    b. the println() method was invoked
-    c. an array of bytes is written as data
+    - a new-line (\n) character is written into the data
+    - the println() method was invoked
+    - an array of bytes is written as data
 
 Constructor parameters of PrintStream:
-    a. (FileOutputStream fos, boolean autoFlush[, Charset cs]): linking with the file stream, turning on or off the auto flushing function, optional output character set
-    b. (String fileName, boolean autoFlush[, Charset cs]): linking with the file without an explicit file stream, turning on or off the auto flushing function, optional output character set
+    - (FileOutputStream fos, boolean autoFlush[, Charset cs]): linking with the file stream, turning on or off the auto flushing function, optional output character set
+    - (String fileName, boolean autoFlush[, Charset cs]): linking with the file without an explicit file stream, turning on or off the auto flushing function, optional output character set
 
 ||METHOD|DESCRIPTION||
 ||print()|prints the specified data||

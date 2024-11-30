@@ -54,6 +54,7 @@ try (FileInputStream fileInputStream = new FileInputStream(fileName); InputStrea
     inputStreamReader.read(characterArray); //read the source into array
 }
 catch (Exception e) {...} //in case the source was not accessible or the bridge was not built over the stream
+END OF EXAMPLE
 
 EXAMPLE FOR USING CHARACTER CODINGS:
 ...

@@ -99,8 +99,8 @@ The OpenOption is an interface. The StandardOpenOption implements it and serves 
 ||WRITE|opens for write access||
 
 Typical constant combinations:
-    a. StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING (upon opening, create if non-existent, truncate content to zero if exists)
-    b. StandardOpenOption.CREATE, StandardOpenOption.APPEND (upon opening, create if non-existent, append if exists)
+    - StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING (upon opening, create if non-existent, truncate content to zero if exists)
+    - StandardOpenOption.CREATE, StandardOpenOption.APPEND (upon opening, create if non-existent, append if exists)
 
 =================================================================================
 3. WALK FILE TREE
