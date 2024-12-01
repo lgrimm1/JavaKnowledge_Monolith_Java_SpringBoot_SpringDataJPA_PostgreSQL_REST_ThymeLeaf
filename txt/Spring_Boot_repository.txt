@@ -3,6 +3,7 @@ SPRING BOOT REPOSITORY
 =================================================================================
 The Spring framework can identify a class as a repository.
 That said, that class will be responsible for storage management.
+In case data will be stored in a database, a decision is needed whether the database will be SQL or NoSQL.
 
 1. REPOSITORY CLASS, NO-JPA
 2. REPOSITORY INTERFACE, JPA
@@ -457,6 +458,7 @@ MORE HERE: Using Advanced LIKE Expressions, https://docs.spring.io/spring-data/j
 
 =>SPRING BOOT
 =>SPRING BOOT ENTITY
+=>SQL AND NOSQL DATABASES
 =>POSTGRESQL
 =>H2
 =>SPRING BOOT REPOSITORY QUERY EXAMPLES

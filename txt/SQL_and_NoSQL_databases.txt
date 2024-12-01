@@ -1,0 +1,72 @@
+=================================================================================
+SQL AND NOSQL DATABASES
+=================================================================================
+DBMS: DataBase Management System.
+SQL: Structured Query Language.
+RDBMS: Relational DBMS, stands for SQL databases (since SQL became industrial standard).
+NoSQL: Not Only SQL, stands for databases not obligated following SQL standards.
+
+SQL database:
+    - record-based storage where all data are rendered into tables with specified number of typed columns;
+    - there can be indexes and JOINs on a table;
+    - after defining a table changing the structure is not permitted (in such case need translation to new table with new structure);
+    - not flexible for structure but fast in any sizes;
+    - SQL queries are permitted;
+    - many of such databases offer some NoSQL functionalities as well but without native relational backing;
+    - mostly choosen over NoSQL solutions;
+    - better suited for long-term, large-scale applications;
+    - examples: Oracle, mySQL, MSSQL, SQL Server (see PostgreSQL, IBM's Informix later).
+
+NoSQL database:
+    - document-based storage where there are no table structures but collections of documents;
+    - a document is usually a JSON stored in binary format;
+    - to a collection any JSON can be added (need more attention on backend side);
+    - more flexible and scalable plus lightweight but large databases can have performance issues;
+    - usually no SQL queries are permitted but have a rich query language (can be different between database engines, in MongoDB it is similar to JavaScript array manipulation);
+    - in time many SQL functionalities were inserted into NoSQL databases, even SQL commands via add-ons but they are translated to NoSQL commands before execution and there are issues);
+    - there is a built-in command which equalizes (standardizes) documents in a collection, creating a virtual table structure (such process closes the collection temporarily);
+    - such databases offer no relational backing (e.g. JOIN);
+    - better suited for short-term, small-scale applications, or for backing up data;
+    - example: MongoDB.
+
+Converting an SQL database to NoSQL storage is easy through converting records to fitting JSON documents first.
+
+Converting a NoSQL database to SQL storage can be very hard: first must find a structure per collection in which all documents can fit, then converting all documents of the collection into JSONs representing the new structure, which can be translated to records. There can be many NULLs or default values in such records which must be carefully processed.
+
+Among the SQL databases the PostgreSQL (and IBM's Informix) databases support NoSQL functionality via JSONB (BSON) data type:
+    - this type can be used for a column in a table;
+    - the JSON documents are stored as binary data;
+    - this column can be indexed and can have JOINs as well;
+    - in case there is no additional column in such table, the table works as a collection of documents;
+    - these mean providing NoSQL functionalities with native relational backing.
+
+The Informix supports the MongoDB API, which means if an application is written to MongoDB but connected to Informix, it will work without changing code, and in some cases even faster.
+
+Both solutions as they are developed, iterate toward a common ground called NoSQL (not only SQL). However, at this point functionalities of the other side are emulated, not presented as native features.
+
+When to choose NoSQL over SQL databases:
+    - when keeping data integrity is not a main issue;
+    - when you have a fairly narrow variety of queries;
+    - when your data does not change frequently;
+    - when the records have to remain “whole” rather than being normalized;
+    - when you are in the cloud and are distributing copies of your records for redundancy;
+    - when you need a database, and you have plenty of programming knowledge but not in SQL;
+    - in situations where you need data to propagate but some slowness could be okay;
+    - when JOINs are expensive;
+    - when you already have a materialized view built by someone;
+    - when you want to replicate the data from an RDBMS for some specific purpose (you can run SQL queries and convert the results to a JSON record to be sent to MongoDB).
+
+Examples for using NoSQL database:
+    - catalogs (lots of reads, not very many writes);
+    - archive of records (no reason they have to stay in their native SQL database when they may only be kept for legal or emergency reasons);
+    - student tests (pull the whole test in from NoSQL database, tabulate the answers in an SQL database);
+    - content management (documents to a collection of documents);
+    - log data or event stream data (you can use an SQL database but if you just archive the data, NoSQL solution can be better; the MongoDB has a Time To Live feature that can remove older information);
+    - daily reports (you can store them in a NoSQL database and call up a given one at a moment’s notice if you have built the system right);
+    - completed invoices (you can store a copy of these and use that to pull from, rather than regenerating them from your RDBMS);
+    - user/password data (you store the user name and hash together in a document);
+    - cloud database (NoSQL databases offered cloud functionalities before the SQL counterparts).
+
+=>SPRING BOOT REPOSITORY
+=>SPRING BOOT ENTITY
+=>POSTGRESQL
