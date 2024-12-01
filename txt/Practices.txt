@@ -4,14 +4,15 @@ PRACTICES
 1. INCREASE ARRAY INDEX, JUMP TO FIRST ELEMENT WHEN REACHING LAST
 2. INCREASE ARRAY CAPACITY
 3. INDEXOF WITH STREAM
-4. GIT COMMANDS
-5. RUNTIME COMPLEXITY
-6. CLEARER CODE VIA LAMBDAS
-7. USING RIGHT RETURN VALUES FOR BETTER INTEGRATION
-8. GET APPLICATION PATHS
-9. FAVORING COMPOSITION OVER INHERITANCE
-10. PRINCIPLES OF SOFTWARE ENGINEERING
-11. QUALITY SOURCES OF JAVA, FRAMEWORKS AND FRONTEND
+4. RECURSIVE SORTING
+5. GIT COMMANDS
+6. RUNTIME COMPLEXITY
+7. CLEARER CODE VIA LAMBDAS
+8. USING RIGHT RETURN VALUES FOR BETTER INTEGRATION
+9. GET APPLICATION PATHS
+10. FAVORING COMPOSITION OVER INHERITANCE
+11. PRINCIPLES OF SOFTWARE ENGINEERING
+12. QUALITY SOURCES OF JAVA, FRAMEWORKS AND FRONTEND
 
 =================================================================================
 1. INCREASE ARRAY INDEX, JUMP TO FIRST ELEMENT WHEN REACHING LAST
@@ -77,7 +78,39 @@ int indexOf(long id) {
 END OF EXAMPLE
 
 =================================================================================
-4. GIT COMMANDS
+4. RECURSIVE SORTING
+=================================================================================
+
+EXAMPLE FOR RECURSIVE SORTING:
+int[] array = new int[10];
+...
+int indexLow = 0, indexHigh = 1;
+int[] sortedArray = sort(array, indexLow, indexHigh);
+...
+public int[] sort(int[] array, int indexLow, int indexHigh) {
+    if (indexLow == array.length - 1) {
+        return array;
+    }
+    else {
+        if (array[indexLow] > array[indexHigh]) {
+            int temp = array[indexLow];
+            array[indexLow] = array[indexHigh];
+            array[indexHigh] = temp;
+        } //if (array[indexLow] > array[indexHigh])
+        if (indexHigh < array.length - 1) {
+            indexHigh++;
+        }
+        else {
+            indexLow++;
+            indexHigh = indexLow + 1;
+        }
+        array = sort(array, indexLow, indexHigh);
+    } //else: if (indexLow == array.length - 1)
+}
+END OF EXAMPLE
+
+=================================================================================
+5. GIT COMMANDS
 =================================================================================
 Repository: a project on the remote git server (e.g. Github, GitBucket).
 Master: the remote summarized code (alive code) on the git server.
@@ -128,7 +161,7 @@ git push origin <branch name>
 END OF EXAMPLE
 
 =================================================================================
-5. RUNTIME COMPLEXITY
+6. RUNTIME COMPLEXITY
 =================================================================================
 Marks how many time a method must run in order to finish a task.
 The O letter marks the complexity. The n letter means the amount of input data.
@@ -166,7 +199,7 @@ Mathematically proven, the most optimized sorting algorithm needs log(n) executi
 Java Collection.sort() method uses Merge Sort for higher amount of data, simpler algorithms for fewer data (the Merge Sort needs more data to work efficiently).
 
 =================================================================================
-6. CLEARER CODE VIA LAMBDAS
+7. CLEARER CODE VIA LAMBDAS
 =================================================================================
 Best practices are:
     - for small function objects, prefer lambdas before anonymous classes
@@ -222,7 +255,7 @@ EXAMPLE FOR AVOIDING RETURN STATEMENT IN LAMBDA:
 END OF EXAMPLE
 
 =================================================================================
-7. USING RIGHT RETURN VALUES FOR BETTER INTEGRATION
+8. USING RIGHT RETURN VALUES FOR BETTER INTEGRATION
 =================================================================================
 When designing a method, the return value represents the purpose of the method.
 Narrowing down the type onto the lower level (e.g. to an int[] or an ArrayList<Integer>) forces the other developer to accept such type when designing his or her own methods.
@@ -254,12 +287,12 @@ private static List<Integer> generateCircledPermutations(int number) {
 END OF EXAMPLE
 
 =================================================================================
-8. GET APPLICATION PATHS
+9. GET APPLICATION PATHS
 =================================================================================
-8.1. APPLICATION PATHS
-8.2. MAVEN TEST RESOURCES PATHS
+9.1. APPLICATION PATHS
+9.2. MAVEN TEST RESOURCES PATHS
 
-8.1. APPLICATION PATHS
+9.1. APPLICATION PATHS
 ---------------------------------------------------------------------------------
 The installed application has an application root folder from which all sub-folders is created. The sub-folder structure depends on whether a build system is used for development, and if used, depends on the used build system (Maven, Gradle etc.).
 
@@ -294,7 +327,7 @@ public static String[] listSourceFoldersIntelliJMaven() {
 }
 END OF EXAMPLE
 
-8.2. MAVEN TEST RESOURCES PATHS
+9.2. MAVEN TEST RESOURCES PATHS
 ---------------------------------------------------------------------------------
 For test environment, Maven uses the src/test/resources folder to read and write files as default.
 In order to get access to it, use getAbsolutePath() method of File, or get() method of Paths combined with getAbsolutePath().
@@ -319,7 +352,7 @@ String absolutePath = (new File(getClass().getClassLoader().getResource("example
 END OF EXAMPLE
 
 =================================================================================
-9. FAVORING COMPOSITION OVER INHERITANCE
+10. FAVORING COMPOSITION OVER INHERITANCE
 =================================================================================
 In OOP, inheritance is used to express that the subclass is a special class of the superclass, in other words presents relationship between the super and the sub.
 Code re-usage means that a code can be a composite of previously created codes in case those codes can be used somewhere else as well.
@@ -368,7 +401,7 @@ class MonthData extends StatData {
 END OF EXAMPLE
 
 =================================================================================
-10. PRINCIPLES OF SOFTWARE ENGINEERING
+11. PRINCIPLES OF SOFTWARE ENGINEERING
 =================================================================================
 Software engineering is a systematic and procedural approach to software development. It usually consists of collecting and documenting requirements from the users, designing and outlining the platform structure, coding or application development, user and developer testing, as well as after launch operations and maintenance support.
 There are some basic principles governing good software engineering:
@@ -389,7 +422,7 @@ The SOLID principles:
 Any software backend code that proceeds with the recommendations of the S.O.L.I.D. principles are much easier to be shared with collaborators, scaled up to meet volume, modified based on user requirements, tested for stress or usability, and managed and troubleshooted without any issues.
 
 =================================================================================
-11. QUALITY SOURCES OF JAVA, FRAMEWORKS AND FRONTEND
+12. QUALITY SOURCES OF JAVA, FRAMEWORKS AND FRONTEND
 =================================================================================
 https://www.baeldung.com
 https://www.bezkoder.com
