@@ -42,9 +42,9 @@ The backend is built up from the next layers:
     - Communication (or Interface)
 
 The Communication layer is made of controllers, and connects the frontend with backend. It handles requests and if necessary, does authentication as well.
-The Business layer does the processing. That said, upon any request handled by the Communication level the data check already will happen in the Business layer.
+The Business layer does the processing. That means, upon any request handled by the Communication level the data check already will happen in the Business layer.
 The Storage layer (also called by Repository layer or Data Access layer) handles all processes connected to data storage like solo databases, cloud-based databases and files.
-The layers are formed due to the need to separate tasks. That said, all tasks connected to communication, must be contained by the Communication layer and so on. In such building when there is a change in a layer, the change will not have effect on other layers.
+The layers are formed due to the need to separate tasks. All tasks connected to communication, must be contained by the Communication layer and so on. In such building when there is a change in a layer, the change will not have effect on other layers.
 
 The Communication layer is built up from the next components:
     - dispatcher servlet
@@ -97,7 +97,7 @@ For simplification, using the Spring Boot framework is advised.
 =================================================================================
 The API means Application Programming Interface.
 Creating an API from an application means that the application will have open points where other applications can connect and use the original application as a black box.
-That said, a backend API means collection of endpoints provided by the backend to which any frontends can connect by sending requests to provided endpoints.
+That means, a backend API means collection of endpoints provided by the backend to which any frontends can connect by sending requests to provided endpoints.
 Following best practices, backend development of Communication layer manifested as a thin Controller class provides the API of a backend web application.
 
 Web APIs are used for providing computing and/or backend support for several customized applications, even from other companies.
@@ -456,7 +456,7 @@ END OF EXAMPLE
 8. CONTAINERS
 =================================================================================
 A container is a unit of software in which application code is packaged alongside all the files necessary to make it run. This makes it easy to move the contained application between environments while retaining full functionality.
-By utilizing container techniques (Docker, Kubernetes) it is possible to change application parts (microservices) along keeping the rest of the application intact. That said, it is perfect for management, scaling and deployment.
+By utilizing container techniques (Docker, Kubernetes) it is possible to change application parts (microservices) along keeping the rest of the application intact. Therefore, it is perfect for management, scaling and deployment.
 Also, using such technique means that on server or cloud side, the application is operated from these containers, instead of managing all members one-by-one.
 
 =>SPRING BOOT

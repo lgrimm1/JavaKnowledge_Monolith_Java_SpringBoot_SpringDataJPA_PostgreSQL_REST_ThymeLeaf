@@ -3,7 +3,7 @@ INPUTSTREAMREADER
 =================================================================================
 Extends Reader.
 Extended by FileReader.
-Converts data of bytes coming from a StreamReader (any subclasses) into data of characters. That said, it is a bridge between byte streams and character streams, reads bytes from an input stream as characters.
+Converts data of bytes coming from a StreamReader (any subclasses) into data of characters. Therefore, it is a bridge between byte streams and character streams, reads bytes from an input stream as characters.
 For 1-byte characters (ASCII) using an InputStream then convert the output to a String through the new String(byteArray) constructor is valid.
 For minimum 2-byte characters (UTF-8, Unicode), the InputStreamReader is needed since it can read more bytes together as one character.
 After building the bridge over it, the handled input stream needs no further access, methods of the bridge can be used.

@@ -11,7 +11,7 @@ Throwable
         L Run-time (developing error, unchecked exceptions, we handle it)
         L I/O (checked exception, compile-time error)
 
-The root class for all exceptions is Exception. That said, can be many kind of exceptions but with the root one, we can catch all in one step. However, in this case, we can not differentiate between what kind of exception has been raised.
+The root class for all exceptions is Exception. There can be many kind of exceptions but with the root one, we can catch all in one step. However, in this case, we can not differentiate between what kind of exception has been raised.
 
 1. EXCEPTIONS HANDLED IN PLACE
 2. EXCEPTIONS HANDLED OUTSIDE THE PLACE

@@ -114,7 +114,7 @@ In the subclass all inherited methods can be accessed.
 As extension, in the subclass new methods can be declared as well.
 A method of the superclass can be overridden if in the subclass a new method is declared with the same name and method signature.
 The overridden method can have different code block and return type than the original one has.
-In case the new method has different method signature than the original one has, instead of overriding overloading will take place, both methods will be accessible in the subclass.
+In case the new method has different method signature than the original one has, instead of overriding, overloading will take place, both methods will be accessible in the subclass.
 Because method overload is possible as well, the compiler will not know whether the aim was to override.
 In order to make it sure that overriding is the aim, in the subclass, right before the overridden method head, the @Override annotation should be placed. In this case, if the method override was not successful in the code, the compiler will give a warning.
 Final and static methods can not be overridden.
@@ -189,7 +189,7 @@ super(...);
 ---------------------------------------------------------------------------------
 In an abstract class, next to normal methods, abstract methods can be declared.
 In such method the code block is empty.
-That said, all of these methods must be overridden as normal, but can be implemented differently in all its subclasses (polymorphism).
+Therefore, all of these methods must be overridden as normal, but can be implemented differently in all its subclasses (polymorphism).
 Abstract method can be declared only in abstract classes.
 
 EXAMPLE FOR ABSTRACT METHOD:
@@ -244,11 +244,11 @@ Because its is a type of abstract class, no object can be created from it.
 Other classes must implement it.
 Keyword for implementation is implements.
 More than one interfaces can be implemented by a class.
-Interface can be inherited as well. It is allowed to inherit more than one interfaces (extends keyword).
+Interface can be inherited as well, it is called extending. It is allowed to inherit more than one interfaces.
 All interface methods are public by default.
 All interface fields are public static final by default.
 Interfaces can have methods with code blocks. These are called default methods.
-Default methods can be overridden on implementation or inheritance, or left as they are.
+Default methods can be overridden on implementation or extending, or left as they are.
 Default interface methods can be static. These can be addressed by using interfaceName.methodName(args) expression.
 Default interface methods can be private explicitly. These are helper methods for interface methods.
 
@@ -287,12 +287,12 @@ class E implements B {
 }
 class Main {
     D d = new D();
-    E d = new E();
-    type1 = methodName1(args1); //implemented in D
-    type2 = methodName2(args2); //default from C
-    type3 = methodName3(args3); //default from A, inherited in C
-    type4 = methodName4(args4); //implemented in D
-    typeVariant4 = methodName4(args4); //implemented in E with different code block
+    E e = new E();
+    type1 = d.methodName1(args1); //implemented in D, abstract in C, abstract in A
+    type2 = d.methodName2(args2); //implemented default in C, abstract in A
+    type3 = d.methodName3(args3); //implemented default in C, abstract in A
+    type4 = d.methodName4(args4); //implemented in D, abstract in B
+    typeVariant4 = e.methodName4(args4); //implemented in E, abstract in B, code block is different in D
 }
 END OF EXAMPLE
 

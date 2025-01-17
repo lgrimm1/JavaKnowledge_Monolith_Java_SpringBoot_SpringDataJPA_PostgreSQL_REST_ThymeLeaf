@@ -14,14 +14,14 @@ SPRING BOOT VALIDATION
 =================================================================================
 1. GENERALLY
 =================================================================================
-The entity object of Spring Boot manifests an element of the repository. In order to use an entity together with Spring Data, Spring will use the default constructor of the entity class which means no pre-checking of field values. That said, all data checks should be coded in the Service layer beforehand, e.g. via applying to dedicated validation helper methods.
+The entity object of Spring Boot manifests an element of the repository. In order to use an entity together with Spring Data, Spring will use the default constructor of the entity class which means no pre-checking of field values. As a result, all data checks should be coded in the Service layer beforehand, e.g. via applying to dedicated validation helper methods.
 For keeping data validation with the entity and integrate the validation into the Repository, Service or Communication layers, the Spring Validation extension is used.
 The extension contains JSR303 (this will be standard in Java core but Spring implemented it beforehand) and Hibernate Validator (implemented for Spring).
 Basically, before an entity object is created, the data will be checked and if not qualify, exception is raised.
 Failed validation can be handled via handler method (different answers for different errors) or being totally automatically handled by Spring Validation.
 Validation can be applied to all Spring beans.
 
-Validation declared on fields of a class creates a validation layer above the class. That said, belongs to that class entirely as a condition set.
+Validation declared on fields of a class creates a validation layer above the class, so it belongs to that class entirely as a condition set.
 In case the same class should have more than one validation rule set, either create independent classes per condition set or write validation method(s) for the class in the Business layer.
 
 Failed validation will raise a certain exception with an exception message declared with the condition for which the validation failed.
@@ -173,7 +173,7 @@ END OF EXAMPLE
 5. CLASS-LEVEL VALIDATION
 =================================================================================
 It is possible to mark a whole class for obligatory validation.
-That said, no call of validation will be needed on caller side, and every attempt to create an instance of the marked class, will check the data for validity first.
+As a result, no call of validation will be needed on caller side, and every attempt to create an instance of the marked class, will check the data for validity first.
 In case the entire object is not filled with data for checked fields (e.g. the incoming model fills 2 fields from 4), validation fails for the entire object.
 
 In case the validation fails, IllegalStateException is raised and HTTP500 error code is sent back. The default message will be "Could not commit JPA transaction".

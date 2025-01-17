@@ -3,7 +3,7 @@ OUTPUTSTREAMWRITER
 =================================================================================
 Extends Writer.
 Extended by FileWriter.
-Converts data of characters to data of bytes for a StreamWriter (any subclasses). That said, it is a bridge between character streams and byte streams, writes characters to an output stream as bytes.
+Converts data of characters to data of bytes for a StreamWriter (any subclasses). Therefore, it is a bridge between character streams and byte streams, writes characters to an output stream as bytes.
 
 For 1-byte characters (ASCII) using simplier converter methods to bytes then using an OutputStream is valid.
 For minimum 2-byte characters (UTF-8, Unicode), the OutputStreamWriter is needed since it can write more bytes together per one character.

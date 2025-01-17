@@ -2,7 +2,7 @@
 STRINGBUILDER
 =================================================================================
 Purpose is to have a fast and optimized class for appending characters and Strings together.
-An instance of StringBuilder class is a mutable object which means the object itself can change as its contained data changes. That said, no other memory allocation will be created in case the contained data changes, the allocated amount of memory changes dynamically.
+An instance of StringBuilder class is a mutable object which means the object itself can change as its contained data changes. No other memory allocation will be created in case the contained data changes, the allocated amount of memory changes dynamically.
 The concept behind the StringBuilder is similar to the OutputStream and the Writer (appending several sequences of data) but in this case, it works with characters and Strings.
 Using the StringBuilder in iteration for adding Strings together is faster and more and effective than using String concatenation (e.g. a += b) due to its mutable structure: memory allocation for every new String is time and place consuming.
 There are methods for trimming memory allocation for the actual size (by default, as optimisation, StringBuilder allocates more memory than the actual size to have free space for processes), clearing the data, returning the actual size and the contained data as String as well.

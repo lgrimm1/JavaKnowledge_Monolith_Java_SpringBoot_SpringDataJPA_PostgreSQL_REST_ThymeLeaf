@@ -434,7 +434,7 @@ All input-types (if relevant):
 Restrictions are useful on form-side but via Javascript it is possible to overwrite or get around them. Always check data on server-side.
 Without setting width and height for an image, the layout will change as the image loads. For proper design, this should be avoided, set the dimensions beforehand.
 Tags can be grouped by using the <fieldset> tag, see below.
-In case a field or object is not rendered into an input, that field will be null upon submit at server side. That said, the attribute must have an <input> tag with th:object|field="..." parameter counterpart within the <form>. In case that attribute should not be offered for changing by the user, the <input> should be either readonly (but appears) or type="hidden" (will not appear).
+In case a field or object is not rendered into an input, that field will be null upon submit at server side. Therefore, the attribute must have an <input> tag with th:object|field="..." parameter counterpart within the <form>. In case that attribute should not be offered for changing by the user, the <input> should be either readonly (but appears) or type="hidden" (will not appear).
 
 For <textarea>, there are 3 variants how operating systems and browsers handle line feeds:
     - CR (carriage return; #0D or #13 \r; one character)
@@ -453,7 +453,7 @@ Visit the SPRING BOOT THYMELEAF EXAMPLES page for examples.
 9. TEMPLATE HOT SWAP
 =================================================================================
 The templates are loaded upon building the application and in case there is any changes in a template file, the change will not appear in the live output.
-However, caching of the templates can be managed. That said, the servlet will read the needed template before creating the virtual static page in-memory.
+However, caching of the templates can be managed, via this the servlet will read the needed template before creating the virtual static page in-memory.
 
 Please note, take these into consideration:
     - generating the server answer will be slower

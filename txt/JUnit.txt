@@ -21,8 +21,8 @@ JUNIT
 1. JUNIT GENERALLY
 =================================================================================
 JUnit is a general test framework for unit tests, integration tests, Test-Driven Development (TDD) etc. This is one of the most commonly used test environment.
-The IntelliJ IDEA IDE - when creating a new projects - asks which test framework should be used and will automatically handle the dependency in the background. That said, it is not needed to add dependency to the pom.xml.
-JUnit extends the functionality of Java core assertions. Furthermore, works together with IntelliJ IDEA perfectly. That said, a method marked with @Test annotation will be handled as a test method and in case the IDE or Maven wants to run tests, will invoke these marked methods.
+The IntelliJ IDEA IDE - when creating a new projects - asks which test framework should be used and will automatically handle the dependency in the background. So, it is not needed to add dependency to the pom.xml.
+JUnit extends the functionality of Java core assertions. Furthermore, works together with IntelliJ IDEA perfectly. As a result, a method marked with @Test annotation will be handled as a test method and in case the IDE or Maven wants to run tests, will invoke these marked methods.
 
 Naming conventions of test classes:
     - Test*

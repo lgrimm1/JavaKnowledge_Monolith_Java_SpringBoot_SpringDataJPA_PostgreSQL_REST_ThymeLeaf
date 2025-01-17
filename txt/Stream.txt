@@ -1,8 +1,8 @@
 =================================================================================
 STREAM
 =================================================================================
-A stream was designed for handling moving input and output data.
-From newer Java versions, streams are also used for manipulating a series of data (e.g. data of Lists).
+A Stream was designed for handling moving input and output data.
+From newer Java versions, Streams are also used for manipulating a series of data (e.g. data of Lists).
 
 1. STREAMS FOR HANDLING INPUT AND OUTPUT DATA
 2. STREAMS FOR MANIPULATING SERIES OF DATA
@@ -20,7 +20,7 @@ For byte streams, abstract classes are InputStream and OutputStream.
 Character streams are used for read and write single character data.
 For character streams, abstract classes are Reader and Writer.
 
-Extending and implementing structure of streams (i - implementing, e - extending):
+Extending and implementing structure of Streams (i - implementing, e - extending):
 InputStream
     L (e) FileInputStream
     L (e) ByteArrayInputStream
@@ -53,13 +53,13 @@ Writer
 
 2.1. STREAM
 ---------------------------------------------------------------------------------
-There are object-typed streams and primitive-typed streams.
-All elements in a stream must have the same type.
-In order to have a stream, can use a collection as a source or generate data by the stream itself.
-By using streams, the code can become more readable and shorter, however understanding what is happening needs more consideration.
+There are object-typed Streams and primitive-typed Streams.
+All elements in a Stream must have the same type.
+In order to have a Stream, can use a Collection as a source or generate data by the Stream itself.
+By using Streams, the code can become more readable and shorter, however understanding what is happening needs more consideration.
 Streams are immutable.
-In order to have a stream, can use a collection as a source or generate data by the stream itself.
-Stream operations are parallel. In case the stream operation reads or writes an object, that object must bear with concurrent accesses. Furthermore, if a Stream writes and reads a not-concurrent variable (e.g. int, array, HashMap), exception or simply wrong data can infect the process flows. Approach stream operations as multithreaded operations and use e.g. atomic variables instead of primitives or wrapper classes, also concurrent versions of Collections.
+In order to have a Stream, can use a Collection as a source or generate data by the Stream itself.
+Stream operations are parallel. In case the Stream operation reads or writes an object, that object must bear with concurrent accesses. Furthermore, if a Stream writes and reads a not-concurrent variable (e.g. int, array, HashMap), exception or simply wrong data can infect the process flows. Approach stream operations as multithreaded operations and use e.g. atomic variables instead of primitives or wrapper classes, also concurrent versions of Collections.
 
 EXAMPLE FOR CONVERTING STREAM FROM A LIST:
 import java.util.List;
@@ -87,9 +87,9 @@ END OF EXAMPLE
 ||filter(lambda)|creates a new stream based upon true result of lambda on every input element||
 ||allMatch(lambda)|checks whether for all elements the lambda results true||
 ||anyMatch(lambda)|checks whether for any elements the lambda results true, order of element are not followed||
-||findFirst()|returns the first element of the stream as an optional type which will be empty in case the stream was empty||
-||findAny()|returns an element of the stream as an optional type which will be empty in case the stream was empty||
-||mapToInt(), mapToLong(), mapToDouble()||returns IntStream, LongStream or DoubleStream||
+||findFirst()|returns the first element of the stream as an Optional type which will be empty in case the stream was empty||
+||findAny()|returns an element of the stream as an Optional type which will be empty in case the stream was empty||
+||mapToInt(), mapToLong(), mapToDouble()|returns IntStream, LongStream or DoubleStream||
 ||limit(long maxSize)|limits the number of elements||
 ||max(Comparator), min(Comparator)|returns the maximum or minimum element based upon the passed comparator as an Optional which will be empty when the stream was empty||
 ||sorted()|returns natural ordered version||
@@ -103,7 +103,7 @@ END OF EXAMPLE
 ||toSet()|creates an immutable Set from the Stream||
 ||collect()|exports the Stream to a mutable Collection, see later||
 
-The of() method creates immutable Stream. That said, it is a very fast way to declare a Stream with its content for e.g. testing purposes but modifying elements will be impossible.
+The of() method creates immutable Stream. Therefore, it is a very fast way to declare a Stream with its content for e.g. testing purposes but modifying elements will be impossible.
 Also, the toList() and toSet() methods export the Stream to immutable Collection.
 If that is not acceptable, solution is using the collect() method of Stream to export the content to mutable List ot Set, see later.
 
@@ -120,7 +120,7 @@ Integer min = list.stream().reduce(0, Integer::min);
 Integer total = list.stream().reduce(0, (a, b) -> Integer.sum(a, b)); //or:
 Integer total = list.stream().reduce(0, Integer::sum);
 Double average = list.stream().reduce(0, (a, b) -> Integer.sum(a, b)) / (double) list.size(); //or:
-Double average = list.stream().reduce(0, Integer::sum) / (double) list.size();
+Double average = list.stream().reduce(0, Integer::sum / (double) list.size());
 //or: convert it into IntStream and use its methods
 END OF EXAMPLE
 
@@ -221,16 +221,16 @@ The Stream.collect() method is used as last step of stream processing. Repackage
 The class of Collectors methods passed via argument of Stream.collect() method, but using the class reference of these methods is optional: Stream.collect(Collectors.toCollection()) equals with Stream.collect(toCollection()).
 
 In case of collecting into a Map which has a pair as element (key and value), a keymapper and a valuemapper lambda must be presented as parameters, see below. Please note, the .toMap() method does not handle key duplicates (the process can throw exception), in such case converting into a Set (practically HashSet) beforehand is preferred. Using elements as values however, does not need special care.
-In case the target is not generic but a specific collection as HashMap or LinkedList, use .toCollection() or the constructor of the target type. However, if .filter() or .map() is necessary before, you would use .toCollection().
-The .toCollection() does not have implementation for all collection types, in such case writing a custom implementation is needed or using the .collectingAndThen() instead which allows a lambda for post-processing.
-Of course after collecting, the resulting collection can be converted into Stream to have full further processing but that means further execution time.
+In case the target is not generic but a specific Collection as HashMap or LinkedList, use .toCollection() or the constructor of the target type. However, if .filter() or .map() is necessary before, you would use .toCollection().
+The .toCollection() does not have implementation for all Collection types, in such case writing a custom implementation is needed or using the .collectingAndThen() instead which allows a lambda for post-processing.
+Of course after collecting, the resulting Collection can be converted into Stream to have full further processing but that means further execution time.
 In case at the actual point of processing stores Stream<String> right before collecting, the .joining() allows to merge the elements into a String. The .joining() has 3 signatures: () for simple concatenating, (String separator) for putting separator between every elements, and (String separatorString, String preString, String postString) for using starting-ending Strings with elements and separators.
 The .counting() counts the number of elements in the Stream. Stream elements can be counted by using the Stream.count() method instead as well.
 The .summarizingInt(), summarizingLong(), .summarizingDouble() generates statistics of Stream elements. In their argument, they accept a lambda with which Stream data can be converted to number before calculating. IntSummaryStatistics or LongSummaryStatistics or DoubleSummaryStatistics is resulted, its getter methods gives the statistics back.
 The .averagingInt(), .averagingLong(), .averagingDouble() returns the average of elements, lambda in argument generates numbers from elements (e.g. String::length or () -> {}).
 The .summingInt(), .summingLong(), .summingDouble() returns the total of elements, lambda in argument generates numbers from elements (e.g. String::length or () -> {}).
 The .maxBy(), .minBy() returns greatest, smallest element as Optional instance, empty Streams can be handled as well. In argument, the comparator is passed with which the examined order is manifested. The comparator can be e.g. Comparator.naturalOrder() or Integer::compareTo.
-The .groupingBy() converts Streams elements to collection elements by grouping the elements, using an attribute of the examined elements, then organize these sets into a Map where the tested attribute is the key, the matching collection is the value. The collection can be any, defined by passed 2nd Collector argument.
+The .groupingBy() converts Streams elements to Collection elements by grouping the elements, using an attribute of the examined elements, then organize these sets into a Map where the tested attribute is the key, the matching Collection is the value. The Collection can be any, defined by passed 2nd Collector argument.
 The .partitioningBy() is a special kind of .groupingBy() where  elements are organized into exactly 2 groups based upon lambda condition passed as argument, the resulted groups are Lists, the keys are true and false.
 The .teeing() splits the Streams processing into two directions and on both directions executes a given collector method, then merges the two results into one. With this, an other processing flow is speared.
 

@@ -2,7 +2,7 @@
 FILEWRITER
 =================================================================================
 Extends OutputStreamWriter.
-Converts data of characters to data of bytes for a StreamWriter (any subclasses). That said, it is a bridge between character streams and byte streams, writes characters to an output stream as bytes.
+Converts data of characters to data of bytes for a StreamWriter (any subclasses). Therefore, it is a bridge between character streams and byte streams, writes characters to an output stream as bytes.
 Its purpose is to read data in characters from a file.
 In case a method tries to access data after the end of the source (accessed length is greater than the actually available), exception raises.
 The stream must be closed after processing in order to release the output stream.

@@ -3,7 +3,7 @@ LINKEDHASHSET
 =================================================================================
 Implements the Set interface.
 Provides hashtable and linked list data structure.
-Elements are stored in hash tables similar to HashSet but internally, data are stored with double-linked list. That said, it stores the order as elements were added to the set.
+Elements are stored in hash tables similar to HashSet but internally, data are stored with double-linked list. Therefore, it stores the order as elements were added to the set.
 Need more storage and has slower speed, compared to HashSet.
 
 Constructor signatures:

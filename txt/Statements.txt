@@ -166,12 +166,15 @@ END OF EXAMPLE
 =================================================================================
 11. RETURN-SWITCH STATEMENT
 =================================================================================
+The yield keyword marks a return value for the code block.
+
 EXAMPLE FOR RETURN-SWITCH STATEMENT:
 return switch (variable) {
 	case value1 -> statement;
 	case value2 -> {
 		statement;
 		statement;
+		yield statement;
 	}
 	[default -> statement;]
 };
@@ -323,7 +326,7 @@ variable1.method1().method2().method3();
 END OF EXAMPLE
 
 These methods will be executed in their respected order.
-Every method will result data the next method will work on. That said, new memory will be allocated with all statement.
+Every method will result data the next method will work on. As a result, new memory will be allocated with all statement.
 
 EXAMPLE FOR CHAINED STATEMENTS (NO RETURNED VALUE):
 ArrayList<String> sal = new ArrayList<>();

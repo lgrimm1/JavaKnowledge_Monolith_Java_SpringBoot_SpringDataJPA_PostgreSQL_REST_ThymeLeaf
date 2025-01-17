@@ -152,7 +152,7 @@ In a dynamic (non-static) class it is allowed to declare static methods, these m
 =================================================================================
 7. HELPER METHOD
 =================================================================================
-In a class there usually are public methods which can be reached by other classes, and helper methods which calculate inner results for public methods. That said, a helper method is private, and helps to organize the method system and the execution flow better.
+In a class there usually are public methods which can be reached by other classes, and helper methods which calculate inner results for public methods. A helper method is private, and helps to organize the method system and the execution flow better.
 
 EXAMPLE FOR HELPER METHOD:
 class ClassName {
@@ -211,12 +211,13 @@ Advantages of using generics:
 =================================================================================
 The method which accepts variable argument, is called variable-arity method or varargs.
 The parameter which represents the variable argument is called vararg.
+All received arguments must have the same type.
 For using varargs, the next formula can be used:
     - <access modifier> returnType methodName(dataType... arg) {...}
 
 It allows to have high amount of passed variables handled. The actual number of passed variables depends on the caller side.
 A vararg means zero or many parameters of the same type.
-The passed variables will be rendered into an array of the same type the varargs have, on the receiver (method) side.
+The passed variables will be rendered into an array of the same type the varargs has, on the receiver (method) side.
 In case all the variants of possible parameters are known and the number of possibilities are low, use overload instead, for better code understanding.
 A vararg must be the last parameter in the method signature. A method can have only 1 vararg parameter.
 In case the vararg and a parameter just before it has the same type (e.g. int i, int... args), will lead to unstable code since the compiler might not know that the first parameter is part of the vararg or not. In such cases use method overload.
@@ -235,6 +236,33 @@ int totalCalc(int... intParams) {
 ...
 int sum = totalCalc(1, 2); //3
 sum = totalCalc(1, 2, 3, 4, 5); //15
+END OF EXAMPLE
+
+EXAMPLE FOR VARARGS WITH OTHER TYPES:
+int moreCalc(char operation, boolean negateIt, int... intParams) {
+    if (intParams.length == 0) {
+        return 0;
+    }
+    int result;
+    switch (operation) {
+        "+" -> {
+                int result = 0;
+                for (int n : intParams) {
+                    result += n;
+                }
+        }
+        "-" -> {
+                int result = 0;
+                for (int n : intParams) {
+                    result -= n;
+                }
+        }
+    }
+    return negateIt ? result * -1 : result;
+}
+...
+int sum = moreCalc("+", true, 1, 2); //-3
+sum = moreCalc("-", false, 10, 3, 2, 1); //4
 END OF EXAMPLE
 
 Varargs can be overloaded as well as normal methods.

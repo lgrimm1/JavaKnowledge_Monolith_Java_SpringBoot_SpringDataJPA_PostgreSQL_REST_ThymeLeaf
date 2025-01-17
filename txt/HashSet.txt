@@ -2,7 +2,7 @@
 HASHSET
 =================================================================================
 Implements the Set interface.
-Provides hash table data structure. That said, elements are stored randomly, and elements are accessed by their hash code. Each element has a unique hash code.
+Provides hash table data structure. Elements are stored randomly, and elements are accessed by their hash code. Each element has a unique hash code.
 HashSet is not synchronized, after modifying by a thread, need external synchronization.
 
 1. GENERALLY

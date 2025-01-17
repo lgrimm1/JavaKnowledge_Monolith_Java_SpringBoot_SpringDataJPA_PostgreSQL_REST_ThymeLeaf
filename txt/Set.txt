@@ -38,7 +38,7 @@ All methods of Collection interface are available.
 ||hashCode()|returns hash code of the element (address of the element) of the set||
 ||of()|creates an immutable Set from given parameter(s)||
 
-The of() method creates immutable Collection. That said, it is a very fast way to declare a Set with its content for e.g. testing purposes but adding, modifying or deleting elements will be impossible.
+The of() method creates immutable Collection. It is a very fast way to declare a Set with its content for e.g. testing purposes but adding, modifying or deleting elements will be impossible.
 Solution is using the constructor of the particular Set subclass on the immutable Set to make it mutable.
 
 EXAMPLE FOR CONVERTING IMMUTABLE LIST TO MUTABLE:

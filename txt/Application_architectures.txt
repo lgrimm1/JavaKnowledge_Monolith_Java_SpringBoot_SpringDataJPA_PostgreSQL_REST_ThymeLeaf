@@ -82,7 +82,7 @@ The application parts can communicate with each other via their APIs, see the AP
 =================================================================================
 The microservices design is the latest step in app structure evolution. From a certain perspective, it was developed from the hexagonal architecture.
 
-A microservice is a small application with or without frontend, it is independent and whole, usually covers one specific (core) function. This allows development teams to build and update new components to meet changing business needs without disrupting the unity of the application. That said, adding new function will not increase application complexity, the development itself will be faster, rendering development resources and keeping development parallel become easier.
+A microservice is a small application with or without frontend, it is independent and whole, usually covers one specific (core) function. This allows development teams to build and update new components to meet changing business needs without disrupting the unity of the application. As a result, adding new function will not increase application complexity, the development itself will be faster, rendering development resources and keeping development parallel become easier.
 
 This structure enables:
     - independent development

@@ -2,20 +2,7 @@
 COLLECTION
 =================================================================================
 1. COLLECTIONS GENERALLY
-2. COMPLEX ELEMENT TYPE
-3. GENERIC ALGORITHMS OF COLLECTIONS
-
-=>LIST
-=>SET
-=>QUEUE
-=>ITERATOR
-=>ARRAYLIST
-=>ARRAY
-=>COMPARATOR
-=>ARRAYLIST;2. ARRAYLIST SORTING
-=>INHERITANCE
-=>GARBAGE COLLECTOR
-=>STREAM
+2. GENERIC ALGORITHMS OF COLLECTIONS
 
 =================================================================================
 1. COLLECTIONS GENERALLY
@@ -44,8 +31,8 @@ Collection
             L (i) LinkedList
             L (e) BlockingDeque
         L (e) BlockingQueue
-            L (i) ArrayBockingQueue
-            L (i) LinkedBockingQueue
+            L (i) ArrayBlockingQueue
+            L (i) LinkedBlockingQueue
     L (e) Set
         L (i) HashSet
         L (i) EnumSet
@@ -65,79 +52,16 @@ Collection
 ||clear()|removes all elements||
 
 =================================================================================
-2. COMPLEX ELEMENT TYPE
+2. GENERIC ALGORITHMS OF COLLECTIONS
 =================================================================================
-Normally, arrays and collections like ArrayLists use the same element type for all of their elements.
-In case different element types should be stored within the same type, creating a new class as element type is necessary.
-We create a field for every element type with assigning null to them.
-Then, we create a constructor for every field which will be the setter method for that field only.
-We can reach the element by invoking a common getter method, and can check the stored type via getting the type name. At the caller side, we need type-casting.
+2.1. SORTING
+2.2. SHUFFLING
+2.3. ROUTINE DATA MANIPULATION
+2.4. BINARY SEARCH
+2.5. COMPOSITION
+2.6. FINDING EXTREME VALUES
 
-EXAMPLE FOR COMPLEX ELEMENT TYPE:
-import java.util.ArrayList;
-
-//element type declaration
-class Element {
-    private String elementTypeName;
-    private elementType1 elementName1 = null;
-    private elementType2 elementName2 = null;
-
-    public Element(elementType1 elementName1) { //constructor and setter for elementName1
-        this.elementName1 = elementName1;
-        this.elementTypeName = elementType1 as String;
-    }
-
-    public Element(elementType2 elementName2) { //constructor and setter for elementName2
-        this.elementName2 = elementName2;
-        this.elementTypeName = elementType2 as String;
-    }
-
-    public Object getElement() { //common getter
-        if (elementName1 != null) {
-            return elementName1;
-        }
-        else if (elementName2 != null) {
-            return elementName2;
-        }
-        else {
-            return null;
-        }
-    }
-
-    public String getTypeName() { //type name getter
-        return elementTypeName;
-    }
-}
-
-class Main {
-    int arrayListIndex;
-    ArrayList<Element> eal = new ArrayList<>();
-    eal.add(new Element(...)); //the passed type determines which constructor will invoke
-    eal.add(new Element(...)); //the passed type determines which constructor will invoke
-    eal.set(arrayListIndex, new Element(...)); //setting value at index
-    ...
-    for (Element e : eal) { //processing ArrayList
-        if (e.getTypeName().equals(elementType1 as String)) {
-            //processing: (elementType1) e.getElement()
-        }
-        if (e.getTypeName().equals(elementType2 as String)) {
-            //processing: (elementType2) e.getElement()
-        }
-    }
-}
-END OF EXAMPLE
-
-=================================================================================
-3. GENERIC ALGORITHMS OF COLLECTIONS
-=================================================================================
-3.1. SORTING
-3.2. SHUFFLING
-3.3. ROUTINE DATA MANIPULATION
-3.4. BINARY SEARCH
-3.5. COMPOSITION
-3.6. FINDING EXTREME VALUES
-
-3.1. SORTING
+2.1. SORTING
 ---------------------------------------------------------------------------------
 Sorting means giving the elements a new order.
 Available with the sort() method.
@@ -170,7 +94,7 @@ Collections.sort(cnal, (f1, f2) -> compare(f1.getField(), f2.getField()));
 //or create a Comparator
 END OF EXAMPLE
 
-3.2. SHUFFLING
+2.2. SHUFFLING
 ---------------------------------------------------------------------------------
 Shuffling means giving the elements a randomized order. Opposite of sorting, destroys any order in the collection.
 Available with shuffle() method.
@@ -184,7 +108,7 @@ ArrayList<Integer> numbers = new ArrayList<>();
 Collections.shuffle(numbers);
 END OF EXAMPLE
 
-3.3. ROUTINE DATA MANIPULATION
+2.3. ROUTINE DATA MANIPULATION
 ---------------------------------------------------------------------------------
 Routine data manipulation means several methods which are meant to manipulate collection data.
 
@@ -207,7 +131,7 @@ ArrayList<Integer> newNumbers = new ArrayList<>();
 Collections.copy(newNumbers, numbers);
 END OF EXAMPLE
 
-3.4. BINARY SEARCH
+2.4. BINARY SEARCH
 ---------------------------------------------------------------------------------
 The binarySearch() method searches for position of the specified element.
 The collection should be sorted before executing.
@@ -221,7 +145,7 @@ ArrayList<Integer> numbers = new ArrayList<>();
 int pos = Collections.binarySearch(numbers, 3);
 END OF EXAMPLE
 
-3.5. COMPOSITION
+2.5. COMPOSITION
 ---------------------------------------------------------------------------------
 The frequency() method returns the count of the number of times an element is present in the collection.
 The disjoint() method checks if two collections contain some common element.
@@ -237,7 +161,7 @@ int count = Collections.frequency(numbers, 2);
 boolean value = Collections.disjoint(numbers, newNumbers);
 END OF EXAMPLE
 
-3.6. FINDING EXTREME VALUES
+2.6. FINDING EXTREME VALUES
 ---------------------------------------------------------------------------------
 Determining of minimum and maximum values of the collection via using min() and max() methods.
 
@@ -250,3 +174,15 @@ ArrayList<Integer> numbers = new ArrayList<>();
 int min = Collections.min(numbers);
 int max = Collections.max(numbers);
 END OF EXAMPLE
+
+=>LIST
+=>SET
+=>QUEUE
+=>ITERATOR
+=>ARRAYLIST
+=>ARRAY
+=>COMPARATOR
+=>ARRAYLIST;2. ARRAYLIST SORTING
+=>INHERITANCE
+=>GARBAGE COLLECTOR
+=>STREAM

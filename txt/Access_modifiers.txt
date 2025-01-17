@@ -5,12 +5,6 @@ ACCESS MODIFIERS
 2. STATIC
 3. FINAL
 
-=>CLASSES
-=>METHODS
-=>VARIABLES
-=>INHERITANCE
-=>IMPORT
-
 =================================================================================
 1. PUBLIC, PROTECTED, DEFAULT, PRIVATE
 =================================================================================
@@ -28,7 +22,7 @@ In case no modifier is defined, will mean default.
 =================================================================================
 2. STATIC
 =================================================================================
-The static keyword defines that a field or method in a class will allocate memory to its contained data. That said, these can can be accessible without creating an instance from their class first.
+The static keyword defines that a field or method in a class will allocate memory to its contained data. These can be accessible without creating an instance from their class first.
 A static code will allocate memory without using them, actually.
 It is still possible to create an instance of such class.
 In case the class which elements would be statically accessed is in a separated file, must be imported first in solo or with package.
@@ -101,3 +95,9 @@ EXAMPLE FOR FINAL CLASS:
 final class className1 {...}
 class className2 extends className1 {...} //compile-time error
 END OF EXAMPLE
+
+=>CLASSES
+=>METHODS
+=>VARIABLES
+=>INHERITANCE
+=>IMPORT

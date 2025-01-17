@@ -7,7 +7,7 @@ SPRING BOOT FILE STORAGE WITH THYMELEAF REPOSITORY EXAMPLE
 =================================================================================
 1. IN-FOLDER REPOSITORY
 =================================================================================
-The entity is a file itself, as it is. That said, the repository must represent all functions needed for managing such storage.
+The entity is a file itself, as it is. In this case, the repository must represent all functions needed for managing such storage.
 On psychical level, the storage will be a ./upload folder under the project root, all files will be stored on the same level.
 Filenames must be unique. The storage does not let overwriting files. The find...() methods return filename(s), the get...() method(s) the link(s) representing files.
 Please note, in case the stored files should be processed by accessing them e.g. via File class, consider creating a new findAll...() method identical to the original but without relativizing paths, or deleting the correspondent Stream sub-method from findAll() but only when this method is not needed otherwise.
@@ -155,7 +155,7 @@ END OF EXAMPLE
 =================================================================================
 2. IN-DATABASE REPOSITORY
 =================================================================================
-The solution utilizes the JpaRepository interface. The solution mirrors the in-folder solution and hides the unnecessary functionality. That said, the solution has two levels: an interface with added derived query method and a class with the narrowed functionality.
+The solution utilizes the JpaRepository interface. The solution mirrors the in-folder solution and hides the unnecessary functionality. The solution has two levels: an interface with added derived query method and a class with the narrowed functionality.
 Filenames must be unique. The storage does not let overwriting entities. The find...() methods return filename(s), the get...() method(s) the file(s).
 
 EXAMPLE FOR IN-DATABASE REPOSITORY INTERFACE:

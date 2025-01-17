@@ -1,11 +1,13 @@
 =================================================================================
 SPRING BOOT ENTITY
 =================================================================================
-Before any development of the repository class, an entity must be defined.
+In case of SQL database, before any development of the repository class, an entity must be defined.
 This class forms the basic element type which will be sent and received to-from the in-memory container or the database by the repository class, and processed by the service class.
 Because objects of this entity will be checked for equality e.g. in tests, overriding the equals() and hashCode() methods of Object class is mandatory.
 In case the entity will be transferred between backend and frontend, following the rules of serialization is necessary (transient and static fields, serialVersionUID, Serializable, writeObject(), readObject() etc.).
 It is advised to express the toString() method of the entity as well.
+
+In order to match the entity with a relational sheet, an ORM (Object Relational Mapper) layer is needed. The database communicates with text or JSON data which must be transformed to instances of the domain class. The Spring provides the ORM layer for entities.
 
 1. NO-JPA ENTITY CLASS
 2. JPA ENTITY CLASS
@@ -128,6 +130,7 @@ The relation between class fields and table fields are marked with field-level a
 ||@Id|marks that the field will represent a primary key column in the table of the database||
 ||@SequenceGenerator|marks the ID generator parameters||
 ||@GeneratedValue|marks ID generator type||
+||@Version|defined the element version number or whether the element is new||
 ||@Column|defines the corresponding column properties||
 ||@Transient|will not match with column, will be calculated with constructor or with other code segments e.g. getter-setter or in service class||
 ||@Temporal|for older Spring JPA, marks that the date or time field will contain temporal data||
@@ -147,6 +150,9 @@ The @GeneratedValue annotation also marks the ID field, and has the next paramet
     - strategy = GenerationType.SEQUENCE
     - generator = "sequence_name" (connects the strategy with the sequence generator defined with @SequenceGenerator annotation)
 
+The @Version annotation defines that a field used as a version number for the element. This field will be used by the repository connected to the ID field:
+    - if null or 0: there is no version number (for version number the element will be considered as new)
+
 The @Column annotation can have the next parameters:
     - name = "column name in database"
     - length = number (maximum length of the text values, default is 255)
@@ -158,11 +164,31 @@ The @Column annotation can have the next parameters:
     - updatable = true|false (is accepting updating existing rows, default is true)
     - table = "table name" (default is "")
     - columnDefinition = "" (default is "")
-In database tables, every cell value can be null unless marked differently. That said, every type when transferred or set directly to and in database, can be null in the database so marking the column for nullability is preferred even in case of primitive type in entity.
+In database tables, every cell value can be null unless marked differently. Therefore, every type when transferred or set directly to and in database, can be null in the database so marking the column for nullability is preferred even in case of primitive type in entity.
 In case the @Column annotation is not used on a field, that field will be matched with table column by the field name, and will apply default values of all parameters of the virtually non-existent annotation.
 Please note, Spring will map VARCHAR(256) to any String field in case columnDefinition is not given. Visit the POSTGRESQL page for details on character types.
 
-A @Transient field is not a persistence field, that said, it is not recorded and maintained by the storage. These fields are for handling structured data which can not or should not be found in the storage (e.g. special data or a List which is not matchable with database column types under all databases).
+EXAMPLE FOR ID DEFINITION:
+@Id
+@Column(name = "id")
+@SequenceGenerator(name = "id_generator", sequenceName = "id_generator", allocationSize = 1)
+@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_generator")
+private long id;
+END OF EXAMPLE
+
+EXAMPLE FOR ID AND VERSION DEFINITION:
+@Id
+@Column(name = "id")
+@SequenceGenerator(name = "id_generator", sequenceName = "id_generator", allocationSize = 1)
+@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_generator")
+private long id;
+
+@Version
+@Column(name = "version")
+private int version
+END OF EXAMPLE
+
+A @Transient field is not a persistence field, it is not recorded and maintained by the storage. These fields are for handling structured data which can not or should not be found in the storage (e.g. special data or a List which is not matchable with database column types under all databases).
 A transient field can be used as a generated value for getting this specific data, but of course it is possible to set persistence fields through transient fields as well.
 A typical solution for storing array or List data without forcing the database to store these.
 Spring will access the database records by using the persistence fields. Through the repository, the backend will access the transient fields. In case setting the persistence fields does not require separated calculating, use the normal constructors and setters, and create getters for transient fields. If creating the persistence fields requires separated codes, create setters for the transient fields which will set the persistence fields upon calling them. See the example below.
@@ -208,7 +234,7 @@ END OF EXAMPLE
 
 2.4. ENTITY CLASS EXAMPLES
 ---------------------------------------------------------------------------------
-EXAMPLE FOR AN ENTITY CLASS (JPA, CRUD API):
+EXAMPLE FOR AN ENTITY CLASS (JPA, CRUD API, WITH VERSION NUMBER):
 package PackageName;
 
 import jakarta.persistence.*;
@@ -223,6 +249,10 @@ public class EntityClassName {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequence_name")
 	@Column(name = "id_column_name_in_database_table")
 	private long id;
+
+	@Version
+	@Column(name = "version_column_name_in_database_table")
+	private int version;
 
 	@Column(name = "column_name_in_database_table", ...)
 	//private field definition

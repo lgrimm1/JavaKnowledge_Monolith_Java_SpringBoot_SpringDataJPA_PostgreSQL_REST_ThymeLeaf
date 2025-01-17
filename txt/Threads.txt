@@ -4,7 +4,7 @@ THREADS
 All processes are organized into threads.
 A thread means a series of statements executed, following the process flow. There is no parallel execution.
 In case of more threads, the execution is separated into several process flows, the execution is parallel.
-The threads are handled by the JVM. That said, no direct access to CPU cores or OS threads. The JVM will manage how the different threads are organized and divided between OS threads. Therefore, the real execution is virtually parallel.
+The threads are handled by the JVM. There is no direct access to CPU cores or OS threads. The JVM will manage how the different threads are organized and divided between OS threads. Therefore, the real execution is virtually parallel.
 The started application forms the main thread. In case no other threads defined, the main thread carries all execution flows.
 Some Java methods work with parallel processes inside (e.g. Streams), and after finishing the task, these threads are joined back into the main thread of the method.
 An object is controlled by one and only one thread. The control is gained by accessing that object. No other thread can access an already owned objects except within their flow an access action happens.

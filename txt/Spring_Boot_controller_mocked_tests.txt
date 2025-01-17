@@ -25,11 +25,11 @@ Although the BigDecimal has proper automatism for serialization and deserializat
 Due to these, when using lower versions of MockMVC, the receiver object can contain Long, Integer, long and int types for whole numbers, but for float numbers in object, use BigDecimal as type.
 In such cases, only for test purposes should the BigDecimal problem be handled, without modifying the original data model.
 
-When MockMVC is used along with Spring Data JPA, an important issue can appear.
-Normally, the main application class carries the @EnableJPARepositories annotation which instructs Hibernate (which is part of JPA core) to collect the repository beans. That said, the Spring layer of the application must be fully started up in order to enable Hibernate to search for beans in the class hierarchy.
-The MockMVC controller test environment does not start the whole Spring framework therefore it is not possible for Hibernate to search for Spring beans. Furthermore, the test class is part of a lower level in the hierarchy.
-Solution is to instruct JPA to re-calibrate the search graph with the MockMVC test class as start by using the @AutoConfigureDataJpa annotation for the particular MockMVC controller test class.
-When no JPA is involved with the test class, this annotation is not needed.
+When MockMVC is used along with Spring Data JPA or Spring Data MongoDB, an important issue can appear.
+Normally, the main application class carries the @EnableJPARepositories or @EnableMongoRepositories annotation instructing Spring Data to collect the repository beans. TTherefore, the Spring layer of the application must be fully started up in order to enable for example Hibernate to search for beans in the class hierarchy.
+The MockMVC controller test environment does not start the whole Spring framework therefore it is not possible for Spring Data to search for Spring beans. Furthermore, the test class is part of a lower level in the hierarchy.
+Solution is to instruct Spring Data to re-calibrate the search graph with the MockMVC test class as start by using the @AutoConfigureDataJpa or @AutoConfigureDataMongo annotation for the particular MockMVC controller test class.
+When no JPA or MongoDB is involved with the test class, this annotation is not needed.
 
 In case if using JUnit4, the class-level @RunWith(SpringRunner.class) annotation is needed additionally.
 

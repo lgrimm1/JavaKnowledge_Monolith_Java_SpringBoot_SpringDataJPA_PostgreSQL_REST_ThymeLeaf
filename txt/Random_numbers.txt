@@ -56,7 +56,7 @@ END OF EXAMPLE
 3. SECURE RANDOM NUMBERS
 =================================================================================
 The SecurityRandom class provides a cryptographically strong random number generator.
-That said, generates true random numbers which means non-deterministic output.
+It generates true random numbers which means non-deterministic output.
 
 EXAMPLE 1 FOR TRUE RANDOM NUMBERS:
 import java.security.SecureRandom;

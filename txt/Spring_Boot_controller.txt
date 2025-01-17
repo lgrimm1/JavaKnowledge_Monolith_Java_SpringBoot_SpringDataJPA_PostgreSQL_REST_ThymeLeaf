@@ -24,8 +24,8 @@ The thinnest controller represents the API to the web application:
     - the @Controller annotation in a class marks that the class is a controller, normal API.
     - the @RestController annotation in a class marks that the class is a controller, REST API.
 
-The normal API uses Spring MVC (Model-View-Controller) framework which is based upon views. That said, the return value (the response body) represents a view (the targeted part of the frontend) and a collection of objects (forms a model which is read by the frontend). When a controller (or a controller method) operates with such data, it operates in model&view mode (or pure view mode).
-The RESTful API uses Spring MVC REST framework which is based upon objects. That said, the controller returns the object or value as it is, usually packed into a JSON or XML format. When a controller (or a controller method) operates with such data, it operates in called object mode.
+The normal API uses Spring MVC (Model-View-Controller) framework which is based upon views. The return value (the response body) represents a view (the targeted part of the frontend) and a collection of objects (forms a model which is read by the frontend). When a controller (or a controller method) operates with such data, it operates in model&view mode (or pure view mode).
+The RESTful API uses Spring MVC REST framework which is based upon objects. The controller returns the object or value as it is, usually packed into a JSON or XML format. When a controller (or a controller method) operates with such data, it operates in called object mode.
 Views can be handled along with complying the REST standard as well, for this the controller returns a ModelAndView object. When operating under such conditions, the mode falls under the object criteria (therefore this mode is usually called object/model&view mode).
 
 EXAMPLE FOR A CONTROLLER CLASS (PURE @AUTOWIRED):
@@ -111,7 +111,7 @@ With a controller, the next annotations can be used.
 The @RestController annotation automatically adds two annotations to the class on class-level:
     - @Controller
     - @ResponseBody
-That said, the class will be a REST controller, and all methods will operate in object mode.
+As a result, the class will be a REST controller, and all methods will operate in object mode.
 When using the @ResponseBody annotation on class-level, will mark all controller methods.
 In case the @ResponseBody annotation is used independently on controller methods, the annotation can be before the method signature or before the return value in the signature.
 

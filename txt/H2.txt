@@ -23,7 +23,7 @@ The default username and password can be manipulated by the appropriate paramete
 =================================================================================
 2. CONSOLE
 =================================================================================
-The console is built-in, can be reached after the current application is started and the proper properties setting enables it. That said, any settings made via its console will be alive only during runtime.
+The console is built-in, can be reached after the current application is started and the proper properties setting enables it. As a result, settings made via its console will be alive only during runtime.
 In order to access the console, type the next URL into a browser:
     - http://localhost:8080/h2-console
 The console uses the root of the application URL plus the /h2-console endpoint.

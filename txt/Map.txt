@@ -42,11 +42,12 @@ All methods of the Collection interface is available. Specific methods follow.
 EXAMPLE FOR REPLACEALL():
 import java.util.HashMap;
 ...
-HashMap<keyType, valueType> hm = new HashMap<>();
+Map<keyType, valueType> hm = new HashMap<>();
 //inserting pairs
 keyType key;
 valueType value;
 hm.replaceAll((key, value) -> value + 3);
+END OF EXAMPLE
 
 =>HASHMAP
 =>ENUMMAP

@@ -15,7 +15,7 @@ A JPA repository test class uses class-level annotations.
 When using @DataJpaTest annotation, Spring will load context for JPA and below (entity level) but not above.
 
 By default, after every test Spring rolls back the database (transaction management for tests). This behaviour can be controlled with @Transactional annotation.
-Please note, although the rollback is a default function of JPA test, Hibernate communicates with the database. That said, new records will be deleted etc., but the record IDs will increment with every added records continuously. In case comparing entities is necessary, avoid comparing IDs.
+Please note, although the rollback is a default function of JPA test, Hibernate communicates with the database. As a result, new records will be deleted etc., but the record IDs will increment with every added records continuously. In case comparing entities is necessary, avoid comparing IDs.
 Alternatively, define an equalsWithoutId() helper method within the test class which compares two entities by fields except IDs.
 
 Except for H2, in case the production database is used for tests, it needs configuration, use @AutoConfigureTestDatabase for this purpose.

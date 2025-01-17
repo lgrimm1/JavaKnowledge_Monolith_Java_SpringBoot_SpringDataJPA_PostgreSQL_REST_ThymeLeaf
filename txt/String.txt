@@ -7,6 +7,7 @@ STRING
 4. STRING FORMATTING
 5. STRING-CHAR[]-CHARACTER ARRAYLIST CONVERSIONS
 6. STRING METHODS
+7. STRING REGEX
 
 =================================================================================
 1. STRING OBJECT
@@ -109,7 +110,7 @@ This parameter will be used only with floating-point numbers.
 
 Conversion character: d|f|c|C|s|S|h|X[\n|%n]
     - d: whole number (byte..long)
-    - f: foating-point number (float, double)
+    - f: floating-point number (float, double)
     - c: character, not case-sensitive
     - C: uppercase character
     - s: text (String)
@@ -119,11 +120,11 @@ Conversion character: d|f|c|C|s|S|h|X[\n|%n]
     - \n, %n: new line character, platform-dependent
 
 EXAMPLE FOR FORMATTING RULES:
-"Total is: $%,.2f\n"
+"Total is: $%, .2f\n"
 //results:
-Total is:    103.40\n
-Total is:  3,212.12\n
-Total is: -3,564.99\n
+Total is: $   103.40\n
+Total is: $ 3,212.12\n
+Total is: $-3,564.99\n
 
 "%02X"
 //results:
@@ -170,14 +171,19 @@ ArrayList<Character> cal = new ArrayList<>();
 for (char c : ca) {
 	cal.add(c);
 }
+//or:
+ArrayList<Character> cal = Arrays.asList(ca)
 END OF EXAMPLE
 
 5.4. CHARACTER ARRAYLIST TO CHAR[]
 ---------------------------------------------------------------------------------
 EXAMPLE FOR CHARACTER ARRAYLIST TO CHAR ARRAY:
-ArrayList<Character> = new ArrayList<>();
+ArrayList<Character> cal = new ArrayList<>();
 ...
 char[] ca = new char[cal.size()];
+//in case element type is not primitive
+cal.toArray(ca);
+//or:
 for (int index = 0, length = cal.size(); index < length; ++index) {
 	ca[index] = cal.get(index);
 }
@@ -222,15 +228,16 @@ boolean b = s.contains(toFind); //true if toFind exists
 b = s.startsWith(toFind); //true if starts with toFind
 b = s.endsWith(toFind); //true if ends with toFind
 b = s.isEmpty(); //true if s.equals("")
+b = s.isBlank(); //true if s is empty or contains only white spaces
 int compResult = s.compareTo(toFind); //-1: s < toFind, 0: equals, +1: s > toFind
 String orig = ...;
 String new = ...;
-String s2 = s.replace(orig, new); //replaces all occurrences of orig to new from start to end; that said, if s is "aaa", orig is "aa" and new is "b", s2 will be "ba"
+String s2 = s.replace(orig, new); //replaces all occurrences of orig to new from start to end; if s is "aaa", orig is "aa" and new is "b", s2 will be "ba"
 s2 = s.replaceFirst(orig, new); //replaces the 1st occurrence
 s2 = s.replaceLast(orig, new); //replaces the last occurrence
 int startIndex, endIndex = ...;
-s2 = s.substring(startIndex, endIndex); //copies a sub-String with startIndex as starting position and endIndex as (ending position - 1); that said, the effective index interval will be [startIndex, endIndex)
-s2 = s.substring(startIndex); //copies a sub-String with startIndex as starting position; that said, the effective index interval will be [startIndex, s.length())
+s2 = s.substring(startIndex, endIndex); //copies a sub-String with startIndex as starting position and endIndex as (ending position - 1); the effective index interval will be [startIndex, endIndex)
+s2 = s.substring(startIndex); //copies a sub-String with startIndex as starting position; the effective index interval will be [startIndex, s.length())
 char[] ca = new ca[]{...};
 int count = ...;
 s2 = s.copyValueOf(ca, startIndex, count); //the result will be an extraction of ca with index interval of [startIndex, startIndex + count - 1], converted to String
@@ -239,6 +246,32 @@ byte[] ba = s.getBytes(); //return the bytes of the String
 byte[] ba = s.getBytes(Charset cs); //return the bytes of the String, following the Charset
 byte[] ba = s.getBytes(String charsetName); //return the bytes of the String, following the Charset from charsetName
 s2 = String.join(s, s2, ...); //adds up the Strings
+END OF EXAMPLE
+
+=================================================================================
+7. STRING REGEX
+=================================================================================
+In many cases we might want to mark characters types. These are regex characters:
+    - \w (any word character)
+    - \W (any not word character, e.g. punctuations)
+    - \s (any space-ish and non-visible character, e.g. white space, &nbsp; \t, \n, %n, \r')
+    - \S (any not space-ish nor non-visible character)
+
+In certain methods these markings can be used. In order to make it work, Java offers the regex engine.
+The regex is a String literal in which we give one or more of regex characters.
+The regex engine will use the characters, which means we have to escape the escape regex characters.
+
+EXAMPLE FOR REPLACING CHARACTER WITH REGEX:
+String s = "\nWindows are made of transparent material.\t";
+s = s.replaceFirst("\\W", "!"); //"\nWindows are made of transparent material!\t"
+s = s.replaceLast("\\s", ""); //"\nWindows are made of transparent material!"
+s = s.replaceFirst("\\s", ""); //"Windows are made of transparent material!"
+s = s.replaceFirst("\\s", "_"); //"Windows_are made of transparent material!"
+s = s + "\n\r" //"Windows_are made of transparent material!\n\r"
+boolean b = s.startsWith("\\W"); //false
+int pos = s.indexOf("\\s"); //11
+s = s.replace("\\s", "="); //"Windows_are=made=of=transparent=material!="
+s = s.replace("\\S", "x"); //"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 END OF EXAMPLE
 
 =>WRAPPER CLASSES

@@ -2,7 +2,7 @@
 SPRING BOOT CONTROLLER TESTS
 =================================================================================
 For controller classes, based upon the best practices, the Communication layer of the backend should be as thin as it is possible. Therefore, following best practices, for all other processes tests should be developed but for the controllers, it can be skipped.
-That said, testing the Communication layer which equals with testing the controller classes, is simplified for sending requests to the layer.
+As a result, testing the Communication layer which equals with testing the controller classes, is simplified for sending requests to the layer.
 Exception is in view mode when, based upon testing needs, setting up the Model object for response should be done in the correspondent controller method, therefore testing this is necessary.
 
 1. CONTROLLER CLASS TESTS WITH CURL
@@ -13,7 +13,7 @@ Exception is in view mode when, based upon testing needs, setting up the Model o
 1. CONTROLLER CLASS TESTS WITH CURL
 =================================================================================
 Before the test runs, the web application must be started up.
-The cURL tests are used to test the application from the outside which means integrity test. That said, the whole application must be started beforehand.
+The cURL tests are used to test the application from the outside which means integrity test. Therefore, the whole application must be started beforehand.
 This kind of testing is possible for controller methods in object mode.
 
 1.1. EXTERNAL CURL TESTS
@@ -211,7 +211,7 @@ Effect of the @DirtiesContext annotation depends on its placement:
     - after class
 
 In case there are more controllers, because running tests for them is executes parallel, there can be communication conflicts (they should use the same (8080 by default) port).
-That said, the @SpringBootTest annotation can have the next formulas:
+Because of that, the @SpringBootTest annotation can have the next formulas:
     - @SpringBootTest
     - @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 In case of the latter version, an additional @Value (under older Spring versions, @LocalServerPort) annotation and its field must be declared (will be used by Spring automatically). In case the port can be given specifically, use other constant of WebEnvironment.

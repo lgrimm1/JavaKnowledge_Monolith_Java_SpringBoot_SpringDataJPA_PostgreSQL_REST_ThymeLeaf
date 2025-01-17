@@ -31,15 +31,16 @@ assertEquals(names.hashCode(), newNames.hashCode());
 END OF EXAMPLE
 
 A record can be extended:
-    - overloading its constructor
-    - adding additional constructors
+    - overriding its constructor
+    - overloading (adding additional) its constructor
     - adding additional (static) fields
     - adding additional (static) methods
 The this keyword points to the record itself, the this() method points to the original (automatically generated) constructor.
-Overloading the automatically created constructor is valid, however, overloading again with the same method signature is not allowed.
+Overriding the automatically created constructor is valid, however, overriding again with the same method signature is not allowed.
 
-EXAMPLE FOR OVERLOADING CONSTRUCTOR OF A RECORD:
+EXAMPLE FOR OVERRIDING THE CONSTRUCTOR OF A RECORD:
 public record RecordName (FieldType1 fieldName1, FieldType2 fieldName2) {
+    @Override
     public RecordName(FieldType1 fieldName1, FieldType2 fieldName2) {
         Objects.requireNonNull(fieldName1);
         Objects.requireNonNull(fieldName2);
@@ -47,7 +48,7 @@ public record RecordName (FieldType1 fieldName1, FieldType2 fieldName2) {
 }
 END OF EXAMPLE
 
-EXAMPLE FOR ADDING NEW CONSTRUCTOR TO A RECORD:
+EXAMPLE FOR OVERLOADING THE CONSTRUCTOR TO A RECORD:
 public record RecordName (FieldType1 fieldName1, FieldType2 fieldName2) {
     public RecordName(FieldType1 fieldName1) {
         this(fieldName1, valueForFieldName2);

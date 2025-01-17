@@ -2,16 +2,23 @@
 SPRING BOOT REPOSITORY
 =================================================================================
 The Spring framework can identify a class as a repository.
-That said, that class will be responsible for storage management.
+That class will be responsible for storage management.
 In case data will be stored in a database, a decision is needed whether the database will be SQL or NoSQL.
 
-1. REPOSITORY CLASS, NO-JPA
-2. REPOSITORY INTERFACE, JPA
+1. SPRING DATA
+2. SPRING DATA JPA
+3. SPRING DATA MONGODB
+4. THE SPRING DATA DOMAIN-REPOSITORY CHAIN
 
 =================================================================================
-1. REPOSITORY CLASS, NO-JPA
+1. SPRING DATA
 =================================================================================
-In case of no-JPA solution, this class will keep the data itself as well in some container of entities.
+1. SIMPLE SPRING DATA CLASS
+2. DATA INTERFACES
+
+1. SIMPLE SPRING DATA CLASS
+---------------------------------------------------------------------------------
+In case of Spring Data solution, this class will keep the data itself as well in some container of entities.
 As a class it gives the structure and its methods but not the instance which will be hold by the service class.
 In order to define a class as repository, the @Repository or @Component or @Bean annotation is needed, the first expresses its function better.
 This class must be a singleton in memory per repository.
@@ -22,7 +29,7 @@ For smaller data amount it provides fast data access. The data will be hold in-m
 In case of higher element number, the time needed for storage operations can be very high.
 For keeping data in file system, the repository class can have load, save, find etc. methods which virtually mirror the in-memory data down to file system.
 
-EXAMPLE FOR A REPOSITORY CLASS (NO-JPA):
+EXAMPLE FOR A REPOSITORY CLASS (SPRING DATA):
 package PackageName;
 
 import org.springframework.stereotype.*;
@@ -37,47 +44,142 @@ public class RepositoryClassName {
 }
 END OF EXAMPLE
 
+2. DATA INTERFACES
+---------------------------------------------------------------------------------
+Spring Data offers several abstract interfaces stuffed with functionalities.
+Upon coding, the repository should be an interface marked with the @Repository class-level annotation.
+Spring Data will implement this interface into an automatically created singleton class and create an instance from it.
+
+The standard interface is the Repository, all other interfaces are extended from this one.
+The Repository interface is a generics, it needs two types in declaration:
+    - EntityClassName: the class of the entity it manages
+    - TypeOfID: the type of the entity ID field e.g. String or Long
+
+EXAMPLE FOR A REPOSITORY INTERFACE:
+package PackageName;
+
+//for JPA
+import org.springframework.data.jpa.repository.Repository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+//for MongoDB
+import org.springframework.data.mongodb.repository.Repository;
+import org.springframework.data.mongodb.repository.Modifying;
+import org.springframework.data.mongodb.repository.Query;
+//for all
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.*;
+
+@Repository
+public interface RepositoryClassName extends Repository<EntityClassName, TypeOfID> {
+    //optional fields
+    //optional overridden default methods
+    //optional derived query methods
+    //optional custom query methods
+    //optional helper methods
+}
+END OF EXAMPLE
+
+The interface must be public in order to let Spring accessing it.
+The best solution is to engage with an in-memory or in-server database.
+Such database can be H2 (in-memory) or PostgreSQL (or postgres) or mySQL or Oracle or MongoDB etc.
+Visit the SPRING BOOT page for adding databases, and the SPRING APPLICATION PROPERTIES page for settings of databases.
+
+||Interface|Description||
+||Repository|the standard||
+||CrudRepository|for adding CRUD operations (create, retrieve, update, delete); in case a method returns more elements, those will be provided in an Iterable||
+||ListCrudRepository|for adding CRUD operations (for more elements it returns a List)||
+||PagingAndSortingRepository|for adding paging and sorting operations (returns Iterable for more elements)||
+||ListPagingAndSortingRepository|for adding paging and sorting operations (returns List for more elements)||
+
+EXAMPLE FOR EXTENDING CRUD REPOSITORY INTERFACE:
+package PackageName;
+
+//for JPA
+import org.springframework.data.jpa.repository.ListCrudRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+//for MongoDB
+import org.springframework.data.mongodb.repository.ListCrudRepository;
+import org.springframework.data.mongodb.repository.Modifying;
+import org.springframework.data.mongodb.repository.Query;
+//for all
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.*;
+
+@Repository
+public interface RepositoryClassName extends CrudRepository<EntityClassName, TypeOfID> {...}
+END OF EXAMPLE
+
+EXAMPLE FOR GIVING LIST-BASED CRUD, PAGING AND SORTING FUNCTIONALITIES TO A REPOSITORY:
+package PackageName;
+
+//for JPA
+import org.springframework.data.jpa.repository.ListCrudRepository;
+import org.springframework.data.jpa.repository.ListPagingAndSortingRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+//for MongoDB
+import org.springframework.data.mongodb.repository.ListCrudRepository;
+import org.springframework.data.mongodb.repository.ListPagingAndSortingRepository;
+import org.springframework.data.mongodb.repository.Modifying;
+import org.springframework.data.mongodb.repository.Query;
+//for all
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Order;
+
+@Repository
+public interface RepositoryClassName extends
+        ListCrudRepository<EntityClassName, TypeOfID>,
+        ListPagingAndSortingRepository<EntityClassName, TypeOfID> {
+    ...
+}
+END OF EXAMPLE
+
+The next interfaces are extended from the CrudRepository for special purposes.
+
+||Interface|Description||
+||ReactiveCrudRepository|adds CRUD support to Reactive stores||
+||ReactiveSortingRepository|adds sorting operations to Reactive stores||
+||RxJava3CrudRepository|adds CRUD support of RxJava||
+||RxJava3SortingRepository|adds sorting support to RxJava||
+||CoroutineCrudRepository|adds CRUD support to Kotlin coroutines||
+||CoroutineSortingRepository|adds sorting support to Kotlin coroutines||
+
 =================================================================================
-2. REPOSITORY INTERFACE, JPA
+2. SPRING DATA JPA
 =================================================================================
 2.1. ABOUT SPRING DATA JPA
-2.2. DEFAULT INTERFACE
+2.2. JPA INTERFACES
 2.3. METHODOLOGY OF SAVING AND MODIFYING
 2.4. DERIVED QUERY METHODS
 2.5. CUSTOM QUERY METHODS
 2.6. QUERIES WITH DYNAMIC SORTING
 2.7. QUERIES WITH DYNAMIC PAGINATION
 2.8. QUERY EXAMPLES
-2.9. SPECIALS
+2.9. UNIQUE REPOSITORY INTERFACE
+2.10. SPECIALS
 
 2.1. ABOUT SPRING DATA JPA
 ---------------------------------------------------------------------------------
-The Spring Data JPA framework is designed to make a bridge between backend repositories and databases.
-Utilizing this framework is different when using without and with Spring Boot (annotations, interfaces etc). Generally, through Spring Boot it became easier, simpler and faster for coding.
-The reason is that Spring Boot is designed to be the top bridge above different Spring frameworks.
-
+The Spring Data JPA framework is designed to make a bridge between backend repositories and SQL databases.
 The JPA stands for Jakarta Persistence API (before Spring 3, Java Persistence API).
+JPA is a layer above Hibernate which is integrated into Spring Data.
 
-2.2. DEFAULT INTERFACE
+2.2. JPA INTERFACES
 ---------------------------------------------------------------------------------
-In Spring, instead of class the repository will be an interface which extends an abstract interface provided by Spring.
-For covering CRUD operations (create, retrieve, update, delete) Spring offers the CrudRepository interface.
-In case of JPA solution, Spring offers the JpaRepository which extends the functionality of the CrudRepository with Collection, Stream, paging, sorting and exampling support.
-Via extending such interface, there is no need to define any fields or methods, by default it will provide the functionality of the JPA repository for Spring Boot.
-
-In order to define an interface as repository, the @Repository annotation is needed.
-The interface must be public in order to let Spring accessing it.
-The best solution is to engage with an in-memory or in-server database. Such database can be H2 (in-memory) or PostgreSQL (or postgres) or mySQL or Oracle etc.
-Visit the SPRING BOOT page for adding databases, and the SPRING APPLICATION PROPERTIES page for settings of databases.
-
-The JpaRepository is a generics for handling basic repository functions like CRUD (Create, Retrieve, Update, Delete). Two types it needs in declaration:
-    - EntityClassName: the class of the entity it manages
-    - TypeOfID: the type of the entity ID field e.g. String or Long
+Spring offers a complex interface:
+    - JpaRepository: adds the functionality of the CrudRepository extended by Collection, Stream, paging, sorting and exampling support, and can return both Iterables and Lists for more elements
 
 It is important that all functionality provided by the interface, will be translated into SQL commands by Hibernate and sent to the database as queries.
-That said, the database will interpret and process, then send data back to the backend.
+The database will interpret and process, then send data back to the backend.
 
-EXAMPLE FOR A REPOSITORY INTERFACE (JPA):
+EXAMPLE FOR A JPA REPOSITORY INTERFACE:
 package PackageName;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -101,12 +203,11 @@ public interface RepositoryClassName extends JpaRepository<EntityClassName, Type
 }
 END OF EXAMPLE
 
-In case of using a database, database access and other parameters must be defined in the application.properties or a Yaml file under the project directory, visit the SPRING APPLICATION PROPERTIES page for details.
-
 By extending the JPA repository, the next inherited methods will be accessible. The access can happen from within the repository class or from the service class into which the repository was injected.
 The entity is the element of the table of the database defined with @Entity under Spring, accessible via the repository.
 Coming from design, it is possible to manage entity management via the repository or via the service.
 These methods are satisfying basic needs of handling database data, mainly satisfying CRUD functions.
+The findByID method identifies the ID field defined in the element class and uses that. That means, the name of the actual ID field can be different, however best practice is to use id as a name for better readability, compatibility, and to prevent future coding errors.
 
 ||Method|Description||
 ||existsById(id)|returns existence of the entity by the ID||
@@ -117,7 +218,7 @@ These methods are satisfying basic needs of handling database data, mainly satis
 ||save(entity)|adds the passed entity to the repository, or modifies an existing one||
 ||saveAll(iterableOfEntities>)|adds the passed entities to the repository, modifies existing ones||
 ||flush()|writes all entities to the storage, which were kept in repository for buffering||
-||count|returns the number of entities stored in the repository||
+||count|returns the long number of entities stored in the repository||
 ||delete(entity)|finds and deletes the passed entity from the repository||
 ||deleteAll(iterableOfEntities)|finds and deletes entities of the passed Iterable||
 ||deleteById(id)|finds and deletes the entity by ID||
@@ -126,21 +227,38 @@ These methods are satisfying basic needs of handling database data, mainly satis
 
 2.3. METHODOLOGY OF SAVING AND MODIFYING
 ---------------------------------------------------------------------------------
-The Spring Data JPA offers the same two default methods for both functions. The separator behind saving and modifying an entity is the existence of an entity by its ID. Visit the SPRING BOOT ENTITY page for ID definition and constructors of an entity.
-The methodology for saving is as follows:
+The Spring Data JPA offers the same two default methods for both functions. The separator behind saving and modifying an entity is the existence of an entity by its ID (or if present, the version number).
+Visit the SPRING BOOT ENTITY page for ID and version definition and constructors of an entity.
+
+The methodology for saving as new (without version field) is as follows:
     - create a new entity without defining its ID
     - save it
     - will return the saved entity with its ID
 
-The methodology for modifying is as follows:
+The methodology for modifying is as follows (without version field):
     - load the original entity (will contain its original ID)
-    - modify its field values by calling proper setters
+    - modify its field values by calling proper setters (except the ID)
     - in case of modified entity, Spring Data JPA will call it dirty
     - dirty entities will be saved automatically by Spring Data JPA at next flushing procedure
     - in case of using Spring Data, save it manually (for better compatibility and safety, always call save() or saveAll())
-    - will return the saved entity with its ID
+    - will return the full saved entity
 
-Because the existence of ID is the procedure separator, when the ID is not found in the table, will save the entity as new.
+The methodology for saving as new is as follows (with version field):
+    - create a new entity without defining its ID and version (leave them null for object or 0 for primitive)
+    - save it
+    - will return the saved entity with its new ID and version
+
+The methodology for modifying is as follows (with version field):
+    - load the original entity (will contain its original version)
+    - modify its field values by calling proper setters (except the ID)
+    - modify the version
+    - in case of modified entity, Spring Data JPA will call it dirty
+    - dirty entities will be saved automatically by Spring Data JPA at next flushing procedure
+    - in case of using Spring Data, save it manually (for better compatibility and safety, always call save() or saveAll())
+    - will return the full saved entity
+
+Because the existence of ID (or version) is the procedure separator, when the ID (or version) is not found in the table, will save the entity as new.
+If the entity has version field but it is not defined (null or 0), JPA will fall back to ID checking.
 As for every repository actions, using the flush() method is optional, use it when data upgrade must be immediate on database side.
 
 EXAMPLE FOR SAVING AN ENTITY:
@@ -192,11 +310,11 @@ END OF EXAMPLE
 
 2.4. DERIVED QUERY METHODS
 ---------------------------------------------------------------------------------
-The default interface is for saving data and finding-managing data by the ID (CRUD functions).
+The default interface is for saving data and finding-managing data by the ID (CRUD or JPA functions).
 In case of other or overridden methods are needed, can be coded on repository level.
 
 It is important that all functionality provided by the interface, will be translated into SQL commands by Hibernate and sent to the database as queries.
-That said, the database will interpret and process, then send data back to the backend.
+Therefore, the database will interpret and process, then send data back to the backend.
 
 The JPA repository offers conventions for new query methods, by utilizing them derived methods can be defined.
 All derived query methods should be defined as abstract only.
@@ -205,6 +323,7 @@ A derived query method usually has argument list, its variable names must be use
 
 The main keywords are for identifying the main purpose of the query.
 The find keyword can be replaced with read, get, query, search or stream keywords. In case of stream, a Stream result type would be advised.
+The remove keyword deletes elements as the delete, but returns the removed elements.
 
 A derived query method does not need explicit SQL expression to work since the theory behind is to have a verbal method name made of keywords. However, for better visual interpretation only, the @Query annotation can be used optionally in the way described with custom query methods, see later.
 
@@ -217,9 +336,25 @@ A derived query method does not need explicit SQL expression to work since the t
 ||stream[...]By...|general query for finding data|SELECT ... FROM ... WHERE ...||
 ||exists[...]By...|returns typically a boolean value|SELECT EXISTS ... FROM ... WHERE ...||
 ||count[...]By...|returns a numeric value|SELECT COUNT ... FROM ... WHERE ...||
-||delete[...]By..., remove[...]By...|deletion query, returns void or number of deleted rows|DELETE FROM ... WHERE ...||
+||delete[...]By...|deletion query, returns void or number of deleted rows|DELETE FROM ... WHERE ...||
+||remove[...]By...|deletion query, returns void or number of deleted rows|DELETE FROM ... WHERE ...||
 ||...First[number]...By..., ...Top[number]...By...|used somewhere between find and By keywords; restricts the found elements for their first appearance (possible found maximum number of rows are defined with the number value, if left, means first only)|SELECT TOP ... ... FROM ... WHERE ...||
 ||...distinct...By...|results unique values for the marked column etc.|SELECT DISTINCT ... FROM ... WHERE ...||
+
+EXAMPLE FOR QUERY METHOD AGAINST SQL:
+//repository type: CRUD
+//domain name defined in element class: Customers
+//domain ID type in element: Long
+//domain field in element: lastname
+//table name in database: customers
+//field name in database: surname
+
+interface UserRepository extends CrudRepository<Customers, Long> {
+    //count
+    long countByLastname(String lastname);
+    //SQL: SELECT COUNT * FROM customers WHERE surname = lastname;
+}
+END OF EXAMPLE
 
 The additional keywords are used together with main keywords (usually with find).
 Except for AllIgnoreCase and AllIgnoringCase, every additional keywords can be used for a column only which means for multiple fields different keywords can be used.
@@ -272,7 +407,7 @@ In case the method return type is different from what the query would produce bu
 
 Return types can be:
     - void
-    - primitive type (int, boolean etc.)
+    - primitive type (long, boolean etc.)
     - wrapper types (Long, String etc.)
     - T (unique entity, the query must produce a single result at most, if none, null will be returned)
     - Iterator<T>
@@ -305,7 +440,7 @@ The @Query method-level annotation is used for a query method:
     - for defining JPQL or native SQL expression of the query (custom query methods; usage is a must)
 
 It is important that all functionality provided by the interface, will be translated into SQL commands by Hibernate and sent to the database as queries.
-That said, the database will interpret and process, then send data back to the backend.
+Therefore, the database will interpret and process, then send data back to the backend.
 
 The JPQL stands for Jakarta Persistence Query Language (former Java Persistence Query Language), it is a platform-independent object-oriented query language defined as part of the Jakarta Persistence API (JPA; formerly Java Persistence API) specification. JPQL is inspired by SQL, and its queries resemble SQL queries in syntax, but operate against JPA entity objects stored in a relational database rather than directly with database tables.
 The JPQL only supports a subset of SQL standard. If you want to make complex queries, use native SQL query.
@@ -343,7 +478,7 @@ In order to match value case-insensitively, the column value and the method para
 Method arguments can overwrite the query expression, this is called dynamic sorting, paging etc. Meaning, the expression is invoked but after that, the query method will invoke the dynamic operation on the results before passing the results to its caller side.
 When using dynamic modification, avoid using similar expression part in the query (would take more operation time, result can be unpredicted).
 
-Dynamic sorting means that to the method signature a Sort object is added. That said, the query expression should not contain ORDER BY part but the method signature will modify the expression by adding sorting afterwards.
+Dynamic sorting means that to the method signature a Sort object is added. Therefore, the query expression should not contain ORDER BY part but the method signature will modify the expression by adding sorting afterwards.
 Spring Data JPA does not currently support dynamic sorting for native SQL queries (will raise InvalidJpaQueryMethodException), because it would have to manipulate the actual query declared, which it cannot do reliably for native SQL. For native SQL, add Pageable object instead, see examples.
 
 In the repository interface, a Sort object can be given as the last argument of the query method:
@@ -450,11 +585,151 @@ The List of entities of a page can be extracted by invoking:
 ---------------------------------------------------------------------------------
 Visit the SPRING BOOT REPOSITORY QUERY EXAMPLES page for derived, custom and dynamic query examples.
 
-2.9. SPECIALS
+2.9. UNIQUE REPOSITORY INTERFACE
+---------------------------------------------------------------------------------
+If you do not want to extend your repository with all the methods of the given standard interface, you can define your own repository:
+    - add the @RepositoryDefinition class-level annotation to the @Repository class
+    - copy-paste code of the needed method from the original code of the interface
+    - carefully choose the return type of your own method for multiple values (Iterable<T> or List<T> or Collection<T> or VAVR list, JPA will flexibly execute your method)
+
+If you want to use your own interface for many repositories, you can define a Spring bean:
+    - create your unique interface
+    - mark it with @NoRepositoryBean (this prevents Spring to create an instant from it which would result a fail because there is no entity for such interface)
+    - create your repositories by extending this bean
+
+EXAMPLE FOR DEFINING AND EXTENDING UNIQUE REPOSITORY INTERFACE:
+/*
+Define a new common generics interface which:
+    - inherits the Repository interface of JPA
+    - adds findById() and save() method signatures
+    - Spring will match these two methods by their method signatures and copy the codes from CrudRepository
+    - this interface will have only these two methods from CrudRepository
+*/
+@NoRepositoryBean
+interface MyBaseRepository<T, ID> extends Repository<T, ID> {
+
+    Optional<T> findById(ID id);
+
+    <S extends T> S save(S entity);
+}
+/*
+Define repositories by extending MyBaseRepository
+In this example:
+    - T will match with User class
+    - Long will match with ID class
+    - adds findByEmailAddress() method to this specific repository
+*/
+interface UserRepository extends MyBaseRepository<User, Long> {
+    User findByEmailAddress(EmailAddress emailAddress);
+}
+END OF EXAMPLE
+
+2.10. SPECIALS
 ---------------------------------------------------------------------------------
 For EntityManager, SQL LIKE on PostgreSQL text array column, named queries and query rewriter, visit the SPRING BOOT REPOSITORY SPECIALS page.
 
 MORE HERE: Using Advanced LIKE Expressions, https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#jpa.query-methods
+
+=================================================================================
+3. SPRING DATA MONGODB
+=================================================================================
+3.1. ABOUT SPRING DATA MONGODB
+3.2. MONGODB INTERFACES
+
+3.1. ABOUT SPRING DATA MONGODB
+---------------------------------------------------------------------------------
+The Spring Data MongoDB framework is designed to make a bridge between backend repositories and MongoDB NoSQL databases.
+The Hibernate is not part of the MongoDB solution under Spring since it is mainly for relational databases. However, it is possible to use Hibernate OGM as a lower layer under Spring Data MongoDB.
+
+3.2. MONGODB INTERFACES
+---------------------------------------------------------------------------------
+Spring offers a complex interface:
+    - MongoRepository: adds the functionality of the CrudRepository extended by Collection, Stream, paging, sorting and exampling support, and can return both Iterables and Lists for more elements
+
+=================================================================================
+4. THE SPRING DATA DOMAIN-REPOSITORY CHAIN
+=================================================================================
+The Spring Data frameworks are designed to make a bridge between backend repositories and databases.
+Utilizing this framework is different when using without and with Spring Boot (annotations, interfaces etc). Generally, through Spring Boot it became easier, simpler and faster for coding.
+The reason is that Spring Boot is designed to be the top bridge above different Spring frameworks.
+
+In Spring Data, when not using unique repository class, repository will be an interface which extends an abstract interface provided by Spring Data.
+In the class chain from domain to controller, the repository level is directly above the domain level.
+The chained domain definition declares which Spring repository archetype will be initialized (e.g. Data JPA or Data MongoDB).
+The chained line must be certain. A repository can not use but one domain type.
+
+The chain can be defined by
+    - the inheriting hierarchy (see examples below)
+    - the main class as annotation
+    - a configuration class as annotation
+Try to avoid using multiple methods for chain definitions.
+Visit the SPRING BOOT CONFIGURATION and SPRING BOOT MAIN CLASS pages for more information.
+
+EXAMPLE FOR CERTAIN DOMAIN-REPOSITORY CHAIN:
+//JPA
+//domain definition using @Entity annotation, class name is EntityClassName
+
+@Repository
+interface MyRepository extends Repository<EntityClassName, Long> {
+//Spring will use Spring Data JPA when creates the repository instance
+}
+
+//JPA with CRUD
+//domain definition using @Entity annotation, class name is EntityClassName
+
+@Repository
+interface MyRepository extends CrudRepository<EntityClassName, Long> {
+//Spring will use Spring Data JPA when creates the repository instance
+}
+
+//MongoDB
+//domain definition using @Document annotation, class name is DocumentClassName
+
+@Repository
+interface MyRepository extends Repository<DocumentClassName, Long> {
+//Spring will use Spring Data MongoDB when creates the repository instance
+}
+
+//with unique repository
+//domain definition using @Entity or @Document annotation, class name is DomainClassName
+
+@NoRepositoryBean
+interface StandardRepository extends Repository<DomainClassName, Long> {
+//Spring will not create instance
+//archetype is chained from domain
+...
+}
+
+@Repository
+interface MyRepository extends StandardRepository<DomainClassName, Long> {
+//Spring will use the proper archetype
+}
+END OF EXAMPLE
+
+EXAMPLE FOR UNCERTAIN DOMAIN-REPOSITORY CHAIN:
+//Generics example
+//domain definition of any kind, class name is DomainClassName
+
+@NoRepositoryBean
+interface StandardRepository extends Repository<T, ID> {
+//Spring does not know that T equals with the domain class
+//Spring will not create instance based on the used annotation
+...
+}
+
+@Repository
+interface MyRepository extends StandardRepository<DomainClassName, Long> {
+//there is no link between the domain and the StandardRepository, Spring fails to determine the archetype
+}
+
+//no-generics example
+//domain definition using @Entity and @Document annotations together, class name is DomainClassName
+
+@Repository
+interface MyRepository extends Repository<DomainClassName, Long> {
+//Spring Data fails to determine which archetype should be chained
+}
+END OF EXAMPLE
 
 =>SPRING BOOT
 =>SPRING BOOT ENTITY
@@ -466,3 +741,5 @@ MORE HERE: Using Advanced LIKE Expressions, https://docs.spring.io/spring-data/j
 =>SPRING BOOT TESTS;3. REPOSITORY TESTS
 =>SPRING DATA JPA TESTS
 =>SPRING APPLICATION PROPERTIES
+=>SPRING BOOT CONFIGURATION
+=>SPRING BOOT MAIN CLASS

@@ -14,9 +14,9 @@ Converting a type to an other type.
 Automatic, no data loss, a type will be converted to a type which can hold wider data.
 
 EXAMPLE FOR IMPLICIT (WIDENING) CASTING:
-int a = ...;
-long b = a;
-double c = a;
+int i = 25;
+long l = i; //25L
+double d = i; //25D
 END OF EXAMPLE
 
 =================================================================================
@@ -25,9 +25,9 @@ END OF EXAMPLE
 The target type is narrower, part of the source type will be truncated or trimmed.
 
 EXAMPLE FOR EXPLICIT (NARROWING) CASTING:
-double a = ...;
-int b = (int) d; //the decimal part will be truncated which means the whole part of the original
-float c = (float) a; //can be processed only when the stored value can fit into the narrower type
+double d = -12.65D;
+int i = (int) d; //-12, the decimal part will be truncated which means the whole part of the original
+float f = (float) d; //-12.65f, can be processed only when the stored value can fit into the narrower type; throws exception if d falls outside of float interval
 END OF EXAMPLE
 
 EXAMPLE FOR TYPICAL NARROWING CASTING:
@@ -47,13 +47,13 @@ Calling a parser on a primitive type is fast, but a .valueOf() first creates a w
 Always use .valueOf() in case the source and the target are classes, and parsing when both are primitives. Otherwise, use .valueOf() if the target is a class.
 
 EXAMPLE FOR CONVERSIONS:
-int a = ...;
-double b = ...;
-String c = String.valueOf(a); //value of a as a String
-c = String.valueOf(b); //value of b as a String like -12.435
-double d = Double.parseDouble(s); //d would be "-12.435"; if conversion is not possible throws exception
-Double e = Double.valueOf(s); //s is converted into a wrapper class
-int f = Integer.parseInt(s); //conversion throws exception, "-12.435" is not an int
+int i = 32;
+double d = -12.435D;
+String s = String.valueOf(i); //"32"
+s = String.valueOf(d); //"-12.435"
+d = Double.parseDouble(s); //-12.435D; if conversion is not possible throws exception
+Double d2 = Double.valueOf(s); //s is converted into a wrapper class, -12.435D as an object
+i = Integer.parseInt(s); //conversion throws exception, "-12.435" is not an int
 END OF EXAMPLE
 
 =================================================================================
@@ -64,6 +64,7 @@ For a few byte-to-hexa conversions, can use String formatting since formatting i
 For general byte-to-hexa solution, use dedicated method.
 For integer, use the Integer.toHexString() method for int-to-hexa, and Integer.parseInt() method for hexa-to-int conversions. Both methods handle minus signs. The toHexString() method results lower case characters, use toUpperCase() method on the result if needed.
 Byte conversions can be handled via int-to-hexa and hexa-to-int conversions as well but must check data against valid byte intervals and the one-byte-two-characters rule.
+The Integer.parseInt() method has an optional second parameter which marks which number the given first parameter represents. If missing, marks the default decimal system.
 
 EXAMPLE FOR BYTE-TO-HEXA CONVERSION VIA STRING FORMATTING:
 byte[] ba = ...;

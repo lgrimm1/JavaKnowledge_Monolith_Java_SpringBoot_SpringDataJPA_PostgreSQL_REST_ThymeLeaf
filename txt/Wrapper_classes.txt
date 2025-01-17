@@ -6,7 +6,7 @@ Arrays can have primitive and (wrapper) class element types.
 Classes (wrapper classes included) can be given as element type to e.g. List collections only.
 It is possible to use objects with wrapper class as type.
 Wrapper classes have constant fields, static and non-static methods as well.
-All wrapper classes are immutable. That said, the object contains data in memory, a variable points to that memory portion as a reference. When the variable receives a new value, means a new object is created and the pointer of variable is moved to that, the old object can be freed.
+All wrapper classes are immutable. The object contains data in memory, a variable points to that memory portion as a reference. When the variable receives a new value, means a new object is created and the pointer of variable is moved to that, the old object can be freed.
 Due to immutability, in order to create a deep copy, no constructor is needed, the new variable can have the old variable assigned to it.
 
 ||PRIMITIVE TYPE|WRAPPER CLASS||

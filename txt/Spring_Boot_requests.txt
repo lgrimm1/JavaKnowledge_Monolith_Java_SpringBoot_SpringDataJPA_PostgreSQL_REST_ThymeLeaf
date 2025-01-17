@@ -18,7 +18,7 @@ A controller method can have zero or any number of arguments in its signature. A
 In case an argument validation is failed, there can be two code flow type in the service method:
     - raise an exception (needs exception handler class)
     - returns value based upon error
-That said, the service method needs to have a validation block at the very beginning of the method.
+Therefore, the service method needs to have a validation block at the very beginning of the method.
 
 EXAMPLE FOR VALIDATION IN SERVICE METHOD:
 public returnType serviceMethod(Type1 var1, Type2 var2, ...) {
@@ -219,10 +219,10 @@ An endpoint can contain more parameters as well. In this case in the method sign
 Because the parameter part of an endpoint forms one or more variables, the fix part must be unique in the controller.
 Furthermore, it is possible that the parameter values will be null in case the endpoint path ends before all values are written into.
 
-All request parameters accesses with @PathVariable have required flag by default. That said, by default, rendering more endpoints to one method with @PathVariable defaults will result 404 error for the latter endpoints.
+All request parameters accesses with @PathVariable have required flag by default. Therefore, by default, rendering more endpoints to one method with @PathVariable defaults will result 404 error for the latter endpoints.
 For default values, using the Optional version below is advised.
 
-Important as well that Spring identifies the last dot (.) in an endpoint as separator of extension. That said, in case the needed parameter would contain dot e.g. we are waiting a domain name with .com ending, the result will not contain the .com part. This is true only for the last parameter.
+Important as well that Spring identifies the last dot (.) in an endpoint as separator of extension. Therefore, in case the needed parameter would contain dot e.g. we are waiting a domain name with .com ending, the result will not contain the .com part. This is true only for the last parameter.
 Solution is to make the compiler to use the dot as part of last parameter, or use an ending / sign which pushes the aim of last parameter; see below.
 
 The endpoint path marks a virtual folder system. it is possible to use request parameter and path characters on the same virtual level:

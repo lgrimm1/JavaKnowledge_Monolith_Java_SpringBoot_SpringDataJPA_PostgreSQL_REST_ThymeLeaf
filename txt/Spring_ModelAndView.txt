@@ -15,12 +15,12 @@ The Communication layer as a whole, or endpoints of the layer can work in two ba
     - object mode
 Included by the object mode, the endpoint or the layer can work in object/model&view mode.
 
-The model&view and the object/model&view modes cover working with models and templates. That said, the sent payload is rendered into a view and a model.
+The model&view and the object/model&view modes cover working with models and templates. That means the sent payload is rendered into a view and a model.
 Spring transforms the view to a template reference.
 The model can contain several objects and this as a package is sent to the template.
 
 When dealing with views and models, the ModelAndView class becomes handy. It merges the View and the Model objects into one object which is returnable so testable as well.
-That said, this class can be used in data traffic between parts of the Business layer, between the Business and the Communication layers (between service and controller instances), also as a return value of an endpoint.
+This means that this class can be used in data traffic between parts of the Business layer, between the Business and the Communication layers (between service and controller instances), also as a return value of an endpoint.
 Please note, unless an endpoint does not return an object (e.g. a ModelAndView object) but only a view name, the endpoint can not comply to the REST standard (no @RestController nor @ResponseBody annotations can be used).
 
 It has high importance that the model and the view is handled by Spring in the background.
@@ -30,7 +30,7 @@ The model contains objects sent by the frontend when entering into the endpoint.
 =================================================================================
 2. CONTROLLER AND SERVICE WITH MODEL&VIEW
 =================================================================================
-In order to form an API, thin controller is needed. That said, the controller is separated from the Business layer. Thin controller means thin endpoints along.
+In order to form an API, thin controller is needed. That means the controller is separated from the Business layer. Thin controller means thin endpoints along.
 In order to receive data from a view, use a custom payload class which will contain all possible data from the view.
 Generating outgoing model is part of the Communication layer. The data connection between the controller and the service should be established via passing payload object or more attributes extracted from the model.
 

@@ -2,7 +2,7 @@
 LINKEDHASHMAP
 =================================================================================
 Implements the Map, extends the HashMap.
-Provides ordered entries (key-value pairs) in a HashMap. That said, it is a double-linked list among entries similarly to LinkedList.
+Provides ordered entries (key-value pairs) in a HashMap. It is a double-linked list among entries similarly to LinkedList.
 All methods from Map and HashMap are available.
 LinkedHashMap provides slower performance than HashMap and needs more storage.
 

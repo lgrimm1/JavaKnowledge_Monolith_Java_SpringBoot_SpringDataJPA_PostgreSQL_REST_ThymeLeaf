@@ -140,7 +140,7 @@ It is possible to alternate a pre-defined query before it reaches the manager by
     - via custom QueryRewriter class
     - via extending the repository interface with QueryRewriter
 
-When the rewriter is expressed via class, in case such query is invoked, JPA will search for a QueryRewriter bean. That said, the class should be marked with @Component annotation or should be lifted into the configuration class of the entity as a @Bean.
+When the rewriter is expressed via class, in case such query is invoked, JPA will search for a QueryRewriter bean. Therefore, the class should be marked with @Component annotation or should be lifted into the configuration class of the entity as a @Bean.
 This version is advised when e.g. more services or more repositories would access the same rewriter.
 
 EXAMPLE FOR REPOSITORY INTERFACE WITH QUERY METHODS REFERENCING TO QUERY REWRITER (SQL AND JPQL):

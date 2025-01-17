@@ -3,7 +3,7 @@ SPRING BOOT
 =================================================================================
 The Spring is a framework family for web applications.
 The Spring Boot is part of the Spring frameworks family in which the Boot provides a universal bridge over Spring frameworks.
-That said, it is a common interface of and to Spring Core, Spring Web, Spring Data and Spring MVC frameworks, extended with Spring test environment.
+It is a common interface of and to Spring Core, Spring Web, Spring Data and Spring MVC frameworks, extended with Spring test environment.
 By using it, setting up the backend part becomes a much simplified process.
 The Spring Boot framework hides the complexity of the web part of an application so the developer can concentrate mainly on the business logic.
 This framework adds another layer between the Communication and the frontend, managed by the frontend and the backend together as the backend fills it with data, the frontend reads data and fills it with other data, then the backend reads those data.
@@ -50,15 +50,16 @@ On database side, several database systems can be added.
 In case the Storage layer is a file-level or a List-based in-memory solution, no database dependency should be added.
 In case of not in-memory nor file-level database solution, installing and-or creating access to the specific database is necessary.
 
-The Spring Data JPA provides the interface towards databases. Add it only when database dependency is added as well.
-Data JPA can work together with the next database systems:
+The Spring Data provides the interface towards databases. Add it only when database dependency is added as well.
+Spring Data can work together with many SQL and NoSQL database systems like these:
     - H2 (fast in-memory SQL)
     - mySQL
     - PostgreSQL (postgres)
     - Oracle
     - SQL Server
-Spring Boot (Spring Data JPA) can handle more data connections parallel. That said, more dependencies can be inserted if more solutions are needed.
-Depending on which database system should be used along with Data JPA, add one or more dependencies.
+    - MongoDB
+Spring Boot (Spring Data) can handle more data connections parallel, more dependencies can be inserted if more solutions are needed.
+Depending on which database system should be used along with Data, add one or more dependencies.
 
 EXAMPLE FOR BUILDING UP SPRING BOOT DEPENDENCY:
 <!-- under the modelVersion tag, above dependencies: -->
@@ -312,7 +313,7 @@ The Maven will compile the project, then attempt to start it.
 To stop the application, press ^C in the console.
 
 In case no profile is defined, the Maven will start the application on localhost:8080 by default.
-That said, in browser the base path will be localhost:8080.
+So, in browser the base path will be localhost:8080.
 
 At start, Spring Boot will create an instance from the controller, through class injection (best practice) an instance will be created from the service class and then from the repository class.
 

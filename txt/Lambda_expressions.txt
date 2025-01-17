@@ -90,7 +90,7 @@ END OF EXAMPLE
 
 EXAMPLE FOR DERIVING MORE-STATEMENT-SAM-WITH-RETURN-VALUE INTO LAMBDA:
 //SAM:
-void methodName() {
+type methodName() {
     statement;
     return returnValue;
 }

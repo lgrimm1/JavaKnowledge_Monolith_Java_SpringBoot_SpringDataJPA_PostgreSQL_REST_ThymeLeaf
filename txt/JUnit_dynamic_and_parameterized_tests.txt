@@ -74,7 +74,7 @@ In order to use this variant, dependency must be added to the pom.xml first:
 The parameterized test method must be static and must return a Collection, an Iterator, a Stream or an Array.
 The test method will be called for each test case independently (parallel).
 Also, @BeforeEach and @AfterEach methods will be launched normally.
-That said, this variant works as a batch for test methods.
+As a result, this variant works as a batch for test methods.
 
 The test input data and their respective expected result should be defined as rows (elements) in a 2D array (matrix) or Collection (e.g. List) or Iterable. This must be served by an independent static helper method. The reason is that this method will be called upon all test method invoking.
 

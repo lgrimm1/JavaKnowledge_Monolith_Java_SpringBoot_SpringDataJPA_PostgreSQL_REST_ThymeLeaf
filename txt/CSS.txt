@@ -21,9 +21,9 @@ A property can be defined by CSS definitions in the hierarchy:
     - inline (tag-level) style definitions (via the style= parameter)
     - inline properties (tag-level) definitions (via property parameters)
 
-The external and internal definitions are on the same level. That said, as the code flow goes definition by definition, the last modification of a property will be alive for that property at the checked element.
+The external and internal definitions are on the same level. As a result, as the code flow goes definition by definition, the last modification of a property will be alive for that property at the checked element.
 The style block in the header can be divided and between the parts the external CSS import can take place. Also, several external CSS-s can be imported at different points of the header. Following the flow, the last modification will be alive for the same property.
-An inline definition is on higher level since it has explicit effect on tag-level. That said, for the same property, overwrites external and internal values.
+An inline definition is on higher level since it has explicit effect on tag-level. So, for the same property, overwrites external and internal values.
 A property not modified by any CSS, will keep its browser default value.
 
 Never use inline definitions (style=) together with property parameters (width=, height= etc.), can confuse the code, hard to find them, and can easily lead to appearance errors.
@@ -124,7 +124,7 @@ A value can be:
     - text value ("'some_text'")
 Please note, there must be no space between a numeric value and its unit.
 
-The class-type definition creates a unique set of property values. That said, when referenced inline with the class= parameter, overwrites every matching external and internal property.
+The class-type definition creates a unique set of property values. Therefore, when referenced inline with the class= parameter, overwrites every matching external and internal property.
 In case there is an inline style definition (via style= parameter) for a property defined by externally, internally and-or via the class parameter as well, the local style= values will overwrite the class values.
 
 EXAMPLE FOR SIMPLE SELECTORS (CSS-SIDE):

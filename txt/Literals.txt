@@ -59,7 +59,7 @@ A text block starts with """ (three quotation marks), the first character of the
 The text block ends with the same three signs (""") right after the last character of the text block.
 New line character (\n) will be inserted following the natural text flow. In case instead of \n the \r\n line break is needed, use the \r escaped character at the visible line end.
 In case no \n character is needed at actual line end in the resulted string but for better readability line break is needed in the text block, use the escape (\) character at the virtual end of the line.
-Inside the text block, no escape character is needed for single or double quotation marks (" and ""). That said, it is ideal to use it for native JSON data, SQL commands etc. For three quotation marks, escape the first one only (\""").
+Inside the text block, no escape character is needed for single or double quotation marks (" and ""). Therefore, it is ideal to use it for native JSON data, SQL commands etc. For three quotation marks, escape the first one only (\""").
 
 EXAMPLE FOR TEXT BLOCKS:
 //single-line text block:

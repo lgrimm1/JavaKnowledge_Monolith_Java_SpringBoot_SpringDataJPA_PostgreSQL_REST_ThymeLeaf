@@ -30,8 +30,8 @@ sa = null; //now the memory allocation from sa is free as well and the GC can ha
 //s and sa variables will remain until the flow exists from the scope they were declared in, then the GC can have them
 END OF EXAMPLE
 
-Collection and StringBuilder objects handle dynamic memory allocation. That said, they occupy more than the actually needed in order to cover instant data grow.
-They can have methods to trim the empty memory parts for the case using such method is a must.
+Collection and StringBuilder objects handle dynamic memory allocation. Because of this, they occupy more than the actually needed in order to cover instant data grow.
+They can have methods to define they allocated space (element number) upon construction, or trim the empty memory parts for the case using such method is a must.
 
 Scanner object keeps memory allocation until .close() method is called.
 

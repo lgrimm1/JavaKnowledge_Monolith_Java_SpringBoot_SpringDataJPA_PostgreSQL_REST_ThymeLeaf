@@ -9,7 +9,6 @@ ARRAY
 6. SEARCH IN ARRAY
 7. CONVERT TO ARRAYLIST AND BACK
 8. CONVERT TO HASHSET AND BACK
-9. COMPLEX ELEMENT TYPE
 
 =================================================================================
 1. ARRAY DIMENSIONS, TYPES, ITERATING
@@ -21,48 +20,61 @@ ARRAY
 
 dataType[] arrayName -> 1D
 dataType[][] arrayName -> 2D
-datatype[][]...[] arrayName -> >2D
+datatype[][]..[] arrayName -> >2D
 The dataType can be primitive or class types.
 Every member of an array will have the same type.
+The array itself is immutable but mutability of its elements depends on the element type.
+The size(s) of an array is (are) defined when allocating in memory, then not changeable.
 The 1st element has the 0th index.
 
 1.1. 1-DIMENSIONAL
 ---------------------------------------------------------------------------------
-double[] da; //declaration
-da = new double[100]; //memory allocation for 100 element
-The array itself is immutable but mutability of elements depends on the element type (mostly immutable).
-The size(s) of an array is defined then fix.
-The arrayName is a reference, can assign other arrays to as well:
-da = new double[100];
-...
-da = new double[50];
-Giving values as constant to array variable:
-da = {2, 5, 3, 9};
+Declaration:
+    - arrayType[] arrayName;
+    - e.g. double[] da;
+Memory allocation for given element number (using an array constructor):
+    - arrayName = new arrayType[numberOfElements];
+    - e.g. da = new double[100];
+Declaration with memory allocation:
+    - arrayType[] arrayName = new arrayType[numberOfElements];
+    - e.g. String[] sa = new String[100];
+Constant array:
+    - {element1, element2, ...}
+Giving values as constant to array variable (memory allocation):
+    - arrayName = {2, 5, 3, 9}; //int array constant
+    - arrayName = {"jumpy", "xyz", "window"}; //String array constant
+    - arrayName = {new ArrayList<Integer>(), new ArrayList<Integer>(), new ArrayList<Integer>()}; //ArrayList array constant
 Declaration, memory allocation and giving values (initializing) in one step:
-double[] da = new double[]{4, 6, 5, 7}; //through array constructor
-double[] da = {4, 6, 5, 7}; //through constant
+    - double[] da = new double[]{4, 6, 5, 7}; //through array constructor
+    - double[] da = {4, 6, 5, 7}; //through constant
+    - Integer[] ia = {new Integer(4), new Integer(6), new Integer(5), new Integer(7)};
+    - int[] ia = {4, 6, 5, 7};
 
-Using for iterations:
+EXAMPLE FOR ITERATION THROUGH 1D ARRAY:
+double[] da = new double[]{...}
 for (int i = 0, l = da.length; i < l; i++) {
 	//process using da[i]
 }
 for (double d : da) {
 	//process using actual d which is element of da
-	//the iteration will step over elements from 0 to da.length by 1
+	//the iteration will step over elements from 0 to da.length - 1 by 1
 }
+END OF EXAMPLE
 
-Accessing an element with wrong index (<0 or >.length or the array has 0 length) throws exception.
+Accessing an element with wrong index (<0 or >=length or the array has 0 length) throws exception.
 For arrays, .length is a property, not a method (length is fixed after memory allocation).
 Using class element type (like String or Method) means the element will contain a reference to such object.
 
 1.2. 2-DIMENSIONAL
 ---------------------------------------------------------------------------------
-arrayType[][] da = new arrayType[3][2]; //3 rows, 2 columns
+Declaration with memory allocation and giving values:
+    - arrayType[][] arrayName = new arrayType[numberOfRows][numberOfColumn];
 
 A 2D array is a 1D array by rows where in every row there is an independent 1D array of arrayType.
-Said, 1D array length in every row can be different but not the element (cell) type.
+As a result, the 1D array length in every row can be different but not the element (cell) type.
 
-Using for iterations:
+EXAMPLE FOR ITERATION THROUGH 2D ARRAY:
+double[][] da = new double[][]{...}
 for (int row = 0, lr = da.length; row < lr; row++) {
 	for (int col = 0, lc = da[row].length; col < lc; col++) {
 		//process da[row][col]
@@ -73,17 +85,22 @@ for (double[] daa : da) {
 		//process d variable
 	}
 }
+END OF EXAMPLE
 
-Memory allocation by using constant 1D arrays:
+EXAMPLE FOR 2D ARRAY CONSTANT:
 double[][] da = {
 	{3, 5, 6},
 	{4},
 	{6, 4, 2, 9, 0}
-}; //results new double[3][5] where the unused cells (e.g. da[1][1] which would be the next element after 4) will be unreachable and da[1].length == 1
+};
+//results new double[3][5]
+//the unused cells will be unreachable
+//unreachable cell example: da[1][1] (da[1].length == 1)
+END OF EXAMPLE
 
 1.3. 3-DIMENSIONAL
 ---------------------------------------------------------------------------------
-3D array initialization (memory allocation):
+EXAMPLE FOR 3D ARRAY CONSTANT:
 int[][][] ia = {
 	{
 		{1, 2, 3},
@@ -97,6 +114,8 @@ int[][][] ia = {
 		{13, 14, 15}
 	}
 };
+//results in int[3][2][4]
+END OF EXAMPLE
 
 1.4. MULTI-DIMENSIONAL
 ---------------------------------------------------------------------------------
@@ -117,19 +136,23 @@ In science can have advantages.
 Shallow copy means only the reference to the original array will be copied.
 In case there is a change in the copy, the original array will change as well.
 
+EXAMPLE FOR SHALLOW COPY OF ARRAY:
 int[] ia1 = new int[]{...};
-int[] ia2 = ia1;
+int[] ia2 = ia1; //shallow copy
+END OF EXAMPLE
 
 2.2. DEEP COPY WITH ITERATION
 ---------------------------------------------------------------------------------
 Deep copy means a new reference will be created for the new array.
 Any changes in the new one will not change the original array.
 
+EXAMPLE FOR DEEP COPY OF ARRAY WITH ITERATION:
 int[] ia1 = new int[]{...};
 int[] ia2 = new int[ia1.length];
 for (int i = 0, l = ia1.length; i < l; i++) {
 	ia2[i] = ia1[i];
 }
+END OF EXAMPLE
 
 In case the element type is a class, the element will be a reference to an object. That means from different arrays elements can show to the same memory allocation.
 In case the object is immutable, any changes to the element will not change the object in memory but create a new object instead, and the array element will show to that so the change will not be copied to the original array.
@@ -139,6 +162,7 @@ Some mutable object types: ArrayList, StringBuilder (rarely used as element type
 
 2.3. DEEP COPY WITH ARRAYCOPY
 ---------------------------------------------------------------------------------
+EXAMPLE FOR DEEP COPY OF ARRAY WITH ARRAYCOPY:
 int[] ia1 = new int[10];
 for (int i = 0; i < 10; i++) {
 	ia1[i] = i + 1;
@@ -152,12 +176,14 @@ System.arrayCopy(ia1, 2, ia2, 1, 3); //ia2[]: {2, 3, 4, 5, 10};
 System.arrayCopy(ia1, 0, ia2, 0, ia2.length); //ia2[]: {1, 2, 3, 4, 5};
 ia2 = new int[ia1.length];
 System.arrayCopy(ia1, 0, ia2, 0, ia1.length); //ia2[]: {1, 2, 3, ..., 9, 10};
+END OF EXAMPLE
 
 Best solution for 1D arrays.
 For >1D cases, must use (nested) loops until the last dimension is reached - for that the arrayCopy is applicable.
 
 2.4. DEEP COPY WITH COPY AND COPYOFRANGE
 ---------------------------------------------------------------------------------
+EXAMPLE FOR DEEP COPY OF ARRAY WITH COPY AND COPYOFRANGE:
 import java.util.Arrays;
 ...
 int[] ia1 = new int[10];
@@ -171,6 +197,7 @@ ia2 = Arrays.copyOf(ia1, 5); //ia2: {1, 2, 3, 4, 5}
 ia2 = Arrays.copyOf(ia1, 13); //ia2: {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 0, 0, 0}; increases array capacity
 ia2 = Arrays.copyOfRange(ia1, 2, 3); //ia2: {3, 4, 5}
 ia2 = Arrays.copyOfRange(ia1, 0, ia1.length); //ia2: {1, 2, 3, ..., 9, 10}
+END OF EXAMPLE
 
 For >1D cases, must use (nested) loops until the last dimension is reached - for that the copyOf() and copyOfRange() is applicable.
 
@@ -182,6 +209,7 @@ For >1D cases, must use (nested) loops until the last dimension is reached - for
 
 3.1. WITH ITERATION
 ---------------------------------------------------------------------------------
+EXAMPLE FOR CONCATENATION WITH ITERATION:
 int[] ia1 = new int[]{...};
 int[] ia2 = new int[]{...};
 ia1Length = ia1.length;
@@ -196,9 +224,11 @@ for (int n : ia2) {
     ia3[ia3Index] = n;
     ia3Index++;
 }
+END OF EXAMPLE
 
 3.2. WITH ARRAYCOPY
 ---------------------------------------------------------------------------------
+EXAMPLE FOR CONCATENATION WITH ARRAYCOPY:
 import java.util.Arrays;
 ...
 int[] ia1 = new int[]{...};
@@ -208,6 +238,7 @@ ia2Length = ia2.length;
 int[] ia3 = new int[ia1Length + ia2Length];
 System.arrayCopy(ia1, 0, ia3, 0, ia1Length);
 System.arrayCopy(ia1, 0, ia3, ia1Length, ia2Length);
+END OF EXAMPLE
 
 =================================================================================
 4. ARRAY TO STRUCTURED STRING
@@ -249,41 +280,36 @@ END OF EXAMPLE
 =================================================================================
 5. ARRAY SORTING
 =================================================================================
-5.1. SORT IN ASCENDING ORDER, PRIMITIVE TYPES
-5.2. SORT IN ASCENDING ORDER, OBJECT TYPES
-5.3. SORT IN DESCENDING ORDER, PRIMITIVE TYPES
-5.4. SORT IN DESCENDING ORDER, OBJECT TYPES
-
-5.1. SORT IN ASCENDING ORDER, PRIMITIVE TYPES
----------------------------------------------------------------------------------
+EXAMPLE FOR SORT IN ASCENDING ORDER, PRIMITIVE TYPES:
 import java.util.Arrays;
 ...
 int[] ia = new int[]{...};
 Arrays.sort(ia);
 Arrays.sort(ia, 1, 3); //sort indexes between 1 and 3
+END OF EXAMPLE
 
-5.2. SORT IN ASCENDING ORDER, OBJECT TYPES
----------------------------------------------------------------------------------
+EXAMPLE FOR SORT IN ASCENDING ORDER, OBJECT TYPES:
 import java.util.Collections;
 ...
 Integer[] ia = new Integer[]{...};
 Collections.sort(ial);
+END OF EXAMPLE
 
-5.3. SORT IN DESCENDING ORDER, PRIMITIVE TYPES
----------------------------------------------------------------------------------
+EXAMPLE FOR SORT IN DESCENDING ORDER, PRIMITIVE TYPES:
 import java.util.Arrays;
 import java.util.Collections;
 ...
 int[] ia = new int[]{...};
 Arrays.sort(ia, Collections.reverseOrder());
+END OF EXAMPLE
 
-5.4. SORT IN DESCENDING ORDER, OBJECT TYPES
----------------------------------------------------------------------------------
+EXAMPLE FOR SORT IN DESCENDING ORDER, OBJECT TYPES:
 import java.util.Arrays;
 import java.util.Collections;
 ...
 Integer[] ia = new Integer[]{...};
 Collections.sort(ial, Collections.reverseOrder());
+END OF EXAMPLE
 
 =================================================================================
 6. SEARCH IN ARRAY
@@ -296,6 +322,7 @@ Collections.sort(ial, Collections.reverseOrder());
 There is no ready-to-use method in the array class nor in the Arrays class. However, a sequential search can be made.
 The 2nd part of the condition can be modified to fit to the search key type.
 
+EXAMPLE FOR SEARCH IN RANDOM-ORDERED ARRAY:
 int index;
 String[] array = new String[]{...};
 String key = ...;
@@ -308,6 +335,7 @@ if (index < array.length) {
 else {
     \\no such element in the array
 }
+END OF EXAMPLE
 
 6.2. SEARCH IN SORTED ARRAY
 ---------------------------------------------------------------------------------
@@ -315,15 +343,18 @@ In case the array is sorted, this method will provide an index, or if found none
 In case there is more than one of element matching with the search key, undefined which will have the index pointed on.
 Can be used for primitive types or object types which has .equals() method.
 
+EXAMPLE FOR SEARCH IN SORTED ARRAY:
 import java.util.Arrays;
 ...
 int[] ia = new int[]{...};
 int key = ...;
 int index = Arrays.binarySearch(ia, key);
+END OF EXAMPLE
 
 =================================================================================
 7. CONVERT TO ARRAYLIST AND BACK
 =================================================================================
+EXAMPLE FOR CONVERTING TO ARRAYLIST AND BACK:
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -345,10 +376,12 @@ sal.toArray(sa2);
 for (int index = 0; index < length; index++) {
     sa2[index] = sal.get(index);
 }
+END OF EXAMPLE
 
 =================================================================================
 8. CONVERT TO HASHSET AND BACK
 =================================================================================
+EXAMPLE FOR CONVERTING TO HASHSET AND BACK:
 import java.util.HashSet;
 import java.util.List;
 import java.util.stream;
@@ -362,64 +395,6 @@ Set<String> set = new HashSet<>(Arrays.stream(array).collect(Collectors.toSet())
 ...
 String[] array2 = new String[set.size()];
 set.toArray(array);
-
-=================================================================================
-9. COMPLEX ELEMENT TYPE
-=================================================================================
-Normally, arrays and collections like ArrayLists use the same element type for all of their elements.
-In case different element types should be stored within the same type, creating a new class as element type is necessary.
-We create a field for every element type with assigning null to them.
-Then, we create a constructor for every field which will be the setter method for that field only.
-We can reach the element by invoking a common getter method, and can check the stored type via getting the type name. At the caller side, we need type-casting.
-
-EXAMPLE FOR COMPLEX ELEMENT TYPE:
-//element type declaration
-class Element {
-    private String elementTypeName;
-    private elementType1 elementName1 = null;
-    private elementType2 elementName2 = null;
-
-    public Element(elementType1 elementName1) { //constructor and setter for elementName1
-        this.elementName1 = elementName1;
-        this.elementTypeName = elementType1 as String;
-    }
-
-    public Element(elementType2 elementName2) { //constructor and setter for elementName2
-        this.elementName2 = elementName2;
-        this.elementTypeName = elementType2 as String;
-    }
-
-    public Object getElement() { //common getter
-        if (elementName1 != null) {
-            return elementName1;
-        }
-        else if (elementName2 != null) {
-            return elementName2;
-        }
-        else {
-            return null;
-        }
-    }
-
-    public String getTypeName() { //type name getter
-        return elementTypeName;
-    }
-}
-
-class Main {
-    int arrayIndex;
-    Element[] ea = new Element[]{new Element(...), new Element(...), ...}; //declaration with values
-    ea[arrayIndex] = new Element(...); //setting value at index
-    ...
-    for (Element e : ea) { //processing array
-        if (e.getTypeName().equals(elementType1 as String)) {
-            //processing: (elementType1) e.getElement()
-        }
-        if (e.getTypeName().equals(elementType2 as String)) {
-            //processing: (elementType2) e.getElement()
-        }
-    }
-}
 END OF EXAMPLE
 
 =>VARIABLES

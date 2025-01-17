@@ -14,14 +14,18 @@ The @ComponentScan part:
     - in case the @Autowired annotation is used for class dependency injection (see later), the dependent class will be instantiated as singleton class
     - in case the @Scope(value = "prototype") annotation is used for class dependency injection (see later), the dependent class will not be instantiated as singleton class
 
-The @EnableJpaRepositories annotation configures JPA, also instructs the Spring that the repository classes can be managed by Spring Data JPA if the repository is an interface and extends JpaRepository.
+The @EnableJpaRepositories annotation instructs Spring to configure JPA and that repository classes can be managed by Spring Data JPA (SQL) if repositories are interfaces and extend Repository.
+The @EnableMongoRepositories annotation instructs Spring to configure MongoDB and that repository classes can be managed by Spring Data MongoDB (NoSQL) if repositories are interfaces and extend Repository.
+Both annotations can be used at the same time.
+Visit the SPRING BOOT REPOSITORY page for more.
 In case of in-memory storage (no database) solution, this annotation can be left out.
 
-Optional parameters of @EnableJpaRepositories annotation:
+Optional parameters of @EnableJpaRepositories and @EnableMongoRepositories annotations:
     - escapeCharacter = 'character' (defines custom escape character e.g. in JSON Strings)
     - value = "Package[.Package...].RepositoryClassName" (marks the exact class path of the repository with which the JPA can build-up)
+    - basePackages = "path" (defines where the repository-domain chains of the type defined by the annotation name starts in the class hierarchy, e.g. "com.acme.repositories.jpa")
 It is possible to use the same annotation with different parameters on different class paths. Be aware of having duplicated annotation use (when there would be more than one enabled repository alive on the given class level).
-In case the value is used, JPA will build up the referred repository from the class of the annotation and below in the classpath graph.
+In case the value is used, Spring Data will build up the referred repository from the class of the annotation and below in the classpath graph.
 
 At startup, the JVM will initialize Spring which will run through the dependency injection chain, creates objects from the bottom to up. In case the Main class needs to access resource from lower levels, use the @Resource annotation with a field which represents the needed resource. This technique is typical at once-time initialization of the application.
 
@@ -30,7 +34,7 @@ Because all controllers are practically independent threads, any code written af
 
 The Main class should wear a class name which resembles the name of the application. The main() method however, must not be renamed.
 
-EXAMPLE FOR MAIN CLASS (JPA):
+EXAMPLE FOR MAIN CLASS (DATA JPA):
 package packageName;
 
 import org.springframework.boot.SpringApplication;
@@ -46,7 +50,23 @@ public class Main {
 }
 END OF EXAMPLE
 
-EXAMPLE FOR MAIN CLASS (JPA, INITIALIZATION, RENAMED MAIN CLASS):
+EXAMPLE FOR MAIN CLASS (DATA MONGODB):
+package packageName;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.data.jpa.repository.config.*;
+
+@SpringBootApplication
+@EnableMongoRepositories
+public class Main {
+	public static void main(String[] args) {
+		SpringApplication.run(Main.class, args);
+	}
+}
+END OF EXAMPLE
+
+EXAMPLE FOR MAIN CLASS (DATA JPA AND DATA MONGODB, INITIALIZATION, RENAMED MAIN CLASS):
 package packageName;
 
 import javax.annotation.Resource;
@@ -57,6 +77,7 @@ import org.springframework.boot.CommandLineRunner;
 
 @SpringBootApplication
 @EnableJpaRepositories
+@EnableMongoRepositories
 public class ApplicationName implements CommandLineRunner {
 
 	@Autowired
@@ -77,7 +98,7 @@ The application context means what objects and variables are created at a certai
 In case of Spring Boot, the context means the class and object structure existing when the flow reaches the SpringApplication.run(). It is possible to catch the context by storing the returned value of this method.
 In Spring terminology all objects are beans (components).
 
-EXAMPLE FOR MAIN CLASS (CATCHING CONTEXT, JPA):
+EXAMPLE FOR MAIN CLASS (CATCHING CONTEXT, DATA JPA):
 package packageName;
 
 import org.springframework.boot.SpringApplication;
@@ -101,3 +122,4 @@ That is, when the web app is launched, an object will be created from it normall
 
 =>SPRING BOOT
 =>SPRING BOOT TESTS;1. MAIN CLASS TEST
+=>SPRING BOOT REPOSITORY

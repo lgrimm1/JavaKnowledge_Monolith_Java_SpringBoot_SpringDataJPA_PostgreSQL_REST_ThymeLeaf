@@ -12,7 +12,7 @@ CLASSES
 9. SINGLETON CLASSES
 10. ENUMERATION CLASSES
 11. GENERICS CLASSES
-12. MULTI-TYPE VARIABLES
+12. MULTI-TYPE CLASSES
 13. CLASS ORGANIZING
 14. CLASS DEPENDENCY INJECTION
 
@@ -154,12 +154,12 @@ END OF EXAMPLE
 =================================================================================
 6. IMMUTABILITY
 =================================================================================
-Best practice is to protect the data in OOP world. That said, in case there is an instance of a class (an object), that instance should not be modified for their fields but instead create a new instance with new data and replace the old object with it behind the same reference.
+Best practice is to protect the data in OOP world. In case there is an instance of a class (an object), that instance should not be modified for their fields but instead create a new instance with new data and replace the old object with it behind the same reference.
 Of course, in time the memory could be overloaded since the old objects are still in memory. Java uses the Garbage Collector to delete all objects without reference pointing to them from memory. Also, Java uses memory pools to keep the objects there and if a new variable gets its value, Java will look for existing object in the pool to reference that to the variable, with this spares memory.
 
 In immutable world there is no setter method in a class. The initial settings are made via the constructor. Also, all fields are private and final.
 
-Immutability ensures that the data contained in an object stays constant in time. Data can be transferred between threads or scopes without being worried about changes, and no synchronization is needed. That said, using immutable objects has no side effects.
+Immutability ensures that the data contained in an object stays constant in time. Data can be transferred between threads or scopes without being worried about changes, and no synchronization is needed. Therefore, using immutable objects has no side effects.
 For short, an immutable object is thread-safe and free for side effects.
 
 EXAMPLE FOR A BASIC IMMUTABLE CLASS:
@@ -291,7 +291,7 @@ Type can be a superclass (the anonymous class will inherit from it) or an interf
 Usage: creating a temporary class for executing a definite task in place, dynamically.
 Perfect solution for polymorphism as an entity is created for only one task from a superclass/interface.
 
-EXAMPLE FOR INHERITING:
+EXAMPLE FOR EXTENDING:
 class P1 {
     public void methodName() {...}
 }
@@ -350,7 +350,7 @@ END OF EXAMPLE
 =================================================================================
 An enumeration class is a special class type which contains a series of constants and automatically made methods, and can contain user-defined fields and methods as well.
 Safe in compile-time: an enum variable can get only the pre-defined values or throws compile-time error.
-Enum classes are final by default. That said, can not be inherited.
+Enum classes are final by default. They can not be inherited.
 Enum classes can not inherit (extend) from other classes. Reason: the declaration of an enum class consists of an inheritance from java.lang.Enum by default, hidden, and in Java, there is no multiple inheritance.
 Enum classes can implement interfaces since there is no restriction in Java for number of implements.
 
@@ -517,7 +517,7 @@ Advantages of using generics:
     - used with Collections (e.g. ArrayList<String> creates a String-based instance of ArrayList<T>)
 
 =================================================================================
-12. MULTI-TYPE VARIABLES
+12. MULTI-TYPE CLASSES
 =================================================================================
 In subclasses of Collection and in arrays the element type means all elements must have the same type.
 In case the need is to have a variable which can contain more than one type, use a multi-type class.
@@ -525,99 +525,398 @@ As an element, primitive types, wrapper and other classes can be used together.
 The number of contained types depends on needs.
 With using this solution, primitive types can be stored in collections and arrays.
 
-EXAMPLE FOR DECLARING A MULTI-TYPE VARIABLE:
-class ClassName {
-    //declare used-type-flag
-    private int flag = -1; //-1 means empty
-    //declare the different needed types
-    private String string = null; //for a wrapper class; null means it will not need memory unless it is used
-    private double d; //for a primitive type; will allocate memory
-    private float[] fa = null; //for an array class, can be ArrayList as well; null means it will not need memory unless it is used
-    private CustomClassName custom = null; //for a custom class; ; null means it will not need memory unless it is used
-    //declare first and overload constructors
-    //only the needed type will be allocated, the rest stay null except primitive types
-    public ClassName(String string) {
-        this.string = string;
-        this.flag = 0;
-    }
-    public ClassName(double d) {
-        this.d = d;
-        this.flag = 1;
-    }
-    public ClassName(float[] fa) {
-        this.fa = fa;
-        this.flag = 2;
-    }
-    public ClassName(CustomClassName custom) {
-        this.custom = custom;
-        this.flag = 3;
-    }
-    //declare flag getter
-    public int getFlag() {
-        return flag;
-    }
-    //declare getters
-    public String get0() {
-        return string;
-    }
-    public double get1() {
-        return d;
-    }
-    public float[] get2() {
-        return fa;
-    }
-    public CustomClassName get3() {
-        return custom;
-    }
+12.1. WRAPPER MULTI-TYPE CLASS
+12.2. PRIMITIVE MULTI-TYPE CLASS
+
+12.1. WRAPPER MULTI-TYPE CLASS
+---------------------------------------------------------------------------------
+EXAMPLE FOR DECLARING AN IMMUTABLE MULTI-TYPE CLASS FOR WRAPPERS:
+//you can choose between getObject() and getInteger(), ..., getString() solutions
+//decide whether you want to publish getType()
+public class Multiwrapper {
+	private final Integer integerValue;
+	private final Long longValue;
+	private final Float floatValue;
+	private final Double doubleValue;
+	private final String stringValue;
+
+	public Multiwrapper(Integer integer) {
+		this.integerValue = integer;
+		this.longValue = null;
+		this.floatValue = null;
+		this.doubleValue = null;
+		this.stringValue = null;
+	}
+
+	public Multiwrapper(Long longValue) {
+		this.integerValue = null;
+		this.longValue = longValue;
+		this.floatValue = null;
+		this.doubleValue = null;
+		this.stringValue = null;
+	}
+
+	public Multiwrapper(Float floatValue) {
+		this.integerValue = null;
+		this.longValue = null;
+		this.floatValue = floatValue;
+		this.doubleValue = null;
+		this.stringValue = null;
+	}
+
+	public Multiwrapper(Double doubleValue) {
+		this.integerValue = null;
+		this.longValue = null;
+		this.floatValue = null;
+		this.doubleValue = doubleValue;
+		this.stringValue = null;
+	}
+
+	public Multiwrapper(String stringValue) {
+		this.integerValue = null;
+		this.longValue = null;
+		this.floatValue = null;
+		this.doubleValue = null;
+		this.stringValue = stringValue;
+	}
+
+	public int getType() {
+		if (integerValue != null) {
+			return 0;
+		}
+		if (longValue != null) {
+			return 1;
+		}
+		if (floatValue != null) {
+			return 2;
+		}
+		if (doubleValue != null) {
+			return 3;
+		}
+		return 4;
+	}
+
+	public Object getObject() {
+		return switch (getType()) {
+			case 0 -> integerValue;
+			case 1 -> longValue;
+			case 2 -> floatValue;
+			case 3 -> doubleValue;
+			case 4 -> stringValue;
+			default -> null;
+		};
+	}
+
+	public Optional<Integer> getInteger() {
+		if (getType() == 0 && integerValue != null) {
+			return Optional.of(integerValue);
+		}
+		return Optional.empty();
+	}
+
+	public Optional<Long> getLong() {
+		if (getType() == 1 && longValue != null) {
+			return Optional.of(longValue);
+		}
+		return Optional.empty();
+	}
+
+	public Optional<Float> getFloat() {
+		if (getType() == 2 && floatValue != null) {
+			return Optional.of(floatValue);
+		}
+		return Optional.empty();
+	}
+
+	public Optional<Double> getDouble() {
+		if (getType() == 3 && doubleValue != null) {
+			return Optional.of(doubleValue);
+		}
+		return Optional.empty();
+	}
+
+	public Optional<String> getString() {
+		if (getType() == 4 && stringValue != null) {
+			return Optional.of(stringValue);
+		}
+		return Optional.empty();
+	}
 }
 END OF EXAMPLE
 
-EXAMPLE FOR USING MULTI-TYPE ELEMENTS (ELEMENT TYPE IS DECLARED IN PREVIOUS EXAMPLE):
-//declare container
-ArrayList<ClassName> cal = new ArrayList<>();
+EXAMPLE FOR DECLARING COMPARATOR FOR AN IMMUTABLE MULTI-TYPE CLASS FOR WRAPPERS:
+public class MultiwrapperComparator implements Comparator<Multiwrapper> {
+	@Override
+	public int compare(Multiwrapper o1, Multiwrapper o2) {
+		byte[] bytes;
+		double[] doubles;
+		int i;
 
-//add a String element
-cal.add(new ClassName("...")); //or:
-String s = ...;
-cal.add(new ClassName(s)); //but this adds a reference, s = null would mean this element will be null as well
-//add a double
-cal.add(new ClassName(23.5D)); //or:
-double d = 45.3D;
-cal.add(new ClassName(d)); //primitive type means no reference is added
-//add an array
-cal.add(new ClassName(new float[10])); //or:
-cal.add(new ClassName(new float[]{...})); //or:
-float[] fa = new float[10];
-cal.add(new ClassName(fa)); //adds a reference
-//add a custom class
-cal.add(new ClassName(new CustomClassName(...))); //use constructor or the custom class, or:
-CustomClassName ccn = new CustomClassName(...);
-cal.add(new ClassName(ccn)); //adds a reference
+		double double1 = switch (o1.getType()) {
+			case 0 -> (double) (int) o1.getObject();
+			case 1 -> (double) (long) o1.getObject();
+			case 2 -> (double) (float) o1.getObject();
+			case 3 -> (double) o1.getObject();
+			case 4 -> {
+				bytes = ((String) o1.getObject()).getBytes();
+				doubles = new double[bytes.length];
+				for (i = 0; i < bytes.length; i++) {
+					doubles[i] = bytes[i];
+				}
+				yield Arrays.stream(doubles)
+						.reduce(0, Double::sum);
+			}
+			default -> throw new IllegalStateException("Unexpected value: " + o1.getType());
+		};
 
-//access elements
-for (ClassName element : cal) {
-    switch (element.getFlag()) {
-        0 -> ...; //process element.get0()
-        1 -> ...; //process element.get1()
-        2 -> ...; //process element.get2()
-        3 -> ...; //process element.get3()
-    }
+		double double2 = switch (o2.getType()) {
+			case 0 -> (double) (int) o2.getObject();
+			case 1 -> (double) (long) o2.getObject();
+			case 2 -> (double) (float) o2.getObject();
+			case 3 -> (double) o2.getObject();
+			case 4 -> {
+				bytes = ((String) o2.getObject()).getBytes();
+				doubles = new double[bytes.length];
+				for (i = 0; i < bytes.length; i++) {
+					doubles[i] = bytes[i];
+				}
+				yield Arrays.stream(doubles)
+						.reduce(0, Double::sum);
+			}
+			default -> throw new IllegalStateException("Unexpected value: " + o2.getType());
+		};
+
+		return Double.compare(double1, double2);
+	}
 }
 END OF EXAMPLE
 
-Through accessing the contained collections and arrays, because the getter gives the reference back, it is possible to access their elements, and in case of Collection, adding and removing their elements as well.
+EXAMPLE FOR USING AN IMMUTABLE MULTI-TYPE CLASS FOR WRAPPERS:
+List<Multiwrapper> mwl = new ArrayList<>();
+mwl.add(new Multiwrapper(12));
+mwl.add(new Multiwrapper(34L));
+mwl.add(new Multiwrapper(56f));
+mwl.add(new Multiwrapper(78D));
+mwl.add(new Multiwrapper("text"));
 
-EXAMPLE FOR MANAGEMENT OF AN ARRAY AS ELEMENT DESCRIBED IN THE PREVIOUS EXAMPLE:
-ArrayList<ClassName> cal = new ArrayList<>();
-cal.add(new ClassName(new float[10]));
-cal.get2()[0] = 32.3f;
-cal.get2()[1] = 1.4f;
-...
-cal.get2()[10] = 123.9f;
-...
-float sum = 0;
-for (float f : cal.get2()) {
-    sum += f;
+mwl.sort(new MultiwrapperComparator());
+mwl.sort(new MultiwrapperComparator().reversed());
+
+for (Multiwrapper mw : mwl) {
+	if (mw.getType() == 0) {
+		//process (Integer) mw.getObject();
+		//process (int) mw.getObject(); //unboxing
+	}
+	if (mw.getType() == 1) {
+		//process (Long) mw.getObject();
+		//process (long) mw.getObject(); //unboxing
+	}
+	if (mw.getType() == 2) {
+		//process (Float) mw.getObject();
+		//process (float) mw.getObject(); //unboxing
+	}
+	if (mw.getType() == 3) {
+		//process (Double) mw.getObject();
+		//process (double) mw.getObject(); //unboxing
+	}
+	if (mw.getType() == 4) {
+		//process (String) mw.getObject();
+	}
+	//process mw.getObject() against null
+}
+
+for (Multiwrapper mw : mwl) {
+	//process mw.getInteger();
+	//process mw.getLong();
+	//process mw.getFloat();
+	//process mw.getDouble();
+	//process mw.getString();
+}
+END OF EXAMPLE
+
+12.2. PRIMITIVE MULTI-TYPE CLASS
+---------------------------------------------------------------------------------
+EXAMPLE FOR DECLARING AN IMMUTABLE MULTI-TYPE CLASS FOR PRIMITIVES:
+//you can choose between getIntegerValue(), ..., getDoubleValue() and getObject() and getOptional() solutions
+//decide whether you want to publish getType()
+public class Multiprimitive {
+	private int integerValue;
+	private long longValue;
+	private float floatValue;
+	private double doubleValue;
+	private int storedType;
+
+	public Multiprimitive(int integerValue) {
+		this.integerValue = integerValue;
+		this.storedType = 0;
+	}
+
+	public Multiprimitive(long longValue) {
+		this.longValue = longValue;
+		this.storedType = 1;
+	}
+
+	public Multiprimitive(float floatValue) {
+		this.floatValue = floatValue;
+		this.storedType = 2;
+	}
+
+	public Multiprimitive(double doubleValue) {
+		this.doubleValue = doubleValue;
+		this.storedType = 3;
+	}
+
+	public int getType() {
+		return storedType;
+	}
+
+	public int getIntegerValue() throws IllegalAccessException {
+		if (storedType == 0) {
+			return integerValue;
+		}
+		throw new IllegalAccessException("Not an integer value.");
+	}
+
+	public long getLongValue() throws IllegalAccessException {
+		if (storedType == 1) {
+			return longValue;
+		}
+		throw new IllegalAccessException("Not a long value.");
+	}
+
+	public float getFloatValue() throws IllegalAccessException {
+		if (storedType == 2) {
+			return floatValue;
+		}
+		throw new IllegalAccessException("Not a float value.");
+	}
+
+	public double getDoubleValue() throws IllegalAccessException {
+		if (storedType == 3) {
+			return doubleValue;
+		}
+		throw new IllegalAccessException("Not a double value.");
+	}
+
+	public Object getObject() {
+		return switch (storedType) {
+			case 0 -> integerValue;
+			case 1 -> longValue;
+			case 2 -> floatValue;
+			case 3 -> doubleValue;
+			default -> null;
+		};
+	}
+
+	public Optional<Object> getOptional() {
+		return switch (storedType) {
+			case 0 -> Optional.of(integerValue);
+			case 1 -> Optional.of(longValue);
+			case 2 -> Optional.of(floatValue);
+			case 3 -> Optional.of(doubleValue);
+			default -> Optional.empty();
+		};
+	}
+}
+END OF EXAMPLE
+
+EXAMPLE FOR DECLARING COMPARATOR FOR AN IMMUTABLE MULTI-TYPE CLASS FOR PRIMITIVES:
+public class MultiprimitiveComparator implements Comparator<Multiprimitive> {
+	@Override
+	public int compare(Multiprimitive o1, Multiprimitive o2) {
+		try {
+			double double1 = switch (o1.getType()) {
+				case 0 -> o1.getIntegerValue();
+				case 1 -> o1.getLongValue();
+				case 2 -> o1.getFloatValue();
+				case 3 -> o1.getDoubleValue();
+				default -> throw new IllegalStateException("Unexpected value: " + o1.getType());
+			};
+
+			double double2 = switch (o2.getType()) {
+				case 0 -> o2.getIntegerValue();
+				case 1 -> o2.getLongValue();
+				case 2 -> o2.getFloatValue();
+				case 3 -> o2.getDoubleValue();
+				default -> throw new IllegalStateException("Unexpected value: " + o2.getType());
+			};
+
+			return Double.compare(double1, double2);
+		}
+		catch (IllegalAccessException e) {
+			return 0;
+		}
+	}
+}
+END OF EXAMPLE
+
+EXAMPLE FOR USING AN IMMUTABLE MULTI-TYPE CLASS FOR PRIMITIVES:
+List<Multiprimitive> mpl = new ArrayList<>();
+mpl.add(new Multiprimitive(12));
+mpl.add(new Multiprimitive(34L));
+mpl.add(new Multiprimitive(56f));
+mpl.add(new Multiprimitive(78D));
+
+mpl.sort(new MultiprimitiveComparator());
+mpl.sort(new MultiprimitiveComparator().reversed());
+
+for (Multiprimitive mp : mpl) {
+	try {
+		if (mp.getType() == 0) {
+			//process mp.getIntegerValue();
+			//process (Integer) mp.getObject(); //boxing
+		}
+		if (mp.getType() == 1) {
+			//process mp.getLongValue();
+			//process (Long) mp.getObject(); //boxing
+		}
+		if (mp.getType() == 2) {
+			//process mp.getFloatValue();
+			//process (Float) mp.getObject(); //boxing
+		}
+		if (mp.getType() == 3) {
+			//process mp.getDoubleValue();
+			//process (Double) mp.getObject(); //boxing
+		}
+	}
+	catch (IllegalStateException e) {
+		//handle wrong getter usage
+	}
+}
+
+for (Multiprimitive mp : mpl) {
+	if (mp.getType() == 0) {
+		//process (Integer) mc.getObject(); //boxing
+		//process (int) mc.getObject(); //boxing and unboxing
+	}
+	if (mp.getType() == 1) {
+		//process (Long) mc.getObject(); //boxing
+		//process (long) mc.getObject(); //boxing and unboxing
+	}
+	if (mp.getType() == 2) {
+		//process (Float) mc.getObject(); //boxing
+		//process (float) mc.getObject(); //boxing and unboxing
+	}
+	if (mp.getType() == 3) {
+		//process (Double) mc.getObject(); //boxing
+		//process (double) mc.getObject(); //boxing and unboxing
+	}
+	//process mc.getObject() against null
+}
+
+for (Multiprimitive mp : mpl) {
+	if (mp.getType() == 0) {
+		//process mp.getOptional(); //boxing
+	}
+	if (mp.getType() == 1) {
+		//process mp.getOptional(); //boxing
+	}
+	if (mp.getType() == 2) {
+		//process mp.getOptional(); //boxing
+	}
+	if (mp.getType() == 3) {
+		//process mp.getOptional(); //boxing
+	}
 }
 END OF EXAMPLE
 

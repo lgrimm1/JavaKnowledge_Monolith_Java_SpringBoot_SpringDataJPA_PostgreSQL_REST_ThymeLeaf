@@ -9,7 +9,7 @@ SPRING PRACTICES
 1. CREATE LINK TO FILE UNDER PROJECT
 =================================================================================
 In the example the files are stored under ./upload folder, directly under project root, all files are at the same level.
-The aim is to generate links to the files along with protecting the files themselves. That said, the links will reach the /files/{filename} endpoint where the file information as a Resource will be sent back.
+The aim is to generate links to the files along with protecting the files themselves. The links will reach the /files/{filename} endpoint where the file information as a Resource will be sent back.
 The download links will be sent back from the /files endpoint along with filenames.
 The /files/{filename} endpoint will also be used for detection of live URL to the server as well.
 
@@ -76,7 +76,7 @@ END OF EXAMPLE
 2. CREATE LINK TO FILE STORED IN DATABASE
 =================================================================================
 In the example the files are stored in a database.
-The aim is to generate download links to the files. That said, the links will reach the /files/{filename} endpoint where the file as a byte[] will be sent back.
+The aim is to generate download links to the files. The links will reach the /files/{filename} endpoint where the file as a byte[] will be sent back.
 The download links will be sent back from the /files endpoint along with filenames.
 
 The files are handled with JPA Repository. The file content is stored as TEXT (infinite VARCHAR).
@@ -152,7 +152,7 @@ END OF EXAMPLE
 =================================================================================
 The URL contains the scheme (e.g. http), the domain name (e.g. domain.com), the port if defined (e.g. :8080), the path to the endpoint (e.g. /endpoint) and the query parameters (e.g. search?title=ABC&author=XYZ).
 The base URL contains only the first three (e.g. http://domain.com:8080). The base URL can be different with every incoming request. The endpoint and after that depend on the application which means they are defined within the Communication layer.
-There can be certain tasks when the actual base URL must be detected. That said, only upon the actual request, the base URL can be determined.
+There can be certain tasks when the actual base URL must be detected. Only upon the actual request, the base URL can be determined.
 For detection, the application context is needed which means it can happen from a controller class or a bean (component).
 The alternative solution below does not examine the URL components for their existence (e.g. existence of port number is not obligatory).
 

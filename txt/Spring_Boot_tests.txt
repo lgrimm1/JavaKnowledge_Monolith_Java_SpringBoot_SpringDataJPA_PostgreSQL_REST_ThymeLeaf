@@ -77,7 +77,7 @@ Naturally, in case the entity contains custom methods above the mentioned ones a
 When behaviours are defined via using Spring Validation annotations, the behaviour is apparent when the Spring framework reads and uses the annotations via the repository and the controller.
 In order to test only the behaviours without starting up the application (and Spring environment with it), the Validator class of Hibernate is needed.
 Behaviours are declared on fields. That means, after creating an object with some data, should be checked what will the validation result be.
-Still, in case the JPA entity has custom methods (e.g. for handling transient fields), for those methods testing is mandatory.
+Still, in case the entity has custom methods (e.g. for handling transient fields), for those methods testing is mandatory.
 
 EXAMPLE FOR ENTITY BEHAVIOUR TEST CLASS (CLEAN JPA):
 package packageName;
@@ -125,7 +125,7 @@ As normally, under the src/test/java/<package> folder, the tests will be created
 Repository classes can be tested out with normal unit tests.
 Proper tests should cover the functionality (e.g. searching, adding, deleting, modifying data) of the repository as it represents the Storage layer of the web application.
 
-Please note, although the testing should involve the actual database touched by the development as well (such testing would include integration test as well between the repository and the database), the database must exist in the database provider (e.g. PostgreSQL) beforehand. That said, when the project is downloaded to a clear storage without installing or setting up database, the tests will fail out-of-the-box. Solution is that for tests, an in-memory H2 database should be used which is independent on local settings. The solution includes creating or modifying application.properties file under the test/resources folder, also adding H2 dependency to the pom.xml Maven file.
+Please note, although the testing should involve the actual database touched by the development as well (such testing would include integration test as well between the repository and the database), the database must exist in the database provider (e.g. PostgreSQL) beforehand. As a result, when the project is downloaded to a clear storage without installing or setting up database, the tests will fail out-of-the-box. Solution is that for tests, an in-memory H2 database should be used which is independent on local settings. The solution includes creating or modifying application.properties file under the test/resources folder, also adding H2 dependency to the pom.xml Maven file.
 
 EXAMPLE FOR EXTENDING POM.XML WITH H2 DATABASE:
         <dependency>
@@ -157,7 +157,7 @@ Service classes need creating their corresponding storage instances first since 
 Best practice in order to gain independent unit tests, is to use mocked repository (storage) classes injected into the right controllers.
 
 In model&view mode, in case of best practice, the controller class should be thin. The controller method receives an empty Model object from Spring which should be filled with data prepared by the service method.
-There is no public method to create a new Method object. That said, examining the Model object in service class is not possible.
+There is no public method to create a new Model object. As a result, examining the Model object in service class is not possible.
 Workaround is, the service method must return a ModelAndView object with the view name and the model included, and the model objects should be added to the Model in the controller class. The controller class will be thin but not the thinnest which is acceptable in model&view mode.
 
 EXAMPLE FOR SERVICE CLASS TEST CLASS (NOT INDEPENDENT UNIT TEST):
