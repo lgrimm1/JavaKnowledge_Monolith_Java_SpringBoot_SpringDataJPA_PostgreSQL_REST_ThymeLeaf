@@ -1,0 +1,586 @@
+=================================================================================
+CODE SNIPPETS
+=================================================================================
+1. INCREASE ARRAY INDEX, JUMP TO FIRST ELEMENT WHEN REACHING LAST
+2. INCREASE ARRAY CAPACITY
+3. INDEXOF WITH STREAM
+4. RECURSIVE SORTING
+5. LINKED LIST
+6. DOUBLE LINKED LIST
+7. QUEUE WITH ARRAY
+8. ROUND ROBIN QUEUE (WITH ARRAYLIST OF STRING ITERATORS)
+9. ROUND ROBIN QUEUE (WITH QUEUE OF STRING ITERATORS)
+10. PALINDROME (STRING EQUALS ITS REVERSED FORM)
+11. CLEAN ALL WHITE SPACES AND NON-VISIBLE CHARACTERS
+12. FIND PRIMES WITH SIEVE OF ATKIN
+13. HASHCODE WITH POLYNOMIAL ROLLING OF STRING KEYS
+
+=================================================================================
+1. INCREASE ARRAY INDEX, JUMP TO FIRST ELEMENT WHEN REACHING LAST
+=================================================================================
+EXAMPLE FOR LOOP AND RESTARTING THE CYCLE IN AN ARRAY:
+int index = 0;
+int capacity = ...;
+
+void push(int newValue) {
+    array[index] = newValue;
+    index = ++index % capacity; //increases until reaches capacity then it jumps back to 0
+}
+END OF EXAMPLE
+
+=================================================================================
+2. INCREASE ARRAY CAPACITY
+=================================================================================
+EXAMPLE FOR MODIFYING ARRAY CAPACITY:
+int capacity = ...;
+int[] array = new int[capacity];
+int index = 0;
+
+void push(int newValue) {
+    array[index] = newValue;
+    index++;
+    //when reaches the limit, doubles the capacity
+    if (index == array.length) {
+        array = Arrays.copyOf(array, capacity * 2);
+        capacity *= 2;
+    }
+}
+END OF EXAMPLE
+
+=================================================================================
+3. INDEXOF WITH STREAM
+=================================================================================
+EXAMPLE FOR FINDING AN ELEMENT VIA STREAM:
+class ClassName {
+    private long id;
+    //fields, constructors, getters
+    public long getId() {
+        return id;
+    }
+}
+//for Lists:
+List<ClassName> list = ...;
+...
+int indexOf(long id) {
+	OptionalInt optionalInt = IntStream.range(0, list.size())
+			.filter(n -> list.get(n).getId() == id)
+			.findFirst();
+	return optionalInt.isEmpty() ? -1 : optionalInt.getAsInt();
+}
+//for arrays:
+ClassName[] array = ...;
+...
+int indexOf(long id) {
+	OptionalInt optionalInt = IntStream.range(0, list.size())
+			.filter(n -> array[n].getId() == id)
+			.findFirst();
+	return optionalInt.isEmpty() ? -1 : optionalInt.getAsInt();
+}
+END OF EXAMPLE
+
+=================================================================================
+4. RECURSIVE SORTING
+=================================================================================
+
+EXAMPLE FOR RECURSIVE SORTING:
+int[] array = new int[10];
+...
+int indexLow = 0, indexHigh = 1;
+int[] sortedArray = sort(array, indexLow, indexHigh);
+...
+public int[] sort(int[] array, int indexLow, int indexHigh) {
+    if (indexLow == array.length - 1) {
+        return array;
+    }
+    else {
+        if (array[indexLow] > array[indexHigh]) {
+            int temp = array[indexLow];
+            array[indexLow] = array[indexHigh];
+            array[indexHigh] = temp;
+        } //if (array[indexLow] > array[indexHigh])
+        if (indexHigh < array.length - 1) {
+            indexHigh++;
+        }
+        else {
+            indexLow++;
+            indexHigh = indexLow + 1;
+        }
+        array = sort(array, indexLow, indexHigh);
+    } //else: if (indexLow == array.length - 1)
+}
+END OF EXAMPLE
+
+=================================================================================
+5. LINKED LIST
+=================================================================================
+EXAMPLE FOR LINKED LIST:
+public class Node {
+	int value;
+	Node next;
+}
+
+public void deleteNode(Node node, int value) {
+	if (node == null) {
+		throw new IllegalArgumentException("first argument is null");
+	}
+
+	Node actualNode = node;
+	Node nextNode;
+	while (actualNode != null) {
+		nextNode = actualNode.next;
+		while (nextNode != null && nextNode.value == value) {
+			nextNode = nextNode.next;
+		}
+		actualNode.next = nextNode;
+		actualNode = actualNode.next;
+	}
+}
+
+public boolean loopDetection(Node node) {
+	if (node == null) {
+		throw new IllegalArgumentException("argument is null");
+	}
+
+	Node actualNode = node;
+	Node detectorNode = actualNode.next;
+	while (detectorNode != null && actualNode != detectorNode) {
+		detectorNode = detectorNode.next;
+		if (detectorNode != null && actualNode != detectorNode) {
+			detectorNode = detectorNode.next;
+			actualNode = actualNode.next;
+		}
+	}
+	return actualNode == detectorNode;
+}
+
+public Node GetLastNode(Node node, int whichNodeFromLast) {
+	if (node == null) {
+		throw new IllegalArgumentException("first argument is null");
+	}
+	if (whichNodeFromLast < 0) {
+		throw new IllegalArgumentException("second argument is negative");
+	}
+
+	Map<Integer, Node> nodes = new HashMap<>();
+	int position = -1;
+	Node actualNode = node;
+	while (actualNode != null) {
+		position++;
+		nodes.put(position, actualNode);
+		actualNode = actualNode.next;
+	}
+
+	if (whichNodeFromLast > position) {
+		return null;
+	}
+	else {
+		return nodes.get(position - whichNodeFromLast);
+	}
+}
+
+public void removeDuplicates(Node node) {
+	if (node == null) {
+		throw new IllegalArgumentException("argument is null");
+	}
+
+	Set<Integer> foundValues = new HashSet<>();
+	Node actualNode = node;
+	foundValues.add(actualNode.value);
+	Node nextNode = actualNode.next;
+
+	while (actualNode != null) {
+		while (nextNode != null && foundValues.contains(nextNode.value)) {
+			nextNode = nextNode.next;
+		}
+		if (actualNode.next != nextNode) {
+			actualNode.next = nextNode;
+		}
+		actualNode = nextNode;
+		if (actualNode != null) {
+			foundValues.add(actualNode.value);
+			nextNode = actualNode.next;
+		}
+	}
+}
+END OF EXAMPLE
+
+=================================================================================
+6. DOUBLE LINKED LIST
+=================================================================================
+EXAMPLE FOR DOUBLE LINKED LIST:
+public class Node {
+	int value;
+	Node previous;
+	Node next;
+}
+
+public void deleteNode(Node node, int value) {
+	if (node == null) {
+		throw new IllegalArgumentException("first argument is null");
+	}
+
+	//backward from previous of given node
+	Node actualNode = node.previous;
+	while (actualNode != null) {
+		if (actualNode.value == value) {
+			if (actualNode.previous != null) {
+				actualNode.previous.next = actualNode.next;
+			}
+			actualNode.next.previous = actualNode.previous;
+		}
+		actualNode = actualNode.previous;
+	}
+
+	//forward from given node
+	actualNode = node;
+	while (actualNode != null) {
+		if (actualNode.value == value) {
+			if (actualNode.next != null) {
+				actualNode.next.previous = actualNode.previous;
+			}
+			if (actualNode.previous != null) {
+				actualNode.previous.next = actualNode.next;
+			}
+		}
+		actualNode = actualNode.next;
+	}
+}
+END OF EXAMPLE
+
+=================================================================================
+7. QUEUE WITH ARRAY
+=================================================================================
+EXAMPLE FOR QUEUE:
+public class MyQueue {
+
+	private final int capacity;
+	private final int[] queue;
+	private int first;
+	private int last;
+
+	public MyQueue(int capacity) {
+		if (capacity < 1) {
+			throw new IllegalArgumentException("insufficient capacity");
+		}
+		this.capacity = capacity;
+		this.queue = new int[capacity];
+		first = -1;
+		last = -1;
+	}
+
+	public void push(int newValue) throws Exception {
+		int newLast = (last + 1) % capacity;
+		if (newLast == first) {
+			throw new Exception("full");
+		}
+		last = newLast;
+
+		queue[last] = newValue;
+
+		if (first == -1) {
+			first++;
+		}
+	}
+
+	public int pull() throws Exception {
+		if (first == -1) {
+			throw new Exception("empty");
+		}
+
+		int value = queue[first];
+
+		if (first == last) {
+			first = -1;
+			last = -1;
+		} else {
+			first = (first + 1) % capacity;
+		}
+		return value;
+	}
+}
+END OF EXAMPLE
+
+=================================================================================
+8. ROUND ROBIN QUEUE (WITH ARRAYLIST OF STRING ITERATORS)
+=================================================================================
+Round Robin structure:
+    - the queue is made from series of collections or arrays forming a pool (here: ArrayList<Iterator<String>>)
+    - the pool has an actual index which shows from which collection or array will be the next pulled element taken
+    - push adds a new collection or array to the end of the pool
+    - pull gets the first element (here: String) from the actual collection or array (here: Iteration<String>) in FIFO fashion, then jumps to the next collection or array
+
+EXAMPLE FOR ROUND ROBIN QUEUE WITH ARRAYLIST OF STRING ITERATORS:
+public class RoundRobinQueue {
+
+	private final List<Iterator<String>> queue;
+	private int lastPullIndex;
+
+	public RoundRobinQueue() {
+		this.queue = new ArrayList<>();
+		lastPullIndex = -1;
+	}
+
+	public void push(List<String> items) {
+		if (items == null) {
+			throw new IllegalArgumentException("argument is null");
+		}
+		this.queue.add(items.iterator());
+	}
+
+	public String pull() {
+/*
+		Returns null when:
+		- the queue is empty yet: no pushed List yet
+		- the queue is already empty: all Strings were pulled (all Iterations have no next element)
+		- the pulled element is null
+		Returns empty String when the pulled element is an empty String.
+		The next pull reads the next Iteration. If it was the actual last Iteration in the List and
+			a new valid push arrives, the next pull will try the new Iteration.
+*/
+
+		if (queue.size() == 0) {
+			return null;
+		}
+
+		int newPullIndex = (lastPullIndex + 1) % queue.size();
+		while (!queue.get(newPullIndex).hasNext() && newPullIndex != lastPullIndex) {
+			newPullIndex = (newPullIndex + 1) % queue.size();
+		}
+
+		if (queue.get(newPullIndex).hasNext()) {
+			lastPullIndex = newPullIndex;
+			return queue.get(lastPullIndex).next();
+		}
+		else {
+			return null;
+		}
+	}
+}
+END OF EXAMPLE
+
+=================================================================================
+9. ROUND ROBIN QUEUE (WITH QUEUE OF STRING ITERATORS)
+=================================================================================
+Round Robin structure:
+    - the queue is made from series of collections or arrays forming a pool (here: Queue<Iterator<String>>)
+    - the pool (Queue) follows the FIFO model
+    - push adds a new collection or array to the queue
+    - pull gets the first element (here: Iteration) from the queue, process the next element in it (FIFO), then add it to the queue (it will be processed again after the original last element)
+
+EXAMPLE FOR ROUND ROBIN QUEUE WITH QUEUE OF STRING ITERATORS:
+public class RoundRobinQueueWithQueue {
+	private final Queue<Iterator<String>> queue;
+
+	public RoundRobinQueueWithQueue() {
+		this.queue = new LinkedList<>();
+	}
+
+	public void push(List<String> strings) {
+		if (strings == null || strings.size() == 0) {
+			throw new IllegalArgumentException("invalid argument");
+		}
+		queue.offer(strings.iterator());
+	}
+
+	public String pull() {
+		Iterator<String> iterator = queue.poll();
+
+		//Queue is empty
+		if (iterator == null) {
+			return null;
+		}
+
+		String s = iterator.next();
+
+		if (iterator.hasNext()) {
+			queue.offer(iterator);
+		}
+
+		return s;
+	}
+}
+END OF EXAMPLE
+
+=================================================================================
+10. PALINDROME (STRING EQUALS ITS REVERSED FORM)
+=================================================================================
+Palindrome:
+    - the given string and its reversed form are identical (A, AA, ABA, ABBA, A A, A  A, A B A, AB BA)
+    - spaces are usually used in checking
+
+EXAMPLE FOR CHECKING PALINDROME:
+public boolean isItPalindrom(String text) {
+	//argument check
+	if (text == null) {
+		return false;
+	}
+
+	//clean all white spaces and non-visible characters
+	//find it in other practice
+
+	//palindrome check with StringBuilder and reversed loop
+	StringBuilder sb = new StringBuilder();
+	for (int i = text.length() - 1, limit = 0; i >= limit; i--) {
+		sb.append(text.charAt(i));
+	}
+	return text.equals(sb.toString());
+
+	//or:
+
+	//palindrome check with StringBuilder.reverse()
+	StringBuilder sb = new StringBuilder(text);
+	return text.equals(sb.reverse().toString());
+
+	//or:
+
+	//palindrome check with single loop
+	int i = 0;
+	int length = text.length();
+	while ((i < length / 2) &&
+			text.charAt(i) == text.charAt(length - i - 1)) {
+		++i;
+	}
+	return i == length / 2;
+}
+END OF EXAMPLE
+
+=================================================================================
+11. CLEAN ALL WHITE SPACES AND NON-VISIBLE CHARACTERS
+=================================================================================
+EXAMPLE FOR CLEANING SPACES AND NON-VISIBLES:
+String s = ...;
+s = s.replaceAll("\\s+",""); //as the number of consecutive spaces increases, performs better
+s = s.replaceAll("\\s",""); //20% faster in normal circumstances
+END OF EXAMPLE
+
+=================================================================================
+12. FIND PRIMES WITH SIEVE OF ATKIN
+=================================================================================
+EXAMPLE FOR FINDING PRIMES WITH SIEVE OF ATKIN:
+List<Integer> sieve(int limit) {
+
+	List<Integer> primes = new ArrayList<>();
+	if (limit < 2) {
+		return primes;
+	}
+	if (limit == 2) {
+		primes.add(2);
+		return primes;
+	}
+	if (limit == 3) {
+		primes.add(2);
+		primes.add(3);
+		return primes;
+	}
+
+	//create and fill marker list
+	List<Boolean> markerList = new ArrayList<>();
+	markerList.add(false);
+	markerList.add(true);
+	markerList.add(true);
+
+	for (int i = 4; i <= limit; i++) {
+		markerList.add(false);
+	}
+
+	int n;
+	int i = 1;
+	while (i <= limit) {
+		int j = 1;
+		while (j <= limit) {
+			n = (4 * i * i) + (j * j);
+			if (n <= limit && (n % 12 == 1 || n % 12 == 5)) {
+				markerList.set(n - 1, true);
+			}
+
+			n = (3 * i * i) + (j * j);
+			if (n <= limit && n % 12 == 7) {
+				markerList.set(n - 1, true);
+			}
+
+			n = (3 * i * i) - (j * j);
+			if (i > j && n <= limit && n % 12 == 11) {
+				markerList.set(n - 1, true);
+			}
+			j++;
+		}
+		i++;
+	}
+
+	int r = 5;
+	while (r * r <= limit) {
+		if (markerList.get(r - 1)) {
+			for (int k = r * r; k <= limit; k = r * r) {
+				markerList.set(k - 1, false);
+			}
+		}
+		r += 1;
+	}
+
+	//convert marker list to numbers
+	for (int k = 0, size = markerList.size(); k < size; k++) {
+		if (markerList.get(k)) {
+			primes.add(k + 1);
+		}
+	}
+
+	return primes;
+}
+END OF EXAMPLE
+
+=================================================================================
+13. HASHCODE WITH POLYNOMIAL ROLLING OF STRING KEYS
+=================================================================================
+The technique gives rare chance of overlapping hashcodes for different strings.
+Therefore, generate 2 hashcodes with different moduluses, and use them in pair, which significantly decreases the chance of overlapping.
+Generated code interval: [0, modulus).
+
+EXAMPLE FOR GENERATING SINGLE HASHCODE WITH POLYNOMIAL ROLLING OF STRING KEYS:
+public int singleHashcodeWithPolynomialRollingOfStringKeys(String string, int modulus) {
+	int length = string.length();
+	int p = 5381;
+	List<Integer> hashList = new ArrayList<>();
+	for (int i = 0; i < length; i++) {
+		hashList.add(0);
+	}
+	int h = 0;
+	int powerOfP = 1;
+
+	for (int i = 0; i < length; i++) {
+		h = (h + (Character.getNumericValue(string.charAt(i)) - Character.getNumericValue('a') + 1) * powerOfP) % modulus;
+		powerOfP = (powerOfP * p) % modulus;
+		hashList.set(i, h);
+	}
+
+	return hashList.get(length - 1);
+}
+END OF EXAMPLE
+
+EXAMPLE FOR GENERATING HASHCODE PAIR WITH POLYNOMIAL ROLLING OF STRING KEYS:
+public List<Integer> hashcodePairWithPolynomialRollingOfStringKeys(String string, int modulus1, int modulus2) {
+	int length = string.length();
+	int p = 5381;
+	List<Integer> hashList1 = new ArrayList<>();
+	for (int i = 0; i < length; i++) {
+		hashList1.add(0);
+	}
+	List<Integer> hashList2 = new ArrayList<>(hashList1);
+	int h1 = 0;
+	int h2 = 0;
+	int powerOfP1 = 1;
+	int powerOfP2 = 1;
+
+	for (int i = 0; i < length; i++) {
+		h1 = (h1 + (Character.getNumericValue(string.charAt(i)) - Character.getNumericValue('a') + 1) * powerOfP1) % modulus1;
+		h2 = (h2 + (Character.getNumericValue(string.charAt(i)) - Character.getNumericValue('a') + 1) * powerOfP2) % modulus2;
+		powerOfP1 = (powerOfP1 * p) % modulus1;
+		powerOfP2 = (powerOfP2 * p) % modulus2;
+		hashList1.set(i, h1);
+		hashList2.set(i, h2);
+	}
+
+	return List.of(hashList1.get(length - 1), hashList2.get(length - 1));
+}
+END OF EXAMPLE
+
+=>PRACTICES
