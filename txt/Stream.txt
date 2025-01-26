@@ -177,7 +177,7 @@ The methods described below are of IntStream, however the other primitive stream
 ||builder()|returns a Builder for IntStream||
 ||allMatch(lambda)|returns whether the lambda gives true for all elements||
 ||anyMatch(lambda)|returns whether the lambda gives true for any of elements||
-||boxed()|creates wrapper element typed String by autoboxing||
+||boxed()|creates wrapper element typed Stream by autoboxing||
 ||map(lambda)|processes the original IntStream elements, returns the same type||
 ||mapToLong(lambda)|processes the original IntStream elements, returns LongStream||
 ||mapToDouble(lambda)|processes the original IntStream elements, returns DoubleStream||
@@ -280,7 +280,7 @@ EXAMPLE FOR COLLECTING INTO SPECIFIC COLLECTION:
 import java.util.stream.Collectors.*;
 import java.util.*;
 ...
-List<...> list = Arrays.asList(...); //source
+List<...> list = Arrays.asList(...); //source; works as intended when the element type is a class
 List<...> ul = list.stream().collect(Collectors.toUnmodifiableList());
 List<...> us = list.stream().collect(Collectors.toUnmodifiableSet()); //duplicates are filtered out
 LinkedList<...> ll = list.stream().collect(toCollection(LinkedList::new)); //via constructor of target
@@ -290,7 +290,7 @@ EXAMPLE FOR COLLECTINGANDTHEN:
 import java.util.stream.Collectors.*;
 import java.util.*;
 ...
-List<...> list = Arrays.asList(...); //source
+List<...> list = Arrays.asList(...); //source; works as intended when the element type is a class
 List<...> result = list.stream()
         .collect(collectingAndThen(toList(), ImmutableList::copyOf)) //turn the result to be immutable
 END OF EXAMPLE

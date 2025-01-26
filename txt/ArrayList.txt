@@ -5,6 +5,7 @@ ARRAYLIST
 2. ARRAYLIST SORTING
 3. ARRAYLIST CONVERTING TO 1D ARRAY AND BACK
 4. ARRAYLIST CONVERTING TO HASHMAP AND BACK
+5. CREATE AND FILL ARRAYLIST
 
 =================================================================================
 1. ARRAYLIST IN GENERAL, METHODS
@@ -208,6 +209,39 @@ List<String> valueList2 = new ArrayList<>(map.values());
 //or:
 List<Integer> keyList2 = map.keySet().stream().collect(Collectors.toList());
 List<String> valueList2 = map.values().stream().collect(Collectors.toList());
+END OF EXAMPLE
+
+=================================================================================
+5. CREATE AND FILL ARRAYLIST
+=================================================================================
+EXAMPLE FOR CREATING AND FILLING AN ARRAYLIST:
+//10 elements, filled with 1
+List<Integer> ial = new ArrayList<>();
+for (int i = 1; i <= 10; i++) {
+	ial.add(1);
+}
+
+//10 elements, filled with 2
+List<Integer> ial = IntStream.rangeClosed(1, 10)
+        .map(n -> 2)
+        .boxed()
+        .collect(Collectors.toList());
+
+//10 elements, filled with 1..10
+List<Integer> ial = IntStream.rangeClosed(1, 10)
+        .boxed()
+        .collect(Collectors.toList());
+
+//10 elements, filled with 3
+int[] ia = new int[10];
+Arrays.fill(ia, 3);
+List<Integer> ial = IntStream.rangeClosed(1, 10)
+        .map(n -> 2)
+        .boxed()
+        .collect(Collectors.toList());
+
+//10 elements, filled with 4
+List<Integer> ial = new ArrayList<>(Collections.nCopies(10, 4));
 END OF EXAMPLE
 
 =>VARIABLES

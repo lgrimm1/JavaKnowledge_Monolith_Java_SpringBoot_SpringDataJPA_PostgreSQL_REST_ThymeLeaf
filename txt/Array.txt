@@ -9,6 +9,7 @@ ARRAY
 6. SEARCH IN ARRAY
 7. CONVERT TO ARRAYLIST AND BACK
 8. CONVERT TO HASHSET AND BACK
+9. CREATE AND FILL ARRAY
 
 =================================================================================
 1. ARRAY DIMENSIONS, TYPES, ITERATING
@@ -354,33 +355,70 @@ END OF EXAMPLE
 =================================================================================
 7. CONVERT TO ARRAYLIST AND BACK
 =================================================================================
-EXAMPLE FOR CONVERTING TO ARRAYLIST AND BACK:
+The List<...> list = Arrays.asList(array) formula can have to different outcome:
+    - in case the array element type is a class (or wrapper), the resulted element type will be the same (e.g. List<Integer>)
+    - in case the array element type is a primitive, the resulted element type will be the array type as a class (e.g. List<int[]>)
+
+EXAMPLE FOR CONVERTING CLASS-TYPED ARRAY TO ARRAYLIST:
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 ...
 String[] sa = new String[]{...};
 ...
-List sal = new ArrayList<>(Arrays.asList(sa));
+List<String> sal = new ArrayList<>(Arrays.asList(sa));
 //or:
 ArrayList<String> sal = new ArrayList<>();
 for (String s : sa) {
 	sal.add(s);
 }
+//or:
+List<String> sal = Arrays.stream(sa)
+        .collect(Collectors.toList());
+END OF EXAMPLE
+
+EXAMPLE FOR CONVERTING PRIMITIVE-TYPED ARRAY TO ARRAYLIST:
+//only for int[], long[] and double[]
+int[] ia = new int[]{...};
+...
+ArrayList<Integer> ial = Arrays.stream(ia)
+        .boxed()
+        .collect(Collectors.toList);
+END OF EXAMPLE
+
+EXAMPLE FOR CONVERTING ARRAYLIST TO CLASS-TYPED ARRAY:
+List<String> sal = new ArrayList<>();
 ...
 int length = sal.size();
-String[] sa2 = new String[length];
-//in case element type is not primitive
+String[] sa = new String[length];
 sal.toArray(sa2);
 //or:
 for (int index = 0; index < length; index++) {
-    sa2[index] = sal.get(index);
+    sa[index] = sal.get(index);
+}
+END OF EXAMPLE
+
+EXAMPLE FOR CONVERTING ARRAYLIST TO PRIMITIVE-TYPED ARRAY:
+//only for int[], long[] and double[]
+List<Integer> ial = new ArrayList<>();
+...
+int[] ia = ial.stream
+        .mapToInt(n -> n)
+        .toArray();
+//or:
+int length = ial.size();
+for (int index = 0; index < length; index++) {
+    ia[index] = ial.get(index);
 }
 END OF EXAMPLE
 
 =================================================================================
 8. CONVERT TO HASHSET AND BACK
 =================================================================================
+The List<...> list = Arrays.asList(array) formula can have to different outcome:
+    - in case the array element type is a class (or wrapper), the resulted element type will be the same (e.g. List<Integer>)
+    - in case the array element type is a primitive, the resulted element type will be the array type as a class (e.g. List<int[]>)
+
 EXAMPLE FOR CONVERTING TO HASHSET AND BACK:
 import java.util.HashSet;
 import java.util.List;
@@ -395,6 +433,24 @@ Set<String> set = new HashSet<>(Arrays.stream(array).collect(Collectors.toSet())
 ...
 String[] array2 = new String[set.size()];
 set.toArray(array);
+END OF EXAMPLE
+
+=================================================================================
+9. CREATE AND FILL ARRAY
+=================================================================================
+EXAMPLE FOR CREATE AND FILL AN ARRAY:
+//10 elements, filled with 1..10
+int[] ia = IntStream.rangeClosed(1, 10)
+        .toArray();
+
+//10 elements, filled with 2
+int[] ia = IntStream.rangeClosed(1, 10)
+        .map(n -> 2)
+        .toArray();
+
+//10 elements, filled with 3
+int[] ia = new int[10];
+Arrays.fill(ia, 3);
 END OF EXAMPLE
 
 =>VARIABLES
