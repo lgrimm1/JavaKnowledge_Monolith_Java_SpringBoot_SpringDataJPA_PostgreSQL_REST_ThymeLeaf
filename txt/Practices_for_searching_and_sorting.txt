@@ -1,0 +1,370 @@
+=================================================================================
+PRACTICES FOR SEARCHING AND SORTING
+=================================================================================
+1. SEARCHING ALGORITHMS
+2. ARRAY SEARCHING ALGORITHMS
+3. ARRAYLIST SEARCHING ALGORITHMS
+4. SORTING ALGORITHMS
+5. ARRAY SORTING ALGORITHMS
+6. ARRAYLIST SORTING ALGORITHMS
+
+=================================================================================
+1. SEARCHING ALGORITHMS
+=================================================================================
+Sequential Search
+    - O(n)
+    - works on sorted and unsorted data sets
+    - finds the first occurrence from the starting point
+
+Binary Search
+    - O(log(n))
+    - works only on sorted data sets (sorting direction is indifferent)
+    - divides the data in binary tree fashion
+    - finds the 1st occurrence which is on a higher level of the binary tree
+    - uses shortcuts for the 1st and the last elements
+
+=================================================================================
+2. ARRAY SEARCHING ALGORITHMS
+=================================================================================
+EXAMPLE FOR SEQUENTIAL SEARCH:
+int[] array = ...;
+int value = ...;
+
+if (array == null || array.length == 0) {
+	return Optional.empty();
+}
+int i = 0;
+while (i < array.length && array[i] != value) {
+	i++;
+}
+if (i < array.length) {
+	return Optional.of(i);
+}
+else {
+	return Optional.empty();
+}
+END OF EXAMPLE
+
+EXAMPLE FOR BINARY SEARCH:
+int[] array = ...;
+int value = ...;
+
+if (array == null || array.length == 0 || !this.sorted) {
+	return Optional.empty();
+}
+if (value < array[0] || value > array[array.length - 1]) {
+	return Optional.empty();
+}
+if (value == array[0]) {
+	return Optional.of(0);
+}
+if (value == array[array.length - 1]) {
+	return Optional.of(array.length - 1);
+}
+
+int i = 0;
+int j = array.length - 1;
+int k = 0;
+boolean notFound = true;
+while (notFound && i < j) {
+	k = (i + j) / 2;
+	if (array[k] < value) {
+		i = k;
+	}
+	else if (array[k] == value) {
+		notFound = false;
+	}
+	else {
+		j = k;
+	}
+}
+if (notFound) {
+	return Optional.empty();
+}
+return Optional.of(k);
+END OF EXAMPLE
+
+=================================================================================
+3. ARRAYLIST SEARCHING ALGORITHMS
+=================================================================================
+EXAMPLE FOR SEQUENTIAL SEARCH:
+List<Integer> list = new ArrayList<>();
+list.sort(Comparator.naturalOrder());
+
+if (list == null || list.isEmpty()) {
+	return Optional.empty();
+}
+int size = list.size();
+int i = 0;
+while (i < size && list.get(i).compareTo(value) != 0) {
+	i++;
+}
+if (i < size) {
+	return Optional.of(i);
+}
+else {
+	return Optional.empty();
+}
+END OF EXAMPLE
+
+EXAMPLE FOR BINARY SEARCH:
+List<Integer> list = new ArrayList<>();
+list.sort(Comparator.naturalOrder());
+
+if (list == null || list.isEmpty() || !this.sorted) {
+	return Optional.empty();
+}
+if (value < list.get(0) || value > list.get(list.size() - 1)) {
+	return Optional.empty();
+}
+if (value == list.get(0)) {
+	return Optional.of(0);
+}
+if (value == list.get(list.size() - 1)) {
+	return Optional.of(list.size() - 1);
+}
+
+int i = 0;
+int j = list.size() - 1;
+int k = 0;
+boolean notFound = true;
+while (notFound && i != j) {
+	k = (i + j) / 2;
+	switch (list.get(k).compareTo(value)) {
+		case -1 -> i = k;
+		case 0 -> notFound = false;
+		case 1 -> j = k;
+	}
+}
+if (notFound) {
+	return Optional.empty();
+}
+return Optional.of(k);
+END OF EXAMPLE
+
+=================================================================================
+4. SORTING ALGORITHMS
+=================================================================================
+Selection Sort:
+    - O(n^2)
+    - not suitable for large lists due to its inefficiency
+    - useful in scenarios where memory writes are a costly operation (makes maximum n - 1 swaps)
+
+Bubble Sort
+    - O(n^2)
+    - not suitable for large data sets due to its inefficiency
+
+Insertion Sort
+    - O(n^2)
+    - efficient for small data sets or for lists that are already mostly sorted
+    - useful in real-time applications where data arrives continuously
+
+Minimum Search Sort
+    - O(n^2)
+    - efficient when number of data swaps must be kept at minimum
+
+Merge Sort
+    - O(n * log(n))
+    - employs a divide-and-conquer strategy
+    - efficient and stable, with a predictable time complexity
+    - performs well on large data sets
+    - performs not as well on small data sets
+    - particularly useful for linked lists and external sorting (e.g., sorting large files on disk)
+
+=================================================================================
+5. ARRAY SORTING ALGORITHMS
+=================================================================================
+EXAMPLE FOR SELECTION SORT:
+int[] array = ...;
+
+if (array != null && array.length > 1) {
+	int i = 0;
+	int j;
+	int temporal;
+	while (i < array.length - 1) {
+		j = i + 1;
+		while (j < array.length) {
+			if (array[i] > array[j]) {
+				temporal = array[i];
+				array[i] = array[j];
+				array[j] = temporal;
+			}
+			j++;
+		}
+		i++;
+	}
+}
+END OF EXAMPLE
+
+EXAMPLE FOR BUBBLE SORT:
+int[] array = ...;
+
+if (array != null && array.length > 1) {
+	boolean swapping = true;
+	int i, j;
+	while (swapping) {
+		i = 0;
+		j = 1;
+		int temporal;
+		swapping = false;
+		while (j < array.length) {
+			if (array[i] > array[j]) {
+				swapping = true;
+				temporal = array[i];
+				array[i] = array[j];
+				array[j] = temporal;
+			}
+			i++;
+			j++;
+		}
+	}
+}
+END OF EXAMPLE
+
+EXAMPLE FOR INSERTION SORT:
+int[] array = ...;
+
+if (array != null && array.length > 1) {
+	int lastSortedElementIndex = 0;
+	int i;
+	int temporal;
+	while (lastSortedElementIndex < array.length - 1) {
+		i = lastSortedElementIndex + 1;
+		while (i > 0 && array[i] < array[i - 1]) {
+			temporal = array[i];
+			array[i] = array[i - 1];
+			array[i - 1] = temporal;
+			i--;
+		}
+		lastSortedElementIndex++;
+	}
+}
+END OF EXAMPLE
+
+EXAMPLE FOR MINIMUM SEARCH SORT:
+int[] array = ...;
+
+if (array != null && array.length > 1) {
+	int i = 0;
+	int j;
+	int minIndex;
+	int temporal;
+	while (i < array.length - 1) {
+		minIndex = i;
+		j = i + 1;
+		while (j < array.length) {
+			if (array[j] < array[minIndex]) {
+				minIndex = j;
+			}
+			j++;
+		}
+		temporal = array[i];
+		array[i] = array[minIndex];
+		array[minIndex] = temporal;
+		i++;
+	}
+}
+END OF EXAMPLE
+
+=================================================================================
+6. ARRAYLIST SORTING ALGORITHMS
+=================================================================================
+EXAMPLE FOR SELECTION SORT:
+List<Integer> list = new ArrayList<>();
+
+if (list != null && list.size() > 1) {
+	int size = list.size();
+	int i = 0;
+	int j;
+	Integer temporal;
+	while (i < size - 1) {
+		j = i + 1;
+		while (j < size) {
+			if (list.get(i).compareTo(list.get(j)) > 0) {
+				temporal = list.get(i);
+				list.set(i, list.get(j));
+				list.set(j, temporal);
+			}
+			j++;
+		}
+		i++;
+	}
+}
+END OF EXAMPLE
+
+EXAMPLE FOR BUBBLE SORT:
+List<Integer> list = new ArrayList<>();
+
+if (list != null && list.size() > 1) {
+	int size = list.size();
+	boolean swapping = true;
+	int i, j;
+	while (swapping) {
+		i = 0;
+		j = 1;
+		Integer temporal;
+		swapping = false;
+		while (j < size) {
+			if (list.get(i).compareTo(list.get(j)) > 0) {
+				swapping = true;
+				temporal = list.get(i);
+				list.set(i, list.get(j));
+				list.set(j, temporal);
+			}
+			i++;
+			j++;
+		}
+	}
+}
+END OF EXAMPLE
+
+EXAMPLE FOR INSERTION SORT:
+List<Integer> list = new ArrayList<>();
+
+if (list != null && list.size() > 1) {
+	int size = list.size();
+	int lastSortedElementIndex = 0;
+	int i;
+	Integer temporal;
+	while (lastSortedElementIndex < size - 1) {
+		i = lastSortedElementIndex + 1;
+		while (i > 0 && list.get(i).compareTo(list.get(i - 1)) < 0) {
+			temporal = list.get(i);
+			list.set(i, list.get(i - 1));
+			list.set(i - 1, temporal);
+			i--;
+		}
+		lastSortedElementIndex++;
+	}
+}
+END OF EXAMPLE
+
+EXAMPLE FOR MINIMUM SEARCH SORT:
+List<Integer> list = new ArrayList<>();
+
+if (list != null && list.size() > 1) {
+	int size = list.size();
+	int i = 0;
+	int j;
+	int minIndex;
+	Integer temporal;
+	while (i < size - 1) {
+		minIndex = i;
+		j = i + 1;
+		while (j < size) {
+			if (list.get(j).compareTo(list.get(minIndex)) < 0) {
+				minIndex = j;
+			}
+			j++;
+		}
+		temporal = list.get(i);
+		list.set(i, list.get(minIndex));
+		list.set(minIndex, temporal);
+		i++;
+	}
+}
+END OF EXAMPLE
+
+=>PRACTICES
+=>ARRAY
+=>ARRAYLIST

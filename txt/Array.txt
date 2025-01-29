@@ -439,20 +439,29 @@ END OF EXAMPLE
 9. CREATE AND FILL ARRAY
 =================================================================================
 EXAMPLE FOR CREATE AND FILL AN ARRAY:
-//10 elements, filled with 1..10
-int[] ia = IntStream.rangeClosed(1, 10)
-        .toArray();
-
-//10 elements, filled with 2
-int[] ia = IntStream.rangeClosed(1, 10)
-        .map(n -> 2)
-        .toArray();
-
-//10 elements, filled with 3
+//10 elements, filled with 1
 int[] ia = new int[10];
-Arrays.fill(ia, 3);
+Arrays.fill(ia, 1);
+//or:
+int[] ia = IntStream.rangeClosed(1, 10)
+        .map(n -> 1)
+        .toArray();
+//or:
+int[] ia = new ArrayList<Integer>(10).stream()
+        .mapToInt(n -> 1)
+        .toArray();
+
+//10 elements, filled with 1..10
+int[] ia = new int[10];
+for (int i = 0; i < ia.length; i++) {
+    ia[i] = i + 1;
+}
+//or:
+int[] ia = IntStream.rangeClosed(1, 10)
+        .toArray();
 END OF EXAMPLE
 
+=>PRACTICES FOR SEARCHING AND SORTING
 =>VARIABLES
 =>PRIMITIVE DATA TYPES
 =>OBJECTS

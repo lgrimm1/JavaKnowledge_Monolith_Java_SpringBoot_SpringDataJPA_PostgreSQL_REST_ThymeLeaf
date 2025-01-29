@@ -220,30 +220,32 @@ List<Integer> ial = new ArrayList<>();
 for (int i = 1; i <= 10; i++) {
 	ial.add(1);
 }
-
-//10 elements, filled with 2
+//or:
+List<Integer> ial = new ArrayList<>(Collections.nCopies(10, 1));
+//or:
+int[] ia = new int[10];
+Arrays.fill(ia, 1);
+List<Integer> ial = Arrays.Stream(ia)
+        .boxed()
+        .collect(Collectors.toList());
+//or:
 List<Integer> ial = IntStream.rangeClosed(1, 10)
-        .map(n -> 2)
+        .map(n -> 1)
         .boxed()
         .collect(Collectors.toList());
 
 //10 elements, filled with 1..10
+List<Integer> ial = new ArrayList<>();
+for (int i = 1; i <= 10; i++) {
+	ial.add(i);
+}
+//or:
 List<Integer> ial = IntStream.rangeClosed(1, 10)
         .boxed()
         .collect(Collectors.toList());
-
-//10 elements, filled with 3
-int[] ia = new int[10];
-Arrays.fill(ia, 3);
-List<Integer> ial = IntStream.rangeClosed(1, 10)
-        .map(n -> 2)
-        .boxed()
-        .collect(Collectors.toList());
-
-//10 elements, filled with 4
-List<Integer> ial = new ArrayList<>(Collections.nCopies(10, 4));
 END OF EXAMPLE
 
+=>PRACTICES FOR SEARCHING AND SORTING
 =>VARIABLES
 =>PRIMITIVE DATA TYPES
 =>OBJECTS
