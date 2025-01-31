@@ -4,6 +4,8 @@ TESTS
 Before any application is deployed, tests are needed in order to make it sure that for functionality, robustness and performance the application is trustable.
 Tests are divided to test cases. A test case represents a certain group of incoming data and checks against the results. The test cases together must cover all possibilities, also it is essential that the test strategy should follow the design.
 A well-designed test series makes it sure that if passes, the code is in proper status and works within the needed parameters. Also, when a test case fails, that marks properly that the code lost it properness and helps to identify the source of error.
+The tests should cover normal cases (when the code is used within ideal parameters) and edge cases (when the code flow is under stress, e.g. against null or maximum input values) as well.
+
 
 There are several test strategies:
     - unit tests
