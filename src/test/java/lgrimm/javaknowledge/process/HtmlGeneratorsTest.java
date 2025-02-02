@@ -68,7 +68,7 @@ class HtmlGeneratorsTest {
 
 		List<String> expectedHtml = List.of(
 				"TabInSpaces" + "<a href=\"#top\"><i>Back to top of page</i></a><br>",
-				"TabInSpaces" + "<a name=\"" + header1 + "\"></a>",
+				"TabInSpaces" + "<a id=\"" + header1 + "\"></a>",
 				"TabInSpaces" + "<h2>" + header1 + "</h2>"
 		);
 
@@ -87,7 +87,7 @@ class HtmlGeneratorsTest {
 
 		List<String> expectedHtml = List.of(
 				"TabInSpaces" + "<a href=\"#top\"><i>Back to top of page</i></a><br>",
-				"TabInSpaces" + "<a name=\"" + header2 + "\"></a>",
+				"TabInSpaces" + "<a id=\"" + header2 + "\"></a>",
 				"TabInSpaces" + "<h3>" + header2 + "</h3>"
 		);
 
