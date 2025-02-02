@@ -9,6 +9,7 @@ Database names, column names, index names etc. should be lowercase.
 3. INDEX (KEY) TYPES
 4. CHARACTER TYPES
 5. BACKEND CONNECTION PARAMETERS
+6. BACKUP, RESTORE
 
 =================================================================================
 1. SETTING UP
@@ -139,6 +140,20 @@ The array marking ([]) is equal with the separate array keyword (e.g. varchar(3)
 =================================================================================
 These parameters are declared in the application.properties or a Yaml file under the project directory.
 Visit SPRING APPLICATION PROPERTIES page for more details.
+
+=================================================================================
+6. LIVE DATABASE, BACKUP, RESTORE
+=================================================================================
+When dealing with live database or database of which structure we should not modify, you must carefully define the database connection mode from create, drop, create-drop etc. to none. This instructs Hibernate not to touch the structure nor the data.
+
+The data and structure in a database should be fall under regular backup. This can be done e.g. in the GUI of PostgreSQL. On the database root bring on the popup menu and select Backup or similar option.
+Under the Query Options tab, do not forget to mark Include DROP DATABASE. This means upon restoring the SQL commands will firstly delete the database, then create it. If you do not select this option, restoring will fail do to existing schemes.
+
+When restoring is necessary, in some cases the backup file which contains excessive SQL commands, when the existing database is not empty, another error will raise. Because you want to overwrite the original database contents with the saved one, you must delete the database before restoring.
+In order to so this, bring up the popup menu on the database root, and select Delete (or if there are live connections you want to close immediately, choose the Delete(Force) option).
+Then, Create the database with the very same name and parameters the original was created before, and then from the popup, choose the Restore option.
+
+When the database was created via Spring Data JPA (Hibernate), it is advised to create the database by starting the application with application properties ideal for drop first, then for create-only.
 
 =>SPRING BOOT
 =>SPRING BOOT ENTITY

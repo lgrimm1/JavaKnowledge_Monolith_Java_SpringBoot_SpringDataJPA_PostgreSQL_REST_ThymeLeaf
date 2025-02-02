@@ -14,23 +14,23 @@ public class Config {
 		return args -> {
 			TitleEntity entity1 = new TitleEntity(
 					"LOREM IPSUM DOLOR SIT AMET 1",
-                    1L,
+					1L,
 					1L);
 			TitleEntity entity2 = new TitleEntity(
 					"LOREM IPSUM DOLOR SIT AMET 2",
-                    2L,
+					2L,
 					2L);
 			TitleEntity entity3 = new TitleEntity(
 					"LOREM IPSUM DOLOR SIT AMET 3",
-                    3L,
+					3L,
 					3L);
 			repository.saveAll(List.of(entity1, entity2, entity3));
 		};
 	}
-	
+
 	@Bean
 	CommandLineRunner txtCommandLineRunner(TxtRepository repository) {
-	String content1 = """
+		String content1 = """
 		1. LOREM IPSUM DOLOR SIT AMET
 		2. LOREM IPSUM DOLOR SIT AMET
 		3. LOREM IPSUM DOLOR SIT AMET
@@ -80,7 +80,7 @@ public class Config {
 		=>LOREM IPSUM DOLOR SIT AMET 2
 		=>LOREM IPSUM DOLOR SIT AMET 3
 			""";
-	String content2 = """
+		String content2 = """
 		Lorem ipsum dolor sit amet.
 		Consectetur adipiscing elit. Aliquam massa erat, pretium sed nibh vel.
 		Ornare finibus nulla:
@@ -180,7 +180,7 @@ public class Config {
 		=>LOREM IPSUM DOLOR SIT AMET 1
 		=>LOREM IPSUM DOLOR SIT AMET 3
 			""";
-	String content3 = """
+		String content3 = """
 		Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam massa erat, pretium sed nibh vel, ornare finibus nulla. Donec elit dui, gravida at ante et, cursus semper mauris. Proin vitae posuere tortor. Donec id lectus at purus fringilla hendrerit. Vestibulum sed tincidunt augue. Sed euismod luctus tincidunt. In hac habitasse platea dictumst. Nulla dignissim enim in convallis dapibus. Maecenas sit amet eros nibh. Nam lectus ligula, tincidunt a sodales eu, laoreet vitae eros. Pellentesque in diam sit amet sem fringilla lacinia. Vestibulum odio lorem, ornare quis ex commodo, facilisis semper massa. Sed eu nunc ac urna suscipit eleifend ut at mi.
 		Pellentesque eget dui rhoncus, malesuada orci sollicitudin, fringilla arcu. Maecenas quis felis convallis, dapibus ex non, cursus sem.
 		

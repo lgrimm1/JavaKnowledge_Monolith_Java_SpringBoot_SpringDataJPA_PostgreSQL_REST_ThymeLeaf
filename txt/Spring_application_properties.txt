@@ -110,7 +110,7 @@ The spring.jpa.hibernate.ddl-auto parameter is needed only in development phase.
     - drop (drops the database)
     - create-drop (creates the schema, then drops the schema when the SessionFactory is closed explicitly, typically when the application is stopped)
     - validate (validates the schema, makes no changes to the database)
-    - none (does nothing with the schema, makes no changes to the database)
+    - none (does nothing with the schema, makes no changes to the database, suggested for live databases)
 While pure backend development is ongoing, create-drop is proper since the structure is not finalized.
 Once the database (entity) design time is over, and automation is needed in database creation, use create or create-only once.
 In production time, use none or validate (latter prevents malfunction in case the structure is damaged or unwillingly changed, and the server will not start up).
