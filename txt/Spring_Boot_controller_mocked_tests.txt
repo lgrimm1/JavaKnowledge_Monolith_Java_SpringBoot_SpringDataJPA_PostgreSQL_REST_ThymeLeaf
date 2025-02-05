@@ -37,6 +37,8 @@ In case one controller class should be tested, use the @WebMvcTest(ControllerCla
 In case more controller classes should be tested by the same test class, use the @WebMvcTest({ControllerClassName1.class, ControllerClassName2.class}) annotation on class level.
 In case all controller classes should be tested in the same test class, use the @WebMvcTest annotation on class level.
 
+The service should be injected by using the @MockBean field-level annotation. From Spring Boot 3.4.2 this annotation is @MockitoBean.
+
 EXAMPLE FOR CONTROLLER TEST CLASS (MOCKMVC, MOCKITO, JPA):
 package packageName;
 
