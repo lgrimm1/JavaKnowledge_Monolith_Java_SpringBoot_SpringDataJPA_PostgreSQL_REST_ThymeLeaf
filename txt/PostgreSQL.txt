@@ -8,8 +8,10 @@ Database names, column names, index names etc. should be lowercase.
 2. CONSOLE
 3. INDEX (KEY) TYPES
 4. CHARACTER TYPES
-5. BACKEND CONNECTION PARAMETERS
-6. BACKUP, RESTORE
+5. NUMERIC AND ARRAY TYPES
+6. OTHER TYPES
+7. BACKEND CONNECTION PARAMETERS
+8. BACKUP, RESTORE
 
 =================================================================================
 1. SETTING UP
@@ -82,10 +84,10 @@ In postgres, there are column types many administrators and developers use, see 
 ||UUID v6|-|-|experimental, need custom generator method for better server performance|-||
 
 Although the types above are used frequently, in case the [1, Long.MAX_VALUE] interval is enough for the table IDs, the next type can be used for primary index as well:
-    bigint
+    - bigint
 This type is matching with the Java long or Long types.
 Also, the Java int and Integer types are matching with the next postgres type:
-    integer
+    - integer
 
 =================================================================================
 4. CHARACTER TYPES
@@ -127,22 +129,83 @@ If needed explicitly, map the entity (domain) fields based upon the next.
 ||String|TEXT or VARCHAR|unlimited text, general usage||
 ||String|VARCHAR(n)|given maximum length with validation||
 ||String|VARCHAR(n)|potential over-length from spaces, truncates to n||
-||List<Character>|CHAR[] or CHAR(1)[]|not needed explicitly, default by Spring||
-||List<String>|TEXT[] or VARCHAR[]|unlimited text elements, general usage||
-||List<String>|VARCHAR(n)[]|given maximum element length with validation||
-||List<String>|VARCHAR(n)[]|potential over-length from spaces in elements, truncates to n||
+||List<Character>, char[], Character[]|CHAR[] or CHAR(1)[]|not needed explicitly, default by Spring||
+||List<String>, char[], Character[]|TEXT[] or VARCHAR[]|unlimited text elements, general usage||
+||List<String>, char[], Character[]|VARCHAR(n)[]|given maximum element length with validation||
+||List<String>, char[], Character[]|VARCHAR(n)[]|potential over-length from spaces in elements, truncates to n||
 
 Types definitions are valid in uppercase and lowercase forms as well (e.g. text and TEXT).
 The array marking ([]) is equal with the separate array keyword (e.g. varchar(3)[] and varchar(3) array).
 
 =================================================================================
-5. BACKEND CONNECTION PARAMETERS
+5. BOOLEAN, NUMERIC AND ARRAY TYPES
+=================================================================================
+||Java type|PostgreSQL type||
+||boolean|BIT, BOOLEAN||
+||short|SMALLINT, INT2||
+||int|INTEGER, INT4||
+||long|BIGINT, INT8||
+||float|REAL||
+||double|DOUBLE, DOUBLEPRECISION||
+||BigDecimal|DECIMAL||
+||byte[]|BYTEA||
+
+For wrapper types (arrays are included), the same PostgreSQL types can be used.
+
+For primitive and wrapper arrays, for wrapper Collection types, all the above types can be used with [] marking, e.g.:
+    - BIT[], INTEGER[]
+
+=================================================================================
+6. OTHER TYPES
+=================================================================================
+Java Spring Data JPA and Hibernate in the background does automated mapping to and from PostgreSQL types via SQL/JDBC. The latter serves as a bridge.
+Mapping of the most important types are in the next table.
+Most important PostgreSQL-Java type pairs:
+    - bigint - long
+    - bit/boolean - boolean
+    - char - char
+    - bytea - byte[]
+
+||POSTGRESQL DATA TYPE|SQL/JDBC TYPE|JAVA TYPE||
+||bool|BIT|boolean||
+||bit|BIT|boolean||
+||int8|BIGINT|long||
+||bigserial|BIGINT|long||
+||oid|BIGINT|long||
+||bytea|BINARY|byte[]||
+||char|CHAR|String||
+||bpchar|CHAR|String||
+||numeric|NUMERIC|java.math.BigDecimal||
+||int4|INTEGER|int||
+||serial|INTEGER|int||
+||int2|SMALLINT|short||
+||smallserial|SMALLINT|short||
+||float4|REAL|float||
+||float8|DOUBLE|double||
+||money|DOUBLE|double||
+||name|VARCHAR|String||
+||date|DATE|java.sql.Date||
+||time|TIME|java.sql.Time||
+||timetz|TIME|java.sql.Time||
+||timestamp|TIMESTAMP|java.sql.Timestamp||
+||timestamptz|TIMESTAMP|java.sql.Timestamp||
+||cardinal_number|DISTINCT|Mapping of underlying type||
+||character_data|DISTINCT|Mapping of underlying type||
+||sql_identifier|DISTINCT|Mapping of underlying type||
+||time_stamp|DISTINCT|Mapping of underlying type||
+||yes_or_no|DISTINCT|Mapping of underlying type||
+||xml|SQLXML|java.sql.SQLXML||
+||refcursor|REF_CURSOR|Undefined||
+||_abc|ARRAY|java.sql.array||
+
+=================================================================================
+7. BACKEND CONNECTION PARAMETERS
 =================================================================================
 These parameters are declared in the application.properties or a Yaml file under the project directory.
 Visit SPRING APPLICATION PROPERTIES page for more details.
 
 =================================================================================
-6. LIVE DATABASE, BACKUP, RESTORE
+8. LIVE DATABASE, BACKUP, RESTORE
 =================================================================================
 When dealing with live database or database of which structure we should not modify, you must carefully define the database connection mode from create, drop, create-drop etc. to none. This instructs Hibernate not to touch the structure nor the data.
 
