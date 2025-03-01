@@ -20,7 +20,9 @@ Spring transforms the view to a template reference.
 The model can contain several objects and this as a package is sent to the template.
 
 When dealing with views and models, the ModelAndView class becomes handy. It merges the View and the Model objects into one object which is returnable so testable as well.
-This means that this class can be used in data traffic between parts of the Business layer, between the Business and the Communication layers (between service and controller instances), also as a return value of an endpoint.
+This means that this class can be used in data traffic between the frontend and the backend, or more concretely, between the Controller and the servlet layers, and the servlet layer and the frontend.
+When you want to send data downward (toward the business layer), extract data from the ModelAndView object beforehand (e.g. as a Map or a payload).
+When you want to send data toward the outer world, create the ModelAndView object in the Communication layer.
 Please note, unless an endpoint does not return an object (e.g. a ModelAndView object) but only a view name, the endpoint can not comply to the REST standard (no @RestController nor @ResponseBody annotations can be used).
 
 It has high importance that the model and the view is handled by Spring in the background.
@@ -273,3 +275,4 @@ END OF EXAMPLE
 =>JUNIT
 =>SPRING EXCEPTION HANDLING
 =>SPRING BOOT VALIDATION
+=>API CALLS

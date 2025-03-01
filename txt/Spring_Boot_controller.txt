@@ -250,6 +250,8 @@ In object/model&view mode, there can be a Model object in the method signature h
 For incoming data, arguments are needed, marked with @ModelAttribute annotation, just like in model&view mode.
 Please note, similarly to model&view mode, the model is handled by Spring in the background, contains the incoming model objects sent by the frontend, and unless not deleted manually, the new added objects will be merged with the original objects. If that is not acceptable (e.g. the new model will be sent to a new view), clear the model before accepting new objects by accessing the Model object from the method signature.
 
+The controller data only exists in the controller layer. This means the Model or the ModelAndView objects must be created in-place and can not be send outside via a method contract.
+
 The frontend intents to send objects to the backend. These objects can be received one-by-one by the proper endpoint method which, in case of more objects, can increase the method signature size.
 Data binding means that Spring parses the incoming data to method arguments marked with proper annotations.
 As first step before invoking the method of the endpoint, Spring examines whether the marked argument will receive an object from the frontend. In case of no matching incoming object, Spring tries to initialise a new object by calling proper constructor and passes that object to the argument.

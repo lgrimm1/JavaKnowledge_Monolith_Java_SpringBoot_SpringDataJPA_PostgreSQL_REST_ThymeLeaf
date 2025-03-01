@@ -469,3 +469,5 @@ Also, using such technique means that on server or cloud side, the application i
 =>JSON PARSE
 =>APPLICATION ARCHITECTURES
 =>AGILE DEVELOPMENT
+=>API CALLS
+=>APPLICATION ARCHITECTURES

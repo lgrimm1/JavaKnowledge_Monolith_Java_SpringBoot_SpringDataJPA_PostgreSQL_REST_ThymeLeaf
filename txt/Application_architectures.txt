@@ -31,10 +31,67 @@ A complex software made in this design has usually one main developer or develop
 
 The monolith structure has evolved into a multi-layered structure where basic parts are separated:
     - business logic (or service) layer
-    - persistence (or data access) layer
+    - persistence (or data access or domain) layer
     - communication layer
 
 Under such design classes, objects are separated by their purposes and layers, even if they become duplicated.
+
+EXAMPLE FOR APP STRUCTURE, MONOLITHIC, 1:
+application
+    L controllers
+    L exception handlers
+    L configurations
+    L DTOs
+    L services
+    L utilities
+    L repositories
+    L entities/documents
+END OF EXAMPLE
+
+EXAMPLE FOR APP STRUCTURE, MONOLITHIC, 2:
+application
+    L controller
+    L package 1
+        L controllers
+        L exception handlers
+        L configurations
+        L DTOs
+        L services
+        L utilities
+        L repositories
+        L entities/documents
+    L package 2
+        L controllers
+        L exception handlers
+        L configurations
+        L DTOs
+        L services
+        L utilities
+        L repositories
+        L entities/documents
+END OF EXAMPLE
+
+EXAMPLE FOR APP STRUCTURE, MONOLITHIC, 3:
+application
+    L package 1
+        L controllers
+        L exception handlers
+        L configurations
+        L DTOs
+        L services
+        L utilities
+        L repositories
+        L entities/documents
+    L package 2
+        L controllers
+        L exception handlers
+        L configurations
+        L DTOs
+        L services
+        L utilities
+        L repositories
+        L entities/documents
+END OF EXAMPLE
 
 Present monolith web applications are designed in the latter system which enables:
     - independent (parallel) development
@@ -47,9 +104,7 @@ This structure does not support:
     - usage of different languages (except calling of external script interpreters)
 
 Additionally, level of code-infection between layers can be kept low to zero by developers but the needed zero is not guarantied by design.
-
 Forming a software in such design is natively backed by several development frameworks like Spring.
-
 In versioning systems like GitHub, one monolith application is presented by one repository.
 
 =================================================================================
@@ -74,14 +129,12 @@ This structure enables:
     - usage of different languages (one language per application part)
 
 The hexagonal design leaves two adapter groups empty as a reserve for other adapters if necessary.
-
 The application parts can communicate with each other via their APIs, see the API CALLS page.
 
 =================================================================================
 4. MICROSERVICES ARCHITECTURE
 =================================================================================
 The microservices design is the latest step in app structure evolution. From a certain perspective, it was developed from the hexagonal architecture.
-
 A microservice is a small application with or without frontend, it is independent and whole, usually covers one specific (core) function. This allows development teams to build and update new components to meet changing business needs without disrupting the unity of the application. As a result, adding new function will not increase application complexity, the development itself will be faster, rendering development resources and keeping development parallel become easier.
 
 This structure enables:
@@ -95,6 +148,57 @@ This structure enables:
     - usage of different languages (one language per service)
 
 Evolution of the software architectures starts with monolithic and points to microservices. However, although microservices architecture seems to be moderner that monolithic and hexagonal, hexagonal than monolithic, before starting a project considerations must be made. There are pros and cons for them.
+
+EXAMPLE FOR APP STRUCTURE, MICROSERVICES 1:
+application
+    L API gateway
+        L controller
+    L microservice 1
+        L controller
+        L exception handler
+        L configuration
+        L DTO
+        L mapper
+        L service
+        L utility
+        L repository
+        L entity/document
+    L microservice 2
+        L controller
+        L exception handler
+        L configuration
+        L DTO
+        L mapper
+        L service
+        L utility
+        L repository
+        L entity/document
+END OF EXAMPLE
+
+EXAMPLE FOR APP STRUCTURE, MICROSERVICES 2:
+application
+    L API gateway
+        L controller
+    L microservice 1
+        L controller
+        L exception handler
+        L configuration
+        L mapper
+        L service
+        L utility
+    L microservice 2
+        L controller
+        L exception handler
+        L configuration
+        L mapper
+        L service
+        L utility
+    L domain
+        L repositories
+        L entities/documents
+    L dto
+        L DTOs
+END OF EXAMPLE
 
 Pros for microservices against monolith:
     - independence: developing a new service is independent and can be done in any appropriate language and under any build system
@@ -117,3 +221,4 @@ In versioning systems like GitHub, one microservices application can be presente
 
 =>WEB APPLICATION
 =>AGILE DEVELOPMENT
+=>API CALLS

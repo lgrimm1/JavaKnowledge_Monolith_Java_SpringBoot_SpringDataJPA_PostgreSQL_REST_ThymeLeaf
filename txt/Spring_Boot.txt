@@ -213,7 +213,7 @@ The Entity class forms the data element itself.
 Although the Main class is very short in code, and some schools use it for inserting the Controller endpoints into it, furthermore the controller methods could contain processing code as well, the best practice is to keep the layers separated on class level, which structure creates and keeps modularity and independent unit tests become possible.
 There can be several controllers, their service classes and several repository classes. In case of complex class structure of data elements, storage, service and controller can be separated by the structure, best practice is to do so which further increases modularity. In such case the three layers will be formed by theoretically summarizing the right independent classes.
 
-A possible structure of classes of application layers with common controller and service (monolith architecture):
+EXAMPLE FOR CLASS STRUCTURE, COMMON CONTROLLER AND SERVICE, MONOLITH ARCHITECTURE:
 web application class
     L common package
         L service class
@@ -221,45 +221,54 @@ web application class
     L 1. package
         L entity class
             L subclasses
-        L repository class
+        L repository interface
     L 2. package
         L entity class
             L subclasses
-        L repository class
+        L repository interface
+END OF EXAMPLE
 
-A possible structure of classes of independent application layers (microservices architecture):
+EXAMPLE FOR CLASS STRUCTURE, INDEPENDENT APPLICATION LAYERS, MICROSERVICES ARCHITECTURE:
 web application class
+    L gateway package
+        L controller class
     L 1. package
         L entity class
             L subclasses
-        L repository class
+        L repository interface
         L service class
         L controller class
     L 2. package
         L entity class
             L subclasses
-        L repository class
+        L repository interface
         L service class
         L controller class
+END OF EXAMPLE
 
-A possible structure per one microservice:
+EXAMPLE FOR CLASS STRUCTURE, ONE MICROSERVICE:
 n. package
     L entity class (JPA entity representing database table rows)
     L document class (MongoDB document representing database documents)
     L repository interface (Spring Data JPA repository for database operations)
     L repository interface (Spring Data MongoDB repository for database operations)
     L dto class (Data Transfer Objects for encapsulating request and-or response data)
+    L dto Collection element class
     L mapper interface (MapStruct mappers for transforming entities to DTOs and vice versa)
     L service class (containing business logic)
     L util class (utility)
     L controller class (REST controllers to handle HTTP requests)
     L config class (configuration classes, e.g. security, application properties)
     L exception classes (custom exception classes and handlers)
+END OF EXAMPLE
 
-When dealing with common domain layer (data persistence, microservices architecture):
+EXAMPLE FOR CLASS STRUCTURE, MICROSERVICES, COMMON DOMAIN AND DTO LAYER:
 domain package
     L entity and document classes
     L repository interfaces
+dto package
+    L dto classes
+    L Collection element classes
 n. package
     L dto class (Data Transfer Objects for encapsulating request and-or response data)
     L mapper interface (MapStruct mappers for transforming entities to DTOs and vice versa)
@@ -268,6 +277,9 @@ n. package
     L controller class (REST controllers to handle HTTP requests)
     L config class (configuration classes, e.g. security, application properties)
     L exception classes (custom exception classes and handlers)
+gateway package
+    L controller class
+END OF EXAMPLE
 
 Under the src/main/resources folder, the next folders should be created:
     - static (contains the static part of frontend)
