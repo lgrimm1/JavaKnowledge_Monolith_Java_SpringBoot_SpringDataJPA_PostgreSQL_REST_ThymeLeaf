@@ -232,6 +232,7 @@ EXAMPLE FOR CLASS STRUCTURE, INDEPENDENT APPLICATION LAYERS, MICROSERVICES ARCHI
 web application class
     L gateway package
         L controller class
+        L configuration class
     L 1. package
         L entity class
             L subclasses
@@ -279,6 +280,7 @@ n. package
     L exception classes (custom exception classes and handlers)
 gateway package
     L controller class
+    L configuration class
 END OF EXAMPLE
 
 Under the src/main/resources folder, the next folders should be created:

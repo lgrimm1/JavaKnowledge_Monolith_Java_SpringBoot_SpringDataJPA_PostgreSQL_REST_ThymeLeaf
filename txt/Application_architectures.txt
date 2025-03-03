@@ -153,6 +153,7 @@ EXAMPLE FOR APP STRUCTURE, MICROSERVICES 1:
 application
     L API gateway
         L controller
+        L configuration
     L microservice 1
         L controller
         L exception handler
@@ -179,6 +180,7 @@ EXAMPLE FOR APP STRUCTURE, MICROSERVICES 2:
 application
     L API gateway
         L controller
+        L configuration
     L microservice 1
         L controller
         L exception handler
