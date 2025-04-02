@@ -70,3 +70,4 @@ Examples for using NoSQL database:
 =>SPRING BOOT REPOSITORY
 =>SPRING BOOT ENTITY
 =>POSTGRESQL
+=>SQL

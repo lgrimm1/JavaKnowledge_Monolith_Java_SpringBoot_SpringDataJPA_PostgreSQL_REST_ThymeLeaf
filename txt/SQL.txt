@@ -1,0 +1,994 @@
+=================================================================================
+SQL
+=================================================================================
+1. COLUMN REFERENCE, LITERALS, OPERATORS, LARGE DATASET CONSIDERATIONS
+2. SELECT
+3. SUBQUERIES, COMMON TABLE EXPRESSIONS (CTE), RECURSIVE QUERIES
+4. JOIN
+5. CREATE
+6. ALTER
+7. MANIPULATING DATA
+8. EXECUTION PLANS
+9. TRANSACTIONS
+10. DATABASE ADMINISTRATION
+
+=================================================================================
+1. COLUMN REFERENCE, LITERALS, OPERATORS, LARGE DATASET CONSIDERATIONS
+=================================================================================
+SQL: Structured Query Language. A language to access and manage relational databases, or in other words: creating, retrieving, updating, deleting (CRUD) and so on.
+All queries (commands) are closed with a semicolon.
+
+Referencing a column in a statement:
+    - if there is one table: column_name
+    - if there are more tables: table_name.column_name
+
+Literals:
+    - integer: 123
+    - float: 123.45
+    - text: 'text'
+    - date: 'yyyy-mm-dd'
+    - time: 'hh:mm:ss'
+    - datetime: 'yyyy-mm-dd hh:mm:ss'
+    - boolean: TRUE, FALSE
+    - null: NULL
+
+Relation signs and logical operators: =, <, <=, >, >=, AND, OR, NOT, IN, NOT IN, EXISTS, NOT EXISTS, LIKE.
+
+Usage of IN:
+    - checking against a list: IN (element1, element2, ...)
+    - checking against a subquery result: IN (SELECT ...)
+If the subquery can result NULL (which can lead to FALSE value in the condition the IN is used), use EXISTS instead.
+
+Usage of LIKE:
+    - %: represents zero, one, or multiple characters (A% means any value starting with "A")
+    - _: represents one character ("A_" matches any value starting with "A" and followed by one character like "Ax", "A1" and so on, "___" means 3 characters)
+    - the LIKE pattern is usually case sensitive, in some databases it depends on collation setting (e.g. MySQL)
+
+Considerations for large datasets:
+    - choose the smallest appropriate data type for each column
+    - when using the same query many times, enable caching, and divide the table to partitions
+    - avoid using functions in the WHERE clause
+    - use LIMIT to avoid unnecessary data retrieval, reduce time and memory usage
+    - upon deletion, use LIMIT and run DELETE several times instead of one execution on the whole table
+    - create index on the columns used with aggregate functions
+    - create index on columns used in GROUP BY and HAVING
+    - use WINDOW instead of GROUP BY for more efficient calculations
+    - avoid using subqueries if the inner query executes for all rows, use JOIN or CTEs instead
+    - index the columns being used in joins
+    - for joining, use INNER JOIN whenever possible, as it is generally faster than OUTER JOIN
+    - minimize joining unnecessary tables
+    - avoid over-indexing, it can slow down operations
+    - identify bottlenecks with execution plans
+    - avoid storing large objects (images, videos) directly in the database
+
+=================================================================================
+2. SELECT
+=================================================================================
+The SELECT query is for retrieving data. Can return a new table with minimum one column and one row, or a value.
+The returned table or value is temporary, unless it is specifically stored in a new table or variable.
+Data can be retrieved from more sources.
+
+Avoid SELECT * to reduce memory usage and time-consuming.
+For aggregated queries, make sure to use specific columns instead of selecting unnecessary data.
+For selection from more tables, use join or subqueries, see examples under their sections:
+    - use JOINs when the relationship between tables is straightforward and requires multiple columns
+    - use Subqueries for more complex filtering or when one table depends on the result of another query
+
+For large datasets, use LIMIT to avoid unnecessary data retrieval, reduce time and memory usage.
+
+2.1. BASIC SELECT, DATA FILTERING, LIMITING RESULT, ORDERING RESULT TABLE
+2.2. AGGREGATORS FOR CALCULATING BASIC STATISTICS
+2.3. GROUP BY FOR COLLAPSING RESULT TABLE
+2.4. EXPRESSIONS AND FUNCTIONS, ALIASES
+2.5. WINDOW FUNCTIONS FOR CALCULATING NEW COLUMN
+2.6. UNION, INTERSECT, EXCEPT OR MINUS OF QUERIES
+2.7. SAVE RESULTS TO A NEW TABLE
+
+2.1. BASIC SELECT, DATA FILTERING, LIMITING RESULT, ORDERING RESULT TABLE
+---------------------------------------------------------------------------------
+The DISTINCT forces unique values in the given column (filters out duplicates). In case of more columns, their combination will be unique.
+The WHERE serves as a data filter.
+The LIMIT defines the number of retrieved rows.
+
+EXAMPLE FOR BASIC SELECT SYNTAX:
+SELECT [DISTINCT] column_name FROM table_name [WHERE condition] [LIMIT number_of_rows] [ORDER BY column_name ASC|DESC];
+-- or:
+SELECT [DISTINCT] column_name
+FROM table_name
+[WHERE condition]
+[LIMIT number_of_rows]
+[ORDER BY column_name ASC|DESC];
+END OF EXAMPLE
+
+EXAMPLE FOR BASIC SELECT:
+-- table: employees
+-- columns: ID, name, position, salary
+-- list department leader names in ABC order
+SELECT name
+FROM employees
+WHERE position = "department leader"
+ORDER BY name ASC;
+END OF EXAMPLE
+
+2.2. AGGREGATORS FOR CALCULATING BASIC STATISTICS
+---------------------------------------------------------------------------------
+The aggregate functions create a value from a set of rows. In other words, collapse the rows into a single value.
+In large datasets, create index on the columns used with aggregate functions.
+
+EXAMPLE FOR AGGREGATE FUNCTIONS SYNTAX:
+-- create a row with 4 columns:
+-- counts the number of columns, and calculates the avg, max and min values in the column_name
+SELECT COUNT(*), SUM(column_name), AVG(column_name), MAX(column_name), MIN(column_name)
+FROM table_name;
+-- or:
+SELECT
+    COUNT(*),
+    SUM(column_name),
+    AVG(column_name),
+    MAX(column_name),
+    MIN(column_name)
+FROM table_name;
+END OF EXAMPLE
+
+EXAMPLE FOR AGGREGATE FUNCTIONS:
+-- table: employees
+-- columns: ID, name, position, salary
+-- calculate the total and average salaries
+SELECT SUM(salary), AVG(salary)
+FROM employees;
+END OF EXAMPLE
+
+2.3. GROUP BY FOR COLLAPSING RESULT TABLE
+---------------------------------------------------------------------------------
+The GROUP BY clause collapses the results following a given value or values, in other words segregates the results. For this, it is usually used along with an aggregator. It will create groups by the given values and aggregates by the group members.
+The HAVING is a filter for the GROUP BY clause.
+In large datasets, create index on columns used in GROUP BY and HAVING. Furthermore, use WINDOW instead of GROUP BY for more efficient calculations.
+
+EXAMPLE FOR GROUP BY SYNTAX:
+-- take column_name from table name, then
+-- by all unique values calculate the number of rows
+SELECT column_name, AGGREGATOR(column_name)
+FROM table_name
+GROUP BY column_name
+[HAVING condition_with_the_aggregator];
+END OF EXAMPLE
+
+EXAMPLE FOR GROUP BY:
+-- table: employees
+-- columns: ID, name, position, salary
+-- list positions and their average salaries if they fall between 5000 and 10000
+SELECT name, position, AVG(salary)
+FROM employees
+GROUP BY position
+HAVING (AVG(salary) > 5000) AND (AVG(salary) < 10000);
+END OF EXAMPLE
+
+2.4. EXPRESSIONS AND FUNCTIONS, ALIASES
+---------------------------------------------------------------------------------
+Mathematical expressions can be used on columns or values.
+
+The AS clause creates alias for a column, a table or an expression, valid only in that query. Usage of AS:
+    - for increasing readability
+    - in case readability means using special character (e.g. space), put the name into "" or [] in some SQL dialects
+    - in some SQL dialects, using AS is optional (using it increases readability)
+    - the alias will be live only in the query
+    - the alias can be live longer if it is defined in a view or a subquery
+    - alias can not be used in the WHERE clause
+
+Functions:
+    - UPPER(), LOWER(): converts the column uppercase, lowercase
+    - CONCAT(column1, column2, ...): concatenates 2 columns into one
+    - SUBSTRING(column_name, start, length): extracts a substring from a column
+    - DATE(year, month, day): creates a date from integers
+    - CURRENT_DATE: gets the current date (MySQL, PostgreSQL)
+    - GETDATE(): gets actual date (SQL Server)
+    - SYSDATETIME(): gets current date and time (SQL Server)
+    - DATEDIFF(date1, date2): calculates the difference between two dates, in days
+    - DATE_ADD(date, INTERVAL value type): adds a time period to a date
+    - YEAR(date), MONTH(date), DAY(date): returns the marked portion of the date
+
+EXAMPLE FOR SELECT WITH MATH EXPRESSIONS AND AS CLAUSES:
+-- table: employees
+-- columns: ID, name, position, salary
+-- calculate the total costs of salaries, name the result as total
+SELECT SUM(salary) AS total
+FROM employees;
+
+-- table: employees
+-- columns: ID, name, position, salary
+-- list all employees with their annual salaries, name the salary column to annual_salary
+SELECT name, salary * 12 AS annual_salary
+FROM employees;
+
+-- table: employees: ID, name, position, salary
+-- table: actual_vat: ID, percent
+-- list all employees with their net annual salaries in descending order, name the columns as name, net_annual_salary
+SELECT e.name AS name, e.salary * (1 - actual_vat.percent / 100) * 12 AS net_annual_salary
+ORDER BY net_annual_salary
+FROM employees AS e, actual_vat;
+END OF EXAMPLE
+
+EXAMPLE FOR CONCATENATION:
+-- name the full text as FullDescription
+SELECT CONCAT(Name, ' (', Position, ')') AS FullDescription
+FROM Employees;
+END OF EXAMPLE
+
+EXAMPLE FOR DATE FUNCTIONS:
+-- employees table: name, hire_date
+-- list employees with the number of days they are employed
+SELECT name, DATEDIFF(CURRENT_DATE, hire_date) AS days_employed
+FROM employees;
+END OF EXAMPLE
+
+2.5. WINDOW FUNCTIONS FOR CALCULATING NEW COLUMN
+---------------------------------------------------------------------------------
+These functions are for calculating a new column without collapsing rows. Usually used for generating ranking, running totals, moving averages etc.
+Window functions can be computationally expensive, especially on large datasets, as they often require sorting and partitioning. Using proper indexing and optimizing query logic can help improve performance.
+
+When to Use Window Functions:
+    - when you need row-level calculations that depend on other rows.
+    - for tasks like rankings, percentages, moving averages, cumulative sums, and time-based comparisons.
+    - to avoid using complex subqueries or self-joins.
+
+Running totals: sum(n) = sum(values(1..n)).
+Counter: value(n) = n.
+Moving averages: average(n) = average(values(1..n)).
+Running maximum: maximum(n) = maximum(values(1..n)).
+Running maximum: minimum(n) = minimum(values(1..n)).
+
+EXAMPLE FOR WINDOW FUNCTION SYNTAX:
+function_name(expression) OVER ([PARTITION BY column] ORDER BY column ASC|DESC)
+END OF EXAMPLE
+
+EXAMPLE FOR A QUERY WITH WINDOW FUNCTION SYNTAX:
+SELECT column1, column2
+    function_name(expression) OVER ([PARTITION BY column1] ORDER BY column2 ASC|DESC)
+FROM table;
+END OF EXAMPLE
+
+Ranking functions:
+    - ROW_NUMBER(): assigns a unique number to each row within a partition
+    - RANK(): assigns a rank to each row within a partition; rows with the same value get the same rank, and the next rank is skipped
+    - DENSE_RANK(): similar to RANK(), but no ranks are skipped
+    - NTILE(n): divides rows into n buckets of approximately equal size and assigns a bucket number
+Aggregate functions:
+    - it will use it as a running (moving) value generator
+Value functions:
+    - LAG(column, offset, default): returns the value from a previous row.
+    - LEAD(column, offset, default): returns the value from a subsequent row.
+    - FIRST_VALUE(column): fetches the first value within a window.
+    - LAST_VALUE(column): fetches the last value within a window.
+    - NTH_VALUE(column, n): fetches the nth value within a window.
+Other functions:
+    - CUME_DIST(): calculates the cumulative distribution of a value within a partition.
+    - PERCENT_RANK(): calculates the relative rank of a value as a percentage.
+
+The OVER clause specifies that the function is used as a window function.
+The PARTITION BY clause divides the result set into partitions or groups for the calculation, which means the function will be executed on these groups independently.
+The ORDER BY clause:
+    - it defines the order of rows for the calculation
+    - it will order independently by partitions if given, or it orders the whole table)
+    - it defines the column on which the function must be executed
+    - in case of aggregate functions, since they have the targeted column in argument, the ORDER BY clause becomes optional
+
+EXAMPLE FOR RANKING:
+SELECT employee_id, department_id, salary,
+    RANK() OVER (PARTITION BY department_id ORDER BY salary DESC) AS rank
+FROM employees;
+END OF EXAMPLE
+
+EXAMPLE FOR RUNNING TOTAL:
+SELECT order_id, customer_id, order_date, order_amount,
+    SUM(order_amount) OVER (PARTITION BY customer_id ORDER BY order_date) AS running_total
+FROM orders;
+END OF EXAMPLE
+
+EXAMPLE FOR LAG:
+SELECT customer_id, order_date, order_amount,
+    LAG(order_amount) OVER (PARTITION BY customer_id ORDER BY order_date) AS previous_order
+FROM orders;
+END OF EXAMPLE
+
+The WINDOW clause lets reusing the result of a window. This clause
+    - uses the given original columns
+    - creates a window and give it a new name
+    - the rest of the SELECT will use the new name as a column or a value
+
+EXAMPLE FOR USING THE WINDOW CLAUSE:
+-- employee table: id, name, department_id, salary
+-- order the data by salary backward, group the data by department_id, name it as department_salary_ranking
+-- rank it and name it rank
+-- dense-rank it and name it dense-rank
+SELECT employee_id, salary,
+   RANK() OVER department_salary_ranking AS rank,
+   DENSE_RANK() OVER department_salary_ranking AS dense_rank
+FROM employees
+WINDOW department_salary_ranking AS (PARTITION BY department_id ORDER BY salary DESC);
+END OF EXAMPLE
+
+2.6. UNION, INTERSECT, EXCEPT OR MINUS OF QUERIES
+---------------------------------------------------------------------------------
+Combines two query results into one set:
+    - UNION: get all rows of the tables but filters out duplicated rows
+    - UNION ALL: get all rows from all tables
+    - INTERSECT: gets only the common records without duplicating them
+    - EXCEPT (OR MINUS in Oracle): all rows of the first table without duplicates
+
+EXAMPLE FOR UNION:
+-- list all records from the tables but filter out duplicates
+SELECT * FROM Sales_Q1
+UNION
+SELECT * FROM Sales_Q2;
+
+-- list all records from the tables
+SELECT * FROM Sales_Q1
+UNION ALL
+SELECT * FROM Sales_Q2;
+END OF EXAMPLE
+
+2.7. SAVE RESULTS TO A NEW TABLE
+---------------------------------------------------------------------------------
+The result of a query can be saved as a new table with the SELECT command, or add to an existing one with the INSERT INTO command.
+The FROM clause can define table(s) and or view(s).
+Properties of the new table:
+    - the new table will inherit the column definitions (data types, sizes) from the view
+    - the new table will not automatically include indexes, primary keys, or constraints
+
+In case of inserting, giving an argument list is optional:
+    - if given, it will define the targeted columns in order of the SELECT columns; these columns will be populated with data while the rest of the columns in the targeted table will get NULL or default value
+    - if not given, the database assumes that columns in the targeted table are in the same order as they are in the SELECT
+Column types must match. If the order of the columns are not matching, and or there are more columns in the targeted table, define the argument list.
+
+EXAMPLE FOR SAVING QUERY RESULT INTO A NEW TABLE:
+-- EmployeeSales: EmployeeID, TotalSales
+-- list and save all employee IDs who have more than 5000 total sales
+SELECT EmployeeID, TotalSales
+INTO ArchivedEmployeeSales
+FROM EmployeeSales
+WHERE TotalSales > 5000;
+END OF EXAMPLE
+
+EXAMPLE FOR SAVING QUERY RESULT INTO AN EXISTING TABLE:
+-- EmployeeSales: EmployeeID, TotalSales
+-- list and add all employee IDs who have more than 5000 total sales, and add it to ArchivedEmployeeSales table
+INSERT INTO ArchivedEmployeeSales [(EmployeeID, TotalSales)]
+SELECT EmployeeID, TotalSales
+FROM EmployeeSales
+WHERE TotalSales > 5000;
+END OF EXAMPLE
+
+=================================================================================
+3. SUBQUERIES, COMMON TABLE EXPRESSIONS (CTE), RECURSIVE QUERIES
+=================================================================================
+3.1. SUBQUERIES
+3.2. SEQUENTIAL QUERIES OR COMMON TABLE EXPRESSIONS (CTE)
+3.3. RECURSIVE QUERIES
+
+3.1. SUBQUERIES
+---------------------------------------------------------------------------------
+Subqueries are queries nested inside another query.
+Can appear in SELECT, FROM and WHERE tags. The nested query creates a new table or value which will be used as an existing table or value in the outer query.
+In large datasets, avoid using it if the inner query executes for all rows, use JOIN or CTEs instead.
+
+EXAMPLE FOR NESTED QUERIES:
+-- employees table: name, salary
+-- list employee names and salaries if their salary is greater than the average
+SELECT name, salary
+FROM employees
+WHERE salary > (
+    SELECT AVG(salary) FROM employees
+    );
+END OF EXAMPLE
+
+Subqueries can be used for selection from more tables. Use it for more complex filtering or when one table depends on the result of another query. Use JOINs when the relationship between tables is straightforward and requires multiple columns.
+In such case, using EXISTS instead of IN is safer when there is a possibility that there is no matching department.
+
+EXAMPLE FOR SELECT FROM MORE TABLES WITH SUBQUERY, USING IN:
+-- Employees: EmployeeID, Name, DepartmentID
+-- Departments: DepartmentID, DepartmentName
+-- create a list of employees and their departments, filter them for Sales department, order them by their names
+SELECT Name
+FROM Employees
+WHERE DepartmentID IN (
+    SELECT DepartmentID
+    FROM Departments
+    WHERE DepartmentName = 'Sales'
+)
+ORDER BY Name ASC;
+END OF EXAMPLE
+
+EXAMPLE FOR SELECT FROM MORE TABLES WITH SUBQUERY, USING EXISTS:
+-- Employees: EmployeeID, Name, DepartmentID
+-- Departments: DepartmentID, DepartmentName
+-- create a list of employees and their departments, filter them for Sales department, order them by their names
+-- the subquery returns 1 (exists) when there is a department matching, and returns NULL (not exists) when there is not
+SELECT Name
+FROM Employees
+WHERE EXISTS (
+    SELECT 1
+    FROM Departments
+    WHERE Departments.DepartmentID = Employees.DepartmentID AND Departments.DepartmentName = 'Sales'
+)
+ORDER BY Name ASC;
+END OF EXAMPLE
+
+3.2. SEQUENTIAL QUERIES OR COMMON TABLE EXPRESSIONS (CTE)
+---------------------------------------------------------------------------------
+CTEs simplify complex queries by breaking them into smaller, manageable parts.
+
+EXAMPLE FOR CTE:
+-- Employees: Name, Salary
+-- list all employees with starting letter A and salary greater than 70000
+WITH HighEarners AS (
+    SELECT Name, Salary
+    FROM Employees
+    WHERE Salary > 70000
+)
+SELECT Name
+FROM HighEarners
+WHERE Name LIKE 'A%';
+END OF EXAMPLE
+
+3.3. RECURSIVE QUERIES
+---------------------------------------------------------------------------------
+Useful for hierarchical or tree-like data, like organizational charts or file directories.
+
+EXAMPLE FOR RECURSIVE QUERIES:
+WITH RECURSIVE EmployeeHierarchy AS (
+    SELECT ID, Name, ManagerID
+    FROM Employees
+    WHERE ManagerID IS NULL -- Starting point (top-level)
+
+    UNION ALL
+
+    SELECT e.ID, e.Name, e.ManagerID
+    FROM Employees e
+    INNER JOIN EmployeeHierarchy h
+    ON e.ManagerID = h.ID
+)
+SELECT * FROM EmployeeHierarchy;
+END OF EXAMPLE
+
+=================================================================================
+4. JOIN
+=================================================================================
+Connects two tables by matching rows:
+    - INNER JOIN: returns only matching rows from both tables
+    - LEFT JOIN: returns all rows from the left table and matching rows from the right table
+    - RIGHT JOIN: returns all rows from the right table and matching rows from the left table
+    - FULL OUTER JOIN: combines LEFT JOIN and RIGHT JOIN
+
+Joins on large datasets can be costly. Optimizing for large datasets:
+    - index the columns being used in the join
+    - use INNER JOIN whenever possible, as it is generally faster than OUTER JOIN
+    - minimize joining unnecessary tables
+
+EXAMPLE FOR INNER JOIN SYNTAX:
+SELECT table1.column1, table2.column2
+FROM table1
+INNER|LEFT|RIGHT|FULL OUTER JOIN table2
+ON table1.joincolumn1 = table2.joincolumn2;
+END OF EXAMPLE
+
+EXAMPLE FOR INNER JOIN:
+-- Employees table: ID, Name, DepartmentID, Salary
+-- Departments table: ID, DepartmentName
+-- create a table with employee names and their corresponding department names, leave out employees without department
+SELECT Employees.Name, Departments.DepartmentName
+FROM Employees
+INNER JOIN Departments
+ON Employees.DepartmentID = Departments.ID;
+END OF EXAMPLE
+
+JOINs can be used for selection from more tables. Use JOINs when the relationship between tables is straightforward and requires multiple columns. Use Subqueries for more complex filtering or when one table depends on the result of another query.
+
+EXAMPLE FOR SELECT FROM MORE TABLES WITH JOIN:
+-- Employees: EmployeeID, Name, DepartmentID
+-- Departments: DepartmentID, DepartmentName
+-- create a list of employees and their departments, filter them for Sales department, order them by their names
+SELECT Employees.Name, Departments.DepartmentName
+FROM Employees
+INNER JOIN Departments
+ON Employees.DepartmentID = Departments.DepartmentID
+WHERE Departments.DepartmentName = 'Sales'
+ORDER BY Employees.Name ASC;
+END OF EXAMPLE
+
+=================================================================================
+5. CREATE
+=================================================================================
+5.1. DATA TYPES
+5.2. TABLES
+5.3. STORED PROCEDURES
+5.4. VIEWS
+5.5. KEYS AND CONSTRAINTS
+5.6. INDEXES
+5.7. PARTITIONS
+
+5.1. DATA TYPES
+---------------------------------------------------------------------------------
+Numeric:
+    - INT, INTEGER: whole numbers
+    - BIGINT: large whole number, useful for large datasets
+    - DECIMAL(length, decimal_places), NUMERIC(length, decimal_places): fixed-point numbers, ideal for financial data requiring precision
+    - FLOAT, REAL: approximate, floating-point numbers, for scientific calculations
+
+Character:
+    - CHAR(n): fixed-length strings, if the stored text is shorter, it pads the remaining space
+    - VARCHAR(length): Variable-length strings, no extra space is used if the text is shorter
+    - TEXT: long texts, maximum length depends on the database system
+
+Date and time:
+    - DATE
+    - TIME
+    - DATETIME, TIMESTAMP
+    - INTERVAL: time intervals or durations, supported by databases like PostgreSQL
+
+Boolean:
+    - BOOLEAN
+
+Binary (binary data such as images or files):
+    - BLOB (Binary Large Object): suitable for multimedia or encrypted data
+    - VARBINARY(n): variable-length binary data
+
+JSON and XML:
+    - JSON
+    - XML
+
+Specialized:
+    - UUID: Universally unique identifier, used for storing unique keys
+    - GEOGRAPHY, GEOMETRY: spatial data like coordinates, points, or polygons (latitude/longitude), supported only by certain databases like PostgreSQL or SQL Server
+
+EXAMPLE FOR CREATING COLUMNS:
+CREATE TABLE ExtendedDataTypesExample (
+    -- Numeric Types
+    ID INT DEFAULT 1, -- Default integer value
+    BigNumber BIGINT DEFAULT 1000000, -- Default large integer value
+    PreciseNumber DECIMAL(10, 2) DEFAULT 99.99, -- Default precise decimal
+    Approximation FLOAT DEFAULT 3.14, -- Default floating-point value
+
+    -- Character Types
+    FixedText CHAR(10) DEFAULT 'DEFAULTTX', -- Default fixed-length text
+    VariableText VARCHAR(50) DEFAULT 'DefaultText', -- Default variable-length text
+
+    -- Text Type
+    LongText TEXT DEFAULT 'Default Long Text', -- Long text, with a default placeholder
+
+    -- Date and Time Types
+    HireDate DATE DEFAULT '2025-01-01', -- Default date value
+    HireTime TIME DEFAULT '09:00:00', -- Default time value
+    TimestampColumn TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- Default current timestamp
+    IntervalColumn INTERVAL DEFAULT INTERVAL '1 YEAR', -- Default time interval (PostgreSQL)
+
+    -- Boolean Type
+    IsActive BOOLEAN DEFAULT TRUE, -- Default boolean value
+
+    -- Binary Type
+    BlobColumn BLOB DEFAULT NULL, -- Binary Large Object (Default NULL for now)
+    BinaryData VARBINARY(50) DEFAULT NULL, -- Default binary (NULL if no value is provided)
+
+    -- JSON Type (for databases supporting it, e.g., PostgreSQL, MySQL)
+    JsonColumn JSON DEFAULT '{}', -- Default empty JSON object
+
+    -- XML Type
+    XmlData XML DEFAULT '<root></root>', -- Default empty XML structure
+
+    -- Specialized Type
+    UniqueIdentifier UUID DEFAULT gen_random_uuid(), -- Default unique identifier (PostgreSQL example)
+    GeographyColumn GEOGRAPHY DEFAULT NULL -- Spatial data (PostgreSQL or SQL Server)
+);
+END OF EXAMPLE
+
+5.2. TABLES
+---------------------------------------------------------------------------------
+Column types are dependent on the database. Relational databases have common field types.
+The ID marks the identification column. Its values will be unique and countable.
+The PRIMARY KEY marks which column will be used as primary key.
+The DEFAULT clause defines the default value on a column. This value will be added when a new row is created but the specific column does not receive data. Without it the column receives NULL.
+
+EXAMPLE FOR CREATE SYNTAX:
+CREATE TABLE table_name (ID id_field_type PRIMARY KEY, column_name1 type1 [DEFAULT default_value1], column_name2 type2 [DEFAULT default_value2], ...);
+-- or:
+CREATE TABLE table_name (
+    ID id_field_type PRIMARY KEY,
+    column_name1 type1 [DEFAULT default_value1],
+    column_name2 type2 [DEFAULT default_value2],
+    ...
+);
+END OF EXAMPLE
+
+EXAMPLE FOR CREATE:
+-- table: employees
+-- columns: ID (integer, primary key), name (text with maximum length of 50, default is empty text), position (text with maximum length of 50, default is empty text), salary (10-wide real number with 2 decimal places, default is 0.00)
+-- create the table
+CREATE TABLE employees (
+    ID INT PRIMARY KEY,
+    name VARCHAR(50) DEFAULT '',
+    position VARCHAR(50) DEFAULT '',
+    salary DECIMAL(10, 2) DEFAULT 0.00
+);
+END OF EXAMPLE
+
+5.3. STORED PROCEDURES
+---------------------------------------------------------------------------------
+A query can be saved and called in any time later. These are reusable code blocks.
+The IN clause defines input parameter.
+
+EXAMPLE FOR CREATING AND CALLING STORED PROCEDURES:
+-- Employees: Name, Salary
+-- create a procedure which queries a list with Names and Salaries where Salaries are greater than the passed float MinSalary
+CREATE PROCEDURE GetHighEarners (IN MinSalary DECIMAL(10, 2))
+BEGIN
+    SELECT Name, Salary
+    FROM Employees
+    WHERE Salary > MinSalary;
+END;
+
+-- execute a procedure
+CALL GetHighEarners(60000); -- for more parameters: ('...', ..., '...')
+EXEC GetHighEarners 6000; -- SQL Server; for more parameters: '...', ..., '...'
+END OF EXAMPLE
+
+5.4. VIEWS
+---------------------------------------------------------------------------------
+Views are virtual tables based on SQL queries. They stay live after executing the query, making it easy to apply more queries on it. Referencing it happens as it would be a table.
+Views stay in the database until they are dropped. They will not contain actual data, once they are created, they must be used as a normal table.
+Altering a view (not all databases support it):
+    - ALTER VIEW: SQL Server
+    - CREATE OR REPLACE VIEW
+
+EXAMPLE FOR CREATING, ALTERING, MODIFYING ITS DATA, DROPPING A VIEW:
+-- Employees: EmployeeID, Name, Salary
+-- create
+CREATE VIEW HighSalaryEmployees AS
+SELECT EmployeeID, Name, Salary
+FROM Employees
+WHERE Salary > 50000;
+
+-- replace
+CREATE OR REPLACE VIEW HighSalaryEmployees AS
+SELECT EmployeeID, Name, Salary, Department
+FROM Employees
+WHERE Salary > 50000;
+
+-- add row
+INSERT INTO Employees (EmployeeID, Name, Salary, Department)
+VALUES (105, 'Alice Smith', 60000, 'IT');
+
+---delete row
+DELETE FROM Employees
+WHERE EmployeeID = 105;
+
+-- drop the view
+DROP VIEW HighSalaryEmployees;
+END OF EXAMPLE
+
+5.5. KEYS AND CONSTRAINTS
+---------------------------------------------------------------------------------
+A constraint create limits how data can be handled on a column:
+    - PRIMARY KEY
+    - FOREIGN KEY
+    - UNIQUE
+    - CHECK
+    - NOT NULL
+
+A primary key uniquely identifies each record in a table. It ensures that no duplicate rows exist and that no column in the primary key contains a NULL value. Furthermore:
+    - a table can have only one primary key
+    - a primary key can consist of a single column or a combination of columns (composite key)
+
+EXAMPLE FOR CREATING A TABLE WITH PRIMARY KEY:
+CREATE TABLE Employees (
+    ID INT PRIMARY KEY, -- ID is the primary key
+    Name VARCHAR(50),
+    Position VARCHAR(50),
+    Salary DECIMAL(10, 2)
+);
+END OF EXAMPLE
+
+EXAMPLE FOR CREATING A TABLE WITH COMPOSITE KEY:
+CREATE TABLE StudentCourses (
+    StudentID INT,
+    CourseID INT,
+    EnrollmentDate DATE,
+    PRIMARY KEY (StudentID, CourseID) -- Composite key
+);
+END OF EXAMPLE
+
+A foreign key is a column or a set of columns that establishes a relationship between two tables by referencing the primary key in another table. It ensures referential integrity, meaning the data in the foreign key column must match a valid primary key in the referenced table. Furthermore:
+    - a table can have multiple foreign keys
+    - foreign keys can have NULL values
+
+EXAMPLE FOR CREATING A TABLE WITH FOREIGN KEY:
+CREATE TABLE Customers (
+    CustomerID INT PRIMARY KEY,
+    Name VARCHAR(50)
+);
+
+CREATE TABLE Orders (
+    OrderID INT PRIMARY KEY,
+    CustomerID INT,
+    OrderDate DATE,
+    FOREIGN KEY (CustomerID) REFERENCES Customers(CustomerID) -- Foreign key linking Orders to Customers
+);
+END OF EXAMPLE
+
+A unique constraint ensures that all values in a column (or a set of columns) are distinct, preventing duplicate entries. Unlike the primary key, a table can have multiple unique constraints. Furthermore:
+    - columns with unique constraints can have NULL values, but only one NULL per column (depending on the database)
+    - useful for enforcing rules like unique emails or usernames
+A check constrain checks the value during adding.
+A not null constraint prevents adding null value.
+
+EXAMPLE FOR CREATING A TABLE WITH CONSTRAINTS:
+CREATE TABLE Users (
+    UserID INT PRIMARY KEY,
+    Email VARCHAR(50) UNIQUE, -- Ensures no duplicate email addresses
+    Name VARCHAR(50) UNIQUE, -- Ensures no duplicate usernames
+    UNIQUE (Email, Name), -- Ensures that the combination is unique as well (constraint on multiple columns)
+    Rank INT CHECK (Rank > 0 AND Rank < 11), -- Ensures rank falls into given interval
+    Salary INT,
+    Initials VARCHAR(3) NOT NULL, -- Ensures initials is not null
+    BirthDate DATE,
+    Height INT,
+    CHECK (BirthDate >= '2001-01-01' AND Height > 100), -- Creates constraint on multiple columns
+    CONSTRAINT CHK_Salary CHECK (Salary > 0) -- Creates constraint with name
+);
+END OF EXAMPLE
+
+5.6. INDEXES
+---------------------------------------------------------------------------------
+Index is a co-table connected to a table, helping in fast search if the checked column.
+Ideal for optimizing large datasets.
+Avoid over-indexing, it can slow down operations.
+
+EXAMPLE FOR CREATING INDEX:
+-- employees: id, name, salary
+-- create an index on salary column named idx_salary
+CREATE INDEX idx_salary ON employees (salary);
+END OF EXAMPLE
+
+5.7. PARTITIONS
+---------------------------------------------------------------------------------
+When using large datasets, it is important to divide the table to partitions. Queries will be executed selectively on one or a few partitions only.
+The SQL for defining partitions, needs verbal keywords.
+Partition types:
+    - range: based on a range of values
+    - list: based on a predefined list of values
+    - hash: based on a hash function applied to one or more columns
+    - composite: combines two partitioning methods
+
+EXAMPLE FOR PARTITIONING UPON CREATION:
+-- Orders: Id, CustomerID, OrderDate, Region
+-- range
+CREATE TABLE Orders (
+    Id INT,
+    CustomerID INT,
+    OrderDate DATE,
+    Region VARCHAR(60)
+)
+PARTITION BY RANGE (YEAR(OrderDate)) (
+    PARTITION p2022 VALUES LESS THAN (2023), -- partition name: p2022
+    PARTITION p2023 VALUES LESS THAN (2024) -- partition name: p2023
+);
+
+-- list
+CREATE TABLE Orders (
+    Id INT,
+    CustomerID INT,
+    OrderDate DATE,
+    Region VARCHAR(60)
+)
+PARTITION BY LIST (Region) (
+    PARTITION Europe VALUES IN ('Germany', 'France', 'Spain'), -- partition name: Europe
+    PARTITION Asia VALUES IN ('Japan', 'India', 'China') -- partition name: Asia
+);
+
+-- hash
+CREATE TABLE Orders (
+    Id INT,
+    CustomerID INT,
+    OrderDate DATE,
+    Region VARCHAR(60)
+)
+PARTITION BY HASH (Id) PARTITIONS 4; -- creates 4 partitions based on the values of Id
+
+-- composite
+CREATE TABLE Orders (
+    Id INT,
+    CustomerID INT,
+    OrderDate DATE,
+    Region VARCHAR(60)
+)
+PARTITION BY RANGE (YEAR(OrderDate)) SUBPARTITION BY HASH (CustomerID);
+END OF EXAMPLE
+
+=================================================================================
+6. ALTER
+=================================================================================
+Modifying the structure of a table.
+Always backup the table before making changes.
+
+Not every databases support column deletion, in such case create a new table without that column and copy data.
+Upon column deletion all constraints pointing on that column will be dispatched along.
+Before deleting a primary key, remove all foreign keys in other tables pointing to this primary key.
+After deleting a primary key, you should create a new one in that table.
+Along with modifying column name or type, check depending references as well (constraints in the table, foreign keys in other tables).
+Constraints usually can not be renamed, use drop-create method instead.
+If a foreign key has no name upon defining, it can be found:
+    - in MySQL: SHOW CREATE TABLE table_name;
+    - in PostgreSQL: \d table_name
+    - in SQL Server: EXEC sp_help 'table_name';
+If a constraint name is unknown, it can be found:
+    - in MySQL: SHOW CREATE TABLE table_name;
+    - in PostgreSQL: \d table_name
+    - in SQL Server: SELECT name FROM sys.key_constraints WHERE parent_object_id = OBJECT_ID('table_name');
+
+EXAMPLE FOR ADDING KEYS, COLUMN, CONSTRAINTS, DEFAULT VALUE:
+-- Employees: StudentID, CourseID, Name, LastName, Department, DateOfJoin
+-- Departments: DepartmentID, DepartmentName
+-- add composite key on StudentID and CourseID, DateOfBirth with constraint, named constraint on Name, constraint on LastName, foreign key on Department, default on DateOfJoin
+ALTER TABLE Employees
+ADD PRIMARY KEY (StudentID, CourseID), -- composite key on existing columns
+ADD DateOfBirth DATE NOT NULL, -- new column
+ADD CONSTRAINT NameNotNull NOT NULL (Name), -- new named constraint
+ADD UNIQUE (LastName), -- new constraint
+ADD FOREIGN KEY (Department) REFERENCES Departments(DepartmentID), -- new foreign key
+ALTER COLUMN DateOfJoin SET DEFAULT CURRENT_DATE;
+END OF EXAMPLE
+
+EXAMPLE FOR DELETING KEYS, COLUMN, CONSTRAINT, DEFAULT:
+-- Employees: Id (primary key), Name, LastName, Age (CHK_Age constraint on it), UserType (UserTypes foreign key on it)
+ALTER TABLE Employees
+DROP Name, -- drops column
+DROP PRIMARY KEY, -- drops key on Id
+DROP CONSTRAINT CHK_Age; -- only if the constraint has a name; foreign keys are usually dropped as constraints
+DROP FOREIGN KEY UserTypes; -- only in MySQL and similars, and if the constraint has a name
+ALTER COLUMN DateOfJoin DROP DEFAULT;
+END OF EXAMPLE
+
+EXAMPLE FOR RENAMING KEYS, COLUMNS, CONSTRAINTS, CHANGING COLUMN TYPES AND DEFAULT VALUE:
+-- Employees: Id (primary key), Name (VARCHAR(30)), LastName, Age (CHK_Age constraint on it), UserType (UserTypes foreign key on it), DateOfJoin (default on it)
+ALTER TABLE Employees
+CHANGE Name FirstName TEXT, -- change column name and type, MySQL
+RENAME COLUMN Name TO FirstName, -- PostgreSQL
+EXEC SP_RENAME 'Employees.Name', 'FirstName', 'COLUMN', -- SQL Server, calls a pre-stored procedure
+ALTER COLUMN DateOfJoin SET DEFAULT '2000-01-01';
+END OF EXAMPLE
+
+=================================================================================
+7. MANIPULATING DATA
+=================================================================================
+Data can be added, modified and deleted from a table as rows.
+Always use the WHERE clause when updating and deleting.
+In case of large dataset, use LIMIT and execute it the needed times.
+Use transactions for safety.
+
+EXAMPLE FOR ADDING, MODIFYING, DELETING DATA:
+-- Employees: ID, Name, Position
+-- add data
+INSERT INTO Employees (ID, Name, Position)
+VALUES (101, 'Alice', 'Manager');
+
+-- modify data
+UPDATE Employees
+SET Position = 'Senior Manager'
+WHERE Name = 'Alice'
+[LIMIT number_of_rows];
+
+-- delete data
+DELETE FROM Employees
+WHERE Name = 'Alice'
+[LIMIT number_of_rows];
+END OF EXAMPLE
+
+=================================================================================
+8. EXECUTION PLANS
+=================================================================================
+Execution plans show how the database processes your query. Most databases support a command like EXPLAIN or EXPLAIN PLAN.
+Analyzes the execution plan for a query and suggest possible optimizations.
+For large datasets, use it for identifying bottlenecks.
+
+EXAMPLE FOR EXECUTION PLANS:
+EXPLAIN SELECT * FROM Employees WHERE Salary > 50000;
+END OF EXAMPLE
+
+=================================================================================
+9. TRANSACTIONS
+=================================================================================
+A series of operations which are executed as a single unit.
+If one part fails, the entire transaction can be rolled back, ensuring data consistency.
+
+Commands:
+    - BEGIN TRANSACTION: starts a transaction
+    - COMMIT: saves the changes and closes the transaction
+    - ROLLBACK: reverts the changes and closes the transaction
+
+The modifications are kept temporary in a transaction workspace, isolated from the live data. In case of COMMIT, the modifications are applied to the live data and the temporal workspace is deleted. In case of ROLLBACK, the temporary workspace is discarded. While the transaction is being built up, any other queries of the database will access the original data, and after the COMMIT command will the changed data be available.
+Transactions are very useful if all changes must happen at once, together, mere simultaneously.
+
+EXAMPLE FOR TRANSACTION:
+-- Begin the transaction
+BEGIN TRANSACTION;
+
+-- Try to execute a series of operations
+BEGIN TRY
+    -- Insert a new record into the 'Customers' table
+    INSERT INTO Customers (CustomerID, Name, Email)
+    VALUES (101, 'John Doe', 'john.doe@example.com');
+
+    -- Update a record in the 'Orders' table
+    UPDATE Orders
+    SET TotalAmount = TotalAmount + 50
+    WHERE OrderID = 2001;
+
+    -- Commit the transaction if all operations succeed
+    COMMIT TRANSACTION;
+    PRINT 'Transaction committed successfully.';
+END TRY
+BEGIN CATCH
+    -- Rollback the transaction in case of an error
+    ROLLBACK TRANSACTION;
+    PRINT 'Transaction rolled back due to an error.';
+END CATCH;
+END OF EXAMPLE
+
+=================================================================================
+10. DATABASE ADMINISTRATION
+=================================================================================
+Type of permissions:
+    - Data Permissions: SELECT, INSERT, DELETE, UPDATE
+    - Schema Permissions: CREATE, DROP, ALTER, INDEX
+    - Administrative Permissions: GRANT, REVOKE, BACKUP, SHUTDOWN
+
+EXAMPLE FOR USER PERMISSION MANAGEMENT:
+-- Create User
+CREATE USER 'username'@'host' IDENTIFIED BY 'password';
+
+-- Grant Permissions
+GRANT SELECT, INSERT ON database_name.table_name TO 'username'@'host';
+
+-- Revoke Permissions
+REVOKE INSERT ON database_name.table_name FROM 'username'@'host';
+
+-- Drop User
+DROP USER 'username'@'host';
+END OF EXAMPLE
+
+EXAMPLE FOR USER PERMISSION MANAGEMENT:
+END OF EXAMPLE
+
+EXAMPLE FOR USER PERMISSION MANAGEMENT:
+END OF EXAMPLE
+
+Backup Strategies:
+    - Full Backup: Backs up the entire database
+    - Incremental Backup: Only backs up data that has changed since the last backup
+    - Differential Backup: Backs up data that has changed since the last full backup
+
+Steps to Restore a Backup:
+    - Full Restoration: Use the backup file to recreate the database
+    - Point-in-Time Restoration: Restore to a specific state using incremental backups and logs
+    - Test Restorations: Always test the restoration process to ensure the backup is functional
+
+EXAMPLE FOR FULL BACKUP AND RESTORATION (MYSQL):
+Shell: mysqldump -u username -p database_name > full_backup.sql
+
+SQL: CREATE DATABASE new_database_name;
+Shell: mysql -u username -p new_database_name < full_backup.sql
+END OF EXAMPLE
+
+Performance Tuning:
+    - Optimize queries
+    - Monitor indexes and execution plans
+Monitoring:
+    - Use tools to track resource usage and database health (e.g., disk space, memory usage)
+Security:
+    - Configure firewalls
+    - Use encryption for sensitive data
+Database Maintenance:
+    - Run regular checks to repair tables
+    - Update schemas as necessary
+
+=>SQL AND NOSQL DATABASES
+=>POSTGRESQL
+=>SPRING BOOT REPOSITORY

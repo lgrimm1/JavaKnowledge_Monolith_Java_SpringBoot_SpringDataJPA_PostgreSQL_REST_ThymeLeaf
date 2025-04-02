@@ -223,3 +223,4 @@ When the database was created via Spring Data JPA (Hibernate), it is advised to 
 =>SPRING BOOT REPOSITORY
 =>SPRING APPLICATION PROPERTIES
 =>SQL AND NOSQL DATABASES
+=>SQL
