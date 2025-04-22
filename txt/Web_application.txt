@@ -7,8 +7,9 @@ WEB APPLICATION
 4. API ARCHITECTURES
 5. REST
 6. JSON COMMUNICATION FILE
-7. CURL
-8. CONTAINERS
+7. API TYPES
+8. CURL
+9. CONTAINERS
 
 =================================================================================
 1. FRONTEND-BACKEND STRUCTURE, WORK CONCEPT
@@ -367,7 +368,51 @@ The serialization and deserialization processes which convert data to and from J
 Before processing incoming JSON data, it can be necessary to parse it to a useful format like Map. See the JSON PARSE page for examples.
 
 =================================================================================
-7. CURL
+7. API TYPES
+=================================================================================
+Open APIs (also called Public APIs):
+	- accessible to anyone on the internet
+	- typically used to allow integration with third-party applications
+	- examples include payment gateways or social media APIs
+
+Internal APIs:
+	- designed for use within an organization
+	- allows systems, teams, or applications within the organization to communicate effectively without external access
+
+Partner APIs:
+	- shared with specific business partners
+	- often used in collaborations or partnerships to exchange data securely
+
+Web APIs:
+	- used for communication over the web, typically following HTTP protocols
+	- includes RESTful APIs and SOAP APIs
+	- typical in gateway-microservice communication
+
+GraphQL APIs:
+	- a query language-based API that allows clients to request specific data structures
+	- used for improved efficiency, especially in modern web apps
+
+Composite APIs:
+	- combine multiple APIs or services into a single call
+	- useful for handling complex processes requiring data from various sources
+
+Hardware APIs:
+	- enable communication between software and hardware components
+	- common in IoT devices or system-level applications
+
+Library APIs:
+	- provided within programming libraries/frameworks
+	- often used to simplify tasks, like data manipulation, graphics rendering, or machine learning
+
+Streaming APIs:
+	- deliver data streams in real-time, often used for continuous data feeds like social media updates or stock prices
+
+In a usual RESTful microservices architecture
+	- the API gateway communicates with web API over HTTP/HTTPS (Angular easily access it), handles routing, load balancing, authentication, and orchestration
+	- the microservices commonly communicate with web API on RESTful design (simplicity and widespread adoption), or gRPC API on performance requirements (efficient binary communication)
+
+=================================================================================
+8. CURL
 =================================================================================
 The cURL is a PowerShell command line app for sending requests.
 Ideal tool for integration test of an application.
@@ -453,7 +498,7 @@ curl -X PUT --upload-file "put_example.json" "https://server/endpoint"
 END OF EXAMPLE
 
 =================================================================================
-8. CONTAINERS
+9. CONTAINERS
 =================================================================================
 A container is a unit of software in which application code is packaged alongside all the files necessary to make it run. This makes it easy to move the contained application between environments while retaining full functionality.
 By utilizing container techniques (Docker, Kubernetes) it is possible to change application parts (microservices) along keeping the rest of the application intact. Therefore, it is perfect for management, scaling and deployment.
