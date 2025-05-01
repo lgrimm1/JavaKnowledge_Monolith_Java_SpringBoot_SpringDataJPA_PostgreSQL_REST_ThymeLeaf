@@ -1,0 +1,561 @@
+=================================================================================
+SQL CREATE
+=================================================================================
+1. DATA TYPES
+2. TABLES
+3. STORED PROCEDURES
+4. VIEWS
+5. KEYS AND CONSTRAINTS
+6. INDEXES
+7. PARTITIONS
+
+=================================================================================
+1. DATA TYPES
+=================================================================================
+Numeric:
+    - INT, INTEGER: whole numbers
+    - BIGINT: large whole number, useful for large datasets
+    - DECIMAL(length, decimal_places), NUMERIC(length, decimal_places): fixed-point numbers, ideal for financial data requiring precision
+    - FLOAT, REAL: approximate, floating-point numbers, for scientific calculations
+
+Character:
+    - CHAR(n): fixed-length strings, if the stored text is shorter, it pads the remaining space
+    - VARCHAR(length): Variable-length strings, no extra space is used if the text is shorter
+    - TEXT: long texts, maximum length depends on the database system
+
+Date and time:
+    - DATE
+    - TIME
+    - DATETIME, TIMESTAMP
+    - INTERVAL: time intervals or durations, supported by databases like PostgreSQL
+
+Boolean:
+    - BOOLEAN
+
+Binary (binary data such as images or files):
+    - BLOB (Binary Large Object): suitable for multimedia or encrypted data
+    - VARBINARY(n): variable-length binary data
+
+JSON and XML:
+    - JSON
+    - XML
+
+Specialized:
+    - UUID: Universally unique identifier, used for storing unique keys
+    - GEOGRAPHY, GEOMETRY: spatial data like coordinates, points, or polygons (latitude/longitude), supported only by certain databases like PostgreSQL or SQL Server
+
+EXAMPLE FOR CREATING COLUMNS:
+CREATE TABLE ExtendedDataTypesExample (
+    -- Numeric Types
+    ID INT DEFAULT 1, -- Default integer value
+    BigNumber BIGINT DEFAULT 1000000, -- Default large integer value
+    PreciseNumber DECIMAL(10, 2) DEFAULT 99.99, -- Default precise decimal
+    Approximation FLOAT DEFAULT 3.14, -- Default floating-point value
+
+    -- Character Types
+    FixedText CHAR(10) DEFAULT 'DEFAULTTX', -- Default fixed-length text
+    VariableText VARCHAR(50) DEFAULT 'DefaultText', -- Default variable-length text
+
+    -- Text Type
+    LongText TEXT DEFAULT 'Default Long Text', -- Long text, with a default placeholder
+
+    -- Date and Time Types
+    HireDate DATE DEFAULT '2025-01-01', -- Default date value
+    HireTime TIME DEFAULT '09:00:00', -- Default time value
+    TimestampColumn TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- Default current timestamp
+    IntervalColumn INTERVAL DEFAULT INTERVAL '1 YEAR', -- Default time interval (PostgreSQL)
+
+    -- Boolean Type
+    IsActive BOOLEAN DEFAULT TRUE, -- Default boolean value
+
+    -- Binary Type
+    BlobColumn BLOB DEFAULT NULL, -- Binary Large Object (Default NULL for now)
+    BinaryData VARBINARY(50) DEFAULT NULL, -- Default binary (NULL if no value is provided)
+
+    -- JSON Type (for databases supporting it, e.g., PostgreSQL, MySQL)
+    JsonColumn JSON DEFAULT '{}', -- Default empty JSON object
+
+    -- XML Type
+    XmlData XML DEFAULT '<root></root>', -- Default empty XML structure
+
+    -- Specialized Type
+    UniqueIdentifier UUID DEFAULT gen_random_uuid(), -- Default unique identifier (PostgreSQL example)
+    GeographyColumn GEOGRAPHY DEFAULT NULL -- Spatial data (PostgreSQL or SQL Server)
+);
+END OF EXAMPLE
+
+=================================================================================
+2. TABLES
+=================================================================================
+Column types are dependent on the database. Relational databases have common field types.
+The ID marks the identification column. Its values will be unique and countable.
+The PRIMARY KEY marks which column will be used as primary key.
+The DEFAULT clause defines the default value on a column. This value will be added when a new row is created but the specific column does not receive data. Without it the column receives NULL.
+
+EXAMPLE FOR CREATE SYNTAX:
+CREATE TABLE table_name (ID id_field_type PRIMARY KEY, column_name1 type1 [DEFAULT default_value1], column_name2 type2 [DEFAULT default_value2], ...);
+-- or:
+CREATE TABLE table_name (
+    ID id_field_type PRIMARY KEY,
+    column_name1 type1 [DEFAULT default_value1],
+    column_name2 type2 [DEFAULT default_value2],
+    ...
+);
+END OF EXAMPLE
+
+EXAMPLE FOR CREATE:
+-- table: employees
+-- columns: ID (integer, primary key), name (text with maximum length of 50, default is empty text), position (text with maximum length of 50, default is empty text), salary (10-wide real number with 2 decimal places, default is 0.00)
+-- create the table
+CREATE TABLE employees (
+    ID INT PRIMARY KEY,
+    name VARCHAR(50) DEFAULT '',
+    position VARCHAR(50) DEFAULT '',
+    salary DECIMAL(10, 2) DEFAULT 0.00
+);
+END OF EXAMPLE
+
+=================================================================================
+3. STORED PROCEDURES
+=================================================================================
+A query can be saved and called in any time later. These are reusable code blocks.
+The IN clause defines input parameter.
+
+EXAMPLE FOR CREATING AND CALLING STORED PROCEDURES:
+-- Employees: Name, Salary
+-- create a procedure which queries a list with Names and Salaries where Salaries are greater than the passed float MinSalary
+CREATE PROCEDURE GetHighEarners (IN MinSalary DECIMAL(10, 2))
+BEGIN
+    SELECT Name, Salary
+    FROM Employees
+    WHERE Salary > MinSalary;
+END;
+
+-- execute a procedure
+CALL GetHighEarners(60000); -- for more parameters: ('...', ..., '...')
+EXEC GetHighEarners 6000; -- SQL Server; for more parameters: '...', ..., '...'
+END OF EXAMPLE
+
+=================================================================================
+4. VIEWS
+=================================================================================
+Views are virtual tables based on SQL queries. They stay live after executing the query, making it easy to apply more queries on it. Referencing it happens as it would be a table.
+Views stay in the database until they are dropped. They will not contain actual data, once they are created, they must be used as a normal table.
+Altering a view (not all databases support it):
+    - ALTER VIEW: SQL Server
+    - CREATE OR REPLACE VIEW
+
+EXAMPLE FOR CREATING, ALTERING, MODIFYING ITS DATA, DROPPING A VIEW:
+-- Employees: EmployeeID, Name, Salary
+-- create
+CREATE VIEW HighSalaryEmployees AS
+SELECT EmployeeID, Name, Salary
+FROM Employees
+WHERE Salary > 50000;
+
+-- replace
+CREATE OR REPLACE VIEW HighSalaryEmployees AS
+SELECT EmployeeID, Name, Salary, Department
+FROM Employees
+WHERE Salary > 50000;
+
+-- add row
+INSERT INTO Employees (EmployeeID, Name, Salary, Department)
+VALUES (105, 'Alice Smith', 60000, 'IT');
+
+---delete row
+DELETE FROM Employees
+WHERE EmployeeID = 105;
+
+-- drop the view
+DROP VIEW HighSalaryEmployees;
+END OF EXAMPLE
+
+=================================================================================
+5. KEYS AND CONSTRAINTS
+=================================================================================
+A constraint create limits how data can be handled on a column.
+
+5.1. PRIMARY KEY
+5.2. FOREIGN KEY
+5.3. UNIQUE, CHECK, NOT NULL CONSTRAINTS
+
+5.1. PRIMARY KEY
+---------------------------------------------------------------------------------
+A primary key uniquely identifies each record in a table. It ensures that no duplicate rows exist and that no column in the primary key contains a NULL value. Furthermore:
+    - a table can have only one primary key
+    - a primary key can consist of a single column or a combination of columns (composite key)
+    - database systems create an index on the column of the primary key automatically (implicit index definition)
+    - the simplest way is using an inline definition, the system will use default index type and automatically generated index name
+    - in case you need named index or not the default index type as a primary key, use CONSTRAINT instead (explicit index definition)
+    - in case you need to manage the keys (usually you need), create named keys
+
+EXAMPLE FOR CREATING A TABLE WITH PRIMARY KEY:
+CREATE TABLE Employees (
+    ID INT PRIMARY KEY, -- ID is the primary key
+    Name VARCHAR(50),
+    Position VARCHAR(50),
+    Salary DECIMAL(10, 2)
+);
+END OF EXAMPLE
+
+EXAMPLE FOR CREATING A TABLE WITH COMPOSITE KEY:
+CREATE TABLE StudentCourses (
+    StudentID INT,
+    CourseID INT,
+    EnrollmentDate DATE,
+    PRIMARY KEY (StudentID, CourseID) -- Composite key
+);
+END OF EXAMPLE
+
+EXAMPLE FOR CREATING A TABLE WITH NAMED PRIMARY KEY:
+CREATE TABLE StudentCourses (
+    StudentID INT,
+    CourseID INT,
+    EnrollmentDate DATE,
+    CONSTRAINT studentid_pkey PRIMARY KEY (StudentID) -- primary key with name
+    -- or:
+    CONSTRAINT studentid_courseid_pkey PRIMARY KEY (StudentID, CourseID) -- composite key with name
+END OF EXAMPLE
+
+5.2. FOREIGN KEY
+---------------------------------------------------------------------------------
+A foreign key is a column or a set of columns that establishes a relationship between two tables by referencing the primary key in another table. This means that a record which has a foreign key, refers to an other record in an other table by its primary key.
+A foreign key must reference an existing primary key value in the parent table or having NULL.
+A table can have multiple foreign keys.
+Foreign keys can have NULL values.
+To retrieve data from multiple tables which are connected by a foreign key reference, use a JOIN.
+
+Performance considerations:
+    - some databases will not create index on foreign keys (PostgreSQL, SQL Server), create them manually
+    - ON DELETE CASCADE and ON UPDATE CASCADE can be expensive if the parent table has many related records (consider using ON DELETE SET NULL or manual deletions on large data)
+    - foreign key validation happens on each row, this slows down bulk (higher amount of) inserts and updates (disable foreign key checks for bulk operations)
+    - on high-concurrency transactions the parent row and all the child rows are locked (consider using optimistic locking or batching updates)
+    - foreign keys do not always work well with partitioned tables (especially in PostgreSQL and MySQL) (use alternative methods, such as manually enforcing constraints with triggers)
+    - some databases (PostgreSQL, Oracle) support deferred constraints, allowing constraint checking at transaction commit rather than immediately (asynchronous constraint checking) (use DEFERRABLE INITIALLY DEFERRED in PostgreSQL)
+
+EXAMPLE FOR CREATING A TABLE WITH FOREIGN KEY:
+CREATE TABLE Customers (
+    CustomerID INT PRIMARY KEY,
+    Name VARCHAR(50)
+);
+
+CREATE TABLE Orders (
+    OrderID INT PRIMARY KEY,
+    CustomerID INT,
+    OrderDate DATE,
+    FOREIGN KEY (CustomerID) REFERENCES Customers(CustomerID) -- Foreign key linking Orders to Customers
+);
+CREATE INDEX idx_customerid ON Orders(CustomerID);
+
+-- retrieve data
+SELECT Customers.Name, Orders.OrderID, Orders.OrderDate
+FROM Customers
+JOIN Orders ON Customers.CustomerID = Orders.CustomerID;
+END OF EXAMPLE
+
+Automatism:
+    - referential integrity
+    - automatic index creation
+    - cascading actions
+    - constraint validation
+    - deferred constraint checking
+
+Referential integrity:
+    - Ensures that a foreign key must reference an existing primary key value in the parent table
+    - Prevents inserting orphan records (e.g. values in the foreign key column that do not exist in the referenced table)
+
+EXAMPLE FOR REFERENTIAL INTEGRITY:
+INSERT INTO Orders (OrderID, CustomerID) VALUES (1, 999); -- Fails if CustomerID 999 does not exist in Customers table
+END OF EXAMPLE
+
+Automatic index creation:
+    - in PostgreSQL and SQL Server: a foreign key column does NOT automatically create an index, but indexing is recommended for performance
+    - in MySQL (InnoDB): a foreign key implicitly creates an index if one does not already exist
+
+Cascading actions:
+    - ON DELETE CASCADE: automatically deletes dependent records if the referenced row is deleted
+    - ON DELETE SET NULL: sets the foreign key column to NULL when the referenced row is deleted
+    - ON UPDATE CASCADE: automatically updates dependent records if the referenced primary key value changes
+
+EXAMPLE FOR CASCADING ACTIONS:
+-- Customers: CustomerID, CustomerName
+-- Orders: OrderID CustomerID(foreign key)
+ALTER TABLE Orders ADD CONSTRAINT fk_Customer FOREIGN KEY (CustomerID)
+REFERENCES Customers(CustomerID) ON DELETE CASCADE;
+
+-- Customers: CustomerID, CustomerName
+-- Orders: OrderID CustomerID(foreign key)
+ALTER TABLE Orders ADD CONSTRAINT fk_Customer FOREIGN KEY (CustomerID)
+REFERENCES Customers(CustomerID) ON DELETE SET NULL;
+
+-- Customers: CustomerID, CustomerName
+-- Orders: OrderID CustomerID(foreign key)
+ALTER TABLE Orders ADD CONSTRAINT fk_Customer FOREIGN KEY (CustomerID)
+REFERENCES Customers(CustomerID) ON UPDATE CASCADE;
+END OF EXAMPLE
+
+Constraint validation:
+    - prevents inserting or updating a foreign key value that does not match an existing primary key
+    - prevents deletion of referenced rows unless ON DELETE CASCADE or SET NULL is used
+
+Deferred constraint checking (PostgreSQL, Oracle):
+    - allows foreign key constraints to be checked at commit time instead of immediately
+    - useful for bulk operations where temporary violations occur but are resolved later
+
+EXAMPLE FOR USING FOREIGN KEY AUTOMATISM:
+-- create tables
+-- if a customer is deleted, all their orders are deleted as well
+-- if a customer’s ID changes, the corresponding orders update automatically
+CREATE TABLE Customers (
+    CustomerID INT PRIMARY KEY,
+    Name VARCHAR(100)
+);
+
+CREATE TABLE Orders (
+    OrderID INT PRIMARY KEY,
+    CustomerID INT,
+    OrderDate DATE,
+    FOREIGN KEY (CustomerID) REFERENCES Customers(CustomerID)
+        ON DELETE CASCADE ON UPDATE CASCADE;
+);
+
+-- insert data with success
+INSERT INTO Customers (CustomerID, Name) VALUES (1, 'Alice');
+INSERT INTO Orders (OrderID, CustomerID, OrderDate) VALUES (100, 1, '2025-05-01');
+INSERT INTO Orders (OrderID, CustomerID, OrderDate) VALUES (101, 1, '2025-05-02');
+
+-- insert data with foreign key violation: customer with ID 999 is non-existing
+INSERT INTO Orders (OrderID, CustomerID, OrderDate) VALUES (102, 999, '2025-05-03');
+
+-- modify customer ID in Customers: foreign key in Orders are modified as well
+UPDATE Customers SET CustomerID = 2 WHERE CustomerID = 1; -- Orders.CustomerID == 2 in both rows
+
+-- delete customer: referencing orders are automatically deleted
+DELETE FROM Customers WHERE CustomerID = 2;
+END OF EXAMPLE
+
+EXAMPLE FOR HANDLING BULK OPERATIONS:
+-- MySQL
+SET FOREIGN_KEY_CHECKS=0;
+-- Perform bulk insert/update
+SET FOREIGN_KEY_CHECKS=1;
+END OF EXAMPLE
+
+EXAMPLE FOR DEFERRED CONSTRAINT CHECKING (POSTGRESQL):
+ALTER TABLE Orders ADD CONSTRAINT fk_customer
+FOREIGN KEY (CustomerID) REFERENCES Customers(CustomerID)
+DEFERRABLE INITIALLY DEFERRED;
+END OF EXAMPLE
+
+5.3. UNIQUE, CHECK, NOT NULL CONSTRAINTS
+---------------------------------------------------------------------------------
+The UNIQUE constraint ensures that all values in a column (or a set of columns) are distinct, preventing duplicate entries. Unlike the primary key, a table can have multiple unique constraints. Furthermore:
+    - columns with unique constraints can have NULL values, but only one NULL per column (depending on the database)
+    - useful for enforcing rules like unique emails or usernames
+The CHECK constrain checks the value during adding.
+The NOT NULL constraint prevents adding null value.
+
+EXAMPLE FOR CREATING A TABLE WITH CONSTRAINTS:
+CREATE TABLE Users (
+    UserID INT PRIMARY KEY,
+    Email VARCHAR(50) UNIQUE, -- Ensures no duplicate email addresses
+    Name VARCHAR(50) UNIQUE, -- Ensures no duplicate usernames
+    UNIQUE (Email, Name), -- Ensures that the combination is unique as well (constraint on multiple columns)
+    Rank INT CHECK (Rank > 0 AND Rank < 11), -- Ensures rank falls into given interval
+    Salary INT,
+    Initials VARCHAR(3) NOT NULL, -- Ensures initials is not null
+    BirthDate DATE,
+    Height INT,
+    CHECK (BirthDate >= '2001-01-01' AND Height > 100), -- Creates constraint on multiple columns
+    CONSTRAINT CHK_Salary CHECK (Salary > 0) -- Creates constraint with name
+);
+END OF EXAMPLE
+
+=================================================================================
+6. INDEXES
+=================================================================================
+Index is usually a co-table connected to a table, helping in fast search if the checked column. It contains pointers to the rows in a table.
+Ideal for optimizing large datasets.
+Avoid over-indexing, it can slow down operations.
+
+Implicit index: created automatically when triggered by PRIMARY KEY, UNIQUE, FOREIGN KEY constraints.
+Explicit index: created with explicit instructions, in dedicated line.
+
+Database systems automatically create index on primary keys:
+    - MySQL: clustered
+    - SQL Server: clustered by default but non-clustered is specifiable
+    - PostgreSQL: unique B-tree
+    - Oracle: unique B-tree
+    - SQLite: implicit B-tree
+
+Database systems automatically create index on UNIQUE constraint as well (non-primary key, implicit index).
+Some databases (e.g. PostgreSQL) create index on FOREIGN KEY columns as well (non-primary key, implicit index).
+
+Default index type on non-primary key columns:
+    - MySQL: B-tree (unless defined as FULLTEXT or SPATIAL)
+    - SQL Server: non-clustered
+    - PostgreSQL: B-tree (unless defined as Hash, GiST etc.)
+    - Oracle: B-tree (unless defined as Bitmap)
+    - SQLite: B-tree
+
+Clustered index:
+    - defines the physical order of the data in the table, therefore
+    - there can be only one clustered index per table
+    - searching for data is very fast, especially for range queries
+
+Non-clustered index:
+    - does NOT change the physical order of the data in the table
+    - it creates a separate structure that holds pointers to the actual rows in the table
+    - there can be multiple non-clustered indexes on a table
+
+Unique index:
+    - prevents duplications (ensures uniqueness)
+
+B-tree index:
+    - ensures efficient retrieval (single row and range) and sorting
+
+Unique B-tree index:
+    - ensures uniqueness, and efficient retrieval and sorting
+
+You can have one clustered and multiple other kind of indexes on a table.
+You can put more indexes on a column, even on IDs if necessary.
+
+Keywords of CREATE INDEX in database systems:
+||DATABASE|KEYWORD|DESCRIPTION||
+||MySQL|UNIQUE|Ensures no duplicate values||
+||MySQL|FULLTEXT|For text-based searches||
+||MySQL|SPATIAL|Used for geographic data||
+||MySQL|USING BTREE, USING HASH|Defines storage structure||
+||SQL Server|CLUSTERED|Defines a clustered index (table physically sorted)||
+||SQL Server|NONCLUSTERED|Creates a separate index structure||
+||SQL Server|INCLUDE|Adds additional columns to the index||
+||SQL Server|FILLFACTOR|Defines storage space usage||
+||PostgreSQL|USING BTREE, USING HASH, USING GIST, USING GIN, USING BRIN|Defines index type||
+||PostgreSQL|TABLESPACE|Defines storage location||
+||PostgreSQL|WITH|Set additional properties||
+||Oracle|UNIQUE|Ensures uniqueness||
+||Oracle|BITMAP|Optimizes for low-cardinality columns||
+||Oracle|TABLESPACE|Specifies where the index is stored||
+||Oracle|ONLINE|Allows index creation without table lock||
+
+EXAMPLE FOR CREATE INDEX SYNTAXES:
+-- MySQL
+CREATE [UNIQUE|FULLTEXT|SPATIAL] INDEX index_name
+ON table_name (column_name[(length)] [ASC|DESC])
+[USING {BTREE|HASH}];
+
+-- SQL Server
+CREATE [CLUSTERED|NONCLUSTERED] INDEX index_name
+ON table_name (column_name [ASC|DESC])
+[INCLUDE (column_name1, column_name2, ...)]
+[WITH (FILLFACTOR = value)];
+
+-- PostgreSQL
+CREATE [UNIQUE] INDEX index_name
+ON table_name USING index_method (column_name [ASC|DESC])
+[WITH (parameter=value)]
+[TABLESPACE tablespace_name];
+
+-- Oracle
+CREATE [UNIQUE|BITMAP] INDEX index_name
+ON table_name (column_name [ASC|DESC])
+[TABLESPACE tablespace_name]
+[ONLINE];
+END OF EXAMPLE
+
+EXAMPLE FOR CREATING DEFAULT INDEX ON NON-PRIMARY KEY COLUMN:
+-- employees: id, name, salary
+-- create an index on salary column named idx_salary
+CREATE INDEX idx_salary ON employees (salary);
+END OF EXAMPLE
+
+EXAMPLE FOR CREATING NON-CLUSTERED INDEX ON PRIMARY KEY COLUMN (IMPLICIT):
+-- customers: id, name
+-- create an primary key with non-clustered index on id (duplicates are enabled)
+CREATE TABLE customers (
+    id INT PRIMARY KEY NONCLUSTERED,
+    Name VARCHAR(100)
+);
+END OF EXAMPLE
+
+EXAMPLE FOR CREATING NON-CLUSTERED INDEX ON NON-PRIMARY KEY COLUMN (EXPLICIT):
+-- employees: id, name, salary
+-- create table with a non-clustered index on salary column named idx_salary
+CREATE NONCLUSTERED INDEX idx_salary ON employees (salary);
+END OF EXAMPLE
+
+EXAMPLE FOR CREATING AN OTHER INDEX TYPE ON EXISTING PRIMARY KEY INDEX (EXPLICIT OVER IMPLICIT):
+-- employees: id, name, salary
+-- create the table with clustered primary key, then add a non-clustered key to the primary key
+CREATE TABLE customers (
+    id INT PRIMARY KEY CLUSTERED,
+    name TEXT,
+    salary INT
+);
+CREATE NONCLUSTERED INDEX customer_pkey_nonclustered ON customers (id);
+END OF EXAMPLE
+
+=================================================================================
+7. PARTITIONS
+=================================================================================
+When using large datasets, it is important to divide the table to partitions. Queries will be executed selectively on one or a few partitions only.
+The SQL for defining partitions, needs verbal keywords.
+Partition types:
+    - range: based on a range of values
+    - list: based on a predefined list of values
+    - hash: based on a hash function applied to one or more columns
+    - composite: combines two partitioning methods
+
+EXAMPLE FOR PARTITIONING UPON CREATION:
+-- Orders: Id, CustomerID, OrderDate, Region
+-- range
+CREATE TABLE Orders (
+    Id INT,
+    CustomerID INT,
+    OrderDate DATE,
+    Region VARCHAR(60)
+)
+PARTITION BY RANGE (YEAR(OrderDate)) (
+    PARTITION p2022 VALUES LESS THAN (2023), -- partition name: p2022
+    PARTITION p2023 VALUES LESS THAN (2024) -- partition name: p2023
+);
+
+-- list
+CREATE TABLE Orders (
+    Id INT,
+    CustomerID INT,
+    OrderDate DATE,
+    Region VARCHAR(60)
+)
+PARTITION BY LIST (Region) (
+    PARTITION Europe VALUES IN ('Germany', 'France', 'Spain'), -- partition name: Europe
+    PARTITION Asia VALUES IN ('Japan', 'India', 'China') -- partition name: Asia
+);
+
+-- hash
+CREATE TABLE Orders (
+    Id INT,
+    CustomerID INT,
+    OrderDate DATE,
+    Region VARCHAR(60)
+)
+PARTITION BY HASH (Id) PARTITIONS 4; -- creates 4 partitions based on the values of Id
+
+-- composite
+CREATE TABLE Orders (
+    Id INT,
+    CustomerID INT,
+    OrderDate DATE,
+    Region VARCHAR(60)
+)
+PARTITION BY RANGE (YEAR(OrderDate)) SUBPARTITION BY HASH (CustomerID);
+END OF EXAMPLE
+
+=>SQL AND NOSQL DATABASES
+=>POSTGRESQL
+=>SPRING BOOT REPOSITORY
+=>SPRING BOOT ENTITY
+=>SQL SELECT
+=>SQL ALTER AND DATA MANIPULATION
+=>SQL TRANSACTION AND EXECUTION PLAN AND ADMINISTRATION

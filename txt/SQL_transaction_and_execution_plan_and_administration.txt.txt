@@ -1,0 +1,116 @@
+=================================================================================
+SQL TRANSACTION AND EXECUTION PLAN AND ADMINISTRATION
+=================================================================================
+1. TRANSACTIONS
+2. EXECUTION PLANS
+3. DATABASE ADMINISTRATION
+
+=================================================================================
+1. TRANSACTIONS
+=================================================================================
+A series of operations which are executed as a single unit.
+If one part fails, the entire transaction can be rolled back, ensuring data consistency.
+
+Commands:
+    - BEGIN TRANSACTION: starts a transaction
+    - COMMIT: saves the changes and closes the transaction
+    - ROLLBACK: reverts the changes and closes the transaction
+
+The modifications are kept temporary in a transaction workspace, isolated from the live data. In case of COMMIT, the modifications are applied to the live data and the temporal workspace is deleted. In case of ROLLBACK, the temporary workspace is discarded. While the transaction is being built up, any other queries of the database will access the original data, and after the COMMIT command will the changed data be available.
+Transactions are very useful if all changes must happen at once, together, mere simultaneously.
+
+EXAMPLE FOR TRANSACTION:
+-- Begin the transaction
+BEGIN TRANSACTION;
+
+-- Try to execute a series of operations
+BEGIN TRY
+    -- Insert a new record into the 'Customers' table
+    INSERT INTO Customers (CustomerID, Name, Email)
+    VALUES (101, 'John Doe', 'john.doe@example.com');
+
+    -- Update a record in the 'Orders' table
+    UPDATE Orders
+    SET TotalAmount = TotalAmount + 50
+    WHERE OrderID = 2001;
+
+    -- Commit the transaction if all operations succeed
+    COMMIT TRANSACTION;
+    PRINT 'Transaction committed successfully.';
+END TRY
+BEGIN CATCH
+    -- Rollback the transaction in case of an error
+    ROLLBACK TRANSACTION;
+    PRINT 'Transaction rolled back due to an error.';
+END CATCH;
+END OF EXAMPLE
+
+=================================================================================
+2. EXECUTION PLANS
+=================================================================================
+Execution plans show how the database processes your query. Most databases support a command like EXPLAIN or EXPLAIN PLAN.
+Analyzes the execution plan for a query and suggest possible optimizations.
+For large datasets, use it for identifying bottlenecks.
+
+EXAMPLE FOR EXECUTION PLANS:
+EXPLAIN SELECT * FROM Employees WHERE Salary > 50000;
+END OF EXAMPLE
+
+=================================================================================
+3. DATABASE ADMINISTRATION
+=================================================================================
+Type of permissions:
+    - Data Permissions: SELECT, INSERT, DELETE, UPDATE
+    - Schema Permissions: CREATE, DROP, ALTER, INDEX
+    - Administrative Permissions: GRANT, REVOKE, BACKUP, SHUTDOWN
+
+EXAMPLE FOR USER PERMISSION MANAGEMENT:
+-- Create User
+CREATE USER 'username'@'host' IDENTIFIED BY 'password';
+
+-- Grant Permissions
+GRANT SELECT, INSERT ON database_name.table_name TO 'username'@'host';
+
+-- Revoke Permissions
+REVOKE INSERT ON database_name.table_name FROM 'username'@'host';
+
+-- Drop User
+DROP USER 'username'@'host';
+END OF EXAMPLE
+
+Backup Strategies:
+    - Full Backup: Backs up the entire database
+    - Incremental Backup: Only backs up data that has changed since the last backup
+    - Differential Backup: Backs up data that has changed since the last full backup
+
+Steps to Restore a Backup:
+    - Full Restoration: Use the backup file to recreate the database
+    - Point-in-Time Restoration: Restore to a specific state using incremental backups and logs
+    - Test Restorations: Always test the restoration process to ensure the backup is functional
+
+EXAMPLE FOR FULL BACKUP AND RESTORATION (MYSQL):
+Shell: mysqldump -u username -p database_name > full_backup.sql
+
+SQL: CREATE DATABASE new_database_name;
+Shell: mysql -u username -p new_database_name < full_backup.sql
+END OF EXAMPLE
+
+Performance Tuning:
+    - Optimize queries
+    - Monitor indexes and execution plans
+Monitoring:
+    - Use tools to track resource usage and database health (e.g., disk space, memory usage)
+Security:
+    - Configure firewalls
+    - Use encryption for sensitive data
+Database Maintenance:
+    - Run regular checks to repair tables
+    - Update schemas as necessary
+
+=>SQL AND NOSQL DATABASES
+=>POSTGRESQL
+=>SPRING BOOT REPOSITORY
+=>SPRING BOOT ENTITY
+=>SQL SELECT
+=>SQL CREATE
+=>SQL ALTER AND DATA MANIPULATION

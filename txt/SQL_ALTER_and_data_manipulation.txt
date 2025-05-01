@@ -1,0 +1,106 @@
+=================================================================================
+SQL ALTER AND DATA MANIPULATION
+=================================================================================
+1. ALTER TABLE STRUCTURE
+2. DATA MANIPULATION
+
+=================================================================================
+1. ALTER TABLE STRUCTURE
+=================================================================================
+Modifying the structure of a table.
+Always backup the table before making changes.
+
+Not every databases support column deletion, in such case create a new table without that column and copy data.
+Upon column deletion all constraints pointing on that column will be dispatched along.
+Before deleting a primary key, remove all foreign keys in other tables pointing to this primary key.
+After deleting a primary key, you should create a new one in that table.
+Along with modifying column name or type, check depending references as well (constraints in the table, foreign keys in other tables).
+Constraints usually can not be renamed, use drop-create method instead.
+
+If a foreign key has no name upon defining, it can be found:
+    - in MySQL: SHOW CREATE TABLE table_name;
+    - in PostgreSQL: \d table_name
+    - in SQL Server: EXEC sp_help 'table_name';
+If a constraint name is unknown, it can be found:
+    - in MySQL: SHOW CREATE TABLE table_name;
+    - in PostgreSQL: \d table_name
+    - in SQL Server: SELECT name FROM sys.key_constraints WHERE parent_object_id = OBJECT_ID('table_name');
+
+EXAMPLE FOR ADDING KEYS, COLUMN, CONSTRAINTS, DEFAULT VALUE:
+-- Employees: StudentID, CourseID, Name, LastName, Department, DateOfJoin
+-- Departments: DepartmentID, DepartmentName
+-- add composite key on StudentID and CourseID, DateOfBirth with constraint, named constraint on Name, constraint on LastName, foreign key on Department, default on DateOfJoin
+ALTER TABLE Employees
+ADD PRIMARY KEY (StudentID, CourseID), -- composite key on existing columns
+ADD DateOfBirth DATE NOT NULL, -- new column
+ADD CONSTRAINT NameNotNull NOT NULL (Name), -- new named constraint
+ADD UNIQUE (LastName), -- new constraint
+ADD FOREIGN KEY (Department) REFERENCES Departments(DepartmentID), -- new foreign key
+ALTER COLUMN DateOfJoin SET DEFAULT CURRENT_DATE;
+END OF EXAMPLE
+
+EXAMPLE FOR DELETING KEYS, COLUMN, CONSTRAINT, DEFAULT:
+-- Employees: Id (primary key), Name, LastName, Age (CHK_Age constraint on it), UserType (UserTypes foreign key on it)
+ALTER TABLE Employees
+DROP Name, -- drops column
+DROP PRIMARY KEY, -- drops key on Id
+DROP CONSTRAINT CHK_Age; -- only if the constraint has a name; foreign keys are usually dropped as constraints
+DROP FOREIGN KEY UserTypes; -- only in MySQL and similars, and if the constraint has a name
+ALTER COLUMN DateOfJoin DROP DEFAULT;
+END OF EXAMPLE
+
+EXAMPLE FOR CHANGING PRIMARY KEY:
+-- Customers: CustomerID, CustomerName
+-- change the primary key to a non-clustered index
+
+-- in case of unnamed index
+ALTER TABLE Customers DROP PRIMARY KEY;
+ALTER TABLE Customers ADD PRIMARY KEY NONCLUSTERED (CustomerID);
+
+-- in case of named index
+ALTER TABLE Customers DROP CONSTRAINT PK_Customers;
+ALTER TABLE Customers ADD CONSTRAINT PK_Customers PRIMARY KEY NONCLUSTERED (CustomerID);
+END OF EXAMPLE
+
+EXAMPLE FOR RENAMING KEYS, COLUMNS, CONSTRAINTS, CHANGING COLUMN TYPES AND DEFAULT VALUE:
+-- Employees: Id (primary key), Name (VARCHAR(30)), LastName, Age (CHK_Age constraint on it), UserType (UserTypes foreign key on it), DateOfJoin (default on it)
+ALTER TABLE Employees
+CHANGE Name FirstName TEXT, -- change column name and type, MySQL
+RENAME COLUMN Name TO FirstName, -- PostgreSQL
+EXEC SP_RENAME 'Employees.Name', 'FirstName', 'COLUMN', -- SQL Server, calls a pre-stored procedure
+ALTER COLUMN DateOfJoin SET DEFAULT '2000-01-01';
+END OF EXAMPLE
+
+=================================================================================
+2. DATA MANIPULATION
+=================================================================================
+Data can be added, modified and deleted from a table as rows.
+Always use the WHERE clause when updating and deleting.
+In case of large dataset, use LIMIT and execute it the needed times.
+Use transactions for safety.
+
+EXAMPLE FOR ADDING, MODIFYING, DELETING DATA:
+-- Employees: ID, Name, Position
+-- add data
+INSERT INTO Employees (ID, Name, Position)
+VALUES (101, 'Alice', 'Manager');
+
+-- modify data
+UPDATE Employees
+SET Position = 'Senior Manager'
+WHERE Name = 'Alice'
+[LIMIT number_of_rows];
+
+-- delete data
+DELETE FROM Employees
+WHERE Name = 'Alice'
+[LIMIT number_of_rows];
+END OF EXAMPLE
+
+=>SQL AND NOSQL DATABASES
+=>POSTGRESQL
+=>SPRING BOOT REPOSITORY
+=>SPRING BOOT ENTITY
+=>SQL SELECT
+=>SQL CREATE
+=>SQL TRANSACTION AND EXECUTION PLAN AND ADMINISTRATION
