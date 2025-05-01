@@ -281,6 +281,17 @@ Cascading actions:
 EXAMPLE FOR CASCADING ACTIONS:
 -- Customers: CustomerID, CustomerName
 -- Orders: OrderID CustomerID(foreign key)
+
+-- upon CREATE
+CREATE TABLE Orders (
+    OrderID INT PRIMARY KEY,
+    CustomerID INT,
+    FOREIGN KEY (CustomerID) REFERENCES Customers(CustomerID)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+);
+
+-- upon ALTER
 ALTER TABLE Orders ADD CONSTRAINT fk_Customer FOREIGN KEY (CustomerID)
 REFERENCES Customers(CustomerID) ON DELETE CASCADE;
 
