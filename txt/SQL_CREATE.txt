@@ -364,6 +364,7 @@ END OF EXAMPLE
 The UNIQUE constraint ensures that all values in a column (or a set of columns) are distinct, preventing duplicate entries. Unlike the primary key, a table can have multiple unique constraints. Furthermore:
     - columns with unique constraints can have NULL values, but only one NULL per column (depending on the database)
     - useful for enforcing rules like unique emails or usernames
+    - it creates an un-named index in the background optimized for uniqueness but not optimized for querying
 The CHECK constrain checks the value during adding.
 The NOT NULL constraint prevents adding null value.
 
@@ -400,7 +401,7 @@ Database systems automatically create index on primary keys:
     - Oracle: unique B-tree
     - SQLite: implicit B-tree
 
-Database systems automatically create index on UNIQUE constraint as well (non-primary key, implicit index).
+Database systems automatically create index on UNIQUE constraint as well (non-primary key, implicit index). This index is for ensuring uniqueness, not for fats searches.
 Some databases (e.g. PostgreSQL) create index on FOREIGN KEY columns as well (non-primary key, implicit index).
 
 Default index type on non-primary key columns:
@@ -431,6 +432,8 @@ Unique B-tree index:
 
 You can have one clustered and multiple other kind of indexes on a table.
 You can put more indexes on a column, even on IDs if necessary.
+You can create an index on multiple columns (composite index). This index will be automatically used when in the WHERE part of the SELECT all columns marked in the definition are present.
+Creating unique composite index can be with or without constraint.  In case of the constraint version, it is not possible to name the index itself, just the constraint, and there is no further index customization (e.g. not-default index type).
 
 Keywords of CREATE INDEX in database systems:
 ||DATABASE|KEYWORD|DESCRIPTION||
@@ -443,6 +446,7 @@ Keywords of CREATE INDEX in database systems:
 ||SQL Server|INCLUDE|Adds additional columns to the index||
 ||SQL Server|FILLFACTOR|Defines storage space usage||
 ||PostgreSQL|USING BTREE, USING HASH, USING GIST, USING GIN, USING BRIN|Defines index type||
+||MySQL|UNIQUE|Ensures no duplicate values||
 ||PostgreSQL|TABLESPACE|Defines storage location||
 ||PostgreSQL|WITH|Set additional properties||
 ||Oracle|UNIQUE|Ensures uniqueness||
@@ -450,10 +454,18 @@ Keywords of CREATE INDEX in database systems:
 ||Oracle|TABLESPACE|Specifies where the index is stored||
 ||Oracle|ONLINE|Allows index creation without table lock||
 
+In PostgreSQL, using non-default index types has different aims.
+
+||INDEX TYPE|PURPOSE|USE CASE|LIMITATIONS||
+||HASH|exact match queries|high-speed lookups with WHERE column = 'value'|not useful for range queries (<, >, BETWEEN)||
+||GiST|Generalized Search Tree, complex queries like spatial data, full-text search, and range queries|PostGIS (geospatial queries) or full-text search with tsvector|-||
+||GIN|Generalized Inverted Index, fast searching in large text-based data and JSONB fields|full-text search (tsvector), arrays, or JSONB queries|-||
+||BRIN|Block Range Index, large datasets that have natural ordering, such as timestamps|huge tables (millions/billions of rows) where queries mostly filter on a range|-||
+
 EXAMPLE FOR CREATE INDEX SYNTAXES:
 -- MySQL
 CREATE [UNIQUE|FULLTEXT|SPATIAL] INDEX index_name
-ON table_name (column_name[(length)] [ASC|DESC])
+ON table_name (column_name[(length)[, column_name[(length), ...]] [ASC|DESC])
 [USING {BTREE|HASH}];
 
 -- SQL Server
@@ -464,13 +476,13 @@ ON table_name (column_name [ASC|DESC])
 
 -- PostgreSQL
 CREATE [UNIQUE] INDEX index_name
-ON table_name USING index_method (column_name [ASC|DESC])
+ON table_name USING index_method (column_name[, column_name, ...] [ASC|DESC])
 [WITH (parameter=value)]
 [TABLESPACE tablespace_name];
 
 -- Oracle
 CREATE [UNIQUE|BITMAP] INDEX index_name
-ON table_name (column_name [ASC|DESC])
+ON table_name (column_name[, column_name, ...] [ASC|DESC])
 [TABLESPACE tablespace_name]
 [ONLINE];
 END OF EXAMPLE
@@ -481,9 +493,49 @@ EXAMPLE FOR CREATING DEFAULT INDEX ON NON-PRIMARY KEY COLUMN:
 CREATE INDEX idx_salary ON employees (salary);
 END OF EXAMPLE
 
+EXAMPLE FOR CREATING DEFAULT COMPOSITE INDEX ON NON-PRIMARY KEY COLUMNS:
+-- employees: id, name, phone, salary
+-- create an index on name and phone columns named idx_person
+CREATE INDEX idx_person ON employees (name, phone);
+
+-- using the composite index
+SELECT name, phone, salary FROM employees WHERE name = 'Smith' AND phone = '612 432';
+END OF EXAMPLE
+
+EXAMPLE FOR CREATING UNIQUE DEFAULT INDEX ON NON-PRIMARY KEY COLUMN:
+-- employees: id, name, email, salary
+-- create a unique index on email column named idx_email
+CREATE UNIQUE INDEX idx_email ON employees (email);
+END OF EXAMPLE
+
+EXAMPLE FOR CREATING UNIQUE DEFAULT COMPOSITE INDEX ON NON-PRIMARY KEY COLUMNS:
+-- employees: id, name, phone, salary
+-- create a unique index on name and phone columns named idx_person
+CREATE UNIQUE INDEX idx_person ON employees (name, phone);
+
+-- using the composite index
+SELECT name, phone, salary FROM employees WHERE name = 'Smith' AND phone = '612 432';
+END OF EXAMPLE
+
+EXAMPLE FOR CREATING UNIQUE DEFAULT COMPOSITE INDEX ON NON-PRIMARY KEY COLUMNS VIA CONSTRAINT:
+-- employees: id, name, phone, salary
+-- create a unique index on name and phone columns named idx_person
+CREATE TABLE employees (
+    id INT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    phone VARCHAR(255) NOT NULL,
+    salary DECIMAL(10, 2),
+    CONSTRAINT uq_person UNIQUE (name, phone)
+);
+CREATE INDEX idx_person ON employees (name, phone);
+
+-- using the composite index
+SELECT name, phone, salary FROM employees WHERE name = 'Smith' AND phone = '612 432';
+END OF EXAMPLE
+
 EXAMPLE FOR CREATING NON-CLUSTERED INDEX ON PRIMARY KEY COLUMN (IMPLICIT):
 -- customers: id, name
--- create an primary key with non-clustered index on id (duplicates are enabled)
+-- create a primary key with non-clustered index on id (duplicates are enabled)
 CREATE TABLE customers (
     id INT PRIMARY KEY NONCLUSTERED,
     Name VARCHAR(100)
@@ -505,6 +557,20 @@ CREATE TABLE customers (
     salary INT
 );
 CREATE NONCLUSTERED INDEX customer_pkey_nonclustered ON customers (id);
+END OF EXAMPLE
+
+EXAMPLE FOR CREATING HASH/GIST/GIN/BRIN INDEX TYPES ON NON-PRIMARY KEY COLUMNS (EXPLICIT):
+CREATE TABLE users (
+    id BIGINT PRIMARY KEY,
+    email VARCHAR(150),
+    location TSVECTOR,
+    bio TEXT,
+    created_at TIMESTAMP
+);
+CREATE INDEX idx_users_hash ON users USING hash(email);
+CREATE INDEX idx_users_gist ON users USING gist(location);
+CREATE INDEX idx_users_gin ON users USING gin(to_tsvector('english', bio));
+CREATE INDEX idx_users_brin ON users USING brin(created_at);
 END OF EXAMPLE
 
 =================================================================================

@@ -1,0 +1,372 @@
+=================================================================================
+SPRING BOOT ENTITY JOIN
+=================================================================================
+The JOIN means two tables in database are connected in a way. On database level, this means using of the PRIMARY KEYs and defining FOREIGN KEYs. All the database structure can be created inside Spring, JOINs are not exclusions.
+A JOIN can be one-to-many (1:n) and many-to-many (n:m).
+In Spring terminology, a JOIN can be established in 1:n form. The 1: side is called one-side, the :m side is called many-side.
+The m:n JOIN can be established as two 1:n JOINs in opposing directions (two-directional JOINs).
+
+A JOIN can be created as:
+    - automatic join via using @OneToMany, @ManyToOne, @JoinColumn annotations in the parent and child Entity classes (executed upon any queries from the Repository)
+    - specific join via using a JPQL query (executes when the specific query in executed in its Repository, database independent)
+    - specific join via native SQL (executes when the specific query is executed in its Repository, database dependent)
+
+It is important that the specific JOIN will be created upon querying. The reason is that it must contain fresh data from both the tables.
+
+1. JOIN FROM ENTITIES
+2. JOIN FROM REPOSITORIES
+
+=================================================================================
+1. JOIN FROM ENTITIES
+=================================================================================
+1.1. ONE-TO-MANY JOIN
+1.2. MANY-TO-MANY JOIN WITH JOIN TABLE
+1.3. MANY-TO-MANY JOIN WITH JOIN ENTITY (COMPOSITE KEY)
+
+1.1. ONE-TO-MANY JOIN
+---------------------------------------------------------------------------------
+In the Entities
+    - on the one-side a virtual Collection (List, Set) field will contain the many-side elements of the JOIN, marked with @OneToMany
+    - on the many-side a virtual object field will contain the one-side of the JOIN, marked with @ManyToOne
+    - the virtual fields contain references in reality
+    - the foreign key column of the child table will not be mapped as field in its entity
+
+Data JPA will not create index on the foreign key automatically.
+
+||ANNOTATION|DESCRIPTION||
+||@OneToMany|marks the one-side of the JOIN which is mapped to the parent table||
+||@ManyToOne|marks the many-side of the JOIN, which is mapped to the child table which has the corresponding foreign key column||
+||@JoinColumn|defines the foreign key column name of the child table||
+
+By maintaining the JOIN, whatever changes is made to an entity, the entity or entities of the other side will be changed as well.
+
+Because this method creates an automatism, when only one side is needed for an operation, create an independent entity for that, without the join field:
+    - spare time (no join is executed)
+    - without careful operations, the consistency can be damaged
+
+In case an annotation has no parameters, Spring tries to figure out the column names by following Spring naming conventions. It can lead to errors and-or unnecessary joins easily, it is better to use arguments.
+
+Arguments of @OneToMany:
+    - mappedBy: Defines the field name in the child entity that maps back to the parent
+    - cascade: Specifies cascade operations (e.g., CascadeType.ALL, CascadeType.PERSIST)
+    - fetch: Defines fetch strategy (FetchType.LAZY or FetchType.EAGER)
+    - orphanRemoval: If true, removes orphaned child entities when detached
+
+Arguments of @ManyToOne:
+    - cascade: defines cascade operations (CascadeType.ALL, CascadeType.MERGE, etc.)
+    - fetch: controls loading strategy (FetchType.LAZY or FetchType.EAGER)
+    - optional: if false, the relationship must always have a value (i.e., NOT NULL)
+
+Arguments of @JoinColumn:
+    - name: specifies column name of the foreign key
+    - nullable: if false, the foreign key must have a value (NOT NULL)
+    - updatable: if false, prevents updates to the foreign key
+    - insertable: if false, prevents inserting values for the foreign key
+    - referencedColumnName: defines which column in the parent entity is referenced
+    - foreignKey: specifies foreign key constraints (@ForeignKey)
+
+Best practices:
+    - use mappedBy in @OneToMany to avoid unnecessary joins
+    - use FetchType.LAZY for better performance (avoid unnecessary data loading)
+    - use cascade = CascadeType.ALL if you want child entities to be automatically saved/removed
+    - use @JoinColumn(name = "...") to control foreign key column properties
+    - create index manually on the foreign key column in the child entity for better performance
+
+EXAMPLE FOR USAGE OF ARGUMENTS:
+@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+private List<Order> orders;
+
+@ManyToOne(fetch = FetchType.LAZY, optional = false)
+private User user;
+
+@ManyToOne
+@JoinColumn(name = "user_id", nullable = false, updatable = false)
+private User user;
+END OF EXAMPLE
+
+EXAMPLE FOR CREATING 1:N JOIN (ONE USER, MANY ORDERS):
+@Entity
+@Table(name = "users")
+public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    @Column(nullable = false, unique = true)
+    private String email;
+
+    @Column(nullable = false)
+    private String name;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL) // Auto-joins with Order entity; Cascade persists orders when saving a user
+    private List<Order> orders = new ArrayList<>();
+
+    //constructors, setters, getters
+}
+
+@Entity
+@Tables(name = "orders", indexes = {
+    @Index(name = "idx_user_id", columnList = "user_id") // index on the foreign key
+})
+public class Order {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    @Column(nullable = false)
+    private String product;
+
+    @ManyToOne // Auto-joins with User entity
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
+    //constructors, setters, getters
+}
+
+@Repository
+public interface UserRepository extends JpaRepository<User, Integer> {
+}
+
+@Repository
+public interface OrderRepository extends JpaRepository<Order, Integer> {
+}
+
+@Service
+public class UserService {
+    @Autowired
+    private UserRepository userRepository;
+
+    public User saveUser(User user) {
+        return userRepository.save(user); // Automatically saves associated orders
+    }
+}
+
+@RestController
+@RequestMapping("/users")
+public class UserController {
+    @Autowired
+    private UserService userService;
+
+    @PostMapping("/save") // Saves a User with multiple Orders
+    public ResponseEntity<User> saveUser(@RequestBody User user) {
+        return ResponseEntity.ok(userService.saveUser(user));
+    }
+}
+
+//example for saving request
+POST /users/save
+Content-Type: application/json
+{
+    "email": "test@example.com",
+    "name": "John Doe",
+    "orders": [
+        { "product": "Laptop" },
+        { "product": "Phone" }
+    ]
+}
+END OF EXAMPLE
+
+1.2. MANY-TO-MANY JOIN WITH JOIN TABLE
+---------------------------------------------------------------------------------
+In case of many-to-many (m:n) JOIN, a JoinTable is needed. This is an independent table in the database, created upon creating the JOIN. Instead of @JoinColumn, we have to use the @JoinTable annotation.
+Both the foreign key columns should be indexed manually for better performance.
+Because the many-to-many JOIN is symmetric, the parent-child roles are interchangeable but not mixable.
+
+||ANNOTATION|DESCRIPTION||
+||@OneToMany|marks the one-side of the JOIN which is mapped to the parent table||
+||@ManyToOne|marks the many-side of the JOIN, which is mapped to the child table which has the corresponding foreign key column||
+||@JoinColumn|defines the foreign key column name of the child table||
+||@JoinTable|defines the JOIN table including both foreign key column names of the parent and the child tables||
+
+EXAMPLE FOR M:N JOIN:
+@Entity
+@Table(name = "students", indexes = {
+    @Index(name = idx_course_id, columnList = "course_id")
+})
+class Student {
+
+    @Id
+    private Long id;
+
+    @ManyToMany
+    @JoinTable(
+        name = "course_like",
+        joinColumns = @JoinColumn(name = "student_id"),
+        inverseJoinColumns = @JoinColumn(name = "course_id"))
+    Set<Course> likedCourses;
+
+    // additional properties
+    // constructors, getters, and setters
+}
+
+@Entity
+@Table(name = "courses", indexes = {
+    @Index(name = "idx_student_id", columnList = "student_id")
+})
+class Course {
+
+    @Id
+    Long id;
+
+    @ManyToMany(mappedBy = "likedCourses")
+    Set<Student> likes;
+
+    // additional properties
+    // constructors, getters, and setters
+}
+END OF EXAMPLE
+
+MORE HERE: https://www.baeldung.com/hibernate-one-to-many
+MORE HERE: https://www.baeldung.com/jpa-many-to-many
+
+1.3. MANY-TO-MANY JOIN WITH JOIN ENTITY (COMPOSITE KEY)
+---------------------------------------------------------------------------------
+This m:n JOIN type is for having attributes (fields) in the join table. That means we give properties to the connection itself, e.g. ranking data.
+This type of relation is created by making a new entity.
+This solution will not limit the number of connected tables to two, nor the number of attributes to one.
+Because the many-to-many JOIN is symmetric, the parent-child roles are interchangeable but not mixable.
+
+||ANNOTATION|DESCRIPTION||
+||@Embeddable|marks the class which defines the parts of the composite key as fields||
+||@EmbeddedId|marks that the field functioning as a primary key in the JOIN table
+||@OneToMany|marks the one-side of the JOIN which is mapped to the parent table||
+||@ManyToOne|marks the many-side of the JOIN, which is mapped to the child table which has the corresponding foreign key column||
+||@@MapsId|defines which column of the original table will be part of the composite key in the JOIN table||
+||@JoinColumn|defines the foreign key column name of the child table||
+
+It is a three-step solution:
+    - create the elements of the composite key as fields in a new class (@Embeddable; must implement Serializable, must have hashcode, equals methods)
+    - create the JOIN table (composite key) as an entity, this will have a new primary key (@Entity, containing @EmbeddedId)
+    - modify the original entities to point to the JOIN table
+
+EXAMPLE FOR CREATING A COMPOSITE KEY:
+@Embeddable
+class CourseRatingKey implements Serializable {
+
+    @Column(name = "student_id")
+    Long studentId;
+
+    @Column(name = "course_id")
+    Long courseId;
+
+    // constructors, getters, and setters
+    // hashcode and equals
+}
+
+@Entity
+class CourseRating {
+
+    @EmbeddedId
+    CourseRatingKey id;
+
+    @ManyToOne
+    @MapsId("studentId")
+    @JoinColumn(name = "student_id")
+    Student student;
+
+    @ManyToOne
+    @MapsId("courseId")
+    @JoinColumn(name = "course_id")
+    Course course;
+
+    int rating; // the attribute, contained within the JOIN
+
+    // constructors, getters, and setters
+}
+
+@Entity
+@Table(name = "students", indexes = {
+    @Index(name = idx_rating_id, columnList = "rating_id")
+})
+class Student {
+
+    // ...
+
+    @OneToMany(mappedBy = "student")
+    Set<CourseRating> ratings;
+
+    // ...
+}
+
+@Entity
+@Table(name = "courses", indexes = {
+    @Index(name = idx_rating_id, columnList = "rating_id")
+})
+class Course {
+
+    // ...
+
+    @OneToMany(mappedBy = "course")
+    Set<CourseRating> ratings;
+
+    // ...
+}
+END OF EXAMPLE
+
+=================================================================================
+2. JOIN FROM REPOSITORIES
+=================================================================================
+When the JOIN is established via JPQL or SQL query, the join will be executed only when the specific query is executed, which means
+    - it spares time
+    - creating two dedicated entities for establishing the join is not needed (less complexity)
+    - it needs careful considerations no to injure the consistency
+
+EXAMPLE FOR DEFINING THE PROPER ENTITIES FOR JPQL AND NATIVE SQL QUERIES:
+//one-side of the join
+@Entity
+public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    @Column(nullable = false, unique = true)
+    private String email;
+
+    @Column(nullable = false)
+    private String name;
+
+    // constructors, setters and getters
+}
+
+//many-side of the join
+@Entity
+public class Order {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    @Column(nullable = false)
+    private String product;
+
+    @Column(name = "user_id", nullable = false) // Foreign key, but no JPA mapping
+    private Integer userId;
+
+    // constructors, setters and getters
+}
+END OF EXAMPLE
+
+EXAMPLE FOR JPQL JOIN QUERY:
+//JPQL manually joins Order and User using userId
+@Repository
+public interface OrderRepository extends JpaRepository<Order, Integer> {
+    @Query("SELECT o FROM Order o JOIN User u ON o.userId = u.id WHERE u.name = :name")
+    List<Order> findOrdersByUserName(@Param("name") String name);
+}
+
+//Hibernate translates it to this SQL
+SELECT o.* FROM orders o
+JOIN users u ON o.user_id = u.id
+WHERE u.name = 'John Doe';
+END OF EXAMPLE
+
+EXAMPLE FOR NATIVE JOIN QUERY:
+@Query(value = "SELECT o.* FROM orders o JOIN users u ON o.user_id = u.id WHERE u.name = :name", nativeQuery = true)
+List<Order> findOrdersByUserName(@Param("name") String name);
+END OF EXAMPLE
+
+=>SPRING BOOT ENTITY
+=>SPRING BOOT REPOSITORY
+=>SQL SELECT
+=>SQL AND NOSQL DATABASES
+=>POSTGRESQL
+=>H2

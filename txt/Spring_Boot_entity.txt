@@ -84,20 +84,24 @@ Every action with the repository will be rendered to SQL commands by Hibernate a
 All application ends with that Hibernate empties the database for rows, tables and everything else unless configured differently or the software is in production. Visit the SPRING APPLICATION PROPERTIES page for further details.
 
 2.1. GENERAL CLASS STRUCTURE
-2.2. FIELDS
-2.3. METHODS
-2.4. ENTITY CLASS EXAMPLES
-2.5. MAPPING ARRAY COLUMNS IN PURE JPA
+2.2. ID (PRIMARY KEY) FIELD
+2.3. INDEX ON NON-PRIMARY KEY FIELD
+2.4. OTHER FIELDS
+2.5. METHODS
+2.6. ENTITY CLASS EXAMPLES
+2.7. MAPPING ARRAY COLUMNS IN PURE JPA
 
 2.1. GENERAL CLASS STRUCTURE
 ---------------------------------------------------------------------------------
 The class must be public and must not be final in order to let Spring accessing and using it.
 The entity class is marked with Spring (Hibernate) class-level annotations.
+The relation between class fields and table fields are marked with field-level annotations.
 
-||ANNOTATION|DESCRIPTION||
-||@Entity|marks that the class is a Spring Data entity||
-||@Table|defines the corresponding table name in the database in case the two are not the same (most cases)||
-||@NamedQuery|optional; defines a domain-level query on the entity and renders it to a query method signature from within the domain||
+||ANNOTATION LEVEL|ANNOTATION|DESCRIPTION||
+||class|@Entity|marks that the class is a Spring Data entity||
+||class|@Table|defines the corresponding table name in the database in case the two are not the same (most cases)||
+||class|@NamedQuery|optional; defines a domain-level query on the entity and renders it to a query method signature from within the domain||
+||field|@Column|defines the corresponding column properties||
 
 The Spring name of the entity is defined by the class name. This can be overwritten via using the optional name parameter:
     - @Entity(name = "entityName")
@@ -114,28 +118,74 @@ By using it, the query will be bounded to the domain class and will be accessibl
 For JPQL examples see the SPRING BOOT REPOSITORY page.
 By using this annotation on a domain class, annotation-based configuration is created.
 
-2.2. FIELDS
+The @Column annotation can have the next parameters:
+    - name = "column name in database"
+    - length = number (maximum length of the text values, default is 255)
+    - precision = number (maximum number of digits, default is zero)
+    - scale = number (maximum number of decimal digits, default is zero)
+    - nullable = true|false (does the column accept null as value, default is true)
+    - unique = true|false (is accepting unique value for the column obligatory, default is false, creates an index)
+    - insertable = true|false (is accepting new rows, default is true)
+    - updatable = true|false (is accepting updating existing rows, default is true)
+    - table = "table name" (default is "")
+    - columnDefinition = "" (default is "")
+In database tables, every cell value can be null unless marked differently. Therefore, every type when transferred or set directly to and in database, can be null in the database so marking the column for nullability is preferred even in case of primitive type in entity.
+In case the @Column annotation is not used on a field, that field will be matched with table column by the field name, and will apply default values of all parameters of the virtually non-existent annotation.
+If unique = true argument is present in the @Column annotation, Hibernate will create a UNIQUE constraint on that field in SQL. It creates an index on that field but that index will not be optimized for queries. If fast lookups are needed, create an index instead.
+Please note, Spring will map VARCHAR(256) to any String field in case columnDefinition is not given. Visit the POSTGRESQL page for details on character types.
+
+EXAMPLE FOR UNIQUE AND NULLABLE PARAMETERS MATCH WITH SQL EXPRESSIONS:
+// entity class
+@Entity
+class entity {
+
+@id
+int Id;
+
+@Column(unique=..., nullable=...)
+String Name;
+}
+
+-- unique=false, nullable=false
+CREATE TABLE entity (
+Id INT PRIMARY KEY,
+Name VARCHAR(255) NOT NULL
+);
+
+-- unique=true, nullable=false
+CREATE TABLE entity (
+Id INT PRIMARY KEY,
+Name VARCHAR(255) UNIQUE NOT NULL
+);
+
+-- unique=false, nullable=true
+CREATE TABLE entity (
+Id INT PRIMARY KEY,
+Name VARCHAR(255)
+);
+
+-- unique=true, nullable=true
+CREATE TABLE entity (
+Id INT PRIMARY KEY,
+Name VARCHAR(255) UNIQUE
+);
+END OF EXAMPLE
+
+2.2. ID (PRIMARY KEY) FIELD
 ---------------------------------------------------------------------------------
-Every JPA entity must have a primary key which follows the standard table structure in relational database world.
+Every JPA entity must have a primary key which follows the standard table structure in relational database world. This is an ID field.
+
+||ANNOTATION LEVEL|ANNOTATION|DESCRIPTION||
+||field|@Id|marks that the field will represent a primary key column in the table of the database||
+||field|@SequenceGenerator|marks the ID generator parameters||
+||field|@GeneratedValue|marks ID generator type||
+
 The ID can be generated via following four strategics, defined with the @GeneratedValue annotation:
-    - AUTO (any strategy will be used by JPA)
-    - TABLE
-    - SEQUENCE (preferred for PostgreSQL, needs a sequence generator)
-    - IDENTITY
+    - AUTO (Hibernate will decide the best strategy)
+    - TABLE (not used anymore, slow, avoid it)
+    - SEQUENCE (preferred for better performance and flexibility, needs a sequence generator, not existent in SQLite and older MySQL)
+    - IDENTITY (uses auto-increment provided by the database, good for int or Integer fields in Java, INT or SERIAL column-types in database)
 When using the SEQUENCE strategy, the ID generator also needs a sequence generator with which the IDs are generated.
-
-The relation between class fields and table fields are marked with field-level annotations.
-
-||ANNOTATION|DESCRIPTION||
-||@Id|marks that the field will represent a primary key column in the table of the database||
-||@SequenceGenerator|marks the ID generator parameters||
-||@GeneratedValue|marks ID generator type||
-||@Version|defined the element version number or whether the element is new||
-||@Column|defines the corresponding column properties||
-||@Transient|will not match with column, will be calculated with constructor or with other code segments e.g. getter-setter or in service class||
-||@Temporal|for older Spring JPA, marks that the date or time field will contain temporal data||
-||@Enumerated|marks that the field contains enum||
-||@Lob|large object||
 
 The @Id annotation marks that the field matches with the table column with primary key values.
 Using the @Column annotation is still needed.
@@ -144,29 +194,11 @@ The @SequenceGenerator annotation also marks the ID field and has the next param
     - name = "generator_name" (practically same as sequence_name)
     - sequenceName = "sequence_name"
     - allocationSize = 1 (defines how the ID value will increase)
-With the values above, the generator will start the IDs with 1 and steps with 1 (allocationSize). The maximum value will be determined by the field type (e.g. long or Long will be bigint in the table, int or Integer will be integer in the table).
+With the values above, the generator will start the IDs with 1 and steps with 1 (allocationSize). The maximum value will be determined by the field type (e.g. long or Long will be BIGINT in the table, int or Integer will be INT in the table).
 
 The @GeneratedValue annotation also marks the ID field, and has the next parameters:
     - strategy = GenerationType.SEQUENCE
     - generator = "sequence_name" (connects the strategy with the sequence generator defined with @SequenceGenerator annotation)
-
-The @Version annotation defines that a field used as a version number for the element. This field will be used by the repository connected to the ID field:
-    - if null or 0: there is no version number (for version number the element will be considered as new)
-
-The @Column annotation can have the next parameters:
-    - name = "column name in database"
-    - length = number (maximum length of the text values, default is 255)
-    - precision = number (maximum number of digits, default is zero)
-    - scale = number (maximum number of decimal digits, default is zero)
-    - nullable = true|false (does the column accept null as value, default is true)
-    - unique = true|false (is accepting unique value for the column obligatory, default is false)
-    - insertable = true|false (is accepting new rows, default is true)
-    - updatable = true|false (is accepting updating existing rows, default is true)
-    - table = "table name" (default is "")
-    - columnDefinition = "" (default is "")
-In database tables, every cell value can be null unless marked differently. Therefore, every type when transferred or set directly to and in database, can be null in the database so marking the column for nullability is preferred even in case of primitive type in entity.
-In case the @Column annotation is not used on a field, that field will be matched with table column by the field name, and will apply default values of all parameters of the virtually non-existent annotation.
-Please note, Spring will map VARCHAR(256) to any String field in case columnDefinition is not given. Visit the POSTGRESQL page for details on character types.
 
 EXAMPLE FOR ID DEFINITION:
 @Id
@@ -175,6 +207,111 @@ EXAMPLE FOR ID DEFINITION:
 @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_generator")
 private long id;
 END OF EXAMPLE
+
+2.3. INDEX ON NON-PRIMARY KEY FIELD
+---------------------------------------------------------------------------------
+An index is needed on a field if on the corresponding column queries are executed regularly.
+The indexes are defined on class-level under the @Table annotation. The index can be defined on one or more fields, and name can be defined as well.
+If unique = true argument is present in the @Column annotation, Hibernate will create a UNIQUE constraint on that field in SQL. It creates an index on that field but that index will not be optimized for queries. If fast lookups are needed, create a unique index instead.
+Using the unique definition under @Column and the @Index argument under the @Table annotation will create two independent indexes on that field.
+It is possible to create composite index (more than one column).
+In case of unique composite index, the @Index formula differs (uniqueness through a CONSTRAINT). In this case, it is not possible to name the index itself.
+It is not possible to create an index type beside the default of the database system. If you want to define a different index type, apply SQL commands directly on the database.
+
+EXAMPLE FOR CREATING DEFAULT-TYPE INDEX:
+// Spring
+@Entity
+@Table(name = "users", indexes = {
+    @Index(name = "idx_user_email", columnList = "email", unique = true), // unique index
+    @Index(name = "idx_user_created_at", columnList = "created_at"),
+    @Index(name = "idx_user_name", columnList = "name")
+})
+public class User {
+    @Id
+    private Integer id;
+    @Column
+    private String email;
+    @Column(nullable = false)
+    private String name;
+    @Column(nullable = false)
+    private LocalDateTime created_at;
+}
+
+-- SQL generated by Hibernate
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    email VARCHAR(255),
+    name VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP NOT NULL
+);
+CREATE UNIQUE INDEX idx_user_email ON users(email);
+CREATE INDEX idx_user_created_at ON users(created_at);
+CREATE INDEX idx_user_name ON users(name);
+END OF EXAMPLE
+
+EXAMPLE FOR CREATING COMPOSITE DEFAULT-TYPE INDEX:
+// Spring
+@Entity
+@Table(name = "users", indexes = {
+    @Index(name = "idx_name_phone", columnList = "name, phone")
+})
+public class User {
+    @Id
+    private Integer id;
+    @Column(nullable = false)
+    private String name;
+    @Column(nullable = false)
+    private String phone;
+}
+
+-- SQL generated by Hibernate
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    phone VARCHAR(255) NOT NULL
+);
+CREATE INDEX idx_name_phone ON users(name, phone);
+END OF EXAMPLE
+
+EXAMPLE FOR CREATING COMPOSITE DEFAULT-TYPE INDEX:
+// Spring
+@Entity
+@Table(name = "users",
+       uniqueConstraints = @UniqueConstraint(name = "uq_name_phone", columnNames = {"name", "phone"}),
+       indexes = {
+           @Index(name = "idx_name_phone", columnList = "name, phone")
+       }
+)
+public class User {
+    @Id
+    private Integer id;
+    @Column(nullable = false)
+    private String name;
+    @Column(nullable = false)
+    private String phone;
+}
+
+-- SQL generated by Hibernate
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    phone VARCHAR(255) NOT NULL
+    CONSTRAINT uq_name_phone UNIQUE (name, phone)
+);
+CREATE INDEX idx_name_phone ON users(name, phone);
+END OF EXAMPLE
+
+2.4. OTHER FIELDS
+---------------------------------------------------------------------------------
+||ANNOTATION LEVEL|ANNOTATION|DESCRIPTION||
+||@Version|defines the element version number or whether the element is new||
+||@Transient|will not match with column, will be calculated with constructor or with other code segments e.g. getter-setter or in service class||
+||@Temporal|for older Spring JPA, marks that the date or time field will contain temporal data||
+||@Enumerated|marks that the field contains enum||
+||@Lob|large object||
+
+The @Version annotation defines that a field used as a version number for the element. This field will be used by the repository connected to the ID field:
+    - if null or 0: there is no version number (for version number the element will be considered as new)
 
 EXAMPLE FOR ID AND VERSION DEFINITION:
 @Id
@@ -219,7 +356,7 @@ EXAMPLE FOR LOB DEFINITION:
 private byte[] photo;
 END OF EXAMPLE
 
-2.3. METHODS
+2.5. METHODS
 ---------------------------------------------------------------------------------
 The default constructor is needed by the Spring JPA. By defining it, the class will not be immutable by definition.
 Custom constructors (which serve as collective setter method as well) is optional.
@@ -232,7 +369,7 @@ EXAMPLE FOR MARKING A NON-NULL METHOD ARGUMENT:
 public void EntityName(..., @NonNull parameterType, parameterName, ...) {...}
 END OF EXAMPLE
 
-2.4. ENTITY CLASS EXAMPLES
+2.6. ENTITY CLASS EXAMPLES
 ---------------------------------------------------------------------------------
 EXAMPLE FOR AN ENTITY CLASS (JPA, CRUD API, WITH VERSION NUMBER):
 package PackageName;
@@ -398,14 +535,11 @@ public class EntityClassName {
 }
 END OF EXAMPLE
 
-2.5. MAPPING ARRAY COLUMNS IN PURE JPA
+2.7. MAPPING ARRAY COLUMNS IN PURE JPA
 ---------------------------------------------------------------------------------
 Spring Boot pairs column types and entity fields automatically.
 In case Spring Data JPA is used but without Spring Boot, must properly map the columns and the fields together.
 Visit the SPRING DATA JPA MAPPING ARRAY COLUMNS page for details.
-
-MORE HERE: https://www.baeldung.com/hibernate-one-to-many
-MORE HERE: https://www.baeldung.com/jpa-many-to-many
 
 =>SPRING BOOT
 =>SPRING BOOT REPOSITORY
@@ -415,6 +549,8 @@ MORE HERE: https://www.baeldung.com/jpa-many-to-many
 =>SQL AND NOSQL DATABASES
 =>POSTGRESQL
 =>H2
+=>SQL SELECT
 =>SPRING BOOT TESTS;2. ENTITY TEST
 =>SPRING BOOT CONTROLLER;9. IMPLEMENT REST CRUD API
 =>SPRING DATA JPA MAPPING ARRAY COLUMNS
+=>SPRING BOOT ENTITY JOIN
