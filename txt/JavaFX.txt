@@ -1,0 +1,105 @@
+=================================================================================
+JAVAFX
+=================================================================================
+JavaFX is the successor of Java Swing, as such, it is a graphical user interface (GUI) extension of Java for creating platform-independent desktop applications.
+It can be used together with Spring Boot, in this case the project must be a desktop application with added Spring Boot dependencies. Using these systems together results a strong GUI designer working with a powerful data management etc. The servlet will not start automatically unless the Spring Web dependency is added, therefore the outcome will not be a web application.
+
+1. INSTALL AND SETUP JAVAFX
+
+=================================================================================
+1. INSTALL AND SETUP JAVAFX
+=================================================================================
+1.1. INSTALL AND SETUP ON INTELLIJ IDEA COMMUNITY EDITION
+1.2. INSTALL AND SETUP ON INTELLIJ IDEA ULTIMATE EDITION
+1.3. DIFFERENCES BETWEEN JAVAFX UNDER COMMUNITY AND ULTIMATE EDITIONS
+
+1.1. INSTALL AND SETUP ON INTELLIJ IDEA COMMUNITY EDITION
+---------------------------------------------------------------------------------
+Installation steps:
+    - download the latest JavaFX SDK (at least JDK 11; https://openjfx.io/), extract it to its final position
+    - in IntelliJ, go to File > Project Structure > SDKs, check if the new SDK is listed, and if not, add it
+
+Create a new JavaFX project:
+    - open IntelliJ and select New Project
+    - choose Java as the project type
+    - set your project SDK to the JDK you configured earlier
+    - finish the setup and create your main class
+
+Add JavaFX libraries:
+    - go to File > Project Structure > Libraries
+    - click the + icon and choose Java
+    - navigate to the lib folder inside your extracted JavaFX SDK and select all .jar files
+    - apply and close the dialog
+
+Configure VM Options:
+    - go to Run > Edit Configurations
+    - in the VM options field, add (replace /path/to/javafx-sdk/lib with the actual path on your system): --module-path /path/to/javafx-sdk/lib --add-modules=javafx.controls,javafx.fxml
+
+Write and run your JavaFX app:
+    - create a class that extends Application and override the start() method.
+    - run the app to see your JavaFX window pop up
+
+Download Scene Builder:
+    - get the latest version (https://gluonhq.com/products/scene-builder/)
+    - install it and note the path to the executable
+
+Executable paths:
+    - Windows: C:\Users\<YourName>\AppData\Local\SceneBuilder\SceneBuilder.exe
+    - macOS: /Applications/SceneBuilder.app
+    - Linux: Depends on your distro, but usually in /opt or your home directory
+
+Configure IntelliJ to Use Scene Builder:
+    - open IntelliJ and go to File > Settings (or IntelliJ IDEA > Preferences on macOS)
+    - navigate to Languages & Frameworks > JavaFX
+    - in the Path to SceneBuilder field, click the folder icon and select the Scene Builder executable
+    - click Apply and OK
+
+Open FXML Files in Scene Builder:
+    - in your project, locate an .fxml file
+    - right-click it and choose Open in SceneBuilder
+    - scene Builder should launch and display your UI file
+
+If the option to open in Scene Builder doesn’t appear, make sure:
+    - your .fxml file is in the resources folder
+    - you've correctly set the path in settings
+
+You can also open .fxml files directly in Scene Builder by dragging them onto the app.
+
+1.2. INSTALL AND SETUP ON INTELLIJ IDEA ULTIMATE EDITION
+---------------------------------------------------------------------------------
+Enabling steps:
+    - go to File > Settings > Plugins
+    - search for JavaFX under the Installed tab
+    - if it's disabled, enable it and restart IntelliJ
+
+Create a JavaFX Project:
+    - go to File > New > Project
+    - select JavaFX from the left-hand menu
+    - choose your JDK (Java 11 or later) and click Next
+    - IntelliJ will generate a sample JavaFX application for you — no need to manually configure libraries
+
+Run the sample app:
+    - open HelloApplication.java
+    - click the green play icon next to the main() method
+    - if everything is set up correctly, a JavaFX window should appear
+
+Customize Your Project:
+    - you can add FXML files, CSS styles, and use Scene Builder for UI design
+    - IntelliJ Ultimate integrates well with Scene Builder — just right-click your .fxml file and choose Open in Scene Builder
+
+1.3. DIFFERENCES BETWEEN JAVAFX UNDER COMMUNITY AND ULTIMATE EDITIONS
+---------------------------------------------------------------------------------
+Community edition:
+    - manual Setup Required: You need to download the JavaFX SDK, configure libraries, and set VM options yourself
+    - no JavaFX Project Wizard: You start with a plain Java project and build your JavaFX structure manually
+    - limited UI Design Tools: You can use external tools like Scene Builder, but integration is basic
+    - no Built-in FXML Preview: You’ll need to open .fxml files in Scene Builder separately
+
+Ultimate Edition:
+    - JavaFX Plugin Support: Comes with a dedicated JavaFX plugin that simplifies project creation and management
+    - JavaFX Project Template: You can create a JavaFX project directly from the New Project wizard
+    - Integrated Scene Builder: Right-click .fxml files and open them in Scene Builder from within IntelliJ
+    - Better Code Assistance: Enhanced support for FXML, CSS styling, and controller binding
+    - UI Preview & Debugging Tools: More advanced tools for visual debugging and layout inspection
+
+=>SPRING BOOT

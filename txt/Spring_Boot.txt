@@ -14,6 +14,8 @@ Spring Boot supports web API and REST API.
 In case Spring Boot is used alongside with template managers (e.g. Spring Boot ThymeLeaf), creation of whole web application becomes possible (frontend via templates, backend web development).
 Optionally, further boiler-coding time can be spared when instead of manual checking of database elements (entities) in the Business layer, Spring Boot Validation is utilized.
 
+Spring Boot can be used together with JavaFX. In this case, a desktop application is created, the powerful features of Spring Boot can be used, but the Spring Web must not be added to dependencies, therefore the servlet will not start up.
+
 1. SETTING UP
 2. CREATING CLASSES AND DIRECTORIES
 3. CLASS DEPENDENCIES IN SPRING
@@ -384,3 +386,4 @@ MORE HERE: https://www.geeksforgeeks.org/how-to-create-a-rest-api-using-java-spr
 =>SPRING EXCEPTION HANDLING
 =>MOCKITO
 =>SPRING BOOT FILE STORAGE WITH THYMELEAF EXAMPLE
+=>JAVAFX
